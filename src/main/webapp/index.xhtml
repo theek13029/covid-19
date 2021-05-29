@@ -23,6 +23,15 @@
                     </iframe>
                 </h:panelGroup>
 
+                <h:form >
+                    <p:panelGrid columns="1" style="width: 90%; text-align: center; padding: 5%; margin: 5%;" >
+                        <p:commandButton value="Add New Patient" ajax="false"  action="#{clientController.toAddNewClient()}" styleClass="width24rem"  ></p:commandButton>
+                        <p:commandButton value="Search Patients"  action="#{clientController.toSearchClientById()}"  styleClass="width24rem"  ></p:commandButton>
+                        <p:commandButton value="Reports" ajax="false"  styleClass="width24rem"  ></p:commandButton>
+                    </p:panelGrid>
+                </h:form>
+
+
                 <h:panelGroup rendered="false">
                     <ez:dashboardSystemAdministrator rendered="#{webUserController.loggedUser.systemAdministrator}"/>
                     <ez:dashboardSuperUser rendered="#{webUserController.loggedUser.superUser}"/>

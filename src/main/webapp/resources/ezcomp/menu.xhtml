@@ -25,17 +25,17 @@
 
                 <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="/index" />
 
-                <p:submenu label="Clients" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
-                    <p:menuitem ajax="false" value="Search by IDs" action="#{clientController.toSearchClientById()}" />
+                <p:submenu label="Patient" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
                     <p:menuitem ajax="false" value="Register New" action="#{clientController.toAddNewClient()}"  />
+                    <p:menuitem ajax="false" value="Search by IDs" action="#{clientController.toSearchClientById()}" />
                     <p:menuitem ajax="false" value="Reserver PHN" 
-                                action="#{clientController.toReserverPhn()}"  />
+                                action="#{clientController.toReserverPhn()}" rendered="false"  />
 
                 </p:submenu>
 
 
                 <p:submenu label="Analysis" disabled="false"
-                           rendered="#{webUserController.hasPrivilege('Institution_Administration')}" >
+                           rendered="#{webUserController.hasPrivilege('Institution_Administration') and false}" >
                     <p:menuitem ajax="false" value="Queries" 
                                 action="#{queryComponentController.toQueryIndex()}"  />
                     <p:menuitem ajax="false" value="Reports" 
@@ -47,7 +47,7 @@
 
                 <!--//Disabled the Menu-->
                 <p:submenu label="Institution Administration"  
-                           rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
+                           rendered="#{webUserController.hasPrivilege('Institution_Administration') and false}"  >
                     <p:menuitem value="Manage Users" 
                                 action="/insAdmin/user_index" ajax="false"
                                 rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
@@ -69,16 +69,13 @@
 
 
                 </p:submenu>
-                <p:submenu label="Modules">
-                    <p:menuitem value="Procedure Room" action="#{webUserController.toProcedureRoom()}"  ajax="false" />
-                </p:submenu>
 
                 <p:submenu label="Settings"  rendered="#{webUserController.hasPrivilege('User')}" >
                     <p:menuitem value="Change My Password" action="#{webUserController.toChangeMyPassword()}"    ajax="false" />
                     <p:menuitem value="Change My Details" action="#{webUserController.toChangeMyDetails()}"    ajax="false" />
                 </p:submenu>
 
-                <p:submenu label="Help" >
+                <p:submenu label="Help" rendered="false" >
                     <p:menuitem value="User Manual" action="/wiki"   ajax="false" />
                     <p:menuitem value="Issue Tracker" url="https://github.com/lk-gov-health-hiu/pssp/issues"   ajax="false"  target="_blank" />
                     <p:menuitem value="Troubleshooting" action="/troubleschooter"    ajax="false" />
