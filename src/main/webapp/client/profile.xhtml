@@ -75,14 +75,34 @@
                             </p:panelGrid>
                         </p:panelGrid>
 
-                        <p:panelGrid columns="1" >
+                        <h:form>
+
+
+                            <h:dataTable value="#{designComponentFormSetController.clinicFormSets}"
+                                         var="cfs"  border="0" >
+                                <h:column >
+                                    <p:commandButton id="btnNewFormset" value="New #{cfs.name}"
+                                                     process="@this" 
+                                                     update="@all"
+                                                     styleClass="width18rem" 
+                                                     action="#{clientEncounterComponentFormSetController.createNewAndNavigateToDataEntry(cfs)}" >
+                                    </p:commandButton>
+                                </h:column>
+                            </h:dataTable>
                             <p:commandButton value="Enter COVID-19 Eposode Data" styleClass="width18rem" ></p:commandButton>
                             <p:commandButton value="Enter Management Data"  styleClass="width18rem"></p:commandButton>
                             <p:commandButton value="Enter Death Data"  styleClass="width18rem"></p:commandButton>
                             <p:commandButton value="Add Contacts"  styleClass="width18rem"></p:commandButton>
-                        </p:panelGrid>
 
-                        <p:panel rendered="false">
+                        </h:form>
+
+
+                        <p:panel>
+
+
+
+
+
                             <h:form>
                                 <p:dataTable value="#{clientController.selectedClientsLastFiveClinicVisits}" tableStyle="borderless"
                                              var="rcv">
@@ -119,10 +139,8 @@
                                         <p:outputLabel value="#{chlce.encounterNumber}" ></p:outputLabel>
                                     </p:column>
                                     <p:column headerText="Fill New Encounter" >
-                                        <h:panelGroup rendered="#{chlce.institution eq webUserController.loggedUser.institution or 
-                                                                  chlce.institution.parent eq webUserController.loggedUser.institution  or 
-                                                                  chlce.institution.parent.parent eq webUserController.loggedUser.institution}" >
-                                            <h:dataTable value="#{designComponentFormSetController.getClinicFormSets(chlce.institution)}"
+                                        <h:panelGroup >
+                                            <h:dataTable value="#{designComponentFormSetController.clinicFormSets}"
                                                          var="cfs"  border="0" >
                                                 <h:column >
                                                     <p:commandLink id="btnNewFormset" value="New #{cfs.name}" process="@this" update="@all"

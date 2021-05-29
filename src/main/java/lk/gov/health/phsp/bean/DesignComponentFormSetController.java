@@ -312,45 +312,16 @@ public class DesignComponentFormSetController implements Serializable {
         return ss;
     }
 
-    public List<DesignComponentFormSet> getClinicFormSets(Institution clinic) {
-        boolean needRefill = false;
-        if (clinicFormSets == null) {
-            needRefill = true;
-        }
-        if (clinicFormSetsInstitution==null || !clinicFormSetsInstitution.equals(clinic)) {
-            clinicFormSetsInstitution = clinic;
-            needRefill = true;
-        }
-        if (!needRefill) {
-            return clinicFormSets;
-        }
+ 
+    public List<DesignComponentFormSet> findClinicFormSets() {
         String j = "Select s from DesignComponentFormSet s "
                 + " where s.retired=false "
-                + " and s.institution = :inss "
-                + " order by s.name";
+                + " order by s.orderNo";
         Map m = new HashMap();
-        m.put("inss", clinic);
         clinicFormSets = getFacade().findByJpql(j, m);
         if (clinicFormSets == null) {
             clinicFormSets = new ArrayList<>();
         }
-        
-        
-        List<Relationship> rs = relationshipController.findRelationships(clinic, RelationshipType.Formsets_for_institution);
-        
-        if(rs!=null){
-            for(Relationship r:rs){
-                Component c = r.getComponent();
-                if(c!=null){
-                    if(c instanceof DesignComponentFormSet){
-                        DesignComponentFormSet ts = (DesignComponentFormSet) r.getComponent();
-                        ts.setCurrentlyUsedIn(clinic);
-                        clinicFormSets.add(ts);
-                    }
-                }
-            }
-        }
-        
         return clinicFormSets;
     }
 
@@ -578,6 +549,9 @@ public class DesignComponentFormSetController implements Serializable {
     }
 
     public List<DesignComponentFormSet> getClinicFormSets() {
+        if(clinicFormSets==null){
+            clinicFormSets = findClinicFormSets();
+        }
         return clinicFormSets;
     }
 
