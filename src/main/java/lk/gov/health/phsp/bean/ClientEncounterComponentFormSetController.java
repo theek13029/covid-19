@@ -1908,6 +1908,18 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         }
     }
 
+    public String deleteSelected(){
+        if(selected==null){
+            JsfUtil.addErrorMessage("Nothing to delete");
+            return "";
+        }
+        selected.setRetired(true);
+        selected.setRetiredAt(new Date());
+        selected.setRetiredBy(webUserController.getLoggedUser());
+        save(selected);
+        return "/client/profile";
+    }
+    
     public void update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/BundleClinical").getString("ClientEncounterComponentFormSetUpdated"));
     }

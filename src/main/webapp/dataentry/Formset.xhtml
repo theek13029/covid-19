@@ -49,7 +49,8 @@
 
                                     <p:commandButton  value="Client Profile" action="#{clientEncounterComponentFormSetController.toClientProfileFromEncounter()}" ajax="false" ></p:commandButton>
 
-                                    <p:commandButton  value="Delete" action="#{clientEncounterComponentFormSetController}" ajax="false"
+                                    <p:commandButton  rendered="#{!clientEncounterComponentFormSetController.selected.completed}"
+                                                      value="Delete" action="#{clientEncounterComponentFormSetController.destroy()}" ajax="false"
                                                       onclick="if (!confirm('Really want to DELETE this data?'))
                                                                   return false"
                                                       ></p:commandButton>

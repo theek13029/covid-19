@@ -15,8 +15,8 @@
 
                 <p:panel style="text-align: center;height: 100%;" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Add Client Details" rendered="#{clientController.selected.id eq null}"></p:outputLabel>
-                        <p:outputLabel value="Edit Client Details" rendered="#{clientController.selected.id ne null}"></p:outputLabel>
+                        <p:outputLabel value="Add Patient Details" rendered="#{clientController.selected.id eq null}"></p:outputLabel>
+                        <p:outputLabel value="Edit Patient Details" rendered="#{clientController.selected.id ne null}"></p:outputLabel>
                     </f:facet>
 
                     <h:form>
@@ -46,14 +46,10 @@
                             <h:panelGroup >
                                 <p:inputText id="phn"  autocomplete="off" 
                                              value="#{clientController.selected.phn}" title="Phn"
-                                             placeholder="Generate New PHN">
+                                             placeholder="New PHN">
                                     <!--<f:validateRegex pattern="^([0-9]{4}+[2|3|4|5|6|7|8|9|B|C|D|F|G|H|J|K|M|P|Q|R|T|V|W|X|Y]{6}+[0-9]{1})?$" ></f:validateRegex>-->
                                     <!--<f:validateRegex pattern="^([0-9]{4}+[2|3|4|5|6|7|8|9|B|C|D|F|G|H|J|K|M|P|Q|R|T|V|W|X|Y|b|c|d|f|g|h|j|k|m|p|q|r|t|v|w|x|y]{6}+[0-9]{1})?$" ></f:validateRegex>-->
                                 </p:inputText>
-                                <p:commandLink value="Generate" 
-                                               action="#{clientController.generateAndAssignNewPhn}" 
-                                               process="@this" 
-                                               update="phn" ></p:commandLink><br ></br>
                             </h:panelGroup>
 
 
@@ -77,36 +73,6 @@
 
                             <p:outputLabel value="Address:" for="address" />
                             <p:inputText id="address"  autocomplete="off" value="#{clientController.selected.person.address}" title="Address" />
-
-                            <p:outputLabel value="Passport Number:" for="passportNumber" />
-                            <p:inputText id="passportNumber"  autocomplete="off" value="#{clientController.selected.person.passportNumber}" title="PassportNumber" />
-
-                            <p:outputLabel value="Email:" for="email" />
-                            <h:panelGroup >
-                                <p:inputText id="email"  autocomplete="off" value="#{clientController.selected.person.email}" title="Email" validatorMessage="Please check email" >
-                                    <f:validateRegex pattern="^([a-zA-Z0-9.!#$%&amp;'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)?$" ></f:validateRegex>
-                                    <!--<f:ajax event="change" execute="@this" render="emailExists" listener="#{clientController.checkEmailExists()}" ></f:ajax>-->
-                                </p:inputText><br ></br>
-                            </h:panelGroup>
-
-
-                            <p:outputLabel value="Driving License Number:" for="drivingLicenseNumber" />
-                            <p:inputText id="drivingLicenseNumber"  autocomplete="off"  value="#{clientController.selected.person.drivingLicenseNumber}" title="DrivingLicenseNumber" />
-
-
-
-
-                            <p:outputLabel value="Local Referance No:" for="localRefNo" />
-                            <p:inputText id="localRefNo"  autocomplete="off"  value="#{clientController.selected.person.localReferanceNo}" title="Local Referance No:" />
-
-
-
-                            <p:outputLabel value="Senior Citizen Number:" for="ssNumber" />
-                            <h:panelGroup >
-                                <p:inputText id="ssNumber"  autocomplete="off"  value="#{clientController.selected.person.ssNumber}" title="Senior Citizen Number" >
-                                    <!--<f:ajax event="change" execute="@this" render="ssNumberExists" listener="#{clientController.checkSsNumberExists()}" ></f:ajax>-->
-                                </p:inputText><br ></br>
-                            </h:panelGroup>
 
                             <p:outputLabel value="NIC No.:" for="nic" />
                             <h:panelGroup >
@@ -140,10 +106,6 @@
                                 <f:selectItems value="#{itemController.marietalStatus}" var="m" itemLabel="#{m.name}"
                                                itemValue="#{m}" ></f:selectItems>
                             </p:selectOneMenu>
-
-
-                            <p:spacer></p:spacer>
-                            <p:spacer></p:spacer>
 
                             <p:outputLabel value="Age: *"  />
                             <h:panelGroup >
@@ -275,9 +237,6 @@
 
                         <p:tooltip for="calDob" >
                             You can also enter the Date of Birth
-                        </p:tooltip>
-                        <p:tooltip for="email" >
-                            Enter the email
                         </p:tooltip>
 
                         <p:tooltip for="phn" >
