@@ -33,19 +33,7 @@
                     </f:facet>
 
                     <p:panelGrid columns="2" columnClasses="width50percent width50percent">
-                        <p:panelGrid columns="2" >
-                            <h:form>
-                                <p:graphicImage  rendered="#{clientController.selected.person.sex.name eq 'Male'}"
-                                                 library="image" name="male.jpg" 
-                                                 class="profile-user-img img-fluid img-circle"
-                                                 style="width: 20rem;  margin: auto;" >
-                                </p:graphicImage>
-                                <p:graphicImage  rendered="#{clientController.selected.person.sex.name eq 'Female'}"
-                                                 class="profile-user-img img-fluid img-circle"
-                                                 library="image" name="female.png" style="width: 20rem;  margin: auto;" >
-                                </p:graphicImage>
-                            </h:form>
-
+                        <p:panelGrid columns="1" >
                             <p:panelGrid columns="2" >
                                 <h:outputLabel value="Name" ></h:outputLabel>
                                 <h:outputLabel value="#{clientController.selected.person.nameWithTitle}" ></h:outputLabel>
@@ -56,11 +44,12 @@
                                 <h:outputLabel value="GN Area" ></h:outputLabel>
                                 <h:outputLabel value="#{clientController.selected.person.gnArea.name}" ></h:outputLabel>
 
+                                <h:outputLabel value="Age" ></h:outputLabel>
+                                <h:outputLabel value="#{clientController.selected.person.age}" ></h:outputLabel>
+
                                 <h:outputLabel value="Sex" ></h:outputLabel>
                                 <h:outputLabel value="#{clientController.selected.person.sex.name}" ></h:outputLabel>
 
-                                <h:outputLabel value="Age" ></h:outputLabel>
-                                <h:outputLabel value="#{clientController.selected.person.age}" ></h:outputLabel>
 
                                 <h:outputLabel value="Date of Birth" ></h:outputLabel>
                                 <h:outputLabel value="#{clientController.selected.person.dateOfBirth}" >
@@ -73,13 +62,8 @@
                                 <h:outputLabel value="Phone 2" ></h:outputLabel>
                                 <h:outputLabel value="#{clientController.selected.person.phone2}" ></h:outputLabel>
 
-                                <h:outputLabel value="Local Ref. No." ></h:outputLabel>
-                                <h:outputLabel value="#{clientController.selected.person.localReferanceNo}" ></h:outputLabel>
 
-                                <h:outputLabel value="Senior Citizen No." ></h:outputLabel>
-                                <h:outputLabel value="#{clientController.selected.person.ssNumber}" ></h:outputLabel>
-
-                                <h:outputLabel value="Address" ></h:outputLabel>
+                                <h:outputLabel value="Current Residential Address" ></h:outputLabel>
                                 <h:outputLabel value="#{clientController.selected.person.address}" ></h:outputLabel>
 
                                 <h:outputLabel value="Date of Registration" ></h:outputLabel>
@@ -91,7 +75,14 @@
                             </p:panelGrid>
                         </p:panelGrid>
 
-                        <p:panel>
+                        <p:panelGrid columns="1" >
+                            <p:commandButton value="Enter COVID-19 Eposode Data" styleClass="width18rem" ></p:commandButton>
+                            <p:commandButton value="Enter Management Data"  styleClass="width18rem"></p:commandButton>
+                            <p:commandButton value="Enter Death Data"  styleClass="width18rem"></p:commandButton>
+                            <p:commandButton value="Add Contacts"  styleClass="width18rem"></p:commandButton>
+                        </p:panelGrid>
+
+                        <p:panel rendered="false">
                             <h:form>
                                 <p:dataTable value="#{clientController.selectedClientsLastFiveClinicVisits}" tableStyle="borderless"
                                              var="rcv">
@@ -153,7 +144,7 @@
 
                             <h:form >
 
-                                <p:panelGrid columns="4" style="width: 100%;">
+                                <p:panelGrid columns="4" style="width: 100%;" >
                                     <f:facet name="header">
                                         <h:outputLabel value="Enroll in a New Clinic" ></h:outputLabel>                                    
                                     </f:facet>
