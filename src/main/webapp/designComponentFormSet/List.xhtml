@@ -26,8 +26,8 @@
                                      rows="10"
                                      rowsPerPageTemplate="10,20,30,40,50">
 
-                            <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton addForm errorEheck"/>
-                            <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton addForm errorEheck"/>
+                            <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton addForm "/>
+                            <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton addForm "/>
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="#{bundleClinical.ListDesignComponentFormSetTitle_name}"/>
@@ -82,13 +82,6 @@
                                 <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleClinical.Edit}" update=":DesignComponentFormSetEditForm" oncomplete="PF('DesignComponentFormSetEditDialog').show()" disabled="#{empty designComponentFormSetController.selected}"/>
                                 <p:commandButton id="addForm"   icon="ui-icon-cart" value="Manage Pages" ajax="false" action="#{designComponentFormSetController.toAddFormsForTheSelectedSet()}" actionListener="#{designComponentFormSetController.setBackStringToSysAdmin()}"
                                                  disabled="#{empty designComponentFormSetController.selected}"/>
-                                
-                                <p:commandButton id="errorEheck"   icon="ui-icon-cart" value="To Export" 
-                                                 ajax="false" 
-                                                 action="#{designComponentFormSetController.toExport()}"
-                                                 actionListener="#{designComponentFormSetController.setBackStringToSysAdmin()}"
-                                                 disabled="#{empty designComponentFormSetController.selected}"/>
-                                
                                 <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleClinical.Delete}" actionListener="#{designComponentFormSetController.destroy}" update="datalist" disabled="#{empty designComponentFormSetController.selected}"
                                                  onclick="if (!confirm('Really want to do that?')) return false"/>
                             </f:facet>

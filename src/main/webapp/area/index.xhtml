@@ -5,126 +5,48 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-
-    <body>
-
+    <h:body>
         <ui:composition template="/template.xhtml">
-
             <ui:define name="content">
-
                 <h:outputStylesheet library="css" name="tem1.css" ></h:outputStylesheet>
-
-
-                <table style="width: 100%;" >
-                    <tr>
-                        <td style="width: calc(26rem);vertical-align: top;">
-                            <p:panel style="width: 100%; min-height: 75vh;" header="Actions">
-                                <h:form >
-                                    <p:panelGrid  >
-                                        <p:commandButton styleClass="width25rem" 
-                                                         ajax="false" value="Add Area"
-                                                         action="#{areaController.toAddArea()}"  ></p:commandButton>
-                                        <p:commandButton styleClass="width25rem"
-                                                         ajax="false" value="List Area"
-                                                         action="#{areaController.toListAreasForSysAdmin()}"  ></p:commandButton>
-                                        <p:commandButton styleClass="width25rem"
-                                                         ajax="false" value="Browse Areas"
-                                                         action="#{areaController.toBrowseAreasForSysAdmin()}"  ></p:commandButton>
-                                        <p:commandButton styleClass="width25rem"
-                                                         ajax="false" value="Search Areas"
-                                                         action="#{areaController.toSearchAreasForSysAdmin()}"  ></p:commandButton>
-
-                                        <p:commandButton styleClass="width25rem"  ajax="false" disabled="true"
-                                                         value="Upload Institution Draining Areas" 
-                                                         action="#{areaController.toImportInstitutionDrainingAreas()}"  ></p:commandButton>
-
-
-
-                                        <p:commandButton styleClass="width25rem"  ajax="false"
-                                                         value="Upload Institution Draining Areas **" 
-                                                         action="/area/import_institution_draining_areas"  ></p:commandButton>
-
-
-
-                                        <p:commandButton styleClass="width25rem"  ajax="false"
-                                                         value="Upload GN Population Data" 
-                                                         action="#{areaController.toImportPopulationOfGnAreas()}"  ></p:commandButton>
-
-
-                                        <p:separator></p:separator>
-
-                                        <p:commandButton value="Add Population Data" ajax="false"  style="width: 15rem; margin-top:1rem;"
-                                                         action="#{relationshipController.toAddPopulationDataForArea()}"></p:commandButton>
-
-                                        <p:commandButton value="View Population Data" ajax="false"  style="width: 15rem; margin-top:1rem;"
-                                                         action="#{relationshipController.toViewPopulationDataForArea()}"></p:commandButton>
-
-
-                                        <p:commandButton styleClass="width25rem"  ajax="false"
-                                                         value="View Population Data of Under Selected" 
-                                                         action="#{relationshipController.toFillAreaData()}"  ></p:commandButton>
-
-
-                                        <p:separator></p:separator>
-
-                                        <p:commandButton styleClass="width25rem"  ajax="false"
-                                                         value="Create new GN Areas By Import" action="/area/import_gn_areas"  ></p:commandButton>
-
-
-                                        <p:commandButton styleClass="width25rem"  ajax="false"
-                                                         value="Add Draining GN Areas for Health Institutions" 
-                                                         action="#{areaController.toImportInstitutionDrainingAreas()}"  ></p:commandButton>
-
-
-                                        <p:commandButton styleClass="width25rem"  ajax="false"
-                                                         value="Update UID of Areas by Area Code" 
-                                                         action="/area/import_update_uid"  ></p:commandButton>
-
-
-
-
-
-                                        <p:commandButton styleClass="width25rem"  ajax="false" value="Import District Data" action="/area/import_district_population"  ></p:commandButton>                        
-
-                                        <p:commandButton styleClass="width25rem" disabled="true"  ajax="false" 
-                                                         value="Calculate Provincial Data from District Data" 
-                                                         action="/area/calculate_provincial_data_from_district_data"  ></p:commandButton>                        
-                                    </p:panelGrid>
-                                </h:form>  
-                            </p:panel>
-                        </td>
-                        <td style="width: calc(100% - 25.8rem);vertical-align: top;">
-                            <p:panel style="width: 100%;min-height: 75vh;">
-                                <f:facet name="header" >
-                                    <ui:insert name="insTopic" >
-                                        <p:outputLabel value="Details" ></p:outputLabel>
-                                    </ui:insert>
-                                </f:facet>
-                                <ui:insert name="insContents" >
-
-                                </ui:insert>
-                            </p:panel>
-                            <br/>
-                            <br/>
-                        </td>
-                    </tr>
-                </table>
-
-
-
-
-
-
-
-
-
-
-
-
-
+                <p:panelGrid style="width: 100%;" columns="2" styleClass="alignTop" columnClasses="width85percent width15percent">
+                    <f:facet name="header" >
+                        <p:outputLabel value="Manage Users" ></p:outputLabel>
+                    </f:facet>  
+                    <p:panel style="width: 100%; min-height: 75vh;" header="Actions">
+                        <h:form >
+                            <p:panelGrid  >
+                                <p:commandButton styleClass="width18rem" 
+                                                 ajax="false" value="Add Area"
+                                                 action="#{areaController.toAddArea()}"  ></p:commandButton>
+                                <p:commandButton styleClass="width18rem" 
+                                                 ajax="false" value="List Area"
+                                                 action="#{areaController.toListAreasForSysAdmin()}"  ></p:commandButton>
+                                <p:commandButton styleClass="width18rem" 
+                                                 ajax="false" value="Browse Areas"
+                                                 action="#{areaController.toBrowseAreasForSysAdmin()}"  ></p:commandButton>
+                                <p:commandButton styleClass="width18rem" 
+                                                 ajax="false" value="Search Areas"
+                                                 action="#{areaController.toSearchAreasForSysAdmin()}"  ></p:commandButton>
+                                <p:commandButton styleClass="width18rem"   ajax="false"
+                                                 value="Create new GN Areas By Import" action="/area/import_gn_areas"  ></p:commandButton>
+                                <p:commandButton styleClass="width18rem"   ajax="false"
+                                                 value="Update UID of Areas by Area Code" 
+                                                 action="/area/import_update_uid"  ></p:commandButton>
+                            </p:panelGrid>
+                        </h:form>  
+                    </p:panel>
+                    <p:panel style="width: 100%;min-height: 75vh;">
+                        <f:facet name="header" >
+                            <ui:insert name="insTopic" >
+                                <p:outputLabel value="Details" ></p:outputLabel>
+                            </ui:insert>
+                        </f:facet>
+                        <ui:insert name="insContents" >
+                        </ui:insert>
+                    </p:panel>
+                </p:panelGrid>
             </ui:define>
-
         </ui:composition>
-
-    </body>
+    </h:body>
 </html>

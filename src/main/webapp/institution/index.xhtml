@@ -15,36 +15,16 @@
                     </f:facet>
                     <h:form>
                         <p:panelGrid columns="1" >
-                            <p:commandButton value="Add Institution" ajax="false" style="width: 15rem; margin-top:1rem;"
+                            <p:commandButton value="Add Institution" ajax="false" styleClass="width18rem" 
                                              action="#{institutionController.toAddInstitution}"></p:commandButton>
-
-                            <p:commandButton value="List Institutions" ajax="false"  style="width: 15rem; margin-top:1rem;"
+                            <p:commandButton value="List Institutions" ajax="false"  styleClass="width18rem" 
                                              action="#{institutionController.toListInstitutions()}"></p:commandButton>
-
-
-                            <p:commandButton value="View Population Data" ajax="false"  style="width: 15rem; margin-top:1rem;"
-                                             action="#{relationshipController.toViewPopulationDataForInstitution()}"></p:commandButton>
-
-                            <p:commandButton value="Add Population Data" ajax="false"  style="width: 15rem; margin-top:1rem;"
-                                             action="#{relationshipController.toAddPopulationDataForInstitution()}"></p:commandButton>
-
-                            <p:commandButton value="Add Procedure Rooms" ajax="false"  style="width: 15rem; margin-top:1rem;"
-                                             action="#{relationshipController.toAddProcedureRoomForInstitution()}"></p:commandButton>
-
-
-                            <p:commandButton value="Add Procedures for Rooms" ajax="false"  style="width: 15rem; margin-top:1rem;"
-                                             action="#{relationshipController.toAddProceduresForProcedureRooms()}"></p:commandButton>
-
-
                             <p:commandButton value="Import Institutions" ajax="false" 
-                                             style="width: 15rem; margin-top:1rem;"
+                                             styleClass="width18rem" 
                                              action="#{institutionController.toImportInstitution()}"></p:commandButton>
-
-
                             <p:commandButton value="Relod Institutions" ajax="false" 
-                                             style="width: 15rem; margin-top:1rem;"
+                                             styleClass="width18rem" 
                                              action="#{institutionController.resetAllInstitutions()}">
-
                             </p:commandButton>
                         </p:panelGrid>
                     </h:form>                   
