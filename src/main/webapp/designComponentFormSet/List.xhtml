@@ -51,9 +51,9 @@
                             
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Created at"/>
+                                    <h:outputText value="Appear With Patient"/>
                                 </f:facet>
-                                <h:outputText value="#{item.createdAt}">
+                                <h:outputText value="#{item.appearWithPatient?'Yes':'No'}">
                                     <f:convertDateTime parent="dd MMM yy hh:mm a" ></f:convertDateTime>
                                 </h:outputText>
                             </p:column><!-- comment -->

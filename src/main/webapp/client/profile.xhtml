@@ -21,62 +21,68 @@
                             </p:commandButton>
                             <p:commandButton value="To Print" action="/client/client_print" style="float: right;">
                             </p:commandButton>
-                            <p:commandButton process="@this" ajax="false"
-                                             actionListener="#{clientController.prepareToCapturePhotoWithWebCam()}"
-                                             value="To Capture Photo" rendered="false"
-                                             action="capture" style="float: right;"/>
-                            <p:commandButton ajax="false" update="photoCap" 
-                                             actionListener="#{clientController.prepareToCapturePhotoWithWebCam()}"
-                                             value="To Upload Photo"  rendered="false"
-                                             action="upload" style="float: right;"/>
                         </h:form>
                     </f:facet>
 
                     <p:panelGrid columns="2" columnClasses="width50percent width50percent">
-                        <p:panelGrid columns="1" >
-                            <p:panelGrid columns="2" >
-                                <h:outputLabel value="Name" ></h:outputLabel>
-                                <h:outputLabel value="#{clientController.selected.person.nameWithTitle}" ></h:outputLabel>
 
-                                <h:outputLabel value="PHN" ></h:outputLabel>
-                                <h:outputLabel value="#{clientController.selected.phn}" ></h:outputLabel>
+                        <p:panelGrid columns="2" style="width: 98%; margin: auto;" >
+                            <h:outputLabel value="Name" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.person.nameWithTitle}" ></h:outputLabel>
 
-                                <h:outputLabel value="GN Area" ></h:outputLabel>
-                                <h:outputLabel value="#{clientController.selected.person.gnArea.name}" ></h:outputLabel>
+                            <h:outputLabel value="PHN" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.phn}" ></h:outputLabel>
 
-                                <h:outputLabel value="Age" ></h:outputLabel>
-                                <h:outputLabel value="#{clientController.selected.person.age}" ></h:outputLabel>
-
-                                <h:outputLabel value="Sex" ></h:outputLabel>
-                                <h:outputLabel value="#{clientController.selected.person.sex.name}" ></h:outputLabel>
+                            <h:outputLabel value="NIC/NIC of the guardian/Passport No" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.person.nic}" ></h:outputLabel>
 
 
-                                <h:outputLabel value="Date of Birth" ></h:outputLabel>
-                                <h:outputLabel value="#{clientController.selected.person.dateOfBirth}" >
-                                    <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>
-                                </h:outputLabel>
+                            <h:outputLabel value="Gender" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.person.sex.name}" ></h:outputLabel>
 
-                                <h:outputLabel value="Phone 1" ></h:outputLabel>
-                                <h:outputLabel value="#{clientController.selected.person.phone1}" ></h:outputLabel>
+                            <h:outputLabel value="Citizenship" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.person.citizenship.name}" ></h:outputLabel>
 
-                                <h:outputLabel value="Phone 2" ></h:outputLabel>
-                                <h:outputLabel value="#{clientController.selected.person.phone2}" ></h:outputLabel>
+                            <h:outputLabel value="Age" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.person.age}" ></h:outputLabel>
 
 
-                                <h:outputLabel value="Current Residential Address" ></h:outputLabel>
-                                <h:outputLabel value="#{clientController.selected.person.address}" ></h:outputLabel>
-
-                                <h:outputLabel value="Date of Registration" ></h:outputLabel>
-                                <h:outputLabel value="#{clientController.selected.createdAt}" >
-                                    <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>
-                                </h:outputLabel>
+                            <h:outputLabel value="Date of Birth" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.person.dateOfBirth}" >
+                                <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>
+                            </h:outputLabel>
 
 
-                            </p:panelGrid>
+                            <h:outputLabel value="Primary Contact Number" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.person.phone1}" ></h:outputLabel>
+
+                            <h:outputLabel value="Secondary Contact Number" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.person.phone2}" ></h:outputLabel>
+
+
+                            <h:outputLabel value="Current Residential Address" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.person.address}" ></h:outputLabel>
+
+
+                            <h:outputLabel value="MOH Area" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.person.mohArea.name}" ></h:outputLabel>
+
+                            <h:outputLabel value="District" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.person.district.name}" ></h:outputLabel>
+
+                            <h:outputLabel value="GN Area" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.person.gnArea.name}" ></h:outputLabel>
+
+                            <h:outputLabel value="Date of Registration" ></h:outputLabel>
+                            <h:outputLabel value="#{clientController.selected.createdAt}" >
+                                <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>
+                            </h:outputLabel>
+
                         </p:panelGrid>
 
-                        <h:form>
 
+
+                        <p:panelGrid style="width: 98%; margin: auto" columns="1" >
 
                             <h:dataTable value="#{designComponentFormSetController.clinicFormSets}"
                                          var="cfs"  border="0" >
@@ -89,18 +95,6 @@
                                     </p:commandButton>
                                 </h:column>
                             </h:dataTable>
-                            <p:commandButton value="Enter COVID-19 Eposode Data" styleClass="width18rem" ></p:commandButton>
-                            <p:commandButton value="Enter Management Data"  styleClass="width18rem"></p:commandButton>
-                            <p:commandButton value="Enter Death Data"  styleClass="width18rem"></p:commandButton>
-                            <p:commandButton value="Add Contacts"  styleClass="width18rem"></p:commandButton>
-
-                        </h:form>
-
-
-                        <p:panel>
-
-
-
 
 
                             <h:form>
@@ -125,83 +119,18 @@
                                     </p:column>
                                 </p:dataTable>
                             </h:form>
-                            <br/>
-
-                            <h:form>
-                                <p:dataTable id="tblClinics" value="#{clientController.selectedClientsClinics}" var="chlce" >
-                                    <f:facet name="header" id="tab_head">
-                                        Current Clinics                                        
-                                    </f:facet>
-                                    <p:column headerText="Clinic" >
-                                        <p:outputLabel value="#{chlce.institution.name}" ></p:outputLabel>
-                                    </p:column>
-                                    <p:column headerText="Number" >
-                                        <p:outputLabel value="#{chlce.encounterNumber}" ></p:outputLabel>
-                                    </p:column>
-                                    <p:column headerText="Fill New Encounter" >
-                                        <h:panelGroup >
-                                            <h:dataTable value="#{designComponentFormSetController.clinicFormSets}"
-                                                         var="cfs"  border="0" >
-                                                <h:column >
-                                                    <p:commandLink id="btnNewFormset" value="New #{cfs.name}" process="@this" update="@all"
-                                                                   action="#{clientEncounterComponentFormSetController.createNewAndNavigateToDataEntry(cfs)}" >
-                                                    </p:commandLink>
-                                                    <p:blockUI block=":#{p:component('tblClinics')}" trigger="btnNewFormset" >
-                                                        LOADING Patient data.<br/>
-                                                        Please wait.<br/>
-                                                        <p:graphicImage library="image" name="loading.gif" ></p:graphicImage>
-                                                    </p:blockUI>
-                                                </h:column>
-                                            </h:dataTable>
-                                        </h:panelGroup>
-                                    </p:column>
-                                </p:dataTable>
-                            </h:form> 
-
-                            <br/>
-
-                            <h:form >
-
-                                <p:panelGrid columns="4" style="width: 100%;" >
-                                    <f:facet name="header">
-                                        <h:outputLabel value="Enroll in a New Clinic" ></h:outputLabel>                                    
-                                    </f:facet>
-                                    <h:outputLabel value="Clinic" ></h:outputLabel>
-
-                                    <h:panelGroup >
-                                        <h:selectOneMenu value="#{clientController.selectedClinic}" 
-                                                         rendered="#{webUserController.loggedUser.systemAdministrator ne true 
-                                                                     and webUserController.loggedUser.superUser ne true  
-                                                                     and webUserController.loggedUser.meAdministrator ne true
-                                                                     and webUserController.loggedUser.meUser ne true
-                                                                     and webUserController.loggedUser.meSuperUser ne true
-                                                                     and webUserController.loggedUser.user ne true}" >
-                                            <f:selectItem itemLabel="Select the clinic" ></f:selectItem>
-                                            <f:selectItems value="#{institutionController.myClinics}" 
-                                                           var="shlc" itemValue="#{shlc}" itemLabel="#{shlc.name}"></f:selectItems>
-                                        </h:selectOneMenu>
-
-                                        <p:autoComplete completeMethod="#{institutionController.completeInstitutions}" 
-                                                        rendered="#{webUserController.loggedUser.systemAdministrator eq true 
-                                                                    or webUserController.loggedUser.superUser eq true}"
-                                                        value="#{clientController.selectedClinic}"  forceSelection="true" 
-                                                        maxResults="15" minQueryLength="4"
-                                                        var="shlc" itemValue="#{shlc}" itemLabel="#{shlc.name}">
-                                        </p:autoComplete>
-                                    </h:panelGroup>
 
 
-                                    <p:commandButton value="Enroll" ajax="false" 
-                                                     action="#{clientController.enrollInClinic()}" ></p:commandButton>
-<!--                                    <p:commandButton action="#{institutionController.refreshMyInstitutions()}" ajax="false" 
-                                                     icon="ui-icon-arrowrefresh-1-n" ></p:commandButton>-->
-                                </p:panelGrid>
+                        </p:panelGrid>
 
-                            </h:form>
 
-                        </p:panel>
+
+
 
                     </p:panelGrid>
+
+
+
                 </p:panelGrid>
             </ui:define>
         </ui:composition>

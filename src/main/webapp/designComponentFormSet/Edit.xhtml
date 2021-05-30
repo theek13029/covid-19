@@ -24,6 +24,10 @@
                             </f:selectItems>
                         </p:selectOneMenu>
 
+                        <p:outputLabel value="Appear with Patient" for="appearWithPatient" />
+                        <p:selectBooleanButton id="appearWithPatient" offLabel="No" onLabel="Yes" value="#{designComponentFormSetController.selected.appearWithPatient}" ></p:selectBooleanButton>
+
+
                         <p:outputLabel value="Panel" for="panel" />
                         <p:selectOneMenu id="panel" value="#{designComponentFormSetController.selected.panelType}" 
                                          title="Panel" >

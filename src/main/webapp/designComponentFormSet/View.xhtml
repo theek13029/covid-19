@@ -13,62 +13,24 @@
 
             <h:form id="DesignComponentFormSetViewForm" >
                 <p:panelGrid columns="2">
-                    <h:outputText value="Id:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.id}" title="Id"/>
-                    <h:outputText value="Name:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.name}" title="Name"/>
-                    <h:outputText value="Code:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.code}" title="Code"/>
 
-                    <h:outputText value="ComponentSetType:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.componentSetType}" title="ComponentSetType"/>
-                    <h:outputText value="PanelType:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.panelType}" title="PanelType"/>
-                    <h:outputText value="ComponentSex:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.componentSex}" title="ComponentSex"/>
+                    <p:outputLabel value="#{bundleClinical.CreateDesignComponentFormSetLabel_name}"  />
+                    <p:outputLabel id="name" value="#{designComponentFormSetController.selected.name}" title="#{bundleClinical.CreateDesignComponentFormSetTitle_name}" />
 
-                    <h:outputText value="ParentComponent:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.parentComponent}" title="ParentComponent"/>
-                    <h:outputText value="CreatedBy:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.createdBy}" title="CreatedBy"/>
-                    <h:outputText value="CreatedAt:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.createdAt}" title="CreatedAt">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:outputText>
-                    <h:outputText value="LastEditBy:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.lastEditBy}" title="LastEditBy"/>
-                    <h:outputText value="LastEditeAt:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.lastEditeAt}" title="LastEditeAt">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:outputText>
-                    <h:outputText value="RetiredReversedBy:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.retiredReversedBy}" title="RetiredReversedBy"/>
-                    <h:outputText value="RetiredReversedAt:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.retiredReversedAt}" title="RetiredReversedAt">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:outputText>
-                    <h:outputText value="RetiredBy:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.retiredBy}" title="RetiredBy"/>
-                    <h:outputText value="RetiredAt:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.retiredAt}" title="RetiredAt">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:outputText>
-                    <h:outputText value="RetireComments:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.retireComments}" title="RetireComments"/>
-                    <h:outputText value="OrderNo:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.orderNo}" title="OrderNo"/>
-                    <h:outputText value="Institution:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.institution}" title="Institution"/>
-                    <h:outputText value="ReferenceComponent:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.referenceComponent}" title="ReferenceComponent"/>
-                    <h:outputText value="Item:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.item}" title="Item"/>
-                    <h:outputText value="Descreption:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.descreption}" title="Descreption"/>
-                    <h:outputText value="GeneratedCss:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.generatedCss}" title="GeneratedCss"/>
-                    <h:outputText value="Css:"/>
-                    <h:outputText value="#{reportController.designingComponentFormSet.css}" title="Css"/>
+                    <p:outputLabel value="Appear with Patient" for="appearWithPatient" />
+                    <p:outputLabel id="appearWithPatient"  value="#{designComponentFormSetController.selected.appearWithPatient?'Yes':'No'}" ></p:outputLabel>
+
+                    <p:outputLabel value="Type" for="type" />
+                    <p:outputLabel id="type" value="#{designComponentFormSetController.selected.componentSetType.label}" >
+                    </p:outputLabel>
+
+                    <p:outputLabel value="Panel" for="panel" />
+                    <p:outputLabel id="panel" value="#{designComponentFormSetController.selected.panelType.label}" title="Panel" >
+                    </p:outputLabel>
+
+                    <p:outputLabel value="Sex" for="sex" />
+                    <p:outputLabel id="sex" value="#{designComponentFormSetController.selected.componentSex.label}" title="Sex" >
+                    </p:outputLabel>
                 </p:panelGrid>
             </h:form>
 

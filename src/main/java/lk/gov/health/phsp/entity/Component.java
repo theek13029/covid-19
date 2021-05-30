@@ -58,6 +58,8 @@ public class Component implements Serializable {
     String name;
 
     private String code;
+    
+    private boolean appearWithPatient;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Item item;
@@ -153,6 +155,8 @@ public class Component implements Serializable {
         this.id = id;
     }
 
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -483,6 +487,14 @@ public class Component implements Serializable {
             parentClientEncounterComponentItem = (ClientEncounterComponentForm) parentComponent;
         }
         return parentClientEncounterComponentItem;
+    }
+
+    public boolean isAppearWithPatient() {
+        return appearWithPatient;
+    }
+
+    public void setAppearWithPatient(boolean appearWithPatient) {
+        this.appearWithPatient = appearWithPatient;
     }
 
 }
