@@ -506,6 +506,9 @@
                                                             requiredMessage="#{ii.di.requiredErrorMessage}" 
                                                             pattern="dd MMMM yyyy">
                                                     <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                                    <p:ajax  event="dateSelect" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                                    <p:ajax  event="change" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+
                                                 </p:calendar>
                                             </td>
                                             <h:panelGroup rendered="#{ii.di.displayLastResult}" >
@@ -528,10 +531,14 @@
                                                 <p:outputLabel for="calC" value="#{ii.di.name}" ></p:outputLabel>
                                             </td>
                                             <td>
-                                                <p:calendar id="calC" value="#{ii.ci.dateValue}" 
+                                                <p:calendar id="calCS" value="#{ii.ci.dateValue}" 
                                                             required="#{ii.di.required}" 
                                                             requiredMessage="#{ii.di.requiredErrorMessage}" pattern="dd MMMM yyyy">
-                                                    <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                                    <p:ajax  event="blur" process="calCS"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                                    <p:ajax  event="blur" process="calCS"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                                    <p:ajax  event="dateSelect" process="calCS"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                                    <p:ajax  event="change" process="calCS"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+
                                                 </p:calendar>
                                             </td>
                                             <h:panelGroup rendered="#{ii.di.displayLastResult}" >
@@ -640,8 +647,8 @@
                                         </tr>
                                     </table>
                                 </h:panelGroup>
-                                
-                                 <h:panelGroup rendered="#{ii.di.renderType eq 'Boolean_Button'}" >
+
+                                <h:panelGroup rendered="#{ii.di.renderType eq 'Boolean_Button'}" >
                                     <table >
                                         <tr>
                                             <td>
@@ -649,8 +656,8 @@
                                             </td>
                                             <td>
                                                 <p:selectBooleanButton id="bbNc" value="#{ii.ci.booleanValue}" offLabel="No" onLabel="Yes"
-                                                                         required="#{ii.di.required}" 
-                                                                         requiredMessage="#{ii.di.requiredErrorMessage}" >
+                                                                       required="#{ii.di.required}" 
+                                                                       requiredMessage="#{ii.di.requiredErrorMessage}" >
                                                     <p:ajax  process="@this"   
                                                              listener="#{clientEncounterComponentItemController.save(ii.ci)}" >
                                                     </p:ajax>
@@ -672,7 +679,7 @@
                                         </tr>
                                     </table>
                                 </h:panelGroup>
-                                
+
                                 <h:panelGroup rendered="#{ii.di.renderType eq 'Autocomplete' and ii.di.item.dataType eq 'Area_Reference'}" >
                                     <table >
                                         <tr>

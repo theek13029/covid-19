@@ -630,14 +630,18 @@ public class ClientEncounterComponentItemController implements Serializable {
     }
 
     public void save(ClientEncounterComponentItem i) {
-        System.out.println("save");
-        System.out.println("i = " + i);
+
         if (i == null) {
             System.out.println("i is null. not saving");
             return;
         }
-        
-        System.out.println("i.getInstitutionValue() = " + i.getInstitutionValue());
+//
+//        System.out.println("to save");
+//        System.out.println("Name = " + i.getName());
+//        System.out.println("iD = " + i.getId());
+//        System.out.println("Date Value = " + i.getDateValue());
+//        System.out.println("Bool Value = " + i.getBooleanValue());
+//        System.out.println("i.getInstitutionValue() = " + i.getInstitutionValue());
 
         if (i.getId() == null) {
             i.setCreatedAt(new Date());
@@ -646,6 +650,12 @@ public class ClientEncounterComponentItemController implements Serializable {
         } else {
             getFacade().edit(i);
         }
+//        System.out.println("saved");
+//        System.out.println("Name = " + i.getName());
+//        System.out.println("iD = " + i.getId());
+//        System.out.println("Date Value = " + i.getDateValue());
+//        System.out.println("Bool Value = " + i.getBooleanValue());
+//        System.out.println("i.getInstitutionValue() = " + i.getInstitutionValue());
     }
 
     public void addAnother(ClientEncounterComponentItem i) {
@@ -697,7 +707,7 @@ public class ClientEncounterComponentItemController implements Serializable {
         userTransactionController.recordTransaction("Add Another - Clinic Forms");
     }
 
-      public void addAnotherDataItem(DataItem i) {
+    public void addAnotherDataItem(DataItem i) {
         System.out.println("addAnother");
         System.out.println("Dataitem i = " + i);
 
@@ -733,13 +743,12 @@ public class ClientEncounterComponentItemController implements Serializable {
         System.out.println("i.getAddingItem().getCi().getId() = " + i.getAddingItem().getCi().getId());
 
         save(i.getAddingItem().getCi());
-        
 
         System.out.println("saved");
         System.out.println("i.getAddingItem().getCi().getId() = " + i.getAddingItem().getCi().getId());
 
         i.getAddedItems().add(i.getAddingItem());
-        
+
         if (i.getAddingItem().getCi().getItemValue() == null) {
             JsfUtil.addErrorMessage("No Item value for CI");
             return;
@@ -766,10 +775,10 @@ public class ClientEncounterComponentItemController implements Serializable {
         nci.setCss(i.getDi().getCss());
         nci.setOrderNo(i.getAddedItems().size() + 1.0);
         nci.setDataRepresentationType(DataRepresentationType.Encounter);
-        
+
         nci.setInstitutionValue(i.getAddingItem().getCi().getInstitutionValue());
 
-        if(i.getDi().getRenderType()==RenderType.Prescreption){
+        if (i.getDi().getRenderType() == RenderType.Prescreption) {
             Prescription p = new Prescription();
             p.setClient(i.getForm().getFormset().getEfs().getEncounter().getClient());
             p.setEncounter(i.getForm().getFormset().getEfs().getEncounter());
@@ -777,7 +786,7 @@ public class ClientEncounterComponentItemController implements Serializable {
             p.setCreatedBy(webUserController.getLoggedUser());
             nci.setPrescriptionValue(p);
         }
-        
+
         System.out.println("before new ni");
 
         DataItem ni = new DataItem();
@@ -821,7 +830,7 @@ public class ClientEncounterComponentItemController implements Serializable {
     public List<ClientEncounterComponentItem> getItems(String j, Map m) {
         return getFacade().findByJpql(j, m);
     }
-    
+
     public ClientEncounterComponentItem getItem(String j, Map m) {
         return getFacade().findFirstByJpql(j, m);
     }
