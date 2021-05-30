@@ -10,37 +10,40 @@
         <ui:define name="title">
             <h:outputText value="#{bundleClinical.ListDesignComponentFormSetTitle}"></h:outputText>
         </ui:define>
+
         <ui:define name="content">
             <h:form id="DesignComponentFormSetListForm">
                 <p:panel header="Form Sets">
                     <p:panelGrid columns="1" >
                         <f:facet name="header" >
                             <p:commandButton ajax="false" value="Back to Manage Metadata"
-                                             action="/systemAdmin/index" style="float: right;" ></p:commandButton>
+                                             action="#{designComponentFormSetController.back()}" style="float: right;" ></p:commandButton>
                         </f:facet>
-                        <p:dataTable id="datalist" 
-                                     value="#{designComponentFormSetController.items}" var="item"
+                        
+                        <p:dataTable id="datalist" value="#{designComponentFormSetController.items}" var="item"
                                      selectionMode="single" selection="#{designComponentFormSetController.selected}"
                                      paginator="true"
                                      rowKey="#{item.id}"
                                      rows="10"
                                      rowsPerPageTemplate="10,20,30,40,50">
 
-                            <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton addForm "/>
-                            <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton addForm "/>
-                            
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Order No."/>
-                                </f:facet>
-                                <h:outputText value="#{item.orderNo}"/>
-                            </p:column>
-                            
-                            <p:column>
+                            <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton addForm reloadButton"/>
+                            <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton addForm reloadButton"/>
+                            <p:column  sortBy="#{item.name}"
+                                      filterBy="#{item.name}"
+                                      filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="#{bundleClinical.ListDesignComponentFormSetTitle_name}"/>
                                 </f:facet>
                                 <h:outputText value="#{item.name}"/>
+                            </p:column>
+                            <p:column sortBy="#{item.institution.name}"
+                                      filterBy="#{item.institution.name}"
+                                      filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Institution"/>
+                                </f:facet>
+                                 <h:outputText value="#{item.institution.name}"/>
                             </p:column>
                             
                             <p:column>
@@ -59,25 +62,28 @@
                             
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Appear With Patient"/>
+                                    <h:outputText value="Derived From"/>
                                 </f:facet>
-                                <h:outputText value="#{item.appearWithPatient?'Yes':'No'}">
-                                    <f:convertDateTime parent="dd MMM yy hh:mm a" ></f:convertDateTime>
-                                </h:outputText>
-                            </p:column><!-- comment -->
+                                <h:outputText value="#{item.referenceComponent.name}"/>
+                            </p:column>
                             
-                            
-                            <f:facet name="footer">
+                            <f:facet name="footer">                               
+                                <p:commandButton id="reloadButton"   icon="ui-icon-arrowrefresh-1-n" value="Reload" ajax="false"
+                                                 disabled="#{empty designComponentFormSetController.selected}"
+                                                 action="#{designComponentFormSetController.reloadSet()}"/>
                                 <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleClinical.Create}" actionListener="#{designComponentFormSetController.prepareCreate}" update=":DesignComponentFormSetCreateForm" oncomplete="PF('DesignComponentFormSetCreateDialog').show()"/>
                                 <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleClinical.View}" update=":DesignComponentFormSetViewForm" oncomplete="PF('DesignComponentFormSetViewDialog').show()" disabled="#{empty designComponentFormSetController.selected}"/>
                                 <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleClinical.Edit}" update=":DesignComponentFormSetEditForm" oncomplete="PF('DesignComponentFormSetEditDialog').show()" disabled="#{empty designComponentFormSetController.selected}"/>
-                                <p:commandButton id="addForm"   icon="ui-icon-cart" value="Manage Pages" ajax="false" action="#{designComponentFormSetController.toAddFormsForTheSelectedSet()}" actionListener="#{designComponentFormSetController.setBackStringToSysAdmin()}"
+                                <p:commandButton id="addForm"   icon="ui-icon-cart" value="Manage Pages" ajax="false" action="#{designComponentFormSetController.toAddFormsForTheSelectedSet()}"
+                                                 actionListener="#{designComponentFormSetController.setBackStringToInsAdmin()}"
                                                  disabled="#{empty designComponentFormSetController.selected}"/>
-                                <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleClinical.Delete}" actionListener="#{designComponentFormSetController.destroy}" update="datalist" disabled="#{empty designComponentFormSetController.selected}"
-                                                 onclick="if (!confirm('Really want to do that?')) return false"/>
+                                <p:commandButton id="deleteButton" icon="ui-icon-trash"  ajax="false"
+                                                 value="#{bundleClinical.Delete}" 
+                                                   onclick="if (!confirm('Really want to do that?')) return false"
+                                                 action="#{designComponentFormSetController.destroy}" 
+                                                 disabled="#{empty designComponentFormSetController.selected}"/>
                             </f:facet>
                         </p:dataTable>
-
                     </p:panelGrid>
                 </p:panel>
             </h:form>
