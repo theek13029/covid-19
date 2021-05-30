@@ -2669,7 +2669,7 @@ public class ClientController implements Serializable {
                 + " where c.retired=false"
                 + " and c.createInstitution=:ins "
                 + " and c.createdOn=:d "
-                + " order by id desc";
+                + " order by c.id desc";
         Map m = new HashMap();
         m.put("ins", webUserController.getInstitution());
         m.put("d", new Date());
