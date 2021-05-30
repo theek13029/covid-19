@@ -768,7 +768,23 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         return false;
     }
 
-    
+    public ClientEncounterComponentFormSet findLastFormsetToDataEntry(DesignComponentFormSet dfs, Client c) {
+        if (clientController.getSelected() == null) {
+            JsfUtil.addErrorMessage("Please select a client");
+            return null;
+        }
+        String j = "select s from ClientEncounterComponentFormSet s join s.encounter e "
+                + " where "
+                + " e.retired=false "
+                + " and (e.client=:c or s.client=:c) "
+                + " and s.referenceComponent=:dfs "
+                + " order by s.id desc";
+        Map m = new HashMap();
+        m.put("c", c);
+        m.put("dfs", dfs);
+        return getFacade().findFirstByJpql(j, m);
+    }
+
 
     public ClientEncounterComponentFormSet createNewFormsetToDataEntry(DesignComponentFormSet dfs) {
         if (clientController.getSelected() == null) {

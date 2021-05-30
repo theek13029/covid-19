@@ -170,6 +170,23 @@ public class ClientController implements Serializable {
     public String toClientProfile() {
         selectedClientsLastFiveClinicVisits = null;
         userTransactionController.recordTransaction("To Client Profile");
+        
+        DesignComponentFormSet dfs = designComponentFormSetController.getFirstClientFormSet();
+        if(dfs==null){
+            JsfUtil.addErrorMessage("No Default Form Set");
+            return "";
+        }
+        ClientEncounterComponentFormSet cefs;
+        cefs = clientEncounterComponentFormSetController.findLastFormsetToDataEntry(dfs, selected);
+        if(cefs==null){
+            cefs=clientEncounterComponentFormSetController.createNewFormsetToDataEntry(dfs);
+        }
+        if(cefs==null){
+            JsfUtil.addErrorMessage("No Patient Form Set");
+            return "";
+        }
+        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        
         return "/client/profile";
     }
     
@@ -200,7 +217,7 @@ public class ClientController implements Serializable {
         selectedClinic = null;
         yearMonthDay = new YearMonthDay();
         userTransactionController.recordTransaction("to add a new client");
-        DesignComponentFormSet dfs = designComponentFormSetController.findFirstClientFormSets();
+        DesignComponentFormSet dfs = designComponentFormSetController.getFirstClientFormSet();
         if(dfs==null){
             JsfUtil.addErrorMessage("No Default Form Set");
             return "";

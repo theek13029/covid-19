@@ -24,17 +24,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
-import lk.gov.health.phsp.entity.Component;
 import lk.gov.health.phsp.entity.DesignComponentForm;
 import lk.gov.health.phsp.entity.DesignComponentFormItem;
 import lk.gov.health.phsp.entity.Institution;
-import lk.gov.health.phsp.entity.Relationship;
-import lk.gov.health.phsp.enums.RelationshipType;
 import lk.gov.health.phsp.facade.DesignComponentFormItemFacade;
-import org.apache.commons.lang3.SerializationUtils;
 // </editor-fold>
 
-@Named("designComponentFormSetController")
+@Named
 @SessionScoped
 public class DesignComponentFormSetController implements Serializable {
 
@@ -63,6 +59,8 @@ public class DesignComponentFormSetController implements Serializable {
     private List<DesignComponentFormItem> exportItems = null;
     private DesignComponentFormSet selected;
     private DesignComponentFormSet referanceSet;
+
+    DesignComponentFormSet firstClientFormSet;
     private Institution institution;
     private Institution clinicFormSetsInstitution;
     private String backString;
@@ -79,18 +77,18 @@ public class DesignComponentFormSetController implements Serializable {
         return backString;
     }
 
-    public String toImportFormsets(){
+    public String toImportFormsets() {
         backString = "/systemAdmin/manage_data_index";
         userTransactionController.recordTransaction("To Import Forms Sets");
         return "/systemAdmin/import_form_sets";
     }
-    
-     public String toAssignFormsets(){
+
+    public String toAssignFormsets() {
         backString = "/systemAdmin/manage_data_index";
         userTransactionController.recordTransaction("To Assign Forms Sets");
         return "/systemAdmin/assign_form_sets";
     }
-    
+
     public String back() {
         userTransactionController.recordTransaction("Back to Manage Metadata");
         return backString;
@@ -312,7 +310,6 @@ public class DesignComponentFormSetController implements Serializable {
         return ss;
     }
 
- 
     public List<DesignComponentFormSet> findClinicFormSets() {
         String j = "Select s from DesignComponentFormSet s "
                 + " where s.retired=false "
@@ -325,19 +322,18 @@ public class DesignComponentFormSetController implements Serializable {
         return clinicFormSets;
     }
 
-    public DesignComponentFormSet findFirstClientFormSets() {
-        DesignComponentFormSet d;
-        String j = "Select s from DesignComponentFormSet s "
-                + " where s.retired=false "
-                + " and s.appearWithPatient=true "
-                + " order by s.orderNo";
-        Map m = new HashMap();
-        d = getFacade().findFirstByJpql(j, m);
-        d.isAppearWithPatient();
-        return d;
+    public DesignComponentFormSet getFirstClientFormSet() {
+        if (firstClientFormSet == null) {
+            String j = "Select s from DesignComponentFormSet s "
+                    + " where s.retired=false "
+                    + " and s.appearWithPatient=true "
+                    + " order by s.orderNo";
+            Map m = new HashMap();
+            firstClientFormSet = getFacade().findFirstByJpql(j, m);
+        }
+        return firstClientFormSet;
     }
 
-    
     public List<DesignComponentFormSet> fillInsItems(List<Institution> insLst) {
         String j = "Select s from DesignComponentFormSet s "
                 + " where s.retired=false "
@@ -562,7 +558,7 @@ public class DesignComponentFormSetController implements Serializable {
     }
 
     public List<DesignComponentFormSet> getClinicFormSets() {
-        if(clinicFormSets==null){
+        if (clinicFormSets == null) {
             clinicFormSets = findClinicFormSets();
         }
         return clinicFormSets;
