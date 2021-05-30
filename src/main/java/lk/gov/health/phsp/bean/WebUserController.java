@@ -563,7 +563,7 @@ public class WebUserController implements Serializable {
             JsfUtil.addErrorMessage("Passwords are not matching. Please retry.");
             return "";
         }
-        current.setWebUserRole(WebUserRole.Institution_User);
+        current.setWebUserRole(WebUserRole.Pdhs);
         try {
             getFacade().create(current);
         } catch (Exception e) {
@@ -742,7 +742,7 @@ public class WebUserController implements Serializable {
         switch (role) {
 
             case Client:
-            case Midwife:
+            case ChiefEpidemiologist:
                 //Menu
                 wups.add(Privilege.Client_Management);
                 wups.add(Privilege.Encounter_Management);
@@ -776,7 +776,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
                 wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
                 break;
-            case Doctor:
+            case Epidemiologist:
                 //Menu
                 wups.add(Privilege.Client_Management);
                 wups.add(Privilege.Encounter_Management);
@@ -795,7 +795,7 @@ public class WebUserController implements Serializable {
                 break;
             case User:
 
-            case Institution_Administrator:
+            case Re:
                 //Menu
                 wups.add(Privilege.User);
                 wups.add(Privilege.Institution_Administration);
@@ -806,7 +806,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Manage_Authorised_Institutions);
                 break;
 
-            case Institution_Super_User:
+            case Rdhs:
                 //Menu
                 wups.add(Privilege.User);
                 wups.add(Privilege.Institution_Administration);
@@ -815,7 +815,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Manage_Authorised_Areas);
                 wups.add(Privilege.Manage_Authorised_Institutions);
                 break;
-            case Institution_User:
+            case Pdhs:
                 //Menu
                 wups.add(Privilege.Client_Management);
                 wups.add(Privilege.Encounter_Management);
@@ -832,17 +832,17 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
                 wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
                 break;
-            case Me_Admin:
+            case Phm:
                 wups.add(Privilege.User);
                 wups.add(Privilege.Monitoring_and_evaluation);
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
                 break;
-            case Me_Super_User:
+            case Phi:
                 wups.add(Privilege.User);
                 wups.add(Privilege.Monitoring_and_evaluation);
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
                 break;
-            case Me_User:
+            case Moh:
                 wups.add(Privilege.User);
                 wups.add(Privilege.Monitoring_and_evaluation);
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
@@ -1296,8 +1296,8 @@ public class WebUserController implements Serializable {
     }
 
     public WebUserRole[] getWebUserRolesForInsAdmin() {
-        WebUserRole[] rs = {WebUserRole.Institution_Administrator, WebUserRole.Institution_Super_User, WebUserRole.Institution_User,
-            WebUserRole.Doctor, WebUserRole.Nurse, WebUserRole.Midwife};
+        WebUserRole[] rs = {WebUserRole.Re, WebUserRole.Rdhs, WebUserRole.Pdhs,
+            WebUserRole.Epidemiologist, WebUserRole.Nurse, WebUserRole.ChiefEpidemiologist};
         return rs;
     }
 

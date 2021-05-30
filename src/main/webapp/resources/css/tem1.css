@@ -221,3 +221,7 @@
 .width24rem{
     width: 24rem;
 }
+
+table.nopadding td {
+    padding: 0;
+}
