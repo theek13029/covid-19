@@ -16,9 +16,13 @@
                         <p:outputLabel value="#{bundleClinical.CreateDesignComponentFormSetLabel_name}" for="name" />
                         <p:inputText id="name" value="#{designComponentFormSetController.selected.name}" title="#{bundleClinical.CreateDesignComponentFormSetTitle_name}" />
 
+                        <p:outputLabel value="Order No" for="orderNo" />
+                        <p:inputText id="orderNo" value="#{designComponentFormSetController.selected.orderNo}" title="Order No" />
+
+
                         <p:outputLabel value="Appear with Patient" for="appearWithPatient" />
                         <p:selectBooleanButton id="appearWithPatient" offLabel="No" onLabel="Yes" value="#{designComponentFormSetController.selected.appearWithPatient}" ></p:selectBooleanButton>
-                        
+
                         <p:outputLabel value="Type" for="type" />
                         <p:selectOneMenu id="type" value="#{designComponentFormSetController.selected.componentSetType}" 
                                          title="#{bundleClinical.CreateDesignComponentFormSetTitle_renderType}" >
@@ -28,7 +32,7 @@
                                            itemLabel="#{componentSetTypes.label}">
                             </f:selectItems>
                         </p:selectOneMenu>
-                        
+
                         <p:outputLabel value="Panel" for="panel" />
                         <p:selectOneMenu id="panel" value="#{designComponentFormSetController.selected.panelType}" 
                                          title="Panel" >
@@ -38,15 +42,15 @@
                                            itemLabel="#{panelTypes.label}">
                             </f:selectItems>
                         </p:selectOneMenu>
-                        
-                         <p:outputLabel value="Sex" for="sex" />
-                         <p:selectOneMenu id="sex" value="#{designComponentFormSetController.selected.componentSex}" 
+
+                        <p:outputLabel value="Sex" for="sex" />
+                        <p:selectOneMenu id="sex" value="#{designComponentFormSetController.selected.componentSex}" 
                                          title="Sex" >
-                             <f:selectItems value="#{commonController.componentSex}"
-                                            var="componentSex"
-                                            itemValue="#{componentSex}"
-                                            itemLabel="#{componentSex.label}">
-                             </f:selectItems>
+                            <f:selectItems value="#{commonController.componentSex}"
+                                           var="componentSex"
+                                           itemValue="#{componentSex}"
+                                           itemLabel="#{componentSex.label}">
+                            </f:selectItems>
                         </p:selectOneMenu>
 
                     </p:panelGrid>

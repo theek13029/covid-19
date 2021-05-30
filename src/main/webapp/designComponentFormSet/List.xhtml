@@ -28,6 +28,14 @@
 
                             <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton addForm "/>
                             <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton addForm "/>
+                            
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Order No."/>
+                                </f:facet>
+                                <h:outputText value="#{item.orderNo}"/>
+                            </p:column>
+                            
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="#{bundleClinical.ListDesignComponentFormSetTitle_name}"/>

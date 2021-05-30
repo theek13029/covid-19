@@ -17,18 +17,22 @@
                     <p:outputLabel value="#{bundleClinical.CreateDesignComponentFormSetLabel_name}"  />
                     <p:outputLabel id="name" value="#{designComponentFormSetController.selected.name}" title="#{bundleClinical.CreateDesignComponentFormSetTitle_name}" />
 
-                    <p:outputLabel value="Appear with Patient" for="appearWithPatient" />
+                    <p:outputLabel value="Appear with Patient"  />
+                    <p:outputLabel id="appearWithPatient"  value="#{designComponentFormSetController.selected.orderNo}" ></p:outputLabel>
+
+
+                    <p:outputLabel value="Appear with Patient"  />
                     <p:outputLabel id="appearWithPatient"  value="#{designComponentFormSetController.selected.appearWithPatient?'Yes':'No'}" ></p:outputLabel>
 
-                    <p:outputLabel value="Type" for="type" />
+                    <p:outputLabel value="Type" />
                     <p:outputLabel id="type" value="#{designComponentFormSetController.selected.componentSetType.label}" >
                     </p:outputLabel>
 
-                    <p:outputLabel value="Panel" for="panel" />
+                    <p:outputLabel value="Panel"  />
                     <p:outputLabel id="panel" value="#{designComponentFormSetController.selected.panelType.label}" title="Panel" >
                     </p:outputLabel>
 
-                    <p:outputLabel value="Sex" for="sex" />
+                    <p:outputLabel value="Sex"  />
                     <p:outputLabel id="sex" value="#{designComponentFormSetController.selected.componentSex.label}" title="Sex" >
                     </p:outputLabel>
                 </p:panelGrid>

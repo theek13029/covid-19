@@ -36,6 +36,7 @@ import jxl.Workbook;
 import jxl.read.biff.BiffException;
 import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.ClientEncounterComponentFormSet;
+import lk.gov.health.phsp.entity.DesignComponentFormSet;
 import lk.gov.health.phsp.entity.Encounter;
 import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Item;
@@ -84,6 +85,8 @@ public class ClientController implements Serializable {
     private ClientEncounterComponentFormSetController clientEncounterComponentFormSetController;
     @Inject
     UserTransactionController userTransactionController;
+    @Inject
+    DesignComponentFormSetController designComponentFormSetController;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Variables">
     private List<Client> items = null;
@@ -189,12 +192,25 @@ public class ClientController implements Serializable {
 
     public String toAddNewClient() {
         setSelected(new Client());
+        selected.setRetired(true);
+        saveClient(selected);
         clearRegisterNewExistsValues();
         selectedClientsClinics = null;
         selectedClientsLastFiveClinicVisits = null;
         selectedClinic = null;
         yearMonthDay = new YearMonthDay();
         userTransactionController.recordTransaction("to add a new client");
+        DesignComponentFormSet dfs = designComponentFormSetController.findFirstClientFormSets();
+        if(dfs==null){
+            JsfUtil.addErrorMessage("No Default Form Set");
+            return "";
+        }
+        ClientEncounterComponentFormSet cefs=clientEncounterComponentFormSetController.createNewFormsetToDataEntry(dfs);
+        if(cefs==null){
+            JsfUtil.addErrorMessage("No Patient Form Set");
+            return "";
+        }
+        clientEncounterComponentFormSetController.loadOldFormset(cefs);
         return "/client/client";
     }
 
@@ -1948,6 +1964,8 @@ public class ClientController implements Serializable {
 
         Institution createdIns = null;
 
+        selected.setRetired(false);
+        
         if (selected.getCreateInstitution() == null) {
             if (webUserController.getLoggedUser().getInstitution().getPoiInstitution() != null) {
                 createdIns = webUserController.getLoggedUser().getInstitution().getPoiInstitution();

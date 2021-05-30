@@ -59,7 +59,7 @@ public class Component implements Serializable {
 
     private String code;
     
-    private boolean appearWithPatient;
+    
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Item item;
@@ -489,12 +489,5 @@ public class Component implements Serializable {
         return parentClientEncounterComponentItem;
     }
 
-    public boolean isAppearWithPatient() {
-        return appearWithPatient;
-    }
-
-    public void setAppearWithPatient(boolean appearWithPatient) {
-        this.appearWithPatient = appearWithPatient;
-    }
-
+  
 }

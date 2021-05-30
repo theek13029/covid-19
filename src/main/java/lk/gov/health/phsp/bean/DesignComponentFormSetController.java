@@ -325,6 +325,19 @@ public class DesignComponentFormSetController implements Serializable {
         return clinicFormSets;
     }
 
+    public DesignComponentFormSet findFirstClientFormSets() {
+        DesignComponentFormSet d;
+        String j = "Select s from DesignComponentFormSet s "
+                + " where s.retired=false "
+                + " and s.appearWithPatient=true "
+                + " order by s.orderNo";
+        Map m = new HashMap();
+        d = getFacade().findFirstByJpql(j, m);
+        d.isAppearWithPatient();
+        return d;
+    }
+
+    
     public List<DesignComponentFormSet> fillInsItems(List<Institution> insLst) {
         String j = "Select s from DesignComponentFormSet s "
                 + " where s.retired=false "
