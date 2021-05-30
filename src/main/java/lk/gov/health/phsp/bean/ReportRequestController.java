@@ -772,19 +772,19 @@ public class ReportRequestController implements Serializable {
             case Client:
                 action = forClient;
                 break;
-            case Doctor:
-            case Institution_Administrator:
-            case Institution_Super_User:
-            case Institution_User:
+            case Epidemiologist:
+            case Re:
+            case Rdhs:
+            case Pdhs:
             case Nurse:
-            case Midwife:
+            case ChiefEpidemiologist:
                 action = forIns;
                 break;
-            case Me_Admin:
-            case Me_Super_User:
+            case Phm:
+            case Phi:
                 action = forMe;
                 break;
-            case Me_User:
+            case Moh:
             case User:
                 action = noAction;
                 break;
@@ -808,19 +808,19 @@ public class ReportRequestController implements Serializable {
             case Client:
                 action = forClient;
                 break;
-            case Doctor:
-            case Institution_Administrator:
-            case Institution_Super_User:
-            case Institution_User:
+            case Epidemiologist:
+            case Re:
+            case Rdhs:
+            case Pdhs:
             case Nurse:
-            case Midwife:
+            case ChiefEpidemiologist:
                 action = forIns;
                 break;
-            case Me_Admin:
-            case Me_Super_User:
+            case Phm:
+            case Phi:
                 action = forMe;
                 break;
-            case Me_User:
+            case Moh:
             case User:
                 action = noAction;
                 break;

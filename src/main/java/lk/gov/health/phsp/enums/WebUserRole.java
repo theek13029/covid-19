@@ -31,15 +31,15 @@ public enum WebUserRole {
     System_Administrator("System Administrator"),
     Super_User("Super User"),
     User("User"),
-    Institution_User("Institution User"),
-    Institution_Super_User("Institution Super User"),
-    Institution_Administrator("Institution Administrator"),
-    Me_User("Monitoring & Evaluation Administrator"),
-    Me_Super_User("Monitoring & Evaluation Super User"),
-    Me_Admin("Monitoring & Evaluation User"),
-    Doctor("Doctor"),
+    Pdhs("PDHS"),
+    Rdhs("RDHS"),
+    Re("Regional Epidemiologist"),
+    Moh("MOH"),
+    Phi("PHI"),
+    Phm("PHM"),
+    Epidemiologist("Epidemiologist"),
     Nurse("Nurse"),
-    Midwife("Midwife"),
+    ChiefEpidemiologist("Midwife"),
     Client("Client");
 
     private final String label;

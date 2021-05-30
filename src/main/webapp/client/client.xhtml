@@ -22,7 +22,7 @@
 
                     <h:form>
 
-                        <p:panelGrid columns="1" >
+                        <p:panelGrid columns="1" style="border: 2px solid red; background-color: yellow;" >
 
                             <p:panelGrid  style="text-align: left;margin: auto; width: 98%;margin: 1%;">
                                 <f:facet name="header" >
@@ -216,7 +216,7 @@
                                 </p:row>
                             </p:panelGrid>
 
-                            <h:panelGrid columns="1" >
+                            <h:panelGrid columns="1" style="padding: 0px; margin: 0px; border: 0px;" >
                                 <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.forms.size() eq 1}" >
                                     <div style="#{clientEncounterComponentFormSetController.dataFormset.forms.get(0).df.css}" >
                                         <ez:dataform form="#{clientEncounterComponentFormSetController.dataFormset.forms.get(0)}" ></ez:dataform>
@@ -293,47 +293,51 @@
                                 </h:panelGroup>
 
                             </h:panelGrid>
+                            <h:panelGroup >
+                                <p:tooltip for="year" >
+                                    You can enter the age in years here. The system will calculate the approximate date of birth.
+                                </p:tooltip>
+                                <p:tooltip for="month" >
+                                    In children below five years, you may enter the age in months here. The system will use this data to calculate the approximate date of birth.
+                                </p:tooltip>
+                                <p:tooltip for="day" >
+                                    In children below one month, you may enter the age in days here. The system will use this to calculate the approximate date of birth.
+                                </p:tooltip>
+
+                                <p:tooltip for="sex" >
+                                    Select Gender
+                                </p:tooltip>
+
+                                <p:tooltip for="phone2" >
+                                    Enter home number
+                                </p:tooltip>
+                                <p:tooltip for="phone1" >
+                                    Enter mobile number
+                                </p:tooltip>
+                                <p:tooltip for="gn" >
+                                    Search GN Area
+                                </p:tooltip>
+                                <p:tooltip for="district" >
+                                    Search District
+                                </p:tooltip>
+
+                                <p:tooltip for="calDob" >
+                                    You can also enter the Date of Birth
+                                </p:tooltip>
+
+                                <p:tooltip for="phn" >
+                                    Generate a new PHN for new registrations of enter existing PHN if already registered.
+                                </p:tooltip>
+                                <p:watermark value="Years" for="year" class="w3-red" />
+                                <p:watermark value="Months" for="month" />
+                                <p:watermark value="Days" for="day" />
+                                <p:watermark for="calDob" value="Birthday" ></p:watermark>
+                            </h:panelGroup>
+                            
                         </p:panelGrid>
 
 
-                        <p:tooltip for="year" >
-                            You can enter the age in years here. The system will calculate the approximate date of birth.
-                        </p:tooltip>
-                        <p:tooltip for="month" >
-                            In children below five years, you may enter the age in months here. The system will use this data to calculate the approximate date of birth.
-                        </p:tooltip>
-                        <p:tooltip for="day" >
-                            In children below one month, you may enter the age in days here. The system will use this to calculate the approximate date of birth.
-                        </p:tooltip>
 
-                        <p:tooltip for="sex" >
-                            Select Gender
-                        </p:tooltip>
-
-                        <p:tooltip for="phone2" >
-                            Enter home number
-                        </p:tooltip>
-                        <p:tooltip for="phone1" >
-                            Enter mobile number
-                        </p:tooltip>
-                        <p:tooltip for="gn" >
-                            Search GN Area
-                        </p:tooltip>
-                        <p:tooltip for="district" >
-                            Search District
-                        </p:tooltip>
-
-                        <p:tooltip for="calDob" >
-                            You can also enter the Date of Birth
-                        </p:tooltip>
-
-                        <p:tooltip for="phn" >
-                            Generate a new PHN for new registrations of enter existing PHN if already registered.
-                        </p:tooltip>
-                        <p:watermark value="Years" for="year" class="w3-red" />
-                        <p:watermark value="Months" for="month" />
-                        <p:watermark value="Days" for="day" />
-                        <p:watermark for="calDob" value="Birthday" ></p:watermark>
                     </h:form>
                 </p:panel>
             </ui:define>

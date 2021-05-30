@@ -362,22 +362,22 @@ public class WebUser implements Serializable {
     }
 
     public boolean isInstitutionUser() {
-        institutionUser = getWebUserRole() == WebUserRole.Institution_User;
+        institutionUser = getWebUserRole() == WebUserRole.Pdhs;
         return institutionUser;
     }
 
     public boolean isInstitutionAdministrator() {
-        institutionAdministrator = getWebUserRole() == WebUserRole.Institution_Administrator;
+        institutionAdministrator = getWebUserRole() == WebUserRole.Re;
         return institutionAdministrator;
     }
 
     public boolean isAuthorityUser() {
-        authorityUser = getWebUserRole() == WebUserRole.Me_User;
+        authorityUser = getWebUserRole() == WebUserRole.Moh;
         return authorityUser;
     }
 
     public boolean isMeAdministrator() {
-        meAdministrator = getWebUserRole() == WebUserRole.Me_Admin;
+        meAdministrator = getWebUserRole() == WebUserRole.Phm;
         return meAdministrator;
     }
 
@@ -393,7 +393,7 @@ public class WebUser implements Serializable {
     }
 
     public boolean isInstitutionSuperUser() {
-        if (getWebUserRole() == WebUserRole.Institution_Super_User) {
+        if (getWebUserRole() == WebUserRole.Rdhs) {
             institutionSuperUser = true;
         } else {
             institutionSuperUser = false;
@@ -402,17 +402,17 @@ public class WebUser implements Serializable {
     }
 
     public boolean isMeSuperUser() {
-        meSuperUser = getWebUserRole() == WebUserRole.Me_Super_User;
+        meSuperUser = getWebUserRole() == WebUserRole.Phi;
         return meSuperUser;
     }
 
     public boolean isMeUser() {
-        meUser = getWebUserRole() == WebUserRole.Me_User;
+        meUser = getWebUserRole() == WebUserRole.Moh;
         return meUser;
     }
 
     public boolean isDoctor() {
-        doctor = getWebUserRole() == WebUserRole.Doctor;
+        doctor = getWebUserRole() == WebUserRole.Epidemiologist;
         return doctor;
     }
 
@@ -427,7 +427,7 @@ public class WebUser implements Serializable {
     }
 
     public boolean isMidwife() {
-        midwife = getWebUserRole() == WebUserRole.Midwife;
+        midwife = getWebUserRole() == WebUserRole.ChiefEpidemiologist;
         return midwife;
     }
 
@@ -483,9 +483,9 @@ public class WebUser implements Serializable {
             return restrictedToInstitution;
         }
         switch (ur) {
-            case Me_Admin:
-            case Me_Super_User:
-            case Institution_User:
+            case Phm:
+            case Phi:
+            case Pdhs:
             case System_Administrator:
             case Super_User:
                 restrictedToInstitution = false;
