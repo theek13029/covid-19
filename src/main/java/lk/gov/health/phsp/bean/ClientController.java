@@ -97,6 +97,9 @@ public class ClientController implements Serializable {
 
     private List<ClientBasicData> selectedClientsBasic = null;
 
+    private List<Client> institutionClients;
+    private Map<Long, Client> institutionClientsMap;
+
     private Client selected;
     private Long selectedId;
     private Long idFrom;
@@ -158,7 +161,7 @@ public class ClientController implements Serializable {
     public String toSelectClient() {
         return "/client/select";
     }
-    
+
     public String toSelectClientBasic() {
         return "/client/select_basic";
     }
@@ -170,29 +173,29 @@ public class ClientController implements Serializable {
     public String toClientProfile() {
         selectedClientsLastFiveClinicVisits = null;
         userTransactionController.recordTransaction("To Client Profile");
-        
+
         DesignComponentFormSet dfs = designComponentFormSetController.getFirstClientFormSet();
-        if(dfs==null){
+        if (dfs == null) {
             JsfUtil.addErrorMessage("No Default Form Set");
             return "";
         }
         ClientEncounterComponentFormSet cefs;
         cefs = clientEncounterComponentFormSetController.findLastFormsetToDataEntry(dfs, selected);
-        if(cefs==null){
-            cefs=clientEncounterComponentFormSetController.createNewFormsetToDataEntry(dfs);
+        if (cefs == null) {
+            cefs = clientEncounterComponentFormSetController.createNewFormsetToDataEntry(dfs);
         }
-        if(cefs==null){
+        if (cefs == null) {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
-        
+
         return "/client/profile";
     }
-    
+
     public String toClientProfileById() {
         selected = getFacade().find(selectedId);
-        if(selected==null){
+        if (selected == null) {
             JsfUtil.addErrorMessage("No such client");
             return "";
         }
@@ -218,12 +221,12 @@ public class ClientController implements Serializable {
         yearMonthDay = new YearMonthDay();
         userTransactionController.recordTransaction("to add a new client");
         DesignComponentFormSet dfs = designComponentFormSetController.getFirstClientFormSet();
-        if(dfs==null){
+        if (dfs == null) {
             JsfUtil.addErrorMessage("No Default Form Set");
             return "";
         }
-        ClientEncounterComponentFormSet cefs=clientEncounterComponentFormSetController.createNewFormsetToDataEntry(dfs);
-        if(cefs==null){
+        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewFormsetToDataEntry(dfs);
+        if (cefs == null) {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";
         }
@@ -416,14 +419,13 @@ public class ClientController implements Serializable {
         }
 
     }
-    
-    
-    public void addCreatedDateFromCreatedAt(){
+
+    public void addCreatedDateFromCreatedAt() {
         String j = "select c from Client c where c.createdOn is null";
-        List<Client> cs = getFacade().findByJpql(j,1000);
+        List<Client> cs = getFacade().findByJpql(j, 1000);
         System.out.println("cs.getSize() = " + cs.size());
-        for(Client c:cs){
-            if(c.getCreatedOn()==null){
+        for (Client c : cs) {
+            if (c.getCreatedOn() == null) {
                 c.setCreatedOn(c.getCreatedAt());
                 getFacade().edit(c);
             }
@@ -551,7 +553,7 @@ public class ClientController implements Serializable {
         String j = "select c from Client c "
                 + " where c.retired=:ret "
                 + " and c.reservedClient<>:res ";
-        
+
         Map m = new HashMap();
         m.put("ret", false);
         m.put("res", true);
@@ -1387,7 +1389,7 @@ public class ClientController implements Serializable {
             setSelected(selectedClients.get(0));
             selectedClients = null;
             clearSearchById();
-            if(selected.isReservedClient()){
+            if (selected.isReservedClient()) {
                 return "/client/client";
             }
             return toClientProfile();
@@ -1587,7 +1589,7 @@ public class ClientController implements Serializable {
             return toSelectClientBasic();
         }
     }
-    
+
     public String searchByPhnWithBasicData() {
         System.out.println("searchByPhnWithBasicData");
         userTransactionController.recordTransaction("Search By PHN");
@@ -1885,8 +1887,7 @@ public class ClientController implements Serializable {
         cs = new ArrayList<>();
         return cs;
     }
-    
-    
+
     public List<ClientBasicData> listPatientsByPhnWithBasicData(String ids) {
         if (ids == null || ids.trim().equals("")) {
             return null;
@@ -1971,18 +1972,12 @@ public class ClientController implements Serializable {
     }
 
     public String saveClient() {
-
-        System.out.println("saveClient");
-
         if (selected == null) {
             JsfUtil.addErrorMessage("Nothing to save");
             return "";
         }
-
         Institution createdIns = null;
-
         selected.setRetired(false);
-        
         if (selected.getCreateInstitution() == null) {
             if (webUserController.getLoggedUser().getInstitution().getPoiInstitution() != null) {
                 createdIns = webUserController.getLoggedUser().getInstitution().getPoiInstitution();
@@ -2039,8 +2034,11 @@ public class ClientController implements Serializable {
             }
         }
         selected.setReservedClient(false);
-        
+
         saveClient(selected);
+
+        getInstitutionClientsMap().put(selected.getId(), selected);
+
         JsfUtil.addSuccessMessage("Saved.");
         return toClientProfile();
     }
@@ -2070,7 +2068,7 @@ public class ClientController implements Serializable {
             return;
         }
         reservePhnList = new ArrayList<>();
-        
+
         while (i < numberOfPhnToReserve) {
             String newPhn = generateNewPhn(createdIns);
 
@@ -2091,7 +2089,7 @@ public class ClientController implements Serializable {
                     rc.getPerson().setCreatedBy(webUserController.getLoggedUser());
                 }
                 rc.setReservedClient(true);
-                
+
                 getFacade().create(rc);
                 i = i + 1;
             }
@@ -2108,7 +2106,7 @@ public class ClientController implements Serializable {
             if (c.getCreatedAt() == null) {
                 c.setCreatedAt(new Date());
             }
-            if(c.getCreatedOn()==null){
+            if (c.getCreatedOn() == null) {
                 c.setCreatedOn(new Date());
             }
             if (c.getCreateInstitution() == null) {
@@ -2648,13 +2646,52 @@ public class ClientController implements Serializable {
     public void setSelectedClientsWithBasicData(List<ClientBasicData> selectedClientsWithBasicData) {
         this.selectedClientsWithBasicData = selectedClientsWithBasicData;
     }
-    
+
     public List<String> getReservePhnList() {
         return reservePhnList;
     }
 
     public void setReservePhnList(List<String> reservePhnList) {
         this.reservePhnList = reservePhnList;
+    }
+
+    public List<Client> getInstitutionClients() {
+        institutionClients = new ArrayList<>(getInstitutionClientsMap().values());
+        return institutionClients;
+    }
+
+    public void setInstitutionClients(List<Client> institutionClients) {
+        this.institutionClients = institutionClients;
+    }
+
+    private Map<Long, Client> findTodaysInstitutionClients() {
+        String j = "select c from Client c "
+                + " where c.retired=false"
+                + " and c.createInstitution=:ins "
+                + " and c.createdOn=:d "
+                + " order by id desc";
+        Map m = new HashMap();
+        m.put("ins", webUserController.getInstitution());
+        m.put("d", new Date());
+        List<Client> cs = getFacade().findByJpql(j, m);
+        Map<Long, Client> tm = new HashMap<>();
+        if (cs != null) {
+            for (Client c : cs) {
+                tm.put(c.getId(), c);
+            }
+        }
+        return tm;
+    }
+
+    public Map<Long, Client> getInstitutionClientsMap() {
+        if (institutionClientsMap == null) {
+            institutionClientsMap = findTodaysInstitutionClients();
+        }
+        return institutionClientsMap;
+    }
+
+    public void setInstitutionClientsMap(Map<Long, Client> institutionClientsMap) {
+        this.institutionClientsMap = institutionClientsMap;
     }
 
     // </editor-fold>
