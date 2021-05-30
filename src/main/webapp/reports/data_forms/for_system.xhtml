@@ -8,7 +8,7 @@
 
     <head>
         <ui:define name="head">
-            Clinic Visits
+            Episode Data
         </ui:define>
     </head>
     <body>
@@ -20,38 +20,42 @@
                         <f:facet name="header" >
                             <p:outputLabel value="Data Forms" ></p:outputLabel>
                         </f:facet>
-                       
-                            <p:outputLabel value="From" ></p:outputLabel>
-                            <p:calendar value="#{reportController.fromDate}" pattern="dd MM yyyy" ></p:calendar>
 
-                            <p:outputLabel value="To" ></p:outputLabel>
-                            <p:calendar value="#{reportController.toDate}" pattern="dd MM yyyy" ></p:calendar>
+                        <p:outputLabel value="From" ></p:outputLabel>
+                        <p:calendar value="#{reportController.fromDate}" pattern="dd MM yyyy" ></p:calendar>
 
-                            <p:outputLabel value="Institution" ></p:outputLabel>
-                            <p:autoComplete   value="#{reportController.institution}" 
-                                              completeMethod="#{institutionController.completeInstitutions}"
-                                              var="i" itemLabel="#{i.name}" itemValue="#{i}"
-                                              forceSelection="true" maxResults="15" minQueryLength="3">
-                            </p:autoComplete >
-                            
-                             <p:outputLabel value="Formset" ></p:outputLabel>
-                             <p:autoComplete   value="#{reportController.designingComponentFormSet}" 
-                                              completeMethod="#{designComponentFormSetController.completeFormSets}"
-                                              var="i" itemLabel="#{i.name}" itemValue="#{i}"
-                                              forceSelection="true" maxResults="15" minQueryLength="3">
-                            </p:autoComplete >
+                        <p:outputLabel value="To" ></p:outputLabel>
+                        <p:calendar value="#{reportController.toDate}" pattern="dd MM yyyy" ></p:calendar>
+
+                        <p:outputLabel value="Institution" ></p:outputLabel>
+                        <p:autoComplete   value="#{reportController.institution}" 
+                                          completeMethod="#{institutionController.completeInstitutions}"
+                                          var="i" itemLabel="#{i.name}" itemValue="#{i}"
+                                          required="true"
+                                          requiredMessage="Please select an institution"
+                                          forceSelection="true" maxResults="15" minQueryLength="3">
+                        </p:autoComplete >
+
+                        <p:outputLabel value="Episode Data" ></p:outputLabel>
+                        <p:autoComplete   value="#{reportController.designingComponentFormSet}" 
+                                          required="true"
+                                          requiredMessage="Please select a data form"
+                                          completeMethod="#{designComponentFormSetController.completeFormSets}"
+                                          var="i" itemLabel="#{i.name}" itemValue="#{i}"
+                                          forceSelection="true" maxResults="15" minQueryLength="3">
+                        </p:autoComplete >
 
 
-                            <p:spacer ></p:spacer>
-                            <p:commandButton value="Download" 
-                                             ajax="false" 
-                                             oncomplete ="PrimeFaces.monitorDownload(start, stop);" 
-                                             icon="ui-icon-arrowthick-1-s"
-                                             actionListener="#{reportController.downloadFormsetDataEntries()}">
-                                <p:fileDownload value="#{reportController.resultExcelFile}" />
-                            </p:commandButton>
+                        <p:spacer ></p:spacer>
+                        <p:commandButton value="Download" 
+                                         ajax="false" 
+                                         oncomplete ="PrimeFaces.monitorDownload(start, stop);" 
+                                         icon="ui-icon-arrowthick-1-s"
+                                         actionListener="#{reportController.downloadFormsetDataEntries()}">
+                            <p:fileDownload value="#{reportController.resultExcelFile}" />
+                        </p:commandButton>
 
-                    
+
 
 
                     </p:panelGrid>

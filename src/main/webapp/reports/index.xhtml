@@ -28,7 +28,7 @@
                             <p:ajax event="tabChange" update="@this" />
                             <p:tab title="Excel Templates"  >
                                 <h:panelGrid columns="1" >
-                                    <p:commandButton value="Monthly Institution Summeries"   style="width:20em;margin:auto;"
+                                    <p:commandButton value="MOH Summery"   style="width:20em;margin:auto;"
                                                      action="#{reportController.toInstitutionMonthlySummeries()}"
                                                      ajax="false"></p:commandButton>
 
@@ -36,65 +36,62 @@
                                                      action="#{reportController.toConsolidateSummeries()}"
                                                      ajax="false"></p:commandButton>
 
-                                    <p:commandButton value="My Summeries"   style="width:20em;margin:auto;"
+                                    <p:commandButton value="My Summeries" rendered="false"   style="width:20em;margin:auto;"
                                                      action="#{reportController.toViewMySummeries()}"
                                                      ajax="false"></p:commandButton>
 
-                                    
-                                </h:panelGrid>
 
+                                </h:panelGrid>
                             </p:tab>
 
                             <p:tab title="Counts"  >
                                 <h:panelGrid columns="1" >
-                                    <p:commandButton value="Institution-vice Clinic Visits"   style="width:20em;margin:auto;"
+                                    <p:outputLabel value="Episodes" ></p:outputLabel>
+                                    <p:commandButton value="MOH-vice"   style="width:20em;margin:auto;"
                                                      action="#{reportController.toViewClinicVisitsByInstitution()}"
                                                      ajax="false"></p:commandButton>
-                                    
-                                    
-                                    <p:commandButton value="Institution-vice Client Registrations"   style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewClientRegistrationsByInstitution()}"
-                                                     ajax="false"></p:commandButton>
-
-                                    <p:commandButton value="District vice Client Registrations" style="width:20em;margin:auto;"
+                                    <p:commandButton value="District-vice" style="width:20em;margin:auto;"
                                                      action="#{reportController.toViewClientRegistrationsByDistrict()}"
                                                      rendered="#{webUserController.hasPrivilege('System_Administration')}"
                                                      ajax="false"></p:commandButton>
-
-                                    <p:commandButton value="Province vice Client Registrations" style="width:20em;margin:auto;"
+                                    <p:commandButton value="Province-vice" style="width:20em;margin:auto;"
                                                      action="#{reportController.toViewClientRegistrationsByProvince()}"
                                                      rendered="#{webUserController.hasPrivilege('System_Administration')}"
                                                      ajax="false"></p:commandButton>
-                                    
-                                    
-                                     <p:commandButton value="Daily Clinic Visits"   style="width:20em;margin:auto;"
-                                                      action="#{reportController.toViewDailyClinicsVisitCounts()}"
+                                    <p:commandButton value="By Day"   style="width:20em;margin:auto;"
+                                                     action="#{reportController.toViewDailyClinicsVisitCounts()}"
                                                      ajax="false"></p:commandButton>
-                                    
-                                     <p:commandButton value="Daily Registrations"   style="width:20em;margin:auto;"
-                                                      action="#{reportController.toViewDailyClinicsRegistrationCounts()}"
+                                    <hr/>
+                                    <p:outputLabel value="Registrations" ></p:outputLabel>
+                                    <p:commandButton value="Institution-vice"   style="width:20em;margin:auto;"
+                                                     action="#{reportController.toViewClientRegistrationsByInstitution()}"
                                                      ajax="false"></p:commandButton>
-                                    
+                                    <p:commandButton value="District-vice" style="width:20em;margin:auto;"
+                                                     action="#{reportController.toViewClientRegistrationsByDistrict()}"
+                                                     rendered="#{webUserController.hasPrivilege('System_Administration')}"
+                                                     ajax="false"></p:commandButton>
+                                    <p:commandButton value="Province-vice" style="width:20em;margin:auto;"
+                                                     action="#{reportController.toViewClientRegistrationsByProvince()}"
+                                                     rendered="#{webUserController.hasPrivilege('System_Administration')}"
+                                                     ajax="false"></p:commandButton>
+                                    <p:commandButton value="By Day"   style="width:20em;margin:auto;"
+                                                     action="#{reportController.toViewDailyClinicsRegistrationCounts()}"
+                                                     ajax="false"></p:commandButton>
                                 </h:panelGrid>
                             </p:tab>
 
                             <p:tab title="Lists" >
 
                                 <h:panelGrid columns="1" >
-                                    <p:commandButton value="Client Registrations"   style="width:20em;margin:auto;"
+                                    <p:commandButton value="Registrations"   style="width:20em;margin:auto;"
                                                      action="#{reportController.toViewClientRegistrations()}"
                                                      ajax="false"></p:commandButton>
-
-                                    <p:commandButton value="Clinic Enrollments"   style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewClinicEnrollments()}"
-                                                     ajax="false"></p:commandButton>
-
-                                    <p:commandButton value="Clinic Visits"   style="width:20em;margin:auto;"
+                                    <p:commandButton value="Episodes"   style="width:20em;margin:auto;"
                                                      action="#{reportController.toViewClinicVisits()}"
                                                      ajax="false"></p:commandButton>
-                                    
-                                     <p:commandButton value="Data Forms"   style="width:20em;margin:auto;"
-                                                      action="#{reportController.toViewDataForms()}"
+
+                                    <p:commandButton value="Episode Data"   style="width:20em;margin:auto;"
+                                                     action="#{reportController.toViewDataForms()}"
                                                      ajax="false"></p:commandButton>
 
                                 </h:panelGrid>

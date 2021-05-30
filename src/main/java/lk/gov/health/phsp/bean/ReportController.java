@@ -65,6 +65,7 @@ import jxl.write.WriteException;
 import lk.gov.health.phsp.entity.ClientEncounterComponentFormSet;
 import lk.gov.health.phsp.entity.ClientEncounterComponentItem;
 import lk.gov.health.phsp.entity.ConsolidatedQueryResult;
+import lk.gov.health.phsp.entity.DesignComponentForm;
 import lk.gov.health.phsp.entity.DesignComponentFormItem;
 import lk.gov.health.phsp.entity.DesignComponentFormSet;
 import lk.gov.health.phsp.entity.IndividualQueryResult;
@@ -93,6 +94,8 @@ import lk.gov.health.phsp.pojcs.DateInstitutionCount;
 import lk.gov.health.phsp.pojcs.EncounterBasicData;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
 import lk.gov.health.phsp.pojcs.Replaceable;
+import lk.gov.health.phsp.pojcs.ReportColumn;
+import lk.gov.health.phsp.pojcs.ReportRow;
 import lk.gov.health.phsp.pojcs.ReportTimePeriod;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -155,6 +158,8 @@ public class ReportController implements Serializable {
     private DesignComponentFormItemController designComponentFormItemController;
     @Inject
     private UserTransactionController userTransactionController;
+    @Inject
+    DesignComponentFormController designComponentFormController;
 // </editor-fold>  
 // <editor-fold defaultstate="collapsed" desc="Class Variables">
     private List<Encounter> encounters;
@@ -1591,7 +1596,7 @@ public class ReportController implements Serializable {
         userTransactionController.recordTransaction("To View Daily Clinic Visits");
         return action;
     }
-    
+
     public String toViewDailyClinicsRegistrationCounts() {
         encounters = new ArrayList<>();
         String forSys = "/reports/client_registrations/for_sa_daily";
@@ -1753,7 +1758,6 @@ public class ReportController implements Serializable {
     }
 
     public String toViewDataForms() {
-        encounters = new ArrayList<>();
         String forSys = "/reports/data_forms/for_system";
         String forIns = "/reports/data_forms/for_ins";
         String forMe = "/reports/data_forms/for_me";
@@ -1808,7 +1812,6 @@ public class ReportController implements Serializable {
             ins.add(institution);
             m.put("ins", ins);
         }
-
         clients = clientController.getItems(j, m);
     }
 
@@ -2545,7 +2548,7 @@ public class ReportController implements Serializable {
                 Cell c2 = row.createCell(1);
                 c2.setCellStyle(cellStyle);
                 c2.setCellValue(cbd.getDate());
-                
+
                 Cell c3 = row.createCell(2);
                 c3.setCellValue(cbd.getCount());
 
@@ -2571,7 +2574,7 @@ public class ReportController implements Serializable {
         }
 
     }
-    
+
     public void downloadDailyClientRegistrationCounts() {
         String j;
         Map m = new HashMap();
@@ -2672,7 +2675,7 @@ public class ReportController implements Serializable {
                 Cell c2 = row.createCell(1);
                 c2.setCellStyle(cellStyle);
                 c2.setCellValue(cbd.getDate());
-                
+
                 Cell c3 = row.createCell(2);
                 c3.setCellValue(cbd.getCount());
 
@@ -2702,54 +2705,78 @@ public class ReportController implements Serializable {
     public void downloadFormsetDataEntries() {
         String j;
         Map m = new HashMap();
+        List<ReportColumn> rcols = new ArrayList<>();
+        int rcount = 1;
+        int ccount = 0;
+        List<ReportRow> rrows = new ArrayList<>();
 
-        j = "select new lk.gov.health.phsp.pojcs.EncounterBasicData("
-                + "e.client.phn, "
-                + "e.client.person.gnArea.name, "
-                + "e.institution.name, "
-                + "e.client.person.dateOfBirth, "
-                + "e.encounterDate, "
-                + "e.client.person.sex.name,"
-                + " cfs.referenceComponent.name  "
-                + ") "
-                + " from ClientEncounterComponentFormSet cfs"
-                + " join cfs.encounter e "
-                + " where e.retired=:ret "
-                + " and e.encounterType=:type "
-                + " and e.encounterDate between :fd and :td ";
-
+        j = "select e "
+                + "from Encounter e "
+                + "where e.retired=:ret "
+                + " and e.encounterDate between :fd and :td "
+                + " and e.institution in :ins ";
         m.put("ret", false);
         m.put("fd", fromDate);
         m.put("td", toDate);
+        m.put("dfs", designingComponentFormSet);
+        m.put("ins", institution);
 
-        if (designingComponentFormSet != null) {
-            j += " and cfs.referenceComponent=:dfs ";
-            m.put("dfs", designingComponentFormSet);
+        ReportColumn rname = new ReportColumn();
+        rname.setColumnNumber(ccount++);
+        rname.setHeader("Name");
+        rcols.add(rname);
+        
+        
+        List<Encounter> es = getEncounterFacade().findByJpql(j, m);
+        for(Encounter e:es){
+            ReportRow tr = new ReportRow();
+            tr.setId(e.getId());
+            tr.setRowNumber(rcount);
+            rcount++;
+            rrows.add(tr);
         }
-        m.put("type", EncounterType.Clinic_Visit);
 
-        ClientEncounterComponentFormSet cfs = new ClientEncounterComponentFormSet();
-        cfs.getEncounter();
-        cfs.getReferenceComponent();
+        m = new HashMap();
+        j = "select  ci "
+                + " from ClientEncounterComponentItem cfs"
+                + " where ci.parentComponent.parentComponent.referenceComponent=:dfs "
+                + " and e.retired=:ret "
+                + " and cfs.retired=:ret "
+                + " and e.encounterDate between :fd and :td "
+                + " and e.institution in :ins ";
+        m.put("ret", false);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("dfs", designingComponentFormSet);
+        m.put("ins", institution);
 
-        if (institution != null) {
-            j += " and e.institution in :ins ";
-            List<Institution> ins = institutionApplicationController.findChildrenInstitutions(institution);
-            ins.add(institution);
-            m.put("ins", ins);
-        } else {
-            if (webUserController.getLoggedUser().isRestrictedToInstitution()) {
-                j += " and e.institution in :ins ";
-                List<Institution> ins = webUserController.getLoggableInstitutions();
-                ins.add(institution);
-                m.put("ins", ins);
+        List<ClientEncounterComponentFormSet> cfs = getClientEncounterComponentItemFacade().findByJpql(j, m);
+
+        List<DesignComponentForm> dfs = designComponentFormController.fillFormsofTheSelectedSet(designingComponentFormSet);
+
+        List<DesignComponentFormItem> dis = new ArrayList<>();
+
+        for (DesignComponentForm df : dfs) {
+            List<DesignComponentFormItem> tdis = designComponentFormItemController.fillItemsOfTheForm(df);
+            ReportColumn rc = new ReportColumn();
+            rc.setId(df.getId());
+            rc.setHeader(df.getName());
+            rc.setColumnNumber(ccount);
+            ccount++;
+            rcols.add(rc);
+            if (tdis != null && !tdis.isEmpty()) {
+                dis.addAll(tdis);
             }
+        }
+
+        for (ClientEncounterComponentFormSet cf : cfs) {
+
         }
 
         //String phn, String gnArea, String institution, Date dataOfBirth, Date encounterAt, String sex
         List<Object> objs = getClientFacade().findAggregates(j, m);
 
-        String FILE_NAME = "client_clinic_visits" + "_" + (new Date()) + ".xlsx";
+        String FILE_NAME = "data_entered_for_episode_with" + designingComponentFormSet.getName() + "_" + (new Date()) + ".xlsx";
         String mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
         String folder = "/tmp/";
