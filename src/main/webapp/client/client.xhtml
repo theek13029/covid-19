@@ -7,14 +7,14 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
-    <body>
+    <h:body>
 
         <ui:composition template="/template.xhtml">
 
             <ui:define name="content">
 
 
-                <p:panel style="text-align: center;height: 100%;" >
+                <p:panel style="text-align: center;height: 100%;width: 100%;" >
                     <f:facet name="header" >
                         <p:outputLabel value="Add Patient Details" rendered="#{clientController.selected.id eq null}"></p:outputLabel>
                         <p:outputLabel value="Edit Patient Details" rendered="#{clientController.selected.id ne null}"></p:outputLabel>
@@ -22,9 +22,9 @@
 
                     <h:form>
 
-                        <p:panelGrid columns="1" style="border: 2px solid red; background-color: yellow;" >
+                        <p:panelGrid columns="1" style="width: 100%;  background-color: yellow;" >
 
-                            <p:panelGrid  style="text-align: left;margin: auto; width: 98%;margin: 1%;">
+                            <p:panelGrid  style="text-align: left; width: 100%;">
                                 <f:facet name="header" >
                                     <p:commandButton ajax="false" action="#{clientController.saveClient()}" value="Save" ></p:commandButton>
                                 </f:facet>
@@ -216,7 +216,7 @@
                                 </p:row>
                             </p:panelGrid>
 
-                            <h:panelGrid columns="1" style="padding: 0px; margin: 0px; border: 0px;" >
+                            <h:panelGrid columns="1" style="width: 100%;" >
                                 <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.forms.size() eq 1}" >
                                     <div style="#{clientEncounterComponentFormSetController.dataFormset.forms.get(0).df.css}" >
                                         <ez:dataform form="#{clientEncounterComponentFormSetController.dataFormset.forms.get(0)}" ></ez:dataform>
@@ -293,46 +293,6 @@
                                 </h:panelGroup>
 
                             </h:panelGrid>
-                            <h:panelGroup >
-                                <p:tooltip for="year" >
-                                    You can enter the age in years here. The system will calculate the approximate date of birth.
-                                </p:tooltip>
-                                <p:tooltip for="month" >
-                                    In children below five years, you may enter the age in months here. The system will use this data to calculate the approximate date of birth.
-                                </p:tooltip>
-                                <p:tooltip for="day" >
-                                    In children below one month, you may enter the age in days here. The system will use this to calculate the approximate date of birth.
-                                </p:tooltip>
-
-                                <p:tooltip for="sex" >
-                                    Select Gender
-                                </p:tooltip>
-
-                                <p:tooltip for="phone2" >
-                                    Enter home number
-                                </p:tooltip>
-                                <p:tooltip for="phone1" >
-                                    Enter mobile number
-                                </p:tooltip>
-                                <p:tooltip for="gn" >
-                                    Search GN Area
-                                </p:tooltip>
-                                <p:tooltip for="district" >
-                                    Search District
-                                </p:tooltip>
-
-                                <p:tooltip for="calDob" >
-                                    You can also enter the Date of Birth
-                                </p:tooltip>
-
-                                <p:tooltip for="phn" >
-                                    Generate a new PHN for new registrations of enter existing PHN if already registered.
-                                </p:tooltip>
-                                <p:watermark value="Years" for="year" class="w3-red" />
-                                <p:watermark value="Months" for="month" />
-                                <p:watermark value="Days" for="day" />
-                                <p:watermark for="calDob" value="Birthday" ></p:watermark>
-                            </h:panelGroup>
                             
                         </p:panelGrid>
 
@@ -343,5 +303,5 @@
             </ui:define>
         </ui:composition>
 
-    </body>
+    </h:body>
 </html>
