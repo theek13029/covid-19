@@ -60,7 +60,8 @@ public class DesignComponentFormSetController implements Serializable {
     private DesignComponentFormSet selected;
     private DesignComponentFormSet referanceSet;
 
-    DesignComponentFormSet firstClientFormSet;
+    DesignComponentFormSet caseEnrollmentFormSet;
+    DesignComponentFormSet testEnrollmentFormSet;
     private Institution institution;
     private Institution clinicFormSetsInstitution;
     private String backString;
@@ -323,15 +324,27 @@ public class DesignComponentFormSetController implements Serializable {
     }
 
     public DesignComponentFormSet getFirstCaseEnrollmentFormSet() {
-        if (firstClientFormSet == null) {
+        if (caseEnrollmentFormSet == null) {
             String j = "Select s from DesignComponentFormSet s "
                     + " where s.retired=false "
                     + " and s.caseEnrollmentForm=true "
                     + " order by s.orderNo";
             Map m = new HashMap();
-            firstClientFormSet = getFacade().findFirstByJpql(j, m);
+            caseEnrollmentFormSet = getFacade().findFirstByJpql(j, m);
         }
-        return firstClientFormSet;
+        return caseEnrollmentFormSet;
+    }
+    
+    public DesignComponentFormSet getFirstTestEnrollmentFormSet() {
+        if (testEnrollmentFormSet == null) {
+            String j = "Select s from DesignComponentFormSet s "
+                    + " where s.retired=false "
+                    + " and s.testEnrollmentForm=true "
+                    + " order by s.orderNo";
+            Map m = new HashMap();
+            testEnrollmentFormSet = getFacade().findFirstByJpql(j, m);
+        }
+        return testEnrollmentFormSet;
     }
 
     public List<DesignComponentFormSet> fillInsItems(List<Institution> insLst) {

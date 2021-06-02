@@ -233,6 +233,30 @@ public class ClientController implements Serializable {
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
         return "/client/client_case_enrollment";
     }
+    
+    public String toAddNewClientForTestOrdering() {
+        setSelected(new Client());
+        selected.setRetired(true);
+        saveClient(selected);
+        clearRegisterNewExistsValues();
+        selectedClientsClinics = null;
+        selectedClientsLastFiveClinicVisits = null;
+        selectedClinic = null;
+        yearMonthDay = new YearMonthDay();
+        userTransactionController.recordTransaction("to add a new client for test ordering");
+        DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
+        if (dfs == null) {
+            JsfUtil.addErrorMessage("No Default Form Set");
+            return "";
+        }
+        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseEnrollmentFormsetToDataEntry(dfs);
+        if (cefs == null) {
+            JsfUtil.addErrorMessage("No Patient Form Set");
+            return "";
+        }
+        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        return "/client/client_case_enrollment";
+    }
 
     public String toViewCorrectedDuplicates() {
         String j;

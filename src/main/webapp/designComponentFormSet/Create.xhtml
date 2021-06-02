@@ -23,6 +23,10 @@
                         <p:outputLabel value="Case Enrollment Form" for="caseEnrollmentForm" />
                         <p:selectBooleanButton id="caseEnrollmentForm" offLabel="No" onLabel="Yes" value="#{designComponentFormSetController.selected.caseEnrollmentForm}" ></p:selectBooleanButton>
 
+                        <p:outputLabel value="Test Enrollment Form" for="testEnrollmentForm" />
+                        <p:selectBooleanButton id="testEnrollmentForm" offLabel="No" onLabel="Yes" value="#{designComponentFormSetController.selected.testEnrollmentForm}" ></p:selectBooleanButton>
+
+
                         <p:outputLabel value="Type" for="type" />
                         <p:selectOneMenu id="type" value="#{designComponentFormSetController.selected.componentSetType}" 
                                          title="#{bundleClinical.CreateDesignComponentFormSetTitle_renderType}" >
