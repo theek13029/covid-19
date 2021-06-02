@@ -41,11 +41,16 @@ import lk.gov.health.phsp.facade.AreaFacade;
 @Named
 @ApplicationScoped
 public class AreaApplicationController {
-    
-        @EJB
+
+    @EJB
     private AreaFacade areaFacade;
 
     private List<Area> gnAreas;
+    private List<Area> provinces;
+    private List<Area> districts;
+    private List<Area> rdhsAreas;
+    private List<Area> pdhsAreas;
+    private List<Area> mohAreas;
     private List<Area> allAreas;
 
     /**
@@ -54,18 +59,48 @@ public class AreaApplicationController {
     public AreaApplicationController() {
     }
 
-    
-     public List<Area> getGnAreas() {
+    public List<Area> getGnAreas() {
         if (gnAreas == null) {
             gnAreas = getAllGnAreas();
         }
         return gnAreas;
     }
 
-    public void setGnAreas(List<Area> gnAreas) {
-        this.gnAreas = gnAreas;
+    public List<Area> getDistricts() {
+        if (districts == null) {
+            districts = getAllDistricts();
+        }
+        return districts;
     }
-    
+
+    public List<Area> getProvinces() {
+        if (provinces == null) {
+            provinces = getAllProvinces();
+        }
+        return provinces;
+    }
+
+    public List<Area> getPdhsAreas() {
+        if (pdhsAreas == null) {
+            pdhsAreas = getAllPdhsAreas();
+        }
+        return pdhsAreas;
+    }
+
+    public List<Area> getRdhsAreas() {
+        if (rdhsAreas == null) {
+            rdhsAreas = getAllRdhsAreas();
+        }
+        return rdhsAreas;
+    }
+
+    public List<Area> getMohAreas() {
+        if (mohAreas == null) {
+            mohAreas = getAllMohAreas();
+        }
+        return mohAreas;
+    }
+
     public List<Area> getAllAreas() {
         if (allAreas == null) {
             allAreas = fillAllAreas();
@@ -82,7 +117,7 @@ public class AreaApplicationController {
         j += " order by a.name";
         return areaFacade.findByJpql(j, m);
     }
-    
+
     public List<Area> getAllGnAreas() {
         List<Area> tas = new ArrayList<>();
         for (Area a : getAllAreas()) {
@@ -93,21 +128,119 @@ public class AreaApplicationController {
         return tas;
     }
 
-
-    public List<Area> getAllAreas(AreaType at) {
+    public List<Area> getAllMohAreas() {
         List<Area> tas = new ArrayList<>();
         for (Area a : getAllAreas()) {
-            if (a.getType()!=null && a.getType().equals(at)) {
+            if (a.getType() == AreaType.MOH) {
                 tas.add(a);
             }
         }
         return tas;
     }
 
+    public List<Area> getAllDistricts() {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getAllAreas()) {
+            if (a.getType() == AreaType.District) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+
+    public List<Area> getAllProvinces() {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getAllAreas()) {
+            if (a.getType() == AreaType.Province) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+
+    public List<Area> getAllPdhsAreas() {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getAllAreas()) {
+            if (a.getType() == AreaType.PdhsArea) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+
+    public List<Area> getAllRdhsAreas() {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getAllAreas()) {
+            if (a.getType() == AreaType.RdhsAra) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+
+    public List<Area> getAllAreas(AreaType at) {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getAllAreas()) {
+            if (a.getType() != null && a.getType().equals(at)) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
 
     public List<Area> completeGnAreas(String qry) {
         List<Area> tas = new ArrayList<>();
         for (Area a : getGnAreas()) {
+            if (a.getName().toLowerCase().contains(qry.trim().toLowerCase())) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+
+    public List<Area> completeDistricts(String qry) {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getDistricts()) {
+            if (a.getName().toLowerCase().contains(qry.trim().toLowerCase())) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+
+    public List<Area> completeProvinces(String qry) {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getProvinces()) {
+            if (a.getName().toLowerCase().contains(qry.trim().toLowerCase())) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+
+    public List<Area> completePdhsAreas(String qry) {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getPdhsAreas()) {
+            if (a.getName().toLowerCase().contains(qry.trim().toLowerCase())) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+
+    public List<Area> completeRdhsAreas(String qry) {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getRdhsAreas()) {
+            if (a.getName().toLowerCase().contains(qry.trim().toLowerCase())) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+
+    public List<Area> completeMohAreas(String qry) {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getMohAreas()) {
             if (a.getName().toLowerCase().contains(qry.trim().toLowerCase())) {
                 tas.add(a);
             }
@@ -126,5 +259,35 @@ public class AreaApplicationController {
         }
         return tas;
     }
-    
+
+    public List<Area> completeGnAreasOfDistrict(String qry, Area district) {
+        List<Area> tas = new ArrayList<>();
+        qry = qry.trim().toLowerCase();
+        for (Area a : getGnAreas()) {
+            if (a.getName().toLowerCase().contains(qry)) {
+                if (a.getParentArea() != null & a.getParentArea().getParentArea() != null && a.getParentArea().getParentArea().equals(district)) {
+                    tas.add(a);
+                    continue;
+                }
+                if (a.getDistrict().equals(district)) {
+                    tas.add(a);
+                }
+            }
+        }
+        return tas;
+    }
+
+    public List<Area> completeMohAreasOfDistrict(String qry, Area district) {
+        List<Area> tas = new ArrayList<>();
+        qry = qry.trim().toLowerCase();
+        for (Area a : getMohAreas()) {
+            if (a.getName().toLowerCase().contains(qry)) {
+                if (a.getDistrict().equals(district)) {
+                    tas.add(a);
+                }
+            }
+        }
+        return tas;
+    }
+
 }

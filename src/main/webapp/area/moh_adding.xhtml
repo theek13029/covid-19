@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="insTopic">
+                <p:outputLabel value="Area List" ></p:outputLabel>
+            </ui:define>
+
+            <ui:define name="insContents">
+
+                <h:form id="AreaListForm">
+
+                    <p:panelGrid columns="2" >
+                        <p:outputLabel value="Province" ></p:outputLabel>
+                        <p:autoComplete value="#{areaController.province}"
+                                        completeMethod="#{areaApplicationController.completeProvinces}"
+                                        var="p"
+                                        itemLabel="#{p.name}"
+                                        itemValue="#{p}" ></p:autoComplete>
+
+                        <p:outputLabel value="PDHS" ></p:outputLabel>
+                        <p:autoComplete value="#{areaController.pdhs}"
+                                        completeMethod="#{areaApplicationController.completePdhsAreas}"
+                                        var="pd"
+                                        itemLabel="#{pd.name}"
+                                        itemValue="#{pd}" ></p:autoComplete>
+
+
+                        <p:outputLabel value="District" ></p:outputLabel>
+                        <p:autoComplete value="#{areaController.district}"
+                                        completeMethod="#{areaApplicationController.completeDistricts}"
+                                        var="d"
+                                        itemLabel="#{d.name}"
+                                        itemValue="#{d}" ></p:autoComplete>
+
+                        <p:outputLabel value="PDHS" ></p:outputLabel>
+                        <p:autoComplete value="#{areaController.rdhs}"
+                                        completeMethod="#{areaApplicationController.completeRdhsAreas}"
+                                        var="rd"
+                                        itemLabel="#{rd.name}"
+                                        itemValue="#{rd}" ></p:autoComplete>
+
+                        <p:outputLabel value="MOH Areas Seperated by Line Breaks" ></p:outputLabel>
+                        <p:inputTextarea value="#{areaController.bulkText}" rows="30" cols="40" ></p:inputTextarea>
+                        
+                        <p:spacer ></p:spacer>
+                        <p:commandButton ajax="false" value="Import" action="#{areaController.importMohAreas()}" >
+                        </p:commandButton>
+                        
+                    </p:panelGrid>
+
+                </h:form>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -660,6 +660,24 @@ public class InstitutionController implements Serializable {
             JsfUtil.addSuccessMessage("Updates");
         }
     }
+    
+    public void save(Institution ins) {
+        if (ins == null) {
+            return;
+        }
+        if (ins.getId() == null) {
+            ins.setCreatedAt(new Date());
+            ins.setCreater(webUserController.getLoggedUser());
+            getFacade().create(ins);
+            institutionApplicationController.getInstitutions().add(ins);
+            items = null;
+        } else {
+            ins.setEditedAt(new Date());
+            ins.setEditer(webUserController.getLoggedUser());
+            getFacade().edit(ins);
+            items = null;
+        }
+    }
 
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/BundleClinical").getString("InstitutionCreated"));

@@ -89,18 +89,18 @@
                                 </p:row>
                                 <p:row>
                                     <p:column >
-                                        <p:outputLabel value="Age: "  />
+                                        <p:outputLabel value="Age: (Years/Months)*"  />
                                     </p:column>
                                     <p:column >
                                         <h:panelGroup >
-                                            <p:inputText autocomplete="off"  id="year"  
-                                                         value="#{clientController.yearMonthDay.year}" 
+                                            <p:inputText autocomplete="off"  id="year"  placeholder="Years"
+                                                         value="#{clientController.yearMonthDay.year}" required="true"
                                                          style="width: 90px; ">
                                                 <f:validateRegex pattern="^((0|1|2|3|4|5|6|7|8|9){1}|(0|1|2|3|4|5|6|7|8|9){2}|(0|1|2|3|4|5|6|7|8|9){3})?$"></f:validateRegex>
                                                 <f:ajax event="keyup" execute="@this month day" render="calDob" 
                                                         listener="#{clientController.yearMonthDateChanged()}"  />
                                             </p:inputText>
-                                            <p:inputText autocomplete="off" id="month"
+                                            <p:inputText autocomplete="off" id="month" placeholder="Months"
                                                          style="width: 90px; " 
                                                          value="#{clientController.yearMonthDay.month}">
                                                 <f:ajax event="keyup" execute="@this year day" 
@@ -108,23 +108,22 @@
                                                         listener="#{clientController.yearMonthDateChanged()}"  />
                                             </p:inputText>
                                             <p:inputText autocomplete="off" id="day" 
-                                                         style="width: 90px;" 
+                                                         style="width: 90px;" rendered="false"
                                                          value="#{clientController.yearMonthDay.day}">
                                                 <f:ajax event="keyup" execute="@this year month" render="calDob" 
                                                         listener="#{clientController.yearMonthDateChanged()}" />
                                             </p:inputText>
-
                                         </h:panelGroup>
                                     </p:column>
                                     <p:column >
                                     </p:column>
                                     <p:column >
-                                        <p:outputLabel value="Date of Birth: *"  />
+                                        <p:outputLabel value="Date of Birth: " rendered="false"  />
                                     </p:column>
                                     <p:column >
                                         <p:calendar  value="#{clientController.selected.person.dateOfBirth}" 
                                                      id="calDob"  navigator="true" pattern="dd/MM/yyyy" yearRange="1900:today"
-                                                     inputStyle="width: 124px!important;" required="true"
+                                                     inputStyle="width: 124px!important;"  rendered="false"
                                                      styleClass="shortinput">
                                             <f:ajax event="dateSelect" listener="#{clientController.updateYearDateMonth}"
                                                     render="year month day" 
@@ -160,27 +159,12 @@
                                     <p:column >
                                         <p:outputLabel value="Current Residential Address:" for="address" />
                                     </p:column>
-                                    <p:column colspan="4" >
+                                    <p:column  >
                                         <p:inputTextarea
-                                            id="address" required="true"  style="width: 40rem;" rows="1" value="#{clientController.selected.person.address}"
+                                            id="address" required="true"  style="width: 30rem;" rows="1" value="#{clientController.selected.person.address}"
                                             title="Address" />
                                     </p:column>
-                                </p:row>
-
-                                <p:row>
-                                    <p:column >
-                                        <p:outputLabel value="MOH Area:" for="moh" />
-                                    </p:column>
-                                    <p:column >
-                                        <p:autoComplete id="moh" value="#{clientController.selected.person.mohArea}"
-                                                        completeMethod="#{areaController.completeMohAreas}"
-                                                        var="m" itemLabel="#{m.name}" itemValue="#{m}" inputStyle="width:20rem;"
-                                                        maxResults="15" forceSelection="true"
-                                                        minQueryLength="3">
-                                        </p:autoComplete>
-                                    </p:column>
-                                    <p:column >
-                                    </p:column>
+                                    <p:column></p:column>
                                     <p:column >
                                         <p:outputLabel value="District:" for="district" />
                                     </p:column>
@@ -190,16 +174,38 @@
                                                         var="d" itemLabel="#{d.name}" itemValue="#{d}"
                                                         maxResults="15" forceSelection="true"
                                                         minQueryLength="3">
+                                            <f:ajax event="itemSelect" execute="district" ></f:ajax>
+                                            <f:ajax event="blur" execute="district" ></f:ajax>
                                         </p:autoComplete>
                                     </p:column>
                                 </p:row>
+
                                 <p:row>
+
+                                    <p:column >
+                                        <p:outputLabel value="MOH Area:" for="moh" />
+                                    </p:column>
+                                    <p:column >
+                                        <p:autoComplete id="moh" value="#{clientController.selected.person.mohArea}"
+                                                        completeMethod="#{areaController.completeMohAreas}"
+                                                        var="m" itemLabel="#{m.name}" itemValue="#{m}" inputStyle="width:20rem;"
+                                                        maxResults="15" forceSelection="true"
+                                                        minQueryLength="3">
+                                            <f:ajax event="itemSelect" execute="moh" ></f:ajax>
+                                            <f:ajax event="blur" execute="moh" ></f:ajax>
+                                        </p:autoComplete>
+                                    </p:column>
+
+                                    <p:column >
+                                    </p:column>
+
+
                                     <p:column >
                                         <p:outputLabel value="GN Area:" for="gn" />
                                     </p:column>
                                     <p:column colspan="4" >
                                         <p:autoComplete id="gn" value="#{clientController.selected.person.gnArea}"
-                                                        completeMethod="#{clientController.completeClientsGnArea}"
+                                                        completeMethod="#{clientController.completeClientsMohArea}"
                                                         var="gn" itemLabel="#{gn.name}" itemValue="#{gn}" inputStyle="width:40rem;"
                                                         maxResults="20" forceSelection="true" placeholder="Not Known"
                                                         minQueryLength="2">
@@ -209,8 +215,9 @@
                                             <p:column headerText="DS Division">
                                                 <p:outputLabel value="#{gn.parentArea.name}"></p:outputLabel>
                                             </p:column>
-                                            <f:ajax event="itemSelect" execute="@this" render="phm moh dsd district province" 
-                                                    listener="#{clientController.gnAreaChanged()}"></f:ajax>
+                                            <p:column headerText="District">
+                                                <p:outputLabel value="#{gn.parentArea.parentArea.name}"></p:outputLabel>
+                                            </p:column>
                                         </p:autoComplete>
                                     </p:column>
                                 </p:row>
@@ -293,7 +300,7 @@
                                 </h:panelGroup>
 
                             </h:panelGrid>
-                            
+
                         </p:panelGrid>
 
 

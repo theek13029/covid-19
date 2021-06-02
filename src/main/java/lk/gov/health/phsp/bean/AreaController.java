@@ -39,8 +39,12 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
 import lk.gov.health.phsp.entity.Institution;
+import lk.gov.health.phsp.entity.Person;
 import lk.gov.health.phsp.entity.Relationship;
+import lk.gov.health.phsp.entity.WebUser;
+import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.enums.RelationshipType;
+import lk.gov.health.phsp.enums.WebUserRole;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.DefaultMapModel;
@@ -65,12 +69,21 @@ public class AreaController implements Serializable {
     List<Area> phiAreas = null;
     List<Area> rdhsAreas = null;
     List<Area> pdhsAreas = null;
+
     private List<Area> gnAreas = null;
     private List<Area> dsAreas = null;
     private List<Area> provinces = null;
     private List<Area> districts = null;
     private Area selected;
     private Area deleting;
+
+    private Area district;
+    private Area province;
+    private Area rdhs;
+    private Area pdhs;
+
+    private String bulkText;
+
     private UploadedFile file;
 
     @Inject
@@ -83,7 +96,9 @@ public class AreaController implements Serializable {
     private InstitutionController institutionController;
     @Inject
     private UserTransactionController userTransactionController;
-    
+    @Inject
+    PersonController personController;
+
     @Inject
     AreaApplicationController areaApplicationController;
 
@@ -183,6 +198,69 @@ public class AreaController implements Serializable {
     public String toSearchAreasForSysAdmin() {
         userTransactionController.recordTransaction("Search Areas By SysAdmin");
         return "/area/search";
+    }
+
+    public String importMohAreas() {
+        if (bulkText == null || bulkText.trim().equals("")) {
+            JsfUtil.addErrorMessage("Text ?");
+            return "";
+        }
+        if (district == null || province == null || pdhs == null || rdhs == null) {
+            JsfUtil.addErrorMessage("Details ?");
+            return "";
+        }
+
+        String lines[] = bulkText.split("\\r?\\n");
+
+        for (String line : lines) {
+            if (line == null || line.trim().equals("")) {
+                continue;
+            }
+            line = line.trim();
+            Area moh;
+
+            Institution insMoh = new Institution();
+            insMoh.setName("MOH Office " + line);
+            insMoh.setInstitutionType(InstitutionType.MOH_Office);
+            institutionController.save(insMoh);
+            
+            Area newMoh = new Area();
+            newMoh.setDistrict(district);
+            newMoh.setProvince(province);
+            newMoh.setPdhsArea(pdhs);
+            newMoh.setRdhsArea(rdhs);
+            newMoh.setName(line);
+            newMoh.setCode("moh_area_" + line);
+            getFacade().create(newMoh);
+            
+            insMoh.setMohArea(newMoh);
+            insMoh.setDistrict(district);
+            insMoh.setProvince(province);
+            insMoh.setPdhsArea(pdhs);
+            insMoh.setRdhsArea(rdhs);
+            institutionController.save(insMoh);
+            
+            
+            Person mohPerson = new Person();
+            mohPerson.setName("MOH " + line);
+            personController.save(mohPerson);
+
+            WebUser mohUser = new WebUser();
+            mohUser.setName("moh" + line);
+            mohUser.setPerson(mohPerson);
+            mohUser.setInstitution(insMoh);
+            mohUser.setArea(newMoh);
+            mohUser.setWebUserRole(WebUserRole.Moh);
+            mohUser.setWebUserPassword(commonController.hash("abcd1234"));
+            mohUser.setCreatedAt(new Date());
+            mohUser.setCreater(webUserController.getLoggedUser());
+            webUserController.save(mohUser);
+            webUserController.addWebUserPrivileges(mohUser, webUserController.getInitialPrivileges(mohUser.getWebUserRole()));
+            webUserController.save(mohUser);
+        }
+
+        bulkText = "";
+        return "";
     }
 
     public String importAreasFromExcel() {
@@ -791,17 +869,17 @@ public class AreaController implements Serializable {
 
     public void updateNationalAndProvincialPopulationFromDistrictPopulations() {
         for (RelationshipType t : getRts()) {
-            
+
             Area sl = getNationalArea();
-            
+
             Relationship slr = getRelationshipController().findRelationship(sl, t, year, true);
             Long pop = 0l;
             for (Area d : getDistricts()) {
-                
+
                 Relationship dr = getRelationshipController().findRelationship(d, t, year, false);
                 if (dr != null) {
                     if (dr.getLongValue1() != null) {
-                       
+
                         pop += dr.getLongValue1();
                     }
                 }
@@ -809,12 +887,12 @@ public class AreaController implements Serializable {
             slr.setLongValue1(pop);
             getRelationshipController().save(slr);
             for (Area p : getProvinces()) {
-                
+
                 List<Area> pds = getAreas(AreaType.District, p);
                 Relationship pr = getRelationshipController().findRelationship(p, t, year, true);
                 Long ppop = 0l;
                 for (Area d : pds) {
-                    
+
                     Relationship pdr = getRelationshipController().findRelationship(d, t, year, false);
                     if (pdr != null) {
                         if (pdr.getLongValue1() != null) {
@@ -1718,7 +1796,7 @@ public class AreaController implements Serializable {
             m.put("t", areaType);
         }
         j += " order by a.code";
-        return getFacade().findByJpql(j, m,30);
+        return getFacade().findByJpql(j, m, 30);
     }
 
     public Area getAreaByCode(String code, AreaType areaType) {
@@ -2277,6 +2355,46 @@ public class AreaController implements Serializable {
         this.rt = rt;
     }
 
+    public Area getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(Area district) {
+        this.district = district;
+    }
+
+    public Area getProvince() {
+        return province;
+    }
+
+    public void setProvince(Area province) {
+        this.province = province;
+    }
+
+    public Area getRdhs() {
+        return rdhs;
+    }
+
+    public void setRdhs(Area rdhs) {
+        this.rdhs = rdhs;
+    }
+
+    public Area getPdhs() {
+        return pdhs;
+    }
+
+    public void setPdhs(Area pdhs) {
+        this.pdhs = pdhs;
+    }
+
+    public String getBulkText() {
+        return bulkText;
+    }
+
+    public void setBulkText(String bulkText) {
+        this.bulkText = bulkText;
+    }
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Converters">
     @FacesConverter(forClass = Area.class)
@@ -2297,7 +2415,7 @@ public class AreaController implements Serializable {
             try {
                 key = Long.valueOf(value);
             } catch (NumberFormatException e) {
-                key =0l;
+                key = 0l;
             }
             return key;
         }

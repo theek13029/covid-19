@@ -469,10 +469,22 @@ public class ClientController implements Serializable {
         if (selected == null) {
             return areas;
         }
-        if (selected.getPerson().getDsArea() == null) {
+        if (selected.getPerson().getDistrict()== null) {
             return areaApplicationController.completeGnAreas(qry);
         } else {
-            return areaApplicationController.completeGnAreas(qry, selected.getPerson().getDsArea());
+            return areaApplicationController.completeGnAreasOfDistrict(qry, selected.getPerson().getDistrict());
+        }
+    }
+    
+    public List<Area> completeClientsMohArea(String qry) {
+        List<Area> areas = new ArrayList<>();
+        if (selected == null) {
+            return areas;
+        }
+        if (selected.getPerson().getDistrict()== null) {
+            return areaApplicationController.completeMohAreas(qry);
+        } else {
+            return areaApplicationController.completeGnAreasOfDistrict(qry, selected.getPerson().getDistrict());
         }
     }
 

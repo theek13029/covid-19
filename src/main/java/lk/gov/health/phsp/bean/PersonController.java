@@ -6,6 +6,7 @@ import lk.gov.health.phsp.bean.util.JsfUtil.PersistAction;
 import lk.gov.health.phsp.facade.PersonFacade;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -18,6 +19,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
 
 @Named("personController")
 @SessionScoped
@@ -27,6 +29,8 @@ public class PersonController implements Serializable {
     private lk.gov.health.phsp.facade.PersonFacade ejbFacade;
     private List<Person> items = null;
     private Person selected;
+    @Inject
+    WebUserController webUserController;
 
     public PersonController() {
     }
@@ -121,6 +125,21 @@ public class PersonController implements Serializable {
         return getFacade().findAll();
     }
 
+    public void save(Person p){
+        if(p==null){
+            return;
+        }
+        if(p.getId()==null){
+            p.setCreatedAt(new Date());
+            p.setCreatedBy(webUserController.getLoggedUser());
+            getFacade().create(p);
+        }else{
+            p.setEditedAt(new Date());
+            p.setEditer(webUserController.getLoggedUser());
+            getFacade().edit(p);
+        }
+    }
+    
     @FacesConverter(forClass = Person.class)
     public static class PersonControllerConverter implements Converter {
 
