@@ -2922,6 +2922,7 @@ public class ClientController implements Serializable {
     }
     
     public void fillTestEnrollmentToMark() {
+        System.out.println("fillTestEnrollmentToMark");
         String j = "select c from Encounter c "
                 + " where c.retired=false"
                 + " and c.institution=:ins "
@@ -2933,8 +2934,14 @@ public class ClientController implements Serializable {
         m.put("fd", getFrom());
         m.put("td", getTo());
         m.put("t", EncounterType.Test_Enrollment);
-        System.out.println("m = " + m);
-        System.out.println("m = " + m);
+        System.out.println("1 m = " + m);
+        System.out.println("2 j = " + j);
+        System.out.println("3 m = " + m);
+        System.out.println("4 j = " + j);
+        System.out.println("5 m = " + m);
+        System.out.println("6 j = " + j);
+        System.out.println("7 m = " + m);
+        System.out.println("8 j = " + j);
         testEnrollmentsToMark = getEncounterFacade().findByJpql(j, m);
     }
 
