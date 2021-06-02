@@ -20,10 +20,10 @@
                     <h:form >
                         <p:panelGrid columns="2" >
                             <p:outputLabel value="From" ></p:outputLabel>
-                            <p:calendar value="#{clientController.from}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+                            <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
                             <p:outputLabel value="To" ></p:outputLabel>
-                            <p:calendar value="#{clientController.to}" pattern="dd MMMM yyyy"></p:calendar>
+                            <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
                             <p:spacer ></p:spacer>
                             <p:commandButton ajax="false" value="Process" action="#{clientController.fillTestEnrollmentToMark()}" ></p:commandButton>
@@ -33,7 +33,8 @@
 
                     <h:form>
                         <p:dataTable value="#{clientController.testEnrollmentsToMark}" 
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10" >
+                                     var="c" paginator="true" rowKey="#{c.id}" rows="10"
+                                     rowStyleClass="#{c.resultPositive?'redRow':''}">
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
@@ -51,15 +52,18 @@
                                 <p:outputLabel rendered="#{c.resultPositive eq null}" value="Not Available" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Result" >
-                                <p:commandButton rendered="#{!c.resultPositive}" value="Mark Positive" action="#{clientController.toggleTestPositiveStatus()}" ajax="false" >
+                                <p:commandButton rendered="#{!c.resultPositive}" value="Mark Positive" action="#{clientController.markTestAsPositive}" ajax="false" >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounterToMarkTest}" ></f:setPropertyActionListener>
                                 </p:commandButton>
 
-                                <p:commandButton rendered="#{!c.resultPositive}"  value="Mark Negative" action="#{clientController.toggleTestPositiveStatus()}" ajax="false" >
+                                <p:commandButton rendered="#{c.resultPositive or c.resultPositive eq null}"  value="Mark Negative" action="#{clientController.markTestAsNegative}" ajax="false" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounterToMarkTest}" ></f:setPropertyActionListener>
+                                </p:commandButton>
+
+                                <p:commandButton rendered="#{c.resultPositive ne null}"  value="Mark As Not Available" action="#{clientController.markTestAsNotReceived}" ajax="false" >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounterToMarkTest}" ></f:setPropertyActionListener>
                                 </p:commandButton>
                             </p:column>
-
                         </p:dataTable>
                     </h:form>
 

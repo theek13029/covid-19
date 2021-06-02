@@ -225,3 +225,17 @@
 table.nopadding td {
     padding: 0;
 }
+
+.yellowRow{
+    background: yellow!important;
+    
+}
+
+.greenRow{
+    background: lightgreen!important;
+}
+
+.redRow{
+    background: lightpink;
+    color: red;
+}

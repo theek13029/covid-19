@@ -102,7 +102,7 @@ public class ClientController implements Serializable {
 
     private List<Encounter> institutionTestEnrollments;
     private Map<Long, Encounter> institutionTestEnrollmentMap;
-    
+
     private List<Encounter> testEnrollmentsToMark;
 
     private Client selected;
@@ -130,8 +130,8 @@ public class ClientController implements Serializable {
     private boolean goingToCaptureWebCamPhoto;
     private UploadedFile file;
     private Date clinicDate;
-    private Date from;
-    private Date to;
+    private Date fromDate;
+    private Date toDate;
 
     private Encounter selectedEncounterToMarkTest;
 
@@ -160,11 +160,11 @@ public class ClientController implements Serializable {
         return "/client/search_by_id";
     }
 
-    public String toEnterTestResults(){
+    public String toEnterTestResults() {
         fillTestEnrollmentToMark();
         return "/client/mark_test_enrollments";
     }
-    
+
     public void markNilReturnForCases() {
         Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getLoggedUser().getInstitution(),
                 EncounterType.No_Covid, new Date());
@@ -214,17 +214,35 @@ public class ClientController implements Serializable {
         return "/client/client";
     }
 
-    public void toggleTestPositiveStatus() {
+    
+     public void markTestAsNotReceived() {
         if (selectedEncounterToMarkTest == null) {
             JsfUtil.addErrorMessage("Nothing to Mark");
             return;
         }
-        if (selectedEncounterToMarkTest.getResultPositive() == null) {
-            selectedEncounterToMarkTest.setResultPositive(true);
-        } else {
-            selectedEncounterToMarkTest.setResultPositive(!selectedEncounterToMarkTest.getResultPositive());
-        }
+        selectedEncounterToMarkTest.setResultPositive(null);
         encounterFacade.edit(selectedEncounterToMarkTest);
+        JsfUtil.addSuccessMessage("Marked as Not Received");
+    }
+    
+    public void markTestAsPositive() {
+        if (selectedEncounterToMarkTest == null) {
+            JsfUtil.addErrorMessage("Nothing to Mark");
+            return;
+        }
+        selectedEncounterToMarkTest.setResultPositive(true);
+        encounterFacade.edit(selectedEncounterToMarkTest);
+        JsfUtil.addSuccessMessage("Marked as Positive");
+    }
+
+    public void markTestAsNegative() {
+        if (selectedEncounterToMarkTest == null) {
+            JsfUtil.addErrorMessage("Nothing to Mark");
+            return;
+        }
+        selectedEncounterToMarkTest.setResultPositive(false);
+        encounterFacade.edit(selectedEncounterToMarkTest);
+        JsfUtil.addSuccessMessage("Marked as Negative");
     }
 
     public String toClientProfile() {
@@ -805,8 +823,8 @@ public class ClientController implements Serializable {
         }
         j = j + " and c.createdAt between :fd and :td ";
         j = j + " order by c.id desc";
-        m.put("fd", getFrom());
-        m.put("td", getTo());
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
         items = getFacade().findByJpql(j, m, TemporalType.TIMESTAMP);
         return "/insAdmin/registered_clients";
     }
@@ -836,8 +854,8 @@ public class ClientController implements Serializable {
         m.put("res", true);
         j = j + " and c.createdAt between :fd and :td ";
         j = j + " order by c.id desc";
-        m.put("fd", getFrom());
-        m.put("td", getTo());
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
         selectedClientsBasic = null;
         clients = getFacade().findByJpql(j, m, TemporalType.TIMESTAMP);
         userTransactionController.recordTransaction("Fill Clients - SysAdmin");
@@ -861,8 +879,8 @@ public class ClientController implements Serializable {
         }
 
         j = j + " order by c.id desc";
-        m.put("fd", getFrom());
-        m.put("td", getTo());
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
         selectedClients = null;
         items = getFacade().findByJpql(j, m, TemporalType.TIMESTAMP);
     }
@@ -907,8 +925,8 @@ public class ClientController implements Serializable {
         m.put("res", true);
         j = j + " and c.createdAt between :fd and :td ";
         j = j + " order by c.id desc";
-        m.put("fd", getFrom());
-        m.put("td", getTo());
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
         selectedClientsBasic = null;
         clients = getFacade().findByJpql(j, m, TemporalType.TIMESTAMP);
         userTransactionController.recordTransaction("Fill Retired Clients - SysAdmin");
@@ -995,7 +1013,7 @@ public class ClientController implements Serializable {
     }
 
 //    public boolean phnExists(String phn) {
-//        String j = "select c from Client c where c.retired=:ret "
+//        String j = "select c fromDate Client c where c.retired=:ret "
 //                + " and c.phn=:phn";
 //        Map m = new HashMap();
 //        m.put("ret", false);
@@ -2340,7 +2358,7 @@ public class ClientController implements Serializable {
     public void create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/BundleClinical").getString("ClientCreated"));
         if (!JsfUtil.isValidationFailed()) {
-            items = null;    // Invalidate list of items to trigger re-query.
+            items = null;    // Invalidate list of items toDate trigger re-query.
         }
     }
 
@@ -2352,7 +2370,7 @@ public class ClientController implements Serializable {
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/BundleClinical").getString("ClientDeleted"));
         if (!JsfUtil.isValidationFailed()) {
             selected = null; // Remove selection
-            items = null;    // Invalidate list of items to trigger re-query.
+            items = null;    // Invalidate list of items toDate trigger re-query.
         }
     }
 
@@ -2691,26 +2709,29 @@ public class ClientController implements Serializable {
         this.institutionController = institutionController;
     }
 
-    public Date getFrom() {
-        if (from == null) {
-            from = commonController.startOfTheDay();
+    public Date getFromDate() {
+        if (fromDate == null) {
+            fromDate = commonController.startOfTheDay();
         }
-        return from;
+        return fromDate;
     }
 
-    public void setFrom(Date from) {
-        this.from = from;
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
     }
 
-    public Date getTo() {
-        if (to == null) {
-            to = commonController.endOfTheDay();
+    public Date getToDate() {
+        System.out.println("getTo");
+        System.out.println("to = " + toDate);
+        if (toDate == null) {
+            toDate = commonController.endOfTheDay();
         }
-        return to;
+        System.out.println("to = " + toDate);
+        return toDate;
     }
 
-    public void setTo(Date to) {
-        this.to = to;
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
 
     }
 
@@ -2920,9 +2941,8 @@ public class ClientController implements Serializable {
         }
         return tm;
     }
-    
+
     public void fillTestEnrollmentToMark() {
-        System.out.println("fillTestEnrollmentToMark");
         String j = "select c from Encounter c "
                 + " where c.retired=false"
                 + " and c.institution=:ins "
@@ -2931,26 +2951,13 @@ public class ClientController implements Serializable {
                 + " order by c.id";
         Map m = new HashMap();
         Institution ins = webUserController.getLoggedUser().getInstitution();
-        System.out.println("ins = " + ins);
-        System.out.println("getFrom() = " + getFrom());
-        System.out.println(" getTo() = " +  getTo());
         m.put("ins", ins);
-        m.put("fd", getFrom());
-        m.put("td", getTo());
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
         m.put("t", EncounterType.Test_Enrollment);
-        System.out.println("1 m = " + m);
-        System.out.println("2 j = " + j);
-        System.out.println("3 m = " + m);
-        System.out.println("4 j = " + j);
-        System.out.println("5 m = " + m);
-        System.out.println("6 j = " + j);
-        System.out.println("7 m = " + m);
-        System.out.println("8 j = " + j);
         testEnrollmentsToMark = getEncounterFacade().findByJpql(j, m);
     }
 
-    
-    
     public Map<Long, Encounter> getInstitutionCaseEnrollmentMap() {
         if (institutionCaseEnrollmentMap == null) {
             institutionCaseEnrollmentMap = findTodaysInstitutionCaseEnrollmentEncounters();
