@@ -59,6 +59,16 @@ public class AreaApplicationController {
     public AreaApplicationController() {
     }
 
+    public void invalidateItems() {
+        gnAreas = null;
+        provinces = null;
+        districts = null;
+        rdhsAreas = null;
+        pdhsAreas = null;
+        mohAreas = null;
+        allAreas = null;
+    }
+
     public List<Area> getGnAreas() {
         if (gnAreas == null) {
             gnAreas = getAllGnAreas();

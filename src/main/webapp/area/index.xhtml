@@ -36,6 +36,9 @@
                                 <p:commandButton styleClass="width18rem"   ajax="false"
                                                  value="Adding MOH data" 
                                                  action="/area/moh_adding"  ></p:commandButton>
+                                <p:commandButton styleClass="width18rem"   ajax="false"
+                                                 value="Reload" 
+                                                 action="#{areaApplicationController.invalidateItems()}"  ></p:commandButton>
                             </p:panelGrid>
                         </h:form>  
                     </p:panel>

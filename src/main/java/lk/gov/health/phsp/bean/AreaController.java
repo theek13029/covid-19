@@ -230,6 +230,7 @@ public class AreaController implements Serializable {
             newMoh.setPdhsArea(pdhs);
             newMoh.setRdhsArea(rdhs);
             newMoh.setName(line);
+            newMoh.setType(AreaType.MOH);
             newMoh.setCode("moh_area_" + line);
             getFacade().create(newMoh);
             
