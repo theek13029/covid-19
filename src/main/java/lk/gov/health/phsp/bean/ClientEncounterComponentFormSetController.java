@@ -847,7 +847,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         Date d = new Date();
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
-        e.setInstitution(dfs.getCurrentlyUsedIn());
+        e.setInstitution(webUserController.getLoggedUser().getInstitution());
         e.setEncounterType(EncounterType.Case_Enrollment);
         e.setRetired(true);
         if (encounterDate != null) {
@@ -871,7 +871,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         cfs.setCreatedAt(new Date());
         cfs.setCreatedBy(webUserController.getLoggedUser());
         cfs.setEncounter(e);
-        cfs.setInstitution(dfs.getCurrentlyUsedIn());
+        cfs.setInstitution(webUserController.getLoggedUser().getInstitution());
         cfs.setReferenceComponent(dfs);
         cfs.setName(dfs.getName());
         cfs.setDescreption(dfs.getDescreption());
@@ -900,7 +900,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 ClientEncounterComponentForm cf = new ClientEncounterComponentForm();
 
                 cf.setEncounter(e);
-                cf.setInstitution(dfs.getCurrentlyUsedIn());
+                cf.setInstitution(webUserController.getLoggedUser().getInstitution());
                 cf.setItem(df.getItem());
 
                 cf.setReferenceComponent(df);
@@ -939,7 +939,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
 
                             ci.setEncounter(e);
-                            ci.setInstitution(dfs.getCurrentlyUsedIn());
+                            ci.setInstitution(webUserController.getLoggedUser().getInstitution());
 
                             ci.setItemFormset(cfs);
                             ci.setItemEncounter(e);
@@ -982,7 +982,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             itemCounter++;
                             ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
                             ci.setEncounter(e);
-                            ci.setInstitution(dfs.getCurrentlyUsedIn());
+                            ci.setInstitution(webUserController.getLoggedUser().getInstitution());
                             ci.setItemFormset(cfs);
                             ci.setItemEncounter(e);
                             ci.setItemClient(e.getClient());
@@ -1035,7 +1035,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         Date d = new Date();
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
-        e.setInstitution(dfs.getCurrentlyUsedIn());
+        e.setInstitution(webUserController.getLoggedUser().getInstitution());
         e.setEncounterType(EncounterType.Test_Enrollment);
         e.setRetired(true);
         if (encounterDate != null) {
@@ -1059,7 +1059,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         cfs.setCreatedAt(new Date());
         cfs.setCreatedBy(webUserController.getLoggedUser());
         cfs.setEncounter(e);
-        cfs.setInstitution(dfs.getCurrentlyUsedIn());
+        cfs.setInstitution(webUserController.getLoggedUser().getInstitution());
         cfs.setReferenceComponent(dfs);
         cfs.setName(dfs.getName());
         cfs.setDescreption(dfs.getDescreption());
@@ -1088,7 +1088,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 ClientEncounterComponentForm cf = new ClientEncounterComponentForm();
 
                 cf.setEncounter(e);
-                cf.setInstitution(dfs.getCurrentlyUsedIn());
+                cf.setInstitution(webUserController.getLoggedUser().getInstitution());
                 cf.setItem(df.getItem());
 
                 cf.setReferenceComponent(df);
@@ -1127,7 +1127,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
 
                             ci.setEncounter(e);
-                            ci.setInstitution(dfs.getCurrentlyUsedIn());
+                            ci.setInstitution(webUserController.getLoggedUser().getInstitution());
 
                             ci.setItemFormset(cfs);
                             ci.setItemEncounter(e);
@@ -1170,7 +1170,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             itemCounter++;
                             ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
                             ci.setEncounter(e);
-                            ci.setInstitution(dfs.getCurrentlyUsedIn());
+                            ci.setInstitution(webUserController.getLoggedUser().getInstitution());
                             ci.setItemFormset(cfs);
                             ci.setItemEncounter(e);
                             ci.setItemClient(e.getClient());
@@ -1226,7 +1226,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         Date d = new Date();
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
-        e.setInstitution(dfs.getCurrentlyUsedIn());
+        e.setInstitution(webUserController.getLoggedUser().getInstitution());
 
         if (encounterDate != null) {
             e.setEncounterDate(encounterDate);
@@ -1249,7 +1249,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         cfs.setCreatedAt(new Date());
         cfs.setCreatedBy(webUserController.getLoggedUser());
         cfs.setEncounter(e);
-        cfs.setInstitution(dfs.getCurrentlyUsedIn());
+        cfs.setInstitution(webUserController.getLoggedUser().getInstitution());
         cfs.setReferenceComponent(dfs);
         cfs.setName(dfs.getName());
         cfs.setDescreption(dfs.getDescreption());
@@ -1278,7 +1278,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 ClientEncounterComponentForm cf = new ClientEncounterComponentForm();
 
                 cf.setEncounter(e);
-                cf.setInstitution(dfs.getCurrentlyUsedIn());
+                cf.setInstitution(webUserController.getLoggedUser().getInstitution());
                 cf.setItem(df.getItem());
 
                 cf.setReferenceComponent(df);
@@ -1317,7 +1317,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
 
                             ci.setEncounter(e);
-                            ci.setInstitution(dfs.getCurrentlyUsedIn());
+                            ci.setInstitution(webUserController.getLoggedUser().getInstitution());
 
                             ci.setItemFormset(cfs);
                             ci.setItemEncounter(e);
@@ -1360,7 +1360,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             itemCounter++;
                             ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
                             ci.setEncounter(e);
-                            ci.setInstitution(dfs.getCurrentlyUsedIn());
+                            ci.setInstitution(webUserController.getLoggedUser().getInstitution());
                             ci.setItemFormset(cfs);
                             ci.setItemEncounter(e);
                             ci.setItemClient(e.getClient());
@@ -1456,7 +1456,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                     cf = new ClientEncounterComponentForm();
 
                     cf.setEncounter(e);
-                    cf.setInstitution(dfs.getCurrentlyUsedIn());
+                    cf.setInstitution(webUserController.getLoggedUser().getInstitution());
                     cf.setItem(df.getItem());
 
                     cf.setReferenceComponent(df);
@@ -1518,7 +1518,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
 
                             ci.setEncounter(e);
-                            ci.setInstitution(dfs.getCurrentlyUsedIn());
+                            ci.setInstitution(webUserController.getLoggedUser().getInstitution());
 
                             ci.setItemFormset(cfs);
                             ci.setItemEncounter(e);
@@ -1590,7 +1590,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                                 itemCounter++;
                                 ci = new ClientEncounterComponentItem();
                                 ci.setEncounter(e);
-                                ci.setInstitution(dfs.getCurrentlyUsedIn());
+                                ci.setInstitution(webUserController.getLoggedUser().getInstitution());
                                 ci.setItemFormset(cfs);
                                 ci.setItemEncounter(e);
                                 ci.setItemClient(e.getClient());
@@ -1681,7 +1681,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                     cf = new ClientEncounterComponentForm();
 
                     cf.setEncounter(e);
-                    cf.setInstitution(dfs.getCurrentlyUsedIn());
+                    cf.setInstitution(webUserController.getLoggedUser().getInstitution());
                     cf.setItem(df.getItem());
 
                     cf.setReferenceComponent(df);
@@ -1743,7 +1743,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
 
                             ci.setEncounter(e);
-                            ci.setInstitution(dfs.getCurrentlyUsedIn());
+                            ci.setInstitution(webUserController.getLoggedUser().getInstitution());
 
                             ci.setItemFormset(cfs);
                             ci.setItemEncounter(e);
@@ -1815,7 +1815,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                                 itemCounter++;
                                 ci = new ClientEncounterComponentItem();
                                 ci.setEncounter(e);
-                                ci.setInstitution(dfs.getCurrentlyUsedIn());
+                                ci.setInstitution(webUserController.getLoggedUser().getInstitution());
                                 ci.setItemFormset(cfs);
                                 ci.setItemEncounter(e);
                                 ci.setItemClient(e.getClient());
