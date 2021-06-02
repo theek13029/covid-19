@@ -311,7 +311,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No Default Form Set");
             return "";
         }
-        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseEnrollmentFormsetToDataEntry(dfs);
+        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewTestEnrollmentFormsetToDataEntry(dfs);
         if (cefs == null) {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";
