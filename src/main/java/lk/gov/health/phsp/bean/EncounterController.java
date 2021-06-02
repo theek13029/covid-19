@@ -81,6 +81,31 @@ public class EncounterController implements Serializable {
         Long c = getFacade().findLongByJpql(j, m);
         return c;
     }
+    
+    public Encounter getInstitutionTypeEncounter(Institution institution, EncounterType ec, Date d) {
+        String j = "select e from Encounter e "
+                + " where e.encounterType=:ec "
+                + " and e.institution=:ins "
+                + " and e.encounterDate=:d";
+        Map m = new HashMap();
+        m.put("ins", institution);
+        m.put("ec", ec);
+        m.put("d", d);
+        Encounter e = getFacade().findFirstByJpql(j, m);
+        if(e==null){
+            e = new Encounter();
+            e.setEncounterDate(d);
+            e.setEncounterType(ec);
+            e.setInstitution(institution);
+            e.setCreatedAt(new Date());
+            e.setCreatedBy(webUserController.getLoggedUser());
+            getFacade().create(e);
+        }else{
+            e.setRetired(true);
+            getFacade().edit(e);
+        }
+        return e;
+    }
 
     public void retireSelectedEncounter() {
         if (selected == null) {

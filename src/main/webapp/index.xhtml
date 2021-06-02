@@ -30,10 +30,12 @@
                         <hr/>
                         <p:commandButton value="Search Patients"  action="#{clientController.toSearchClientById()}"  styleClass="width24rem"  ></p:commandButton>
                         <hr/>
-                        <p:commandButton value="Mark Nil Return for Cases" ajax="false"  styleClass="width24rem"  ></p:commandButton>
-                        <p:commandButton value="Mark Nil Return for Tests" ajax="false"  styleClass="width24rem"  ></p:commandButton>
+                        <p:commandButton value="Mark Nil Return for Cases" ajax="false"  action="#{clientController.markNilReturnForCases()}"  styleClass="width24rem"  ></p:commandButton>
+                        <p:commandButton value="Mark Nil Return for Tests" ajax="false"   action="#{clientController.markNilReturnForTests()}"  styleClass="width24rem"  ></p:commandButton>
+                        <p:commandButton value="Reverse Nil Return for Cases" ajax="false"  action="#{clientController.reverseNilReturnForCases()}"  styleClass="width24rem"  ></p:commandButton>
+                        <p:commandButton value="Reverse Nil Return for Tests" ajax="false"   action="#{clientController.reverseNilReturnForTests()}"  styleClass="width24rem"  ></p:commandButton>
                         <hr/>
-                        <p:commandButton value="Test Result Entering" ajax="false" action="/client/mark_test_enrollments"  styleClass="width24rem"  ></p:commandButton>
+                        <p:commandButton value="Test Result Entering" ajax="false" action="#{clientController.toEnterTestResults()}"  styleClass="width24rem"  ></p:commandButton>
                         <hr/>
                         <p:commandButton value="Case List" ajax="false"  styleClass="width24rem"  ></p:commandButton>
                         <p:commandButton value="Test List" ajax="false"  styleClass="width24rem"  ></p:commandButton>

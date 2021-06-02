@@ -102,6 +102,8 @@ public class ClientController implements Serializable {
 
     private List<Encounter> institutionTestEnrollments;
     private Map<Long, Encounter> institutionTestEnrollmentMap;
+    
+    private List<Encounter> testEnrollmentsToMark;
 
     private Client selected;
     private Long selectedId;
@@ -156,6 +158,43 @@ public class ClientController implements Serializable {
     public String toSearchClientById() {
         userTransactionController.recordTransaction("To Search Client By Id");
         return "/client/search_by_id";
+    }
+
+    public String toEnterTestResults(){
+        fillTestEnrollmentToMark();
+        return "/client/mark_test_enrollments";
+    }
+    
+    public void markNilReturnForCases() {
+        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getInstitution(),
+                EncounterType.No_Covid, new Date());
+        JsfUtil.addSuccessMessage("Marked");
+    }
+
+    public void markNilReturnForTests() {
+        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getInstitution(),
+                EncounterType.No_test, new Date());
+        JsfUtil.addSuccessMessage("Marked");
+    }
+
+    public void reverseNilReturnForTests() {
+        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getInstitution(),
+                EncounterType.No_test, new Date());
+        nilCases.setRetired(true);
+        nilCases.setRetiredBy(webUserController.getLoggedUser());
+        nilCases.setRetiredAt(new Date());
+        encounterController.save(nilCases);
+        JsfUtil.addSuccessMessage("Reversed");
+    }
+
+    public void reverseNilReturnForCases() {
+        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getInstitution(),
+                EncounterType.No_Covid, new Date());
+        nilCases.setRetired(true);
+        nilCases.setRetiredBy(webUserController.getLoggedUser());
+        nilCases.setRetiredAt(new Date());
+        encounterController.save(nilCases);
+        JsfUtil.addSuccessMessage("Reversed");
     }
 
     public String toSearchClientByDetails() {
@@ -2122,7 +2161,7 @@ public class ClientController implements Serializable {
         selected.setReservedClient(false);
 
         saveClient(selected);
-        
+
         if (clientEncounterComponentFormSetController.getSelected().getEncounter() != null) {
             clientEncounterComponentFormSetController.getSelected().getEncounter().setRetired(false);
             encounterFacade.edit(clientEncounterComponentFormSetController.getSelected().getEncounter());
@@ -2196,7 +2235,6 @@ public class ClientController implements Serializable {
                 }
             }
         }
-       
 
         saveClient(selected);
 
@@ -2268,7 +2306,7 @@ public class ClientController implements Serializable {
     public void saveClient(Client c) {
         if (c == null) {
             JsfUtil.addErrorMessage("No Client Selected to save.");
-            return ;
+            return;
         }
         if (c.getId() == null) {
             c.setCreatedBy(webUserController.getLoggedUser());
@@ -2882,7 +2920,24 @@ public class ClientController implements Serializable {
         }
         return tm;
     }
+    
+    public void fillTestEnrollmentToMark() {
+        String j = "select c from Encounter c "
+                + " where c.retired=false"
+                + " and c.institution=:ins "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.encounterType=:t "
+                + " order by c.id desc";
+        Map m = new HashMap();
+        m.put("ins", webUserController.getInstitution());
+        m.put("fd", getFrom());
+        m.put("td", getTo());
+        m.put("t", EncounterType.Test_Enrollment);
+        testEnrollmentsToMark = getEncounterFacade().findByJpql(j, m);
+    }
 
+    
+    
     public Map<Long, Encounter> getInstitutionCaseEnrollmentMap() {
         if (institutionCaseEnrollmentMap == null) {
             institutionCaseEnrollmentMap = findTodaysInstitutionCaseEnrollmentEncounters();
@@ -2911,6 +2966,14 @@ public class ClientController implements Serializable {
 
     public void setSelectedEncounterToMarkTest(Encounter selectedEncounterToMarkTest) {
         this.selectedEncounterToMarkTest = selectedEncounterToMarkTest;
+    }
+
+    public List<Encounter> getTestEnrollmentsToMark() {
+        return testEnrollmentsToMark;
+    }
+
+    public void setTestEnrollmentsToMark(List<Encounter> testEnrollmentsToMark) {
+        this.testEnrollmentsToMark = testEnrollmentsToMark;
     }
 
     // </editor-fold>
