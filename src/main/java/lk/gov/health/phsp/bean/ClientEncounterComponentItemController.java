@@ -66,11 +66,14 @@ public class ClientEncounterComponentItemController implements Serializable {
     private ClientEncounterComponentItem selected;
 
     private Long searchId;
-
+    
+   
     public void searchById() {
 
         selected = getFacade().find(searchId);
     }
+    
+  
 
     public void findClientEncounterComponentItemOfAFormset(ClientEncounterComponentFormSet fs) {
 
@@ -636,12 +639,15 @@ public class ClientEncounterComponentItemController implements Serializable {
             return;
         }
 //
-//        System.out.println("to save");
-//        System.out.println("Name = " + i.getName());
-//        System.out.println("iD = " + i.getId());
-//        System.out.println("Date Value = " + i.getDateValue());
-//        System.out.println("Bool Value = " + i.getBooleanValue());
-//        System.out.println("i.getInstitutionValue() = " + i.getInstitutionValue());
+        System.out.println("to save");
+        System.out.println("Name = " + i.getName());
+        System.out.println("iD = " + i.getId());
+        System.out.println("Date Value = " + i.getDateValue());
+        System.out.println("Bool Value = " + i.getBooleanValue());
+        System.out.println("i.getInstitutionValue() = " + i.getInstitutionValue());
+        System.out.println("i.getItemValue() = " + i.getItemValue());
+        System.out.println("i.getShortTextValue() = " + i.getShortTextValue());
+        System.out.println("i.getLongTextValue() = " + i.getLongTextValue());
 
         if (i.getId() == null) {
             i.setCreatedAt(new Date());
@@ -650,12 +656,16 @@ public class ClientEncounterComponentItemController implements Serializable {
         } else {
             getFacade().edit(i);
         }
-//        System.out.println("saved");
-//        System.out.println("Name = " + i.getName());
-//        System.out.println("iD = " + i.getId());
-//        System.out.println("Date Value = " + i.getDateValue());
-//        System.out.println("Bool Value = " + i.getBooleanValue());
-//        System.out.println("i.getInstitutionValue() = " + i.getInstitutionValue());
+        System.out.println("saved");
+        System.out.println("Name = " + i.getName());
+        System.out.println("iD = " + i.getId());
+        System.out.println("Date Value = " + i.getDateValue());
+        System.out.println("Bool Value = " + i.getBooleanValue());
+        System.out.println("i.getInstitutionValue() = " + i.getInstitutionValue());
+        System.out.println("i.getItemValue() = " + i.getItemValue());
+        System.out.println("i.getShortTextValue() = " + i.getShortTextValue());
+        System.out.println("i.getLongTextValue() = " + i.getLongTextValue());
+         System.out.println("Bool Value = " + i.getBooleanValue());
     }
 
     public void addAnother(ClientEncounterComponentItem i) {

@@ -65,6 +65,8 @@ public class Encounter implements Serializable {
     
     private boolean firstEncounter ;
 
+    private Boolean resultPositive;
+    
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date encounterDate;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -155,6 +157,8 @@ public class Encounter implements Serializable {
         return "id=" + id + "";
     }
 
+    
+    
     public Client getClient() {
         return client;
     }
@@ -379,6 +383,16 @@ public class Encounter implements Serializable {
     public void setRetireComments(String retireComments) {
         this.retireComments = retireComments;
     }
+
+    public Boolean getResultPositive() {
+        return resultPositive;
+    }
+
+    public void setResultPositive(Boolean resultPositive) {
+        this.resultPositive = resultPositive;
+    }
+
+   
     
     
     

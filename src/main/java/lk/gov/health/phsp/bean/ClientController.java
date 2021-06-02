@@ -131,6 +131,8 @@ public class ClientController implements Serializable {
     private Date from;
     private Date to;
 
+    private Encounter selectedEncounterToMarkTest;
+
     private Boolean nicExists;
     private Boolean phnExists;
     private Boolean emailExists;
@@ -173,6 +175,19 @@ public class ClientController implements Serializable {
         return "/client/client";
     }
 
+    public void toggleTestPositiveStatus() {
+        if (selectedEncounterToMarkTest == null) {
+            JsfUtil.addErrorMessage("Nothing to Mark");
+            return;
+        }
+        if (selectedEncounterToMarkTest.getResultPositive() == null) {
+            selectedEncounterToMarkTest.setResultPositive(true);
+        } else {
+            selectedEncounterToMarkTest.setResultPositive(!selectedEncounterToMarkTest.getResultPositive());
+        }
+        encounterFacade.edit(selectedEncounterToMarkTest);
+    }
+
     public String toClientProfile() {
         selectedClientsLastFiveClinicVisits = null;
         userTransactionController.recordTransaction("To Client Profile");
@@ -195,11 +210,9 @@ public class ClientController implements Serializable {
 
         return "/client/profile";
     }
-    
-    public String toClientProfileForCaseEncounter() {
-        selectedClientsLastFiveClinicVisits = null;
-        userTransactionController.recordTransaction("To Client Profile");
 
+    public String toClientProfileForCaseEncounter() {
+        userTransactionController.recordTransaction("To Client Profile");
         DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
         if (dfs == null) {
             JsfUtil.addErrorMessage("No Default Form Set");
@@ -218,12 +231,12 @@ public class ClientController implements Serializable {
 
         return "/client/profile_case_enrollment";
     }
-    
+
     public String toClientProfileForTestEncounter() {
         selectedClientsLastFiveClinicVisits = null;
         userTransactionController.recordTransaction("To Client Profile");
 
-        DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
+        DesignComponentFormSet dfs = designComponentFormSetController.getFirstTestEnrollmentFormSet();
         if (dfs == null) {
             JsfUtil.addErrorMessage("No Default Form Set");
             return "";
@@ -2109,16 +2122,19 @@ public class ClientController implements Serializable {
         selected.setReservedClient(false);
 
         saveClient(selected);
-
-        clientEncounterComponentFormSetController.completeFormsetForCaseEnrollment();
-
+        
+        if (clientEncounterComponentFormSetController.getSelected().getEncounter() != null) {
+            clientEncounterComponentFormSetController.getSelected().getEncounter().setRetired(false);
+            encounterFacade.edit(clientEncounterComponentFormSetController.getSelected().getEncounter());
+        }
         getInstitutionCaseEnrollmentMap().put(selected.getId(), clientEncounterComponentFormSetController.getSelected().getEncounter());
 
         JsfUtil.addSuccessMessage("Saved.");
-        return toClientProfileForCaseEncounter();
+        return "/client/profile_case_enrollment";
     }
 
-      public String saveClientAndTestEnrollment() {
+    public String saveClientAndTestEnrollment() {
+        System.out.println("saveClientAndTestEnrollment");
         if (selected == null) {
             JsfUtil.addErrorMessage("Nothing to save");
             return "";
@@ -2184,15 +2200,18 @@ public class ClientController implements Serializable {
 
         saveClient(selected);
 
-        clientEncounterComponentFormSetController.completeFormsetForTestEnrollment();
+        if (clientEncounterComponentFormSetController.getSelected().getEncounter() != null) {
+            clientEncounterComponentFormSetController.getSelected().getEncounter().setRetired(false);
+            encounterFacade.edit(clientEncounterComponentFormSetController.getSelected().getEncounter());
+        }
 
+        // clientEncounterComponentFormSetController.completeFormsetForTestEnrollment();
         getInstitutionTestEnrollmentMap().put(selected.getId(), clientEncounterComponentFormSetController.getSelected().getEncounter());
 
         JsfUtil.addSuccessMessage("Saved.");
-        return toClientProfileForTestEncounter();
+        return "/client/profile_test_enrollment";
     }
 
-    
     public void reserverPhn() {
         Institution createdIns;
         int i = 0;
@@ -2813,7 +2832,7 @@ public class ClientController implements Serializable {
     public void setInstitutionCaseEnrollments(List<Encounter> institutionCaseEnrollments) {
         this.institutionCaseEnrollments = institutionCaseEnrollments;
     }
-    
+
     public List<Encounter> getInstitutionTestEnrollments() {
         institutionTestEnrollments = new ArrayList<>(getInstitutionTestEnrollmentMap().values());
         return institutionTestEnrollments;
@@ -2843,7 +2862,7 @@ public class ClientController implements Serializable {
         }
         return tm;
     }
-    
+
     private Map<Long, Encounter> findTodaysInstitutionTestEnrollmentEncounters() {
         String j = "select c from Encounter c "
                 + " where c.retired=false"
@@ -2875,7 +2894,7 @@ public class ClientController implements Serializable {
     public void setInstitutionCaseEnrollmentMap(Map<Long, Encounter> institutionCaseEnrollmentMap) {
         this.institutionCaseEnrollmentMap = institutionCaseEnrollmentMap;
     }
-    
+
     public Map<Long, Encounter> getInstitutionTestEnrollmentMap() {
         if (institutionTestEnrollmentMap == null) {
             institutionTestEnrollmentMap = findTodaysInstitutionTestEnrollmentEncounters();
@@ -2885,6 +2904,14 @@ public class ClientController implements Serializable {
 
     public void setInstitutionTestEnrollmentMap(Map<Long, Encounter> institutionTestEnrollmentMap) {
         this.institutionTestEnrollmentMap = institutionTestEnrollmentMap;
+    }
+
+    public Encounter getSelectedEncounterToMarkTest() {
+        return selectedEncounterToMarkTest;
+    }
+
+    public void setSelectedEncounterToMarkTest(Encounter selectedEncounterToMarkTest) {
+        this.selectedEncounterToMarkTest = selectedEncounterToMarkTest;
     }
 
     // </editor-fold>

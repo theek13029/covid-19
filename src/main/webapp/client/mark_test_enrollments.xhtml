@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <body>
+
+        <ui:composition template="/template.xhtml">
+            <ui:define name="content">
+                <h:outputStylesheet library="css" name="tem1.css"/>
+                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                    <f:facet name="header" >
+                        <h:form>
+                            <p:outputLabel value="Patient Data For Test Enrollment" ></p:outputLabel>
+                            <p:spacer height="1" width="30"></p:spacer>
+                            <p:commandButton value="To Edit Details" action="/client/client_test_enrollment"
+                                             style="float: right;">
+                            </p:commandButton>
+                            <p:commandButton value="Add New Test Enrollment" action="#{clientController.toAddNewClientForTestEnrollment()}" style="float: right;">
+                            </p:commandButton>
+                        </h:form>
+                    </f:facet>
+
+
+                    <h:form>
+                        <p:dataTable value="#{clientController.institutionTestEnrollments}" 
+                                     var="c" paginator="true" rowKey="#{c.id}" rows="10" >
+                            <p:column headerText="Name" >
+                                <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Age" >
+                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Sex" >
+                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Address" >
+                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
+                            </p:column>
+                             <p:column headerText="Result" >
+                                 <p:outputLabel rendered="#{c.resultPositive ne null}" value="#{c.resultPositive?'Yes':'No'}" ></p:outputLabel>
+                                 <p:outputLabel rendered="#{c.resultPositive eq null}" value="Not Available" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Result" >
+                                <p:commandButton rendered="#{!c.resultPositive}" value="Mark Positive" action="#{clientController.toggleTestPositiveStatus()}" ajax="false" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounterToMarkTest}" ></f:setPropertyActionListener>
+                                </p:commandButton>
+                                
+                                <p:commandButton rendered="#{!c.resultPositive}"  value="Mark Negative" action="#{clientController.toggleTestPositiveStatus()}" ajax="false" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounterToMarkTest}" ></f:setPropertyActionListener>
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+
+
+
+                </p:panelGrid>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
