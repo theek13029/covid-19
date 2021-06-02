@@ -1225,7 +1225,7 @@ public class ExcelReportController implements Serializable {
                 + " order by e.id";
         Map m = new HashMap();
         m.put("i", institution);
-        m.put("t", EncounterType.Pcr_test_order);
+        m.put("t", EncounterType.Test_Enrollment);
         m.put("er", true);
         m.put("fr", true);
         m.put("fc", true);
@@ -1250,7 +1250,7 @@ public class ExcelReportController implements Serializable {
                 + " group by e.encounterDate";
         Map m = new HashMap();
         m.put("i", institution);
-        m.put("t", EncounterType.Pcr_test_order);
+        m.put("t", EncounterType.Test_Enrollment);
         m.put("er", true);
         m.put("fr", true);
         m.put("fc", true);

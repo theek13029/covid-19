@@ -30,7 +30,7 @@ package lk.gov.health.phsp.enums;
  */
 public enum EncounterType {
     Case_Enrollment("Case Enrollment"),
-    Pcr_test_order("PCR Test Order"),
+    Test_Enrollment("PCR Enrollment"),
     Rat("RAT"),
     Death("Death"),
     No_Covid("Admission"),

@@ -377,9 +377,9 @@ public class ApiResource {
 
             List<Institution> pIns = institutionApplicationController.findChildrenInstitutions(a);
 
-            Long maleCount = analysisController.findEncounterCount(from, to, pIns, EncounterType.Pcr_test_order, itemApplicationController.getMale());
-            Long femaleCount = analysisController.findEncounterCount(from, to, pIns, EncounterType.Pcr_test_order, itemApplicationController.getFemale());
-            Long totalCount = analysisController.findEncounterCount(from, to, pIns, EncounterType.Pcr_test_order, null);
+            Long maleCount = analysisController.findEncounterCount(from, to, pIns, EncounterType.Test_Enrollment, itemApplicationController.getMale());
+            Long femaleCount = analysisController.findEncounterCount(from, to, pIns, EncounterType.Test_Enrollment, itemApplicationController.getFemale());
+            Long totalCount = analysisController.findEncounterCount(from, to, pIns, EncounterType.Test_Enrollment, null);
 
             if (totalCount != null && totalCount > 0) {
                 JSONObject ja = new JSONObject();
@@ -685,9 +685,9 @@ public class ApiResource {
         JSONArray array = new JSONArray();
         List<Relationship> ds = institutionApplicationController.findInstitutionPopulationData(a, intYear);
 
-        Long maleCount = analysisController.findEncounterCount(from, to, pIns, EncounterType.Pcr_test_order, itemApplicationController.getMale());
-        Long femaleCount = analysisController.findEncounterCount(from, to, pIns, EncounterType.Pcr_test_order, itemApplicationController.getFemale());
-        Long totalCount = analysisController.findEncounterCount(from, to, pIns, EncounterType.Pcr_test_order, null);
+        Long maleCount = analysisController.findEncounterCount(from, to, pIns, EncounterType.Test_Enrollment, itemApplicationController.getMale());
+        Long femaleCount = analysisController.findEncounterCount(from, to, pIns, EncounterType.Test_Enrollment, itemApplicationController.getFemale());
+        Long totalCount = analysisController.findEncounterCount(from, to, pIns, EncounterType.Test_Enrollment, null);
 
         JSONObject jam = new JSONObject();
         jam.put("name", "Males");

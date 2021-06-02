@@ -93,7 +93,7 @@ public class AnalysisController {
         j += " and s.encounterDate between :fd and :td ";
         m.put("fd", getFrom());
         m.put("td", getTo());
-        m.put("t", EncounterType.Pcr_test_order);
+        m.put("t", EncounterType.Test_Enrollment);
         m.put("ret", true);
 
         fs = getEncounterFacade().findLongByJpql(j, m);
@@ -104,7 +104,7 @@ public class AnalysisController {
 
     public Long findEncounterCount(Date pFrom, Date pTo, List<Institution> pIns, EncounterType ec, Item sex) {
         if (ec == null) {
-            ec = EncounterType.Pcr_test_order;
+            ec = EncounterType.Test_Enrollment;
         }
         if (pIns == null || pIns.isEmpty()) {
             return null;

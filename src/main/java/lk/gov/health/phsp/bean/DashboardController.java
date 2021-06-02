@@ -94,7 +94,7 @@ public class DashboardController {
     }
 
     public Long findTotalNumberOfClinicVisitsForAdmin() {
-        return (countOfEncounters(null, EncounterType.Pcr_test_order));
+        return (countOfEncounters(null, EncounterType.Test_Enrollment));
     }
 
     public Long findTotalNumberOfCvsRiskClientsForAdmin() {

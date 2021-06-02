@@ -374,7 +374,7 @@ public class ReportController implements Serializable {
         m.put("i", institution);
         m.put("er", true);
 
-        m.put("t", EncounterType.Pcr_test_order);
+        m.put("t", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
 
@@ -939,7 +939,7 @@ public class ReportController implements Serializable {
 
         Map m = new HashMap();
         m.put("i", institution);
-        m.put("t", EncounterType.Pcr_test_order);
+        m.put("t", EncounterType.Test_Enrollment);
         m.put("er", true);
         m.put("fr", true);
         m.put("fc", true);
@@ -964,7 +964,7 @@ public class ReportController implements Serializable {
 
         Map m = new HashMap();
         m.put("i", institution);
-        m.put("t", EncounterType.Pcr_test_order);
+        m.put("t", EncounterType.Test_Enrollment);
         m.put("er", true);
         m.put("fr", true);
         m.put("fc", true);
@@ -990,7 +990,7 @@ public class ReportController implements Serializable {
 
         Map m = new HashMap();
         m.put("i", institution);
-        m.put("t", EncounterType.Pcr_test_order);
+        m.put("t", EncounterType.Test_Enrollment);
         m.put("er", true);
         m.put("fr", true);
         m.put("fc", true);
@@ -1020,7 +1020,7 @@ public class ReportController implements Serializable {
         j += " order by e.client.id";
 
         m.put("i", institution);
-        m.put("t", EncounterType.Pcr_test_order);
+        m.put("t", EncounterType.Test_Enrollment);
         m.put("er", true);
         m.put("fr", true);
         m.put("fc", true);
@@ -2037,7 +2037,7 @@ public class ReportController implements Serializable {
                 + " and e.encounterType=:et ";
         Map m = new HashMap();
         m.put("ret", true);
-        m.put("et", EncounterType.Pcr_test_order);
+        m.put("et", EncounterType.Test_Enrollment);
         j = j + " and e.encounterDate between :fd and :td ";
 
         j = j + " group by e.institution ";
@@ -2312,7 +2312,7 @@ public class ReportController implements Serializable {
         m.put("ret", false);
         m.put("fd", fromDate);
         m.put("td", toDate);
-        m.put("type", EncounterType.Pcr_test_order);
+        m.put("type", EncounterType.Test_Enrollment);
         if (institution != null) {
             j += " and e.institution in :ins ";
             List<Institution> ins = institutionApplicationController.findChildrenInstitutions(institution);
@@ -2461,7 +2461,7 @@ public class ReportController implements Serializable {
         m.put("ret", false);
         m.put("fd", fromDate);
         m.put("td", toDate);
-        m.put("type", EncounterType.Pcr_test_order);
+        m.put("type", EncounterType.Test_Enrollment);
         if (institution != null) {
             j += " and e.institution in :ins ";
             List<Institution> ins = institutionApplicationController.findChildrenInstitutions(institution);
@@ -2915,7 +2915,7 @@ public class ReportController implements Serializable {
         m.put("ret", false);
         m.put("fd", fromDate);
         m.put("td", toDate);
-        m.put("type", EncounterType.Pcr_test_order);
+        m.put("type", EncounterType.Test_Enrollment);
         if (institution != null) {
             j += " and c.institution in :ins ";
             List<Institution> ins = institutionApplicationController.findChildrenInstitutions(institution);
@@ -2957,7 +2957,7 @@ public class ReportController implements Serializable {
         m.put("ret", false);
         m.put("fd", fromDate);
         m.put("td", toDate);
-        m.put("type", EncounterType.Pcr_test_order);
+        m.put("type", EncounterType.Test_Enrollment);
         if (institution != null) {
             j += " and c.institution in :ins ";
             List<Institution> ins = institutionApplicationController.findChildrenInstitutions(institution);

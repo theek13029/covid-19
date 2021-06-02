@@ -290,6 +290,31 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         }
         userTransactionController.recordTransaction("Formset Completed for Case Enrollment");
     }
+    
+    public void completeFormsetForTestEnrollment() {
+        if (selected == null) {
+            System.err.println("Nothing to Complete in completeFormsetForCaseEnrollment.");
+            userTransactionController.recordTransaction("Nothing to Complete in formset");
+            return ;
+        }
+        save(selected);
+        executreCompleteEvents(dataFormset);
+        selected.setCompleted(true);
+        selected.setCompletedAt(new Date());
+        selected.setCompletedBy(webUserController.getLoggedUser());
+        getFacade().edit(selected);
+        loadOldNavigateToDataEntry(selected);
+//        executePostCompletionStrategies(selected);
+
+        formEditable = false;
+        if(selected.getEncounter()!=null){
+           selected.getEncounter().setRetired(false);
+           getEncounterFacade().edit(selected.getEncounter());
+        }else{
+            System.err.println("selected.getEncounter() is NULL");
+        }
+        userTransactionController.recordTransaction("Formset Completed for Test Enrollment");
+    }
 
     public void executreCompleteEvents(DataFormset tSet) {
         if (tSet.getForms() == null) {
@@ -669,7 +694,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 + " and s.encounter.client=:c ";
         j += " order by s.encounter.encounterFrom desc";
         m.put("c", getClientController().getSelected());
-        m.put("t", EncounterType.Pcr_test_order);
+        m.put("t", EncounterType.Test_Enrollment);
         lastFiveClinicVisits = getFacade().findByJpql(j, m, 5);
         if (lastFiveClinicVisits == null) {
             lastFiveClinicVisits = new ArrayList<>();
@@ -832,9 +857,197 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         }
 
         e.setEncounterFrom(d);
-        e.setEncounterType(EncounterType.Pcr_test_order);
+        e.setEncounterType(EncounterType.Test_Enrollment);
 
-        e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Pcr_test_order));
+        e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Test_Enrollment));
+
+        e.setEncounterMonth(CommonController.getMonth(d));
+        e.setEncounterQuarter(CommonController.getQuarter(d));
+        e.setEncounterYear(CommonController.getYear(d));
+
+        encounterController.save(e);
+
+        ClientEncounterComponentFormSet cfs = new ClientEncounterComponentFormSet();
+        cfs.setCreatedAt(new Date());
+        cfs.setCreatedBy(webUserController.getLoggedUser());
+        cfs.setEncounter(e);
+        cfs.setInstitution(dfs.getCurrentlyUsedIn());
+        cfs.setReferenceComponent(dfs);
+        cfs.setName(dfs.getName());
+        cfs.setDescreption(dfs.getDescreption());
+        cfs.setCss(dfs.getCss());
+        getFacade().create(cfs);
+
+        fs.setDfs(dfs);
+        fs.setEfs(cfs);
+
+        List<DesignComponentForm> dfList = designComponentFormController.fillFormsofTheSelectedSet(dfs);
+
+        int formCounter = 0;
+
+        for (DesignComponentForm df : dfList) {
+
+            boolean skipThisForm = false;
+            if (df.getComponentSex() == ComponentSex.For_Females && clientController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_male")) {
+                skipThisForm = true;
+            }
+            if (df.getComponentSex() == ComponentSex.For_Males && clientController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_female")) {
+                skipThisForm = true;
+            }
+
+            if (!skipThisForm) {
+                formCounter++;
+                ClientEncounterComponentForm cf = new ClientEncounterComponentForm();
+
+                cf.setEncounter(e);
+                cf.setInstitution(dfs.getCurrentlyUsedIn());
+                cf.setItem(df.getItem());
+
+                cf.setReferenceComponent(df);
+                cf.setName(df.getName());
+                cf.setOrderNo(df.getOrderNo());
+                cf.setParentComponent(cfs);
+                cf.setCss(df.getCss());
+
+                clientEncounterComponentFormController.save(cf);
+
+                DataForm f = new DataForm();
+                f.cf = cf;
+                f.df = df;
+                f.formset = fs;
+                f.id = formCounter;
+                f.orderNo = formCounter;
+
+                List<DesignComponentFormItem> diList = designComponentFormItemController.fillItemsOfTheForm(df);
+
+                int itemCounter = 0;
+
+                for (DesignComponentFormItem dis : diList) {
+
+                    boolean disSkipThisItem = false;
+                    if (dis.getComponentSex() == ComponentSex.For_Females && clientController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_male")) {
+                        disSkipThisItem = true;
+                    }
+                    if (dis.getComponentSex() == ComponentSex.For_Males && clientController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_female")) {
+                        disSkipThisItem = true;
+                    }
+
+                    if (!disSkipThisItem) {
+
+                        if (dis.isMultipleEntiesPerForm()) {
+                            itemCounter++;
+                            ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
+
+                            ci.setEncounter(e);
+                            ci.setInstitution(dfs.getCurrentlyUsedIn());
+
+                            ci.setItemFormset(cfs);
+                            ci.setItemEncounter(e);
+                            ci.setItemClient(e.getClient());
+
+                            ci.setItem(dis.getItem());
+                            ci.setDescreption(dis.getDescreption());
+
+                            ci.setReferenceComponent(dis);
+                            ci.setParentComponent(cf);
+                            ci.setName(dis.getName());
+                            ci.setCss(dis.getCss());
+                            ci.setOrderNo(dis.getOrderNo());
+                            ci.setDataRepresentationType(DataRepresentationType.Encounter);
+                            if (ci.getReferanceDesignComponentFormItem().getDataPopulationStrategy() == DataPopulationStrategy.From_Client_Value) {
+                                updateFromClientValueSingle(ci, e.getClient(), mapOfClientValues);
+                            } else if (ci.getReferanceDesignComponentFormItem().getDataPopulationStrategy() == DataPopulationStrategy.From_Last_Encounter) {
+                                updateFromLastEncounter(ci);
+                            }
+                            
+                            if(dis.getRenderType()==RenderType.Prescreption){
+                                Prescription p = new Prescription();
+                                p.setClient(e.getClient());
+                                p.setEncounter(e);
+                                p.setCreatedAt(new Date());
+                                p.setCreatedBy(webUserController.getLoggedUser());
+                                ci.setPrescriptionValue(p);
+                            }
+                            
+                            DataItem i = new DataItem();
+                            i.setMultipleEntries(true);
+                            i.setCi(ci);
+                            i.di = dis;
+                            i.id = itemCounter;
+                            i.orderNo = itemCounter;
+                            i.form = f;
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems()));
+                            f.getItems().add(i);
+                        } else {
+                            itemCounter++;
+                            ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
+                            ci.setEncounter(e);
+                            ci.setInstitution(dfs.getCurrentlyUsedIn());
+                            ci.setItemFormset(cfs);
+                            ci.setItemEncounter(e);
+                            ci.setItemClient(e.getClient());
+                            ci.setItem(dis.getItem());
+                            ci.setDescreption(dis.getDescreption());
+                            ci.setReferenceComponent(dis);
+                            ci.setParentComponent(cf);
+                            ci.setName(dis.getName());
+                            ci.setCss(dis.getCss());
+                            ci.setOrderNo(dis.getOrderNo());
+                            ci.setDataRepresentationType(DataRepresentationType.Encounter);
+                            if (ci.getReferanceDesignComponentFormItem().getDataPopulationStrategy() == DataPopulationStrategy.From_Client_Value) {
+                                updateFromClientValueSingle(ci, e.getClient(), mapOfClientValues);
+                                save(ci);
+                            } else if (ci.getReferanceDesignComponentFormItem().getDataPopulationStrategy() == DataPopulationStrategy.From_Last_Encounter) {
+                                updateFromLastEncounter(ci);
+                                save(ci);
+                            }
+                            DataItem i = new DataItem();
+                            i.setMultipleEntries(false);
+                            i.setCi(ci);
+                            i.di = dis;
+                            i.id = itemCounter;
+                            i.orderNo = itemCounter;
+                            i.form = f;
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems()));
+
+                            f.getItems().add(i);
+                        }
+
+                    }
+
+                }
+                fs.getForms().add(f);
+            }
+        }
+        dataFormset = fs;
+        selected = cfs;
+        return cfs;
+    }
+
+     public ClientEncounterComponentFormSet createNewTestEnrollmentFormsetToDataEntry(DesignComponentFormSet dfs) {
+        if (clientController.getSelected() == null) {
+            JsfUtil.addErrorMessage("Please select a client");
+            return null;
+        }
+        DataFormset fs = new DataFormset();
+        Map<String, ClientEncounterComponentItem> mapOfClientValues = getClientValues(clientController.getSelected());
+        fs.setMapOfClientValues(mapOfClientValues);
+        Date d = new Date();
+        Encounter e = new Encounter();
+        e.setClient(clientController.getSelected());
+        e.setInstitution(dfs.getCurrentlyUsedIn());
+        e.setEncounterType(EncounterType.Test_Enrollment);
+        e.setRetired(true);
+        if (encounterDate != null) {
+            e.setEncounterDate(encounterDate);
+        } else {
+            e.setEncounterDate(d);
+        }
+
+        e.setEncounterFrom(d);
+        e.setEncounterType(EncounterType.Test_Enrollment);
+
+        e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Test_Enrollment));
 
         e.setEncounterMonth(CommonController.getMonth(d));
         e.setEncounterQuarter(CommonController.getQuarter(d));
@@ -1022,9 +1235,9 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         }
 
         e.setEncounterFrom(d);
-        e.setEncounterType(EncounterType.Pcr_test_order);
+        e.setEncounterType(EncounterType.Test_Enrollment);
 
-        e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Pcr_test_order));
+        e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Test_Enrollment));
 
         e.setEncounterMonth(CommonController.getMonth(d));
         e.setEncounterQuarter(CommonController.getQuarter(d));

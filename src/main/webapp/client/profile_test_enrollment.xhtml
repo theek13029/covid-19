@@ -15,12 +15,12 @@
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
                         <h:form>
-                            <p:outputLabel value="Patient Data" ></p:outputLabel>
+                            <p:outputLabel value="Patient Data For Test Enrollment" ></p:outputLabel>
                             <p:spacer height="1" width="30"></p:spacer>
-                            <p:commandButton value="To Edit Details" action="/client/client"
+                            <p:commandButton value="To Edit Details" action="/client/client_test_enrollment"
                                              style="float: right;">
                             </p:commandButton>
-                            <p:commandButton value="Add New Patient" action="#{clientController.toAddNewClientForNewCase()}" style="float: right;">
+                            <p:commandButton value="Add New Test Enrollment" action="#{clientController.toAddNewClientForTestEnrollment()}" style="float: right;">
                             </p:commandButton>
                         </h:form>
                     </f:facet>
@@ -166,7 +166,7 @@
 
 
                     <h:form>
-                        <p:dataTable value="#{clientController.institutionCaseEnrollments}" 
+                        <p:dataTable value="#{clientController.institutionTestEnrollments}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" >
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>

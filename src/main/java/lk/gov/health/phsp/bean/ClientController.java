@@ -97,8 +97,11 @@ public class ClientController implements Serializable {
 
     private List<ClientBasicData> selectedClientsBasic = null;
 
-    private List<Encounter> institutionClients;
+    private List<Encounter> institutionCaseEnrollments;
     private Map<Long, Encounter> institutionCaseEnrollmentMap;
+
+    private List<Encounter> institutionTestEnrollments;
+    private Map<Long, Encounter> institutionTestEnrollmentMap;
 
     private Client selected;
     private Long selectedId;
@@ -192,6 +195,52 @@ public class ClientController implements Serializable {
 
         return "/client/profile";
     }
+    
+    public String toClientProfileForCaseEncounter() {
+        selectedClientsLastFiveClinicVisits = null;
+        userTransactionController.recordTransaction("To Client Profile");
+
+        DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
+        if (dfs == null) {
+            JsfUtil.addErrorMessage("No Default Form Set");
+            return "";
+        }
+        ClientEncounterComponentFormSet cefs;
+        cefs = clientEncounterComponentFormSetController.findLastFormsetToDataEntry(dfs, selected);
+        if (cefs == null) {
+            cefs = clientEncounterComponentFormSetController.createNewCaseEnrollmentFormsetToDataEntry(dfs);
+        }
+        if (cefs == null) {
+            JsfUtil.addErrorMessage("No Patient Form Set");
+            return "";
+        }
+        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+
+        return "/client/profile_case_enrollment";
+    }
+    
+    public String toClientProfileForTestEncounter() {
+        selectedClientsLastFiveClinicVisits = null;
+        userTransactionController.recordTransaction("To Client Profile");
+
+        DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
+        if (dfs == null) {
+            JsfUtil.addErrorMessage("No Default Form Set");
+            return "";
+        }
+        ClientEncounterComponentFormSet cefs;
+        cefs = clientEncounterComponentFormSetController.findLastFormsetToDataEntry(dfs, selected);
+        if (cefs == null) {
+            cefs = clientEncounterComponentFormSetController.createNewTestEnrollmentFormsetToDataEntry(dfs);
+        }
+        if (cefs == null) {
+            JsfUtil.addErrorMessage("No Patient Form Set");
+            return "";
+        }
+        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+
+        return "/client/profile_test_enrollment";
+    }
 
     public String toClientProfileById() {
         selected = getFacade().find(selectedId);
@@ -233,8 +282,8 @@ public class ClientController implements Serializable {
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
         return "/client/client_case_enrollment";
     }
-    
-    public String toAddNewClientForTestOrdering() {
+
+    public String toAddNewClientForTestEnrollment() {
         setSelected(new Client());
         selected.setRetired(true);
         saveClient(selected);
@@ -244,7 +293,7 @@ public class ClientController implements Serializable {
         selectedClinic = null;
         yearMonthDay = new YearMonthDay();
         userTransactionController.recordTransaction("to add a new client for test ordering");
-        DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
+        DesignComponentFormSet dfs = designComponentFormSetController.getFirstTestEnrollmentFormSet();
         if (dfs == null) {
             JsfUtil.addErrorMessage("No Default Form Set");
             return "";
@@ -255,7 +304,7 @@ public class ClientController implements Serializable {
             return "";
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
-        return "/client/client_case_enrollment";
+        return "/client/client_test_enrollment";
     }
 
     public String toViewCorrectedDuplicates() {
@@ -2060,15 +2109,90 @@ public class ClientController implements Serializable {
         selected.setReservedClient(false);
 
         saveClient(selected);
-        
+
         clientEncounterComponentFormSetController.completeFormsetForCaseEnrollment();
 
         getInstitutionCaseEnrollmentMap().put(selected.getId(), clientEncounterComponentFormSetController.getSelected().getEncounter());
 
         JsfUtil.addSuccessMessage("Saved.");
-        return toClientProfile();
+        return toClientProfileForCaseEncounter();
     }
 
+      public String saveClientAndTestEnrollment() {
+        if (selected == null) {
+            JsfUtil.addErrorMessage("Nothing to save");
+            return "";
+        }
+        Institution createdIns = null;
+        selected.setRetired(false);
+        if (selected.getCreateInstitution() == null) {
+            if (webUserController.getLoggedUser().getInstitution().getPoiInstitution() != null) {
+                createdIns = webUserController.getLoggedUser().getInstitution().getPoiInstitution();
+            } else {
+                createdIns = webUserController.getLoggedUser().getInstitution();
+            }
+            selected.setCreateInstitution(createdIns);
+        } else {
+            createdIns = selected.getCreateInstitution();
+        }
+
+        if (createdIns == null || createdIns.getPoiNumber() == null || createdIns.getPoiNumber().trim().equals("")) {
+            JsfUtil.addErrorMessage("The institution you logged has no POI. Can not generate a PHN.");
+            return "";
+        }
+
+        if (selected.getPhn() == null || selected.getPhn().trim().equals("")) {
+            String newPhn = applicationController.createNewPersonalHealthNumberformat(createdIns);
+
+            int count = 0;
+            while (checkPhnExists(newPhn, null)) {
+                newPhn = applicationController.createNewPersonalHealthNumberformat(createdIns);
+                count++;
+                if (count > 100) {
+                    JsfUtil.addErrorMessage("Generating New PHN Failed. Client NOT saved. Please contact System Administrator.");
+                    return "";
+                }
+            }
+            selected.setPhn(newPhn);
+        }
+
+        if (selected.getId() == null) {
+            if (checkPhnExists(selected.getPhn(), null)) {
+                JsfUtil.addErrorMessage("PHN already exists.");
+                return null;
+            }
+            if (selected.getPerson().getNic() != null && !selected.getPerson().getNic().trim().equals("")) {
+
+                if (checkNicExists(selected.getPerson().getNic(), null)) {
+                    JsfUtil.addErrorMessage("NIC already exists.");
+                    return null;
+                }
+            }
+        } else {
+            if (checkPhnExists(selected.getPhn(), selected)) {
+                JsfUtil.addErrorMessage("PHN already exists.");
+                return null;
+            }
+            if (selected.getPerson().getNic() != null && !selected.getPerson().getNic().trim().equals("")) {
+                if (checkNicExists(selected.getPerson().getNic(), selected)) {
+                    JsfUtil.addErrorMessage("NIC already exists.");
+                    return null;
+                }
+            }
+        }
+        selected.setReservedClient(false);
+
+        saveClient(selected);
+
+        clientEncounterComponentFormSetController.completeFormsetForTestEnrollment();
+
+        getInstitutionTestEnrollmentMap().put(selected.getId(), clientEncounterComponentFormSetController.getSelected().getEncounter());
+
+        JsfUtil.addSuccessMessage("Saved.");
+        return toClientProfileForTestEncounter();
+    }
+
+    
     public void reserverPhn() {
         Institution createdIns;
         int i = 0;
@@ -2631,7 +2755,7 @@ public class ClientController implements Serializable {
 
     public List<Encounter> getSelectedClientsLastFiveClinicVisits() {
         if (selectedClientsLastFiveClinicVisits == null) {
-            selectedClientsLastFiveClinicVisits = fillEncounters(selected, InstitutionType.Clinic, EncounterType.Pcr_test_order, true, 5);
+            selectedClientsLastFiveClinicVisits = fillEncounters(selected, InstitutionType.Clinic, EncounterType.Test_Enrollment, true, 5);
 
         }
         return selectedClientsLastFiveClinicVisits;
@@ -2681,24 +2805,56 @@ public class ClientController implements Serializable {
         this.reservePhnList = reservePhnList;
     }
 
-    public List<Encounter> getInstitutionClients() {
-        institutionClients = new ArrayList<>(getInstitutionCaseEnrollmentMap().values());
-        return institutionClients;
+    public List<Encounter> getInstitutionCaseEnrollments() {
+        institutionCaseEnrollments = new ArrayList<>(getInstitutionCaseEnrollmentMap().values());
+        return institutionCaseEnrollments;
     }
 
-    public void setInstitutionClients(List<Encounter> institutionClients) {
-        this.institutionClients = institutionClients;
+    public void setInstitutionCaseEnrollments(List<Encounter> institutionCaseEnrollments) {
+        this.institutionCaseEnrollments = institutionCaseEnrollments;
+    }
+    
+    public List<Encounter> getInstitutionTestEnrollments() {
+        institutionTestEnrollments = new ArrayList<>(getInstitutionTestEnrollmentMap().values());
+        return institutionTestEnrollments;
     }
 
-    private Map<Long, Encounter> findTodaysInstitutionEncounters() {
+    public void setInstitutionTestEnrollments(List<Encounter> institutionTestEnrollments) {
+        this.institutionTestEnrollments = institutionTestEnrollments;
+    }
+
+    private Map<Long, Encounter> findTodaysInstitutionCaseEnrollmentEncounters() {
         String j = "select c from Encounter c "
                 + " where c.retired=false"
                 + " and c.institution=:ins "
                 + " and c.encounterDate=:d "
+                + " and c.encounterType=:t "
                 + " order by c.id desc";
         Map m = new HashMap();
         m.put("ins", webUserController.getInstitution());
         m.put("d", new Date());
+        m.put("t", EncounterType.Case_Enrollment);
+        List<Encounter> cs = getEncounterFacade().findByJpql(j, m);
+        Map<Long, Encounter> tm = new HashMap<>();
+        if (cs != null) {
+            for (Encounter c : cs) {
+                tm.put(c.getId(), c);
+            }
+        }
+        return tm;
+    }
+    
+    private Map<Long, Encounter> findTodaysInstitutionTestEnrollmentEncounters() {
+        String j = "select c from Encounter c "
+                + " where c.retired=false"
+                + " and c.institution=:ins "
+                + " and c.encounterDate=:d "
+                + " and c.encounterType=:t "
+                + " order by c.id desc";
+        Map m = new HashMap();
+        m.put("ins", webUserController.getInstitution());
+        m.put("d", new Date());
+        m.put("t", EncounterType.Test_Enrollment);
         List<Encounter> cs = getEncounterFacade().findByJpql(j, m);
         Map<Long, Encounter> tm = new HashMap<>();
         if (cs != null) {
@@ -2711,13 +2867,24 @@ public class ClientController implements Serializable {
 
     public Map<Long, Encounter> getInstitutionCaseEnrollmentMap() {
         if (institutionCaseEnrollmentMap == null) {
-            institutionCaseEnrollmentMap = findTodaysInstitutionEncounters();
+            institutionCaseEnrollmentMap = findTodaysInstitutionCaseEnrollmentEncounters();
         }
         return institutionCaseEnrollmentMap;
     }
 
     public void setInstitutionCaseEnrollmentMap(Map<Long, Encounter> institutionCaseEnrollmentMap) {
         this.institutionCaseEnrollmentMap = institutionCaseEnrollmentMap;
+    }
+    
+    public Map<Long, Encounter> getInstitutionTestEnrollmentMap() {
+        if (institutionTestEnrollmentMap == null) {
+            institutionTestEnrollmentMap = findTodaysInstitutionTestEnrollmentEncounters();
+        }
+        return institutionTestEnrollmentMap;
+    }
+
+    public void setInstitutionTestEnrollmentMap(Map<Long, Encounter> institutionTestEnrollmentMap) {
+        this.institutionTestEnrollmentMap = institutionTestEnrollmentMap;
     }
 
     // </editor-fold>
