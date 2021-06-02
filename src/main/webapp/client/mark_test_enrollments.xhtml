@@ -17,19 +17,22 @@
                         <p:outputLabel value="Marking Test Results" ></p:outputLabel>
                     </f:facet>
 
-                    <p:panelGrid columns="2" >
-                        <p:outputLabel value="From" ></p:outputLabel>
-                        <p:calendar value="#{clientController.from}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
-                        
-                        <p:outputLabel value="To" ></p:outputLabel>
-                        <p:calendar value="#{clientController.to}" pattern="dd MMMM yyyy"></p:calendar>
-                        
-                        <p:spacer ></p:spacer>
-                        <p:commandButton ajax="false" value="Process" action="#{clientController.fillTestEnrollmentToMark()}" ></p:commandButton>
-                    </p:panelGrid>
+                    <h:form >
+                        <p:panelGrid columns="2" >
+                            <p:outputLabel value="From" ></p:outputLabel>
+                            <p:calendar value="#{clientController.from}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+
+                            <p:outputLabel value="To" ></p:outputLabel>
+                            <p:calendar value="#{clientController.to}" pattern="dd MMMM yyyy"></p:calendar>
+
+                            <p:spacer ></p:spacer>
+                            <p:commandButton ajax="false" value="Process" action="#{clientController.fillTestEnrollmentToMark()}" ></p:commandButton>
+                        </p:panelGrid>
+                    </h:form>
+
 
                     <h:form>
-                        <p:dataTable value="#{clientController.institutionTestEnrollments}" 
+                        <p:dataTable value="#{clientController.testEnrollmentsToMark}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" >
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>

@@ -166,19 +166,19 @@ public class ClientController implements Serializable {
     }
     
     public void markNilReturnForCases() {
-        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getInstitution(),
+        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getLoggedUser().getInstitution(),
                 EncounterType.No_Covid, new Date());
         JsfUtil.addSuccessMessage("Marked");
     }
 
     public void markNilReturnForTests() {
-        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getInstitution(),
+        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getLoggedUser().getInstitution(),
                 EncounterType.No_test, new Date());
         JsfUtil.addSuccessMessage("Marked");
     }
 
     public void reverseNilReturnForTests() {
-        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getInstitution(),
+        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getLoggedUser().getInstitution(),
                 EncounterType.No_test, new Date());
         nilCases.setRetired(true);
         nilCases.setRetiredBy(webUserController.getLoggedUser());
@@ -188,7 +188,7 @@ public class ClientController implements Serializable {
     }
 
     public void reverseNilReturnForCases() {
-        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getInstitution(),
+        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getLoggedUser().getInstitution(),
                 EncounterType.No_Covid, new Date());
         nilCases.setRetired(true);
         nilCases.setRetiredBy(webUserController.getLoggedUser());
@@ -2887,7 +2887,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:t "
                 + " order by c.id desc";
         Map m = new HashMap();
-        m.put("ins", webUserController.getInstitution());
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
         m.put("d", new Date());
         m.put("t", EncounterType.Case_Enrollment);
         List<Encounter> cs = getEncounterFacade().findByJpql(j, m);
@@ -2908,7 +2908,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:t "
                 + " order by c.id desc";
         Map m = new HashMap();
-        m.put("ins", webUserController.getInstitution());
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
         m.put("d", new Date());
         m.put("t", EncounterType.Test_Enrollment);
         List<Encounter> cs = getEncounterFacade().findByJpql(j, m);
@@ -2927,12 +2927,14 @@ public class ClientController implements Serializable {
                 + " and c.institution=:ins "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.encounterType=:t "
-                + " order by c.id desc";
+                + " order by c.id";
         Map m = new HashMap();
-        m.put("ins", webUserController.getInstitution());
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
         m.put("fd", getFrom());
         m.put("td", getTo());
         m.put("t", EncounterType.Test_Enrollment);
+        System.out.println("m = " + m);
+        System.out.println("m = " + m);
         testEnrollmentsToMark = getEncounterFacade().findByJpql(j, m);
     }
 
