@@ -40,7 +40,9 @@ import lk.gov.health.phsp.enums.PanelType;
 @XmlRootElement
 public class DesignComponentFormSet extends DesignComponent  {
     
-    private boolean appearWithPatient;
+    private boolean caseEnrollmentForm;
+    
+    private boolean testEnrollmentForm;
     
     @Transient
     private Institution currentlyUsedIn;
@@ -80,12 +82,20 @@ public class DesignComponentFormSet extends DesignComponent  {
         this.currentlyUsedIn = currentlyUsedIn;
     }
 
-    public boolean isAppearWithPatient() {
-        return appearWithPatient;
+    public boolean isCaseEnrollmentForm() {
+        return caseEnrollmentForm;
     }
 
-    public void setAppearWithPatient(boolean appearWithPatient) {
-        this.appearWithPatient = appearWithPatient;
+    public void setCaseEnrollmentForm(boolean caseEnrollmentForm) {
+        this.caseEnrollmentForm = caseEnrollmentForm;
+    }
+
+    public boolean isTestEnrollmentForm() {
+        return testEnrollmentForm;
+    }
+
+    public void setTestEnrollmentForm(boolean testEnrollmentForm) {
+        this.testEnrollmentForm = testEnrollmentForm;
     }
 
    

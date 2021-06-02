@@ -265,6 +265,31 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         userTransactionController.recordTransaction("Formset Completed");
         return toViewFormset();
     }
+    
+    public void completeFormsetForCaseEnrollment() {
+        if (selected == null) {
+            System.err.println("Nothing to Complete in completeFormsetForCaseEnrollment.");
+            userTransactionController.recordTransaction("Nothing to Complete in formset");
+            return ;
+        }
+        save(selected);
+        executreCompleteEvents(dataFormset);
+        selected.setCompleted(true);
+        selected.setCompletedAt(new Date());
+        selected.setCompletedBy(webUserController.getLoggedUser());
+        getFacade().edit(selected);
+        loadOldNavigateToDataEntry(selected);
+//        executePostCompletionStrategies(selected);
+
+        formEditable = false;
+        if(selected.getEncounter()!=null){
+           selected.getEncounter().setRetired(false);
+           getEncounterFacade().edit(selected.getEncounter());
+        }else{
+            System.err.println("selected.getEncounter() is NULL");
+        }
+        userTransactionController.recordTransaction("Formset Completed for Case Enrollment");
+    }
 
     public void executreCompleteEvents(DataFormset tSet) {
         if (tSet.getForms() == null) {
@@ -644,7 +669,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 + " and s.encounter.client=:c ";
         j += " order by s.encounter.encounterFrom desc";
         m.put("c", getClientController().getSelected());
-        m.put("t", EncounterType.Clinic_Visit);
+        m.put("t", EncounterType.Pcr_test_order);
         lastFiveClinicVisits = getFacade().findByJpql(j, m, 5);
         if (lastFiveClinicVisits == null) {
             lastFiveClinicVisits = new ArrayList<>();
@@ -786,7 +811,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
     }
 
 
-    public ClientEncounterComponentFormSet createNewFormsetToDataEntry(DesignComponentFormSet dfs) {
+    public ClientEncounterComponentFormSet createNewCaseEnrollmentFormsetToDataEntry(DesignComponentFormSet dfs) {
         if (clientController.getSelected() == null) {
             JsfUtil.addErrorMessage("Please select a client");
             return null;
@@ -798,7 +823,8 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
         e.setInstitution(dfs.getCurrentlyUsedIn());
-
+        e.setEncounterType(EncounterType.Case_Enrollment);
+        e.setRetired(true);
         if (encounterDate != null) {
             e.setEncounterDate(encounterDate);
         } else {
@@ -806,9 +832,9 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         }
 
         e.setEncounterFrom(d);
-        e.setEncounterType(EncounterType.Clinic_Visit);
+        e.setEncounterType(EncounterType.Pcr_test_order);
 
-        e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Clinic_Visit));
+        e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Pcr_test_order));
 
         e.setEncounterMonth(CommonController.getMonth(d));
         e.setEncounterQuarter(CommonController.getQuarter(d));
@@ -996,9 +1022,9 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         }
 
         e.setEncounterFrom(d);
-        e.setEncounterType(EncounterType.Clinic_Visit);
+        e.setEncounterType(EncounterType.Pcr_test_order);
 
-        e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Clinic_Visit));
+        e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Pcr_test_order));
 
         e.setEncounterMonth(CommonController.getMonth(d));
         e.setEncounterQuarter(CommonController.getQuarter(d));

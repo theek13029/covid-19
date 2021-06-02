@@ -1558,7 +1558,7 @@ public class QueryComponentController implements Serializable {
                 + " order by e.id";
         Map m = new HashMap();
         m.put("i", gnArea);
-        m.put("t", EncounterType.Clinic_Visit);
+        m.put("t", EncounterType.Pcr_test_order);
         m.put("er", true);
         m.put("fr", true);
         m.put("fc", true);

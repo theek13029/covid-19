@@ -25,13 +25,16 @@
 
                 <h:form >
                     <p:panelGrid columns="1" style="width: 90%; text-align: center; padding: 5%; margin: 5%;" >
-                        <p:commandButton value="Add New Patient" ajax="false"  action="#{clientController.toAddNewClient()}" styleClass="width24rem"  ></p:commandButton>
+                        <p:commandButton value="Add New Case" ajax="false"  action="#{clientController.toAddNewClientForCaseEnrollment()}" styleClass="width24rem"  ></p:commandButton>
+                        <p:commandButton value="Add New Test" ajax="false"  action="#{clientController.toAddNewClientForCaseEnrollment()}" styleClass="width24rem"  ></p:commandButton>
+                        <hr/>
                         <p:commandButton value="Search Patients"  action="#{clientController.toSearchClientById()}"  styleClass="width24rem"  ></p:commandButton>
                         <hr/>
-                        <p:commandButton value="Mark No Cases Today" ajax="false"  styleClass="width24rem"  ></p:commandButton>
-                        <p:commandButton value="Reverse Mark No Cases" ajax="false"  styleClass="width24rem"  ></p:commandButton>
+                        <p:commandButton value="Mark Nil Return for Cases" ajax="false"  styleClass="width24rem"  ></p:commandButton>
+                        <p:commandButton value="Mark Nil Return for Tests" ajax="false"  styleClass="width24rem"  ></p:commandButton>
                         <hr/>
-                        <p:commandButton value="Reports" ajax="false"  styleClass="width24rem"  ></p:commandButton>
+                        <p:commandButton value="Case List" ajax="false"  styleClass="width24rem"  ></p:commandButton>
+                        <p:commandButton value="Test List" ajax="false"  styleClass="width24rem"  ></p:commandButton>
 
                     </p:panelGrid>
                 </h:form>

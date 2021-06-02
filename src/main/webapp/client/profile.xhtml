@@ -20,7 +20,7 @@
                             <p:commandButton value="To Edit Details" action="/client/client"
                                              style="float: right;">
                             </p:commandButton>
-                            <p:commandButton value="Add New Patient" action="#{clientController.toAddNewClient()}" style="float: right;">
+                            <p:commandButton value="Add New Patient" action="#{clientController.toAddNewClientForNewCase()}" style="float: right;">
                             </p:commandButton>
                         </h:form>
                     </f:facet>
@@ -169,21 +169,21 @@
                         <p:dataTable value="#{clientController.institutionClients}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" >
                             <p:column headerText="Name" >
-                                <p:outputLabel value="#{c.person.name}" ></p:outputLabel>
+                                <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Age" >
-                                <p:outputLabel value="#{c.person.age}" ></p:outputLabel>
+                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Sex" >
-                                <p:outputLabel value="#{c.person.sex.name}" ></p:outputLabel>
+                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Address" >
-                                <p:outputLabel value="#{c.person.address}" ></p:outputLabel>
+                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Action" >
-                                <p:commandButton value="Load" action="#{clientController.toClient()}" ajax="false" >
+<!--                                <p:commandButton value="Load" action="#{clientController.toClient()}" ajax="false" >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selected}" ></f:setPropertyActionListener>
-                                </p:commandButton>
+                                </p:commandButton>-->
                             </p:column>
 
                         </p:dataTable>

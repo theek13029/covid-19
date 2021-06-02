@@ -1,7 +1,7 @@
-/*
+/* 
  * The MIT License
  *
- * Copyright 2019 Dr M H B Ariyaratne<buddhika.ari@gmail.com>.
+ * Copyright 2021 buddhika.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,27 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package lk.gov.health.phsp.enums;
-
 /**
- *
- * @author User
+ * Author:  buddhika
+ * Created: Jun 2, 2021
  */
-public enum EncounterType {
-    Case_Enrollment("Case Enrollment"),
-    Pcr_test_order("PCR Test Order"),
-    Rat("RAT"),
-    Death("Death"),
-    No_Covid("Admission"),
-    No_test("Pharmacy Issue");
-    
-    private final String label;    
-    private EncounterType(String label){
-        this.label = label;
-    }
-    
-    public String getLabel(){
-        return label;
-    }
-}
+
+set foreign_key_checks=0;
+delete from component where `DTYPE` in ('ClientEncounterComponentFormSet','ClientEncounterComponentForm','ClientEncounterComponentItem');
+delete from encounter where id > 0;
+
+set foreign_key_checks=1;

@@ -322,11 +322,11 @@ public class DesignComponentFormSetController implements Serializable {
         return clinicFormSets;
     }
 
-    public DesignComponentFormSet getFirstClientFormSet() {
+    public DesignComponentFormSet getFirstCaseEnrollmentFormSet() {
         if (firstClientFormSet == null) {
             String j = "Select s from DesignComponentFormSet s "
                     + " where s.retired=false "
-                    + " and s.appearWithPatient=true "
+                    + " and s.caseEnrollmentForm=true "
                     + " order by s.orderNo";
             Map m = new HashMap();
             firstClientFormSet = getFacade().findFirstByJpql(j, m);

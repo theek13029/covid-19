@@ -52,7 +52,7 @@ public class EncounterController implements Serializable {
 //        j = "select count(e) from Encounter e ";
         Map m = new HashMap();
         m.put("d", CommonController.startOfTheYear());
-        m.put("ec", EncounterType.Clinic_Enroll);
+        m.put("ec", EncounterType.Death);
         m.put("ins", clinic);
         Long c = getFacade().findLongByJpql(j, m);
         if (c == null) {
@@ -105,7 +105,7 @@ public class EncounterController implements Serializable {
         m.put("i", i);
         m.put("c", c);
         m.put("com", false);
-        m.put("et", EncounterType.Clinic_Enroll);
+        m.put("et", EncounterType.Death);
         Encounter e = getFacade().findFirstByJpql(j, m);
         if (e == null) {
             return false;

@@ -25,7 +25,7 @@
                 <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="/index" />
 
                 <p:submenu label="Patient" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
-                    <p:menuitem ajax="false" value="Register New" action="#{clientController.toAddNewClient()}"  />
+                    <p:menuitem ajax="false" value="Register New Case Enrollment" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
                     <p:menuitem ajax="false" value="Search by IDs" action="#{clientController.toSearchClientById()}" />
                 </p:submenu>
 
@@ -93,7 +93,7 @@
                 <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="/index" />
                 <p:submenu label="Clients" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
                     <p:menuitem ajax="false" value="Search by IDs" action="#{clientController.toSearchClientById()}" />
-                    <p:menuitem ajax="false" value="Register New" action="#{clientController.toAddNewClient()}"  />
+                    <p:menuitem ajax="false" value="Register New" action="#{clientController.toAddNewClientForNewCase()}"  />
                 </p:submenu>
 
                 <p:submenu label="Analysis" 

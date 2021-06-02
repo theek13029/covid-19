@@ -176,7 +176,7 @@ public class ReportRequestController implements Serializable {
 
         Map m = new HashMap();
         m.put("i", institution);
-        m.put("t", EncounterType.Clinic_Visit);
+        m.put("t", EncounterType.Pcr_test_order);
         m.put("er", true);
         m.put("fr", true);
         m.put("fc", true);
@@ -201,7 +201,7 @@ public class ReportRequestController implements Serializable {
 
         Map m = new HashMap();
         m.put("i", institution);
-        m.put("t", EncounterType.Clinic_Visit);
+        m.put("t", EncounterType.Pcr_test_order);
         m.put("er", true);
         m.put("fr", true);
         m.put("fc", true);
@@ -229,7 +229,7 @@ public class ReportRequestController implements Serializable {
 
         Map m = new HashMap();
         m.put("i", institution);
-        m.put("t", EncounterType.Clinic_Visit);
+        m.put("t", EncounterType.Pcr_test_order);
         m.put("er", true);
         m.put("fr", true);
         m.put("fc", true);
@@ -259,7 +259,7 @@ public class ReportRequestController implements Serializable {
         j += " order by e.client.id";
 
         m.put("i", institution);
-        m.put("t", EncounterType.Clinic_Visit);
+        m.put("t", EncounterType.Pcr_test_order);
         m.put("er", true);
         m.put("fr", true);
         m.put("fc", true);
@@ -865,7 +865,7 @@ public class ReportRequestController implements Serializable {
         m.put("ret", false);
         m.put("fd", fromDate);
         m.put("td", toDate);
-        m.put("type", EncounterType.Clinic_Enroll);
+        m.put("type", EncounterType.Death);
         if (institution != null) {
             j += " and c.institution in :ins ";
             List<Institution> ins = institutionApplicationController.findChildrenInstitutions(institution);
@@ -885,7 +885,7 @@ public class ReportRequestController implements Serializable {
         m.put("ret", false);
         m.put("fd", fromDate);
         m.put("td", toDate);
-        m.put("type", EncounterType.Clinic_Enroll);
+        m.put("type", EncounterType.Death);
         if (institution != null) {
             j += " and c.institution in :ins ";
             List<Institution> ins = institutionApplicationController.findChildrenInstitutions(institution);
