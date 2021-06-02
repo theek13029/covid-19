@@ -2930,7 +2930,11 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:t "
                 + " order by c.id";
         Map m = new HashMap();
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        Institution ins = webUserController.getLoggedUser().getInstitution();
+        System.out.println("ins = " + ins);
+        System.out.println("getFrom() = " + getFrom());
+        System.out.println(" getTo() = " +  getTo());
+        m.put("ins", ins);
         m.put("fd", getFrom());
         m.put("td", getTo());
         m.put("t", EncounterType.Test_Enrollment);
