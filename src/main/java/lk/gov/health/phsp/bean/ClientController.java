@@ -2196,7 +2196,7 @@ public class ClientController implements Serializable {
                 }
             }
         }
-        selected.setReservedClient(false);
+       
 
         saveClient(selected);
 
@@ -2265,10 +2265,10 @@ public class ClientController implements Serializable {
         }
     }
 
-    public String saveClient(Client c) {
+    public void saveClient(Client c) {
         if (c == null) {
             JsfUtil.addErrorMessage("No Client Selected to save.");
-            return "";
+            return ;
         }
         if (c.getId() == null) {
             c.setCreatedBy(webUserController.getLoggedUser());
@@ -2297,7 +2297,6 @@ public class ClientController implements Serializable {
             c.setLastEditeAt(new Date());
             getFacade().edit(c);
         }
-        return toClientProfile();
     }
 
     public void create() {
