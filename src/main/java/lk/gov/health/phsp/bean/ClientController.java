@@ -46,6 +46,7 @@ import lk.gov.health.phsp.enums.EncounterType;
 import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.pojcs.ClientBasicData;
+import lk.gov.health.phsp.pojcs.SlNic;
 import lk.gov.health.phsp.pojcs.YearMonthDay;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
@@ -75,6 +76,8 @@ public class ClientController implements Serializable {
     private EncounterController encounterController;
     @Inject
     private ItemController itemController;
+    @Inject
+    ItemApplicationController itemApplicationController;
     @Inject
     private InstitutionController institutionController;
     @Inject
@@ -561,6 +564,24 @@ public class ClientController implements Serializable {
             return;
         }
         nicExists = checkNicExists(selected.getPerson().getNic(), selected);
+    }
+
+    public void ageAndSexFromNic() {
+        if (getSelected().getPerson().getNic() != null) {
+            SlNic n = new SlNic();
+            n.setNic(getSelected().getPerson().getNic());
+            if(n.getDateOfBirth()!=null){
+                getSelected().getPerson().setDateOfBirth(n.getDateOfBirth());
+            }
+            if(n.getSex()!=null){
+                if(n.getSex().equalsIgnoreCase("male")){
+                    getSelected().getPerson().setSex(itemApplicationController.getMale());
+                }else{
+                    getSelected().getPerson().setSex(itemApplicationController.getFemale());
+                }
+            }
+        }
+        updateYearDateMonth();
     }
 
     public Boolean checkNicExists(String nic, Client c) {
@@ -3039,8 +3060,6 @@ public class ClientController implements Serializable {
         m.put("t", EncounterType.Test_Enrollment);
         testEnrollmentsToMark = getEncounterFacade().findByJpql(j, m);
     }
-    
-    
 
     public void fillTestList() {
         String j = "select c from Encounter c "

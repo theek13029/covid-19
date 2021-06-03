@@ -47,8 +47,12 @@
                                     <p:column >
                                         <p:inputText id="nic"  autocomplete="off" value="#{clientController.selected.person.nic}" title="Nic" validatorMessage="Please check the number">
                                             <f:validateRegex pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})?$" ></f:validateRegex>
-                                            <f:ajax event="change" execute="@this" render="nicExists" 
-                                                    listener="#{clientController.checkNicExists}" ></f:ajax>
+                                            <p:inputText id="nic"  autocomplete="off" value="#{clientController.selected.person.nic}" title="Nic" validatorMessage="Please check the number">
+                                            <!--<f:validateRegex pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})?$" ></f:validateRegex>-->
+                                            <f:ajax event="blur" listener="#{clientController.ageAndSexFromNic}"
+                                                    render="year month sex" 
+                                                    execute="@this"/>
+                                        </p:inputText>
                                         </p:inputText>
                                     </p:column>
                                     <p:column >
