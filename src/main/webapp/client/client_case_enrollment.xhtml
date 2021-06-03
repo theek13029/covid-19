@@ -13,21 +13,20 @@
 
             <ui:define name="content">
 
+                <h:form>
+                    <p:panel style="text-align: center;height: 100%;width: 100%;" >
+                        <f:facet name="header" >
+                            <p:outputLabel value="Add Patient Details" rendered="#{clientController.selected.id eq null}"></p:outputLabel>
+                            <p:outputLabel value="Edit Patient Details" rendered="#{clientController.selected.id ne null}"></p:outputLabel>
+                            <p:commandButton style="float: left;" ajax="false" action="#{clientController.saveClientAndCaseEnrollment()}" value="Save" ></p:commandButton>
 
-                <p:panel style="text-align: center;height: 100%;width: 100%;" >
-                    <f:facet name="header" >
-                        <p:outputLabel value="Add Patient Details" rendered="#{clientController.selected.id eq null}"></p:outputLabel>
-                        <p:outputLabel value="Edit Patient Details" rendered="#{clientController.selected.id ne null}"></p:outputLabel>
-                    </f:facet>
+                        </f:facet>
 
-                    <h:form>
+
 
                         <p:panelGrid columns="1" style="width: 100%;  background-color: yellow;" >
 
                             <p:panelGrid  style="text-align: left; width: 100%;">
-                                <f:facet name="header" >
-                                    <p:commandButton ajax="false" action="#{clientController.saveClientAndCaseEnrollment()}" value="Save" ></p:commandButton>
-                                </f:facet>
                                 <p:row >
                                     <p:column >
                                         <p:outputLabel value="Name:" for="name" />
@@ -305,8 +304,9 @@
 
 
 
-                    </h:form>
-                </p:panel>
+
+                    </p:panel>
+                </h:form>
             </ui:define>
         </ui:composition>
 

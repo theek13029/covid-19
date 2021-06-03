@@ -843,6 +843,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
                 break;
             case Moh:
+                wups.add(Privilege.Client_Management);
                 wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Add_Tests);
                 wups.add(Privilege.Mark_Tests);
