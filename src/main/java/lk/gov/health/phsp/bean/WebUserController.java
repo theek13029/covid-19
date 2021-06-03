@@ -326,22 +326,22 @@ public class WebUserController implements Serializable {
         String insList = null;
         String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/redirect";
         String urlVals = "?API_KEY=EF16A5D4EF8AA6AA0580AF1390CF0600";
-        urlVals += "&UserId="+loggedUser.getId();
-        urlVals += "&UserName="+loggedUser.getName();
-        urlVals += "&UserRole="+loggedUser.getWebUserRole();       
-        
-        for(Institution ins_:institutionApplicationController.findChildrenInstitutions(loggedUser.getInstitution(), InstitutionType.Procedure_Room)){
-            if(ins_.getId() != null){
-                if(insList==null){
+        urlVals += "&UserId=" + loggedUser.getId();
+        urlVals += "&UserName=" + loggedUser.getName();
+        urlVals += "&UserRole=" + loggedUser.getWebUserRole();
+
+        for (Institution ins_ : institutionApplicationController.findChildrenInstitutions(loggedUser.getInstitution(), InstitutionType.Procedure_Room)) {
+            if (ins_.getId() != null) {
+                if (insList == null) {
                     insList = ins_.getId().toString();
-                }else{
-                    insList += "A"+ins_.getId().toString();
+                } else {
+                    insList += "A" + ins_.getId().toString();
                 }
             }
         }
-        urlVals += "&insList="+insList;
-        urlVals += "&userInstitution="+loggedUser.getInstitution().getId();
-        
+        urlVals += "&insList=" + insList;
+        urlVals += "&userInstitution=" + loggedUser.getInstitution().getId();
+
         Client client = Client.create();
         WebResource webResource1 = client.resource(baseUrl + urlVals);
         com.sun.jersey.api.client.ClientResponse cr = webResource1.accept("text/plain").get(com.sun.jersey.api.client.ClientResponse.class);
@@ -843,6 +843,16 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
                 break;
             case Moh:
+                wups.add(Privilege.Add_Client);
+                wups.add(Privilege.Add_Tests);
+                wups.add(Privilege.Mark_Tests);
+                wups.add(Privilege.Submit_Returns);
+                wups.add(Privilege.Search_any_Client_by_IDs);
+                wups.add(Privilege.Search_any_Client_by_Details);
+                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Areas);
+                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Areas);
+                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
+                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
                 wups.add(Privilege.User);
                 wups.add(Privilege.Monitoring_and_evaluation);
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
@@ -859,6 +869,7 @@ public class WebUserController implements Serializable {
             case System_Administrator:
                 //Menu
                 wups.add(Privilege.Client_Management);
+
                 wups.add(Privilege.Encounter_Management);
                 wups.add(Privilege.Appointment_Management);
                 wups.add(Privilege.Lab_Management);
@@ -868,6 +879,9 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.System_Administration);
                 //Client Management
                 wups.add(Privilege.Add_Client);
+                wups.add(Privilege.Add_Tests);
+                wups.add(Privilege.Mark_Tests);
+                wups.add(Privilege.Submit_Returns);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
                 wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Areas);
@@ -1135,9 +1149,9 @@ public class WebUserController implements Serializable {
         userTransactionController.recordTransaction("Edit Password user list By SysAdmin or InsAdmin");
         return "/webUser/Password";
     }
-    
+
     public String deleteUser() {
-        if(current==null){
+        if (current == null) {
             JsfUtil.addErrorMessage("Nothing to delete");
             return "";
         }
@@ -1149,14 +1163,16 @@ public class WebUserController implements Serializable {
         getItems().remove(current);
         return "";
     }
-    
-    public void save(WebUser u){
-        if(u==null) return;
-        if(u.getId()==null){
+
+    public void save(WebUser u) {
+        if (u == null) {
+            return;
+        }
+        if (u.getId() == null) {
             u.setCreatedAt(new Date());
             u.setCreater(getLoggedUser());
             getFacade().create(u);
-        }else{
+        } else {
             u.setLastEditBy(getLoggedUser());
             u.setLastEditeAt(new Date());
             getFacade().edit(u);
@@ -1308,7 +1324,6 @@ public class WebUserController implements Serializable {
     private void recreateModel() {
         items = null;
     }
-
 
     public WebUser getWebUser(java.lang.Long id) {
         return ejbFacade.find(id);
@@ -1818,8 +1833,6 @@ public class WebUserController implements Serializable {
     public void setMetadataTabIndex(int metadataTabIndex) {
         this.metadataTabIndex = metadataTabIndex;
     }
-    
-    
 
     @FacesConverter(forClass = WebUser.class)
     public static class WebUserControllerConverter implements Converter {

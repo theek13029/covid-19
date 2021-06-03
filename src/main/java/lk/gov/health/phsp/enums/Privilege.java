@@ -20,6 +20,9 @@ public enum Privilege {
     System_Administration("System Administration"),
     //Client Management
     Add_Client("Add Client"),
+    Add_Tests("Add Tests"),
+    Mark_Tests("Mark Tests"),
+    Submit_Returns("Submit Returns"),
     Search_any_Client_by_IDs("Search any Client by IDs"),
     Search_any_Client_by_Details("Search any Client by Details"),
     Search_any_client_by_ID_of_Authorised_Areas("Search any client by ID of Authorised Areas"),
