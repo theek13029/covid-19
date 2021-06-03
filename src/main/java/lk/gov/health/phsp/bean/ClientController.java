@@ -214,8 +214,7 @@ public class ClientController implements Serializable {
         return "/client/client";
     }
 
-    
-     public void markTestAsNotReceived() {
+    public void markTestAsNotReceived() {
         if (selectedEncounterToMarkTest == null) {
             JsfUtil.addErrorMessage("Nothing to Mark");
             return;
@@ -224,7 +223,7 @@ public class ClientController implements Serializable {
         encounterFacade.edit(selectedEncounterToMarkTest);
         JsfUtil.addSuccessMessage("Marked as Not Received");
     }
-    
+
     public void markTestAsPositive() {
         if (selectedEncounterToMarkTest == null) {
             JsfUtil.addErrorMessage("Nothing to Mark");
@@ -332,6 +331,9 @@ public class ClientController implements Serializable {
     public String toAddNewClientForCaseEnrollment() {
         setSelected(new Client());
         selected.setRetired(true);
+        selected.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
+        selected.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+
         saveClient(selected);
         clearRegisterNewExistsValues();
         selectedClientsClinics = null;
@@ -355,6 +357,9 @@ public class ClientController implements Serializable {
 
     public String toAddNewClientForTestEnrollment() {
         setSelected(new Client());
+        selected.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
+        selected.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+
         selected.setRetired(true);
         saveClient(selected);
         clearRegisterNewExistsValues();
@@ -469,19 +474,19 @@ public class ClientController implements Serializable {
         if (selected == null) {
             return areas;
         }
-        if (selected.getPerson().getDistrict()== null) {
+        if (selected.getPerson().getDistrict() == null) {
             return areaApplicationController.completeGnAreas(qry);
         } else {
             return areaApplicationController.completeGnAreasOfDistrict(qry, selected.getPerson().getDistrict());
         }
     }
-    
+
     public List<Area> completeClientsMohArea(String qry) {
         List<Area> areas = new ArrayList<>();
         if (selected == null) {
             return areas;
         }
-        if (selected.getPerson().getDistrict()== null) {
+        if (selected.getPerson().getDistrict() == null) {
             return areaApplicationController.completeMohAreas(qry);
         } else {
             return areaApplicationController.completeGnAreasOfDistrict(qry, selected.getPerson().getDistrict());
