@@ -855,10 +855,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         } else {
             e.setEncounterDate(d);
         }
-
-        e.setEncounterFrom(d);
-        e.setEncounterType(EncounterType.Test_Enrollment);
-
         e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Test_Enrollment));
 
         e.setEncounterMonth(CommonController.getMonth(d));
