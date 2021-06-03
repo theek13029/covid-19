@@ -27,12 +27,17 @@
 
                             <p:spacer ></p:spacer>
                             <p:commandButton ajax="false" value="Process" action="#{clientController.fillTestEnrollmentToMark()}" ></p:commandButton>
+
+
                         </p:panelGrid>
                     </h:form>
 
 
                     <h:form>
-                        <p:dataTable value="#{clientController.testEnrollmentsToMark}" 
+                        <p:commandButton ajax="false" value="Download">
+                            <p:dataExporter target="tbl" type="xlsx" fileName="test_enrollments" ></p:dataExporter>
+                        </p:commandButton>
+                        <p:dataTable id="tbl" value="#{clientController.testEnrollmentsToMark}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      rowStyleClass="#{c.resultPositive?'redRow':''}">
                             <p:column headerText="Name" >
