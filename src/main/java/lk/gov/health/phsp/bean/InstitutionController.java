@@ -354,6 +354,12 @@ public class InstitutionController implements Serializable {
         its.add(InstitutionType.Surgical_Clinic);
         return fillInstitutions(its, qry, null);
     }
+    
+    public List<Institution> completeMohs(String qry) {
+        List<InstitutionType> its = new ArrayList<>();
+        its.add(InstitutionType.MOH_Office);
+        return fillInstitutions(its, qry, null);
+    }
 
     public List<InstitutionType> hospitalInstitutionTypes() {
         List<InstitutionType> ts = new ArrayList<>();

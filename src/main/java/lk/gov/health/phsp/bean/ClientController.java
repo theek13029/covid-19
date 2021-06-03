@@ -95,6 +95,9 @@ public class ClientController implements Serializable {
     private List<ClientBasicData> selectedClientsWithBasicData = null;
     private List<Client> importedClients = null;
 
+    boolean institutionSelectable;
+    boolean institutionListIsAutocomplete;
+
     private List<ClientBasicData> selectedClientsBasic = null;
 
     private List<Encounter> institutionCaseEnrollments;
@@ -104,6 +107,8 @@ public class ClientController implements Serializable {
     private Map<Long, Encounter> institutionTestEnrollmentMap;
 
     private List<Encounter> testEnrollmentsToMark;
+    private List<Encounter> testList;
+    private List<Encounter> caseList;
 
     private Client selected;
     private Long selectedId;
@@ -2959,6 +2964,66 @@ public class ClientController implements Serializable {
         return tm;
     }
 
+    public String toListCases() {
+        switch (webUserController.getLoggedUser().getWebUserRole()) {
+            case Moh:
+            case Nurse:
+            case Phi:
+            case Phm:
+            case Client:
+                institution = webUserController.getLoggedUser().getInstitution();
+                institutionSelectable = false;
+                institutionListIsAutocomplete = false;
+                break;
+            case ChiefEpidemiologist:
+            case Epidemiologist:
+            case Super_User:
+            case System_Administrator:
+            case User:
+                institution = null;
+                institutionSelectable = true;
+                institutionListIsAutocomplete = false;
+                break;
+            case Pdhs:
+            case Rdhs:
+            case Re:
+                institution = null;
+                institutionSelectable = true;
+                institutionListIsAutocomplete = true;
+        }
+        return "/client/case_list";
+    }
+
+    public String toListTests() {
+        switch (webUserController.getLoggedUser().getWebUserRole()) {
+            case Moh:
+            case Nurse:
+            case Phi:
+            case Phm:
+            case Client:
+                institution = webUserController.getLoggedUser().getInstitution();
+                institutionSelectable = false;
+                institutionListIsAutocomplete = false;
+                break;
+            case ChiefEpidemiologist:
+            case Epidemiologist:
+            case Super_User:
+            case System_Administrator:
+            case User:
+                institution = null;
+                institutionSelectable = true;
+                institutionListIsAutocomplete = false;
+                break;
+            case Pdhs:
+            case Rdhs:
+            case Re:
+                institution = null;
+                institutionSelectable = true;
+                institutionListIsAutocomplete = true;
+        }
+        return "/client/test_list";
+    }
+
     public void fillTestEnrollmentToMark() {
         String j = "select c from Encounter c "
                 + " where c.retired=false"
@@ -2973,6 +3038,38 @@ public class ClientController implements Serializable {
         m.put("td", getToDate());
         m.put("t", EncounterType.Test_Enrollment);
         testEnrollmentsToMark = getEncounterFacade().findByJpql(j, m);
+    }
+    
+    
+
+    public void fillTestList() {
+        String j = "select c from Encounter c "
+                + " where c.retired=false"
+                + " and c.institution=:ins "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.encounterType=:t "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ins", institution);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("t", EncounterType.Test_Enrollment);
+        caseList = getEncounterFacade().findByJpql(j, m);
+    }
+
+    public void fillCaseList() {
+        String j = "select c from Encounter c "
+                + " where c.retired=false"
+                + " and c.institution=:ins "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.encounterType=:t "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ins", institution);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("t", EncounterType.Case_Enrollment);
+        testList = getEncounterFacade().findByJpql(j, m);
     }
 
     public Map<Long, Encounter> getInstitutionCaseEnrollmentMap() {
@@ -3011,6 +3108,38 @@ public class ClientController implements Serializable {
 
     public void setTestEnrollmentsToMark(List<Encounter> testEnrollmentsToMark) {
         this.testEnrollmentsToMark = testEnrollmentsToMark;
+    }
+
+    public boolean isInstitutionSelectable() {
+        return institutionSelectable;
+    }
+
+    public void setInstitutionSelectable(boolean institutionSelectable) {
+        this.institutionSelectable = institutionSelectable;
+    }
+
+    public boolean isInstitutionListIsAutocomplete() {
+        return institutionListIsAutocomplete;
+    }
+
+    public void setInstitutionListIsAutocomplete(boolean institutionListIsAutocomplete) {
+        this.institutionListIsAutocomplete = institutionListIsAutocomplete;
+    }
+
+    public List<Encounter> getTestList() {
+        return testList;
+    }
+
+    public void setTestList(List<Encounter> testList) {
+        this.testList = testList;
+    }
+
+    public List<Encounter> getCaseList() {
+        return caseList;
+    }
+
+    public void setCaseList(List<Encounter> caseList) {
+        this.caseList = caseList;
     }
 
     // </editor-fold>
