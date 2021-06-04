@@ -1041,7 +1041,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         }
 
         e.setEncounterFrom(d);
-        e.setEncounterType(EncounterType.Test_Enrollment);
 
         e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Test_Enrollment));
 

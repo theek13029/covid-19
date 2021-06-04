@@ -2224,6 +2224,9 @@ public class ClientController implements Serializable {
         saveClient(selected);
 
         if (clientEncounterComponentFormSetController.getSelected().getEncounter() != null) {
+            
+            clientEncounterComponentFormSetController.getSelected().getEncounter().setEncounterNumber(encounterController.createCaseNumber(webUserController.getLoggedUser().getInstitution()));
+           
             clientEncounterComponentFormSetController.getSelected().getEncounter().setRetired(false);
             encounterFacade.edit(clientEncounterComponentFormSetController.getSelected().getEncounter());
         }
@@ -2300,6 +2303,10 @@ public class ClientController implements Serializable {
         saveClient(selected);
 
         if (clientEncounterComponentFormSetController.getSelected().getEncounter() != null) {
+            
+            clientEncounterComponentFormSetController.getSelected().getEncounter().setEncounterNumber(encounterController.createTestNumber(webUserController.getLoggedUser().getInstitution()));
+            
+            
             clientEncounterComponentFormSetController.getSelected().getEncounter().setRetired(false);
             encounterFacade.edit(clientEncounterComponentFormSetController.getSelected().getEncounter());
         }

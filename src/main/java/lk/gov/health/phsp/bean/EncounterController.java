@@ -65,6 +65,48 @@ public class EncounterController implements Serializable {
         return clinic.getCode() + "/" + yy + "/" + c;
     }
 
+    public String createTestNumber(Institution clinic) {
+        String j = "select count(e) from Encounter e "
+                + " where e.institution=:ins "
+                + " and e.encounterType=:ec "
+                + " and e.createdAt>:d";
+//        j = "select count(e) from Encounter e ";
+        Map m = new HashMap();
+        m.put("d", CommonController.startOfTheYear());
+        m.put("ec", EncounterType.Test_Enrollment);
+        m.put("ins", clinic);
+        Long c = getFacade().findLongByJpql(j, m);
+        if (c == null) {
+            c = 1l;
+        } else {
+            c += 1;
+        }
+//        SimpleDateFormat format = new SimpleDateFormat("yy");
+//        String yy = format.format(new Date());
+        return clinic.getCode() + "/" + String.format("%03d", c);
+    }
+    
+    public String createCaseNumber(Institution clinic) {
+        String j = "select count(e) from Encounter e "
+                + " where e.institution=:ins "
+                + " and e.encounterType=:ec "
+                + " and e.createdAt>:d";
+//        j = "select count(e) from Encounter e ";
+        Map m = new HashMap();
+        m.put("d", CommonController.startOfTheYear());
+        m.put("ec", EncounterType.Case_Enrollment);
+        m.put("ins", clinic);
+        Long c = getFacade().findLongByJpql(j, m);
+        if (c == null) {
+            c = 1l;
+        } else {
+            c += 1;
+        }
+//        SimpleDateFormat format = new SimpleDateFormat("yy");
+//        String yy = format.format(new Date());
+        return clinic.getCode() + "/" + String.format("%03d", c);
+    }
+
     public Long countOfEncounters(List<Institution> clinics, EncounterType ec) {
         String j = "select count(e) from Encounter e "
                 + " where e.retired=:ret "
@@ -81,7 +123,7 @@ public class EncounterController implements Serializable {
         Long c = getFacade().findLongByJpql(j, m);
         return c;
     }
-    
+
     public Encounter getInstitutionTypeEncounter(Institution institution, EncounterType ec, Date d) {
         String j = "select e from Encounter e "
                 + " where e.encounterType=:ec "
@@ -92,7 +134,7 @@ public class EncounterController implements Serializable {
         m.put("ec", ec);
         m.put("d", d);
         Encounter e = getFacade().findFirstByJpql(j, m);
-        if(e==null){
+        if (e == null) {
             e = new Encounter();
             e.setEncounterDate(d);
             e.setEncounterType(ec);
@@ -100,7 +142,7 @@ public class EncounterController implements Serializable {
             e.setCreatedAt(new Date());
             e.setCreatedBy(webUserController.getLoggedUser());
             getFacade().create(e);
-        }else{
+        } else {
             e.setRetired(true);
             getFacade().edit(e);
         }
