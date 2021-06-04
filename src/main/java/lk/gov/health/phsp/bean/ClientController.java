@@ -3080,7 +3080,7 @@ public class ClientController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("t", EncounterType.Test_Enrollment);
-        caseList = getEncounterFacade().findByJpql(j, m);
+        testList = getEncounterFacade().findByJpql(j, m);
     }
 
     public void fillCaseList() {
@@ -3095,7 +3095,7 @@ public class ClientController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("t", EncounterType.Case_Enrollment);
-        testList = getEncounterFacade().findByJpql(j, m);
+        caseList = getEncounterFacade().findByJpql(j, m);
     }
 
     public Map<Long, Encounter> getInstitutionCaseEnrollmentMap() {

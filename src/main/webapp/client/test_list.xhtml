@@ -58,6 +58,9 @@
                             <p:column headerText="No" >
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Serial" >
+                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
