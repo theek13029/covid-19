@@ -377,6 +377,7 @@ public class ClientController implements Serializable {
             return "";
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        updateYearDateMonth();
         return "/client/client_case_enrollment";
     }
 
