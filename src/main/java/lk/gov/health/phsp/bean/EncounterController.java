@@ -249,6 +249,16 @@ public class EncounterController implements Serializable {
     public List<Encounter> getItems(String jpql, Map m) {
         return getFacade().findByJpql(jpql, m);
     }
+    
+    public List<Encounter> getItems(Client client) {
+        String j = "select e "
+                + " from Encounter e "
+                + " where e.retired=false"
+                + " and e.client=:c";
+        Map m = new HashMap();
+        m.put("c", client);
+        return getFacade().findByJpql(j, m);
+    }
 
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {

@@ -1206,6 +1206,20 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         selected = cfs;
         return cfs;
     }
+     
+     public ClientEncounterComponentFormSet findFormsetFromEncounter(Encounter encounter) {
+        if (encounter == null) {
+            System.err.println("No Encounter");
+            return null;
+        }
+        String j = "select efs from ClientEncounterComponentFormSet efs"
+                + " where efs.retired=false "
+                + " and efs.encounter=:e "
+                + " order by efs.id desc";
+        Map m = new HashMap();
+        m.put("e", encounter);
+        return getFacade().findFirstByJpql(j, m);
+    }
 
     
     public String createNewAndNavigateToDataEntry(DesignComponentFormSet dfs) {

@@ -119,7 +119,7 @@ public class ClientController implements Serializable {
     private Long idTo;
     private Institution institution;
     private List<Encounter> selectedClientsClinics;
-    private List<Encounter> selectedClientsLastFiveClinicVisits;
+    private List<Encounter> selectedClientEncounters;
     private String searchingId;
     private String searchingPhn;
     private String searchingPassportNo;
@@ -142,6 +142,7 @@ public class ClientController implements Serializable {
     private Date toDate;
 
     private Encounter selectedEncounterToMarkTest;
+    private Encounter selectedEncounter;
 
     private Boolean nicExists;
     private Boolean phnExists;
@@ -253,25 +254,9 @@ public class ClientController implements Serializable {
     }
 
     public String toClientProfile() {
-        selectedClientsLastFiveClinicVisits = null;
+        selectedClientEncounters = null;
         userTransactionController.recordTransaction("To Client Profile");
-
-        DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
-        if (dfs == null) {
-            JsfUtil.addErrorMessage("No Default Form Set");
-            return "";
-        }
-        ClientEncounterComponentFormSet cefs;
-        cefs = clientEncounterComponentFormSetController.findLastFormsetToDataEntry(dfs, selected);
-        if (cefs == null) {
-            cefs = clientEncounterComponentFormSetController.createNewCaseEnrollmentFormsetToDataEntry(dfs);
-        }
-        if (cefs == null) {
-            JsfUtil.addErrorMessage("No Patient Form Set");
-            return "";
-        }
-        clientEncounterComponentFormSetController.loadOldFormset(cefs);
-
+        selectedClientEncounters = encounterController.getItems(selected);
         return "/client/profile";
     }
 
@@ -297,7 +282,7 @@ public class ClientController implements Serializable {
     }
 
     public String toClientProfileForTestEncounter() {
-        selectedClientsLastFiveClinicVisits = null;
+        selectedClientEncounters = null;
         userTransactionController.recordTransaction("To Client Profile");
 
         DesignComponentFormSet dfs = designComponentFormSetController.getFirstTestEnrollmentFormSet();
@@ -326,7 +311,7 @@ public class ClientController implements Serializable {
             return "";
         }
         selectedClientsClinics = null;
-        selectedClientsLastFiveClinicVisits = null;
+        selectedClientEncounters = null;
         userTransactionController.recordTransaction("To Client Profile");
         return "/client/profile";
     }
@@ -345,7 +330,38 @@ public class ClientController implements Serializable {
         saveClient(selected);
         clearRegisterNewExistsValues();
         selectedClientsClinics = null;
-        selectedClientsLastFiveClinicVisits = null;
+        selectedClientEncounters = null;
+        selectedClinic = null;
+        yearMonthDay = new YearMonthDay();
+        userTransactionController.recordTransaction("to add a new client for case");
+        DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
+        if (dfs == null) {
+            JsfUtil.addErrorMessage("No Default Form Set");
+            return "";
+        }
+        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseEnrollmentFormsetToDataEntry(dfs);
+        if (cefs == null) {
+            JsfUtil.addErrorMessage("No Patient Form Set");
+            return "";
+        }
+        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        return "/client/client_case_enrollment";
+    }
+    
+    public String toNewCaseEnrollmentFromEncounter() {
+        if(selectedEncounter==null){
+            JsfUtil.addErrorMessage("No encounter");
+            return "";
+        }
+        if(selectedEncounter.getClient()==null){
+            JsfUtil.addErrorMessage("No Client");
+            return "";
+        }
+        setSelected(selectedEncounter.getClient());
+        saveClient(selected);
+        clearRegisterNewExistsValues();
+        selectedClientsClinics = null;
+        selectedClientEncounters = null;
         selectedClinic = null;
         yearMonthDay = new YearMonthDay();
         userTransactionController.recordTransaction("to add a new client for case");
@@ -372,7 +388,7 @@ public class ClientController implements Serializable {
         saveClient(selected);
         clearRegisterNewExistsValues();
         selectedClientsClinics = null;
-        selectedClientsLastFiveClinicVisits = null;
+        selectedClientEncounters = null;
         selectedClinic = null;
         yearMonthDay = new YearMonthDay();
         userTransactionController.recordTransaction("to add a new client for test ordering");
@@ -388,6 +404,44 @@ public class ClientController implements Serializable {
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
         return "/client/client_test_enrollment";
+    }
+
+    public String toFromFromEncounter() {
+        if (selectedEncounter == null) {
+            JsfUtil.addErrorMessage("Nothing selected");
+            return "";
+        }
+
+        setSelected(selectedEncounter.getClient());
+        clearRegisterNewExistsValues();
+        selectedClientsClinics = null;
+        selectedClientEncounters = null;
+        selectedClinic = null;
+        yearMonthDay = new YearMonthDay();
+        userTransactionController.recordTransaction("to From from a Selected Encounter");
+
+        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.findFormsetFromEncounter(selectedEncounter);
+
+        if (cefs == null) {
+            JsfUtil.addErrorMessage("No such formset");
+            return "";
+        }
+
+        DesignComponentFormSet dfs = cefs.getReferanceDesignComponentFormSet();
+        if (dfs == null) {
+            JsfUtil.addErrorMessage("No DFS");
+            return "";
+        }
+        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        if (dfs.isCaseEnrollmentForm()) {
+            return "/client/client_test_enrollment";
+        } else if (dfs.isTestEnrollmentForm()) {
+            return "/client/client_test_enrollment";
+        } else {
+            JsfUtil.addErrorMessage("No Form");
+            return "";
+        }
+
     }
 
     public String toViewCorrectedDuplicates() {
@@ -570,13 +624,13 @@ public class ClientController implements Serializable {
         if (getSelected().getPerson().getNic() != null) {
             SlNic n = new SlNic();
             n.setNic(getSelected().getPerson().getNic());
-            if(n.getDateOfBirth()!=null){
+            if (n.getDateOfBirth() != null) {
                 getSelected().getPerson().setDateOfBirth(n.getDateOfBirth());
             }
-            if(n.getSex()!=null){
-                if(n.getSex().equalsIgnoreCase("male")){
+            if (n.getSex() != null) {
+                if (n.getSex().equalsIgnoreCase("male")) {
                     getSelected().getPerson().setSex(itemApplicationController.getMale());
-                }else{
+                } else {
                     getSelected().getPerson().setSex(itemApplicationController.getFemale());
                 }
             }
@@ -2224,9 +2278,9 @@ public class ClientController implements Serializable {
         saveClient(selected);
 
         if (clientEncounterComponentFormSetController.getSelected().getEncounter() != null) {
-            
+
             clientEncounterComponentFormSetController.getSelected().getEncounter().setEncounterNumber(encounterController.createCaseNumber(webUserController.getLoggedUser().getInstitution()));
-           
+
             clientEncounterComponentFormSetController.getSelected().getEncounter().setRetired(false);
             encounterFacade.edit(clientEncounterComponentFormSetController.getSelected().getEncounter());
         }
@@ -2303,10 +2357,9 @@ public class ClientController implements Serializable {
         saveClient(selected);
 
         if (clientEncounterComponentFormSetController.getSelected().getEncounter() != null) {
-            
+
             clientEncounterComponentFormSetController.getSelected().getEncounter().setEncounterNumber(encounterController.createTestNumber(webUserController.getLoggedUser().getInstitution()));
-            
-            
+
             clientEncounterComponentFormSetController.getSelected().getEncounter().setRetired(false);
             encounterFacade.edit(clientEncounterComponentFormSetController.getSelected().getEncounter());
         }
@@ -2518,7 +2571,7 @@ public class ClientController implements Serializable {
         updateYearDateMonth();
         selectedClientChanged();
         selectedClientsClinics = null;
-        selectedClientsLastFiveClinicVisits = null;
+        selectedClientEncounters = null;
     }
 
     private ClientFacade getFacade() {
@@ -2880,16 +2933,16 @@ public class ClientController implements Serializable {
         this.intNo = intNo;
     }
 
-    public List<Encounter> getSelectedClientsLastFiveClinicVisits() {
-        if (selectedClientsLastFiveClinicVisits == null) {
-            selectedClientsLastFiveClinicVisits = fillEncounters(selected, InstitutionType.Clinic, EncounterType.Test_Enrollment, true, 5);
+    public List<Encounter> getSelectedClientEncounters() {
+        if (selectedClientEncounters == null) {
+            selectedClientEncounters = fillEncounters(selected, InstitutionType.Clinic, EncounterType.Test_Enrollment, true, 5);
 
         }
-        return selectedClientsLastFiveClinicVisits;
+        return selectedClientEncounters;
     }
 
-    public void setSelectedClientsLastFiveClinicVisits(List<Encounter> selectedClientsLastFiveClinicVisits) {
-        this.selectedClientsLastFiveClinicVisits = selectedClientsLastFiveClinicVisits;
+    public void setSelectedClientEncounters(List<Encounter> selectedClientEncounters) {
+        this.selectedClientEncounters = selectedClientEncounters;
     }
 
     public Boolean getEmailExists() {
@@ -3166,6 +3219,14 @@ public class ClientController implements Serializable {
 
     public void setCaseList(List<Encounter> caseList) {
         this.caseList = caseList;
+    }
+
+    public Encounter getSelectedEncounter() {
+        return selectedEncounter;
+    }
+
+    public void setSelectedEncounter(Encounter selectedEncounter) {
+        this.selectedEncounter = selectedEncounter;
     }
 
     // </editor-fold>

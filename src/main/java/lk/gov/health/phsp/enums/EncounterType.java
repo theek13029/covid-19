@@ -30,7 +30,7 @@ package lk.gov.health.phsp.enums;
  */
 public enum EncounterType {
     Case_Enrollment("Case Enrollment"),
-    Test_Enrollment("PCR Enrollment"),
+    Test_Enrollment("Test Enrollment"),
     Rat("RAT"),
     Death("Death"),
     No_Covid("Admission"),
@@ -43,5 +43,16 @@ public enum EncounterType {
     
     public String getLabel(){
         return label;
+    }
+    
+    public String getCode(){
+        switch(this){
+            case Case_Enrollment:
+                return "C";
+            case Test_Enrollment:
+                return "T";
+            default:
+                return "E";
+        }
     }
 }

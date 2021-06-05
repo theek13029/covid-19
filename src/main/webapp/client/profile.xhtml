@@ -166,26 +166,29 @@
 
 
                     <h:form>
-                        <p:dataTable value="#{clientController.institutionCaseEnrollments}" 
+                        <p:dataTable value="#{clientController.selectedClientEncounters}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" >
                             <p:column headerText="Name" >
-                                <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                                <p:outputLabel value="#{c.encounterDate}" >
+                                    <f:convertDateTime parent="dd MMMM yyyy" ></f:convertDateTime>
+                                </p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age" >
-                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                            <p:column headerText="Type" >
+                                <p:outputLabel value="#{c.encounterType.label}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Sex" >
-                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                            <p:column headerText="Number" >
+                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Address" >
-                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
+                            <p:column headerText="Institution" >
+                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Action" >
-<!--                                <p:commandButton value="Load" action="#{clientController.toClient()}" ajax="false" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selected}" ></f:setPropertyActionListener>
-                                </p:commandButton>-->
+                            <p:column headerText="Institution" >
+                                <p:commandButton value="View" ajax="false" action="#{clientController.toFromFromEncounter()}" >
+                                    <f:setPropertyActionListener value="#{c}" 
+                                                                 target="#{clientController.selectedEncounter}" >
+                                    </f:setPropertyActionListener>
+                                </p:commandButton>
                             </p:column>
-
                         </p:dataTable>
                     </h:form>
 
