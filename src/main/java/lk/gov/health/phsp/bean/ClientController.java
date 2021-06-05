@@ -257,6 +257,7 @@ public class ClientController implements Serializable {
         selectedClientEncounters = null;
         userTransactionController.recordTransaction("To Client Profile");
         selectedClientEncounters = encounterController.getItems(selected);
+        updateYearDateMonth();
         return "/client/profile";
     }
 
@@ -277,7 +278,7 @@ public class ClientController implements Serializable {
             return "";
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
-
+        updateYearDateMonth();
         return "/client/profile_case_enrollment";
     }
 
@@ -300,7 +301,7 @@ public class ClientController implements Serializable {
             return "";
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
-
+        updateYearDateMonth();
         return "/client/profile_test_enrollment";
     }
 
@@ -347,13 +348,13 @@ public class ClientController implements Serializable {
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
         return "/client/client_case_enrollment";
     }
-    
+
     public String toNewCaseEnrollmentFromEncounter() {
-        if(selectedEncounter==null){
+        if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("No encounter");
             return "";
         }
-        if(selectedEncounter.getClient()==null){
+        if (selectedEncounter.getClient() == null) {
             JsfUtil.addErrorMessage("No Client");
             return "";
         }
