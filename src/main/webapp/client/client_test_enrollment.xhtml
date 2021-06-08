@@ -18,7 +18,7 @@
                         <f:facet name="header" >
                             <p:outputLabel value="Add Patient Details" rendered="#{clientController.selected.id eq null}"></p:outputLabel>
                             <p:outputLabel value="Edit Patient Details" rendered="#{clientController.selected.id ne null}"></p:outputLabel>
-                            <p:commandButton style="float: left;" ajax="false" action="#{clientController.saveClientAndCaseEnrollment()}" value="Save" ></p:commandButton>
+                            <p:commandButton style="float: left;" ajax="false" action="#{clientController.saveClientAndTestEnrollment()}" value="Save" ></p:commandButton>
                         </f:facet>
 
 
