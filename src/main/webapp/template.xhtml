@@ -54,16 +54,6 @@
     </h:head>
 
     <h:body class="w3-light-grey">
-
-        <!-- Top container -->
-        <div class="w3-bar w3-top w3-blue w3-large" style="z-index:4">
-            <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
-            <span class="w3-bar-item w3-right">Logo</span>
-        </div>
-
-
-        <ui:insert name="free">
-        </ui:insert>
         <style>
             html,body { height: 100%; margin: 0px; padding: 0px; }
             .ui-widget {
@@ -79,23 +69,21 @@
 
         </style>
         <f:view locale="#{webUserController.locale}" >
-            <p:growl   >
-            </p:growl>
-            <div class="w3-row w3-theme-l5" style="font-family: 'Poppins', sans-serif!important;">
-                <h:panelGroup rendered="#{webUserController.loggedUser ne null}">
-                    <div class="w3-row" >
-                        <h1>COVID19</h1>
-                         <h1>Ministry of Health</h1>
-                        <ez:menu/>
-                    </div>
-                </h:panelGroup>
-
-                <h:panelGroup rendered="#{webUserController.loggedUser eq null}">
-                    <div class="w3-row" style="text-align: center;" >
-                        <!--<p:graphicImage library="image" name="hmis_logo.png" style="width: 25%;" ></p:graphicImage>-->
-                    </div>
-                </h:panelGroup>
+            <div class="w3-row w3-blue w3-large w3-padding w3-center" style="z-index:4">
+                COVID-19 Case Based Surveillance System (CCBSS)
             </div>
+
+            <h:panelGroup rendered="#{webUserController.loggedUser ne null}">
+                <div class="w3-row" >
+                    <ez:menu/>
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{webUserController.loggedUser eq null}">
+                <div class="w3-row" style="text-align: center;" >
+                    <!--<p:graphicImage library="image" name="hmis_logo.png" style="width: 25%;" ></p:graphicImage>-->
+                </div>
+            </h:panelGroup>
 
             <div class="w3-row w3-theme-l5" style="height: 100%; width: 100%; padding: 0px;margin: 0px;" >
                 <h:panelGroup rendered="#{webUserController.loggedUser ne null}">
@@ -118,6 +106,10 @@
                     <ez:footer/>
                 </ui:insert>
             </div>
+
+            <p:growl   >
+            </p:growl>
+
 
         </f:view>
 

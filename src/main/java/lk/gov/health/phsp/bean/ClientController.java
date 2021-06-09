@@ -2360,8 +2360,10 @@ public class ClientController implements Serializable {
 
         if (clientEncounterComponentFormSetController.getSelected().getEncounter() != null) {
 
-            clientEncounterComponentFormSetController.getSelected().getEncounter().setEncounterNumber(encounterController.createTestNumber(webUserController.getLoggedUser().getInstitution()));
-
+            if (clientEncounterComponentFormSetController.getSelected().getEncounter().getEncounterNumber() == null
+                    || clientEncounterComponentFormSetController.getSelected().getEncounter().getEncounterNumber().trim().equals("")) {
+                clientEncounterComponentFormSetController.getSelected().getEncounter().setEncounterNumber(encounterController.createTestNumber(webUserController.getLoggedUser().getInstitution()));
+            }
             clientEncounterComponentFormSetController.getSelected().getEncounter().setRetired(false);
             encounterFacade.edit(clientEncounterComponentFormSetController.getSelected().getEncounter());
         }
