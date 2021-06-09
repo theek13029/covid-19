@@ -24,14 +24,14 @@
 
                 <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="/index" />
 
-                <p:submenu label="Patient" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
+                <p:submenu label="Patient"  >
                     <p:menuitem ajax="false" value="Register New Case" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
-                    <p:menuitem ajax="false" value="Register New Test" action="#{clientController.toAddNewClientForTestEnrollment()}"  />
+                    <p:menuitem ajax="false" value="Add New PCR/RAT Request" action="#{clientController.toAddNewClientForTestEnrollment()}"  />
                     <p:menuitem ajax="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
                     <p:menuitem ajax="false" value="Test Result Entering" action="#{clientController.toEnterTestResults()}" />
                 </p:submenu>
 
-                <p:submenu label="Returns" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
+                <p:submenu label="Returns"  >
                     <p:menuitem ajax="false" value="Mark Nil Return for Cases" action="#{clientController.markNilReturnForCases()}"  />
                     <p:menuitem ajax="false" value="Mark Nil Return for Tests" action="#{clientController.markNilReturnForTests()}"  />
                     <p:menuitem ajax="false" value="Reverse Nil Return for Cases" action="#{clientController.reverseNilReturnForCases()}" />

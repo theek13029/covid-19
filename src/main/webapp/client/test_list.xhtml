@@ -39,19 +39,16 @@
                             </p:autoComplete>
 
 
-                            <p:spacer ></p:spacer>
+                            <p:commandButton ajax="false" value="Generate Excel">
+                                <p:dataExporter target="tbl" type="xlsx" fileName="test_enrollments" ></p:dataExporter>
+                            </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
                                              action="#{clientController.fillTestList()}" ></p:commandButton>
 
 
                         </p:panelGrid>
-                    </h:form>
 
 
-                    <h:form>
-                        <p:commandButton ajax="false" value="Download">
-                            <p:dataExporter target="tbl" type="xlsx" fileName="test_enrollments" ></p:dataExporter>
-                        </p:commandButton>
                         <p:dataTable id="tbl" value="#{clientController.testList}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
@@ -96,7 +93,7 @@
                                     </f:setPropertyActionListener>
                                 </p:commandButton>
                             </p:column>
-                            
+
                         </p:dataTable>
                     </h:form>
 
