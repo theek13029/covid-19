@@ -250,8 +250,8 @@
 
                                 <h:panelGrid columns="2" >
                                     <p:outputLabel value="Test Number" ></p:outputLabel>
-                                    <p:inputText value="#{clientEncounterComponentFormSetController.selected.encounterNumber}" >
-                                        <f:ajax event="blur" execute="@this" listener="#{encounterController.save(clientEncounterComponentFormSetController.selected)}" ></f:ajax>
+                                    <p:inputText value="#{clientEncounterComponentFormSetController.selected.encounter.encounterNumber}" >
+                                        <f:ajax event="blur" execute="@this" listener="#{encounterController.save(clientEncounterComponentFormSetController.selected.encounter.encounterNumber)}" ></f:ajax>
                                     </p:inputText>
                                 </h:panelGrid>
 
