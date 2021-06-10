@@ -408,6 +408,77 @@ public class ClientController implements Serializable {
         return "/client/client_case_enrollment";
     }
 
+    public String toNewTestEnrollmentFromEncounter() {
+        if (selectedEncounter == null) {
+            JsfUtil.addErrorMessage("No encounter");
+            return "";
+        }
+        if (selectedEncounter.getClient() == null) {
+            JsfUtil.addErrorMessage("No Client");
+            return "";
+        }
+        setSelected(selectedEncounter.getClient());
+        saveClient(selected);
+        clearRegisterNewExistsValues();
+        selectedClientsClinics = null;
+        selectedClientEncounters = null;
+        selectedClinic = null;
+        yearMonthDay = new YearMonthDay();
+        userTransactionController.recordTransaction("to add a new client for case");
+        DesignComponentFormSet dfs = designComponentFormSetController.getFirstTestEnrollmentFormSet();
+        if (dfs == null) {
+            JsfUtil.addErrorMessage("No Default Form Set");
+            return "";
+        }
+        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewTestEnrollmentFormsetToDataEntry(dfs);
+        if (cefs == null) {
+            JsfUtil.addErrorMessage("No Patient Form Set");
+            return "";
+        }
+        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        updateYearDateMonth();
+        return "/client/client_test_enrollment";
+    }
+
+    
+    public String toDeleteTestEncounter() {
+        if (selectedEncounter == null) {
+            JsfUtil.addErrorMessage("No encounter");
+            return "";
+        }
+        if (selectedEncounter.getClient() == null) {
+            JsfUtil.addErrorMessage("No Client");
+            return "";
+        }
+        selectedEncounter.setRetired(true);
+        selectedEncounter.setRetiredAt(new Date());
+        selectedEncounter.setRetiredBy(webUserController.getLoggedUser());
+        encounterController.save(selectedEncounter);
+        fillTestList();
+        selectedEncounter=null;
+        return "";
+    }
+
+    public String toDeleteCaseEncounter() {
+        if (selectedEncounter == null) {
+            JsfUtil.addErrorMessage("No encounter");
+            return "";
+        }
+        if (selectedEncounter.getClient() == null) {
+            JsfUtil.addErrorMessage("No Client");
+            return "";
+        }
+        selectedEncounter.setRetired(true);
+        selectedEncounter.setRetiredAt(new Date());
+        selectedEncounter.setRetiredBy(webUserController.getLoggedUser());
+        encounterController.save(selectedEncounter);
+        fillCaseList();
+        selectedEncounter=null;
+        return "";
+    }
+
+    
+    
     public String toAddNewClientForTestEnrollment() {
         setSelected(new Client());
         selected.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
@@ -3084,7 +3155,7 @@ public class ClientController implements Serializable {
 
     private Map<Long, Encounter> findTodaysInstitutionTestEnrollmentEncounters() {
         String j = "select c from Encounter c "
-                + " where c.retired=false"
+                + " where c.retired=false "
                 + " and c.institution=:ins "
                 + " and c.encounterDate=:d "
                 + " and c.encounterType=:t "

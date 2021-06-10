@@ -87,8 +87,14 @@
                             <p:column headerText="GN Area" >
                                 <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column exportable="false" >
+                            <p:column headerText="Actions" exportable="false" >
                                 <p:commandButton ajax="false" value="Convert to a case" action="#{clientController.toNewCaseEnrollmentFromEncounter()}" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
+                                    </f:setPropertyActionListener>
+                                </p:commandButton>
+                                <p:commandButton ajax="false" value="Delete"  action="#{clientController.toDeleteTestEncounter()}" 
+                                                 onclick="return confirm('Are you sure?')" 
+                                                 >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                     </f:setPropertyActionListener>
                                 </p:commandButton>

@@ -39,19 +39,14 @@
                             </p:autoComplete>
 
 
-                            <p:spacer ></p:spacer>
+                            <p:commandButton ajax="false" value="Download">
+                                <p:dataExporter target="tbl" type="xlsx" fileName="case_list" ></p:dataExporter>
+                            </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
                                              action="#{clientController.fillCaseList()}" ></p:commandButton>
 
 
                         </p:panelGrid>
-                    </h:form>
-
-
-                    <h:form>
-                        <p:commandButton ajax="false" value="Download">
-                            <p:dataExporter target="tbl" type="xlsx" fileName="case_list" ></p:dataExporter>
-                        </p:commandButton>
                         <p:dataTable id="tbl" value="#{clientController.caseList}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
@@ -89,6 +84,18 @@
                             </p:column>
                             <p:column headerText="GN Area" >
                                 <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Actions" exportable="false" >
+                                <p:commandButton ajax="false" value="Order New Test" action="#{clientController.toNewTestEnrollmentFromEncounter()}" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
+                                    </f:setPropertyActionListener>
+                                </p:commandButton>
+                                <p:commandButton ajax="false" value="Delete"  action="#{clientController.toDeleteCaseEncounter()}" 
+                                                 onclick="return confirm('Are you sure?')" 
+                                                 >
+                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
+                                    </f:setPropertyActionListener>
+                                </p:commandButton>
                             </p:column>
                         </p:dataTable>
                     </h:form>
