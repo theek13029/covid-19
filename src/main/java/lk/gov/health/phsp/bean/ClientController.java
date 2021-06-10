@@ -748,6 +748,7 @@ public class ClientController implements Serializable {
     }
 
     public void ageAndSexFromNic() {
+        System.out.println("ageAndSexFromNic");
         if (getSelected().getPerson().getNic() != null) {
             SlNic n = new SlNic();
             n.setNic(getSelected().getPerson().getNic());

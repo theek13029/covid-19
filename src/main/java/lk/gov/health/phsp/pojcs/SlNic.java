@@ -39,6 +39,7 @@ public class SlNic {
     private String sex;
 
     public void processNic() {
+        System.out.println("processNic");
         oldNic = false;
         newNic = false;
         if (nic == null || nic.trim().equals("")) {
@@ -72,7 +73,7 @@ public class SlNic {
             c.add(Calendar.DATE, dates-2);
             dateOfBirth = c.getTime();
         } else if (nic.length() == 12) {
-            String strYear = nic.substring(0, 3);
+            String strYear = nic.substring(0, 4);
             System.out.println("strYear = " + strYear);
             Integer year = Integer.parseInt(strYear);
             String strDates = nic.substring(4, 7);
