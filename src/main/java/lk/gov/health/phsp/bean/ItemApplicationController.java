@@ -174,7 +174,7 @@ public class ItemApplicationController {
     public List<Item> findDictionaryItems() {
         List<ItemType> its = new ArrayList<>();
         its.add(ItemType.Dictionary_Category);
-        its.add(ItemType.Dictionary_Category);
+        its.add(ItemType.Dictionary_Item);
         return findItems(its);
     }
 
