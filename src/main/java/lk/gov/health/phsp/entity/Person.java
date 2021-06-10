@@ -74,15 +74,15 @@ public class Person implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Item mariatalStatus;
-    
-     @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Item educationStatus;
-     
-     private String occupation;
+
+    private String occupation;
 
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateOfBirth;
-    
+
     private boolean dobIsAnApproximation;
 
     @Lob
@@ -98,7 +98,7 @@ public class Person implements Serializable {
 
     private String website;
     private String drivingLicenseNumber;
-    
+
     private String localReferanceNo;
     private String ssNumber;
 
@@ -155,7 +155,7 @@ public class Person implements Serializable {
 // <editor-fold defaultstate="collapsed" desc="Functions">
 
     public void calAgeFromDob() {
-        ageCalculated=true;
+        ageCalculated = true;
         setAge("");
         setAgeInDays(0l);
         setAgeMonths(0);
@@ -184,9 +184,7 @@ public class Person implements Serializable {
     }
 
     public String getAge() {
-        if (!ageCalculated) {
-            calAgeFromDob();
-        }
+        calAgeFromDob();
         return age;
     }
 
@@ -212,7 +210,7 @@ public class Person implements Serializable {
     }
 
     public int getAgeYears() {
-       if (!ageCalculated) {
+        if (!ageCalculated) {
             calAgeFromDob();
         }
         return ageYears;
@@ -349,8 +347,6 @@ public class Person implements Serializable {
         this.ageInDays = ageInDays;
     }
 
-    
-    
     public Item getSex() {
         return sex;
     }
@@ -415,9 +411,6 @@ public class Person implements Serializable {
         this.phone2 = phone2;
     }
 
-    
-    
-    
     public String getName() {
         return name;
     }
@@ -503,7 +496,7 @@ public class Person implements Serializable {
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
-        ageCalculated=false;
+        ageCalculated = false;
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -570,12 +563,6 @@ public class Person implements Serializable {
     public void setEducationStatus(Item educationStatus) {
         this.educationStatus = educationStatus;
     }
-    
-    
-    
-    
-    
-    
 
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Over-rides">
@@ -619,25 +606,23 @@ public class Person implements Serializable {
     public void setOccupation(String occupation) {
         this.occupation = occupation;
     }
-    
-    
 
     public String getTransPhoneNumbers() {
-        boolean phoneOneNotBlank=false;
-        boolean phoneTwoNotBlank=false;
-        if(phone1!=null && !phone1.trim().equals("")){
-            phoneOneNotBlank=true;
+        boolean phoneOneNotBlank = false;
+        boolean phoneTwoNotBlank = false;
+        if (phone1 != null && !phone1.trim().equals("")) {
+            phoneOneNotBlank = true;
         }
-        if(phone2!=null && !phone2.trim().equals("")){
-            phoneTwoNotBlank=true;
+        if (phone2 != null && !phone2.trim().equals("")) {
+            phoneTwoNotBlank = true;
         }
-        if(phoneOneNotBlank && phoneTwoNotBlank){
+        if (phoneOneNotBlank && phoneTwoNotBlank) {
             transPhoneNumbers = phone1 + ", " + phone2;
-        }else if(phoneOneNotBlank){
+        } else if (phoneOneNotBlank) {
             transPhoneNumbers = phone1;
-        }else if(phoneTwoNotBlank){
+        } else if (phoneTwoNotBlank) {
             transPhoneNumbers = phone2;
-        }else{
+        } else {
             transPhoneNumbers = "";
         }
         return transPhoneNumbers;

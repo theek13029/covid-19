@@ -7,25 +7,26 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
-    <body>
+    <h:body style="width: 100%;">
 
         <ui:composition template="/template.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
-                    <f:facet name="header" >
-                        <h:form>
+
+                <h:form >
+                    <p:panelGrid columns="2" style="width: 100%;" styleClass="alignTop" columnClasses="width50percent width50percent" >
+                        <f:facet name="header" >
                             <p:outputLabel value="Patient Data" ></p:outputLabel>
                             <p:spacer height="1" width="30"></p:spacer>
                             <p:commandButton value="To Edit Details" action="/client/client"
                                              style="float: right;">
                             </p:commandButton>
-                            <p:commandButton value="Add New Patient" action="#{clientController.toAddNewClientForNewCase()}" style="float: right;">
+                            <p:commandButton value="Add New Case" action="#{clientController.toAddNewClientForCaseEnrollment()}" style="float: right;">
                             </p:commandButton>
-                        </h:form>
-                    </f:facet>
+                            <p:commandButton value="Add New PCR/RAT Test" action="#{clientController.toAddNewClientForTestEnrollment()}" style="float: right;">
+                            </p:commandButton>
+                        </f:facet>
 
-                    <h:form >
                         <p:panelGrid columns="2" style="width: 100%; margin: auto;" >
                             <h:outputLabel value="Name" ></h:outputLabel>
                             <h:outputLabel value="#{clientController.selected.person.nameWithTitle}" ></h:outputLabel>
@@ -79,123 +80,44 @@
                             </h:outputLabel>
 
                         </p:panelGrid>
-                    </h:form>
 
-                    <h:form >
-                        <h:panelGrid columns="1" style="width: 100%; margin: auto;" >
-                            <f:facet name="header" >
-                                <p:outputLabel value="#{clientEncounterComponentFormSetController.dataFormset.dfs.name}" ></p:outputLabel>
-                            </f:facet>
-                            <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.forms.size() eq 1}" >
-                                <div style="#{clientEncounterComponentFormSetController.dataFormset.forms.get(0).df.css}" >
-                                    <ez:dataform_view form="#{clientEncounterComponentFormSetController.dataFormset.forms.get(0)}" ></ez:dataform_view>
-                                </div>
-                            </h:panelGroup>
+                        <p:panelGrid columns="1" style="width: 100%;" >
+                            <p:dataTable value="#{clientController.selectedClientEncounters}" 
+                                         var="c" paginator="true" rowKey="#{c.id}" rows="10" >
+                                <p:column headerText="Name" >
+                                    <p:outputLabel value="#{c.encounterDate}" >
+                                        <f:convertDateTime parent="dd MMMM yyyy" ></f:convertDateTime>
+                                    </p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Type" >
+                                    <p:outputLabel value="#{c.encounterType.label}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Number" >
+                                    <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Institution" >
+                                    <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Institution" >
+                                    <p:commandButton value="View" ajax="false" action="#{clientController.toFromFromEncounter()}" >
+                                        <f:setPropertyActionListener value="#{c}" 
+                                                                     target="#{clientController.selectedEncounter}" >
+                                        </f:setPropertyActionListener>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
 
-                            <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.forms.size() gt 1}" >
-                                <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.dfs.panelType  eq 'TabView_Left_Oriented' }" >
-                                    <p:tabView 
-                                        activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}"
-                                        orientation="left" style="width: 100%; padding: 5px;" 
-                                        value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
-                                        <p:tab title="#{f.df.name}" >
-                                            <div style="#{f.df.css}" >
-                                                <ez:dataform_view form="#{f}" ></ez:dataform_view>
-                                            </div>
-                                        </p:tab>
-                                        <p:ajax event="tabChange" process="@this"/>
-                                    </p:tabView>
-                                </h:panelGroup>
-                                <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'TabView_Bottom_Oriented'}" >
-                                    <p:tabView 
-                                        activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}"  
-                                        orientation="bottom" style="width: 100%; padding: 5px;" 
-                                        value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
-                                        <p:tab title="#{f.df.name}" >
-                                            <div style="#{f.df.css}" >
-                                                <ez:dataform_view form="#{f}" ></ez:dataform_view>
-                                            </div>
-                                        </p:tab>
-                                        <p:ajax event="tabChange" process="@this"/>
-                                    </p:tabView>
-                                </h:panelGroup>
-                                <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'Tabview_Top_Oriented'}" >
-                                    <p:tabView activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}"  orientation="top" style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
-                                        <p:tab title="#{f.df.name}" >
-                                            <div style="#{f.df.css}" >
-                                                <ez:dataform_view form="#{f}" ></ez:dataform_view>
-                                            </div>
-                                        </p:tab>
-                                        <p:ajax event="tabChange" process="@this"/>
-                                    </p:tabView>
-                                </h:panelGroup>
-                                <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'TabView_Right_Oriented'}" >
-                                    <p:tabView  activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}" orientation="right" style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
-                                        <p:tab title="#{f.df.name}" >
-                                            <div style="#{f.df.css}" >
-                                                <ez:dataform_view form="#{f}" ></ez:dataform_view>
-                                            </div>
-                                        </p:tab>
-                                        <p:ajax event="tabChange" process="@this"/>
-                                    </p:tabView>
-                                </h:panelGroup>
-                                <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'Accordion_Basic'}" >
-                                    <p:accordionPanel  activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}"  style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
-                                        <p:tab title="#{f.df.name}" >
-                                            <div style="#{f.df.css}" >
-                                                <ez:dataform_view form="#{f}" ></ez:dataform_view>
-                                            </div>
-                                        </p:tab>
-                                        <p:ajax event="tabChange" process="@this"/>
-                                    </p:accordionPanel>
-                                </h:panelGroup>
-                                <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'Accordion_Multiple'}" >
-                                    <p:accordionPanel multiple="true" style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
-                                        <p:tab title="#{f.df.name}" >
-                                            <div style="#{f.df.css}" >
-                                                <ez:dataform_view form="#{f}" ></ez:dataform_view>
-                                            </div>
-                                        </p:tab>
-                                        <p:ajax event="tabChange" process="@this"/>
-                                    </p:accordionPanel>
-                                </h:panelGroup>
-                            </h:panelGroup>
+                            <p:commandButton value="Fill New Case Data" action="#{clientController.toSelectedForCaseEnrollment()}" style="float: right;">
+                            </p:commandButton>
+                            <p:commandButton value="Fill New PCR/RAT Test" action="#{clientController.toSelectedForNewTestEnrollment()}" style="float: right;">
+                            </p:commandButton>
+                        </p:panelGrid>
 
-                        </h:panelGrid>
-                    </h:form>
+                    </p:panelGrid>
+                </h:form>
 
 
-                    <h:form>
-                        <p:dataTable value="#{clientController.selectedClientEncounters}" 
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10" >
-                            <p:column headerText="Name" >
-                                <p:outputLabel value="#{c.encounterDate}" >
-                                    <f:convertDateTime parent="dd MMMM yyyy" ></f:convertDateTime>
-                                </p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Type" >
-                                <p:outputLabel value="#{c.encounterType.label}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Number" >
-                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Institution" >
-                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Institution" >
-                                <p:commandButton value="View" ajax="false" action="#{clientController.toFromFromEncounter()}" >
-                                    <f:setPropertyActionListener value="#{c}" 
-                                                                 target="#{clientController.selectedEncounter}" >
-                                    </f:setPropertyActionListener>
-                                </p:commandButton>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-
-
-
-                </p:panelGrid>
             </ui:define>
         </ui:composition>
-    </body>
+    </h:body>
 </html>

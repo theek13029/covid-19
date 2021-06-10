@@ -349,6 +349,33 @@ public class ClientController implements Serializable {
         return "/client/client_case_enrollment";
     }
 
+    
+    public String toSelectedForCaseEnrollment() {
+        if(selected==null){
+            JsfUtil.addErrorMessage("Nothing Selected");
+            return "";
+        }
+        clearRegisterNewExistsValues();
+        selectedClientsClinics = null;
+        selectedClientEncounters = null;
+        selectedClinic = null;
+        yearMonthDay = new YearMonthDay();
+        userTransactionController.recordTransaction("to add a new client for case");
+        DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
+        if (dfs == null) {
+            JsfUtil.addErrorMessage("No Default Form Set");
+            return "";
+        }
+        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseEnrollmentFormsetToDataEntry(dfs);
+        if (cefs == null) {
+            JsfUtil.addErrorMessage("No Patient Form Set");
+            return "";
+        }
+        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        return "/client/client_case_enrollment";
+    }
+
+    
     public String toNewCaseEnrollmentFromEncounter() {
         if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("No encounter");
@@ -408,6 +435,33 @@ public class ClientController implements Serializable {
         return "/client/client_test_enrollment";
     }
 
+    public String toSelectedForNewTestEnrollment() {
+        if(selected==null){
+            JsfUtil.addErrorMessage("No Patient");
+            return "";
+        }
+        clearRegisterNewExistsValues();
+        selectedClientsClinics = null;
+        selectedClientEncounters = null;
+        selectedClinic = null;
+        yearMonthDay = new YearMonthDay();
+        userTransactionController.recordTransaction("to new test for selected client");
+        DesignComponentFormSet dfs = designComponentFormSetController.getFirstTestEnrollmentFormSet();
+        if (dfs == null) {
+            JsfUtil.addErrorMessage("No Default Form Set");
+            return "";
+        }
+        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewTestEnrollmentFormsetToDataEntry(dfs);
+        if (cefs == null) {
+            JsfUtil.addErrorMessage("No Patient Form Set");
+            return "";
+        }
+        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        return "/client/client_test_enrollment";
+    }
+
+    
+    
     public String toFromFromEncounter() {
         if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("Nothing selected");
