@@ -1785,21 +1785,23 @@ public class AreaController implements Serializable {
     }
 
     public List<Area> getAreas(String qry, AreaType areaType) {
-        switch (areaType) {
-            case District:
-                return areaApplicationController.completeDistricts(qry);
-            case GN:
-                return areaApplicationController.completeGnAreas(qry);
-            case MOH:
-                return areaApplicationController.completeMohAreas(qry);
-            case PHI:
-                return areaApplicationController.completePhiAreas(qry);
-            case PdhsArea:
-                return areaApplicationController.completePdhsAreas(qry);
-            case Province:
-                return areaApplicationController.completeProvinces(qry);
-            case RdhsAra:
-                return areaApplicationController.completeDistricts(qry);
+        if (areaType != null) {
+            switch (areaType) {
+                case District:
+                    return areaApplicationController.completeDistricts(qry);
+                case GN:
+                    return areaApplicationController.completeGnAreas(qry);
+                case MOH:
+                    return areaApplicationController.completeMohAreas(qry);
+                case PHI:
+                    return areaApplicationController.completePhiAreas(qry);
+                case PdhsArea:
+                    return areaApplicationController.completePdhsAreas(qry);
+                case Province:
+                    return areaApplicationController.completeProvinces(qry);
+                case RdhsAra:
+                    return areaApplicationController.completeDistricts(qry);
+            }
         }
         String j;
         Map m = new HashMap();
