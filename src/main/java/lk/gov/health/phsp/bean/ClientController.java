@@ -157,6 +157,8 @@ public class ClientController implements Serializable {
     private List<String> reservePhnList;
     private int intNo;
 
+    String continuedAddress = "";
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     public ClientController() {
@@ -327,7 +329,7 @@ public class ClientController implements Serializable {
         selected.setRetired(true);
         selected.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
         selected.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
-
+        selected.getPerson().setAddress(continuedAddress);
         saveClient(selected);
         clearRegisterNewExistsValues();
         selectedClientsClinics = null;
@@ -349,9 +351,8 @@ public class ClientController implements Serializable {
         return "/client/client_case_enrollment";
     }
 
-    
     public String toSelectedForCaseEnrollment() {
-        if(selected==null){
+        if (selected == null) {
             JsfUtil.addErrorMessage("Nothing Selected");
             return "";
         }
@@ -375,7 +376,6 @@ public class ClientController implements Serializable {
         return "/client/client_case_enrollment";
     }
 
-    
     public String toNewCaseEnrollmentFromEncounter() {
         if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("No encounter");
@@ -440,7 +440,6 @@ public class ClientController implements Serializable {
         return "/client/client_test_enrollment";
     }
 
-    
     public String toDeleteTestEncounter() {
         if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("No encounter");
@@ -455,7 +454,7 @@ public class ClientController implements Serializable {
         selectedEncounter.setRetiredBy(webUserController.getLoggedUser());
         encounterController.save(selectedEncounter);
         fillTestList();
-        selectedEncounter=null;
+        selectedEncounter = null;
         return "";
     }
 
@@ -473,16 +472,15 @@ public class ClientController implements Serializable {
         selectedEncounter.setRetiredBy(webUserController.getLoggedUser());
         encounterController.save(selectedEncounter);
         fillCaseList();
-        selectedEncounter=null;
+        selectedEncounter = null;
         return "";
     }
 
-    
-    
     public String toAddNewClientForTestEnrollment() {
         setSelected(new Client());
         selected.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
         selected.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        selected.getPerson().setAddress(continuedAddress);
 
         selected.setRetired(true);
         saveClient(selected);
@@ -507,7 +505,7 @@ public class ClientController implements Serializable {
     }
 
     public String toSelectedForNewTestEnrollment() {
-        if(selected==null){
+        if (selected == null) {
             JsfUtil.addErrorMessage("No Patient");
             return "";
         }
@@ -531,8 +529,6 @@ public class ClientController implements Serializable {
         return "/client/client_test_enrollment";
     }
 
-    
-    
     public String toFromFromEncounter() {
         if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("Nothing selected");
@@ -2344,6 +2340,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Nothing to save");
             return "";
         }
+        continuedAddress= getSelected().getPerson().getAddress();
         Institution createdIns = null;
         selected.setRetired(false);
         if (selected.getCreateInstitution() == null) {
@@ -2424,6 +2421,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Nothing to save");
             return "";
         }
+        continuedAddress= getSelected().getPerson().getAddress();
         Institution createdIns = null;
         selected.setRetired(false);
         if (selected.getCreateInstitution() == null) {
