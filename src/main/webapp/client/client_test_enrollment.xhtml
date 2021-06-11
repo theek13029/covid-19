@@ -178,28 +178,26 @@
                                     </p:column>
                                 </p:row>
                                 <p:row>
-                                    <p:column >
-                                        <p:outputLabel value="GN Area:" for="gn" />
+                                    <p:column colspan="2" >
+                                        <p:panelGrid columns="5" >
+                                            <p:outputLabel value="GN Area:" for="gn" />
+                                            <p:autoComplete tabindex="5" id="gn" value="#{clientController.selected.person.gnArea}"
+                                                            completeMethod="#{clientController.completeClientsMohArea}"
+                                                            var="gn" itemLabel="#{gn.name}" itemValue="#{gn}" inputStyle="width:30rem;"
+                                                            maxResults="20" forceSelection="true" placeholder="Not Known"
+                                                            minQueryLength="2">
+                                            </p:autoComplete>
+                                            <p:spacer height="1" width="2" ></p:spacer>
+                                             <p:outputLabel value="PHI Area:" for="phi" />
+                                             <p:autoComplete tabindex="5" id="phi" value="#{clientController.selected.person.phiArea}"
+                                                            completeMethod="#{clientController.completeClientsPhiArea}"
+                                                            var="gn" itemLabel="#{gn.name}" itemValue="#{gn}" inputStyle="width:30rem;"
+                                                            maxResults="20" forceSelection="true" placeholder="Not Known"
+                                                            minQueryLength="2">
+                                            </p:autoComplete>
+                                        </p:panelGrid>
                                     </p:column>
-                                    <p:column >
-                                        <p:autoComplete tabindex="5" id="gn" value="#{clientController.selected.person.gnArea}"
-                                                        completeMethod="#{clientController.completeClientsMohArea}"
-                                                        var="gn" itemLabel="#{gn.name}" itemValue="#{gn}" inputStyle="width:30rem;"
-                                                        maxResults="20" forceSelection="true" placeholder="Not Known"
-                                                        minQueryLength="2">
-                                            <p:column headerText="Name">
-                                                <p:outputLabel value="#{gn.name}"></p:outputLabel>
-                                            </p:column>
-                                            <p:column headerText="DS Division">
-                                                <p:outputLabel value="#{gn.parentArea.name}"></p:outputLabel>
-                                            </p:column>
-                                            <p:column headerText="District">
-                                                <p:outputLabel value="#{gn.parentArea.parentArea.name}"></p:outputLabel>
-                                            </p:column>
-                                        </p:autoComplete>
-                                    </p:column>
-                                    <p:column></p:column>
-
+                                    <p:column ></p:column>
                                     <p:column colspan="2" >
                                         <p:panelGrid >
                                             <p:row >

@@ -678,6 +678,20 @@ public class ClientController implements Serializable {
         }
     }
 
+    
+    public List<Area> completeClientsPhiArea(String qry) {
+        List<Area> areas = new ArrayList<>();
+        if (selected == null) {
+            return areas;
+        }
+        if (selected.getPerson().getMohArea() == null) {
+            return areaApplicationController.completePhiAreas(qry);
+        } else {
+            return areaApplicationController.completePhiAreasOfMoh(qry, selected.getPerson().getMohArea());
+        }
+    }
+
+    
     public void clearRegisterNewExistsValues() {
         phnExists = false;
         nicExists = false;
