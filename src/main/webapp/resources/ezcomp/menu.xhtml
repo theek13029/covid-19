@@ -41,6 +41,8 @@
                 <p:submenu label="Analysis" >
                     <p:menuitem ajax="false" value="Case List" action="#{clientController.toListCases()}" />
                     <p:menuitem ajax="false" value="Test List" action="#{clientController.toListTests()}" />
+                    <p:menuitem ajax="false" value="SMS" action="/sms/index" />
+
                     <p:menuitem ajax="false" value="Reports" 
                                 action="#{reportController.toViewReports()}" ></p:menuitem>
                     <p:menuitem ajax="false" value="Indicators" 
@@ -65,7 +67,7 @@
                     <p:menuitem value="Manage Areas" action="/area/index" ajax="false"    />
                     <p:menuitem value="Manage Metadata" action="/systemAdmin/manage_metadata_index"    ajax="false" />
                     <p:menuitem value="Manage Data" action="/systemAdmin/manage_data_index"    ajax="false" />
-                    <p:menuitem value="Manage Interfaces" action="/systemAdmin/interfaces"    ajax="false" />
+                    <p:menuitem value="Manage Preferences" action="/systemAdmin/preferences"    ajax="false" />
                     <p:menuitem value="Manage Analysis"  action="/queryComponent/index"     ajax="false" />
                 </p:submenu>
 
@@ -74,13 +76,11 @@
                     <p:menuitem value="Change My Details" action="#{webUserController.toChangeMyDetails()}"    ajax="false" />
                 </p:submenu>
 
-                <p:submenu label="Help" rendered="false" >
+                <p:submenu label="Help" >
                     <p:menuitem value="User Manual" action="/wiki"   ajax="false" />
-                    <p:menuitem value="Issue Tracker" url="https://github.com/lk-gov-health-hiu/pssp/issues"   ajax="false"  target="_blank" />
-                    <p:menuitem value="Troubleshooting" action="/troubleschooter"    ajax="false" />
                     <p:menuitem value="Feedback" action="/feedback"   ajax="false" />
                     <p:menuitem value="Contact us" action="/contact"   ajax="false" />
-                    <p:menuitem value="About us" action="/about_us"   ajax="false" />
+                    <p:menuitem value="About" action="/about_us"   ajax="false" />
                 </p:submenu>
 
 
@@ -119,6 +119,7 @@
                 <p:submenu label="Analysis" >
                     <p:menuitem ajax="false" value="Case List" action="#{clientController.toListCases()}" />
                     <p:menuitem ajax="false" value="Test List" action="#{clientController.toListTests()}" />
+                    <p:menuitem ajax="false" value="SMS" action="/sms/index" />
                     <p:menuitem ajax="false" value="Reports" 
                                 action="#{reportController.toViewReports()}" ></p:menuitem>
                     <p:menuitem ajax="false" value="Indicators" 
@@ -143,7 +144,7 @@
                     <p:menuitem value="Manage Areas" action="/area/index" ajax="false"    />
                     <p:menuitem value="Manage Metadata" action="/systemAdmin/manage_metadata_index"    ajax="false" />
                     <p:menuitem value="Manage Data" action="/systemAdmin/manage_data_index"    ajax="false" />
-                    <p:menuitem value="Manage Interfaces" action="/systemAdmin/preferences"    ajax="false" />
+                    <p:menuitem value="Manage Preferences" action="/systemAdmin/preferences"    ajax="false" />
                     <p:menuitem value="Manage Analysis"  action="/queryComponent/index"     ajax="false" />
                 </p:submenu>
 
@@ -152,7 +153,7 @@
                     <p:menuitem value="Change My Details" action="#{webUserController.toChangeMyDetails()}"    ajax="false" />
                 </p:submenu>
 
-                <p:submenu label="Help" rendered="false" >
+                <p:submenu label="Help" >
                     <p:menuitem value="User Manual" action="/wiki"   ajax="false" />
                     <p:menuitem value="Feedback" action="/feedback"   ajax="false" />
                     <p:menuitem value="Contact us" action="/contact"   ajax="false" />

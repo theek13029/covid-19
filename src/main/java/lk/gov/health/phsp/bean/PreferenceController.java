@@ -71,13 +71,13 @@ public class PreferenceController implements Serializable {
     }
 
     public void savePreferences(){
-        savePreference("dictionaryServiceBaseUrl", positiveRatSmsTemplate);
-        savePreference("dictionaryServiceKey", negativePcrSmsTemplate);
-        savePreference("facilityRegistryBaseUrl", negativeRatSmsTemplate);
-        savePreference("facilityRegistryKey", positivePcrSmsTemplate);
-        savePreference("procedureRoomBaseUrl", sentByErrorSmsTemplate);
-        savePreference("procedureRoomKey", positiveSmsTemplate);
-        savePreference("limsBaseUrl", negativeSmsTemplate);
+        savePreference("positiveRatSmsTemplate", positiveRatSmsTemplate);
+        savePreference("negativePcrSmsTemplate", negativePcrSmsTemplate);
+        savePreference("negativeRatSmsTemplate", negativeRatSmsTemplate);
+        savePreference("positivePcrSmsTemplate", positivePcrSmsTemplate);
+        savePreference("sentByErrorSmsTemplate", sentByErrorSmsTemplate);
+        savePreference("positiveSmsTemplate", positiveSmsTemplate);
+        savePreference("negativeSmsTemplate", negativeSmsTemplate);
         savePreference("limsKey", limsKey);
         savePreference("pharmacyBaseUrl", pharmacyBaseUrl);
         savePreference("pharmacyKey", pharmacyKey);

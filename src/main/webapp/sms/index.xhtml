@@ -10,7 +10,7 @@
         <ui:composition template="/template.xhtml">
             <ui:define name="content">
                 <h:form>
-                    <p:panelGrid columns="2" >
+                    <p:panelGrid columns="2" style="width: 100%;" styleClass="alignTop" >
                         <f:facet name="header" >
                             <p:outputLabel value="SMS Reports" ></p:outputLabel>
                         </f:facet>
@@ -20,7 +20,7 @@
                                              value="Successfully Sent SMS"   ></p:commandButton>
                         </p:panelGrid>
                         <ui:insert name="reports" >
-
+                            <h1> reports </h1>
                         </ui:insert>
                     </p:panelGrid>
                 </h:form>
