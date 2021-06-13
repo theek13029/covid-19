@@ -51,6 +51,7 @@ public class AreaApplicationController {
     private List<Area> rdhsAreas;
     private List<Area> pdhsAreas;
     private List<Area> mohAreas;
+    private List<Area> phiAreas;
     private List<Area> allAreas;
 
     /**
@@ -66,6 +67,7 @@ public class AreaApplicationController {
         rdhsAreas = null;
         pdhsAreas = null;
         mohAreas = null;
+        phiAreas=null;
         allAreas = null;
     }
 
@@ -110,6 +112,13 @@ public class AreaApplicationController {
         }
         return mohAreas;
     }
+    
+     public List<Area> getPhiAreas() {
+        if (phiAreas == null) {
+            phiAreas = getAllPhiAreas();
+        }
+        return phiAreas;
+    }
 
     public List<Area> getAllAreas() {
         if (allAreas == null) {
@@ -142,6 +151,16 @@ public class AreaApplicationController {
         List<Area> tas = new ArrayList<>();
         for (Area a : getAllAreas()) {
             if (a.getType() == AreaType.MOH) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+    
+    public List<Area> getAllPhiAreas() {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getAllAreas()) {
+            if (a.getType() == AreaType.PHI) {
                 tas.add(a);
             }
         }
@@ -258,6 +277,17 @@ public class AreaApplicationController {
         return tas;
     }
 
+    public List<Area> completePhiAreas(String qry) {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getPhiAreas()) {
+            if (a.getName().toLowerCase().contains(qry.trim().toLowerCase())) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+
+    
     public List<Area> completeGnAreas(String qry, Area dsArea) {
         List<Area> tas = new ArrayList<>();
         for (Area a : getGnAreas()) {
@@ -287,6 +317,25 @@ public class AreaApplicationController {
         return tas;
     }
 
+    
+    public List<Area> completePhiAreasOfMoh(String qry, Area moh) {
+        List<Area> tas = new ArrayList<>();
+        qry = qry.trim().toLowerCase();
+        for (Area a : getPhiAreas()) {
+            if (a.getName().toLowerCase().contains(qry)) {
+                if (a.getParentArea() != null & a.getParentArea().getParentArea() != null && a.getParentArea().getParentArea().equals(moh)) {
+                    tas.add(a);
+                    continue;
+                }
+                if (a.getMoh().equals(moh)) {
+                    tas.add(a);
+                }
+            }
+        }
+        return tas;
+    }
+
+    
     public List<Area> completeMohAreasOfDistrict(String qry, Area district) {
         List<Area> tas = new ArrayList<>();
         qry = qry.trim().toLowerCase();

@@ -109,6 +109,8 @@ public class Person implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Area phmArea;
     @ManyToOne(fetch = FetchType.LAZY)
+    private Area phiArea;
+    @ManyToOne(fetch = FetchType.LAZY)
     private Area mohArea;
     @ManyToOne(fetch = FetchType.LAZY)
     private Area district;
@@ -475,6 +477,8 @@ public class Person implements Serializable {
         this.website = website;
     }
 
+    
+    
     public String getDrivingLicenseNumber() {
         return drivingLicenseNumber;
     }
@@ -650,6 +654,14 @@ public class Person implements Serializable {
 
     public void setSsNumber(String ssNumber) {
         this.ssNumber = ssNumber;
+    }
+
+    public Area getPhiArea() {
+        return phiArea;
+    }
+
+    public void setPhiArea(Area phiArea) {
+        this.phiArea = phiArea;
     }
 
 }

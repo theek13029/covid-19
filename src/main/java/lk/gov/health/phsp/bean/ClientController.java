@@ -164,6 +164,8 @@ public class ClientController implements Serializable {
     private List<String> reservePhnList;
     private int intNo;
 
+    String continuedAddress = "";
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Constructors">
     public ClientController() {
@@ -373,7 +375,7 @@ public class ClientController implements Serializable {
         selected.setRetired(true);
         selected.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
         selected.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
-
+        selected.getPerson().setAddress(continuedAddress);
         saveClient(selected);
         clearRegisterNewExistsValues();
         selectedClientsClinics = null;
@@ -524,6 +526,7 @@ public class ClientController implements Serializable {
         setSelected(new Client());
         selected.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
         selected.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        selected.getPerson().setAddress(continuedAddress);
 
         selected.setRetired(true);
         saveClient(selected);
@@ -721,6 +724,20 @@ public class ClientController implements Serializable {
         }
     }
 
+    
+    public List<Area> completeClientsPhiArea(String qry) {
+        List<Area> areas = new ArrayList<>();
+        if (selected == null) {
+            return areas;
+        }
+        if (selected.getPerson().getMohArea() == null) {
+            return areaApplicationController.completePhiAreas(qry);
+        } else {
+            return areaApplicationController.completePhiAreasOfMoh(qry, selected.getPerson().getMohArea());
+        }
+    }
+
+    
     public void clearRegisterNewExistsValues() {
         phnExists = false;
         nicExists = false;
@@ -2383,6 +2400,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Nothing to save");
             return "";
         }
+        continuedAddress= getSelected().getPerson().getAddress();
         Institution createdIns = null;
         selected.setRetired(false);
         if (selected.getCreateInstitution() == null) {
@@ -2463,6 +2481,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Nothing to save");
             return "";
         }
+        continuedAddress= getSelected().getPerson().getAddress();
         Institution createdIns = null;
         selected.setRetired(false);
         if (selected.getCreateInstitution() == null) {

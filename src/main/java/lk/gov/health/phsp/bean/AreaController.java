@@ -223,7 +223,7 @@ public class AreaController implements Serializable {
             insMoh.setName("MOH Office " + line);
             insMoh.setInstitutionType(InstitutionType.MOH_Office);
             institutionController.save(insMoh);
-            
+
             Area newMoh = new Area();
             newMoh.setDistrict(district);
             newMoh.setProvince(province);
@@ -233,15 +233,14 @@ public class AreaController implements Serializable {
             newMoh.setType(AreaType.MOH);
             newMoh.setCode("moh_area_" + line);
             getFacade().create(newMoh);
-            
+
             insMoh.setMohArea(newMoh);
             insMoh.setDistrict(district);
             insMoh.setProvince(province);
             insMoh.setPdhsArea(pdhs);
             insMoh.setRdhsArea(rdhs);
             institutionController.save(insMoh);
-            
-            
+
             Person mohPerson = new Person();
             mohPerson.setName("MOH " + line);
             personController.save(mohPerson);
@@ -1786,6 +1785,24 @@ public class AreaController implements Serializable {
     }
 
     public List<Area> getAreas(String qry, AreaType areaType) {
+        if (areaType != null) {
+            switch (areaType) {
+                case District:
+                    return areaApplicationController.completeDistricts(qry);
+                case GN:
+                    return areaApplicationController.completeGnAreas(qry);
+                case MOH:
+                    return areaApplicationController.completeMohAreas(qry);
+                case PHI:
+                    return areaApplicationController.completePhiAreas(qry);
+                case PdhsArea:
+                    return areaApplicationController.completePdhsAreas(qry);
+                case Province:
+                    return areaApplicationController.completeProvinces(qry);
+                case RdhsAra:
+                    return areaApplicationController.completeDistricts(qry);
+            }
+        }
         String j;
         Map m = new HashMap();
         j = "select a "

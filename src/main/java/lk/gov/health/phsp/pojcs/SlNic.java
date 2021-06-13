@@ -65,7 +65,7 @@ public class SlNic {
                 sex = "Male";
             }
             Calendar c = Calendar.getInstance();
-            year = year;
+            year = year+ 1900;
             c.set(Calendar.YEAR, year);
             c.set(Calendar.MONTH, 0);
             c.set(Calendar.DATE, 1);
@@ -86,7 +86,6 @@ public class SlNic {
                 sex = "Female";
             }
             Calendar c = Calendar.getInstance();
-            year = year + 1900;
             c.set(Calendar.YEAR, year);
             c.set(Calendar.MONTH, 0);
             c.set(Calendar.DATE, 1);
