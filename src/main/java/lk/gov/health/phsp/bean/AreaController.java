@@ -82,6 +82,8 @@ public class AreaController implements Serializable {
     private Area rdhs;
     private Area pdhs;
 
+    private Institution rdhsInstitution;
+    
     private String bulkText;
 
     private UploadedFile file;
@@ -205,7 +207,7 @@ public class AreaController implements Serializable {
             JsfUtil.addErrorMessage("Text ?");
             return "";
         }
-        if (district == null || province == null || pdhs == null || rdhs == null) {
+        if (district == null || province == null || pdhs == null || rdhs == null || rdhsInstitution==null) {
             JsfUtil.addErrorMessage("Details ?");
             return "";
         }
@@ -222,6 +224,7 @@ public class AreaController implements Serializable {
             Institution insMoh = new Institution();
             insMoh.setName("MOH Office " + line);
             insMoh.setInstitutionType(InstitutionType.MOH_Office);
+            insMoh.setParent(rdhsInstitution);
             institutionController.save(insMoh);
 
             Area newMoh = new Area();
@@ -2251,6 +2254,8 @@ public class AreaController implements Serializable {
     public void setGnAreas(List<Area> gnAreas) {
         this.gnAreas = gnAreas;
     }
+    
+    
 
     public List<Area> getDistricts() {
         if (districts == null) {
@@ -2411,6 +2416,14 @@ public class AreaController implements Serializable {
 
     public void setBulkText(String bulkText) {
         this.bulkText = bulkText;
+    }
+
+    public Institution getRdhsInstitution() {
+        return rdhsInstitution;
+    }
+
+    public void setRdhsInstitution(Institution rdhsInstitution) {
+        this.rdhsInstitution = rdhsInstitution;
     }
 
     // </editor-fold>

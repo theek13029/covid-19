@@ -41,9 +41,16 @@
                                         itemLabel="#{d.name}"
                                         itemValue="#{d}" ></p:autoComplete>
 
-                        <p:outputLabel value="RDHS" ></p:outputLabel>
+                        <p:outputLabel value="RDHS Area" ></p:outputLabel>
                         <p:autoComplete value="#{areaController.rdhs}"
                                         completeMethod="#{areaApplicationController.completeRdhsAreas}"
+                                        var="rd"
+                                        itemLabel="#{rd.name}"
+                                        itemValue="#{rd}" ></p:autoComplete>
+                        
+                        <p:outputLabel value="Parent Institution" ></p:outputLabel>
+                        <p:autoComplete value="#{areaController.rdhsInstitution}"
+                                        completeMethod="#{institutionController.completeRdhs}"
                                         var="rd"
                                         itemLabel="#{rd.name}"
                                         itemValue="#{rd}" ></p:autoComplete>
