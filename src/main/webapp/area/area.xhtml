@@ -35,7 +35,7 @@
 
                             <p:outputLabel value="#{bundleClinical.EditAreaLabel_name}" for="name" />
                             <p:inputText id="name" value="#{areaController.selected.name}" autocomplete="off" title="#{bundleClinical.EditAreaTitle_name}" />
-                            
+
                             <p:outputLabel value="#{bundleClinical.EditAreaLabel_code}" for="code" />
                             <p:inputText id="code" value="#{areaController.selected.code}" autocomplete="off" title="#{bundleClinical.EditAreaTitle_code}" />
 
@@ -47,7 +47,44 @@
                             <p:autoComplete id="parentArea" value="#{areaController.selected.parentArea}"
                                             completeMethod="#{areaController.completeAreas}"
                                             var="parentAreaItem" itemLabel="#{parentAreaItem.name}"
-                                            itemValue="#{parentAreaItem}"></p:autoComplete>                            
+                                            itemValue="#{parentAreaItem}"></p:autoComplete>   
+
+                            <p:outputLabel value="PHI" />
+                            <p:autoComplete  value="#{areaController.selected.phi}"
+                                             completeMethod="#{areaController.completePhiAreas}"
+                                             var="parentAreaItem" itemLabel="#{parentAreaItem.name}"
+                                             itemValue="#{parentAreaItem}"></p:autoComplete>  
+
+
+                            <p:outputLabel value="MOH" />
+                            <p:autoComplete  value="#{areaController.selected.moh}"
+                                             completeMethod="#{areaController.completeMoh}"
+                                             var="parentAreaItem" itemLabel="#{parentAreaItem.name}"
+                                             itemValue="#{parentAreaItem}"></p:autoComplete>  
+
+                            <p:outputLabel value="RDHS" />
+                            <p:autoComplete  value="#{areaController.selected.rdhsArea}"
+                                             completeMethod="#{areaController.completeRdhsAreas}"
+                                             var="parentAreaItem" itemLabel="#{parentAreaItem.name}"
+                                             itemValue="#{parentAreaItem}"></p:autoComplete> 
+
+                            <p:outputLabel value="District" />
+                            <p:autoComplete  value="#{areaController.selected.district}"
+                                             completeMethod="#{areaController.completeDistricts}"
+                                             var="parentAreaItem" itemLabel="#{parentAreaItem.name}"
+                                             itemValue="#{parentAreaItem}"></p:autoComplete>  
+
+                            <p:outputLabel value="PDHS" />
+                            <p:autoComplete  value="#{areaController.selected.pdhsArea}"
+                                             completeMethod="#{areaController.completePdhsAreas}"
+                                             var="parentAreaItem" itemLabel="#{parentAreaItem.name}"
+                                             itemValue="#{parentAreaItem}"></p:autoComplete>  
+
+                            <p:outputLabel value="Province" />
+                            <p:autoComplete  value="#{areaController.selected.province}"
+                                             completeMethod="#{areaController.completeProvinces}"
+                                             var="parentAreaItem" itemLabel="#{parentAreaItem.name}"
+                                             itemValue="#{parentAreaItem}"></p:autoComplete>  
 
 
                             <p:outputLabel value="#{bundleClinical.EditAreaLabel_centreLongitude}" for="centreLongitude" />
