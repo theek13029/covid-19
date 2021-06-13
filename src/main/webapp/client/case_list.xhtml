@@ -28,6 +28,7 @@
                             <p:outputLabel value="MOH" rendered="#{clientController.institutionSelectable}" ></p:outputLabel>
                             <p:selectOneMenu value="#{clientController.institution}"  
                                              rendered="#{clientController.institutionSelectable and not clientController.nationalLevel}" >
+                                <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{webUserController.loggableInstitutions}" var="ins"
                                                itemLabel="#{ins.name}"
                                                itemValue="#{ins}"></f:selectItems>

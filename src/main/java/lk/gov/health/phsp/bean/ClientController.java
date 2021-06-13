@@ -3393,12 +3393,9 @@ public class ClientController implements Serializable {
             j += " and c.institution=:ins ";
             m.put("ins", webUserController.getLoggedUser().getInstitution());
         }
-
         j += " and c.encounterDate between :fd and :td "
                 + " and c.encounterType=:t "
                 + " order by c.id";
-
-        m.put("ins", institution);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("t", EncounterType.Test_Enrollment);
