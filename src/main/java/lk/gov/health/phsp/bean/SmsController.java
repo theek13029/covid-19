@@ -56,7 +56,7 @@ public class SmsController implements Serializable {
     public SmsController() {
     }
 
-    public void listSentSms() {
+    public String listSentSms() {
         String j = "select s "
                 + " from Sms s "
                 + " where s.retired=false "
@@ -72,6 +72,7 @@ public class SmsController implements Serializable {
             m.put("ins", institution);
         }
         smses = smsFacade.findByJpql(j, m);
+        return "/sms/sent_successfully";
     }
 
     public static String executePost(String targetURL, Map<String, Object> parameters) {
