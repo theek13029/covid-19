@@ -13,49 +13,38 @@
             <ui:define name="content">
                 <h:form>
 
-                    <p:panel header="Preferences" >
-                        <p:panelGrid columns="1" >
-                            <f:facet name="header" >
-                                <p:commandButton ajax="false" action="#{preferenceController.savePreferences()}" 
-                                                 value="SAVE" ></p:commandButton>
-                            </f:facet>
-                            <p:tabView orientation="left" >
-                                <p:tab title="Interfacing" >
-                                    <p:panelGrid columns="2" >
-                                        <f:facet name="header" >
-                                            <p:commandButton ajax="false" action="#{preferenceController.savePreferences()}" 
-                                                             value="SAVE" ></p:commandButton>
-                                        </f:facet>
+                    <p:panelGrid columns="1" style="width: 100%;">
+                        <f:facet name="header" >
+                            <p:commandButton ajax="false" action="#{preferenceController.savePreferences()}" 
+                                             value="SAVE" style="float: left;"></p:commandButton>
+                            <p:outputLabel value="Preferences" ></p:outputLabel>
 
-                                        <p:outputLabel value="Positive PCR SMS Template" ></p:outputLabel>
-                                        <p:inputText size="100" value="#{preferenceController.positivePcrSmsTemplate}" ></p:inputText>
-
-                                        <p:outputLabel value="Negative PCR SMS Tempalte" ></p:outputLabel>
-                                        <p:inputText  size="100" value="#{preferenceController.negativePcrSmsTemplate}" ></p:inputText>
-
-                                        <p:outputLabel value="Positive RAT SMS Template" ></p:outputLabel>
-                                        <p:inputText size="100" value="#{preferenceController.positivePcrSmsTemplate}"></p:inputText>
-                                        <p:outputLabel value="Negative RAT SMS Tempalte" ></p:outputLabel>
-                                        <p:inputText  size="100" value="#{preferenceController.negativePcrSmsTemplate}" ></p:inputText>
-
-                                        <p:outputLabel value="Sent By Error SMS Template" ></p:outputLabel>
-                                        <p:inputText size="100" value="#{preferenceController.sentByErrorSmsTemplate}"></p:inputText>
-
-                                        <p:outputLabel value="Positive SMS Template" ></p:outputLabel>
-                                        <p:inputText size="100" value="#{preferenceController.positiveSmsTemplate}"></p:inputText>
-                                        <p:outputLabel value="Negative SMS Tempalte" ></p:outputLabel>
-                                        <p:inputText  size="100" value="#{preferenceController.negativeSmsTemplate}" ></p:inputText>
-
-
-                                    </p:panelGrid>
-                                </p:tab>
-                            </p:tabView>
-                        </p:panelGrid>
-                    </p:panel>
+                        </f:facet>
 
 
 
 
+                        <p:outputLabel value="Positive PCR SMS Template" ></p:outputLabel>
+                        <p:inputText size="255" value="#{preferenceController.positivePcrSmsTemplate}" ></p:inputText>
+
+                        <p:outputLabel value="Negative PCR SMS Tempalte" ></p:outputLabel>
+                        <p:inputText  size="255" value="#{preferenceController.negativePcrSmsTemplate}" ></p:inputText>
+
+                        <p:outputLabel value="Positive RAT SMS Template" ></p:outputLabel>
+                        <p:inputText size="255" value="#{preferenceController.positiveRatSmsTemplate}"></p:inputText>
+                        <p:outputLabel value="Negative RAT SMS Tempalte" ></p:outputLabel>
+                        <p:inputText  size="255" value="#{preferenceController.negativeRatSmsTemplate}" ></p:inputText>
+
+                        <p:outputLabel value="Sent By Error SMS Template" ></p:outputLabel>
+                        <p:inputText size="255" value="#{preferenceController.sentByErrorSmsTemplate}"></p:inputText>
+
+                        <p:outputLabel value="Positive SMS Template" ></p:outputLabel>
+                        <p:inputText size="255" value="#{preferenceController.positiveSmsTemplate}"></p:inputText>
+                        <p:outputLabel value="Negative SMS Tempalte" ></p:outputLabel>
+                        <p:inputText  size="255" value="#{preferenceController.negativeSmsTemplate}" ></p:inputText>
+
+
+                    </p:panelGrid>
 
                 </h:form>
             </ui:define>

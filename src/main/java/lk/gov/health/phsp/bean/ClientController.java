@@ -240,6 +240,8 @@ public class ClientController implements Serializable {
             return;
         }
         selectedEncounterToMarkTest.setResultPositive(null);
+        selectedEncounterToMarkTest.setResultDate(new Date());
+        selectedEncounterToMarkTest.setResultDateTime( new Date());
         encounterFacade.edit(selectedEncounterToMarkTest);
         JsfUtil.addSuccessMessage("Marked as Not Received");
     }
@@ -250,6 +252,8 @@ public class ClientController implements Serializable {
             return;
         }
         selectedEncounterToMarkTest.setResultPositive(true);
+        selectedEncounterToMarkTest.setResultDate(new Date());
+        selectedEncounterToMarkTest.setResultDateTime( new Date());
         encounterFacade.edit(selectedEncounterToMarkTest);
         sendPositiveSms(selectedEncounterToMarkTest);
         JsfUtil.addSuccessMessage("Marked as Positive");
@@ -350,6 +354,12 @@ public class ClientController implements Serializable {
         s.setCreater(webUserController.getLoggedUser());
         s.setInstitution(webUserController.getLoggedUser().getInstitution());
         s.setReceipientNumber(number);
+        
+        System.out.println("smsTemplate = " + smsTemplate);
+        System.out.println("s = " + s);
+        System.out.println("s.getEncounter() = " + s.getEncounter());
+        System.out.println("s.getEncounter().getClient() = " + s.getEncounter().getClient());
+        
         smsTemplate = smsTemplate.replace("#{name}",s.getEncounter().getClient().getPerson().getName());
         smsTemplate = smsTemplate.replace("#{institution}",s.getEncounter().getInstitution().getName());
         smsTemplate = smsTemplate.replace("#{sampled_date}", CommonController.dateTimeToString(s.getEncounter().getEncounterDate()));
@@ -369,6 +379,8 @@ public class ClientController implements Serializable {
             return;
         }
         selectedEncounterToMarkTest.setResultPositive(false);
+        selectedEncounterToMarkTest.setResultDate(new Date());
+        selectedEncounterToMarkTest.setResultDateTime( new Date());
         encounterFacade.edit(selectedEncounterToMarkTest);
         sendNegativeSms(selectedEncounterToMarkTest);
         JsfUtil.addSuccessMessage("Marked as Negative");
