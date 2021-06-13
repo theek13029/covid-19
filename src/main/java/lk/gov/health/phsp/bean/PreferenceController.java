@@ -36,8 +36,8 @@ public class PreferenceController implements Serializable {
     private String negativeRatSmsTemplate;
     private String positivePcrSmsTemplate;
     private String sentByErrorSmsTemplate;
-    private String procedureRoomKey;
-    private String limsBaseUrl;
+    private String positiveSmsTemplate;
+    private String negativeSmsTemplate;
     private String limsKey;
     private String pharmacyBaseUrl;
     private String pharmacyKey;
@@ -62,8 +62,8 @@ public class PreferenceController implements Serializable {
         negativeRatSmsTemplate = findApplicationPreferanceValue(negativeRatSmsTemplate);
         positivePcrSmsTemplate = findApplicationPreferanceValue(positivePcrSmsTemplate);
         sentByErrorSmsTemplate = findApplicationPreferanceValue(sentByErrorSmsTemplate);
-        procedureRoomKey = findApplicationPreferanceValue(procedureRoomKey);
-        limsBaseUrl = findApplicationPreferanceValue(limsBaseUrl);
+        positiveSmsTemplate = findApplicationPreferanceValue(positiveSmsTemplate);
+        negativeSmsTemplate = findApplicationPreferanceValue(negativeSmsTemplate);
         limsKey = findApplicationPreferanceValue(limsKey);
         pharmacyBaseUrl = findApplicationPreferanceValue(pharmacyBaseUrl);
         pharmacyKey = findApplicationPreferanceValue(pharmacyKey);
@@ -76,8 +76,8 @@ public class PreferenceController implements Serializable {
         savePreference("facilityRegistryBaseUrl", negativeRatSmsTemplate);
         savePreference("facilityRegistryKey", positivePcrSmsTemplate);
         savePreference("procedureRoomBaseUrl", sentByErrorSmsTemplate);
-        savePreference("procedureRoomKey", procedureRoomKey);
-        savePreference("limsBaseUrl", limsBaseUrl);
+        savePreference("procedureRoomKey", positiveSmsTemplate);
+        savePreference("limsBaseUrl", negativeSmsTemplate);
         savePreference("limsKey", limsKey);
         savePreference("pharmacyBaseUrl", pharmacyBaseUrl);
         savePreference("pharmacyKey", pharmacyKey);
@@ -167,20 +167,20 @@ public class PreferenceController implements Serializable {
         this.sentByErrorSmsTemplate = sentByErrorSmsTemplate;
     }
 
-    public String getProcedureRoomKey() {
-        return procedureRoomKey;
+    public String getPositiveSmsTemplate() {
+        return positiveSmsTemplate;
     }
 
-    public void setProcedureRoomKey(String procedureRoomKey) {
-        this.procedureRoomKey = procedureRoomKey;
+    public void setPositiveSmsTemplate(String positiveSmsTemplate) {
+        this.positiveSmsTemplate = positiveSmsTemplate;
     }
 
-    public String getLimsBaseUrl() {
-        return limsBaseUrl;
+    public String getNegativeSmsTemplate() {
+        return negativeSmsTemplate;
     }
 
-    public void setLimsBaseUrl(String limsBaseUrl) {
-        this.limsBaseUrl = limsBaseUrl;
+    public void setNegativeSmsTemplate(String negativeSmsTemplate) {
+        this.negativeSmsTemplate = negativeSmsTemplate;
     }
 
     public String getLimsKey() {

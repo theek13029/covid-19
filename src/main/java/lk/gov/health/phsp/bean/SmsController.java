@@ -5,7 +5,6 @@
  */
 package lk.gov.health.phsp.bean;
 
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
@@ -20,9 +19,11 @@ import java.util.Set;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import javax.ejb.EJB;
 import javax.inject.Inject;
+import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Sms;
 import lk.gov.health.phsp.facade.SmsFacade;
 
@@ -45,12 +46,33 @@ public class SmsController implements Serializable {
     List<Sms> smses;
     List<SmsSummeryRow> smsSummeryRows;
 
+    private Date fromDate;
+    private Date toDate;
+    private Institution institution;
+
     /**
      * Creates a new instance of SmsController
      */
     public SmsController() {
     }
 
+    public void listSentSms() {
+        String j = "select s "
+                + " from Sms s "
+                + " where s.retired=false "
+                + " and s.createdAt between :fd and :td ";
+        Map m = new HashMap();
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        if (institution == null) {
+            j += " and s.institution in :inss ";
+            m.put("inss", webUserController.getLoggableInstitutions());
+        } else {
+            j += " and s.institution=:ins";
+            m.put("ins", institution);
+        }
+        smses = smsFacade.findByJpql(j, m);
+    }
 
     public static String executePost(String targetURL, Map<String, Object> parameters) {
         HttpURLConnection connection = null;
@@ -134,7 +156,6 @@ public class SmsController implements Serializable {
 
     }
 
-
     public List<SmsSummeryRow> getSmsSummeryRows() {
         return smsSummeryRows;
     }
@@ -147,7 +168,38 @@ public class SmsController implements Serializable {
         return commonFunctions;
     }
 
+    public Date getFromDate() {
+        if (fromDate == null) {
+            fromDate = CommonController.startOfTheDate();
+        }
+        return fromDate;
+    }
+
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public Date getToDate() {
+        if (toDate == null) {
+            toDate = CommonController.endOfTheDate();
+        }
+        return toDate;
+    }
+
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
+    }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
+
     public class SmsSummeryRow {
+
         String smsType;
         long count;
 
