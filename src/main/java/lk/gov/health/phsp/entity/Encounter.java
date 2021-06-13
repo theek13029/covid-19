@@ -66,6 +66,13 @@ public class Encounter implements Serializable {
     private boolean firstEncounter ;
 
     private Boolean resultPositive;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date resultDate;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date resultDateTime;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date resultMarkedUser;
+    
     
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date encounterDate;
@@ -375,10 +382,21 @@ public class Encounter implements Serializable {
     public void setClientEncounterComponentItems(List<ClientEncounterComponentItem> clientEncounterComponentItems) {
         this.clientEncounterComponentItems = clientEncounterComponentItems;
     }
-
+    
+    public ClientEncounterComponentItem getClientEncounterComponentItem(Item item){
+        for(ClientEncounterComponentItem i: getClientEncounterComponentItems()){
+            if(i.getItem().equals(item)){
+                return i;
+            }
+        }
+        return null;
+    }
+    
     public String getRetireComments() {
         return retireComments;
     }
+    
+    
 
     public void setRetireComments(String retireComments) {
         this.retireComments = retireComments;
@@ -390,6 +408,30 @@ public class Encounter implements Serializable {
 
     public void setResultPositive(Boolean resultPositive) {
         this.resultPositive = resultPositive;
+    }
+
+    public Date getResultDate() {
+        return resultDate;
+    }
+
+    public void setResultDate(Date resultDate) {
+        this.resultDate = resultDate;
+    }
+
+    public Date getResultDateTime() {
+        return resultDateTime;
+    }
+
+    public void setResultDateTime(Date resultDateTime) {
+        this.resultDateTime = resultDateTime;
+    }
+
+    public Date getResultMarkedUser() {
+        return resultMarkedUser;
+    }
+
+    public void setResultMarkedUser(Date resultMarkedUser) {
+        this.resultMarkedUser = resultMarkedUser;
     }
 
    

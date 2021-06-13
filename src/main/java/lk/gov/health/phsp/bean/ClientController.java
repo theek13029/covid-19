@@ -36,15 +36,18 @@ import jxl.Workbook;
 import jxl.read.biff.BiffException;
 import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.ClientEncounterComponentFormSet;
+import lk.gov.health.phsp.entity.ClientEncounterComponentItem;
 import lk.gov.health.phsp.entity.DesignComponentFormSet;
 import lk.gov.health.phsp.entity.Encounter;
 import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.entity.Person;
+import lk.gov.health.phsp.entity.Sms;
 import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.EncounterType;
 import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.facade.EncounterFacade;
+import lk.gov.health.phsp.facade.SmsFacade;
 import lk.gov.health.phsp.pojcs.ClientBasicData;
 import lk.gov.health.phsp.pojcs.SlNic;
 import lk.gov.health.phsp.pojcs.YearMonthDay;
@@ -62,6 +65,8 @@ public class ClientController implements Serializable {
     private lk.gov.health.phsp.facade.ClientFacade ejbFacade;
     @EJB
     private EncounterFacade encounterFacade;
+    @EJB
+    private SmsFacade smsFacade;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Controllers">
     @Inject
@@ -90,6 +95,10 @@ public class ClientController implements Serializable {
     UserTransactionController userTransactionController;
     @Inject
     DesignComponentFormSetController designComponentFormSetController;
+    @Inject
+    ClientEncounterComponentItemController clientEncounterComponentItemController;
+    @Inject
+    PreferenceController preferenceController;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Variables">
     private List<Client> items = null;
@@ -242,9 +251,118 @@ public class ClientController implements Serializable {
         }
         selectedEncounterToMarkTest.setResultPositive(true);
         encounterFacade.edit(selectedEncounterToMarkTest);
+        sendPositiveSms(selectedEncounterToMarkTest);
         JsfUtil.addSuccessMessage("Marked as Positive");
     }
 
+    public void sendPositiveSms(Encounter e) {
+        String number = "";
+        if (e == null) {
+            System.err.println("No encounter");
+            return;
+        }
+        if (e.getClient() == null) {
+            System.err.println("No Client");
+            return;
+        }
+        if (e.getClient().getPerson().getPhone1() != null && !e.getClient().getPerson().getPhone1().trim().equals("")) {
+            number = e.getClient().getPerson().getPhone1().trim();
+        } else if (e.getClient().getPerson().getPhone2() != null && !e.getClient().getPerson().getPhone2().trim().equals("")) {
+            number = e.getClient().getPerson().getPhone2().trim();
+        }else{
+            System.out.println("No Phone number");
+            return;
+        }
+        String smsType = "COVID-19 Positive SMS";
+        Item item = itemController.findItemByCode("test_type");
+        ClientEncounterComponentItem ceci =  e.getClientEncounterComponentItem(item);
+        String smsTemplate;
+        if(ceci==null || ceci.getItemValue()==null){
+            smsTemplate = preferenceController.getPositiveSmsTemplate() ;
+        }else if(ceci.getItemValue().equals(itemController.findItemByCode("covid19_pcr_test"))){
+            smsType = "Positive PCR SMS";
+            smsTemplate = preferenceController.getPositivePcrSmsTemplate();
+        }else if(ceci.getItemValue().equals(itemController.findItemByCode("covid19_rat"))){
+            smsTemplate = preferenceController.getPositiveRatSmsTemplate();
+            smsType = "Positive RAT SMS";
+        }else{
+            smsTemplate = preferenceController.getPositiveSmsTemplate();
+        }
+        
+        Sms s = new Sms();
+        s.setEncounter(e);
+        s.setCreatedAt(new Date());
+        s.setCreater(webUserController.getLoggedUser());
+        s.setInstitution(webUserController.getLoggedUser().getInstitution());
+        s.setReceipientNumber(number);
+        smsTemplate = smsTemplate.replace("#{name}",s.getEncounter().getClient().getPerson().getName());
+        smsTemplate = smsTemplate.replace("#{institution}",s.getEncounter().getInstitution().getName());
+        smsTemplate = smsTemplate.replace("#{sampled_date}", CommonController.dateTimeToString(s.getEncounter().getEncounterDate()));
+        smsTemplate = smsTemplate.replace("#{reported_date}",CommonController.dateTimeToString(s.getEncounter().getResultDate()));
+        String messageBody = smsTemplate;
+        s.setSendingMessage(messageBody);
+        s.setSentSuccessfully(false);
+        s.setAwaitingSending(true);
+        s.setSendingFailed(false);
+        s.setSmsType(smsType);
+        getSmsFacade().create(s);
+    }
+
+    
+    
+    public void sendNegativeSms(Encounter e) {
+        String number = "";
+        if (e == null) {
+            System.err.println("No encounter");
+            return;
+        }
+        if (e.getClient() == null) {
+            System.err.println("No Client");
+            return;
+        }
+        if (e.getClient().getPerson().getPhone1() != null && !e.getClient().getPerson().getPhone1().trim().equals("")) {
+            number = e.getClient().getPerson().getPhone1().trim();
+        } else if (e.getClient().getPerson().getPhone2() != null && !e.getClient().getPerson().getPhone2().trim().equals("")) {
+            number = e.getClient().getPerson().getPhone2().trim();
+        }else{
+            System.out.println("No Phone number");
+            return;
+        }
+        String smsType = "COVID-19 Negative SMS";
+        Item item = itemController.findItemByCode("test_type");
+        ClientEncounterComponentItem ceci =  e.getClientEncounterComponentItem(item);
+        String smsTemplate;
+        if(ceci==null || ceci.getItemValue()==null){
+            smsTemplate = preferenceController.getNegativeSmsTemplate() ;
+        }else if(ceci.getItemValue().equals(itemController.findItemByCode("covid19_pcr_test"))){
+            smsType = "Negative PCR SMS";
+            smsTemplate = preferenceController.getNegativePcrSmsTemplate();
+        }else if(ceci.getItemValue().equals(itemController.findItemByCode("covid19_rat"))){
+            smsTemplate = preferenceController.getNegativeRatSmsTemplate();
+            smsType = "Negative RAT SMS";
+        }else{
+            smsTemplate = preferenceController.getNegativeSmsTemplate();
+        }
+        
+        Sms s = new Sms();
+        s.setEncounter(e);
+        s.setCreatedAt(new Date());
+        s.setCreater(webUserController.getLoggedUser());
+        s.setInstitution(webUserController.getLoggedUser().getInstitution());
+        s.setReceipientNumber(number);
+        smsTemplate = smsTemplate.replace("#{name}",s.getEncounter().getClient().getPerson().getName());
+        smsTemplate = smsTemplate.replace("#{institution}",s.getEncounter().getInstitution().getName());
+        smsTemplate = smsTemplate.replace("#{sampled_date}", CommonController.dateTimeToString(s.getEncounter().getEncounterDate()));
+        smsTemplate = smsTemplate.replace("#{reported_date}",CommonController.dateTimeToString(s.getEncounter().getResultDate()));
+        String messageBody = smsTemplate;
+        s.setSendingMessage(messageBody);
+        s.setSentSuccessfully(false);
+        s.setAwaitingSending(true);
+        s.setSendingFailed(false);
+        s.setSmsType(smsType);
+        getSmsFacade().create(s);
+    }
+    
     public void markTestAsNegative() {
         if (selectedEncounterToMarkTest == null) {
             JsfUtil.addErrorMessage("Nothing to Mark");
@@ -252,6 +370,7 @@ public class ClientController implements Serializable {
         }
         selectedEncounterToMarkTest.setResultPositive(false);
         encounterFacade.edit(selectedEncounterToMarkTest);
+        sendNegativeSms(selectedEncounterToMarkTest);
         JsfUtil.addSuccessMessage("Marked as Negative");
     }
 
@@ -2652,6 +2771,8 @@ public class ClientController implements Serializable {
         return searchingId;
     }
 
+    
+    
     public void setSearchingId(String searchingId) {
         this.searchingId = searchingId;
     }
@@ -3369,6 +3490,14 @@ public class ClientController implements Serializable {
 
     public void setSelectedEncounter(Encounter selectedEncounter) {
         this.selectedEncounter = selectedEncounter;
+    }
+
+    public SmsFacade getSmsFacade() {
+        return smsFacade;
+    }
+
+    public void setSmsFacade(SmsFacade smsFacade) {
+        this.smsFacade = smsFacade;
     }
 
     // </editor-fold>

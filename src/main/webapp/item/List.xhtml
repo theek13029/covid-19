@@ -11,13 +11,13 @@
 
         <ui:define name="metadata">
             <h:form id="ItemListForm">
-                
+
                 <p:commandButton value="Download" ajax="false" >
                     <p:dataExporter target="datalist" type="xls" fileName="dictionary" ></p:dataExporter>
                 </p:commandButton>
                 <p:commandButton value="Reload" ajax="false" action="#{itemController.reloadItems()}" >
                 </p:commandButton>
-                
+
                 <p:panel header="#{bundleClinical.ListItemTitle}">
                     <p:dataTable id="datalist" value="#{itemController.items}" var="item"
                                  selectionMode="single" selection="#{itemController.selected}"
@@ -36,7 +36,7 @@
                             </f:facet>
                             <h:outputText value="#{item.id}"/>
                         </p:column>
-                        
+
                         <p:column filterBy="#{item.itemType.label}" filterMatchMode="contains" sortBy="#{item.itemType.label}">
                             <f:facet name="header">
                                 <h:outputText value="#{bundleClinical.ListItemTitle_itemType}"/>
@@ -78,12 +78,27 @@
                                 <h:outputText value="Parent"/>
                             </f:facet>
                             <h:outputText value="#{item.parent.name}"/>
+                            || <h:outputText value="#{item.parent.readOnly?'Yes':'No'}"/> ||
                         </p:column>
+
+                        <p:column  filterBy="#{item.readOnly}" >
+                            <f:facet name="header">
+                                <h:outputText value="Read Only"/>
+                            </f:facet>
+                            <h:outputText value="#{item.readOnly?'Yes':'No'}"/>
+                        </p:column>
+                        
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleClinical.Create}" actionListener="#{itemController.prepareCreate}" update=":ItemCreateForm" oncomplete="PF('ItemCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleClinical.View}" update=":ItemViewForm" oncomplete="PF('ItemViewDialog').show()" disabled="#{empty itemController.selected}"/>
                             <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleClinical.Edit}" update=":ItemEditForm" oncomplete="PF('ItemEditDialog').show()" disabled="#{empty itemController.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleClinical.Delete}" actionListener="#{itemController.destroy}" update="datalist" disabled="#{empty itemController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  
+                                             value="#{bundleClinical.Delete}" ajax="false"
+                                             actionListener="#{itemController.removeItem()}" 
+                                             update="datalist" 
+                                             disabled="#{empty itemController.selected}">
+                                <f:setPropertyActionListener value="#{itemController.selected}" target="#{itemController.removingItem}" ></f:setPropertyActionListener>
+                            </p:commandButton>
                         </f:facet>
                     </p:dataTable>
                 </p:panel>
@@ -92,14 +107,14 @@
             <ui:include src="Create.xhtml"/>
             <ui:include src="Edit.xhtml"/>
             <ui:include src="View.xhtml"/>
-            
-            
+
+
             <br/>
             <br/>
             <br/>
             <br/>
-            
-            
+
+
         </ui:define>
     </ui:composition>
 

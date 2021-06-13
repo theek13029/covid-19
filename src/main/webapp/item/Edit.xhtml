@@ -118,6 +118,15 @@
                             </p:panelGrid>
                         </p:tab>
 
+                        <p:tab title="Developer" >
+                            <p:panelGrid columns="2" >
+                                <p:outputLabel value="Read Only" ></p:outputLabel>
+                                <p:selectBooleanButton value="#{itemController.selected.readOnly}"
+                                                       onLabel="Yes" offLabel="No" 
+                                                       disabled="#{itemController.selected.readOnly}"></p:selectBooleanButton>
+                            </p:panelGrid>
+                        </p:tab>
+
 
                     </p:tabView>
 

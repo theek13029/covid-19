@@ -67,6 +67,8 @@ public class Item implements Serializable {
     @ManyToOne
     private Item parent;
 
+    private boolean readOnly;
+    
     @Lob
     private String descreption;
     private SelectionDataType dataType;
@@ -485,6 +487,14 @@ public class Item implements Serializable {
 
     public void setLocalCode(String localCode) {
         this.localCode = localCode;
+    }
+
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
     }
     
     
