@@ -33,11 +33,10 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import lk.gov.health.phsp.entity.Client;
 import lk.gov.health.phsp.entity.Component;
-import lk.gov.health.phsp.entity.DesignComponentFormItem;
 import lk.gov.health.phsp.entity.Encounter;
+import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.entity.Person;
 import lk.gov.health.phsp.entity.Prescription;
-import lk.gov.health.phsp.enums.DataPopulationStrategy;
 import lk.gov.health.phsp.enums.DataRepresentationType;
 import lk.gov.health.phsp.enums.RenderType;
 import lk.gov.health.phsp.enums.SelectionDataType;
@@ -74,6 +73,18 @@ public class ClientEncounterComponentItemController implements Serializable {
     }
     
   
+    
+    public ClientEncounterComponentItem findFirstCeciForEncounter(Encounter e, Item iem){
+        String jpql = "select i "
+                + " from ClientEncounterComponentItem i "
+                + " where i.parent.parent.encounter=:e "
+                + " and i.item=:item "
+                + " order by i.id";
+        Map m = new HashMap();
+        m.put("e", e);
+        m.put("item", iem);
+        return getFacade().findFirstByJpql(jpql, m);
+    }
 
     public void findClientEncounterComponentItemOfAFormset(ClientEncounterComponentFormSet fs) {
 

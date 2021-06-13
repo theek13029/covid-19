@@ -36,6 +36,7 @@ import jxl.Workbook;
 import jxl.read.biff.BiffException;
 import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.ClientEncounterComponentFormSet;
+import lk.gov.health.phsp.entity.ClientEncounterComponentItem;
 import lk.gov.health.phsp.entity.DesignComponentFormSet;
 import lk.gov.health.phsp.entity.Encounter;
 import lk.gov.health.phsp.entity.Institution;
@@ -94,6 +95,8 @@ public class ClientController implements Serializable {
     UserTransactionController userTransactionController;
     @Inject
     DesignComponentFormSetController designComponentFormSetController;
+    @Inject
+    ClientEncounterComponentItemController clientEncounterComponentItemController;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Variables">
     private List<Client> items = null;
@@ -265,6 +268,12 @@ public class ClientController implements Serializable {
             System.out.println("No Phone number");
             return;
         }
+        
+        Item item = itemController.findItemByCode("");
+        ClientEncounterComponentItem ceci = clientEncounterComponentItemController.findFirstCeciForEncounter(e, item);
+        
+        
+        
         Sms s = new Sms();
         s.setEncounter(e);
         s.setCreatedAt(new Date());

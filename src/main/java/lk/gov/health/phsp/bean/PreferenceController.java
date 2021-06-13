@@ -31,11 +31,11 @@ public class PreferenceController implements Serializable {
     @Inject
     private UserTransactionController userTransactionController;
 
-    private String dictionaryServiceBaseUrl;
-    private String dictionaryServiceKey;
-    private String facilityRegistryBaseUrl;
-    private String facilityRegistryKey;
-    private String procedureRoomBaseUrl;
+    private String positiveRatSmsTemplate;
+    private String negativePcrSmsTemplate;
+    private String negativeRatSmsTemplate;
+    private String positivePcrSmsTemplate;
+    private String sentByErrorSmsTemplate;
     private String procedureRoomKey;
     private String limsBaseUrl;
     private String limsKey;
@@ -57,11 +57,11 @@ public class PreferenceController implements Serializable {
     }
 
     public String toManagePreferences() {
-        dictionaryServiceBaseUrl = findApplicationPreferanceValue(dictionaryServiceBaseUrl);
-        dictionaryServiceKey = findApplicationPreferanceValue(dictionaryServiceKey);
-        facilityRegistryBaseUrl = findApplicationPreferanceValue(facilityRegistryBaseUrl);
-        facilityRegistryKey = findApplicationPreferanceValue(facilityRegistryKey);
-        procedureRoomBaseUrl = findApplicationPreferanceValue(procedureRoomBaseUrl);
+        positiveRatSmsTemplate = findApplicationPreferanceValue(positiveRatSmsTemplate);
+        negativePcrSmsTemplate = findApplicationPreferanceValue(negativePcrSmsTemplate);
+        negativeRatSmsTemplate = findApplicationPreferanceValue(negativeRatSmsTemplate);
+        positivePcrSmsTemplate = findApplicationPreferanceValue(positivePcrSmsTemplate);
+        sentByErrorSmsTemplate = findApplicationPreferanceValue(sentByErrorSmsTemplate);
         procedureRoomKey = findApplicationPreferanceValue(procedureRoomKey);
         limsBaseUrl = findApplicationPreferanceValue(limsBaseUrl);
         limsKey = findApplicationPreferanceValue(limsKey);
@@ -71,11 +71,11 @@ public class PreferenceController implements Serializable {
     }
 
     public void savePreferences(){
-        savePreference("dictionaryServiceBaseUrl", dictionaryServiceBaseUrl);
-        savePreference("dictionaryServiceKey", dictionaryServiceKey);
-        savePreference("facilityRegistryBaseUrl", facilityRegistryBaseUrl);
-        savePreference("facilityRegistryKey", facilityRegistryKey);
-        savePreference("procedureRoomBaseUrl", procedureRoomBaseUrl);
+        savePreference("dictionaryServiceBaseUrl", positiveRatSmsTemplate);
+        savePreference("dictionaryServiceKey", negativePcrSmsTemplate);
+        savePreference("facilityRegistryBaseUrl", negativeRatSmsTemplate);
+        savePreference("facilityRegistryKey", positivePcrSmsTemplate);
+        savePreference("procedureRoomBaseUrl", sentByErrorSmsTemplate);
         savePreference("procedureRoomKey", procedureRoomKey);
         savePreference("limsBaseUrl", limsBaseUrl);
         savePreference("limsKey", limsKey);
@@ -127,44 +127,44 @@ public class PreferenceController implements Serializable {
         }
     }
 
-    public String getDictionaryServiceBaseUrl() {
-        return dictionaryServiceBaseUrl;
+    public String getPositiveRatSmsTemplate() {
+        return positiveRatSmsTemplate;
     }
 
-    public void setDictionaryServiceBaseUrl(String dictionaryServiceBaseUrl) {
-        this.dictionaryServiceBaseUrl = dictionaryServiceBaseUrl;
+    public void setPositiveRatSmsTemplate(String positiveRatSmsTemplate) {
+        this.positiveRatSmsTemplate = positiveRatSmsTemplate;
     }
 
-    public String getDictionaryServiceKey() {
-        return dictionaryServiceKey;
+    public String getNegativePcrSmsTemplate() {
+        return negativePcrSmsTemplate;
     }
 
-    public void setDictionaryServiceKey(String dictionaryServiceKey) {
-        this.dictionaryServiceKey = dictionaryServiceKey;
+    public void setNegativePcrSmsTemplate(String negativePcrSmsTemplate) {
+        this.negativePcrSmsTemplate = negativePcrSmsTemplate;
     }
 
-    public String getFacilityRegistryBaseUrl() {
-        return facilityRegistryBaseUrl;
+    public String getNegativeRatSmsTemplate() {
+        return negativeRatSmsTemplate;
     }
 
-    public void setFacilityRegistryBaseUrl(String facilityRegistryBaseUrl) {
-        this.facilityRegistryBaseUrl = facilityRegistryBaseUrl;
+    public void setNegativeRatSmsTemplate(String negativeRatSmsTemplate) {
+        this.negativeRatSmsTemplate = negativeRatSmsTemplate;
     }
 
-    public String getFacilityRegistryKey() {
-        return facilityRegistryKey;
+    public String getPositivePcrSmsTemplate() {
+        return positivePcrSmsTemplate;
     }
 
-    public void setFacilityRegistryKey(String facilityRegistryKey) {
-        this.facilityRegistryKey = facilityRegistryKey;
+    public void setPositivePcrSmsTemplate(String positivePcrSmsTemplate) {
+        this.positivePcrSmsTemplate = positivePcrSmsTemplate;
     }
 
-    public String getProcedureRoomBaseUrl() {
-        return procedureRoomBaseUrl;
+    public String getSentByErrorSmsTemplate() {
+        return sentByErrorSmsTemplate;
     }
 
-    public void setProcedureRoomBaseUrl(String procedureRoomBaseUrl) {
-        this.procedureRoomBaseUrl = procedureRoomBaseUrl;
+    public void setSentByErrorSmsTemplate(String sentByErrorSmsTemplate) {
+        this.sentByErrorSmsTemplate = sentByErrorSmsTemplate;
     }
 
     public String getProcedureRoomKey() {

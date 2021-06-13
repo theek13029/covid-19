@@ -27,32 +27,20 @@
                                                              value="SAVE" ></p:commandButton>
                                         </f:facet>
 
-                                        <p:outputLabel value="Dictionary Service URL" ></p:outputLabel>
-                                        <p:inputText size="100" value="#{preferenceController.dictionaryServiceBaseUrl}" ></p:inputText>
+                                        <p:outputLabel value="Positive PCR SMS Template" ></p:outputLabel>
+                                        <p:inputText size="100" value="#{preferenceController.positivePcrSmsTemplate}" ></p:inputText>
 
-                                        <p:outputLabel value="Dictionary Service KEY" ></p:outputLabel>
-                                        <p:inputText  size="100" value="#{preferenceController.dictionaryServiceKey}" ></p:inputText>
+                                        <p:outputLabel value="Negative PCR SMS Tempalte" ></p:outputLabel>
+                                        <p:inputText  size="100" value="#{preferenceController.negativePcrSmsTemplate}" ></p:inputText>
 
-                                        <p:outputLabel value="Facility Registory URL" ></p:outputLabel>
-                                        <p:inputText size="100" value="#{preferenceController.facilityRegistryBaseUrl}"></p:inputText>
-                                        <p:outputLabel value="Facility Registory  KEY" ></p:outputLabel>
-                                        <p:inputText  size="100" value="#{preferenceController.facilityRegistryKey}" ></p:inputText>
+                                        <p:outputLabel value="Positive RAT SMS Template" ></p:outputLabel>
+                                        <p:inputText size="100" value="#{preferenceController.positivePcrSmsTemplate}"></p:inputText>
+                                        <p:outputLabel value="Negative RAT SMS Tempalte" ></p:outputLabel>
+                                        <p:inputText  size="100" value="#{preferenceController.negativePcrSmsTemplate}" ></p:inputText>
 
-                                        <p:outputLabel value="Procedure Room URL" ></p:outputLabel>
-                                        <p:inputText size="100" value="#{preferenceController.procedureRoomBaseUrl}"></p:inputText>
-                                        <p:outputLabel value="Procedure Room  KEY" ></p:outputLabel>
-                                        <p:inputText  size="100"  value="#{preferenceController.procedureRoomKey}"></p:inputText>
-
-                                        <p:outputLabel value="LIMS URL" ></p:outputLabel>
-                                        <p:inputText size="100" value="#{preferenceController.limsBaseUrl}"></p:inputText>
-                                        <p:outputLabel value="LIMS  KEY" ></p:outputLabel>
-                                        <p:inputText  size="100"  value="#{preferenceController.limsKey}"></p:inputText>
-
-                                        <p:outputLabel value="Pharmacy URL" ></p:outputLabel>
-                                        <p:inputText size="100" value="#{preferenceController.pharmacyBaseUrl}"></p:inputText>
-                                        <p:outputLabel value="Pharmacy KEY" ></p:outputLabel>
-                                        <p:inputText  size="100"  value="#{preferenceController.pharmacyKey}"></p:inputText>
-
+                                        <p:outputLabel value="Sent By Error SMS Template" ></p:outputLabel>
+                                        <p:inputText size="100" value="#{preferenceController.sentByErrorSmsTemplate}"></p:inputText>
+                                        
                                     </p:panelGrid>
                                 </p:tab>
                             </p:tabView>
