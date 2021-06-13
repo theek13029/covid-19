@@ -52,6 +52,9 @@
                             <p:column headerText="Address" >
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Phone" >
+                                <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
+                            </p:column>
                             <p:column id="result" headerText="Result" >
                                 <p:outputLabel rendered="#{c.resultPositive ne null}" value="#{c.resultPositive?'Yes':'No'}" ></p:outputLabel>
                                 <p:outputLabel rendered="#{c.resultPositive eq null}" value="Not Available" ></p:outputLabel>
