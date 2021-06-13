@@ -41,10 +41,12 @@ import lk.gov.health.phsp.entity.Encounter;
 import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.entity.Person;
+import lk.gov.health.phsp.entity.Sms;
 import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.EncounterType;
 import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.facade.EncounterFacade;
+import lk.gov.health.phsp.facade.SmsFacade;
 import lk.gov.health.phsp.pojcs.ClientBasicData;
 import lk.gov.health.phsp.pojcs.SlNic;
 import lk.gov.health.phsp.pojcs.YearMonthDay;
@@ -62,6 +64,8 @@ public class ClientController implements Serializable {
     private lk.gov.health.phsp.facade.ClientFacade ejbFacade;
     @EJB
     private EncounterFacade encounterFacade;
+    @EJB
+    private SmsFacade smsFacade;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Controllers">
     @Inject
@@ -243,6 +247,39 @@ public class ClientController implements Serializable {
         JsfUtil.addSuccessMessage("Marked as Positive");
     }
 
+    public void sendPositiveSms(Encounter e) {
+        String number = "";
+        if (e == null) {
+            System.err.println("No encounter");
+            return;
+        }
+        if (e.getClient() == null) {
+            System.err.println("No Client");
+            return;
+        }
+        if (e.getClient().getPerson().getPhone1() != null && !e.getClient().getPerson().getPhone1().trim().equals("")) {
+            number = e.getClient().getPerson().getPhone1().trim();
+        } else if (e.getClient().getPerson().getPhone2() != null && !e.getClient().getPerson().getPhone2().trim().equals("")) {
+            number = e.getClient().getPerson().getPhone2().trim();
+        }else{
+            System.out.println("No Phone number");
+            return;
+        }
+        Sms s = new Sms();
+        s.setEncounter(e);
+        s.setCreatedAt(new Date());
+        s.setCreater(webUserController.getLoggedUser());
+        s.setInstitution(webUserController.getLoggedUser().getInstitution());
+        s.setReceipientNumber(number);
+        String messageBody = "Your test has been reported as Positive. The relevant Officers will contact you.";
+        s.setSendingMessage(messageBody);
+        s.setSentSuccessfully(false);
+        s.setAwaitingSending(true);
+        s.setSendingFailed(false);
+        s.setSmsType("PCR Positive SMS");
+        getSmsFacade().create(s);
+    }
+
     public void markTestAsNegative() {
         if (selectedEncounterToMarkTest == null) {
             JsfUtil.addErrorMessage("Nothing to Mark");
@@ -349,9 +386,8 @@ public class ClientController implements Serializable {
         return "/client/client_case_enrollment";
     }
 
-    
     public String toSelectedForCaseEnrollment() {
-        if(selected==null){
+        if (selected == null) {
             JsfUtil.addErrorMessage("Nothing Selected");
             return "";
         }
@@ -375,7 +411,6 @@ public class ClientController implements Serializable {
         return "/client/client_case_enrollment";
     }
 
-    
     public String toNewCaseEnrollmentFromEncounter() {
         if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("No encounter");
@@ -440,7 +475,6 @@ public class ClientController implements Serializable {
         return "/client/client_test_enrollment";
     }
 
-    
     public String toDeleteTestEncounter() {
         if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("No encounter");
@@ -455,7 +489,7 @@ public class ClientController implements Serializable {
         selectedEncounter.setRetiredBy(webUserController.getLoggedUser());
         encounterController.save(selectedEncounter);
         fillTestList();
-        selectedEncounter=null;
+        selectedEncounter = null;
         return "";
     }
 
@@ -473,12 +507,10 @@ public class ClientController implements Serializable {
         selectedEncounter.setRetiredBy(webUserController.getLoggedUser());
         encounterController.save(selectedEncounter);
         fillCaseList();
-        selectedEncounter=null;
+        selectedEncounter = null;
         return "";
     }
 
-    
-    
     public String toAddNewClientForTestEnrollment() {
         setSelected(new Client());
         selected.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
@@ -507,7 +539,7 @@ public class ClientController implements Serializable {
     }
 
     public String toSelectedForNewTestEnrollment() {
-        if(selected==null){
+        if (selected == null) {
             JsfUtil.addErrorMessage("No Patient");
             return "";
         }
@@ -531,8 +563,6 @@ public class ClientController implements Serializable {
         return "/client/client_test_enrollment";
     }
 
-    
-    
     public String toFromFromEncounter() {
         if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("Nothing selected");
@@ -2640,6 +2670,8 @@ public class ClientController implements Serializable {
         return searchingId;
     }
 
+    
+    
     public void setSearchingId(String searchingId) {
         this.searchingId = searchingId;
     }
@@ -3357,6 +3389,14 @@ public class ClientController implements Serializable {
 
     public void setSelectedEncounter(Encounter selectedEncounter) {
         this.selectedEncounter = selectedEncounter;
+    }
+
+    public SmsFacade getSmsFacade() {
+        return smsFacade;
+    }
+
+    public void setSmsFacade(SmsFacade smsFacade) {
+        this.smsFacade = smsFacade;
     }
 
     // </editor-fold>
