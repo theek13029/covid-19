@@ -107,8 +107,8 @@ public class ClientController implements Serializable {
     private List<ClientBasicData> selectedClientsWithBasicData = null;
     private List<Client> importedClients = null;
 
-    boolean institutionSelectable;
-    boolean institutionListIsAutocomplete;
+    Boolean institutionSelectable;
+    Boolean nationalLevel;
 
     private List<ClientBasicData> selectedClientsBasic = null;
 
@@ -241,7 +241,7 @@ public class ClientController implements Serializable {
         }
         selectedEncounterToMarkTest.setResultPositive(null);
         selectedEncounterToMarkTest.setResultDate(new Date());
-        selectedEncounterToMarkTest.setResultDateTime( new Date());
+        selectedEncounterToMarkTest.setResultDateTime(new Date());
         encounterFacade.edit(selectedEncounterToMarkTest);
         JsfUtil.addSuccessMessage("Marked as Not Received");
     }
@@ -253,7 +253,7 @@ public class ClientController implements Serializable {
         }
         selectedEncounterToMarkTest.setResultPositive(true);
         selectedEncounterToMarkTest.setResultDate(new Date());
-        selectedEncounterToMarkTest.setResultDateTime( new Date());
+        selectedEncounterToMarkTest.setResultDateTime(new Date());
         encounterFacade.edit(selectedEncounterToMarkTest);
         sendPositiveSms(selectedEncounterToMarkTest);
         JsfUtil.addSuccessMessage("Marked as Positive");
@@ -273,36 +273,36 @@ public class ClientController implements Serializable {
             number = e.getClient().getPerson().getPhone1().trim();
         } else if (e.getClient().getPerson().getPhone2() != null && !e.getClient().getPerson().getPhone2().trim().equals("")) {
             number = e.getClient().getPerson().getPhone2().trim();
-        }else{
+        } else {
             System.out.println("No Phone number");
             return;
         }
         String smsType = "COVID-19 Positive SMS";
         Item item = itemController.findItemByCode("test_type");
-        ClientEncounterComponentItem ceci =  e.getClientEncounterComponentItem(item);
+        ClientEncounterComponentItem ceci = e.getClientEncounterComponentItem(item);
         String smsTemplate;
-        if(ceci==null || ceci.getItemValue()==null){
-            smsTemplate = preferenceController.getPositiveSmsTemplate() ;
-        }else if(ceci.getItemValue().equals(itemController.findItemByCode("covid19_pcr_test"))){
+        if (ceci == null || ceci.getItemValue() == null) {
+            smsTemplate = preferenceController.getPositiveSmsTemplate();
+        } else if (ceci.getItemValue().equals(itemController.findItemByCode("covid19_pcr_test"))) {
             smsType = "Positive PCR SMS";
             smsTemplate = preferenceController.getPositivePcrSmsTemplate();
-        }else if(ceci.getItemValue().equals(itemController.findItemByCode("covid19_rat"))){
+        } else if (ceci.getItemValue().equals(itemController.findItemByCode("covid19_rat"))) {
             smsTemplate = preferenceController.getPositiveRatSmsTemplate();
             smsType = "Positive RAT SMS";
-        }else{
+        } else {
             smsTemplate = preferenceController.getPositiveSmsTemplate();
         }
-        
+        smsTemplate = "The PCR Test of #{name} done on #{reported_date} was Positive for COVID-19. Relevant Officers will contact you. #{institution}";
         Sms s = new Sms();
         s.setEncounter(e);
         s.setCreatedAt(new Date());
         s.setCreater(webUserController.getLoggedUser());
         s.setInstitution(webUserController.getLoggedUser().getInstitution());
         s.setReceipientNumber(number);
-        smsTemplate = smsTemplate.replace("#{name}",s.getEncounter().getClient().getPerson().getName());
-        smsTemplate = smsTemplate.replace("#{institution}",s.getEncounter().getInstitution().getName());
+        smsTemplate = smsTemplate.replace("#{name}", s.getEncounter().getClient().getPerson().getName());
+        smsTemplate = smsTemplate.replace("#{institution}", s.getEncounter().getInstitution().getName());
         smsTemplate = smsTemplate.replace("#{sampled_date}", CommonController.dateTimeToString(s.getEncounter().getEncounterDate()));
-        smsTemplate = smsTemplate.replace("#{reported_date}",CommonController.dateTimeToString(s.getEncounter().getResultDate()));
+        smsTemplate = smsTemplate.replace("#{reported_date}", CommonController.dateTimeToString(s.getEncounter().getResultDate()));
         String messageBody = smsTemplate;
         s.setSendingMessage(messageBody);
         s.setSentSuccessfully(false);
@@ -312,8 +312,6 @@ public class ClientController implements Serializable {
         getSmsFacade().create(s);
     }
 
-    
-    
     public void sendNegativeSms(Encounter e) {
         String number = "";
         if (e == null) {
@@ -328,42 +326,42 @@ public class ClientController implements Serializable {
             number = e.getClient().getPerson().getPhone1().trim();
         } else if (e.getClient().getPerson().getPhone2() != null && !e.getClient().getPerson().getPhone2().trim().equals("")) {
             number = e.getClient().getPerson().getPhone2().trim();
-        }else{
+        } else {
             System.out.println("No Phone number");
             return;
         }
         String smsType = "COVID-19 Negative SMS";
         Item item = itemController.findItemByCode("test_type");
-        ClientEncounterComponentItem ceci =  e.getClientEncounterComponentItem(item);
+        ClientEncounterComponentItem ceci = e.getClientEncounterComponentItem(item);
         String smsTemplate;
-        if(ceci==null || ceci.getItemValue()==null){
-            smsTemplate = preferenceController.getNegativeSmsTemplate() ;
-        }else if(ceci.getItemValue().equals(itemController.findItemByCode("covid19_pcr_test"))){
+        if (ceci == null || ceci.getItemValue() == null) {
+            smsTemplate = preferenceController.getNegativeSmsTemplate();
+        } else if (ceci.getItemValue().equals(itemController.findItemByCode("covid19_pcr_test"))) {
             smsType = "Negative PCR SMS";
             smsTemplate = preferenceController.getNegativePcrSmsTemplate();
-        }else if(ceci.getItemValue().equals(itemController.findItemByCode("covid19_rat"))){
+        } else if (ceci.getItemValue().equals(itemController.findItemByCode("covid19_rat"))) {
             smsTemplate = preferenceController.getNegativeRatSmsTemplate();
             smsType = "Negative RAT SMS";
-        }else{
+        } else {
             smsTemplate = preferenceController.getNegativeSmsTemplate();
         }
-        
+
         Sms s = new Sms();
         s.setEncounter(e);
         s.setCreatedAt(new Date());
         s.setCreater(webUserController.getLoggedUser());
         s.setInstitution(webUserController.getLoggedUser().getInstitution());
         s.setReceipientNumber(number);
-        
+
         System.out.println("smsTemplate = " + smsTemplate);
         System.out.println("s = " + s);
         System.out.println("s.getEncounter() = " + s.getEncounter());
         System.out.println("s.getEncounter().getClient() = " + s.getEncounter().getClient());
-        
-        smsTemplate = smsTemplate.replace("#{name}",s.getEncounter().getClient().getPerson().getName());
-        smsTemplate = smsTemplate.replace("#{institution}",s.getEncounter().getInstitution().getName());
+
+        smsTemplate = smsTemplate.replace("#{name}", s.getEncounter().getClient().getPerson().getName());
+        smsTemplate = smsTemplate.replace("#{institution}", s.getEncounter().getInstitution().getName());
         smsTemplate = smsTemplate.replace("#{sampled_date}", CommonController.dateTimeToString(s.getEncounter().getEncounterDate()));
-        smsTemplate = smsTemplate.replace("#{reported_date}",CommonController.dateTimeToString(s.getEncounter().getResultDate()));
+        smsTemplate = smsTemplate.replace("#{reported_date}", CommonController.dateTimeToString(s.getEncounter().getResultDate()));
         String messageBody = smsTemplate;
         s.setSendingMessage(messageBody);
         s.setSentSuccessfully(false);
@@ -372,7 +370,7 @@ public class ClientController implements Serializable {
         s.setSmsType(smsType);
         getSmsFacade().create(s);
     }
-    
+
     public void markTestAsNegative() {
         if (selectedEncounterToMarkTest == null) {
             JsfUtil.addErrorMessage("Nothing to Mark");
@@ -380,7 +378,7 @@ public class ClientController implements Serializable {
         }
         selectedEncounterToMarkTest.setResultPositive(false);
         selectedEncounterToMarkTest.setResultDate(new Date());
-        selectedEncounterToMarkTest.setResultDateTime( new Date());
+        selectedEncounterToMarkTest.setResultDateTime(new Date());
         encounterFacade.edit(selectedEncounterToMarkTest);
         sendNegativeSms(selectedEncounterToMarkTest);
         JsfUtil.addSuccessMessage("Marked as Negative");
@@ -809,7 +807,6 @@ public class ClientController implements Serializable {
         }
     }
 
-    
     public List<Area> completeClientsPhiArea(String qry) {
         List<Area> areas = new ArrayList<>();
         if (selected == null) {
@@ -822,7 +819,6 @@ public class ClientController implements Serializable {
         }
     }
 
-    
     public void clearRegisterNewExistsValues() {
         phnExists = false;
         nicExists = false;
@@ -2485,7 +2481,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Nothing to save");
             return "";
         }
-        continuedAddress= getSelected().getPerson().getAddress();
+        continuedAddress = getSelected().getPerson().getAddress();
         Institution createdIns = null;
         selected.setRetired(false);
         if (selected.getCreateInstitution() == null) {
@@ -2566,7 +2562,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Nothing to save");
             return "";
         }
-        continuedAddress= getSelected().getPerson().getAddress();
+        continuedAddress = getSelected().getPerson().getAddress();
         Institution createdIns = null;
         selected.setRetired(false);
         if (selected.getCreateInstitution() == null) {
@@ -2783,8 +2779,6 @@ public class ClientController implements Serializable {
         return searchingId;
     }
 
-    
-    
     public void setSearchingId(String searchingId) {
         this.searchingId = searchingId;
     }
@@ -3320,16 +3314,18 @@ public class ClientController implements Serializable {
         return tm;
     }
 
-    public String toListCases() {
+    private void prepareSelectionPrivileges() {
         switch (webUserController.getLoggedUser().getWebUserRole()) {
             case Moh:
             case Nurse:
             case Phi:
             case Phm:
             case Client:
+            case Hospital_Admin:
+            case Hospital_User:
                 institution = webUserController.getLoggedUser().getInstitution();
                 institutionSelectable = false;
-                institutionListIsAutocomplete = false;
+                nationalLevel = false;
                 break;
             case ChiefEpidemiologist:
             case Epidemiologist:
@@ -3338,45 +3334,22 @@ public class ClientController implements Serializable {
             case User:
                 institution = null;
                 institutionSelectable = true;
-                institutionListIsAutocomplete = false;
+                nationalLevel = true;
                 break;
             case Pdhs:
             case Rdhs:
             case Re:
                 institution = null;
                 institutionSelectable = true;
-                institutionListIsAutocomplete = true;
+                nationalLevel = false;
         }
+    }
+
+    public String toListCases() {
         return "/client/case_list";
     }
 
     public String toListTests() {
-        switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case Moh:
-            case Nurse:
-            case Phi:
-            case Phm:
-            case Client:
-                institution = webUserController.getLoggedUser().getInstitution();
-                institutionSelectable = false;
-                institutionListIsAutocomplete = false;
-                break;
-            case ChiefEpidemiologist:
-            case Epidemiologist:
-            case Super_User:
-            case System_Administrator:
-            case User:
-                institution = null;
-                institutionSelectable = true;
-                institutionListIsAutocomplete = false;
-                break;
-            case Pdhs:
-            case Rdhs:
-            case Re:
-                institution = null;
-                institutionSelectable = true;
-                institutionListIsAutocomplete = true;
-        }
         return "/client/test_list";
     }
 
@@ -3397,14 +3370,32 @@ public class ClientController implements Serializable {
     }
 
     public void fillTestList() {
+        Map m = new HashMap();
         String j = "select c from Encounter c "
-                + " where c.retired=false"
-                + " and c.institution=:ins "
-                + " and c.encounterDate between :fd and :td "
+                + " where c.retired=false";
+        if (getInstitutionSelectable()) {
+            if (getNationalLevel()) {
+                if (getInstitution() == null) {
+                } else {
+                    j += " and c.institution = :ins ";
+                    m.put("ins", getInstitution());
+                }
+            } else {
+                if (getInstitution() == null) {
+                    j += " and c.institution in :inss ";
+                    m.put("inss", webUserController.getLoggableInstitutions());
+                } else {
+                    j += " and c.institution = :ins ";
+                    m.put("ins", getInstitution());
+                }
+            }
+        } else {
+            j += " and c.institution=:ins ";
+            m.put("ins", webUserController.getLoggedUser().getInstitution());
+        }
+        j += " and c.encounterDate between :fd and :td "
                 + " and c.encounterType=:t "
                 + " order by c.id";
-        Map m = new HashMap();
-        m.put("ins", institution);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("t", EncounterType.Test_Enrollment);
@@ -3412,14 +3403,35 @@ public class ClientController implements Serializable {
     }
 
     public void fillCaseList() {
+        Map m = new HashMap();
         String j = "select c from Encounter c "
-                + " where c.retired=false"
-                + " and c.institution=:ins "
-                + " and c.encounterDate between :fd and :td "
+                + " where c.retired=false";
+        if (getInstitutionSelectable()) {
+
+            if (getNationalLevel()) {
+                if (getInstitution() == null) {
+                } else {
+                    j += " and c.institution = :ins ";
+                    m.put("ins", getInstitution());
+                }
+            } else {
+                if (getInstitution() == null) {
+                    j += " and c.institution in :inss ";
+                    m.put("inss", webUserController.getLoggableInstitutions());
+                } else {
+                    j += " and c.institution = :ins ";
+                    m.put("ins", getInstitution());
+                }
+            }
+        } else {
+            j += " and c.institution=:ins ";
+            m.put("ins", webUserController.getLoggedUser().getInstitution());
+        }
+
+        j += " and c.encounterDate between :fd and :td "
                 + " and c.encounterType=:t "
                 + " order by c.id";
-        Map m = new HashMap();
-        m.put("ins", institution);
+
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("t", EncounterType.Case_Enrollment);
@@ -3464,20 +3476,26 @@ public class ClientController implements Serializable {
         this.testEnrollmentsToMark = testEnrollmentsToMark;
     }
 
-    public boolean isInstitutionSelectable() {
+    public Boolean getInstitutionSelectable() {
+        if (institutionSelectable == null) {
+            prepareSelectionPrivileges();
+        }
         return institutionSelectable;
     }
 
-    public void setInstitutionSelectable(boolean institutionSelectable) {
+    public void setInstitutionSelectable(Boolean institutionSelectable) {
         this.institutionSelectable = institutionSelectable;
     }
 
-    public boolean isInstitutionListIsAutocomplete() {
-        return institutionListIsAutocomplete;
+    public Boolean getNationalLevel() {
+        if (nationalLevel == null) {
+            prepareSelectionPrivileges();
+        }
+        return nationalLevel;
     }
 
-    public void setInstitutionListIsAutocomplete(boolean institutionListIsAutocomplete) {
-        this.institutionListIsAutocomplete = institutionListIsAutocomplete;
+    public void setNationalLevel(Boolean nationalLevel) {
+        this.nationalLevel = nationalLevel;
     }
 
     public List<Encounter> getTestList() {

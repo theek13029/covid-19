@@ -31,22 +31,12 @@
                     <p:menuitem ajax="false" value="Test Result Entering" action="#{clientController.toEnterTestResults()}" />
                 </p:submenu>
 
-                <p:submenu label="Returns"  >
-                    <p:menuitem ajax="false" value="Mark Nil Return for Cases" action="#{clientController.markNilReturnForCases()}"  />
-                    <p:menuitem ajax="false" value="Mark Nil Return for Tests" action="#{clientController.markNilReturnForTests()}"  />
-                    <p:menuitem ajax="false" value="Reverse Nil Return for Cases" action="#{clientController.reverseNilReturnForCases()}" />
-                    <p:menuitem ajax="false" value="Reverse Nil Return for Tests" action="#{clientController.reverseNilReturnForTests()}" />
-                </p:submenu>
-
-                <p:submenu label="Analysis" >
+                <p:submenu label="Reports" >
                     <p:menuitem ajax="false" value="Case List" action="#{clientController.toListCases()}" />
                     <p:menuitem ajax="false" value="Test List" action="#{clientController.toListTests()}" />
                     <p:menuitem ajax="false" value="SMS" action="/sms/index" />
-
-                    <p:menuitem ajax="false" value="Reports" 
+                    <p:menuitem ajax="false" value="Analysis" 
                                 action="#{reportController.toViewReports()}" ></p:menuitem>
-                    <p:menuitem ajax="false" value="Indicators" 
-                                action="#{indicatorController.toIndicatorIndex}" ></p:menuitem>
                 </p:submenu>
 
 
@@ -67,7 +57,7 @@
                     <p:menuitem value="Manage Areas" action="/area/index" ajax="false"    />
                     <p:menuitem value="Manage Metadata" action="/systemAdmin/manage_metadata_index"    ajax="false" />
                     <p:menuitem value="Manage Data" action="/systemAdmin/manage_data_index"    ajax="false" />
-                    <p:menuitem value="Manage Preferences" action="/systemAdmin/preferences"    ajax="false" />
+                    <p:menuitem value="Manage Preferences" action="#{preferenceController.toManagePreferences()}"    ajax="false" />
                     <p:menuitem value="Manage Analysis"  action="/queryComponent/index"     ajax="false" />
                 </p:submenu>
 
@@ -109,21 +99,12 @@
                     <p:menuitem ajax="false" value="Test Result Entering" action="#{clientController.toEnterTestResults()}" />
                 </p:submenu>
 
-                <p:submenu label="Returns" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
-                    <p:menuitem ajax="false" value="Mark Nil Return for Cases" action="#{clientController.markNilReturnForCases()}"  />
-                    <p:menuitem ajax="false" value="Mark Nil Return for Tests" action="#{clientController.markNilReturnForTests()}"  />
-                    <p:menuitem ajax="false" value="Reverse Nil Return for Cases" action="#{clientController.reverseNilReturnForCases()}" />
-                    <p:menuitem ajax="false" value="Reverse Nil Return for Tests" action="#{clientController.reverseNilReturnForTests()}" />
-                </p:submenu>
-
-                <p:submenu label="Analysis" >
+                <p:submenu label="Reports" >
                     <p:menuitem ajax="false" value="Case List" action="#{clientController.toListCases()}" />
                     <p:menuitem ajax="false" value="Test List" action="#{clientController.toListTests()}" />
                     <p:menuitem ajax="false" value="SMS" action="/sms/index" />
-                    <p:menuitem ajax="false" value="Reports" 
+                    <p:menuitem ajax="false" value="Analysis" 
                                 action="#{reportController.toViewReports()}" ></p:menuitem>
-                    <p:menuitem ajax="false" value="Indicators" 
-                                action="#{indicatorController.toIndicatorIndex}" ></p:menuitem>
                 </p:submenu>
 
 
@@ -144,7 +125,7 @@
                     <p:menuitem value="Manage Areas" action="/area/index" ajax="false"    />
                     <p:menuitem value="Manage Metadata" action="/systemAdmin/manage_metadata_index"    ajax="false" />
                     <p:menuitem value="Manage Data" action="/systemAdmin/manage_data_index"    ajax="false" />
-                    <p:menuitem value="Manage Preferences" action="/systemAdmin/preferences"    ajax="false" />
+                    <p:menuitem value="Manage Preferences" action="#{preferenceController.toManagePreferences()}"    ajax="false" />
                     <p:menuitem value="Manage Analysis"  action="/queryComponent/index"     ajax="false" />
                 </p:submenu>
 

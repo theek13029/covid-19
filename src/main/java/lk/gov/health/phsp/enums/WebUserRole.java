@@ -40,7 +40,9 @@ public enum WebUserRole {
     Epidemiologist("Epidemiologist"),
     Nurse("Nurse"),
     ChiefEpidemiologist("Midwife"),
-    Client("Client");
+    Client("Client"),
+    Hospital_Admin("Hospital User"),
+    Hospital_User("Hospital Admin");
 
     private final String label;
     
