@@ -292,7 +292,7 @@ public class ClientController implements Serializable {
         } else {
             smsTemplate = preferenceController.getPositiveSmsTemplate();
         }
-
+        smsTemplate = "The PCR Test of #{name} done on #{reported_date} was Positive for COVID-19. Relevant Officers will contact you. #{institution}";
         Sms s = new Sms();
         s.setEncounter(e);
         s.setCreatedAt(new Date());
@@ -3377,7 +3377,7 @@ public class ClientController implements Serializable {
             if (getNationalLevel()) {
                 if (getInstitution() == null) {
                 } else {
-                    j += " and c.institution in :ins ";
+                    j += " and c.institution = :ins ";
                     m.put("ins", getInstitution());
                 }
             } else {
@@ -3385,7 +3385,7 @@ public class ClientController implements Serializable {
                     j += " and c.institution in :inss ";
                     m.put("inss", webUserController.getLoggableInstitutions());
                 } else {
-                    j += " and c.institution in :ins ";
+                    j += " and c.institution = :ins ";
                     m.put("ins", getInstitution());
                 }
             }
@@ -3411,7 +3411,7 @@ public class ClientController implements Serializable {
             if (getNationalLevel()) {
                 if (getInstitution() == null) {
                 } else {
-                    j += " and c.institution in :ins ";
+                    j += " and c.institution = :ins ";
                     m.put("ins", getInstitution());
                 }
             } else {
@@ -3419,7 +3419,7 @@ public class ClientController implements Serializable {
                     j += " and c.institution in :inss ";
                     m.put("inss", webUserController.getLoggableInstitutions());
                 } else {
-                    j += " and c.institution in :ins ";
+                    j += " and c.institution = :ins ";
                     m.put("ins", getInstitution());
                 }
             }
