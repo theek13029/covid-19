@@ -63,16 +63,16 @@ public class PreferenceController implements Serializable {
 
     public void loadPreferences() {
         System.out.println("loadPreferences");
-        positiveRatSmsTemplate = findApplicationPreferanceValue(positiveRatSmsTemplate);
-        negativePcrSmsTemplate = findApplicationPreferanceValue(negativePcrSmsTemplate);
-        negativeRatSmsTemplate = findApplicationPreferanceValue(negativeRatSmsTemplate);
-        positivePcrSmsTemplate = findApplicationPreferanceValue(positivePcrSmsTemplate);
-        sentByErrorSmsTemplate = findApplicationPreferanceValue(sentByErrorSmsTemplate);
-        positiveSmsTemplate = findApplicationPreferanceValue(positiveSmsTemplate);
-        negativeSmsTemplate = findApplicationPreferanceValue(negativeSmsTemplate);
-        limsKey = findApplicationPreferanceValue(limsKey);
-        pharmacyBaseUrl = findApplicationPreferanceValue(pharmacyBaseUrl);
-        pharmacyKey = findApplicationPreferanceValue(pharmacyKey);
+        positiveRatSmsTemplate = findApplicationPreferanceValue("positiveRatSmsTemplate");
+        negativePcrSmsTemplate = findApplicationPreferanceValue("negativePcrSmsTemplate");
+        negativeRatSmsTemplate = findApplicationPreferanceValue("negativeRatSmsTemplate");
+        positivePcrSmsTemplate = findApplicationPreferanceValue("positivePcrSmsTemplate");
+        sentByErrorSmsTemplate = findApplicationPreferanceValue("sentByErrorSmsTemplate");
+        positiveSmsTemplate = findApplicationPreferanceValue("positiveSmsTemplate");
+        negativeSmsTemplate = findApplicationPreferanceValue("negativeSmsTemplate");
+        limsKey = findApplicationPreferanceValue("limsKey");
+        pharmacyBaseUrl = findApplicationPreferanceValue("pharmacyBaseUrl");
+        pharmacyKey = findApplicationPreferanceValue("pharmacyKey");
     }
 
     public void savePreferences() {
