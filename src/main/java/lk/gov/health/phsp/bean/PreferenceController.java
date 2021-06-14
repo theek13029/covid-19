@@ -47,6 +47,7 @@ public class PreferenceController implements Serializable {
     }
 
     public String findApplicationPreferanceValue(String name) {
+        System.out.println("findApplicationPreferanceValue");
         Preference p = findApplicationPreferance(name);
         if (p != null) {
             return p.getLongTextValue();
@@ -61,6 +62,7 @@ public class PreferenceController implements Serializable {
     }
 
     public void loadPreferences() {
+        System.out.println("loadPreferences");
         positiveRatSmsTemplate = findApplicationPreferanceValue(positiveRatSmsTemplate);
         negativePcrSmsTemplate = findApplicationPreferanceValue(negativePcrSmsTemplate);
         negativeRatSmsTemplate = findApplicationPreferanceValue(negativeRatSmsTemplate);
@@ -87,6 +89,7 @@ public class PreferenceController implements Serializable {
     }
 
     public Preference findApplicationPreferance(String name) {
+        System.out.println("findApplicationPreferance");
         if (name == null) {
             return null;
         }
@@ -98,6 +101,7 @@ public class PreferenceController implements Serializable {
         m.put("ap", true);
         m.put("n", name);
         Preference p = getFacade().findFirstByJpql(j, m);
+        System.out.println("p = " + p);
         if (p == null) {
             p = new Preference();
             p.setApplicationPreferance(true);
