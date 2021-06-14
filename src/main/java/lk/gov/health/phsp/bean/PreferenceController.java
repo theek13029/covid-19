@@ -1,6 +1,5 @@
 package lk.gov.health.phsp.bean;
 
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,6 +56,11 @@ public class PreferenceController implements Serializable {
     }
 
     public String toManagePreferences() {
+        loadPreferences();
+        return "/systemAdmin/preferences";
+    }
+
+    public void loadPreferences() {
         positiveRatSmsTemplate = findApplicationPreferanceValue(positiveRatSmsTemplate);
         negativePcrSmsTemplate = findApplicationPreferanceValue(negativePcrSmsTemplate);
         negativeRatSmsTemplate = findApplicationPreferanceValue(negativeRatSmsTemplate);
@@ -67,10 +71,9 @@ public class PreferenceController implements Serializable {
         limsKey = findApplicationPreferanceValue(limsKey);
         pharmacyBaseUrl = findApplicationPreferanceValue(pharmacyBaseUrl);
         pharmacyKey = findApplicationPreferanceValue(pharmacyKey);
-        return "/systemAdmin/preferences";
     }
 
-    public void savePreferences(){
+    public void savePreferences() {
         savePreference("positiveRatSmsTemplate", positiveRatSmsTemplate);
         savePreference("negativePcrSmsTemplate", negativePcrSmsTemplate);
         savePreference("negativeRatSmsTemplate", negativeRatSmsTemplate);
@@ -82,7 +85,7 @@ public class PreferenceController implements Serializable {
         savePreference("pharmacyBaseUrl", pharmacyBaseUrl);
         savePreference("pharmacyKey", pharmacyKey);
     }
-    
+
     public Preference findApplicationPreferance(String name) {
         if (name == null) {
             return null;
@@ -128,6 +131,9 @@ public class PreferenceController implements Serializable {
     }
 
     public String getPositiveRatSmsTemplate() {
+        if(positiveRatSmsTemplate==null){
+            loadPreferences();
+        }
         return positiveRatSmsTemplate;
     }
 
@@ -136,6 +142,9 @@ public class PreferenceController implements Serializable {
     }
 
     public String getNegativePcrSmsTemplate() {
+        if(negativePcrSmsTemplate==null){
+            loadPreferences();
+        }
         return negativePcrSmsTemplate;
     }
 
@@ -144,6 +153,9 @@ public class PreferenceController implements Serializable {
     }
 
     public String getNegativeRatSmsTemplate() {
+        if(negativeRatSmsTemplate==null){
+            loadPreferences();
+        }
         return negativeRatSmsTemplate;
     }
 
@@ -152,6 +164,9 @@ public class PreferenceController implements Serializable {
     }
 
     public String getPositivePcrSmsTemplate() {
+        if(positivePcrSmsTemplate==null){
+            loadPreferences();
+        }
         return positivePcrSmsTemplate;
     }
 
@@ -160,6 +175,9 @@ public class PreferenceController implements Serializable {
     }
 
     public String getSentByErrorSmsTemplate() {
+        if(sentByErrorSmsTemplate==null){
+            loadPreferences();
+        }
         return sentByErrorSmsTemplate;
     }
 
@@ -168,6 +186,9 @@ public class PreferenceController implements Serializable {
     }
 
     public String getPositiveSmsTemplate() {
+        if(positiveSmsTemplate==null){
+            loadPreferences();
+        }
         return positiveSmsTemplate;
     }
 
@@ -176,6 +197,9 @@ public class PreferenceController implements Serializable {
     }
 
     public String getNegativeSmsTemplate() {
+        if(negativeSmsTemplate==null){
+            loadPreferences();
+        }
         return negativeSmsTemplate;
     }
 

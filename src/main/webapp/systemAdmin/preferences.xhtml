@@ -18,11 +18,7 @@
                             <p:commandButton ajax="false" action="#{preferenceController.savePreferences()}" 
                                              value="SAVE" style="float: left;"></p:commandButton>
                             <p:outputLabel value="Preferences" ></p:outputLabel>
-
                         </f:facet>
-
-
-
 
                         <p:outputLabel value="Positive PCR SMS Template" ></p:outputLabel>
                         <p:inputText size="255" value="#{preferenceController.positivePcrSmsTemplate}" ></p:inputText>
@@ -40,9 +36,9 @@
 
                         <p:outputLabel value="Positive SMS Template" ></p:outputLabel>
                         <p:inputText size="255" value="#{preferenceController.positiveSmsTemplate}"></p:inputText>
+                        
                         <p:outputLabel value="Negative SMS Tempalte" ></p:outputLabel>
                         <p:inputText  size="255" value="#{preferenceController.negativeSmsTemplate}" ></p:inputText>
-
 
                     </p:panelGrid>
 
