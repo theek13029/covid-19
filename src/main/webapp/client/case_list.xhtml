@@ -54,7 +54,7 @@
                             <p:column headerText="No" >
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Serial" >
+                            <p:column headerText="Serial" sortBy="#{c.encounterNumber}" >
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Name" >

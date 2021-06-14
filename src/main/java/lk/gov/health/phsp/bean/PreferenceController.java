@@ -48,6 +48,7 @@ public class PreferenceController implements Serializable {
 
     public String findApplicationPreferanceValue(String name) {
         System.out.println("findApplicationPreferanceValue");
+        System.out.println("name = " + name);
         Preference p = findApplicationPreferance(name);
         if (p != null) {
             return p.getLongTextValue();
@@ -63,16 +64,17 @@ public class PreferenceController implements Serializable {
 
     public void loadPreferences() {
         System.out.println("loadPreferences");
-        positiveRatSmsTemplate = findApplicationPreferanceValue(positiveRatSmsTemplate);
-        negativePcrSmsTemplate = findApplicationPreferanceValue(negativePcrSmsTemplate);
-        negativeRatSmsTemplate = findApplicationPreferanceValue(negativeRatSmsTemplate);
-        positivePcrSmsTemplate = findApplicationPreferanceValue(positivePcrSmsTemplate);
-        sentByErrorSmsTemplate = findApplicationPreferanceValue(sentByErrorSmsTemplate);
-        positiveSmsTemplate = findApplicationPreferanceValue(positiveSmsTemplate);
-        negativeSmsTemplate = findApplicationPreferanceValue(negativeSmsTemplate);
-        limsKey = findApplicationPreferanceValue(limsKey);
-        pharmacyBaseUrl = findApplicationPreferanceValue(pharmacyBaseUrl);
-        pharmacyKey = findApplicationPreferanceValue(pharmacyKey);
+        System.out.println("loadPreferences");
+        positiveRatSmsTemplate = findApplicationPreferanceValue("positiveRatSmsTemplate");
+        negativePcrSmsTemplate = findApplicationPreferanceValue("negativePcrSmsTemplate");
+        negativeRatSmsTemplate = findApplicationPreferanceValue("negativeRatSmsTemplate");
+        positivePcrSmsTemplate = findApplicationPreferanceValue("positivePcrSmsTemplate");
+        sentByErrorSmsTemplate = findApplicationPreferanceValue("sentByErrorSmsTemplate");
+        positiveSmsTemplate = findApplicationPreferanceValue("positiveSmsTemplate");
+        negativeSmsTemplate = findApplicationPreferanceValue("negativeSmsTemplate");
+        limsKey = findApplicationPreferanceValue("limsKey");
+        pharmacyBaseUrl = findApplicationPreferanceValue("pharmacyBaseUrl");
+        pharmacyKey = findApplicationPreferanceValue("pharmacyKey");
     }
 
     public void savePreferences() {
@@ -90,6 +92,7 @@ public class PreferenceController implements Serializable {
 
     public Preference findApplicationPreferance(String name) {
         System.out.println("findApplicationPreferance");
+        System.out.println("name = " + name);
         if (name == null) {
             return null;
         }
@@ -135,7 +138,7 @@ public class PreferenceController implements Serializable {
     }
 
     public String getPositiveRatSmsTemplate() {
-        if(positiveRatSmsTemplate==null){
+        if (positiveRatSmsTemplate == null) {
             loadPreferences();
         }
         return positiveRatSmsTemplate;
@@ -146,7 +149,7 @@ public class PreferenceController implements Serializable {
     }
 
     public String getNegativePcrSmsTemplate() {
-        if(negativePcrSmsTemplate==null){
+        if (negativePcrSmsTemplate == null) {
             loadPreferences();
         }
         return negativePcrSmsTemplate;
@@ -157,7 +160,7 @@ public class PreferenceController implements Serializable {
     }
 
     public String getNegativeRatSmsTemplate() {
-        if(negativeRatSmsTemplate==null){
+        if (negativeRatSmsTemplate == null) {
             loadPreferences();
         }
         return negativeRatSmsTemplate;
@@ -168,7 +171,7 @@ public class PreferenceController implements Serializable {
     }
 
     public String getPositivePcrSmsTemplate() {
-        if(positivePcrSmsTemplate==null){
+        if (positivePcrSmsTemplate == null) {
             loadPreferences();
         }
         return positivePcrSmsTemplate;
@@ -179,7 +182,7 @@ public class PreferenceController implements Serializable {
     }
 
     public String getSentByErrorSmsTemplate() {
-        if(sentByErrorSmsTemplate==null){
+        if (sentByErrorSmsTemplate == null) {
             loadPreferences();
         }
         return sentByErrorSmsTemplate;
@@ -190,7 +193,7 @@ public class PreferenceController implements Serializable {
     }
 
     public String getPositiveSmsTemplate() {
-        if(positiveSmsTemplate==null){
+        if (positiveSmsTemplate == null) {
             loadPreferences();
         }
         return positiveSmsTemplate;
@@ -201,7 +204,7 @@ public class PreferenceController implements Serializable {
     }
 
     public String getNegativeSmsTemplate() {
-        if(negativeSmsTemplate==null){
+        if (negativeSmsTemplate == null) {
             loadPreferences();
         }
         return negativeSmsTemplate;

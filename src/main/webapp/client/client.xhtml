@@ -24,15 +24,31 @@
 
                         <p:panelGrid columns="1" style="width: 100%;  background-color: yellow;" >
 
-                            <p:focus context="demography"/>
-                            <p:panelGrid id="demography"  style="text-align: left; width: 100%;">
+                            <p:panelGrid  style="text-align: left; width: 100%;">
+                                <f:facet name="header" >
+                                    <p:commandButton ajax="false" action="#{clientController.saveClientAndCaseEnrollment()}" value="Save" ></p:commandButton>
+                                </f:facet>
                                 <p:row >
                                     <p:column >
                                         <p:outputLabel value="Name:" for="name" />
                                     </p:column>
-                                    <p:column  >
-                                        <p:inputText autocomplete="off" style="width: 30rem;" tabindex="1"
+                                    <p:column colspan="4" >
+                                        <p:inputText autocomplete="off" style="width: 40rem;"
                                                      id="name" required="true" value="#{clientController.selected.person.name}" title="Name" />
+                                    </p:column>
+
+                                </p:row>
+
+                                <p:row>
+                                    <p:column >
+                                        <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
+                                    </p:column>
+                                    <p:column >
+                                        <p:inputText id="nic"  autocomplete="off" value="#{clientController.selected.person.nic}" title="Nic" validatorMessage="Please check the number">
+                                            <f:validateRegex pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})?$" ></f:validateRegex>
+                                            <f:ajax event="change" execute="@this" render="nicExists" 
+                                                    listener="#{clientController.checkNicExists}" ></f:ajax>
+                                        </p:inputText>
                                     </p:column>
                                     <p:column >
                                     </p:column>
@@ -43,89 +59,24 @@
                                         <p:inputText id="phn"  autocomplete="off" 
                                                      value="#{clientController.selected.phn}" title="Phn"
                                                      placeholder="New PHN">
+                                            <!--<f:validateRegex pattern="^([0-9]{4}+[2|3|4|5|6|7|8|9|B|C|D|F|G|H|J|K|M|P|Q|R|T|V|W|X|Y]{6}+[0-9]{1})?$" ></f:validateRegex>-->
+                                            <!--<f:validateRegex pattern="^([0-9]{4}+[2|3|4|5|6|7|8|9|B|C|D|F|G|H|J|K|M|P|Q|R|T|V|W|X|Y|b|c|d|f|g|h|j|k|m|p|q|r|t|v|w|x|y]{6}+[0-9]{1})?$" ></f:validateRegex>-->
                                         </p:inputText>
                                     </p:column>
                                 </p:row>
 
                                 <p:row>
                                     <p:column >
-                                        <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
+                                        <p:outputLabel value="Gender:" for="sex" />
                                     </p:column>
                                     <p:column >
-                                        <p:inputText id="nic" tabindex="2"  autocomplete="off" value="#{clientController.selected.person.nic}" title="Nic" validatorMessage="Please check the number">
-                                            <!--<f:validateRegex pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})?$" ></f:validateRegex>-->
-                                            <f:ajax event="blur" listener="#{clientController.ageAndSexFromNic}"
-                                                    render="year month sex" 
-                                                    execute="@this"/>
-                                        </p:inputText>
+                                        <p:selectOneMenu id="sex"  value="#{clientController.selected.person.sex}" required="true" >
+                                            <f:selectItems value="#{itemController.sexes}" var="s" itemLabel="#{s.name}"
+                                                           itemValue="#{s}" ></f:selectItems>
+                                        </p:selectOneMenu>
                                     </p:column>
                                     <p:column >
                                     </p:column>
-
-                                    <p:column colspan="2" >
-                                        <p:panelGrid >
-                                            <p:row >
-                                                <p:column >
-                                                    <p:outputLabel value="Gender:" for="sex" />
-                                                </p:column>
-                                                <p:column >
-                                                    <p:selectOneMenu id="sex"  value="#{clientController.selected.person.sex}" required="true" >
-                                                        <f:selectItems value="#{itemController.sexes}" var="s" itemLabel="#{s.name}"
-                                                                       itemValue="#{s}" ></f:selectItems>
-                                                    </p:selectOneMenu>
-                                                </p:column>
-
-
-                                                <p:column >
-                                                    <p:spacer height="1" width="60" ></p:spacer>
-                                                </p:column>
-                                                <p:column >
-                                                    <p:outputLabel value="Age: (Years/Months)*"  />
-                                                </p:column>
-                                                <p:column >
-                                                    <h:panelGroup >
-                                                        <p:inputText autocomplete="off"  id="year"  placeholder="Years"
-                                                                     value="#{clientController.yearMonthDay.year}" required="true"
-                                                                     style="width: 90px; ">
-                                                            <f:validateRegex pattern="^((0|1|2|3|4|5|6|7|8|9){1}|(0|1|2|3|4|5|6|7|8|9){2}|(0|1|2|3|4|5|6|7|8|9){3})?$"></f:validateRegex>
-                                                            <f:ajax event="keyup" execute="@this month day" render="calDob" 
-                                                                    listener="#{clientController.yearMonthDateChanged()}"  />
-                                                        </p:inputText>
-                                                        <p:inputText autocomplete="off" id="month" placeholder="Months"
-                                                                     style="width: 90px; " 
-                                                                     value="#{clientController.yearMonthDay.month}">
-                                                            <f:ajax event="keyup" execute="@this year day" 
-                                                                    render="calDob" 
-                                                                    listener="#{clientController.yearMonthDateChanged()}"  />
-                                                        </p:inputText>
-                                                        <p:inputText autocomplete="off" id="day" 
-                                                                     style="width: 90px;" rendered="false"
-                                                                     value="#{clientController.yearMonthDay.day}">
-                                                            <f:ajax event="keyup" execute="@this year month" render="calDob" 
-                                                                    listener="#{clientController.yearMonthDateChanged()}" />
-                                                        </p:inputText>
-                                                    </h:panelGroup>
-                                                </p:column>
-
-                                            </p:row>
-                                        </p:panelGrid>
-                                    </p:column>
-
-
-
-                                </p:row>
-
-                                <p:row>
-                                    <p:column >
-                                        <p:outputLabel value="Current Residential Address:" for="address" />
-                                    </p:column>
-                                    <p:column  >
-                                        <p:inputTextarea tabindex="3"
-                                                         id="address" required="true"  style="width: 30rem;" rows="1" value="#{clientController.selected.person.address}"
-                                                         title="Address" />
-                                    </p:column>
-                                    <p:column ></p:column>
-
                                     <p:column >
                                         <p:outputLabel value="Citizenship:" for="citizenship" />
                                     </p:column>
@@ -136,14 +87,44 @@
                                         </p:selectOneMenu>
                                     </p:column>
                                 </p:row>
-                                <p:row rendered="false">
+                                <p:row>
                                     <p:column >
-                                        <p:outputLabel value="Date of Birth: " rendered="false"  />
+                                        <p:outputLabel value="Age: "  />
+                                    </p:column>
+                                    <p:column >
+                                        <h:panelGroup >
+                                            <p:inputText autocomplete="off"  id="year"  
+                                                         value="#{clientController.yearMonthDay.year}" 
+                                                         style="width: 90px; ">
+                                                <f:validateRegex pattern="^((0|1|2|3|4|5|6|7|8|9){1}|(0|1|2|3|4|5|6|7|8|9){2}|(0|1|2|3|4|5|6|7|8|9){3})?$"></f:validateRegex>
+                                                <f:ajax event="keyup" execute="@this month day" render="calDob" 
+                                                        listener="#{clientController.yearMonthDateChanged()}"  />
+                                            </p:inputText>
+                                            <p:inputText autocomplete="off" id="month"
+                                                         style="width: 90px; " 
+                                                         value="#{clientController.yearMonthDay.month}">
+                                                <f:ajax event="keyup" execute="@this year day" 
+                                                        render="calDob" 
+                                                        listener="#{clientController.yearMonthDateChanged()}"  />
+                                            </p:inputText>
+                                            <p:inputText autocomplete="off" id="day" 
+                                                         style="width: 90px;" 
+                                                         value="#{clientController.yearMonthDay.day}">
+                                                <f:ajax event="keyup" execute="@this year month" render="calDob" 
+                                                        listener="#{clientController.yearMonthDateChanged()}" />
+                                            </p:inputText>
+
+                                        </h:panelGroup>
+                                    </p:column>
+                                    <p:column >
+                                    </p:column>
+                                    <p:column >
+                                        <p:outputLabel value="Date of Birth: *"  />
                                     </p:column>
                                     <p:column >
                                         <p:calendar  value="#{clientController.selected.person.dateOfBirth}" 
                                                      id="calDob"  navigator="true" pattern="dd/MM/yyyy" yearRange="1900:today"
-                                                     inputStyle="width: 124px!important;"  rendered="false"
+                                                     inputStyle="width: 124px!important;" required="true"
                                                      styleClass="shortinput">
                                             <f:ajax event="dateSelect" listener="#{clientController.updateYearDateMonth}"
                                                     render="year month day" 
@@ -157,7 +138,7 @@
                                         <p:outputLabel value="Primary Contact Number :" for="phone1" />
                                     </p:column>
                                     <p:column >
-                                        <p:inputText tabindex="4" id="phone1" required="true" autocomplete="off" value="#{clientController.selected.person.phone1}" title="Mobile" 
+                                        <p:inputText id="phone1" required="true" autocomplete="off" value="#{clientController.selected.person.phone1}" title="Mobile" 
                                                      validatorMessage="Please check the number">
                                             <f:validateRegex pattern="^((?:0|94|\+94|0094)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|91)(0|2|3|4|5|7|9)|7(0|1|2|4|5|6|7|8)\d)\d{6})?$"
                                                              ></f:validateRegex>
@@ -177,12 +158,49 @@
                                 </p:row>
                                 <p:row>
                                     <p:column >
-                                        <p:outputLabel value="GN Area:" for="gn" />
+                                        <p:outputLabel value="Current Residential Address:" for="address" />
+                                    </p:column>
+                                    <p:column colspan="4" >
+                                        <p:inputTextarea
+                                            id="address" required="true"  style="width: 40rem;" rows="1" value="#{clientController.selected.person.address}"
+                                            title="Address" />
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column >
+                                        <p:outputLabel value="MOH Area:" for="moh" />
                                     </p:column>
                                     <p:column >
-                                        <p:autoComplete tabindex="5" id="gn" value="#{clientController.selected.person.gnArea}"
-                                                        completeMethod="#{clientController.completeClientsMohArea}"
-                                                        var="gn" itemLabel="#{gn.name}" itemValue="#{gn}" inputStyle="width:30rem;"
+                                        <p:autoComplete id="moh" value="#{clientController.selected.person.mohArea}"
+                                                        completeMethod="#{areaController.completeMohAreas}"
+                                                        var="m" itemLabel="#{m.name}" itemValue="#{m}" inputStyle="width:20rem;"
+                                                        maxResults="15" forceSelection="true"
+                                                        minQueryLength="3">
+                                        </p:autoComplete>
+                                    </p:column>
+                                    <p:column >
+                                    </p:column>
+                                    <p:column >
+                                        <p:outputLabel value="District:" for="district" />
+                                    </p:column>
+                                    <p:column >
+                                        <p:autoComplete required="true" id="district" value="#{clientController.selected.person.district}"
+                                                        completeMethod="#{areaController.completeDistricts}"
+                                                        var="d" itemLabel="#{d.name}" itemValue="#{d}"
+                                                        maxResults="15" forceSelection="true"
+                                                        minQueryLength="3">
+                                        </p:autoComplete>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column >
+                                        <p:outputLabel value="GN Area:" for="gn" />
+                                    </p:column>
+                                    <p:column colspan="4" >
+                                        <p:autoComplete id="gn" value="#{clientController.selected.person.gnArea}"
+                                                        completeMethod="#{clientController.completeClientsGnArea}"
+                                                        var="gn" itemLabel="#{gn.name}" itemValue="#{gn}" inputStyle="width:40rem;"
                                                         maxResults="20" forceSelection="true" placeholder="Not Known"
                                                         minQueryLength="2">
                                             <p:column headerText="Name">
@@ -191,61 +209,91 @@
                                             <p:column headerText="DS Division">
                                                 <p:outputLabel value="#{gn.parentArea.name}"></p:outputLabel>
                                             </p:column>
-                                            <p:column headerText="District">
-                                                <p:outputLabel value="#{gn.parentArea.parentArea.name}"></p:outputLabel>
-                                            </p:column>
+                                            <f:ajax event="itemSelect" execute="@this" render="phm moh dsd district province" 
+                                                    listener="#{clientController.gnAreaChanged()}"></f:ajax>
                                         </p:autoComplete>
                                     </p:column>
-                                    <p:column></p:column>
-
-                                    <p:column colspan="2" >
-                                        <p:panelGrid >
-                                            <p:row >
-                                                <p:column >
-                                                    <p:outputLabel value="District:" for="district" />
-                                                </p:column>
-                                                <p:column >
-                                                    <p:autoComplete required="true" id="district" value="#{clientController.selected.person.district}"
-                                                                    completeMethod="#{areaController.completeDistricts}"
-                                                                    var="d" itemLabel="#{d.name}" itemValue="#{d}"
-                                                                    maxResults="15" forceSelection="true"
-                                                                    minQueryLength="3">
-                                                        <f:ajax event="itemSelect" execute="district" ></f:ajax>
-                                                        <f:ajax event="blur" execute="district" ></f:ajax>
-                                                    </p:autoComplete>
-                                                </p:column>
-
-                                                <p:column >
-                                                    <p:spacer height="1" width="60" ></p:spacer>
-                                                </p:column>
-
-                                                <p:column >
-                                                    <p:outputLabel value="MOH Area:" for="moh" />
-                                                </p:column>
-                                                <p:column >
-                                                    <p:autoComplete id="moh" value="#{clientController.selected.person.mohArea}"
-                                                                    completeMethod="#{areaController.completeMohAreas}"
-                                                                    var="m" itemLabel="#{m.name}" itemValue="#{m}" inputStyle="width:20rem;"
-                                                                    maxResults="15" forceSelection="true"
-                                                                    minQueryLength="3">
-                                                        <f:ajax event="itemSelect" execute="moh" ></f:ajax>
-                                                        <f:ajax event="blur" execute="moh" ></f:ajax>
-                                                    </p:autoComplete>
-                                                </p:column>
-                                            </p:row>
-                                        </p:panelGrid>
-                                    </p:column>
-
-
-                                </p:row>
-
-                                <p:row>
-
                                 </p:row>
                             </p:panelGrid>
 
+                            <h:panelGrid columns="1" style="width: 100%;" >
+                                <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.forms.size() eq 1}" >
+                                    <div style="#{clientEncounterComponentFormSetController.dataFormset.forms.get(0).df.css}" >
+                                        <ez:dataform form="#{clientEncounterComponentFormSetController.dataFormset.forms.get(0)}" ></ez:dataform>
+                                    </div>
+                                </h:panelGroup>
 
+                                <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.forms.size() gt 1}" >
+                                    <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.dfs.panelType  eq 'TabView_Left_Oriented' }" >
+                                        <p:tabView 
+                                            activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}"
+                                            orientation="left" style="width: 100%; padding: 5px;" 
+                                            value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
+                                            <p:tab title="#{f.df.name}" >
+                                                <div style="#{f.df.css}" >
+                                                    <ez:dataform form="#{f}" ></ez:dataform>
+                                                </div>
+                                            </p:tab>
+                                            <p:ajax event="tabChange" process="@this"/>
+                                        </p:tabView>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'TabView_Bottom_Oriented'}" >
+                                        <p:tabView 
+                                            activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}"  
+                                            orientation="bottom" style="width: 100%; padding: 5px;" 
+                                            value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
+                                            <p:tab title="#{f.df.name}" >
+                                                <div style="#{f.df.css}" >
+                                                    <ez:dataform form="#{f}" ></ez:dataform>
+                                                </div>
+                                            </p:tab>
+                                            <p:ajax event="tabChange" process="@this"/>
+                                        </p:tabView>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'Tabview_Top_Oriented'}" >
+                                        <p:tabView activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}"  orientation="top" style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
+                                            <p:tab title="#{f.df.name}" >
+                                                <div style="#{f.df.css}" >
+                                                    <ez:dataform form="#{f}" ></ez:dataform>
+                                                </div>
+                                            </p:tab>
+                                            <p:ajax event="tabChange" process="@this"/>
+                                        </p:tabView>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'TabView_Right_Oriented'}" >
+                                        <p:tabView  activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}" orientation="right" style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
+                                            <p:tab title="#{f.df.name}" >
+                                                <div style="#{f.df.css}" >
+                                                    <ez:dataform form="#{f}" ></ez:dataform>
+                                                </div>
+                                            </p:tab>
+                                            <p:ajax event="tabChange" process="@this"/>
+                                        </p:tabView>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'Accordion_Basic'}" >
+                                        <p:accordionPanel  activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}"  style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
+                                            <p:tab title="#{f.df.name}" >
+                                                <div style="#{f.df.css}" >
+                                                    <ez:dataform form="#{f}" ></ez:dataform>
+                                                </div>
+                                            </p:tab>
+                                            <p:ajax event="tabChange" process="@this"/>
+                                        </p:accordionPanel>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'Accordion_Multiple'}" >
+                                        <p:accordionPanel multiple="true" style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
+                                            <p:tab title="#{f.df.name}" >
+                                                <div style="#{f.df.css}" >
+                                                    <ez:dataform form="#{f}" ></ez:dataform>
+                                                </div>
+                                            </p:tab>
+                                            <p:ajax event="tabChange" process="@this"/>
+                                        </p:accordionPanel>
+                                    </h:panelGroup>
+                                </h:panelGroup>
 
+                            </h:panelGrid>
+                            
                         </p:panelGrid>
 
 
