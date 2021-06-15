@@ -255,7 +255,7 @@ public class ClientController implements Serializable {
         selectedEncounterToMarkTest.setResultDate(new Date());
         selectedEncounterToMarkTest.setResultDateTime(new Date());
         encounterFacade.edit(selectedEncounterToMarkTest);
-        sendPositiveSms(selectedEncounterToMarkTest);
+//        sendPositiveSms(selectedEncounterToMarkTest);
         JsfUtil.addSuccessMessage("Marked as Positive");
     }
 
@@ -380,7 +380,7 @@ public class ClientController implements Serializable {
         selectedEncounterToMarkTest.setResultDate(new Date());
         selectedEncounterToMarkTest.setResultDateTime(new Date());
         encounterFacade.edit(selectedEncounterToMarkTest);
-        sendNegativeSms(selectedEncounterToMarkTest);
+//        sendNegativeSms(selectedEncounterToMarkTest);
         JsfUtil.addSuccessMessage("Marked as Negative");
     }
 

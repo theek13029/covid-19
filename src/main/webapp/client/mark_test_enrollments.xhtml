@@ -69,7 +69,8 @@
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounterToMarkTest}" ></f:setPropertyActionListener>
                                 </p:commandButton>
 
-                                <p:commandButton rendered="#{c.resultPositive or c.resultPositive eq null}"  value="Mark Negative" action="#{clientController.markTestAsNegative}" ajax="false" >
+                                <p:commandButton rendered="#{c.resultPositive or c.resultPositive eq null}"  value="Mark Negative" 
+                                                 action="#{clientController.markTestAsNegative}" ajax="false" >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounterToMarkTest}" ></f:setPropertyActionListener>
                                 </p:commandButton>
 
