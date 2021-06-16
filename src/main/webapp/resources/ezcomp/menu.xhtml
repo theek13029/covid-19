@@ -5,30 +5,28 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-
     <!-- INTERFACE -->
     <cc:interface>
     </cc:interface>
-
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <h:form>  
             <h:outputStylesheet library="css" name="tem1.css"/>
             <p:menubar  rendered="#{webUserController.loggedUser ne null}"  autoDisplay="true"   styleClass="horizontalmenu">
                 <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="/index" />
-                <p:submenu label="Patient" rendered="#{webUserController.hasPrivilege("Client_Management")}" >
+                <p:submenu label="Patient" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
                     <p:menuitem ajax="false" value="Register New Case" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
                     <p:menuitem ajax="false" value="Add New PCR/RAT Request" action="#{clientController.toAddNewClientForTestEnrollment()}"  />
                     <p:menuitem ajax="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
                     <p:menuitem ajax="false" value="Test Result Entering" action="#{clientController.toEnterTestResults()}" />
                 </p:submenu>
-                <p:submenu label="Lab"  rendered="#{webUserController.hasPrivilege("Lab_Management")}"  >
+                <p:submenu label="Lab"  rendered="#{webUserController.hasPrivilege('Lab_Management')}"  >
                     <p:menuitem ajax="false" value="Lab Order Summery" action="#{clientController.toLabOrderSummery()}"  />
                     <p:menuitem ajax="false" value="Lab Orders" action="#{clientController.toLabOrderByReferringInstitution()}"  />
                     <p:menuitem ajax="false" value="Enter Results" action="#{clientController.toSearchClientById()}" />
                     <p:menuitem ajax="false" value="Print Results" action="#{clientController.toEnterTestResults()}" />
                 </p:submenu>
-                <p:submenu label="Reports"  rendered="#{webUserController.hasPrivilege("Monitoring_and_evaluation")}"  >
+                <p:submenu label="Reports"  rendered="#{webUserController.hasPrivilege('Monitoring_and_evaluation')}"  >
                     <p:menuitem ajax="false" value="Case List" action="#{clientController.toListCases()}" />
                     <p:menuitem ajax="false" value="Test List" action="#{clientController.toListTests()}" />
                     <p:menuitem ajax="false" value="SMS" action="/sms/index" />

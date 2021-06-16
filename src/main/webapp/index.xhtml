@@ -39,27 +39,13 @@
                 </h:form>
 
                 <h:panelGroup rendered="false">
-                    <ez:dashboardSystemAdministrator rendered="#{webUserController.loggedUser.systemAdministrator}"/>
-                    <ez:dashboardSuperUser rendered="#{webUserController.loggedUser.superUser}"/>
-                    <ez:dashboardUser rendered="#{webUserController.loggedUser.user}"/>
-
-                    <ez:dashboardMeAdministrator rendered="#{webUserController.loggedUser.meAdministrator}"/>
-                    <ez:dashboardMeSuperUser rendered="#{webUserController.loggedUser.meSuperUser}"/>
-                    <ez:dashboardMeUser rendered="#{webUserController.loggedUser.meUser}"/>
-
-<!--                    <ez:dashboardInstItutionAdministrator rendered="#{webUserController.loggedUser.institutionAdministrator}"/>
-                    <ez:dashboardInstitutionSuperUser rendered="#{webUserController.loggedUser.institutionSuperUser}"/>
-                    <ez:dashboardInstitutionUser rendered="#{webUserController.loggedUser.institutionUser}"/>
-                    <ez:dashboardDoctor rendered="#{webUserController.loggedUser.doctor}"/>
-                    <ez:dashboardNurse rendered="#{webUserController.loggedUser.nurse}"/>
-                    <ez:dashboardMidwife rendered="#{webUserController.loggedUser.midwife}"/>-->
+                    <ez:dashboardNational rendered="#{webUserController.loggedUser.nationalDashboard}"/>
+                    <ez:dashboardProvincial rendered="#{webUserController.loggedUser.provincialDashboard}"/>
+                    <ez:dashboardRegional rendered="#{webUserController.loggedUser.regionalDashboard}"/>
+                    <ez:dashboardLab rendered="#{webUserController.loggedUser.labDashboard}"/>
+                    <ez:dashboardHospital rendered="#{webUserController.loggedUser.hospitalDashboard}"/>
+                    <ez:dashboardMoh rendered="#{webUserController.loggedUser.mohDashboard}"/>
                 </h:panelGroup>
-
-                <!--                <h:panelGroup>
-                                    <ez:userModules rendered="#{webUserController.loggedUser.systemAdministrator}"/>
-                                </h:panelGroup>-->
-
-
             </ui:define>
         </ui:composition>
     </h:body>
