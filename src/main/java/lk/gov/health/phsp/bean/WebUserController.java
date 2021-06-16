@@ -740,24 +740,24 @@ public class WebUserController implements Serializable {
             return wups;
         }
         switch (role) {
-
             case Client:
+                break;
             case ChiefEpidemiologist:
                 //Menu
                 wups.add(Privilege.Client_Management);
                 wups.add(Privilege.Encounter_Management);
-                wups.add(Privilege.Appointment_Management);
                 wups.add(Privilege.Lab_Management);
-                wups.add(Privilege.Pharmacy_Management);
+//                wups.add(Privilege.Pharmacy_Management);
                 wups.add(Privilege.User);
                 //Client Management
-                wups.add(Privilege.Add_Client);
+//                wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
+//                Motinoring & Evaluation
+                wups.add(Privilege.Monitoring_and_evaluation);
+                wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
                 break;
             case Nurse:
                 //Menu
@@ -765,7 +765,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Encounter_Management);
                 wups.add(Privilege.Appointment_Management);
                 wups.add(Privilege.Lab_Management);
-                wups.add(Privilege.Pharmacy_Management);
+//                wups.add(Privilege.Pharmacy_Management);
                 wups.add(Privilege.User);
                 //Client Management
                 wups.add(Privilege.Add_Client);
@@ -792,8 +792,17 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Areas);
                 wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
                 wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
+                //M&E
+                wups.add(Privilege.Monitoring_and_evaluation);
+                wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
                 break;
             case User:
+
+                wups.add(Privilege.Monitoring_and_evaluation);
+                wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_aggragate_date);
 
             case Re:
                 //Menu
@@ -804,6 +813,12 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Manage_Institution_Metadata);
                 wups.add(Privilege.Manage_Authorised_Areas);
                 wups.add(Privilege.Manage_Authorised_Institutions);
+                //Monitoring & Evaluation
+                wups.add(Privilege.Monitoring_and_evaluation);
+                wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
+
                 break;
 
             case Rdhs:
@@ -811,36 +826,46 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.User);
                 wups.add(Privilege.Institution_Administration);
                 //Institution Administration
-                wups.add(Privilege.Manage_Institution_Metadata);
                 wups.add(Privilege.Manage_Authorised_Areas);
                 wups.add(Privilege.Manage_Authorised_Institutions);
+                //Monitoring & Evaluation
+                wups.add(Privilege.Monitoring_and_evaluation);
+                wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
                 break;
             case Pdhs:
                 //Menu
                 wups.add(Privilege.Client_Management);
                 wups.add(Privilege.Encounter_Management);
-                wups.add(Privilege.Appointment_Management);
-                wups.add(Privilege.Lab_Management);
-                wups.add(Privilege.Pharmacy_Management);
                 wups.add(Privilege.User);
+                //Institution Administration
+                wups.add(Privilege.Manage_Authorised_Areas);
+                wups.add(Privilege.Manage_Authorised_Institutions);
                 //Client Management
-                wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
+                //Monitoring & Evaluation
+                wups.add(Privilege.Monitoring_and_evaluation);
+                wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
                 break;
             case Phm:
                 wups.add(Privilege.User);
+                //Monitoring & Evaluation
                 wups.add(Privilege.Monitoring_and_evaluation);
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
                 break;
             case Phi:
                 wups.add(Privilege.User);
+                //Monitoring & Evaluation
                 wups.add(Privilege.Monitoring_and_evaluation);
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
                 break;
             case Moh:
                 wups.add(Privilege.Client_Management);
@@ -850,13 +875,13 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Submit_Returns);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
                 wups.add(Privilege.User);
+                //Monitoring & Evaluation
                 wups.add(Privilege.Monitoring_and_evaluation);
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
+
                 break;
             case Super_User:
                 wups.add(Privilege.User);
@@ -866,11 +891,15 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Manage_Area);
                 wups.add(Privilege.Manage_Institutions);
                 wups.add(Privilege.Manage_Forms);
+                //Monitoring & Evaluation
+                wups.add(Privilege.Monitoring_and_evaluation);
+                wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
                 break;
             case System_Administrator:
                 //Menu
                 wups.add(Privilege.Client_Management);
-
                 wups.add(Privilege.Encounter_Management);
                 wups.add(Privilege.Appointment_Management);
                 wups.add(Privilege.Lab_Management);
@@ -885,10 +914,6 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Submit_Returns);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Areas);
-                wups.add(Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
-                wups.add(Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
                 //Institution Administration
                 wups.add(Privilege.Manage_Institution_Users);
                 wups.add(Privilege.Manage_Institution_Metadata);
@@ -900,8 +925,26 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Manage_Area);
                 wups.add(Privilege.Manage_Institutions);
                 wups.add(Privilege.Manage_Forms);
-
+                //Monitoring & Evaluation
+                wups.add(Privilege.Monitoring_and_evaluation);
+                wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
                 break;
+            case Lab_Consultant:
+                wups.add(Privilege.Manage_Users);
+            case Lab_Mlt:
+            case Lab_User:
+                wups.add(Privilege.Lab_Management);
+                wups.add(Privilege.View_Orders);
+                wups.add(Privilege.Enter_Results);
+                break;
+            case Hospital_Admin:
+            case Hospital_User:
+                wups.add(Privilege.Monitoring_and_evaluation);
+                wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
         }
 
         return wups;

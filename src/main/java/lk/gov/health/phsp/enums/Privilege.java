@@ -10,27 +10,34 @@ package lk.gov.health.phsp.enums;
  */
 public enum Privilege {
     //Main Menu Privileges
-    Client_Management("Client Management"),
-    Encounter_Management("Encounter Management"),
+    Client_Management("Patient Management"),
+    Encounter_Management("Order Management"),
+    @Deprecated
     Appointment_Management("Appointment Management"),
     Lab_Management("Lab Management"),
+    @Deprecated
     Pharmacy_Management("Pharmacy Management"),
     User("User"),
     Institution_Administration("Institution Administration"),
     System_Administration("System Administration"),
     //Client Management
-    Add_Client("Add Client"),
+    Add_Client("Add Patient"),
     Add_Tests("Add Tests"),
     Mark_Tests("Mark Tests"),
     Submit_Returns("Submit Returns"),
     Search_any_Client_by_IDs("Search any Client by IDs"),
     Search_any_Client_by_Details("Search any Client by Details"),
+    @Deprecated
     Search_any_client_by_ID_of_Authorised_Areas("Search any client by ID of Authorised Areas"),
+    @Deprecated
     Search_any_client_by_Details_of_Authorised_Areas("Search any client by Details of Authorised Areas"),
+    @Deprecated
     Search_any_client_by_ID_of_Authorised_Institutions("Search any client by ID of Authorised Institutions"),
+    @Deprecated
     Search_any_client_by_Details_of_Authorised_Institutions("Search any client by Details of Authorised Institutions"),
     //Institution Administration
     Manage_Institution_Users("Manage Institution Users"),
+    @Deprecated
     Manage_Institution_Metadata("Manage Institution Metadata"),
     Manage_Authorised_Areas("Manage Authorised Areas"),
     Manage_Authorised_Institutions("Manage Authorised Institutions"),
@@ -42,14 +49,20 @@ public enum Privilege {
     Manage_Forms("Manage Forms"),
     //Monitoring and Evaluation
     Monitoring_and_evaluation("Monitoring & Evaluation"),
-    Monitoring_and_evaluation_reports("Monitoring & Evaluation Reports");
-    
-    public final String label;    
-    private Privilege(String label){
+    Monitoring_and_evaluation_reports("Monitoring & Evaluation Reports"),
+    View_individual_data("View Individual Data"),
+    View_aggragate_date("View Aggregate Data"),
+    //Lab Management
+    View_Orders("View Orders"),
+    Enter_Results("Enter Results"),;
+
+    public final String label;
+
+    private Privilege(String label) {
         this.label = label;
     }
-    
-    public String getLabel(){
+
+    public String getLabel() {
         return label;
     }
 
