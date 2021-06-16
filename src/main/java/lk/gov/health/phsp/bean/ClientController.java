@@ -49,6 +49,7 @@ import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.SmsFacade;
 import lk.gov.health.phsp.pojcs.ClientBasicData;
+import lk.gov.health.phsp.pojcs.InstitutionCount;
 import lk.gov.health.phsp.pojcs.SlNic;
 import lk.gov.health.phsp.pojcs.YearMonthDay;
 import org.primefaces.component.tabview.TabView;
@@ -127,6 +128,7 @@ public class ClientController implements Serializable {
     private Long idFrom;
     private Long idTo;
     private Institution institution;
+    private Institution referingInstitution;
     private List<Encounter> selectedClientsClinics;
     private List<Encounter> selectedClientEncounters;
     private String searchingId;
@@ -166,7 +168,10 @@ public class ClientController implements Serializable {
     private List<String> reservePhnList;
     private int intNo;
 
+    private List<InstitutionCount> labOrderSummeries;
+
     String continuedAddress = "";
+    Institution continuedLab;
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Constructors">
@@ -453,6 +458,61 @@ public class ClientController implements Serializable {
         return "/client/reserve_phn";
     }
 
+    public String toLabOrderSummery() {
+        if (institution == null) {
+            institution = webUserController.getLoggedUser().getInstitution();
+        }
+        processLabOrderSummery();
+        return "/lab/order_summary";
+    }
+
+    public void processLabOrderSummery() {
+
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired<>:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.referalInstitution=:ins "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("ins", institution);
+        labOrderSummeries = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labOrderSummeries.add((InstitutionCount) o);
+            }
+        }
+
+    }
+
+    
+    public String toLabOrderByReferringInstitution() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired<>:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("ins", referingInstitution);
+        testList = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/lab/order_list";
+    }
+
+    
+    
     public String toAddNewClientForCaseEnrollment() {
         setSelected(new Client());
         selected.setRetired(true);
@@ -477,6 +537,7 @@ public class ClientController implements Serializable {
             return "";
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        clientEncounterComponentFormSetController.getSelected().getEncounter().setReferalInstitution(continuedLab);
         return "/client/client_case_enrollment";
     }
 
@@ -630,6 +691,7 @@ public class ClientController implements Serializable {
             return "";
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        clientEncounterComponentFormSetController.getSelected().getEncounter().setReferalInstitution(continuedLab);
         return "/client/client_test_enrollment";
     }
 
@@ -2482,6 +2544,7 @@ public class ClientController implements Serializable {
             return "";
         }
         continuedAddress = getSelected().getPerson().getAddress();
+        continuedLab = clientEncounterComponentFormSetController.getSelected().getEncounter().getReferalInstitution();
         Institution createdIns = null;
         selected.setRetired(false);
         if (selected.getCreateInstitution() == null) {
@@ -2563,6 +2626,7 @@ public class ClientController implements Serializable {
             return "";
         }
         continuedAddress = getSelected().getPerson().getAddress();
+        continuedLab = clientEncounterComponentFormSetController.getSelected().getEncounter().getReferalInstitution();
         Institution createdIns = null;
         selected.setRetired(false);
         if (selected.getCreateInstitution() == null) {
@@ -3528,6 +3592,24 @@ public class ClientController implements Serializable {
 
     public void setSmsFacade(SmsFacade smsFacade) {
         this.smsFacade = smsFacade;
+    }
+
+    public List<InstitutionCount> getLabOrderSummeries() {
+        return labOrderSummeries;
+    }
+
+    
+    
+    public void setLabOrderSummeries(List<InstitutionCount> labOrderSummeries) {
+        this.labOrderSummeries = labOrderSummeries;
+    }
+
+    public Institution getReferingInstitution() {
+        return referingInstitution;
+    }
+
+    public void setReferingInstitution(Institution referingInstitution) {
+        this.referingInstitution = referingInstitution;
     }
 
     // </editor-fold>

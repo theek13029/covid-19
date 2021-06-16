@@ -30,6 +30,14 @@
                     <p:menuitem ajax="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
                     <p:menuitem ajax="false" value="Test Result Entering" action="#{clientController.toEnterTestResults()}" />
                 </p:submenu>
+                
+                
+                <p:submenu label="Lab"  >
+                    <p:menuitem ajax="false" value="Lab Order Summery" action="#{clientController.toLabOrderSummery()}"  />
+                    <p:menuitem ajax="false" value="Lab Orders" action="#{clientController.toLabOrderByReferringInstitution()}"  />
+                    <p:menuitem ajax="false" value="Enter Results" action="#{clientController.toSearchClientById()}" />
+                    <p:menuitem ajax="false" value="Print Results" action="#{clientController.toEnterTestResults()}" />
+                </p:submenu>
 
                 <p:submenu label="Reports" >
                     <p:menuitem ajax="false" value="Case List" action="#{clientController.toListCases()}" />
