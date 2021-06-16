@@ -22,21 +22,64 @@
 
                     </iframe>
                 </h:panelGroup>
+                <h:panelGroup>
+                    <p:panelGrid columns="1" style="width: 95%; text-align: left; padding: 2%; margin: 2%;" >
+                        <div class="row text-lg-center">
+                            <div class="col-xl-3 col-md-6">                            
+                                <div class="card bg-gradient-success text-white mb-4">
+                                    <div class="card-header">Test Count</div>
+                                    <div class="card-body text-bold" style="font-size: 32px;">#{applicationController.nationalTestCount}</div>                                    
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-gradient-maroon text-white mb-4">
+                                    <div class="card-header">Case Count</div>
+                                    <div class="card-body text-bold" style="font-size: 32px;">#{applicationController.nationalCaseCount}</div>                                    
+                                </div>
+                            </div>
+                        </div>
 
-                <h:form >
-                    <p:panelGrid columns="1" style="width: 90%; text-align: center; padding: 5%; margin: 5%;" >
-                        <p:commandButton value="Add New Case" ajax="false"  action="#{clientController.toAddNewClientForCaseEnrollment()}" styleClass="width24rem"  ></p:commandButton>
-                        <p:commandButton value="Add New PCR/RAT" ajax="false"  action="#{clientController.toAddNewClientForTestEnrollment()}" styleClass="width24rem"  ></p:commandButton>
-                        <hr/>
-                        <p:commandButton value="Test Result Entering" ajax="false" action="#{clientController.toEnterTestResults()}"  styleClass="width24rem"  ></p:commandButton>
-                        <hr/>
-                        <p:commandButton value="Search Patients"  action="#{clientController.toSearchClientById()}"  styleClass="width24rem"  ></p:commandButton>
-                        <hr/>
-                        <p:commandButton value="Test List"  action="#{clientController.toListTests()}" ajax="false"  styleClass="width24rem"  ></p:commandButton>
-                        <p:commandButton value="Case List"  action="#{clientController.toListCases()}" ajax="false"  styleClass="width24rem"  ></p:commandButton>
-
+                        <h:form >
+                            <div class="row">
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="card text-black-50 mb-4">
+                                        <p:commandButton value="Add New Case" ajax="false"  action="#{clientController.toAddNewClientForCaseEnrollment()}" styleClass="card-body ui-button-info ui-button-flat"></p:commandButton>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="card text-black-50 mb-4">
+                                        <p:commandButton value="Add New PCR/RAT" ajax="false"  action="#{clientController.toAddNewClientForTestEnrollment()}" styleClass="card-body ui-button-info ui-button-flat" ></p:commandButton>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="card text-black-50 mb-4">
+                                        <p:commandButton value="Test Result Entering" ajax="false" action="#{clientController.toEnterTestResults()}"  styleClass="card-body ui-button-info ui-button-flat"  ></p:commandButton>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="card text-black-50 mb-4">
+                                        <p:commandButton value="Search Patients"  action="#{clientController.toSearchClientById()}"  styleClass="card-body ui-button-info ui-button-flat"  ></p:commandButton>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="card text-black-50 mb-4">
+                                        <p:commandButton value="Test List"  action="#{clientController.toListTests()}" ajax="false"  styleClass="card-body ui-button-info ui-button-flat"  ></p:commandButton>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="card text-black-50 mb-4">
+                                        <p:commandButton value="Case List"  action="#{clientController.toListCases()}" ajax="false"  styleClass="card-body ui-button-info ui-button-flat"  ></p:commandButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </h:form>
                     </p:panelGrid>
-                </h:form>
+
+                </h:panelGroup> 
+
+
 
                 <h:panelGroup rendered="false">
                     <ez:dashboardSystemAdministrator rendered="#{webUserController.loggedUser.systemAdministrator}"/>

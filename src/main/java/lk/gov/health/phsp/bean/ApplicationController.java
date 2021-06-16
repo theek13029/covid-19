@@ -83,8 +83,8 @@ public class ApplicationController {
     private String versionNo = "1.1.4";
     private List<QueryComponent> queryComponents;
     private List<String> userTransactionTypes;
-    Long nationalTestCount;
-    Long nationalCaseCount;
+    private Long nationalTestCount;
+    private Long nationalCaseCount;
     //Encounter Count
     //Nont Retired
     //cASE = cASE_eNROLLMENT
@@ -95,19 +95,25 @@ public class ApplicationController {
     // </editor-fold>
     public ApplicationController() {
     }
-
+    
     public Long getNationalTestCount() {
+        if (nationalTestCount == null){
+            nationalTestCount = getNationalCounts(EncounterType.Test_Enrollment);
+        }
         return nationalTestCount;
     }
 
     public void setNationalTestCount(Long nationalTestCount) {
         this.nationalTestCount = nationalTestCount;
     }
-
+    
     public Long getNationalCaseCount() {
+        if(nationalCaseCount == null){            
+            nationalCaseCount = getNationalCounts(EncounterType.Case_Enrollment);
+        }
         return nationalCaseCount;
     }
-
+    
     public void setNationalCaseCount(Long nationalCaseCount) {
         this.nationalCaseCount = nationalCaseCount;
     }
@@ -375,4 +381,14 @@ public class ApplicationController {
         this.clientEncounterComponentItemFacade = clientEncounterComponentItemFacade;
     }
 
+    private Long getNationalCounts(EncounterType countType) {        
+        String jpql = "SELECT count(e) FROM Encounter e "
+                + " WHERE e.retired=:ret "
+                + " AND e.encounterType=:encounterType ";
+        
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("encounterType", countType);
+        return encounterFacade.countByJpql(jpql, m);        
+    }
 }
