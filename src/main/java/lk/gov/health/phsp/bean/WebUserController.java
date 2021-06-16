@@ -901,9 +901,7 @@ public class WebUserController implements Serializable {
                 //Menu
                 wups.add(Privilege.Client_Management);
                 wups.add(Privilege.Encounter_Management);
-                wups.add(Privilege.Appointment_Management);
                 wups.add(Privilege.Lab_Management);
-                wups.add(Privilege.Pharmacy_Management);
                 wups.add(Privilege.User);
                 wups.add(Privilege.Institution_Administration);
                 wups.add(Privilege.System_Administration);
@@ -916,7 +914,6 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Search_any_Client_by_Details);
                 //Institution Administration
                 wups.add(Privilege.Manage_Institution_Users);
-                wups.add(Privilege.Manage_Institution_Metadata);
                 wups.add(Privilege.Manage_Authorised_Areas);
                 wups.add(Privilege.Manage_Authorised_Institutions);
                 //System Administration
