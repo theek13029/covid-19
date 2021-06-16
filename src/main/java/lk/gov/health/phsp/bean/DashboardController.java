@@ -53,10 +53,10 @@ public class DashboardController {
     @EJB
     ClientEncounterComponentItemFacade clientEncounterComponentItemFacade;
 
-    private Long totalNumberOfRegisteredClients;
-    private Long totalNumberOfClinicVisits;
-    private Long totalNumberOfClinicEnrolments;
-    private Long totalNumberOfCvsRiskClients;
+    private Long totalNumberOfOrdersYesterday;
+    private Long totalNumberOfPendingResults;
+    private Long totalNumberOfCasesYesterday;
+    private Long totalNumberOfCasesToMark;
 
     private String riskVariable = "cvs_risk_factor";
     private String riskVal1 = "30-40%";
@@ -71,20 +71,21 @@ public class DashboardController {
 
     public void prepareSystemDashboard() {
 
-        if (totalNumberOfRegisteredClients == null) {
-            totalNumberOfRegisteredClients = findTotalNumberOfRegisteredClientsForAdmin();
+        if (totalNumberOfOrdersYesterday == null) {
+            totalNumberOfOrdersYesterday = findTotalNumberOfRegisteredClientsForAdmin();
         }
-        if (totalNumberOfClinicEnrolments == null) {
-            totalNumberOfClinicEnrolments = findTotalNumberOfClinicEnrolmentsForAdmin();
+        if (totalNumberOfCasesYesterday == null) {
+            totalNumberOfCasesYesterday = findTotalNumberOfClinicEnrolmentsForAdmin();
         }
-        if (totalNumberOfClinicVisits == null) {
-            totalNumberOfClinicVisits = findTotalNumberOfClinicVisitsForAdmin();
+        if (totalNumberOfPendingResults == null) {
+            totalNumberOfPendingResults = findTotalNumberOfClinicVisitsForAdmin();
         }
-        if (totalNumberOfCvsRiskClients == null) {
-            totalNumberOfCvsRiskClients = findTotalNumberOfCvsRiskClientsForAdmin();
+        if (totalNumberOfCasesToMark == null) {
+            totalNumberOfCasesToMark = findTotalNumberOfCvsRiskClientsForAdmin();
         }
     }
 
+    
     public Long findTotalNumberOfRegisteredClientsForAdmin() {
         return (countOfRegistedClients(null, null));
     }
@@ -165,48 +166,48 @@ public class DashboardController {
         return clientEncounterComponentItemFacade.findLongByJpql(j, m);
     }
 
-    public Long getTotalNumberOfRegisteredClients() {
-        if (totalNumberOfRegisteredClients == null) {
+    public Long getTotalNumberOfOrdersYesterday() {
+        if (totalNumberOfOrdersYesterday == null) {
             prepareSystemDashboard();
         }
-        return totalNumberOfRegisteredClients;
+        return totalNumberOfOrdersYesterday;
     }
 
-    public void setTotalNumberOfRegisteredClients(Long totalNumberOfRegisteredClients) {
-        this.totalNumberOfRegisteredClients = totalNumberOfRegisteredClients;
+    public void setTotalNumberOfOrdersYesterday(Long totalNumberOfOrdersYesterday) {
+        this.totalNumberOfOrdersYesterday = totalNumberOfOrdersYesterday;
     }
 
-    public Long getTotalNumberOfClinicVisits() {
-        if (totalNumberOfClinicVisits == null) {
+    public Long getTotalNumberOfPendingResults() {
+        if (totalNumberOfPendingResults == null) {
             prepareSystemDashboard();
         }
-        return totalNumberOfClinicVisits;
+        return totalNumberOfPendingResults;
     }
 
-    public void setTotalNumberOfClinicVisits(Long totalNumberOfClinicVisits) {
-        this.totalNumberOfClinicVisits = totalNumberOfClinicVisits;
+    public void setTotalNumberOfPendingResults(Long totalNumberOfPendingResults) {
+        this.totalNumberOfPendingResults = totalNumberOfPendingResults;
     }
 
-    public Long getTotalNumberOfClinicEnrolments() {
-        if (totalNumberOfClinicEnrolments == null) {
+    public Long getTotalNumberOfCasesYesterday() {
+        if (totalNumberOfCasesYesterday == null) {
             prepareSystemDashboard();
         }
-        return totalNumberOfClinicEnrolments;
+        return totalNumberOfCasesYesterday;
     }
 
-    public void setTotalNumberOfClinicEnrolments(Long totalNumberOfClinicEnrolments) {
-        this.totalNumberOfClinicEnrolments = totalNumberOfClinicEnrolments;
+    public void setTotalNumberOfCasesYesterday(Long totalNumberOfCasesYesterday) {
+        this.totalNumberOfCasesYesterday = totalNumberOfCasesYesterday;
     }
 
-    public Long getTotalNumberOfCvsRiskClients() {
-        if (totalNumberOfCvsRiskClients == null) {
+    public Long getTotalNumberOfCasesToMark() {
+        if (totalNumberOfCasesToMark == null) {
             prepareSystemDashboard();
         }
-        return totalNumberOfCvsRiskClients;
+        return totalNumberOfCasesToMark;
     }
 
-    public void setTotalNumberOfCvsRiskClients(Long totalNumberOfCvsRiskClients) {
-        this.totalNumberOfCvsRiskClients = totalNumberOfCvsRiskClients;
+    public void setTotalNumberOfCasesToMark(Long totalNumberOfCasesToMark) {
+        this.totalNumberOfCasesToMark = totalNumberOfCasesToMark;
     }
 
     public String getRiskVariable() {
