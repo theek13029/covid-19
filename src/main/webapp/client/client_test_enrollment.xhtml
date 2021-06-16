@@ -256,7 +256,7 @@
                                         <f:ajax event="blur" execute="@this" listener="#{encounterController.save(clientEncounterComponentFormSetController.selected.encounter.encounterNumber)}" ></f:ajax>
                                     </p:inputText>
                                     <p:spacer height="1" width="20" ></p:spacer>
-                                    <p:outputLabel value="Test Number" ></p:outputLabel>
+                                    <p:outputLabel value="Lab" ></p:outputLabel>
                                     <p:autoComplete value="#{clientEncounterComponentFormSetController.selected.encounter.referalInstitution}"
                                                     forceSelection="true" 
                                                     completeMethod="#{institutionController.completeLab}" var="l" itemLabel="#{l.name}" itemValue="#{l}" >
