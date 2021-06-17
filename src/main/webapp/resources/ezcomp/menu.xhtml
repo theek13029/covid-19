@@ -23,8 +23,8 @@
                 <p:submenu label="Lab"  rendered="#{webUserController.hasPrivilege('Lab_Management')}"  >
                     <p:menuitem ajax="false" value="Lab Order Summery" action="#{clientController.toLabOrderSummery()}"  />
                     <p:menuitem ajax="false" value="Lab Orders" action="#{clientController.toLabOrderByReferringInstitution()}"  />
-                    <p:menuitem ajax="false" value="Enter Results" action="#{clientController.toSearchClientById()}" />
-                    <p:menuitem ajax="false" value="Print Results" action="#{clientController.toEnterTestResults()}" />
+                    <p:menuitem ajax="false" value="Enter Results" action="#{clientController.toLabOrderByReferringInstitutionToMarkResults()}" />
+                    <p:menuitem ajax="false" value="Print Results" action="#{clientController.toLabOrderByReferringInstitutionToPrintResults}" />
                 </p:submenu>
                 <p:submenu label="Reports"  rendered="#{webUserController.hasPrivilege('Monitoring_and_evaluation')}"  >
                     <p:menuitem ajax="false" value="Case List" action="#{clientController.toListCases()}" />

@@ -510,6 +510,42 @@ public class ClientController implements Serializable {
         testList = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/order_list";
     }
+    
+    public String toLabOrderByReferringInstitutionToMarkResults() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired<>:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("ins", referingInstitution);
+        testList = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/lab/mark_results";
+    }
+    
+    public String toLabOrderByReferringInstitutionToPrintResults() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired<>:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("ins", referingInstitution);
+        testList = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/lab/result_list";
+    }
 
     
     
