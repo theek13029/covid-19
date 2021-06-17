@@ -474,7 +474,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:ins "
-                + " order by c.id";
+                + " group by c.institution";
         Map m = new HashMap();
         m.put("ret", true);
         m.put("type", EncounterType.Test_Enrollment);
