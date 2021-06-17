@@ -1790,6 +1790,10 @@ public class ReportController implements Serializable {
                 break;
         }
         userTransactionController.recordTransaction("To View Data Forms");
+        
+        
+        
+        
         return action;
     }
 

@@ -64,7 +64,6 @@ public class PreferenceController implements Serializable {
 
     public void loadPreferences() {
         System.out.println("loadPreferences");
-        System.out.println("loadPreferences");
         positiveRatSmsTemplate = findApplicationPreferanceValue("positiveRatSmsTemplate");
         negativePcrSmsTemplate = findApplicationPreferanceValue("negativePcrSmsTemplate");
         negativeRatSmsTemplate = findApplicationPreferanceValue("negativeRatSmsTemplate");

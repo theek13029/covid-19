@@ -29,29 +29,25 @@
 
                 <div class="wrapper">
 
-                    <!--<h:panelGroup rendered="#{!applicationController.production}" >-->
-                        <div class="content-header">
-                            <div class="container-fluid">
-                                <div class="row mb-2">
-                                    <div class="col-sm-6">
-                                        <!--<h1 class="m-0 text-dark">System Administrator's Dashboard</h1>-->
-                                    </div><!-- /.col -->
-                                    <div class="col-sm-6">
-                                        <ol class="breadcrumb float-sm-right">
-                                            <li class="breadcrumb-item">
-                                                <h:commandLink action="#{webUserController.toHome()}" >
-                                                    Home
-                                                </h:commandLink>
-                                            </li>
-                                            <li class="breadcrumb-item active">#{webUserController.loggedUser.person.nameWithTitle}</li>
-                                        </ol>
-                                    </div><!-- /.col -->
-                                </div><!-- /.row -->
-                            </div><!-- /.container-fluid -->
-                        </div>
-                    <!--</h:panelGroup>-->
-
-
+                    <div class="content-header">
+                        <div class="container-fluid">
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <!--<h1 class="m-0 text-dark">System Administrator's Dashboard</h1>-->
+                                </div><!-- /.col -->
+                                <div class="col-sm-6">
+                                    <ol class="breadcrumb float-sm-right">
+                                        <li class="breadcrumb-item">
+                                            <h:commandLink action="#{webUserController.toHome()}" >
+                                                Home
+                                            </h:commandLink>
+                                        </li>
+                                        <li class="breadcrumb-item active">#{webUserController.loggedUser.person.nameWithTitle}</li>
+                                    </ol>
+                                </div><!-- /.col -->
+                            </div><!-- /.row -->
+                        </div><!-- /.container-fluid -->
+                    </div>
 
                     <section class="content">
                         <div class="container-fluid">
@@ -65,7 +61,7 @@
                                     <div class="small-box bg-info">
                                         <div class="inner">
                                             <h3>
-                                                <h:outputLabel value="#{dashboardController.totalNumberOfRegisteredClients}" >
+                                                <h:outputLabel value="#{dashboardController.numberOfOrdersYesterday}" >
                                                     <f:convertNumber pattern="#,##0" ></f:convertNumber>
                                                 </h:outputLabel>
                                             </h3>
@@ -89,7 +85,7 @@
                                     <div class="small-box bg-success">
                                         <div class="inner">
                                             <h3>
-                                                <h:outputLabel value="#{dashboardController.totalNumberOfClinicEnrolments}" >
+                                                <h:outputLabel value="#{dashboardController.totalNumberOfCasesYesterday}" >
                                                     <f:convertNumber pattern="#,##0" ></f:convertNumber>
                                                 </h:outputLabel>
                                             </h3>
@@ -112,7 +108,7 @@
                                     <div class="small-box bg-warning">
                                         <div class="inner">
                                             <h3>
-                                                <h:outputLabel value="#{dashboardController.totalNumberOfClinicVisits}" >
+                                                <h:outputLabel value="#{dashboardController.totalNumberOfPendingResults}" >
                                                     <f:convertNumber pattern="#,##0" ></f:convertNumber>
                                                 </h:outputLabel>
                                             </h3>
@@ -135,7 +131,7 @@
                                     <div class="small-box bg-danger">
                                         <div class="inner">
                                             <h3>
-                                                <h:outputLabel value="#{dashboardController.totalNumberOfCvsRiskClients}" >
+                                                <h:outputLabel value="#{dashboardController.totalNumberOfCasesToMark}" >
                                                     <f:convertNumber pattern="#,##0" ></f:convertNumber>
                                                 </h:outputLabel>
                                             </h3>

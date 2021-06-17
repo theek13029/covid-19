@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <body>
+
+        <ui:composition template="/template.xhtml">
+            <ui:define name="content">
+                <h:outputStylesheet library="css" name="tem1.css"/>
+                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                    <f:facet name="header" >
+                        <p:outputLabel value="Marking Test Results" ></p:outputLabel>
+                    </f:facet>
+
+                    <h:form >
+                        <p:panelGrid columns="2" >
+                            <p:outputLabel value="From" ></p:outputLabel>
+                            <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+
+                            <p:outputLabel value="To" ></p:outputLabel>
+                            <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+
+                            <p:spacer ></p:spacer>
+                            <p:commandButton ajax="false" value="Process" action="#{clientController.fillTestEnrollmentToMark()}" ></p:commandButton>
+
+
+                        </p:panelGrid>
+                    </h:form>
+
+
+                    <h:form>
+                        <p:commandButton ajax="false" value="Download">
+                            <p:dataExporter target="tbl" type="xlsx" fileName="test_enrollments" ></p:dataExporter>
+                        </p:commandButton>
+                        <p:dataTable id="tbl" value="#{clientController.testEnrollmentsToMark}" 
+                                     var="c" paginator="true" rowKey="#{c.id}" rows="10"
+                                     rowStyleClass="#{c.resultPositive?'redRow':''}">
+                            <p:column headerText="Name" >
+                                <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Age" >
+                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Sex" >
+                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Address" >
+                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Phone" >
+                                <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
+                            </p:column>
+                            <p:column id="result" headerText="Result" >
+                                <p:outputLabel rendered="#{c.resultPositive ne null}" value="#{c.resultPositive?'Yes':'No'}" ></p:outputLabel>
+                                <p:outputLabel rendered="#{c.resultPositive eq null}" value="Not Available" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Result" >
+                                <p:outputLabel value="POSITIVE" rendered="#{c.resultPositive eq true}" ></p:outputLabel>
+                                <p:outputLabel value="Negative" rendered="#{c.resultPositive eq false}" ></p:outputLabel>
+                                <p:outputLabel value="Awaiting Results" rendered="#{c.resultPositive eq null}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Result" exportable="false" >
+                                <p:commandButton rendered="#{!c.resultPositive}" value="Mark Positive" action="#{clientController.markTestAsPositive}" ajax="false" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounterToMarkTest}" ></f:setPropertyActionListener>
+                                </p:commandButton>
+
+                                <p:commandButton rendered="#{c.resultPositive or c.resultPositive eq null}"  value="Mark Negative" action="#{clientController.markTestAsNegative}" ajax="false" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounterToMarkTest}" ></f:setPropertyActionListener>
+                                </p:commandButton>
+
+                                <p:commandButton rendered="#{c.resultPositive ne null}"  value="Mark As Not Available" action="#{clientController.markTestAsNotReceived}" ajax="false" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounterToMarkTest}" ></f:setPropertyActionListener>
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column exportable="false" >
+                                <p:commandButton ajax="false" value="Convert to a case" action="#{clientController.toNewCaseEnrollmentFromEncounter()}" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
+                                    </f:setPropertyActionListener>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+
+
+
+                </p:panelGrid>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

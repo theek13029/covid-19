@@ -42,7 +42,10 @@ public enum WebUserRole {
     ChiefEpidemiologist("Midwife"),
     Client("Client"),
     Hospital_Admin("Hospital User"),
-    Hospital_User("Hospital Admin");
+    Hospital_User("Hospital Admin"),
+    Lab_Consultant("Lab Consultant"),
+    Lab_Mlt("MLT"),
+    Lab_User("Lab Assistant");
 
     private final String label;
     

@@ -83,6 +83,12 @@ public class ApplicationController {
     private String versionNo = "1.1.4";
     private List<QueryComponent> queryComponents;
     private List<String> userTransactionTypes;
+    Long nationalTestCount;
+    Long nationalCaseCount;
+    //Encounter Count
+    //Nont Retired
+    //cASE = cASE_eNROLLMENT
+    //Test = TestEncollment
 
     private final boolean logActivity = true;
 
@@ -90,6 +96,24 @@ public class ApplicationController {
     public ApplicationController() {
     }
 
+    public Long getNationalTestCount() {
+        return nationalTestCount;
+    }
+
+    public void setNationalTestCount(Long nationalTestCount) {
+        this.nationalTestCount = nationalTestCount;
+    }
+
+    public Long getNationalCaseCount() {
+        return nationalCaseCount;
+    }
+
+    public void setNationalCaseCount(Long nationalCaseCount) {
+        this.nationalCaseCount = nationalCaseCount;
+    }
+
+    
+    
     // <editor-fold defaultstate="collapsed" desc="Functions">
     public String createNewPersonalHealthNumber(Institution pins) {
         if (pins == null) {
