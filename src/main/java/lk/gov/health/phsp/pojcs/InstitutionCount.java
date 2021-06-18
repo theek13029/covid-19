@@ -33,6 +33,14 @@ public class InstitutionCount {
 
     private Institution institution;
     private Long count;
+    Long pcrCountByOrderedIns;
+    Long pcrCountByAddress;
+    Long ratCountByOrderedIns;
+    Long ratOrderedByAddress;
+    Long pcrDoneByLab;
+    Long pcrPositiveByLab;
+    Long ratPositiveByLab;
+    
 
     public InstitutionCount(Institution institution, Long count) {
         this.institution = institution;

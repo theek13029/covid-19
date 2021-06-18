@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2020 chims.
+ * Copyright 2021 buddhika.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,32 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package lk.gov.health.phsp.enums;
+package lk.gov.health.phsp.pojcs;
+
+import lk.gov.health.phsp.entity.Area;
+import lk.gov.health.phsp.entity.Institution;
 
 /**
  *
- * @author chims
+ * @author buddhika
  */
-public enum TimePeriodType {
-    Today("Today"),
-    Yesterday("Yesterday"),
-    LastSevenDays("Last seven days"),
-    ThisMonth("This month"),
-    LastMonth("Last month"),
-    ThisYear("This year"),
-    LastYear("Last Year"),
-    Yearley("Yearly"),
-    Monthly("Monthly"),
-    Quarterly("Quarterly"),
-    Dates("Dates");
+public class InstitutionAreaPeriodCount {
+    Institution institution;
+    Area area;
     
-    private final String label;
-    
-    private TimePeriodType(String label){
-        this.label = label;
-    }
-    
-    public String getLabel(){
-        return label;
-    } 
 }
