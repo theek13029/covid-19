@@ -73,9 +73,9 @@ public class ClientController implements Serializable {
     @Inject
     ApplicationController applicationController;
     @Inject
-    AreaApplicationController areaApplicationController;
+    private AreaApplicationController areaApplicationController;
     @Inject
-    InstitutionApplicationController institutionApplicationController;
+    private InstitutionApplicationController institutionApplicationController;
     @Inject
     private WebUserController webUserController;
     @Inject
@@ -83,7 +83,7 @@ public class ClientController implements Serializable {
     @Inject
     private ItemController itemController;
     @Inject
-    ItemApplicationController itemApplicationController;
+    private ItemApplicationController itemApplicationController;
     @Inject
     private InstitutionController institutionController;
     @Inject
@@ -93,13 +93,13 @@ public class ClientController implements Serializable {
     @Inject
     private ClientEncounterComponentFormSetController clientEncounterComponentFormSetController;
     @Inject
-    UserTransactionController userTransactionController;
+    private UserTransactionController userTransactionController;
     @Inject
-    DesignComponentFormSetController designComponentFormSetController;
+    private DesignComponentFormSetController designComponentFormSetController;
     @Inject
-    ClientEncounterComponentItemController clientEncounterComponentItemController;
+    private ClientEncounterComponentItemController clientEncounterComponentItemController;
     @Inject
-    PreferenceController preferenceController;
+    private PreferenceController preferenceController;
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Variables">
     private List<Client> items = null;
@@ -122,6 +122,9 @@ public class ClientController implements Serializable {
     private List<Encounter> testEnrollmentsToMark;
     private List<Encounter> testList;
     private List<Encounter> caseList;
+
+    private List<Encounter> selectedToReceive;
+    private List<Encounter> selectedToConfirm;
 
     private Client selected;
     private Long selectedId;
@@ -170,8 +173,8 @@ public class ClientController implements Serializable {
 
     private List<InstitutionCount> labOrderSummeries;
 
-    String continuedAddress = "";
-    Institution continuedLab;
+    private String continuedAddress = "";
+    private Institution continuedLab;
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Constructors">
@@ -458,22 +461,24 @@ public class ClientController implements Serializable {
         return "/client/reserve_phn";
     }
 
-    public String toLabOrderSummery() {
+    public String toLabOrdersToReceiveSummery() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
-        processLabOrderSummery();
-        return "/lab/order_summary";
+        processLabOrdersToReceiveSummery();
+        return "/lab/orders_to_receive_summary";
     }
 
-    public void processLabOrderSummery() {
+    public void processLabOrdersToReceiveSummery() {
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired<>:ret "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:ins "
+                + " and c.receivedAtLab<>:rec "
                 + " group by c.institution";
         Map m = new HashMap();
         m.put("ret", true);
+        m.put("rec", true);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
@@ -487,6 +492,33 @@ public class ClientController implements Serializable {
             }
         }
 
+    }
+
+    public String receiveAllLabOrders() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired<>:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.referalInstitution=:ins "
+                + " and c.receivedAtLab<>:rec "
+                + " group by c.institution";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("rec", true);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("ins", referingInstitution);
+        labOrderSummeries = new ArrayList<>();
+        List<Encounter> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
+        for (Encounter e : obs) {
+            e.setReceivedAtLab(true);
+            e.setReceivedAtLabAt(new Date());
+            e.setReceivedAtLabBy(webUserController.getLoggedUser());
+            encounterFacade.edit(e);
+        }
+        return toLabOrderByReferringInstitution();
     }
 
     public String toLabOrderByReferringInstitution() {
@@ -542,15 +574,26 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.institution=:ins "
+                + " and c.receivedAtLab=:rec "
+                + " and c.resultConfirmed<>:con "
                 + " order by c.id";
         Map m = new HashMap();
         m.put("ret", true);
+        m.put("rec", true);
+        m.put("con", true);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
         m.put("ins", referingInstitution);
         testList = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/mark_results";
+    }
+
+    public void saveEncounter(Encounter se) {
+        if (se == null) {
+            return;
+        }
+        encounterFacade.edit(se);
     }
 
     public String toLabOrderByReferringInstitutionToPrintResults() {
@@ -3674,6 +3717,94 @@ public class ClientController implements Serializable {
 
     public void setReferingInstitution(Institution referingInstitution) {
         this.referingInstitution = referingInstitution;
+    }
+
+    public AreaApplicationController getAreaApplicationController() {
+        return areaApplicationController;
+    }
+
+    public void setAreaApplicationController(AreaApplicationController areaApplicationController) {
+        this.areaApplicationController = areaApplicationController;
+    }
+
+    public InstitutionApplicationController getInstitutionApplicationController() {
+        return institutionApplicationController;
+    }
+
+    public void setInstitutionApplicationController(InstitutionApplicationController institutionApplicationController) {
+        this.institutionApplicationController = institutionApplicationController;
+    }
+
+    public ItemApplicationController getItemApplicationController() {
+        return itemApplicationController;
+    }
+
+    public void setItemApplicationController(ItemApplicationController itemApplicationController) {
+        this.itemApplicationController = itemApplicationController;
+    }
+
+    public UserTransactionController getUserTransactionController() {
+        return userTransactionController;
+    }
+
+    public void setUserTransactionController(UserTransactionController userTransactionController) {
+        this.userTransactionController = userTransactionController;
+    }
+
+    public DesignComponentFormSetController getDesignComponentFormSetController() {
+        return designComponentFormSetController;
+    }
+
+    public void setDesignComponentFormSetController(DesignComponentFormSetController designComponentFormSetController) {
+        this.designComponentFormSetController = designComponentFormSetController;
+    }
+
+    public ClientEncounterComponentItemController getClientEncounterComponentItemController() {
+        return clientEncounterComponentItemController;
+    }
+
+    public void setClientEncounterComponentItemController(ClientEncounterComponentItemController clientEncounterComponentItemController) {
+        this.clientEncounterComponentItemController = clientEncounterComponentItemController;
+    }
+
+    public PreferenceController getPreferenceController() {
+        return preferenceController;
+    }
+
+    public void setPreferenceController(PreferenceController preferenceController) {
+        this.preferenceController = preferenceController;
+    }
+
+    public String getContinuedAddress() {
+        return continuedAddress;
+    }
+
+    public void setContinuedAddress(String continuedAddress) {
+        this.continuedAddress = continuedAddress;
+    }
+
+    public Institution getContinuedLab() {
+        return continuedLab;
+    }
+
+    public void setContinuedLab(Institution continuedLab) {
+        this.continuedLab = continuedLab;
+    }
+
+    public List<Encounter> getSelectedToReceive() {
+        return selectedToReceive;
+    }
+
+    public void setSelectedToReceive(List<Encounter> selectedToReceive) {
+        this.selectedToReceive = selectedToReceive;
+    }
+
+    public List<Encounter> getSelectedToConfirm() {
+        return selectedToConfirm;
+    }
+
+    public void setSelectedToConfirm(List<Encounter> selectedToConfirm) {
+        this.selectedToConfirm = selectedToConfirm;
     }
 
     // </editor-fold>

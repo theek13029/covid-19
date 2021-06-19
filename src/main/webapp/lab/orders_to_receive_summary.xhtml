@@ -32,7 +32,7 @@
                                                         </p:autoComplete>-->
 
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{clientController.processLabOrderToReceiveSummery()}" ></p:commandButton>
+                                             action="#{clientController.processLabOrdersToReceiveSummery()}" ></p:commandButton>
                             <p:commandButton ajax="false" value="Generate Excel" >
                                 <p:dataExporter type="xlsx" fileName="Lab Order Summery" target="tbl" ></p:dataExporter>
                             </p:commandButton>
@@ -58,7 +58,7 @@
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                 </p:commandButton>
-                                <p:commandButton ajax="false" value="Mark All as Received" action="#{clientController.toLabOrderByReferringInstitution()}" >
+                                <p:commandButton ajax="false" value="Mark All as Received" action="#{clientController.receiveAllLabOrders()}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                 </p:commandButton>

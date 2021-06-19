@@ -98,7 +98,7 @@ public class Encounter implements Serializable {
 
     private Double ctValue;
     @ManyToOne
-    private Item pctResult;
+    private Item pcrResult;
 
     private Boolean resultPositive;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -554,12 +554,12 @@ public class Encounter implements Serializable {
         this.ctValue = ctValue;
     }
 
-    public Item getPctResult() {
-        return pctResult;
+    public Item getPcrResult() {
+        return pcrResult;
     }
 
-    public void setPctResult(Item pctResult) {
-        this.pctResult = pctResult;
+    public void setPcrResult(Item pcrResult) {
+        this.pcrResult = pcrResult;
     }
 
     public WebUser getSampledBy() {

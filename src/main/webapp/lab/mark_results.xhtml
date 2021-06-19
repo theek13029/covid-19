@@ -65,34 +65,18 @@
                             <p:column headerText="Phone" >
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
-                            <p:column id="result" headerText="Result" >
-                                <p:outputLabel rendered="#{c.resultPositive ne null}" value="#{c.resultPositive?'Yes':'No'}" ></p:outputLabel>
-                                <p:outputLabel rendered="#{c.resultPositive eq null}" value="Not Available" ></p:outputLabel>
+                            <p:column id="result" headerText="CT" >
+                                <p:inputText id="txtCt" value="#{c.ctValue}" style="width: 5rem;" >
+                                    <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounter(c)}" >
+                                    </p:ajax>
+                                </p:inputText>
                             </p:column>
                             <p:column headerText="Result" >
-                                <p:outputLabel value="POSITIVE" rendered="#{c.resultPositive eq true}" ></p:outputLabel>
-                                <p:outputLabel value="Negative" rendered="#{c.resultPositive eq false}" ></p:outputLabel>
-                                <p:outputLabel value="Awaiting Results" rendered="#{c.resultPositive eq null}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Result" exportable="false" >
-                                <p:commandButton rendered="#{!c.resultPositive}" value="Mark Positive" action="#{clientController.markTestAsPositive}" ajax="false" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounterToMarkTest}" ></f:setPropertyActionListener>
-                                </p:commandButton>
-
-                                <p:commandButton rendered="#{c.resultPositive or c.resultPositive eq null}"  value="Mark Negative" action="#{clientController.markTestAsNegative}" ajax="false" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounterToMarkTest}" ></f:setPropertyActionListener>
-                                </p:commandButton>
-
-                                <p:commandButton rendered="#{c.resultPositive ne null}"  value="Mark As Not Available" action="#{clientController.markTestAsNotReceived}" ajax="false" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounterToMarkTest}" ></f:setPropertyActionListener>
-                                </p:commandButton>
-                            </p:column>
-
-                            <p:column exportable="false" >
-                                <p:commandButton ajax="false" value="Convert to a case" action="#{clientController.toNewCaseEnrollmentFromEncounter()}" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
-                                    </f:setPropertyActionListener>
-                                </p:commandButton>
+                                <p:selectOneMenu value="#{c.pcrResult}"  >
+                                    <f:selectItem itemLabel="Select Result" ></f:selectItem>
+                                    <f:selectItems itemValue="#{itemApplicationController.pcrResults}"
+                                                   var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
+                                </p:selectOneMenu>
                             </p:column>
                         </p:dataTable>
                     </h:form>
