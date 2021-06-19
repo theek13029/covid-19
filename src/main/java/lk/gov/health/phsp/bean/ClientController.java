@@ -585,17 +585,31 @@ public class ClientController implements Serializable {
         m.put("fd", fromDate);
         m.put("td", toDate);
         m.put("ins", institution);
-        testList = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        testEnrollmentsToMark = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/mark_results";
     }
 
-    public void saveEncounter(Encounter se) {
+    public void saveEncounterResults(Encounter se) {
         if (se == null) {
             return;
         }
+        se.setResultEntered(true);
+        se.setResultEnteredAt(new Date());
+        se.setResultEnteredBy(webUserController.getLoggedUser());
         encounterFacade.edit(se);
     }
 
+    public void confirmSelectedResults(){
+        for(Encounter e:selectedToConfirm){
+            e.setResultConfirmed(true);
+            e.setResultConfirmedAt(new Date());
+            e.setResultConfirmedBy(webUserController.getLoggedUser());
+            encounterFacade.edit(e);
+        }
+        selectedToConfirm = null;
+        
+    }
+    
     public String toLabOrderByReferringInstitutionToPrintResults() {
         String j = "select c "
                 + " from Encounter c "
@@ -647,6 +661,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Nothing Selected");
             return "";
         }
+        selected.getPerson().calAgeFromDob();
         clearRegisterNewExistsValues();
         selectedClientsClinics = null;
         selectedClientEncounters = null;
@@ -664,6 +679,7 @@ public class ClientController implements Serializable {
             return "";
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        
         return "/client/client_case_enrollment";
     }
 
@@ -801,6 +817,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No Patient");
             return "";
         }
+        selected.getPerson().calAgeFromDob();
         clearRegisterNewExistsValues();
         selectedClientsClinics = null;
         selectedClientEncounters = null;
