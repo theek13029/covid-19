@@ -26,8 +26,7 @@
                             <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
                             <p:outputLabel value="Ordered Institution" ></p:outputLabel>
-                            <p:autoComplete value="#{clientController.referingInstitution}"
-                                            rendered="#{clientController.institutionSelectable and clientController.nationalLevel}" 
+                            <p:autoComplete value="#{clientController.institution}"
                                             completeMethod="#{institutionController.completeInstitutions}"
                                             var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                             </p:autoComplete>
@@ -72,10 +71,12 @@
                                 </p:inputText>
                             </p:column>
                             <p:column headerText="Result" >
-                                <p:selectOneMenu value="#{c.pcrResult}"  >
+                                <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}"  >
                                     <f:selectItem itemLabel="Select Result" ></f:selectItem>
-                                    <f:selectItems itemValue="#{itemApplicationController.pcrResults}"
+                                    <f:selectItems value="#{itemApplicationController.pcrResults}"
                                                    var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
+                                     <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounter(c)}" >
+                                    </p:ajax>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:dataTable>

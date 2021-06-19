@@ -354,6 +354,7 @@ public class ItemApplicationController {
         strengthUnits = null;
         durationUnits = null;
         issueUnits = null;
+        pcrResults=null;
     }
 
     public List<ItemType> getUnitsTypes() {

@@ -584,7 +584,7 @@ public class ClientController implements Serializable {
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
-        m.put("ins", referingInstitution);
+        m.put("ins", institution);
         testList = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/mark_results";
     }
