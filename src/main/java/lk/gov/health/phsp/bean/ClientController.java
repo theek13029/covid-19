@@ -476,11 +476,11 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:ins "
-                + " and c.receivedAtLab<>:rec "
+                + " and (c.receivedAtLab is null or c.receivedAtLab=:rec) "
                 + " group by c.institution";
         Map m = new HashMap();
         m.put("ret", true);
-        m.put("rec", true);
+        m.put("rec", false);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
@@ -611,7 +611,7 @@ public class ClientController implements Serializable {
         m.put("td", toDate);
         m.put("ins", institution);
         listedToConfirm = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
-        return "/lab/mark_results";
+        return "/lab/confirm_results";
     }
 
     

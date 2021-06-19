@@ -274,10 +274,10 @@ public class ItemApplicationController {
         List<Item> titems = new ArrayList<>();
         for (Item ti : getItems()) {
             if (ti.getCode() != null && ti.getCode().equalsIgnoreCase(code)) {
-                items.add(ti);
+                titems.add(ti);
             }
         }
-        return items;
+        return titems;
     }
 
     
@@ -404,7 +404,7 @@ public class ItemApplicationController {
     
     public List<Item> getPcrResults() {
         if (pcrResults == null) {
-            pcrResults = findItemsByCode("pcr_results");
+            pcrResults = findChildDictionaryItems("pcr_results");
         }
         return pcrResults;
     }
