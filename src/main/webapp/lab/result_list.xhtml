@@ -26,8 +26,7 @@
                             <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
                             <p:outputLabel value="Ordered Institution" ></p:outputLabel>
-                            <p:autoComplete value="#{clientController.referingInstitution}"
-                                            rendered="#{clientController.institutionSelectable and clientController.nationalLevel}" 
+                            <p:autoComplete value="#{clientController.institution}"
                                             completeMethod="#{institutionController.completeInstitutions}"
                                             var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                             </p:autoComplete>
