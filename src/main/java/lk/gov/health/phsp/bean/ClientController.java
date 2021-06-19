@@ -459,9 +459,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabOrderSummery() {
-        if (institution == null) {
-            institution = webUserController.getLoggedUser().getInstitution();
-        }
+        institution = webUserController.getLoggedUser().getInstitution();
         processLabOrderSummery();
         return "/lab/order_summary";
     }
@@ -492,7 +490,6 @@ public class ClientController implements Serializable {
 
     }
 
-    
     public String toLabOrderByReferringInstitution() {
         String j = "select c "
                 + " from Encounter c "
@@ -510,7 +507,7 @@ public class ClientController implements Serializable {
         testList = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/order_list";
     }
-    
+
     public String toLabOrderByReferringInstitutionToMarkResults() {
         String j = "select c "
                 + " from Encounter c "
@@ -528,7 +525,7 @@ public class ClientController implements Serializable {
         testList = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/mark_results";
     }
-    
+
     public String toLabOrderByReferringInstitutionToPrintResults() {
         String j = "select c "
                 + " from Encounter c "
@@ -547,8 +544,6 @@ public class ClientController implements Serializable {
         return "/lab/result_list";
     }
 
-    
-    
     public String toAddNewClientForCaseEnrollment() {
         setSelected(new Client());
         selected.setRetired(true);
@@ -3634,8 +3629,6 @@ public class ClientController implements Serializable {
         return labOrderSummeries;
     }
 
-    
-    
     public void setLabOrderSummeries(List<InstitutionCount> labOrderSummeries) {
         this.labOrderSummeries = labOrderSummeries;
     }

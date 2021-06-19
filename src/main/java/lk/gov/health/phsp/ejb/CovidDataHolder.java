@@ -344,7 +344,6 @@ public class CovidDataHolder {
         } else {
             return null;
         }
-        j += " order by n.id desc";
         Long count = numbersFacade.findLongByJpql(j, m);
         System.out.println("count = " + count);
         return count;
