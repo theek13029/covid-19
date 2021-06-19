@@ -119,7 +119,9 @@ public class ClientController implements Serializable {
     private List<Encounter> institutionTestEnrollments;
     private Map<Long, Encounter> institutionTestEnrollmentMap;
 
-    private List<Encounter> testEnrollmentsToMark;
+    private List<Encounter> listedToReceive;
+    private List<Encounter> listedToEnterResults;
+    private List<Encounter> listedToConfirm;
     private List<Encounter> testList;
     private List<Encounter> caseList;
 
@@ -518,7 +520,7 @@ public class ClientController implements Serializable {
             e.setReceivedAtLabBy(webUserController.getLoggedUser());
             encounterFacade.edit(e);
         }
-        return toLabOrderByReferringInstitution();
+        return toLabOrdersToReceiveSummery();
     }
 
     public String toLabOrderByReferringInstitution() {
@@ -585,10 +587,34 @@ public class ClientController implements Serializable {
         m.put("fd", fromDate);
         m.put("td", toDate);
         m.put("ins", institution);
-        testEnrollmentsToMark = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/mark_results";
     }
 
+    
+    public String toConfirmResultsByReferringInstitution() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired<>:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.resultEntered=:rec "
+                + " and c.resultConfirmed<>:con "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("rec", true);
+        m.put("con", true);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("ins", institution);
+        listedToConfirm = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/lab/mark_results";
+    }
+
+    
     public void saveEncounterResults(Encounter se) {
         if (se == null) {
             return;
@@ -2968,6 +2994,8 @@ public class ClientController implements Serializable {
     public String getSearchingId() {
         return searchingId;
     }
+    
+    
 
     public void setSearchingId(String searchingId) {
         this.searchingId = searchingId;
@@ -3556,7 +3584,7 @@ public class ClientController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("t", EncounterType.Test_Enrollment);
-        testEnrollmentsToMark = getEncounterFacade().findByJpql(j, m);
+        listedToReceive = getEncounterFacade().findByJpql(j, m);
     }
 
     public void fillTestList() {
@@ -3658,12 +3686,12 @@ public class ClientController implements Serializable {
         this.selectedEncounterToMarkTest = selectedEncounterToMarkTest;
     }
 
-    public List<Encounter> getTestEnrollmentsToMark() {
-        return testEnrollmentsToMark;
+    public List<Encounter> getListedToReceive() {
+        return listedToReceive;
     }
 
-    public void setTestEnrollmentsToMark(List<Encounter> testEnrollmentsToMark) {
-        this.testEnrollmentsToMark = testEnrollmentsToMark;
+    public void setListedToReceive(List<Encounter> listedToReceive) {
+        this.listedToReceive = listedToReceive;
     }
 
     public Boolean getInstitutionSelectable() {
@@ -3816,12 +3844,30 @@ public class ClientController implements Serializable {
         this.selectedToReceive = selectedToReceive;
     }
 
+    
+    
     public List<Encounter> getSelectedToConfirm() {
         return selectedToConfirm;
     }
 
     public void setSelectedToConfirm(List<Encounter> selectedToConfirm) {
         this.selectedToConfirm = selectedToConfirm;
+    }
+
+    public List<Encounter> getListedToConfirm() {
+        return listedToConfirm;
+    }
+
+    public void setListedToConfirm(List<Encounter> listedToConfirm) {
+        this.listedToConfirm = listedToConfirm;
+    }
+
+    public List<Encounter> getListedToEnterResults() {
+        return listedToEnterResults;
+    }
+
+    public void setListedToEnterResults(List<Encounter> listedToEnterResults) {
+        this.listedToEnterResults = listedToEnterResults;
     }
 
     // </editor-fold>

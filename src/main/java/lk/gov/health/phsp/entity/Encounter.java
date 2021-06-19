@@ -96,6 +96,14 @@ public class Encounter implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private WebUser resultConfirmedBy;
 
+    private Boolean resultNoted;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date resultNotedAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebUser resultNotedBy;
+
+    
+    
     private Double ctValue;
     @ManyToOne
     private Item pcrResult;
@@ -601,5 +609,31 @@ public class Encounter implements Serializable {
     public void setResultConfirmedBy(WebUser resultConfirmedBy) {
         this.resultConfirmedBy = resultConfirmedBy;
     }
+
+    public Boolean getResultNoted() {
+        return resultNoted;
+    }
+
+    public void setResultNoted(Boolean resultNoted) {
+        this.resultNoted = resultNoted;
+    }
+
+    public Date getResultNotedAt() {
+        return resultNotedAt;
+    }
+
+    public void setResultNotedAt(Date resultNotedAt) {
+        this.resultNotedAt = resultNotedAt;
+    }
+
+    public WebUser getResultNotedBy() {
+        return resultNotedBy;
+    }
+
+    public void setResultNotedBy(WebUser resultNotedBy) {
+        this.resultNotedBy = resultNotedBy;
+    }
+    
+    
 
 }

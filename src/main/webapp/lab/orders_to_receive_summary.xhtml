@@ -25,12 +25,6 @@
                             <p:outputLabel value="To" ></p:outputLabel>
                             <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                            <!--                            <p:outputLabel value="Lab"  ></p:outputLabel>
-                                                        <p:autoComplete value="#{clientController.referingInstitution}"
-                                                                        completeMethod="#{institutionController.completeLab}"
-                                                                        var="m" itemLabel="#{m.name}" itemValue="#{m}" >
-                                                        </p:autoComplete>-->
-
                             <p:commandButton ajax="false" value="Process" 
                                              action="#{clientController.processLabOrdersToReceiveSummery()}" ></p:commandButton>
                             <p:commandButton ajax="false" value="Generate Excel" >

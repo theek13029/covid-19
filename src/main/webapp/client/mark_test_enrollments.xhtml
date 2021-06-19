@@ -37,7 +37,7 @@
                         <p:commandButton ajax="false" value="Download">
                             <p:dataExporter target="tbl" type="xlsx" fileName="test_enrollments" ></p:dataExporter>
                         </p:commandButton>
-                        <p:dataTable id="tbl" value="#{clientController.testEnrollmentsToMark}" 
+                        <p:dataTable id="tbl" value="#{clientController.listedToReceive}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      rowStyleClass="#{c.resultPositive?'redRow':''}">
                             <p:column headerText="Name" >

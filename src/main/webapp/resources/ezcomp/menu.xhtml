@@ -24,7 +24,7 @@
                     <p:menuitem ajax="false" value="To Receive Summery" action="#{clientController.toLabOrdersToReceiveSummery()}"  />
                     <p:menuitem ajax="false" value="Search Orders" action="#{clientController.toLabOrderByReferringInstitution()}"  />
                     <p:menuitem ajax="false" value="Enter Results" action="#{clientController.toLabOrderByReferringInstitutionToMarkResults()}" />
-                    <p:menuitem ajax="false" value="Authorize Results" action="#{clientController.toLabOrderByReferringInstitutionToMarkResults()}" />
+                    <p:menuitem ajax="false" value="Approve Results" action="#{clientController.toConfirmResultsByReferringInstitution()}" />
                     <p:menuitem ajax="false" value="Print Results" action="#{clientController.toLabOrderByReferringInstitutionToPrintResults}" />
                 </p:submenu>
                 <p:submenu label="Reports"  rendered="#{webUserController.hasPrivilege('Monitoring_and_evaluation')}"  >

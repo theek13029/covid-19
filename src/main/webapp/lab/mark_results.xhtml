@@ -43,8 +43,8 @@
 
 
                     <h:form>
-                        <p:dataTable id="tbl" value="#{clientController.testEnrollmentsToMark}" 
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10"
+                        <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}" 
+                                     var="c" paginator="true" rowKey="#{c.id}" rows="10" 
                                      rowStyleClass="#{c.resultPositive?'redRow':''}">
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
