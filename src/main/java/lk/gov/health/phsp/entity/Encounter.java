@@ -62,8 +62,32 @@ public class Encounter implements Serializable {
     private Client client;
     @ManyToOne
     private Area area;
+
+    private boolean firstEncounter;
+
+    private Boolean sampled;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date sampledAt;
+
+    private Boolean sentToLab;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date sentToLabAt;
+
+    private Boolean receivedAtLab;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date receivedAtLabAt;
+
+    private Boolean resultEntered;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date resultEnteredAt;
+
+    private Boolean resultConfirmed;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date resultConfirmedAt;
     
-    private boolean firstEncounter ;
+    private Double ctValue;
+    @ManyToOne
+    private Item pctResult;
 
     private Boolean resultPositive;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -72,15 +96,14 @@ public class Encounter implements Serializable {
     private Date resultDateTime;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date resultMarkedUser;
-    
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date encounterDate;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date encounterFrom;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date encounterTo;
-    
+
     private Integer encounterYear;
     private Integer encounterMonth;
     private Integer encounterQuarter;
@@ -89,13 +112,13 @@ public class Encounter implements Serializable {
     private EncounterType encounterType;
 
     private String encounterNumber;
-    
+
     @ManyToOne
     private Encounter parentEncounter;
 
     @ManyToOne
     Institution institution;
-    
+
     @ManyToOne
     Institution referalInstitution;
 
@@ -117,14 +140,14 @@ public class Encounter implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date retiredReversedAt;
 
-/*
+    /*
     Last Edit Properties
      */
     @ManyToOne
     private WebUser lastEditBy;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date lastEditeAt;    
-    
+    private Date lastEditeAt;
+
     private boolean completed;
     @ManyToOne
     private WebUser completedBy;
@@ -164,8 +187,6 @@ public class Encounter implements Serializable {
         return "id=" + id + "";
     }
 
-    
-    
     public Client getClient() {
         return client;
     }
@@ -382,21 +403,19 @@ public class Encounter implements Serializable {
     public void setClientEncounterComponentItems(List<ClientEncounterComponentItem> clientEncounterComponentItems) {
         this.clientEncounterComponentItems = clientEncounterComponentItems;
     }
-    
-    public ClientEncounterComponentItem getClientEncounterComponentItem(Item item){
-        for(ClientEncounterComponentItem i: getClientEncounterComponentItems()){
-            if(i.getItem().equals(item)){
+
+    public ClientEncounterComponentItem getClientEncounterComponentItem(Item item) {
+        for (ClientEncounterComponentItem i : getClientEncounterComponentItems()) {
+            if (i.getItem().equals(item)) {
                 return i;
             }
         }
         return null;
     }
-    
+
     public String getRetireComments() {
         return retireComments;
     }
-    
-    
 
     public void setRetireComments(String retireComments) {
         this.retireComments = retireComments;
@@ -434,9 +453,102 @@ public class Encounter implements Serializable {
         this.resultMarkedUser = resultMarkedUser;
     }
 
-   
-    
-    
-    
+    public Boolean getSampled() {
+        return sampled;
+    }
 
+    public void setSampled(Boolean sampled) {
+        this.sampled = sampled;
+    }
+
+    public Date getSampledAt() {
+        return sampledAt;
+    }
+
+    public void setSampledAt(Date sampledAt) {
+        this.sampledAt = sampledAt;
+    }
+
+    public Boolean getSentToLab() {
+        return sentToLab;
+    }
+
+    public void setSentToLab(Boolean sentToLab) {
+        this.sentToLab = sentToLab;
+    }
+
+    public Date getSentToLabAt() {
+        return sentToLabAt;
+    }
+
+    public void setSentToLabAt(Date sentToLabAt) {
+        this.sentToLabAt = sentToLabAt;
+    }
+
+    public Boolean getReceivedAtLab() {
+        return receivedAtLab;
+    }
+
+    public void setReceivedAtLab(Boolean receivedAtLab) {
+        this.receivedAtLab = receivedAtLab;
+    }
+
+    public Date getReceivedAtLabAt() {
+        return receivedAtLabAt;
+    }
+
+    public void setReceivedAtLabAt(Date receivedAtLabAt) {
+        this.receivedAtLabAt = receivedAtLabAt;
+    }
+
+    public Boolean getResultEntered() {
+        return resultEntered;
+    }
+
+    public void setResultEntered(Boolean resultEntered) {
+        this.resultEntered = resultEntered;
+    }
+
+    public Date getResultEnteredAt() {
+        return resultEnteredAt;
+    }
+
+    public void setResultEnteredAt(Date resultEnteredAt) {
+        this.resultEnteredAt = resultEnteredAt;
+    }
+
+    public Boolean getResultConfirmed() {
+        return resultConfirmed;
+    }
+
+    public void setResultConfirmed(Boolean resultConfirmed) {
+        this.resultConfirmed = resultConfirmed;
+    }
+
+    public Date getResultConfirmedAt() {
+        return resultConfirmedAt;
+    }
+
+    public void setResultConfirmedAt(Date resultConfirmedAt) {
+        this.resultConfirmedAt = resultConfirmedAt;
+    }
+
+    public Double getCtValue() {
+        return ctValue;
+    }
+
+    public void setCtValue(Double ctValue) {
+        this.ctValue = ctValue;
+    }
+
+    public Item getPctResult() {
+        return pctResult;
+    }
+
+    public void setPctResult(Item pctResult) {
+        this.pctResult = pctResult;
+    }
+
+    
+    
 }
