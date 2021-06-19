@@ -31,6 +31,12 @@
                                             var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                             </p:autoComplete>
 
+                            <p:outputLabel value="Lab" ></p:outputLabel>
+                            <p:autoComplete value="#{clientController.referingInstitution}"
+                                            completeMethod="#{institutionController.completeInstitutions}"
+                                            var="m" itemLabel="#{m.name}" itemValue="#{m}" >
+                            </p:autoComplete>
+
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                             </p:commandButton>
@@ -72,7 +78,7 @@
                                     <f:selectItem itemLabel="Select Result" ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
                                                    var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
-                                     <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounterResults(c)}" >
+                                    <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:selectOneMenu>
                             </p:column>

@@ -464,14 +464,13 @@ public class ClientController implements Serializable {
     }
 
     public String toLabOrdersToReceiveSummery() {
-        System.out.println("toLabOrdersToReceiveSummery");
         referingInstitution = webUserController.getLoggedUser().getInstitution();
         processLabOrdersToReceiveSummery();
         return "/lab/orders_to_receive_summary";
     }
 
     public void processLabOrdersToReceiveSummery() {
-        System.out.println("processLabOrdersToReceiveSummery");
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired=false "
@@ -495,7 +494,6 @@ public class ClientController implements Serializable {
                 labOrderSummeries.add((InstitutionCount) o);
             }
         }
-
     }
 
     public String receiveAllLabOrders() {
@@ -524,7 +522,6 @@ public class ClientController implements Serializable {
         return toLabOrdersToReceiveSummery();
     }
 
-    
     public String toReceiveLabOrdersSelectively() {
         String j = "select c "
                 + " from Encounter c "
@@ -544,8 +541,8 @@ public class ClientController implements Serializable {
         return "/lab/receive_orders";
     }
 
-    
     public String toLabOrderByReferringInstitution() {
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
         Map m = new HashMap();
         String j = "select c "
                 + " from Encounter c "
@@ -594,45 +591,49 @@ public class ClientController implements Serializable {
     }
 
     public String toLabOrderByReferringInstitutionToMarkResults() {
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired<>:ret "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.institution=:ins "
+                + " and c.referalInstitution=:rins"
                 + " and c.receivedAtLab=:rec "
-                + " and c.resultConfirmed<>:con "
+                + " and c.resultConfirmed is null "
                 + " order by c.id";
         Map m = new HashMap();
         m.put("ret", true);
         m.put("rec", true);
-        m.put("con", true);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
         m.put("ins", institution);
+        m.put("rins", referingInstitution);
         listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/mark_results";
     }
 
     public String toConfirmResultsByReferringInstitution() {
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
         String j = "select c "
                 + " from Encounter c "
-                + " where c.retired<>:ret "
+                + " where c.retired=:ret "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.institution=:ins "
+                + " and c.referalInstitution=:rins"
                 + " and c.resultEntered=:rec "
-                + " and c.resultConfirmed<>:con "
+                + " and c.resultConfirmed is null "
                 + " order by c.id";
         Map m = new HashMap();
-        m.put("ret", true);
+        m.put("ret", false);
         m.put("rec", true);
-        m.put("con", true);
         m.put("type", EncounterType.Test_Enrollment);
-        m.put("fd", fromDate);
-        m.put("td", toDate);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
         m.put("ins", institution);
+        m.put("rins", referingInstitution);
         listedToConfirm = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/confirm_results";
     }
@@ -659,19 +660,24 @@ public class ClientController implements Serializable {
     }
 
     public String toLabOrderByReferringInstitutionToPrintResults() {
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired<>:ret "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.institution=:ins "
+                + " and c.referalInstitution=:rins "
+                + " and c.resultConfirmed=:con "
                 + " order by c.id";
         Map m = new HashMap();
         m.put("ret", true);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
-        m.put("ins", referingInstitution);
+        m.put("con", true);
+        m.put("ins", institution);
+        m.put("rins", referingInstitution);
         testList = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/result_list";
     }
