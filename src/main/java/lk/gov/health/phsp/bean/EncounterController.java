@@ -43,6 +43,16 @@ public class EncounterController implements Serializable {
 
     public EncounterController() {
     }
+    
+    public void addEncounterDateFromEncounterTime(){
+        String j = "select e from Encounter e "
+                + " where e.encounterDate is null";
+        List<Encounter>  es = getFacade().findByJpql(j);
+        for(Encounter e:es){
+            e.setEncounterDate(e.getCreatedAt());
+            getFacade().edit(e);
+        }
+    }
 
     public String createClinicEnrollNumber(Institution clinic) {
         String j = "select count(e) from Encounter e "

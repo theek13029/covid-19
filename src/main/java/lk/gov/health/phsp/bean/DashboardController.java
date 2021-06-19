@@ -23,45 +23,167 @@
  */
 package lk.gov.health.phsp.bean;
 
+import javax.inject.Named;
+import javax.enterprise.context.SessionScoped;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-import javax.inject.Named;
-import javax.enterprise.context.ApplicationScoped;
-import lk.gov.health.phsp.entity.Area;
-import lk.gov.health.phsp.entity.Institution;
+import javax.inject.Inject;
+import javax.persistence.TemporalType;
+import lk.gov.health.phsp.entity.ClientEncounterComponentItem;
+import lk.gov.health.phsp.entity.Encounter;
+import lk.gov.health.phsp.entity.Item;
+import lk.gov.health.phsp.entity.Numbers;
 import lk.gov.health.phsp.enums.EncounterType;
-import lk.gov.health.phsp.facade.ClientEncounterComponentItemFacade;
-import lk.gov.health.phsp.facade.ClientFacade;
 import lk.gov.health.phsp.facade.EncounterFacade;
+import lk.gov.health.phsp.facade.NumbersFacade;
+import lk.gov.health.phsp.pojcs.InstitutionCount;
 
 /**
  *
  * @author buddhika
  */
 @Named
-@ApplicationScoped
-public class DashboardController {
+@SessionScoped
+public class DashboardController implements Serializable {
 
     @EJB
-    ClientFacade clientFacade;
+    private NumbersFacade numbersFacade;
     @EJB
-    EncounterFacade encounterFacade;
-    @EJB
-    ClientEncounterComponentItemFacade clientEncounterComponentItemFacade;
+    private EncounterFacade encounterFacade;
 
-    private Long totalNumberOfOrdersYesterday;
-    private Long totalNumberOfPendingResults;
-    private Long totalNumberOfCasesYesterday;
-    private Long totalNumberOfCasesToMark;
+    @Inject
+    private EncounterController encounterController;
+    @Inject
+    ItemController itemController;
 
-    private String riskVariable = "cvs_risk_factor";
-    private String riskVal1 = "30-40%";
-    private String riskVal2 = ">40%";
-    private List<String> riskVals;
+    private Date fromDate;
+    private Date toDate;
+    private List<InstitutionCount> ics;
+    List<Encounter> encounters;
+    List<Numbers> numbersList;
+
+    public String toCalculateNumbers() {
+        return "/systemAdmin/calculate_numbers";
+    }
+
+    public void calculateNumbers() {
+        numbersList = new ArrayList<>();
+        calculateNumbersByOrderedTest();
+        calculateCasesAndTestNumbers();
+    }
+
+    public void calculateNumbersByOrderedTest() {
+        ClientEncounterComponentItem i = new ClientEncounterComponentItem();
+        i.getItemEncounter();
+        i.getItem();
+        i.getItemValue();
+        List<Item> items = new ArrayList<>();
+        items.add(itemController.findItemByCode("test_type"));
+        items.add(itemController.findItemByCode("covid_19_test_ordering_context_category"));
+        Item pcr = itemController.findItemByCode("covid19_pcr_test");
+        Item rat = itemController.findItemByCode("covid19_rat");
+
+        ics = new ArrayList<>();
+        String j = "select  new lk.gov.health.phsp.pojcs.InstitutionCount(count(e), e.institution, e.encounterDate, e.encounterType, i.item, i.itemValue)  "
+                + " from  ClientEncounterComponentItem i join i.itemEncounter e"
+                + " where e.retired=false "
+                + " and e.encounterDate between :fd and :td "
+                + " and i.item in :items "
+                + " and e.encounterType=:test"
+                + " group by e.encounterDate, e.institution, e.encounterType, i.item, i.itemValue";
+        Map m = new HashMap();
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("items", items);
+        m.put("test", EncounterType.Test_Enrollment);
+        List<Object> os = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
+        for (Object o : os) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                String name = "";
+
+                if (ic.getEncounerType() == null) {
+                    continue;
+                }
+                switch (ic.getEncounerType()) {
+                    case Test_Enrollment:
+                        if (ic.getItemValue() == null) {
+                            continue;
+                        }
+                        if (ic.getItemValue().equals(rat)) {
+                            name = "rat orders";
+                        } else if (ic.getItemValue().equals(pcr)) {
+                            name = "pcr orders";
+                        } else {
+                            name = "";
+                        }
+                        break;
+                    default:
+                        name = "";
+                }
+
+                if (!name.trim().equals("")) {
+                    Numbers n = new Numbers();
+                    n.setInstitution(ic.getInstitution());
+                    n.setNumberDate(ic.getDate());
+                    n.setName(name);
+                    n.setCount(ic.getCount());
+                    Numbers nn = save(n);
+                    if (nn != null) {
+                        numbersList.add(nn);
+                    }
+                }
+            }
+        }
+    }
+
+    public void calculateCasesAndTestNumbers() {
+        String j = "select  new lk.gov.health.phsp.pojcs.InstitutionCount(count(e), e.institution, e.encounterDate, e.encounterType)  "
+                + " from Encounter e "
+                + " where e.retired=false "
+                + " and e.encounterDate between :fd and :td "
+                + " group by e.encounterDate, e.institution, e.encounterType";
+        Map m = new HashMap();
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        List<Object> os = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
+        for (Object o : os) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                String name = "";
+                switch (ic.getEncounerType()) {
+                    case Case_Enrollment:
+                        name = "cases";
+                        break;
+                    case Death:
+                        name = "deaths";
+                        break;
+                    case Test_Enrollment:
+                        name = "test orders";
+                        break;
+                    default:
+                        name = "";
+                }
+
+                if (!name.trim().equals("")) {
+                    Numbers n = new Numbers();
+                    n.setInstitution(ic.getInstitution());
+                    n.setNumberDate(ic.getDate());
+                    n.setName(name);
+                    n.setCount(ic.getCount());
+                    Numbers nn = save(n);
+                    if (nn != null) {
+                        numbersList.add(nn);
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * Creates a new instance of DashboardController
@@ -69,177 +191,97 @@ public class DashboardController {
     public DashboardController() {
     }
 
-    public void prepareSystemDashboard() {
+    public NumbersFacade getNumbersFacade() {
+        return numbersFacade;
+    }
 
-        if (totalNumberOfOrdersYesterday == null) {
-            totalNumberOfOrdersYesterday = findTotalNumberOfRegisteredClientsForAdmin();
+    public Numbers save(Numbers numbers) {
+        if (numbers == null) {
+            return null;
         }
-        if (totalNumberOfCasesYesterday == null) {
-            totalNumberOfCasesYesterday = findTotalNumberOfClinicEnrolmentsForAdmin();
+        if (numbers.getId() != null) {
+            numbersFacade.edit(numbers);
+            return numbers;
         }
-        if (totalNumberOfPendingResults == null) {
-            totalNumberOfPendingResults = findTotalNumberOfClinicVisitsForAdmin();
-        }
-        if (totalNumberOfCasesToMark == null) {
-            totalNumberOfCasesToMark = findTotalNumberOfCvsRiskClientsForAdmin();
-        }
-    }
-
-    
-    public Long findTotalNumberOfRegisteredClientsForAdmin() {
-        return (countOfRegistedClients(null, null));
-    }
-
-    public Long findTotalNumberOfClinicEnrolmentsForAdmin() {
-        return (countOfEncounters(null, EncounterType.Death));
-    }
-
-    public Long findTotalNumberOfClinicVisitsForAdmin() {
-        return (countOfEncounters(null, EncounterType.Test_Enrollment));
-    }
-
-    public Long findTotalNumberOfCvsRiskClientsForAdmin() {
-        riskVals = new ArrayList<>();
-        riskVals.add(riskVal1);
-        riskVals.add(riskVal2);
-        return (findClientCountEncounterComponentItemMatchCount(
-                null, CommonController.startOfTheYear(), new Date(), riskVariable, riskVals));
-    }
-
-    public Long countOfRegistedClients(Institution ins, Area gn) {
-        String j = "select count(c) from Client c "
-                + " where c.retired=:ret ";
+        Numbers databaseNumbers;
         Map m = new HashMap();
-        m.put("ret", false);
-        if (ins != null) {
-            j += " and c.createInstitution=:ins ";
-            m.put("ins", ins);
+        String j = "select n "
+                + " from Numbers n "
+                + " where n.numberDate=:d "
+                + " and n.name=:name ";
+        m.put("d", numbers.getNumberDate());
+        m.put("name", numbers.getName());
+        if (numbers.getInstitution() != null) {
+            j += " and n.institution=:ins ";
+            m.put("ins", numbers.getInstitution());
+        } else if (numbers.getArea() != null) {
+            j += " and n.area=:area ";
+            m.put("area", numbers.getArea());
+        } else {
+            return null;
         }
-        if (gn != null) {
-            j += " and c.person.gnArea=:gn ";
-            m.put("gn", gn);
+        j += " order by n.id desc";
+        databaseNumbers = numbersFacade.findFirstByJpql(j, m);
+        if (databaseNumbers == null) {
+            numbersFacade.create(numbers);
+            return numbers;
+        } else {
+            databaseNumbers.setCount(numbers.getCount());
+            numbersFacade.edit(databaseNumbers);
+            return databaseNumbers;
         }
-        return clientFacade.countByJpql(j, m);
     }
 
-    public Long countOfEncounters(List<Institution> clinics, EncounterType ec) {
-        String j = "select count(e) from Encounter e "
-                + " where e.retired=:ret "
-                + " and e.encounterType=:ec "
-                + " and e.createdAt>:d";
-        Map m = new HashMap();
-        m.put("d", CommonController.startOfTheYear());
-        m.put("ec", ec);
-        m.put("ret", false);
-        if (clinics != null && !clinics.isEmpty()) {
-            m.put("ins", clinics);
-            j += " and e.institution in :ins ";
-        }
-        return encounterFacade.findLongByJpql(j, m);
-    }
-    
-    boolean bypass=true;
-
-    public long findClientCountEncounterComponentItemMatchCount(
-            List<Institution> ins,
-            Date fromDate,
-            Date toDate,
-            String itemCode,
-            List<String> valueStrings) {
-
-        String j;
-        Map m = new HashMap();
-
-        j = "select count(f) "
-                + " from ClientEncounterComponentItem f "
-                + " where f.retired<>:ret ";
-        j += " and f.item.code=:ic ";
-        j += " and f.shortTextValue in :ivs";
-        m.put("ic", itemCode);
-        m.put("ret", true);
-        m.put("ivs", valueStrings);
-        if (fromDate != null && toDate != null) {
-            m.put("fd", fromDate);
-            m.put("td", toDate);
-            j += " and f.createdAt between :fd and :td ";
-        }
-        return clientEncounterComponentItemFacade.findLongByJpql(j, m);
+    public void setNumbersFacade(NumbersFacade numbersFacade) {
+        this.numbersFacade = numbersFacade;
     }
 
-    public Long getTotalNumberOfOrdersYesterday() {
-        if (totalNumberOfOrdersYesterday == null) {
-            prepareSystemDashboard();
-        }
-        return totalNumberOfOrdersYesterday;
+    public Date getFromDate() {
+        return fromDate;
     }
 
-    public void setTotalNumberOfOrdersYesterday(Long totalNumberOfOrdersYesterday) {
-        this.totalNumberOfOrdersYesterday = totalNumberOfOrdersYesterday;
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
     }
 
-    public Long getTotalNumberOfPendingResults() {
-        if (totalNumberOfPendingResults == null) {
-            prepareSystemDashboard();
-        }
-        return totalNumberOfPendingResults;
+    public Date getToDate() {
+        return toDate;
     }
 
-    public void setTotalNumberOfPendingResults(Long totalNumberOfPendingResults) {
-        this.totalNumberOfPendingResults = totalNumberOfPendingResults;
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
     }
 
-    public Long getTotalNumberOfCasesYesterday() {
-        if (totalNumberOfCasesYesterday == null) {
-            prepareSystemDashboard();
-        }
-        return totalNumberOfCasesYesterday;
+    public EncounterFacade getEncounterFacade() {
+        return encounterFacade;
     }
 
-    public void setTotalNumberOfCasesYesterday(Long totalNumberOfCasesYesterday) {
-        this.totalNumberOfCasesYesterday = totalNumberOfCasesYesterday;
+    public void setEncounterFacade(EncounterFacade encounterFacade) {
+        this.encounterFacade = encounterFacade;
     }
 
-    public Long getTotalNumberOfCasesToMark() {
-        if (totalNumberOfCasesToMark == null) {
-            prepareSystemDashboard();
-        }
-        return totalNumberOfCasesToMark;
+    public EncounterController getEncounterController() {
+        return encounterController;
     }
 
-    public void setTotalNumberOfCasesToMark(Long totalNumberOfCasesToMark) {
-        this.totalNumberOfCasesToMark = totalNumberOfCasesToMark;
+    public void setEncounterController(EncounterController encounterController) {
+        this.encounterController = encounterController;
     }
 
-    public String getRiskVariable() {
-        return riskVariable;
+    public List<InstitutionCount> getIcs() {
+        return ics;
     }
 
-    public void setRiskVariable(String riskVariable) {
-        this.riskVariable = riskVariable;
+    public void setIcs(List<InstitutionCount> ics) {
+        this.ics = ics;
     }
 
-    public String getRiskVal1() {
-        return riskVal1;
+    public List<Numbers> getNumbersList() {
+        return numbersList;
     }
 
-    public void setRiskVal1(String riskVal1) {
-        this.riskVal1 = riskVal1;
-    }
-
-    public String getRiskVal2() {
-        return riskVal2;
-    }
-
-    public void setRiskVal2(String riskVal2) {
-        this.riskVal2 = riskVal2;
-    }
-
-    public List<String> getRiskVals() {
-        return riskVals;
-    }
-
-    public void setRiskVals(List<String> riskVals) {
-        this.riskVals = riskVals;
+    public void setNumbersList(List<Numbers> numbersList) {
+        this.numbersList = numbersList;
     }
 
 }

@@ -23,7 +23,11 @@
  */
 package lk.gov.health.phsp.pojcs;
 
+import java.util.Date;
+import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.Institution;
+import lk.gov.health.phsp.entity.Item;
+import lk.gov.health.phsp.enums.EncounterType;
 
 /**
  *
@@ -32,15 +36,41 @@ import lk.gov.health.phsp.entity.Institution;
 public class InstitutionCount {
 
     private Institution institution;
+    private Area area;
     private Long count;
-    Long pcrCountByOrderedIns;
-    Long pcrCountByAddress;
-    Long ratCountByOrderedIns;
-    Long ratOrderedByAddress;
-    Long pcrDoneByLab;
-    Long pcrPositiveByLab;
-    Long ratPositiveByLab;
+    private Date date;
+    private EncounterType encounerType;
+    private Item item;
+    private Item itemValue;
+
+    public InstitutionCount(Long count, Institution institution, Date date, EncounterType encounerType) {
+        this.institution = institution;
+        this.count = count;
+        this.date = date;
+        this.encounerType = encounerType;
+    }
+
+    public InstitutionCount(Long count, Institution institution, Date date, EncounterType encounerType, Item item, Item itemValue) {
+        this.institution = institution;
+        this.count = count;
+        this.date = date;
+        this.encounerType = encounerType;
+        this.item = item;
+        this.itemValue = itemValue;
+    }
+
     
+    
+    public InstitutionCount(Long count, Area area, Date date, EncounterType encounerType) {
+        this.area = area;
+        this.count = count;
+        this.date = date;
+        this.encounerType = encounerType;
+    }
+
+    
+    
+
 
     public InstitutionCount(Institution institution, Long count) {
         this.institution = institution;
@@ -69,6 +99,47 @@ public class InstitutionCount {
     public void setCount(Long count) {
         this.count = count;
     }
+
+    public Area getArea() {
+        return area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public EncounterType getEncounerType() {
+        return encounerType;
+    }
+
+    public void setEncounerType(EncounterType encounerType) {
+        this.encounerType = encounerType;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    public Item getItemValue() {
+        return itemValue;
+    }
+
+    public void setItemValue(Item itemValue) {
+        this.itemValue = itemValue;
+    }
+    
     
     
 }

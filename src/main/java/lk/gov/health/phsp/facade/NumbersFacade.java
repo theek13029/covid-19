@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2021 buddhika.
+ * Copyright 2019 Dr M H B Ariyaratne<buddhika.ari@gmail.com>.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package lk.gov.health.phsp.pojcs;
+package lk.gov.health.phsp.facade;
 
-import lk.gov.health.phsp.entity.Area;
-import lk.gov.health.phsp.entity.Institution;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import lk.gov.health.phsp.entity.Numbers;
 
 /**
  *
- * @author buddhika
+ * @author Dr M H B Ariyaratne<buddhika.ari@gmail.com>
  */
-public class InstitutionAreaPeriodCount {
-    Institution institution;
-    Area area;
+@Stateless
+public class NumbersFacade extends AbstractFacade<Numbers> {
 
+    @PersistenceContext(unitName = "hmisPU")
+    private EntityManager em;
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+
+    public NumbersFacade() {
+        super(Numbers.class);
+    }
+    
 }

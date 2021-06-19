@@ -31,10 +31,13 @@ package lk.gov.health.phsp.enums;
 public enum EncounterType {
     Case_Enrollment("Case Enrollment"),
     Test_Enrollment("Test Enrollment"),
-    Rat("RAT"),
     Death("Death"),
-    No_Covid("Admission"),
-    No_test("Pharmacy Issue");
+    @Deprecated
+    No_Covid("Deprecated No_Covid"),
+    @Deprecated
+    No_test("Deprecated No_test"),
+    @Deprecated
+    Rat("Deprecated RAT");
     
     private final String label;    
     private EncounterType(String label){
