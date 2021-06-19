@@ -55,7 +55,7 @@
                             </p:column>
                             <p:column headerText="Actions" exportable="false" >
                                 <p:commandButton ajax="false" value="View" action="#{clientController.toLabOrderByReferringInstitution()}" >
-                                    <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.referingInstitution}" >
+                                    <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                 </p:commandButton>
                             </p:column>

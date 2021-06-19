@@ -26,18 +26,23 @@
                             <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
                             <p:outputLabel value="Ordered Institution" ></p:outputLabel>
+                            <p:autoComplete value="#{clientController.institution}"
+                                            completeMethod="#{institutionController.completeInstitutions}"
+                                            var="m" itemLabel="#{m.name}" itemValue="#{m}" >
+                            </p:autoComplete>
+
+                            <p:outputLabel value="Lab" ></p:outputLabel>
                             <p:autoComplete value="#{clientController.referingInstitution}"
-                                            rendered="#{clientController.institutionSelectable and clientController.nationalLevel}" 
                                             completeMethod="#{institutionController.completeInstitutions}"
                                             var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                             </p:autoComplete>
 
 
+                            <p:commandButton ajax="false" value="Process" 
+                                             action="#{clientController.toLabOrderByReferringInstitution()}" ></p:commandButton>
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="test_enrollments" ></p:dataExporter>
                             </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{clientController.toLabOrderByReferringInstitution()}" ></p:commandButton>
 
 
                         </p:panelGrid>
@@ -60,6 +65,9 @@
                             </p:column>
                             <p:column headerText="Gender"  sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Lab"  sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Age"  sortBy="#{c.client.person.age}"
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains">

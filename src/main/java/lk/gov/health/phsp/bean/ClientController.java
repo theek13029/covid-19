@@ -459,13 +459,12 @@ public class ClientController implements Serializable {
     }
 
     public String toLabOrderSummery() {
-        institution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
         processLabOrderSummery();
         return "/lab/order_summary";
     }
 
     public void processLabOrderSummery() {
-
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired<>:ret "
@@ -478,7 +477,7 @@ public class ClientController implements Serializable {
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
-        m.put("ins", institution);
+        m.put("ins", referingInstitution);
         labOrderSummeries = new ArrayList<>();
         List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
 
@@ -497,13 +496,15 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.institution=:ins "
+                + " and c.referalInstitution=:rins"
                 + " order by c.id";
         Map m = new HashMap();
         m.put("ret", true);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
-        m.put("ins", referingInstitution);
+        m.put("ins", institution);
+        m.put("rins", referingInstitution);
         testList = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/order_list";
     }
