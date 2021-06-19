@@ -65,6 +65,7 @@ public class DashboardApplicationController {
     @Inject
     CovidDataHolder covidDataHolder;
 
+    Boolean dashboardPrepared;
    
 
     /**
@@ -90,5 +91,15 @@ public class DashboardApplicationController {
         covidDataHolder.generateCovidCountsAsync(pcr, rat, testType, orderingCat, mohs, hospitals, labs, areas);
     }
 
+    public Boolean getDashboardPrepared() {
+        if(dashboardPrepared==null){
+            updateDashboard();
+            dashboardPrepared = true;
+        }
+        return dashboardPrepared;
+    }
+
+    
+    
     
 }

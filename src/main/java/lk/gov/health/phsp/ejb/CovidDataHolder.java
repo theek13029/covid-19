@@ -119,15 +119,21 @@ public class CovidDataHolder {
             CovidData cd = new CovidData();
             cd.setInstitution(ins);
             cd.setTodaysCases(findCount(ins, null, today, "case"));
-            cd.setTodaysTests(findCount(ins, null, today, "orders"));
+            cd.setTodaysTests(findCount(ins, null, today, "test orders"));
             cd.setTodaysPcrs(findCount(ins, null, today, "pcr"));
             cd.setTodaysRats(findCount(ins, null, today, "rat"));
+
+            System.out.println("firstDayOfMonth = " + firstDayOfMonth);
+            System.out.println("today = " + today);
             
-            cd.setThisMonthCases(findCount(ins, null,firstDayOfMonth, today, "case"));
-            cd.setThisMonthTests(findCount(ins, null,firstDayOfMonth,  today, "orders"));
-            cd.setThisMonthPcrs(findCount(ins, null,firstDayOfMonth,  today, "pcr"));
-            cd.setThisMonthRats(findCount(ins, null,firstDayOfMonth,  today, "rat"));
+            System.out.println("CommonController.dateTimeToString(firstDayOfMonth); = " + CommonController.dateTimeToString(firstDayOfMonth));
+            System.out.println("CommonController.dateTimeToString(today) = " + CommonController.dateTimeToString(today));
             
+            cd.setThisMonthCases(findCount(ins, null, firstDayOfMonth, today, "case"));
+            cd.setThisMonthTests(findCount(ins, null, firstDayOfMonth, today, "test orders"));
+            cd.setThisMonthPcrs(findCount(ins, null, firstDayOfMonth, today, "pcr"));
+            cd.setThisMonthRats(findCount(ins, null, firstDayOfMonth, today, "rat"));
+
             covidDatasForMohs.add(cd);
             //TODO
         }
@@ -314,6 +320,11 @@ public class CovidDataHolder {
     }
 
     public Long findCount(Institution ins, Area a, Date fromDate, Date toDate, String name) {
+        System.out.println("findCountForPeriod");
+        System.out.println("ins = " + ins);
+        System.out.println("name = " + name);
+        System.out.println("fromDate = " + fromDate);
+        System.out.println("toDate = " + toDate);
         Map m = new HashMap();
         String j = "select sum(n.count) "
                 + " from Numbers n "
@@ -325,6 +336,8 @@ public class CovidDataHolder {
         if (ins != null) {
             j += " and n.institution=:ins ";
             m.put("ins", ins);
+            System.out.println("ins Name = " + ins.getName());
+            System.out.println("ins ID = " + ins.getId());
         } else if (a != null) {
             j += " and n.area=:area ";
             m.put("area", a);
@@ -333,6 +346,7 @@ public class CovidDataHolder {
         }
         j += " order by n.id desc";
         Long count = numbersFacade.findLongByJpql(j, m);
+        System.out.println("count = " + count);
         return count;
     }
 
@@ -364,6 +378,4 @@ public class CovidDataHolder {
         return covidDatasForCountry;
     }
 
-    
-    
 }

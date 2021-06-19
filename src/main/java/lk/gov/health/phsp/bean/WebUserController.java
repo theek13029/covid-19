@@ -103,6 +103,8 @@ public class WebUserController implements Serializable {
     WebUserApplicationController webUserApplicationController;
     @Inject
     RelationshipController relationshipController;
+    @Inject
+    DashboardApplicationController dashboardApplicationController;
     /*
     Variables
      */
@@ -645,6 +647,9 @@ public class WebUserController implements Serializable {
 
         JsfUtil.addSuccessMessage("Successfully Logged");
         userTransactionController.recordTransaction("Successful Login");
+        if(!dashboardApplicationController.getDashboardPrepared()){
+            JsfUtil.addErrorMessage("Dashboard NOT ready");
+        }
         return "/index";
     }
 
