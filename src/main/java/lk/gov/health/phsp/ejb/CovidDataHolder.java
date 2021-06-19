@@ -21,31 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package lk.gov.health.phsp.bean;
+package lk.gov.health.phsp.ejb;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
+import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
-import javax.inject.Named;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import javax.ejb.Schedule;
+import javax.ejb.Singleton;
 import javax.persistence.TemporalType;
-import lk.gov.health.phsp.ejb.AnalysisBean;
-import lk.gov.health.phsp.ejb.CovidDataHolder;
+import lk.gov.health.phsp.bean.CommonController;
 import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.ClientEncounterComponentItem;
 import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.entity.Numbers;
-import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.EncounterType;
-import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.facade.ClientEncounterComponentItemFacade;
-import lk.gov.health.phsp.facade.ClientFacade;
 import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.NumbersFacade;
 import lk.gov.health.phsp.pojcs.CovidData;
@@ -55,12 +51,9 @@ import lk.gov.health.phsp.pojcs.InstitutionCount;
  *
  * @author buddhika
  */
-@Named
-@ApplicationScoped
-public class DashboardApplicationController {
+@Singleton
+public class CovidDataHolder {
 
-    @EJB
-    ClientFacade clientFacade;
     @EJB
     EncounterFacade encounterFacade;
     @EJB
@@ -68,38 +61,76 @@ public class DashboardApplicationController {
     @EJB
     NumbersFacade numbersFacade;
 
-    @Inject
-    ItemController itemController;
-    @Inject
-    InstitutionApplicationController institutionApplicationController;
-    @Inject
-    AreaApplicationController areaApplicationController;
-    @Inject
-    CovidDataHolder covidDataHolder;
+    private List<CovidData> covidDatasForMohs;
+    private List<CovidData> covidDatasForAreas;
+    private List<CovidData> covidDatasForLabs;
+    private List<CovidData> covidDatasForHospitals;
+    private List<CovidData> covidDatasForRdhs;
+    private List<CovidData> covidDatasForPdhs;
+    private List<CovidData> covidDatasForCountry;
+    List<Institution> mohs;
+    List<Institution> hospitals;
+    List<Institution> labs;
+    List<Area> areas;
 
-   
+    Item pcr;
+    Item rat;
+    Item testType;
+    Item orderingCategory;
 
-    /**
-     * Creates a new instance of DashboardController
-     */
-    public DashboardApplicationController() {
+    @Schedule(month = "*", hour = "2", dayOfMonth = "*", year = "*", minute = "1", second = "0", persistent = false)
+    public void generateCovidCountsForToday() {
+        calculateNumbers();
+        generateCovidCounts();
     }
 
-    @PostConstruct
-    public void init() {
-        List<Institution> mohs;
-        List<Institution> hospitals;
-        List<Institution> labs;
-        List<Area> areas;
-        mohs = institutionApplicationController.findInstitutions(InstitutionType.MOH_Office);
-        labs = institutionApplicationController.findInstitutions(InstitutionType.Lab);
-        hospitals = institutionApplicationController.findInstitutions(institutionApplicationController.getHospitalTypes());
-        areas = areaApplicationController.getAllAreas(areaApplicationController.getCovidMonitoringAreaTypes());
-        Item testType = itemController.findItemByCode("test_type");
-        Item orderingCat = itemController.findItemByCode("covid_19_test_ordering_context_category");
-        Item pcr = itemController.findItemByCode("covid19_pcr_test");
-        Item rat = itemController.findItemByCode("covid19_rat");
-        covidDataHolder.generateCovidCountsAsync(pcr, rat, testType, orderingCat, mohs, hospitals, labs, areas);
+    @Asynchronous
+    public void generateCovidCountsAsync(Item pcr, Item rat, Item testType, Item orderingCategory, List<Institution> mohs, List<Institution> hospitals, List<Institution> labs, List<Area> areas) {
+        this.pcr = pcr;
+        this.rat = rat;
+        this.testType = testType;
+        this.orderingCategory = orderingCategory;
+        this.mohs = mohs;
+        this.hospitals = hospitals;
+        this.areas = areas;
+        this.labs = labs;
+        generateCovidCounts();
+    }
+
+    public void generateCovidCounts() {
+        covidDatasForMohs = new ArrayList<>();
+
+        /**
+         * cases deaths test orders rat orders pcr orders
+         */
+        Calendar t = Calendar.getInstance();
+
+        Date today = t.getTime();
+        t.add(Calendar.DATE, -1);
+        Date yesterday = t.getTime();
+        t.add(Calendar.DATE, -6);
+        Date sevenDaysAgo = t.getTime();
+        t.add(Calendar.DATE, -7);
+        Date fourteenDaysAgo = t.getTime();
+        Date firstDayOfMonth = CommonController.startOfTheMonth();
+        Date firstDayOfYear = CommonController.startOfTheYear();
+        //TODO 
+        for (Institution ins : mohs) {
+            CovidData cd = new CovidData();
+            cd.setInstitution(ins);
+            cd.setTodaysCases(findCount(ins, null, today, "case"));
+            cd.setTodaysTests(findCount(ins, null, today, "orders"));
+            cd.setTodaysPcrs(findCount(ins, null, today, "pcr"));
+            cd.setTodaysRats(findCount(ins, null, today, "rat"));
+            
+            cd.setThisMonthCases(findCount(ins, null,firstDayOfMonth, today, "case"));
+            cd.setThisMonthTests(findCount(ins, null,firstDayOfMonth,  today, "orders"));
+            cd.setThisMonthPcrs(findCount(ins, null,firstDayOfMonth,  today, "pcr"));
+            cd.setThisMonthRats(findCount(ins, null,firstDayOfMonth,  today, "rat"));
+            
+            covidDatasForMohs.add(cd);
+            //TODO
+        }
     }
 
     public void calculateNumbers() {
@@ -121,10 +152,8 @@ public class DashboardApplicationController {
         i.getItem();
         i.getItemValue();
         List<Item> items = new ArrayList<>();
-        items.add(itemController.findItemByCode("test_type"));
-        items.add(itemController.findItemByCode("covid_19_test_ordering_context_category"));
-        Item pcr = itemController.findItemByCode("covid19_pcr_test");
-        Item rat = itemController.findItemByCode("covid19_rat");
+        items.add(testType);
+        items.add(orderingCategory);
 
         String j = "select  new lk.gov.health.phsp.pojcs.InstitutionCount(count(e), e.institution, e.encounterDate, e.encounterType, i.item, i.itemValue)  "
                 + " from  ClientEncounterComponentItem i join i.itemEncounter e"
@@ -253,5 +282,88 @@ public class DashboardApplicationController {
         }
     }
 
+    public Long findCount(Institution ins, Area a, Date date, String name) {
+        Numbers databaseNumbers;
+        Map m = new HashMap();
+        String j = "select n "
+                + " from Numbers n "
+                + " where n.numberDate=:d "
+                + " and n.name=:name ";
+        m.put("d", date);
+        m.put("name", name);
+        if (ins != null) {
+            j += " and n.institution=:ins ";
+            m.put("ins", ins);
+        } else if (a != null) {
+            j += " and n.area=:area ";
+            m.put("area", a);
+        } else {
+            return null;
+        }
+        j += " order by n.id desc";
+        databaseNumbers = numbersFacade.findFirstByJpql(j, m);
+        if (databaseNumbers == null) {
+            return 0l;
+        } else {
+            Long c = databaseNumbers.getCount();
+            if (c == null) {
+                c = 0l;
+            }
+            return c;
+        }
+    }
+
+    public Long findCount(Institution ins, Area a, Date fromDate, Date toDate, String name) {
+        Map m = new HashMap();
+        String j = "select sum(n.count) "
+                + " from Numbers n "
+                + " where n.numberDate between :fd and :td "
+                + " and n.name=:name ";
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("name", name);
+        if (ins != null) {
+            j += " and n.institution=:ins ";
+            m.put("ins", ins);
+        } else if (a != null) {
+            j += " and n.area=:area ";
+            m.put("area", a);
+        } else {
+            return null;
+        }
+        j += " order by n.id desc";
+        Long count = numbersFacade.findLongByJpql(j, m);
+        return count;
+    }
+
+    public List<CovidData> getCovidDatasForMohs() {
+        return covidDatasForMohs;
+    }
+
+    public List<CovidData> getCovidDatasForAreas() {
+        return covidDatasForAreas;
+    }
+
+    public List<CovidData> getCovidDatasForLabs() {
+        return covidDatasForLabs;
+    }
+
+    public List<CovidData> getCovidDatasForHospitals() {
+        return covidDatasForHospitals;
+    }
+
+    public List<CovidData> getCovidDatasForRdhs() {
+        return covidDatasForRdhs;
+    }
+
+    public List<CovidData> getCovidDatasForPdhs() {
+        return covidDatasForPdhs;
+    }
+
+    public List<CovidData> getCovidDatasForCountry() {
+        return covidDatasForCountry;
+    }
+
+    
     
 }

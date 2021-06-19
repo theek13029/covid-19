@@ -288,17 +288,7 @@ public class InstitutionController implements Serializable {
     }
 
     public List<Institution> findInstitutions(InstitutionType type) {
-        List<Institution> cins = institutionApplicationController.getInstitutions();
-        List<Institution> tins = new ArrayList<>();
-        for (Institution i : cins) {
-            if (i.getInstitutionType() == null) {
-                continue;
-            }
-            if (i.getInstitutionType().equals(type)) {
-                tins.add(i);
-            }
-        }
-        return tins;
+        return institutionApplicationController.findInstitutions(type);
     }
 
     public List<Institution> findInstitutions(Area area, InstitutionType type) {

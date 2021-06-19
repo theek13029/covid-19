@@ -54,6 +54,8 @@ public class AreaApplicationController {
     private List<Area> phiAreas;
     private List<Area> allAreas;
 
+    
+    private List<AreaType> covidMonitoringAreaTypes;
     /**
      * Creates a new instance of AreaApplicationController
      */
@@ -67,10 +69,12 @@ public class AreaApplicationController {
         rdhsAreas = null;
         pdhsAreas = null;
         mohAreas = null;
-        phiAreas=null;
+        phiAreas = null;
         allAreas = null;
     }
 
+    
+    
     public List<Area> getGnAreas() {
         if (gnAreas == null) {
             gnAreas = getAllGnAreas();
@@ -112,8 +116,8 @@ public class AreaApplicationController {
         }
         return mohAreas;
     }
-    
-     public List<Area> getPhiAreas() {
+
+    public List<Area> getPhiAreas() {
         if (phiAreas == null) {
             phiAreas = getAllPhiAreas();
         }
@@ -156,7 +160,7 @@ public class AreaApplicationController {
         }
         return tas;
     }
-    
+
     public List<Area> getAllPhiAreas() {
         List<Area> tas = new ArrayList<>();
         for (Area a : getAllAreas()) {
@@ -211,6 +215,25 @@ public class AreaApplicationController {
         List<Area> tas = new ArrayList<>();
         for (Area a : getAllAreas()) {
             if (a.getType() != null && a.getType().equals(at)) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+
+    public List<Area> getAllAreas(List<AreaType> ats) {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getAllAreas()) {
+            if (a.getType() == null) {
+                continue;
+            }
+            boolean canInclude = false;
+            for (AreaType at : ats) {
+                if (a.getType().equals(at)) {
+                    canInclude = true;
+                }
+            }
+            if (canInclude) {
                 tas.add(a);
             }
         }
@@ -287,7 +310,6 @@ public class AreaApplicationController {
         return tas;
     }
 
-    
     public List<Area> completeGnAreas(String qry, Area dsArea) {
         List<Area> tas = new ArrayList<>();
         for (Area a : getGnAreas()) {
@@ -317,7 +339,6 @@ public class AreaApplicationController {
         return tas;
     }
 
-    
     public List<Area> completePhiAreasOfMoh(String qry, Area moh) {
         List<Area> tas = new ArrayList<>();
         qry = qry.trim().toLowerCase();
@@ -335,7 +356,6 @@ public class AreaApplicationController {
         return tas;
     }
 
-    
     public List<Area> completeMohAreasOfDistrict(String qry, Area district) {
         List<Area> tas = new ArrayList<>();
         qry = qry.trim().toLowerCase();
@@ -347,6 +367,17 @@ public class AreaApplicationController {
             }
         }
         return tas;
+    }
+
+    public List<AreaType> getCovidMonitoringAreaTypes() {
+        if(covidMonitoringAreaTypes==null){
+            covidMonitoringAreaTypes=new ArrayList<>();
+            covidMonitoringAreaTypes.add(AreaType.MOH);
+            covidMonitoringAreaTypes.add(AreaType.District);
+            covidMonitoringAreaTypes.add(AreaType.Province);
+            covidMonitoringAreaTypes.add(AreaType.National);
+        }
+        return covidMonitoringAreaTypes;
     }
 
 }

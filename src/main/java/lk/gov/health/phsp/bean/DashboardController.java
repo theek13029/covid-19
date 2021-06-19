@@ -34,6 +34,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.persistence.TemporalType;
+import lk.gov.health.phsp.ejb.CovidDataHolder;
 import lk.gov.health.phsp.entity.ClientEncounterComponentItem;
 import lk.gov.health.phsp.entity.Encounter;
 import lk.gov.health.phsp.entity.Item;
@@ -41,6 +42,7 @@ import lk.gov.health.phsp.entity.Numbers;
 import lk.gov.health.phsp.enums.EncounterType;
 import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.NumbersFacade;
+import lk.gov.health.phsp.pojcs.CovidData;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
 
 /**
@@ -55,134 +57,30 @@ public class DashboardController implements Serializable {
     private NumbersFacade numbersFacade;
     @EJB
     private EncounterFacade encounterFacade;
+    @EJB
+    CovidDataHolder covidDataHolder;
 
     @Inject
     private EncounterController encounterController;
     @Inject
     ItemController itemController;
+    @Inject
+    DashboardApplicationController dashboardApplicationController;
 
     private Date fromDate;
     private Date toDate;
     private List<InstitutionCount> ics;
-    List<Encounter> encounters;
-    List<Numbers> numbersList;
+
+    private List<CovidData> covidDatasForMohs;
+    private List<CovidData> covidDatasForAreas;
+    private List<CovidData> covidDatasForLabs;
+    private List<CovidData> covidDatasForHospitals;
+    private List<CovidData> covidDatasForRdhs;
+    private List<CovidData> covidDatasForPdhs;
+    private List<CovidData> covidDatasForCountry;
 
     public String toCalculateNumbers() {
         return "/systemAdmin/calculate_numbers";
-    }
-
-    public void calculateNumbers() {
-        numbersList = new ArrayList<>();
-        calculateNumbersByOrderedTest();
-        calculateCasesAndTestNumbers();
-    }
-
-    public void calculateNumbersByOrderedTest() {
-        ClientEncounterComponentItem i = new ClientEncounterComponentItem();
-        i.getItemEncounter();
-        i.getItem();
-        i.getItemValue();
-        List<Item> items = new ArrayList<>();
-        items.add(itemController.findItemByCode("test_type"));
-        items.add(itemController.findItemByCode("covid_19_test_ordering_context_category"));
-        Item pcr = itemController.findItemByCode("covid19_pcr_test");
-        Item rat = itemController.findItemByCode("covid19_rat");
-
-        ics = new ArrayList<>();
-        String j = "select  new lk.gov.health.phsp.pojcs.InstitutionCount(count(e), e.institution, e.encounterDate, e.encounterType, i.item, i.itemValue)  "
-                + " from  ClientEncounterComponentItem i join i.itemEncounter e"
-                + " where e.retired=false "
-                + " and e.encounterDate between :fd and :td "
-                + " and i.item in :items "
-                + " and e.encounterType=:test"
-                + " group by e.encounterDate, e.institution, e.encounterType, i.item, i.itemValue";
-        Map m = new HashMap();
-        m.put("fd", getFromDate());
-        m.put("td", getToDate());
-        m.put("items", items);
-        m.put("test", EncounterType.Test_Enrollment);
-        List<Object> os = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
-        for (Object o : os) {
-            if (o instanceof InstitutionCount) {
-                InstitutionCount ic = (InstitutionCount) o;
-                String name = "";
-
-                if (ic.getEncounerType() == null) {
-                    continue;
-                }
-                switch (ic.getEncounerType()) {
-                    case Test_Enrollment:
-                        if (ic.getItemValue() == null) {
-                            continue;
-                        }
-                        if (ic.getItemValue().equals(rat)) {
-                            name = "rat orders";
-                        } else if (ic.getItemValue().equals(pcr)) {
-                            name = "pcr orders";
-                        } else {
-                            name = "";
-                        }
-                        break;
-                    default:
-                        name = "";
-                }
-
-                if (!name.trim().equals("")) {
-                    Numbers n = new Numbers();
-                    n.setInstitution(ic.getInstitution());
-                    n.setNumberDate(ic.getDate());
-                    n.setName(name);
-                    n.setCount(ic.getCount());
-                    Numbers nn = save(n);
-                    if (nn != null) {
-                        numbersList.add(nn);
-                    }
-                }
-            }
-        }
-    }
-
-    public void calculateCasesAndTestNumbers() {
-        String j = "select  new lk.gov.health.phsp.pojcs.InstitutionCount(count(e), e.institution, e.encounterDate, e.encounterType)  "
-                + " from Encounter e "
-                + " where e.retired=false "
-                + " and e.encounterDate between :fd and :td "
-                + " group by e.encounterDate, e.institution, e.encounterType";
-        Map m = new HashMap();
-        m.put("fd", getFromDate());
-        m.put("td", getToDate());
-        List<Object> os = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
-        for (Object o : os) {
-            if (o instanceof InstitutionCount) {
-                InstitutionCount ic = (InstitutionCount) o;
-                String name = "";
-                switch (ic.getEncounerType()) {
-                    case Case_Enrollment:
-                        name = "cases";
-                        break;
-                    case Death:
-                        name = "deaths";
-                        break;
-                    case Test_Enrollment:
-                        name = "test orders";
-                        break;
-                    default:
-                        name = "";
-                }
-
-                if (!name.trim().equals("")) {
-                    Numbers n = new Numbers();
-                    n.setInstitution(ic.getInstitution());
-                    n.setNumberDate(ic.getDate());
-                    n.setName(name);
-                    n.setCount(ic.getCount());
-                    Numbers nn = save(n);
-                    if (nn != null) {
-                        numbersList.add(nn);
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -191,45 +89,12 @@ public class DashboardController implements Serializable {
     public DashboardController() {
     }
 
-    public NumbersFacade getNumbersFacade() {
-        return numbersFacade;
+    public void calculateNumbers() {
+        dashboardApplicationController.calculateNumbers(fromDate, toDate);
     }
 
-    public Numbers save(Numbers numbers) {
-        if (numbers == null) {
-            return null;
-        }
-        if (numbers.getId() != null) {
-            numbersFacade.edit(numbers);
-            return numbers;
-        }
-        Numbers databaseNumbers;
-        Map m = new HashMap();
-        String j = "select n "
-                + " from Numbers n "
-                + " where n.numberDate=:d "
-                + " and n.name=:name ";
-        m.put("d", numbers.getNumberDate());
-        m.put("name", numbers.getName());
-        if (numbers.getInstitution() != null) {
-            j += " and n.institution=:ins ";
-            m.put("ins", numbers.getInstitution());
-        } else if (numbers.getArea() != null) {
-            j += " and n.area=:area ";
-            m.put("area", numbers.getArea());
-        } else {
-            return null;
-        }
-        j += " order by n.id desc";
-        databaseNumbers = numbersFacade.findFirstByJpql(j, m);
-        if (databaseNumbers == null) {
-            numbersFacade.create(numbers);
-            return numbers;
-        } else {
-            databaseNumbers.setCount(numbers.getCount());
-            numbersFacade.edit(databaseNumbers);
-            return databaseNumbers;
-        }
+    public NumbersFacade getNumbersFacade() {
+        return numbersFacade;
     }
 
     public void setNumbersFacade(NumbersFacade numbersFacade) {
@@ -276,12 +141,33 @@ public class DashboardController implements Serializable {
         this.ics = ics;
     }
 
-    public List<Numbers> getNumbersList() {
-        return numbersList;
+    public List<CovidData> getCovidDatasForMohs() {
+        covidDatasForMohs = covidDataHolder.getCovidDatasForMohs();
+        return covidDatasForMohs;
     }
 
-    public void setNumbersList(List<Numbers> numbersList) {
-        this.numbersList = numbersList;
+    public List<CovidData> getCovidDatasForAreas() {
+        return covidDatasForAreas;
+    }
+
+    public List<CovidData> getCovidDatasForLabs() {
+        return covidDatasForLabs;
+    }
+
+    public List<CovidData> getCovidDatasForHospitals() {
+        return covidDatasForHospitals;
+    }
+
+    public List<CovidData> getCovidDatasForRdhs() {
+        return covidDatasForRdhs;
+    }
+
+    public List<CovidData> getCovidDatasForPdhs() {
+        return covidDatasForPdhs;
+    }
+
+    public List<CovidData> getCovidDatasForCountry() {
+        return covidDatasForCountry;
     }
 
 }

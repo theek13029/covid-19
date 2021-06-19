@@ -59,6 +59,7 @@ public class InstitutionApplicationController {
     private List<Institution> institutions;
     List<Institution> hospitals;
     private List<InstitutionType> hospitalTypes;
+    private List<InstitutionType> covidDataHirachiInstitutions;
     // </editor-fold>
 
     public InstitutionApplicationController() {
@@ -91,9 +92,43 @@ public class InstitutionApplicationController {
         }
         return institutions;
     }
-    
-    public String getInstitutionHash(){
-         return  DigestUtils.md5Hex(getInstitutions().toString()).toUpperCase();
+
+    public List<Institution> findInstitutions(InstitutionType type) {
+        List<Institution> cins = getInstitutions();
+        List<Institution> tins = new ArrayList<>();
+        for (Institution i : cins) {
+            if (i.getInstitutionType() == null) {
+                continue;
+            }
+            if (i.getInstitutionType().equals(type)) {
+                tins.add(i);
+            }
+        }
+        return tins;
+    }
+
+    public List<Institution> findInstitutions(List<InstitutionType> types) {
+        List<Institution> cins = getInstitutions();
+        List<Institution> tins = new ArrayList<>();
+        for (Institution i : cins) {
+            boolean canInclude = false;
+            if (i.getInstitutionType() == null) {
+                continue;
+            }
+            for (InstitutionType type : types) {
+                if (i.getInstitutionType().equals(type)) {
+                    canInclude=true;
+                }
+            }
+            if (canInclude) {
+                tins.add(i);
+            }
+        }
+        return tins;
+    }
+
+    public String getInstitutionHash() {
+        return DigestUtils.md5Hex(getInstitutions().toString()).toUpperCase();
     }
 
     public List<Institution> getHospitals() {
@@ -112,7 +147,7 @@ public class InstitutionApplicationController {
     }
 
     public boolean institutionTypeCorrect(List<InstitutionType> its, InstitutionType it) {
-        
+
         boolean correct = false;
         if (its == null || it == null) {
             return correct;
@@ -208,6 +243,8 @@ public class InstitutionApplicationController {
         }
         return hospitalTypes;
     }
+    
+    
 
     public Institution findInstitution(Long insId) {
         Institution ri = null;
@@ -222,22 +259,17 @@ public class InstitutionApplicationController {
     public List<Institution> findChildrenInstitutions(Institution ins) {
         List<Institution> allIns = getInstitutions();
         List<Institution> cins = new ArrayList<>();
-        for (Institution i : allIns) {
-            if (i.getParent() == null) {
-                continue;
-            }
-            if (i.getParent().equals(ins)) {
-                cins.add(i);
-            }
-        }
+        allIns.stream().filter(i -> !(i.getParent() == null)).filter(i -> (i.getParent().equals(ins))).forEachOrdered(i -> {
+            cins.add(i);
+        });
         List<Institution> tins = new ArrayList<>();
         tins.addAll(cins);
         if (cins.isEmpty()) {
             return tins;
         } else {
-            for (Institution i : cins) {
+            cins.forEach(i -> {
                 tins.addAll(findChildrenInstitutions(i));
-            }
+            });
         }
         return tins;
     }
@@ -245,18 +277,21 @@ public class InstitutionApplicationController {
     public List<Institution> findChildrenInstitutions(Institution ins, InstitutionType type) {
         List<Institution> cins = findChildrenInstitutions(ins);
         List<Institution> tins = new ArrayList<>();
-        for (Institution i : cins) {
-            if (i.getParent() == null) {
-                continue;
-            }
-            if (i.getInstitutionType() == null) {
-                continue;
-            }
-            if (i.getInstitutionType().equals(type)) {
-                tins.add(i);
-            }
-        }
+        cins.stream().filter(i -> !(i.getParent() == null)).filter(i -> !(i.getInstitutionType() == null)).filter(i -> (i.getInstitutionType().equals(type))).forEachOrdered(i -> {
+            tins.add(i);
+        });
         return tins;
+    }
+
+    public List<InstitutionType> getCovidDataHirachiInstitutions() {
+        if(covidDataHirachiInstitutions==null){
+            covidDataHirachiInstitutions = new ArrayList<>();
+            covidDataHirachiInstitutions.add(InstitutionType.Ministry_of_Health);
+            covidDataHirachiInstitutions.add(InstitutionType.Provincial_Department_of_Health_Services);
+            covidDataHirachiInstitutions.add(InstitutionType.Regional_Department_of_Health_Department);
+            covidDataHirachiInstitutions.add(InstitutionType.MOH_Office);
+        }
+        return covidDataHirachiInstitutions;
     }
 
 }
