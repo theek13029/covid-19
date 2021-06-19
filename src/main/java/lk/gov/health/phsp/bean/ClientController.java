@@ -464,30 +464,32 @@ public class ClientController implements Serializable {
     }
 
     public String toLabOrdersToReceiveSummery() {
+        System.out.println("toLabOrdersToReceiveSummery");
         referingInstitution = webUserController.getLoggedUser().getInstitution();
         processLabOrdersToReceiveSummery();
         return "/lab/orders_to_receive_summary";
     }
 
     public void processLabOrdersToReceiveSummery() {
+        System.out.println("processLabOrdersToReceiveSummery");
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
                 + " from Encounter c "
-                + " where c.retired<>:ret "
+                + " where c.retired=false "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
-                + " and c.referalInstitution=:ins "
-                + " and (c.receivedAtLab is null or c.receivedAtLab=:rec) "
+                + " and c.referalInstitution=:rins "
+                + " and c.receivedAtLab is null "
                 + " group by c.institution";
         Map m = new HashMap();
-        m.put("ret", true);
-        m.put("rec", false);
         m.put("type", EncounterType.Test_Enrollment);
-        m.put("fd", fromDate);
-        m.put("td", toDate);
-        m.put("ins", referingInstitution);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("rins", referingInstitution);
         labOrderSummeries = new ArrayList<>();
         List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
-
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        System.out.println("obs = " + obs.size());
         for (Object o : obs) {
             if (o instanceof InstitutionCount) {
                 labOrderSummeries.add((InstitutionCount) o);
@@ -499,21 +501,20 @@ public class ClientController implements Serializable {
     public String receiveAllLabOrders() {
         String j = "select c "
                 + " from Encounter c "
-                + " where c.retired<>:ret "
+                + " where c.retired=false "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
-                + " and c.referalInstitution=:ins "
-                + " and c.receivedAtLab<>:rec "
-                + " group by c.institution";
+                + " and c.referalInstitution=:rins "
+                + " and c.institution=:ins "
+                + " and c.receivedAtLab is null";
         Map m = new HashMap();
-        m.put("ret", true);
-        m.put("rec", true);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
-        m.put("ins", referingInstitution);
+        m.put("ins", institution);
+        m.put("rins", webUserController.getLoggedUser().getInstitution());
         labOrderSummeries = new ArrayList<>();
-        List<Encounter> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
+        List<Encounter> obs = encounterFacade.findByJpql(j, m);
         for (Encounter e : obs) {
             e.setReceivedAtLab(true);
             e.setReceivedAtLabAt(new Date());
@@ -523,21 +524,44 @@ public class ClientController implements Serializable {
         return toLabOrdersToReceiveSummery();
     }
 
-    public String toLabOrderByReferringInstitution() {
+    
+    public String toReceiveLabOrdersSelectively() {
         String j = "select c "
                 + " from Encounter c "
-                + " where c.retired<>:ret "
+                + " where c.retired=false "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
+                + " and c.referalInstitution=:rins "
                 + " and c.institution=:ins "
-                + " and c.referalInstitution=:rins"
-                + " order by c.id";
+                + " and c.receivedAtLab is null";
         Map m = new HashMap();
-        m.put("ret", true);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
         m.put("ins", institution);
+        m.put("rins", webUserController.getLoggedUser().getInstitution());
+        listedToReceive = encounterFacade.findByJpql(j, m);
+        return "/lab/receive_orders";
+    }
+
+    
+    public String toLabOrderByReferringInstitution() {
+        Map m = new HashMap();
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired<>:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td ";
+        if (institution != null) {
+            j += " and c.institution=:ins ";
+            m.put("ins", institution);
+        }
+        j += " and c.referalInstitution=:rins"
+                + " order by c.id";
+        m.put("ret", true);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
         m.put("rins", referingInstitution);
         testList = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/order_list";
@@ -591,7 +615,6 @@ public class ClientController implements Serializable {
         return "/lab/mark_results";
     }
 
-    
     public String toConfirmResultsByReferringInstitution() {
         String j = "select c "
                 + " from Encounter c "
@@ -614,7 +637,6 @@ public class ClientController implements Serializable {
         return "/lab/confirm_results";
     }
 
-    
     public void saveEncounterResults(Encounter se) {
         if (se == null) {
             return;
@@ -625,17 +647,17 @@ public class ClientController implements Serializable {
         encounterFacade.edit(se);
     }
 
-    public void confirmSelectedResults(){
-        for(Encounter e:selectedToConfirm){
+    public void confirmSelectedResults() {
+        for (Encounter e : selectedToConfirm) {
             e.setResultConfirmed(true);
             e.setResultConfirmedAt(new Date());
             e.setResultConfirmedBy(webUserController.getLoggedUser());
             encounterFacade.edit(e);
         }
         selectedToConfirm = null;
-        
+
     }
-    
+
     public String toLabOrderByReferringInstitutionToPrintResults() {
         String j = "select c "
                 + " from Encounter c "
@@ -705,7 +727,7 @@ public class ClientController implements Serializable {
             return "";
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
-        
+
         return "/client/client_case_enrollment";
     }
 
@@ -843,7 +865,6 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No Patient");
             return "";
         }
-        selected.getPerson().calAgeFromDob();
         clearRegisterNewExistsValues();
         selectedClientsClinics = null;
         selectedClientEncounters = null;
@@ -861,6 +882,7 @@ public class ClientController implements Serializable {
             return "";
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        updateYearDateMonth();
         return "/client/client_test_enrollment";
     }
 
@@ -2994,8 +3016,6 @@ public class ClientController implements Serializable {
     public String getSearchingId() {
         return searchingId;
     }
-    
-    
 
     public void setSearchingId(String searchingId) {
         this.searchingId = searchingId;
@@ -3844,8 +3864,6 @@ public class ClientController implements Serializable {
         this.selectedToReceive = selectedToReceive;
     }
 
-    
-    
     public List<Encounter> getSelectedToConfirm() {
         return selectedToConfirm;
     }

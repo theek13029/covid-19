@@ -56,6 +56,10 @@
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                 </p:commandButton>
+                                <p:commandButton ajax="false" value="To Selectively Mark as Received" action="#{clientController.receiveAllLabOrders()}" >
+                                    <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
+                                    </f:setPropertyActionListener>
+                                </p:commandButton>
                             </p:column>
                         </p:dataTable>
                     </h:form>
