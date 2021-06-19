@@ -90,8 +90,13 @@ public class DashboardController implements Serializable {
     }
 
     public void calculateNumbers() {
-        dashboardApplicationController.calculateNumbers(fromDate, toDate);
+        covidDataHolder.calculateNumbers(fromDate, toDate);
     }
+    
+    public void updateDashboard(){
+        dashboardApplicationController.updateDashboard();
+    }
+   
 
     public NumbersFacade getNumbersFacade() {
         return numbersFacade;

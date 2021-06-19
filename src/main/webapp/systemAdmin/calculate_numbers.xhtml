@@ -21,24 +21,6 @@
 
                 </p:panelGrid>
 
-                <p:dataTable value="#{dashboardController.numbersList}" var="ic" >
-                    <p:column headerText="Institution" >
-                        <p:outputLabel value="#{ic.institution.name}" ></p:outputLabel>
-                    </p:column>
-                    <p:column headerText="Area" >
-                        <p:outputLabel value="#{ic.area.name}" ></p:outputLabel>
-                    </p:column>
-                    <p:column headerText="Date" >
-                        <p:outputLabel value="#{ic.numberDate}" ></p:outputLabel>
-                    </p:column>
-                    <p:column headerText="Name" >
-                        <p:outputLabel value="#{ic.name}" ></p:outputLabel>
-                    </p:column>
-                    <p:column headerText="Count" >
-                        <p:outputLabel value="#{ic.count}" ></p:outputLabel>
-                    </p:column>
-                </p:dataTable>
-
             </ui:define>
 
         </ui:composition>
