@@ -43,12 +43,12 @@ public class EncounterController implements Serializable {
 
     public EncounterController() {
     }
-    
-    public void addEncounterDateFromEncounterTime(){
+
+    public void addEncounterDateFromEncounterTime() {
         String j = "select e from Encounter e "
                 + " where e.encounterDate is null";
-        List<Encounter>  es = getFacade().findByJpql(j);
-        for(Encounter e:es){
+        List<Encounter> es = getFacade().findByJpql(j);
+        for (Encounter e : es) {
             e.setEncounterDate(e.getCreatedAt());
             getFacade().edit(e);
         }
@@ -93,9 +93,14 @@ public class EncounterController implements Serializable {
         }
 //        SimpleDateFormat format = new SimpleDateFormat("yy");
 //        String yy = format.format(new Date());
+        if (clinic.getCode() == null || clinic.getCode().trim().equals("")) {
+            if(clinic.getName()!=null){
+                clinic.setCode(clinic.getName().substring(0, 2));
+            }
+        }
         return clinic.getCode() + "/" + String.format("%03d", c);
     }
-    
+
     public String createCaseNumber(Institution clinic) {
         String j = "select count(e) from Encounter e "
                 + " where e.institution=:ins "
@@ -259,7 +264,7 @@ public class EncounterController implements Serializable {
     public List<Encounter> getItems(String jpql, Map m) {
         return getFacade().findByJpql(jpql, m);
     }
-    
+
     public List<Encounter> getItems(Client client) {
         String j = "select e "
                 + " from Encounter e "

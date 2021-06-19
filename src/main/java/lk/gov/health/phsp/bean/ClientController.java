@@ -509,6 +509,32 @@ public class ClientController implements Serializable {
         return "/lab/order_list";
     }
 
+    public String markAllAsReceived() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired<>:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.referalInstitution=:rins"
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("ins", institution);
+        m.put("rins", referingInstitution);
+        List<Encounter> receiving = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        for (Encounter e : receiving) {
+            e.setReceivedAtLab(true);
+            e.setReceivedAtLabAt(new Date());
+            e.setReceivedAtLabBy(webUserController.getLoggedUser());
+            encounterFacade.edit(e);
+        }
+        return "/lab/order_list";
+    }
+
     public String toLabOrderByReferringInstitutionToMarkResults() {
         String j = "select c "
                 + " from Encounter c "
@@ -2725,8 +2751,16 @@ public class ClientController implements Serializable {
                     || clientEncounterComponentFormSetController.getSelected().getEncounter().getEncounterNumber().trim().equals("")) {
                 clientEncounterComponentFormSetController.getSelected().getEncounter().setEncounterNumber(encounterController.createTestNumber(webUserController.getLoggedUser().getInstitution()));
             }
-            clientEncounterComponentFormSetController.getSelected().getEncounter().setRetired(false);
-            encounterFacade.edit(clientEncounterComponentFormSetController.getSelected().getEncounter());
+            Encounter te
+                    = clientEncounterComponentFormSetController.getSelected().getEncounter();
+            te.setRetired(false);
+            te.setSampled(true);
+            te.setSampledAt(new Date());
+            te.setSampledBy(webUserController.getLoggedUser());
+            te.setSentToLab(true);
+            te.setSentToLabAt(new Date());
+            te.setSentToLabBy(webUserController.getLoggedUser());
+            encounterFacade.edit(te);
         }
 
         // clientEncounterComponentFormSetController.completeFormsetForTestEnrollment();

@@ -29,6 +29,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -68,23 +69,33 @@ public class Encounter implements Serializable {
     private Boolean sampled;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date sampledAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebUser sampledBy;
 
     private Boolean sentToLab;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date sentToLabAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebUser sentToLabBy;
 
     private Boolean receivedAtLab;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date receivedAtLabAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebUser receivedAtLabBy;
 
     private Boolean resultEntered;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date resultEnteredAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebUser resultEnteredBy;
 
     private Boolean resultConfirmed;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date resultConfirmedAt;
-    
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebUser resultConfirmedBy;
+
     private Double ctValue;
     @ManyToOne
     private Item pctResult;
@@ -194,6 +205,8 @@ public class Encounter implements Serializable {
     public void setClient(Client client) {
         this.client = client;
     }
+    
+    
 
     public Area getArea() {
         return area;
@@ -549,6 +562,44 @@ public class Encounter implements Serializable {
         this.pctResult = pctResult;
     }
 
-    
-    
+    public WebUser getSampledBy() {
+        return sampledBy;
+    }
+
+    public void setSampledBy(WebUser sampledBy) {
+        this.sampledBy = sampledBy;
+    }
+
+    public WebUser getSentToLabBy() {
+        return sentToLabBy;
+    }
+
+    public void setSentToLabBy(WebUser sentToLabBy) {
+        this.sentToLabBy = sentToLabBy;
+    }
+
+    public WebUser getReceivedAtLabBy() {
+        return receivedAtLabBy;
+    }
+
+    public void setReceivedAtLabBy(WebUser receivedAtLabBy) {
+        this.receivedAtLabBy = receivedAtLabBy;
+    }
+
+    public WebUser getResultEnteredBy() {
+        return resultEnteredBy;
+    }
+
+    public void setResultEnteredBy(WebUser resultEnteredBy) {
+        this.resultEnteredBy = resultEnteredBy;
+    }
+
+    public WebUser getResultConfirmedBy() {
+        return resultConfirmedBy;
+    }
+
+    public void setResultConfirmedBy(WebUser resultConfirmedBy) {
+        this.resultConfirmedBy = resultConfirmedBy;
+    }
+
 }
