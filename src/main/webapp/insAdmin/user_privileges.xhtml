@@ -7,18 +7,14 @@
       xmlns:p="http://primefaces.org/ui">
 
     <h:body>
-
- <ui:composition template="/webUser/index.xhtml">
-
+        <ui:composition template="/insAdmin/user_index.xhtml">
             <ui:define name="webUserContents">
-
                 <h:form>
                     <p:panel header="Manage Privileges" >
-
                         <f:facet name="header" >
                             <p:commandButton id="btnUpdate" 
-                                            ajax="false" 
-                                             action="#{webUserController.updateUserPrivileges()}" 
+                                             ajax="false" 
+                                             action="#{webUserController.updateUserPrivilegesIns()}" 
                                              value="#{bundleClinical.Save}" />
                             <p:commandButton ajax="false" value="Back" action="#{webUserController.toManageUserIndexForSystemAdmin()}"/>
                         </f:facet>
@@ -36,7 +32,7 @@
 
                 </h:form>
 
-         
+
 
 
             </ui:define>
