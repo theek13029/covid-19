@@ -153,6 +153,7 @@ public class CovidDataHolder {
     }
 
     public void calculateNumbersByOrderedTest(Date fromDate, Date toDate) {
+        System.out.println("calculateNumbersByOrderedTest");
         ClientEncounterComponentItem i = new ClientEncounterComponentItem();
         i.getItemEncounter();
         i.getItem();
@@ -173,10 +174,13 @@ public class CovidDataHolder {
         m.put("td", toDate);
         m.put("items", items);
         m.put("test", EncounterType.Test_Enrollment);
+        System.out.println("m = " + m);
+        System.out.println("j = " + j);
         List<Object> os = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
         for (Object o : os) {
             if (o instanceof InstitutionCount) {
                 InstitutionCount ic = (InstitutionCount) o;
+                System.out.println("ic = " + ic);
                 String name = "";
 
                 if (ic.getEncounerType() == null) {
@@ -289,6 +293,7 @@ public class CovidDataHolder {
     }
 
     public Long findCount(Institution ins, Area a, Date date, String name) {
+        System.out.println("findCount");
         Numbers databaseNumbers;
         Map m = new HashMap();
         String j = "select n "
@@ -321,7 +326,6 @@ public class CovidDataHolder {
 
     public Long findCount(Institution ins, Area a, Date fromDate, Date toDate, String name) {
         System.out.println("findCountForPeriod");
-        System.out.println("ins = " + ins);
         System.out.println("name = " + name);
         System.out.println("fromDate = " + fromDate);
         System.out.println("toDate = " + toDate);

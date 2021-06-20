@@ -36,7 +36,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
@@ -313,7 +312,7 @@ public class WebUserController implements Serializable {
         m.put("inss", getLoggableInstitutions());
         items = getFacade().findByJpql(j, m);
         userTransactionController.recordTransaction("To Manage Institution Users");
-        return "/insAdmin/manage_users";
+        return "/insAdmin/user_list";
     }
 
     public String toAddNewUserByInsAdmin() {
@@ -321,7 +320,7 @@ public class WebUserController implements Serializable {
         password = "";
         passwordReenter = "";
         userTransactionController.recordTransaction("To Add New User By InsAdmin");
-        return "/insAdmin/create_new_user";
+        return "/insAdmin/user_new";
     }
 
     public void toProcedureRoom() {
@@ -409,8 +408,54 @@ public class WebUserController implements Serializable {
             }
         }
         selectedNodes = temSelected.toArray(new TreeNode[temSelected.size()]);
-        userTransactionController.recordTransaction("Manage Privileges in user list By SysAdmin or InsAdmin");
+        userTransactionController.recordTransaction("Manage Privileges in user list By SysAdmin");
         return "/webUser/privileges";
+    }
+    
+    public String toManagePrivilegesIns() {
+        if (current == null) {
+            JsfUtil.addErrorMessage("Nothing Selected");
+            return "";
+        }
+        selectedNodes = new TreeNode[0];
+        List<UserPrivilege> userps = userPrivilegeList(current);
+
+        for (TreeNode n : allPrivilegeRoot.getChildren()) {
+            n.setSelected(false);
+            for (TreeNode n1 : n.getChildren()) {
+                n1.setSelected(false);
+                for (TreeNode n2 : n1.getChildren()) {
+                    n2.setSelected(false);
+                }
+            }
+        }
+        List<TreeNode> temSelected = new ArrayList<>();
+        for (UserPrivilege wup : userps) {
+            for (TreeNode n : allPrivilegeRoot.getChildren()) {
+                if (wup.getPrivilege().equals(((PrivilegeTreeNode) n).getP())) {
+                    n.setSelected(true);
+
+                    temSelected.add(n);
+                }
+                for (TreeNode n1 : n.getChildren()) {
+                    if (wup.getPrivilege().equals(((PrivilegeTreeNode) n1).getP())) {
+                        n1.setSelected(true);
+
+                        temSelected.add(n1);
+                    }
+                    for (TreeNode n2 : n1.getChildren()) {
+                        if (wup.getPrivilege().equals(((PrivilegeTreeNode) n2).getP())) {
+                            n2.setSelected(true);
+
+                            temSelected.add(n2);
+                        }
+                    }
+                }
+            }
+        }
+        selectedNodes = temSelected.toArray(new TreeNode[temSelected.size()]);
+        userTransactionController.recordTransaction("Manage Privileges in user list By InsAdmin");
+        return "/insUser/user_privileges";
     }
 
     public String toOpdModule() {
@@ -421,25 +466,19 @@ public class WebUserController implements Serializable {
     private void createAllPrivilege() {
         allPrivilegeRoot = new PrivilegeTreeNode("Root", null);
 
-        TreeNode clientManagement = new PrivilegeTreeNode("Client Management", allPrivilegeRoot, Privilege.Client_Management);
-        TreeNode encounterManagement = new PrivilegeTreeNode("Encounter Management", allPrivilegeRoot, Privilege.Encounter_Management);
-        TreeNode appointmentManagement = new PrivilegeTreeNode("Appointment Management", allPrivilegeRoot, Privilege.Appointment_Management);
+        TreeNode clientManagement = new PrivilegeTreeNode("Patient Management", allPrivilegeRoot, Privilege.Client_Management);
         TreeNode labManagement = new PrivilegeTreeNode("Lab Management", allPrivilegeRoot, Privilege.Lab_Management);
-        TreeNode pharmacyManagement = new PrivilegeTreeNode("Pharmacy Management", allPrivilegeRoot, Privilege.Pharmacy_Management);
         TreeNode user = new PrivilegeTreeNode("User", allPrivilegeRoot, Privilege.Manage_Users);
         TreeNode institutionAdministration = new PrivilegeTreeNode("Institution Administration", allPrivilegeRoot, Privilege.Institution_Administration);
         TreeNode me = new PrivilegeTreeNode("Monitoring and Evaluation", allPrivilegeRoot, Privilege.Monitoring_and_evaluation);
-
         TreeNode systemAdministration = new PrivilegeTreeNode("System Administration", allPrivilegeRoot, Privilege.System_Administration);
         //Client Management
 
-        TreeNode add_Client = new PrivilegeTreeNode("Add_Client", clientManagement, Privilege.Add_Client);
+        TreeNode add_Client = new PrivilegeTreeNode("Add Cases", clientManagement, Privilege.Add_Client);
+        TreeNode add_Tests = new PrivilegeTreeNode("Add Tests", clientManagement, Privilege.Add_Tests);
+        TreeNode enter_Results = new PrivilegeTreeNode("Enter Results", clientManagement, Privilege.Enter_Results);
         TreeNode search_any_Client_by_IDs = new PrivilegeTreeNode("Search any Client by IDs", clientManagement, Privilege.Search_any_Client_by_IDs);
         TreeNode search_any_Client_by_Details = new PrivilegeTreeNode("Search any Client by Details", clientManagement, Privilege.Search_any_Client_by_Details);
-        TreeNode search_any_client_by_ID_of_Authorised_Areas = new PrivilegeTreeNode("Search any client by ID of Authorised Areas", clientManagement, Privilege.Search_any_client_by_ID_of_Authorised_Areas);
-        TreeNode search_any_client_by_Details_of_Authorised_Areas = new PrivilegeTreeNode("Search any client by Details of Authorised Areas", clientManagement, Privilege.Search_any_client_by_Details_of_Authorised_Areas);
-        TreeNode search_any_client_by_ID_of_Authorised_Institutions = new PrivilegeTreeNode("Search any client by ID of Authorised Institutions", clientManagement, Privilege.Search_any_client_by_ID_of_Authorised_Institutions);
-        TreeNode search_any_client_by_Details_of_Authorised_Institutions = new PrivilegeTreeNode("Search any client by Details of Authorised Institutions", clientManagement, Privilege.Search_any_client_by_Details_of_Authorised_Institutions);
 
         //Institution Administration
         TreeNode manage_Institution_Users = new PrivilegeTreeNode("Manage Institution Users", institutionAdministration, Privilege.Manage_Institution_Users);
@@ -455,6 +494,13 @@ public class WebUserController implements Serializable {
 
         //Monitoring and Evaluation
         TreeNode me_Users = new PrivilegeTreeNode("View Reports", me, Privilege.Monitoring_and_evaluation_reports);
+
+        //Institution Administration
+        TreeNode manage_Lab_Users = new PrivilegeTreeNode("Receive Orders", labManagement, Privilege.View_Orders);
+        TreeNode manage_Lab_Enter_Results = new PrivilegeTreeNode("Enter Results", labManagement, Privilege.Enter_Results);
+        TreeNode manage_Lab_Review_Results = new PrivilegeTreeNode("Review Results", labManagement, Privilege.Review_Results);
+        TreeNode manage_Lab_Confirm_Results = new PrivilegeTreeNode("Confirm Results", labManagement, Privilege.Confirm_Results);
+        TreeNode manage_Lab_Reports = new PrivilegeTreeNode("Lab Reports", labManagement, Privilege.Lab_Reports);
 
     }
 
@@ -647,7 +693,7 @@ public class WebUserController implements Serializable {
 
         JsfUtil.addSuccessMessage("Successfully Logged");
         userTransactionController.recordTransaction("Successful Login");
-        if(!dashboardApplicationController.getDashboardPrepared()){
+        if (!dashboardApplicationController.getDashboardPrepared()) {
             JsfUtil.addErrorMessage("Dashboard NOT ready");
         }
         return "/index";
@@ -1122,8 +1168,8 @@ public class WebUserController implements Serializable {
             JsfUtil.addErrorMessage(e, ("Error Occured. Please change username and try again."));
             return "";
         }
-        userTransactionController.recordTransaction("Save NewWebUser By InsAdmin");
-        return "/insAdmin/user_index";
+        userTransactionController.recordTransaction("New Web User Added by InsAdmin");
+        return toManageInstitutionUsers();
     }
 
     public boolean userNameExsists() {
@@ -1185,15 +1231,28 @@ public class WebUserController implements Serializable {
     }
 
     public String prepareEdit() {
-        userTransactionController.recordTransaction("Edit user list By SysAdmin or InsAdmin");
+        userTransactionController.recordTransaction("Edit user list By SysAdmin");
         return "/webUser/Edit";
     }
 
+    public String prepareEditIns() {
+        userTransactionController.recordTransaction("Edit user list By InsAdmin");
+        return "/insAdmin/user_edit";
+    }
+
+    
     public String prepareEditPassword() {
         password = "";
         passwordReenter = "";
-        userTransactionController.recordTransaction("Edit Password user list By SysAdmin or InsAdmin");
+        userTransactionController.recordTransaction("Edit Password user list By SysAdmin");
         return "/webUser/Password";
+    }
+    
+    public String prepareEditPasswordIns() {
+        password = "";
+        passwordReenter = "";
+        userTransactionController.recordTransaction("Edit Password user list By InsAdmin");
+        return "/insAdmin/user_password";
     }
 
     public String deleteUser() {
@@ -1238,7 +1297,6 @@ public class WebUserController implements Serializable {
     }
 
     public String updateUserPrivileges() {
-
         if (current == null) {
             JsfUtil.addErrorMessage("Please select a user");
             return "";
@@ -1283,10 +1341,61 @@ public class WebUserController implements Serializable {
                 getUserPrivilegeFacade().edit(tup);
             }
         }
-        userTransactionController.recordTransaction("update User Privileges By SysAdmin or InsAdmin");
+        userTransactionController.recordTransaction("update User Privileges By SysAdmin");
         return "/webUser/manage_users";
     }
 
+    
+    
+    public String updateUserPrivilegesIns() {
+        if (current == null) {
+            JsfUtil.addErrorMessage("Please select a user");
+            return "";
+        }
+        List<UserPrivilege> userps = userPrivilegeList(current);
+        List<Privilege> tps = new ArrayList<>();
+        if (selectedNodes != null && selectedNodes.length > 0) {
+            for (TreeNode node : selectedNodes) {
+                Privilege p;
+                p = ((PrivilegeTreeNode) node).getP();
+                if (p != null) {
+                    tps.add(p);
+                }
+            }
+        }
+        for (Privilege p : tps) {
+            boolean found = false;
+            for (UserPrivilege tup : userps) {
+
+                if (p != null && tup.getPrivilege() != null && p.equals(tup.getPrivilege())) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                addWebUserPrivileges(current, p);
+            }
+        }
+
+        userps = userPrivilegeList(current);
+
+        for (UserPrivilege tup : userps) {
+            boolean found = false;
+            for (Privilege p : tps) {
+                if (p != null && tup.getPrivilege() != null && p.equals(tup.getPrivilege())) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                tup.setRetired(true);
+                tup.setRetiredAt(new Date());
+                tup.setRetiredBy(loggedUser);
+                getUserPrivilegeFacade().edit(tup);
+            }
+        }
+        userTransactionController.recordTransaction("update User Privileges By SysAdmin");
+        return "/insAdmin/manage_users";
+    }
+    
     public String updateMyDetails() {
         try {
             getFacade().edit(current);
@@ -1358,9 +1467,80 @@ public class WebUserController implements Serializable {
     }
 
     public WebUserRole[] getWebUserRolesForInsAdmin() {
-        WebUserRole[] rs = {WebUserRole.Re, WebUserRole.Rdhs, WebUserRole.Pdhs,
-            WebUserRole.Epidemiologist, WebUserRole.Nurse, WebUserRole.ChiefEpidemiologist};
+        List<WebUserRole> ars=findManagableRoles(loggedUser.getWebUserRole());
+        WebUserRole[] rs = ars.toArray(new WebUserRole[0]);
         return rs;
+    }
+
+    private List<WebUserRole> findManagableRoles(WebUserRole ur) {
+        List<WebUserRole> urs = new ArrayList<>();
+        switch (ur) {
+            case System_Administrator:
+                urs.addAll(Arrays.asList(WebUserRole.values()));
+                break;
+            case Super_User:
+                urs.addAll(Arrays.asList(WebUserRole.values()));
+                urs.remove(WebUserRole.System_Administrator);
+                break;
+            case ChiefEpidemiologist:
+                urs.add(WebUserRole.ChiefEpidemiologist);
+                urs.add(WebUserRole.Epidemiologist);
+                break;
+            case Epidemiologist:
+                urs.add(WebUserRole.Epidemiologist);
+                break;
+            case Hospital_Admin:
+                urs.add(WebUserRole.Hospital_Admin);
+                urs.add(WebUserRole.Hospital_User);
+                break;
+            case Hospital_User:
+                urs.add(WebUserRole.Hospital_User);
+                break;
+            case Moh:
+                urs.add(WebUserRole.Moh);
+                urs.add(WebUserRole.Phi);
+                urs.add(WebUserRole.Phm);
+                break;
+            case Pdhs:
+                urs.add(WebUserRole.Pdhs);
+                urs.add(WebUserRole.Re);
+                urs.add(WebUserRole.Rdhs);
+                urs.add(WebUserRole.Moh);
+                urs.add(WebUserRole.Phi);
+                urs.add(WebUserRole.Phm);
+                break;
+            case Rdhs:
+                urs.add(WebUserRole.Pdhs);
+                urs.add(WebUserRole.Rdhs);
+                urs.add(WebUserRole.Re);
+                urs.add(WebUserRole.Moh);
+                urs.add(WebUserRole.Phi);
+                urs.add(WebUserRole.Phm);
+                break;
+            case Re:
+                urs.add(WebUserRole.Re);
+                urs.add(WebUserRole.Moh);
+                urs.add(WebUserRole.Phi);
+                urs.add(WebUserRole.Phm);
+                break;
+            case Lab_Consultant:
+                urs.add(WebUserRole.Lab_Consultant);
+                urs.add(WebUserRole.Lab_Mlt);
+                urs.add(WebUserRole.Lab_User);
+                break;
+            case Lab_Mlt:
+                urs.add(WebUserRole.Lab_Mlt);
+                urs.add(WebUserRole.Lab_User);
+                break;
+            case Lab_User:
+            case Phi:
+            case Phm:
+            case Client:
+            case Nurse:
+            case User:
+                urs.add(ur);
+        }
+        return urs;
     }
 
     public List<WebUser> getItems() {

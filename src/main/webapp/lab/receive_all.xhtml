@@ -26,7 +26,7 @@
                             <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{clientController.processLabOrdersToReceiveSummery()}" ></p:commandButton>
+                                             action="#{clientController.toLabReceiveAll()}" ></p:commandButton>
                             <p:commandButton ajax="false" value="Generate Excel" >
                                 <p:dataExporter type="xlsx" fileName="Lab Order Summery" target="tbl" ></p:dataExporter>
                             </p:commandButton>
@@ -52,11 +52,11 @@
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                 </p:commandButton>
-                                <p:commandButton ajax="false" value="Mark All as Received" action="#{clientController.receiveAllLabOrders()}" >
+                                <p:commandButton ajax="false" value="Mark All as Received" action="#{clientController.labReceiveAll()}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                 </p:commandButton>
-                                <p:commandButton ajax="false" value="To Selectively Mark as Received" action="#{clientController.receiveAllLabOrders()}" >
+                                <p:commandButton ajax="false" value="To Selectively Mark as Received" action="#{clientController.labReceiveAll()}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                 </p:commandButton>

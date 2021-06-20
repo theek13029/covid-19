@@ -60,22 +60,24 @@
 
                             <div class="row" >
                                 <div class="col-sm">
-                                    <p:dataTable class="table padding margin" value="#{dashboardController.covidDatasForMohs}" var="cd" rows="5" >
-                                        <p:column headerText="MOH" >
+                                    <p:dataTable class="table padding margin"
+                                                 value="#{dashboardController.covidDatasForMohs}" var="cd" rows="5" paginator="true">
+                                        <p:column headerText="MOH/Hospital" >
                                             <h:outputLabel value="#{cd.institution.name}" ></h:outputLabel>
                                         </p:column>
-                                        <p:column headerText="Tests" sortBy="#{cd.todaysTests}" >
-                                            <h:outputLabel value="#{cd.todaysTests}" ></h:outputLabel>
+                                        <p:column headerText="Tests" sortBy="#{cd.thisMonthTests}" >
+                                            <h:outputLabel value="#{cd.thisMonthTests}" ></h:outputLabel>
                                         </p:column>
                                     </p:dataTable>
                                 </div>
                                 <div class="col-sm">
-                                    <p:dataTable class="table" value="#{dashboardController.covidDatasForMohs}" var="cd" rows="5" >
+                                    <p:dataTable class="table" value="#{dashboardController.covidDatasForMohs}" var="cd" rows="5"
+                                                  paginator="true">
                                         <p:column headerText="MOH" >
                                             <h:outputLabel value="#{cd.institution.name}" ></h:outputLabel>
                                         </p:column>
-                                        <p:column headerText="Cases" sortBy="#{cd.todaysCases}" >
-                                            <h:outputLabel value="#{cd.todaysCases}" ></h:outputLabel>
+                                        <p:column headerText="Cases" sortBy="#{cd.thisMonthCases}" >
+                                            <h:outputLabel value="#{cd.thisMonthCases}" ></h:outputLabel>
                                         </p:column>
                                     </p:dataTable>
                                 </div>
