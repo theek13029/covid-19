@@ -117,8 +117,8 @@ public class PreferenceController implements Serializable {
     }
 
     public void savePreferencesInstitution() {
-        savePreference("labApprovalSteps", labApprovalSteps);
-        savePreference("labReportHeader", labReportHtml);
+        savePreference("labApprovalSteps", webUserController.getLoggedUser().getInstitution() , labApprovalSteps);
+        savePreference("labReportHeader", webUserController.getLoggedUser().getInstitution() ,labReportHtml);
     }
 
     public Preference findPreferance(String name) {
