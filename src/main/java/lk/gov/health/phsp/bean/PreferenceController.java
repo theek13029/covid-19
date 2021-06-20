@@ -14,6 +14,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 import javax.inject.Named;
+import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.facade.PreferenceFacade;
 
 @Named
@@ -30,6 +31,9 @@ public class PreferenceController implements Serializable {
     @Inject
     private UserTransactionController userTransactionController;
 
+    /*
+    Application Preferences
+     */
     private String positiveRatSmsTemplate;
     private String negativePcrSmsTemplate;
     private String negativeRatSmsTemplate;
@@ -41,15 +45,28 @@ public class PreferenceController implements Serializable {
     private String pharmacyBaseUrl;
     private String pharmacyKey;
 
+    /*
+    Institution Preferences
+     */
+    private String labReportHtml;
+    private String labApprovalSteps;
+
     // <editor-fold defaultstate="collapsed" desc="Getters and Setters">
     private PreferenceFacade getFacade() {
         return ejbFacade;
     }
 
-    public String findApplicationPreferanceValue(String name) {
-        System.out.println("findApplicationPreferanceValue");
-        System.out.println("name = " + name);
-        Preference p = findApplicationPreferance(name);
+    public String findPreferanceValue(String name) {
+        Preference p = findPreferance(name);
+        if (p != null) {
+            return p.getLongTextValue();
+        } else {
+            return "";
+        }
+    }
+
+    public String findPreferanceValue(String name, Institution ins) {
+        Preference p = findPreferance(name, ins);
         if (p != null) {
             return p.getLongTextValue();
         } else {
@@ -62,18 +79,28 @@ public class PreferenceController implements Serializable {
         return "/systemAdmin/preferences";
     }
 
+    public String toManagePreferencesInstitution() {
+        loadPreferencesInstitution();
+        return "/insAdmin/preferences";
+    }
+
     public void loadPreferences() {
         System.out.println("loadPreferences");
-        positiveRatSmsTemplate = findApplicationPreferanceValue("positiveRatSmsTemplate");
-        negativePcrSmsTemplate = findApplicationPreferanceValue("negativePcrSmsTemplate");
-        negativeRatSmsTemplate = findApplicationPreferanceValue("negativeRatSmsTemplate");
-        positivePcrSmsTemplate = findApplicationPreferanceValue("positivePcrSmsTemplate");
-        sentByErrorSmsTemplate = findApplicationPreferanceValue("sentByErrorSmsTemplate");
-        positiveSmsTemplate = findApplicationPreferanceValue("positiveSmsTemplate");
-        negativeSmsTemplate = findApplicationPreferanceValue("negativeSmsTemplate");
-        limsKey = findApplicationPreferanceValue("limsKey");
-        pharmacyBaseUrl = findApplicationPreferanceValue("pharmacyBaseUrl");
-        pharmacyKey = findApplicationPreferanceValue("pharmacyKey");
+        positiveRatSmsTemplate = findPreferanceValue("positiveRatSmsTemplate");
+        negativePcrSmsTemplate = findPreferanceValue("negativePcrSmsTemplate");
+        negativeRatSmsTemplate = findPreferanceValue("negativeRatSmsTemplate");
+        positivePcrSmsTemplate = findPreferanceValue("positivePcrSmsTemplate");
+        sentByErrorSmsTemplate = findPreferanceValue("sentByErrorSmsTemplate");
+        positiveSmsTemplate = findPreferanceValue("positiveSmsTemplate");
+        negativeSmsTemplate = findPreferanceValue("negativeSmsTemplate");
+        limsKey = findPreferanceValue("limsKey");
+        pharmacyBaseUrl = findPreferanceValue("pharmacyBaseUrl");
+        pharmacyKey = findPreferanceValue("pharmacyKey");
+    }
+
+    public void loadPreferencesInstitution() {
+        labApprovalSteps = findPreferanceValue("labApprovalSteps", webUserController.getLoggedUser().getInstitution());
+        labReportHtml = findPreferanceValue("labReportHeader", webUserController.getLoggedUser().getInstitution());
     }
 
     public void savePreferences() {
@@ -89,9 +116,12 @@ public class PreferenceController implements Serializable {
         savePreference("pharmacyKey", pharmacyKey);
     }
 
-    public Preference findApplicationPreferance(String name) {
-        System.out.println("findApplicationPreferance");
-        System.out.println("name = " + name);
+    public void savePreferencesInstitution() {
+        savePreference("labApprovalSteps", labApprovalSteps);
+        savePreference("labReportHeader", labReportHtml);
+    }
+
+    public Preference findPreferance(String name) {
         if (name == null) {
             return null;
         }
@@ -103,7 +133,6 @@ public class PreferenceController implements Serializable {
         m.put("ap", true);
         m.put("n", name);
         Preference p = getFacade().findFirstByJpql(j, m);
-        System.out.println("p = " + p);
         if (p == null) {
             p = new Preference();
             p.setApplicationPreferance(true);
@@ -113,8 +142,43 @@ public class PreferenceController implements Serializable {
         return p;
     }
 
+    public Preference findPreferance(String name, Institution ins) {
+        if (name == null) {
+            return null;
+        }
+        if (ins == null) {
+            return null;
+        }
+        String j = "select p "
+                + " from Preference p "
+                + " where p.applicationPreferance=:ap "
+                + " and p.name=:n "
+                + " and p.institution=:ins ";
+        Map m = new HashMap();
+        m.put("ap", false);
+        m.put("n", name);
+        m.put("ins", ins);
+        Preference p = getFacade().findFirstByJpql(j, m);
+        if (p == null) {
+            p = new Preference();
+            p.setApplicationPreferance(false);
+            p.setInstitution(ins);
+            p.setName(name);
+            savePreference(p);
+        }
+        return p;
+    }
+
     public void savePreference(String name, String value) {
-        Preference p = findApplicationPreferance(name);
+        Preference p = findPreferance(name);
+        if (p != null) {
+            p.setLongTextValue(value);
+            savePreference(p);
+        }
+    }
+
+    public void savePreference(String name, Institution ins, String value) {
+        Preference p = findPreferance(name, ins);
         if (p != null) {
             p.setLongTextValue(value);
             savePreference(p);
@@ -269,6 +333,30 @@ public class PreferenceController implements Serializable {
         this.userTransactionController = userTransactionController;
     }
 
+    public String getLabReportHtml() {
+        if(labReportHtml==null){
+            loadPreferencesInstitution();
+        }
+        return labReportHtml;
+    }
+
+    public void setLabReportHtml(String labReportHtml) {
+        this.labReportHtml = labReportHtml;
+    }
+
+    public String getLabApprovalSteps() {
+        if(labApprovalSteps==null){
+            loadPreferencesInstitution();
+        }
+        return labApprovalSteps;
+    }
+
+    public void setLabApprovalSteps(String labApprovalSteps) {
+        this.labApprovalSteps = labApprovalSteps;
+    }
+
+    
+    
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Converters">
     @FacesConverter(forClass = Preference.class)

@@ -121,11 +121,13 @@ public class ClientController implements Serializable {
 
     private List<Encounter> listedToReceive;
     private List<Encounter> listedToEnterResults;
+    private List<Encounter> listedToReviewResults;
     private List<Encounter> listedToConfirm;
     private List<Encounter> testList;
     private List<Encounter> caseList;
 
     private List<Encounter> selectedToReceive;
+    private List<Encounter> selectedToReview;
     private List<Encounter> selectedToConfirm;
 
     private Client selected;
@@ -463,13 +465,7 @@ public class ClientController implements Serializable {
         return "/client/reserve_phn";
     }
 
-    public String toLabOrdersToReceiveSummery() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
-        processLabOrdersToReceiveSummery();
-        return "/lab/orders_to_receive_summary";
-    }
-
-    public void processLabOrdersToReceiveSummery() {
+    public String toLabReceiveAll() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
                 + " from Encounter c "
@@ -494,9 +490,10 @@ public class ClientController implements Serializable {
                 labOrderSummeries.add((InstitutionCount) o);
             }
         }
+        return "/lab/receive_all";
     }
 
-    public String receiveAllLabOrders() {
+    public String labReceiveAll() {
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired=false "
@@ -519,10 +516,10 @@ public class ClientController implements Serializable {
             e.setReceivedAtLabBy(webUserController.getLoggedUser());
             encounterFacade.edit(e);
         }
-        return toLabOrdersToReceiveSummery();
+        return toLabReceiveAll();
     }
 
-    public String toReceiveLabOrdersSelectively() {
+    public String toLabReceiveSelected() {
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired=false "
@@ -590,7 +587,7 @@ public class ClientController implements Serializable {
         return "/lab/order_list";
     }
 
-    public String toLabOrderByReferringInstitutionToMarkResults() {
+    public String toLabEnterResults() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
         String j = "select c "
                 + " from Encounter c "
@@ -611,9 +608,35 @@ public class ClientController implements Serializable {
         m.put("ins", institution);
         m.put("rins", referingInstitution);
         listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
-        return "/lab/mark_results";
+        return "/lab/enter_results";
     }
 
+    public String toLabReviewResults() {
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired<>:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.referalInstitution=:rins"
+                + " and c.resultEntered=:rec "
+                + " and c.resultReviewed is null "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("rec", true);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("ins", institution);
+        m.put("rins", referingInstitution);
+        listedToReviewResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/lab/review_results";
+    }
+
+    
+    
     public String toConfirmResultsByReferringInstitution() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
         String j = "select c "
@@ -3022,6 +3045,8 @@ public class ClientController implements Serializable {
     public String getSearchingId() {
         return searchingId;
     }
+    
+    
 
     public void setSearchingId(String searchingId) {
         this.searchingId = searchingId;
@@ -3892,6 +3917,22 @@ public class ClientController implements Serializable {
 
     public void setListedToEnterResults(List<Encounter> listedToEnterResults) {
         this.listedToEnterResults = listedToEnterResults;
+    }
+
+    public List<Encounter> getListedToReviewResults() {
+        return listedToReviewResults;
+    }
+
+    public void setListedToReviewResults(List<Encounter> listedToReviewResults) {
+        this.listedToReviewResults = listedToReviewResults;
+    }
+
+    public List<Encounter> getSelectedToReview() {
+        return selectedToReview;
+    }
+
+    public void setSelectedToReview(List<Encounter> selectedToReview) {
+        this.selectedToReview = selectedToReview;
     }
 
     // </editor-fold>

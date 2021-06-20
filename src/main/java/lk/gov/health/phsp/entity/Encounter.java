@@ -90,6 +90,12 @@ public class Encounter implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private WebUser resultEnteredBy;
 
+    private Boolean resultReviewed;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date resultReviewedAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebUser resultReviewedBy;
+
     private Boolean resultConfirmed;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date resultConfirmedAt;
@@ -102,11 +108,10 @@ public class Encounter implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private WebUser resultNotedBy;
 
-    
-    
     private Double ctValue;
     @ManyToOne
     private Item pcrResult;
+    private String resultComments;
 
     private Boolean resultPositive;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -181,6 +186,8 @@ public class Encounter implements Serializable {
         this.id = id;
     }
 
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -213,8 +220,6 @@ public class Encounter implements Serializable {
     public void setClient(Client client) {
         this.client = client;
     }
-    
-    
 
     public Area getArea() {
         return area;
@@ -633,7 +638,37 @@ public class Encounter implements Serializable {
     public void setResultNotedBy(WebUser resultNotedBy) {
         this.resultNotedBy = resultNotedBy;
     }
-    
-    
+
+    public String getResultComments() {
+        return resultComments;
+    }
+
+    public void setResultComments(String resultComments) {
+        this.resultComments = resultComments;
+    }
+
+    public Boolean getResultReviewed() {
+        return resultReviewed;
+    }
+
+    public void setResultReviewed(Boolean resultReviewed) {
+        this.resultReviewed = resultReviewed;
+    }
+
+    public Date getResultReviewedAt() {
+        return resultReviewedAt;
+    }
+
+    public void setResultReviewedAt(Date resultReviewedAt) {
+        this.resultReviewedAt = resultReviewedAt;
+    }
+
+    public WebUser getResultReviewedBy() {
+        return resultReviewedBy;
+    }
+
+    public void setResultReviewedBy(WebUser resultReviewedBy) {
+        this.resultReviewedBy = resultReviewedBy;
+    }
 
 }

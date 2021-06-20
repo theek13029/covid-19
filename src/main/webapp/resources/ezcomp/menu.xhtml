@@ -21,11 +21,12 @@
                     <p:menuitem ajax="false" value="Test Result Entering" action="#{clientController.toEnterTestResults()}" />
                 </p:submenu>
                 <p:submenu label="Lab"  rendered="#{webUserController.hasPrivilege('Lab_Management')}"  >
-                    <p:menuitem ajax="false" value="Receive Samples" action="#{clientController.toLabOrdersToReceiveSummery()}"  />
-                    <p:menuitem ajax="false" value="Search Orders" action="#{clientController.toLabOrderByReferringInstitution()}"  />
-                    <p:menuitem ajax="false" value="Enter Results" action="#{clientController.toLabOrderByReferringInstitutionToMarkResults()}" />
+                    <p:menuitem ajax="false" value="Receive Samples" action="#{clientController.toLabReceiveAll()}"  />
+                    <p:menuitem ajax="false" value="Enter Results" action="#{clientController.toLabEnterResults()}" />
+                    <p:menuitem ajax="false" value="Review Results" action="#{clientController.toLabReviewResults()}" />
                     <p:menuitem ajax="false" value="Approve Results" action="#{clientController.toConfirmResultsByReferringInstitution()}" />
                     <p:menuitem ajax="false" value="Print Results" action="#{clientController.toLabOrderByReferringInstitutionToPrintResults}" />
+                    <p:menuitem ajax="false" value="Search Orders" action="#{clientController.toLabOrderByReferringInstitution()}"  />
                 </p:submenu>
                 <p:submenu label="Reports"  rendered="#{webUserController.hasPrivilege('Monitoring_and_evaluation')}"  >
                     <p:menuitem ajax="false" value="Case List" action="#{clientController.toListCases()}" />
@@ -41,6 +42,7 @@
                                 rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
                     <p:menuitem value="Manage Institutions" action="/insAdmin/institution_index" rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
                     <p:menuitem value="Manage Areas" action="/insAdmin/area_index" ajax="false" rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
+                    <p:menuitem value="Manage Areas"  action="#{preferenceController.toManagePreferencesInstitution()}"    ajax="false" rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
                 </p:submenu>
                 <p:submenu label="System Administration"  rendered="#{webUserController.hasPrivilege('System_Administration')}"  >
                     <p:menuitem value="Manage Users" action="#{webUserController.toManageUserIndexForSystemAdmin()}"  ajax="false" />
