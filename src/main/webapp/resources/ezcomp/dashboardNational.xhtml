@@ -64,7 +64,7 @@
                                         <p:column headerText="MOH" >
                                             <h:outputLabel value="#{cd.institution.name}" ></h:outputLabel>
                                         </p:column>
-                                        <p:column headerText="Tests" sortBy="#{cd.todaysTests}" >
+                                        <p:column headerText="Tests" sortBy="#{cd.thisMonthTests}" >
                                             <h:outputLabel value="#{cd.todaysTests}" ></h:outputLabel>
                                         </p:column>
                                     </p:dataTable>
@@ -74,7 +74,7 @@
                                         <p:column headerText="MOH" >
                                             <h:outputLabel value="#{cd.institution.name}" ></h:outputLabel>
                                         </p:column>
-                                        <p:column headerText="Cases" sortBy="#{cd.todaysCases}" >
+                                        <p:column headerText="Cases" sortBy="#{cd.thisMonthCases}" >
                                             <h:outputLabel value="#{cd.todaysCases}" ></h:outputLabel>
                                         </p:column>
                                     </p:dataTable>
