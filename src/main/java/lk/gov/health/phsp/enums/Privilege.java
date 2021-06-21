@@ -21,7 +21,7 @@ public enum Privilege {
     Institution_Administration("Institution Administration"),
     System_Administration("System Administration"),
     //Client Management
-    Add_Client("Add Patient"),
+    Add_Client("Add Cases"),
     Add_Tests("Add Tests"),
     Mark_Tests("Mark Tests"),
     Submit_Returns("Submit Returns"),
@@ -53,8 +53,11 @@ public enum Privilege {
     View_individual_data("View Individual Data"),
     View_aggragate_date("View Aggregate Data"),
     //Lab Management
-    View_Orders("View Orders"),
-    Enter_Results("Enter Results"),;
+    View_Orders("Receive Orders"),
+    Enter_Results("Enter Results"),
+    Review_Results("Review Results"),
+    Confirm_Results("Approve Results"),
+    Lab_Reports("Lab Reports"),;
 
     public final String label;
 

@@ -239,3 +239,8 @@ table.nopadding td {
     background: lightpink;
     color: red;
 }
+
+.editor{
+    width: 40rem;
+    height: 60rem;
+}

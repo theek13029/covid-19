@@ -12,25 +12,30 @@
     <h:body>
         <ui:composition template="/template.xhtml">
             <ui:define name="content">
-                <h:form>
-                    <p:panel header="Manage Data" >
-                        <p:tabView orientation="left" >
-                            <p:tab title="Metadata" >
-                                <p:panelGrid columns="1" >
-                                    <p:commandButton  
-                                        value="Add New User" 
-                                        action="#{webUserController.toAddNewUserByInsAdmin()}">
-                                    </p:commandButton>
-                                    <p:commandButton  
-                                        value="View Users"  
-                                        action="#{webUserController.toManageInstitutionUsers()}">
-                                    </p:commandButton>
-                                </p:panelGrid>
-                            </p:tab> 
 
-                        </p:tabView>
-                    </p:panel>
-                </h:form>
+                <p:panelGrid columns="2" style="width: 100%;" columnClasses="width20percent width80percent" styleClass="alignTop" >
+                    <f:facet name="header" >
+                        <p:outputLabel value="Manage Users" ></p:outputLabel>
+                    </f:facet>
+                    <h:form >
+                        <p:panelGrid columns="1"  style="width: 100%;" >
+                            <p:commandButton   style="width: 98%;margin: auto;" 
+                                value="Add New User" 
+                                action="#{webUserController.toAddNewUserByInsAdmin()}">
+                            </p:commandButton>
+                            <p:commandButton   style="width: 98%;margin: auto;" 
+                                value="View Users"  
+                                action="#{webUserController.toManageInstitutionUsers}">
+                            </p:commandButton>
+                        </p:panelGrid>
+                    </h:form>
+                    <h:panelGroup >
+                        <ui:insert  name="webUserContents"  >
+
+                        </ui:insert>
+                    </h:panelGroup>
+                </p:panelGrid>
+
             </ui:define>
         </ui:composition>
     </h:body>

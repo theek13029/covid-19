@@ -5,22 +5,16 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:body>
+        <ui:composition template="/insAdmin/user_index.xhtml">
 
-    <body>
+            <ui:define name="webUserContents" >
 
-        <ui:composition template="/template.xhtml">
-
-            <ui:define name="content" >
-                <p:panel id="WebUserEditDlg" header="Add New User" style="text-align: center; height: 100%;" >
-                    <f:facet name="header" >
-                        <p:outputLabel value="Add New User" ></p:outputLabel>
-                        <h:form>
-                            <p:commandButton value="Back" action="index" ajax="false" style="float: right;" >
-                            </p:commandButton>
-                        </h:form>
-                    </f:facet>
-                    <h:form id="WebUserEditForm">
-
+                <h:form>
+                    <p:panel id="WebUserEditDlg" header="Add New User" style="text-align: center; height: 100%;" >
+                        <f:facet name="header" >
+                            <p:outputLabel value="Add New User" ></p:outputLabel>
+                        </f:facet>
                         <p:panelGrid  columns="3" rendered="#{webUserController.selected != null}" style="margin: auto; text-align: left;">
                             <f:facet name="header" >
                                 <p:commandButton action="#{webUserController.saveNewWebUserByInsAdmin()}" value="#{bundleClinical.Save}" />
@@ -47,30 +41,28 @@
 
 
 
-                            <p:outputLabel value="Username:" for="username" />
-                            <p:inputText  id="username" value="#{webUserController.selected.name}" 
-                                          title="#{bundleClinical.EditWebUserTitle_name}"
-                                          required="true" autocomplete="false"
+                            <p:outputLabel value="Username:" for="txtU" />
+                            <p:inputText  id="txtU" value="#{webUserController.selected.name}" 
+                                          required="true" autocomplete="off"
                                           requiredMessage="#{bundleClinical.EditWebUserRequiredMessage_name}">
-                                <f:ajax execute="@this" render="lblune" event="blur" ></f:ajax>
                             </p:inputText>
                             <p:outputLabel id="lblune"
                                            style="color: red;"
                                            value="#{webUserController.userNameExsists()?'Username is already taken. Please try another.':''}" ></p:outputLabel>
 
 
-                            <p:outputLabel value="Password:" for="password" />
-                            <p:password  id="password" value="#{webUserController.password}" title="Password"
-                                         autocomplete="false"
+                            <p:outputLabel value="Password:" for="txtP" />
+                            <p:password  id="txtP" value="#{webUserController.password}" title="Password"
+                                         autocomplete="off"
                                          required="true" requiredMessage="Password is required."/>
                             <p:spacer ></p:spacer>
 
 
 
-                            <p:outputLabel value="Re-enter Password:" for="passwordReenter" />
-                            <p:password  id="passwordReenter" value="#{webUserController.passwordReenter}" title="Re-enter Password"
+                            <p:outputLabel value="Re-enter Password:" for="txtPr" />
+                            <p:password  id="txtPr" value="#{webUserController.passwordReenter}" title="Re-enter Password"
                                          required="true"
-                                         autocomplete="false"
+                                         autocomplete="off"
                                          requiredMessage="Password is required."/>
                             <p:spacer ></p:spacer>
 
@@ -122,17 +114,17 @@
                                                itemValue="#{r}" >
                                 </f:selectItems>
                             </p:selectOneMenu>
-                            <p:spacer ></p:spacer>
+                       
 
                         </p:panelGrid>
+                    </p:panel>
+                </h:form>
 
-
-                    </h:form>
-                </p:panel>
+                <br/><!-- comment -->
+                <br/>
 
             </ui:define>
         </ui:composition>
-
-    </body>
+    </h:body>
 </html>
 
