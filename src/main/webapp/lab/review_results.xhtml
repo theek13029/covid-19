@@ -49,9 +49,15 @@
 
 
                     <h:form>
-                        <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}" 
+                         <p:commandButton value="MARK AS REVIEWED FOR SELECTED" ajax="false" 
+                                         action="#{clientController.confirmSelectedResults()}" ></p:commandButton>
+
+                       
+                        <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" 
-                                     rowStyleClass="#{c.resultPositive?'redRow':''}">
+                                     rowStyleClass="#{c.resultPositive?'redRow':''}"
+                                     selection="#{clientController.selectedToReview}">
+                            <p:column selectionMode="multiple" ></p:column>
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>

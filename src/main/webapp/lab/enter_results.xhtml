@@ -82,6 +82,13 @@
                                     </p:ajax>
                                 </p:selectOneMenu>
                             </p:column>
+                            <p:column headerText="Comments" >
+                                <p:inputText id="txtComments" value="#{c.resultComments}"  >
+                                    <p:ajax event="blur" process="txtComments" 
+                                            listener="#{clientController.saveEncounterResults(c)}" >
+                                    </p:ajax>
+                                </p:inputText>
+                            </p:column>
                         </p:dataTable>
                     </h:form>
 

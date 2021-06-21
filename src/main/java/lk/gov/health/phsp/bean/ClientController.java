@@ -635,9 +635,7 @@ public class ClientController implements Serializable {
         return "/lab/review_results";
     }
 
-    
-    
-    public String toConfirmResultsByReferringInstitution() {
+    public String toConfirmResults() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
         String j = "select c "
                 + " from Encounter c "
@@ -646,7 +644,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.institution=:ins "
                 + " and c.referalInstitution=:rins"
-                + " and c.resultEntered=:rec "
+                + " and c.resultReviewed=:rec "
                 + " and c.resultConfirmed is null "
                 + " order by c.id";
         Map m = new HashMap();
@@ -665,9 +663,21 @@ public class ClientController implements Serializable {
         if (se == null) {
             return;
         }
-        se.setResultEntered(true);
-        se.setResultEnteredAt(new Date());
-        se.setResultEnteredBy(webUserController.getLoggedUser());
+        String labApprovalSteps = preferenceController.findPreferanceValue("labApprovalSteps", webUserController.getLoggedUser().getInstitution());
+        switch (labApprovalSteps) {
+            case "Entry":
+                se.setResultConfirmed(true);
+                se.setResultConfirmedAt(new Date());
+                se.setResultConfirmedBy(webUserController.getLoggedUser());
+            case "EntryConfirm":
+                se.setResultReviewed(true);
+                se.setResultReviewedAt(new Date());
+                se.setResultReviewedBy(webUserController.getLoggedUser());
+            case "EntryReviewConfirm":
+                se.setResultEntered(true);
+                se.setResultEnteredAt(new Date());
+                se.setResultEnteredBy(webUserController.getLoggedUser());
+        }
         encounterFacade.edit(se);
     }
 
@@ -680,6 +690,16 @@ public class ClientController implements Serializable {
         }
         selectedToConfirm = null;
 
+    }
+
+    public void reviewOkForSelectedResults() {
+        for (Encounter e : selectedToReview) {
+            e.setResultReviewed(true);
+            e.setResultReviewedAt(new Date());
+            e.setResultReviewedBy(webUserController.getLoggedUser());
+            encounterFacade.edit(e);
+        }
+        selectedToReview = null;
     }
 
     public String toLabOrderByReferringInstitutionToPrintResults() {
@@ -3045,8 +3065,6 @@ public class ClientController implements Serializable {
     public String getSearchingId() {
         return searchingId;
     }
-    
-    
 
     public void setSearchingId(String searchingId) {
         this.searchingId = searchingId;
