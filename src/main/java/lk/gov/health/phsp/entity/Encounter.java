@@ -101,6 +101,12 @@ public class Encounter implements Serializable {
     private Date resultConfirmedAt;
     @ManyToOne(fetch = FetchType.LAZY)
     private WebUser resultConfirmedBy;
+    
+    private Boolean resultPrinted;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date resultPrintedAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebUser resultPrintedBy;
 
     private Boolean resultNoted;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -216,6 +222,8 @@ public class Encounter implements Serializable {
     public Client getClient() {
         return client;
     }
+    
+    
 
     public void setClient(Client client) {
         this.client = client;
@@ -669,6 +677,30 @@ public class Encounter implements Serializable {
 
     public void setResultReviewedBy(WebUser resultReviewedBy) {
         this.resultReviewedBy = resultReviewedBy;
+    }
+
+    public Boolean getResultPrinted() {
+        return resultPrinted;
+    }
+
+    public void setResultPrinted(Boolean resultPrinted) {
+        this.resultPrinted = resultPrinted;
+    }
+
+    public Date getResultPrintedAt() {
+        return resultPrintedAt;
+    }
+
+    public void setResultPrintedAt(Date resultPrintedAt) {
+        this.resultPrintedAt = resultPrintedAt;
+    }
+
+    public WebUser getResultPrintedBy() {
+        return resultPrintedBy;
+    }
+
+    public void setResultPrintedBy(WebUser resultPrintedBy) {
+        this.resultPrintedBy = resultPrintedBy;
     }
 
 }

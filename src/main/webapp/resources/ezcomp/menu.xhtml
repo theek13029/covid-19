@@ -24,9 +24,10 @@
                     <p:menuitem ajax="false" value="Receive Samples" action="#{clientController.toLabReceiveAll()}"  />
                     <p:menuitem ajax="false" value="Enter Results" action="#{clientController.toLabEnterResults()}" />
                     <p:menuitem ajax="false" value="Review Results" action="#{clientController.toLabReviewResults()}" />
-                    <p:menuitem ajax="false" value="Approve Results" action="#{clientController.toConfirmResultsByReferringInstitution()}" />
-                    <p:menuitem ajax="false" value="Print Results" action="#{clientController.toLabOrderByReferringInstitutionToPrintResults}" />
+                    <p:menuitem ajax="false" value="Approve Results" action="#{clientController.toConfirmResults}" />
+                    <p:menuitem ajax="false" value="Print Results" action="#{clientController.toLabPrintSelected()}" />
                     <p:menuitem ajax="false" value="Search Orders" action="#{clientController.toLabOrderByReferringInstitution()}"  />
+                    <p:menuitem ajax="false" value="Reports" action="#{clientController.toLabReports()}"  />
                 </p:submenu>
                 <p:submenu label="Reports"  rendered="#{webUserController.hasPrivilege('Monitoring_and_evaluation')}"  >
                     <p:menuitem ajax="false" value="Case List" action="#{clientController.toListCases()}" />

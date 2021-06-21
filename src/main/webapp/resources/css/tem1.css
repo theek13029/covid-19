@@ -244,3 +244,7 @@ table.nopadding td {
     width: 40rem;
     height: 60rem;
 }
+
+.labReportPage{
+    page-break-after: always;
+}

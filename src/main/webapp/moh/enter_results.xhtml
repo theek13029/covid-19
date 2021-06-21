@@ -14,7 +14,7 @@
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Review Test Results" ></p:outputLabel>
+                        <p:outputLabel value="Entering Test Results" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
@@ -49,15 +49,9 @@
 
 
                     <h:form>
-                         <p:commandButton value="MARK AS REVIEWED FOR SELECTED" ajax="false" 
-                                          action="#{clientController.reviewOkForSelectedResults()}" ></p:commandButton>
-
-                       
-                        <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}" 
+                        <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" 
-                                     rowStyleClass="#{c.resultPositive?'redRow':''}"
-                                     selection="#{clientController.selectedToReview}">
-                            <p:column selectionMode="multiple" ></p:column>
+                                     rowStyleClass="#{c.resultPositive?'redRow':''}">
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
@@ -87,6 +81,13 @@
                                     <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:selectOneMenu>
+                            </p:column>
+                            <p:column headerText="Comments" >
+                                <p:inputText id="txtComments" value="#{c.resultComments}"  >
+                                    <p:ajax event="blur" process="txtComments" 
+                                            listener="#{clientController.saveEncounterResults(c)}" >
+                                    </p:ajax>
+                                </p:inputText>
                             </p:column>
                         </p:dataTable>
                     </h:form>

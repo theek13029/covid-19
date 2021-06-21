@@ -123,12 +123,14 @@ public class ClientController implements Serializable {
     private List<Encounter> listedToEnterResults;
     private List<Encounter> listedToReviewResults;
     private List<Encounter> listedToConfirm;
+    private List<Encounter> listedToPrint;
     private List<Encounter> testList;
     private List<Encounter> caseList;
 
     private List<Encounter> selectedToReceive;
     private List<Encounter> selectedToReview;
     private List<Encounter> selectedToConfirm;
+    private List<Encounter> selectedToPrint;
 
     private Client selected;
     private Long selectedId;
@@ -538,6 +540,10 @@ public class ClientController implements Serializable {
         return "/lab/receive_orders";
     }
 
+    public String toLabReports(){
+        return "/lab/reports_index";
+    }
+
     public String toLabOrderByReferringInstitution() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
         Map m = new HashMap();
@@ -596,8 +602,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.institution=:ins "
                 + " and c.referalInstitution=:rins"
-                + " and c.receivedAtLab=:rec "
-                + " and c.resultConfirmed is null "
+                + " and c.resultConfirmed is not null "
                 + " order by c.id";
         Map m = new HashMap();
         m.put("ret", true);
@@ -608,7 +613,7 @@ public class ClientController implements Serializable {
         m.put("ins", institution);
         m.put("rins", referingInstitution);
         listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
-        return "/lab/enter_results";
+        return "/lab/print_results";
     }
 
     public String toLabReviewResults() {
@@ -689,7 +694,16 @@ public class ClientController implements Serializable {
             encounterFacade.edit(e);
         }
         selectedToConfirm = null;
-
+    }
+    
+    public void toLabPrintSelected() {
+        for (Encounter e : selectedToPrint) {
+            e.setResultPrinted(true);
+            e.setResultPrintedAt(new Date());
+            e.setResultPrintedBy(webUserController.getLoggedUser());
+            encounterFacade.edit(e);
+        }
+        selectedToPrint = null;
     }
 
     public void reviewOkForSelectedResults() {
@@ -982,6 +996,7 @@ public class ClientController implements Serializable {
         userTransactionController.recordTransaction("To View Corrected Duplicates");
         return "/systemAdmin/clients_with_corrected_duplicate_phn";
     }
+    
 
     public String toDetectPhnDuplicates() {
         String j;
@@ -3796,6 +3811,8 @@ public class ClientController implements Serializable {
     public List<Encounter> getCaseList() {
         return caseList;
     }
+    
+    
 
     public void setCaseList(List<Encounter> caseList) {
         this.caseList = caseList;
@@ -3916,7 +3933,7 @@ public class ClientController implements Serializable {
     public List<Encounter> getSelectedToConfirm() {
         return selectedToConfirm;
     }
-
+    
     public void setSelectedToConfirm(List<Encounter> selectedToConfirm) {
         this.selectedToConfirm = selectedToConfirm;
     }
@@ -3951,6 +3968,22 @@ public class ClientController implements Serializable {
 
     public void setSelectedToReview(List<Encounter> selectedToReview) {
         this.selectedToReview = selectedToReview;
+    }
+
+    public List<Encounter> getListedToPrint() {
+        return listedToPrint;
+    }
+
+    public void setListedToPrint(List<Encounter> listedToPrint) {
+        this.listedToPrint = listedToPrint;
+    }
+
+    public List<Encounter> getSelectedToPrint() {
+        return selectedToPrint;
+    }
+
+    public void setSelectedToPrint(List<Encounter> selectedToPrint) {
+        this.selectedToPrint = selectedToPrint;
     }
 
     // </editor-fold>
