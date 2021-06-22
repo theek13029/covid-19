@@ -43,7 +43,7 @@
                         
                         <p:commandButton value="PRINT SELECTED" ajax="false" 
                                          action="#{clientController.toLabPrintSelected()}" 
-                                         target="_blank"></p:commandButton>
+                                          onclick="form.target='_blank'"></p:commandButton>
 
 
                         <p:dataTable id="tbl" value="#{clientController.listedToPrint}" 

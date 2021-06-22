@@ -834,7 +834,9 @@ public class ClientController implements Serializable {
             html = html.replace("{pcr_result}", e.getPcrResult().getName());
         }
         html = html.replace("{pcr_ct}", e.getCtValue().toString());
-        html = html.replace("{pcr_comments}", e.getResultComments());
+        if (e.getResultComments() != null) {
+            html = html.replace("{pcr_comments}", e.getResultComments());
+        }
         return html;
     }
 

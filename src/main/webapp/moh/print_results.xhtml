@@ -42,8 +42,8 @@
                         </p:panelGrid>
                         
                         <p:commandButton value="PRINT SELECTED" ajax="false" 
-                                         action="#{clientController.toLabPrintSelected()}" 
-                                         target="_blank"></p:commandButton>
+                                         action="#{clientController.toMohPrintSelected()}" 
+                                          onclick="form.target='_blank'"></p:commandButton>
 
 
                         <p:dataTable id="tbl" value="#{clientController.listedToPrint}" 
