@@ -819,7 +819,7 @@ public class ClientController implements Serializable {
         if (e.getClient().getPerson().getGnArea() != null) {
             html = html.replace("{gn}", e.getClient().getPerson().getGnArea().getName());
         }
-        if (e.getClient().getPerson().getGnArea() != null) {
+        if (e.getClient().getPerson().getPhiArea() != null) {
             html = html.replace("{phi}", e.getClient().getPerson().getPhiArea().getName());
         }
         Item test = itemController.findItemByCode("test_type");
