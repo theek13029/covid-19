@@ -108,6 +108,8 @@ public class ClientController implements Serializable {
     private List<ClientBasicData> selectedClientsWithBasicData = null;
     private List<Client> importedClients = null;
 
+    private Encounter lastTest;
+
     Boolean institutionSelectable;
     Boolean nationalLevel;
 
@@ -179,7 +181,6 @@ public class ClientController implements Serializable {
 
     private List<InstitutionCount> labOrderSummeries;
 
-    private String continuedAddress = "";
     private Institution continuedLab;
 
     // </editor-fold>
@@ -664,7 +665,7 @@ public class ClientController implements Serializable {
         listedToConfirm = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/confirm_results";
     }
-    
+
     public String toLabToSelectForPrinting() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
         String j = "select c "
@@ -747,7 +748,7 @@ public class ClientController implements Serializable {
             html = html.replaceFirst("pcr_result", e.getPcrResult().getName());
         }
         html = html.replaceFirst("pcr_ct", e.getCtValue().toString());
-         html = html.replaceFirst("pcr_comments", e.getResultComments());
+        html = html.replaceFirst("pcr_comments", e.getResultComments());
         return html;
     }
 
@@ -790,7 +791,6 @@ public class ClientController implements Serializable {
         selected.setRetired(true);
         selected.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
         selected.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
-        selected.getPerson().setAddress(continuedAddress);
         saveClient(selected);
         clearRegisterNewExistsValues();
         selectedClientsClinics = null;
@@ -940,11 +940,52 @@ public class ClientController implements Serializable {
         return "";
     }
 
+    public void addLastAddress() {
+        if (lastTest == null) {
+            return;
+        }
+        if (selected == null) {
+            return;
+        }
+        selected.getPerson().setAddress(lastTest.getClient().getPerson().getAddress());
+    }
+
+    public void addLastPhones() {
+        if (lastTest == null) {
+            return;
+        }
+        if (selected == null) {
+            return;
+        }
+        selected.getPerson().setPhone1(lastTest.getClient().getPerson().getPhone1());
+        selected.getPerson().setPhone2(lastTest.getClient().getPerson().getPhone2());
+    }
+    
+    public void addLastGn() {
+        if (lastTest == null) {
+            return;
+        }
+        if (selected == null) {
+            return;
+        }
+        selected.getPerson().setGnArea(lastTest.getClient().getPerson().getGnArea());
+    }
+    
+    public void addLastPhi() {
+        if (lastTest == null) {
+            return;
+        }
+        if (selected == null) {
+            return;
+        }
+        selected.getPerson().setPhiArea(lastTest.getClient().getPerson().getPhiArea());
+    }
+    
+
     public String toAddNewClientForTestEnrollment() {
         setSelected(new Client());
         selected.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
         selected.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
-        selected.getPerson().setAddress(continuedAddress);
 
         selected.setRetired(true);
         saveClient(selected);
@@ -2818,7 +2859,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Nothing to save");
             return "";
         }
-        continuedAddress = getSelected().getPerson().getAddress();
+
         continuedLab = clientEncounterComponentFormSetController.getSelected().getEncounter().getReferalInstitution();
         Institution createdIns = null;
         selected.setRetired(false);
@@ -2889,7 +2930,7 @@ public class ClientController implements Serializable {
             encounterFacade.edit(clientEncounterComponentFormSetController.getSelected().getEncounter());
         }
         getInstitutionCaseEnrollmentMap().put(selected.getId(), clientEncounterComponentFormSetController.getSelected().getEncounter());
-
+       
         JsfUtil.addSuccessMessage("Saved.");
         return "/client/profile_case_enrollment";
     }
@@ -2900,7 +2941,6 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Nothing to save");
             return "";
         }
-        continuedAddress = getSelected().getPerson().getAddress();
         continuedLab = clientEncounterComponentFormSetController.getSelected().getEncounter().getReferalInstitution();
         Institution createdIns = null;
         selected.setRetired(false);
@@ -2978,8 +3018,11 @@ public class ClientController implements Serializable {
             te.setSentToLabAt(new Date());
             te.setSentToLabBy(webUserController.getLoggedUser());
             encounterFacade.edit(te);
+            lastTest = te;
         }
 
+        
+        
         // clientEncounterComponentFormSetController.completeFormsetForTestEnrollment();
         getInstitutionTestEnrollmentMap().put(selected.getId(), clientEncounterComponentFormSetController.getSelected().getEncounter());
 
@@ -3949,14 +3992,6 @@ public class ClientController implements Serializable {
         this.preferenceController = preferenceController;
     }
 
-    public String getContinuedAddress() {
-        return continuedAddress;
-    }
-
-    public void setContinuedAddress(String continuedAddress) {
-        this.continuedAddress = continuedAddress;
-    }
-
     public Institution getContinuedLab() {
         return continuedLab;
     }
@@ -4027,6 +4062,14 @@ public class ClientController implements Serializable {
 
     public void setSelectedToPrint(List<Encounter> selectedToPrint) {
         this.selectedToPrint = selectedToPrint;
+    }
+
+    public Encounter getLastTest() {
+        return lastTest;
+    }
+
+    public void setLastTest(Encounter lastTest) {
+        this.lastTest = lastTest;
     }
 
     // </editor-fold>

@@ -22,6 +22,21 @@
                         </f:facet>
 
 
+                        <h:panelGrid columns="5" >
+                            <p:outputLabel value="Test Number" ></p:outputLabel>
+                            <p:inputText value="#{clientEncounterComponentFormSetController.selected.encounter.encounterNumber}" >
+                                <f:ajax event="blur" execute="@this" listener="#{encounterController.save(clientEncounterComponentFormSetController.selected.encounter.encounterNumber)}" ></f:ajax>
+                            </p:inputText>
+                            <p:spacer height="1" width="20" ></p:spacer>
+                            <p:outputLabel value="Lab" ></p:outputLabel>
+                            <p:autoComplete value="#{clientEncounterComponentFormSetController.selected.encounter.referalInstitution}"
+                                            forceSelection="true" 
+                                            completeMethod="#{institutionController.completeLab}" var="l" itemLabel="#{l.name}" itemValue="#{l}" >
+                                <f:ajax event="blur" execute="@this" 
+                                        listener="#{encounterController.save(clientEncounterComponentFormSetController.selected.encounter.encounterNumber)}" ></f:ajax>
+                            </p:autoComplete>
+
+                        </h:panelGrid>
 
                         <p:panelGrid columns="1" style="width: 100%;  background-color: yellow;" >
                             <f:facet name="header" >
@@ -123,8 +138,13 @@
                                     </p:column>
                                     <p:column  >
                                         <p:inputText tabindex="3"
-                                                         id="address" required="true"  style="width: 30rem;" value="#{clientController.selected.person.address}"
-                                                         title="Address" />
+                                                     id="address" required="true"  style="width: 30rem;" value="#{clientController.selected.person.address}"
+                                                     title="Address ****" />
+                                        <p:commandLink id="lnkLastAddress"
+                                                       style="float: right;"
+                                                       action="#{clientController.addLastAddress()}" process="lnkLastAddress" update="address" >
+                                            <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
+                                        </p:commandLink>
                                     </p:column>
                                     <p:column ></p:column>
 
@@ -164,6 +184,11 @@
                                             <!--                                            <f:validateRegex pattern="^((?:0|94|\+94|0094)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|91)(0|2|3|4|5|7|9)|7(0|1|2|4|5|6|7|8)\d)\d{6})?$"
                                                                                                          ></f:validateRegex>-->
                                         </p:inputText>
+                                        <p:commandLink id="lnkLastphone1" 
+                                                       style="float: right;"
+                                                       action="#{clientController.addLastPhones()}" process="lnkLastphone1" update="lnkLastphone1" >
+                                            <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
+                                        </p:commandLink>
                                     </p:column>
                                     <p:column >
                                     </p:column>
@@ -189,6 +214,11 @@
                                                         maxResults="20" forceSelection="true" placeholder="Not Known"
                                                         minQueryLength="2">
                                         </p:autoComplete>
+                                        <p:commandLink id="lnkLastGn" 
+                                                       style="float: right;"
+                                                       action="#{clientController.addLastAddress()}" process="lnkLastGn" update="gn" >
+                                            <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
+                                        </p:commandLink>
                                     </p:column>
                                     <p:column ></p:column>
                                     <p:column colspan="2" >
@@ -250,21 +280,7 @@
 
                             <h:panelGrid columns="1" style="width: 100%;" >
 
-                                <h:panelGrid columns="5" >
-                                    <p:outputLabel value="Test Number" ></p:outputLabel>
-                                    <p:inputText value="#{clientEncounterComponentFormSetController.selected.encounter.encounterNumber}" >
-                                        <f:ajax event="blur" execute="@this" listener="#{encounterController.save(clientEncounterComponentFormSetController.selected.encounter.encounterNumber)}" ></f:ajax>
-                                    </p:inputText>
-                                    <p:spacer height="1" width="20" ></p:spacer>
-                                    <p:outputLabel value="Lab" ></p:outputLabel>
-                                    <p:autoComplete value="#{clientEncounterComponentFormSetController.selected.encounter.referalInstitution}"
-                                                    forceSelection="true" 
-                                                    completeMethod="#{institutionController.completeLab}" var="l" itemLabel="#{l.name}" itemValue="#{l}" >
-                                        <f:ajax event="blur" execute="@this" 
-                                                listener="#{encounterController.save(clientEncounterComponentFormSetController.selected.encounter.encounterNumber)}" ></f:ajax>
-                                    </p:autoComplete>
 
-                                </h:panelGrid>
 
 
                                 <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.forms.size() eq 1}" >
