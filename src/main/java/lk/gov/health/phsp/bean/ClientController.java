@@ -195,6 +195,7 @@ public class ClientController implements Serializable {
         return "/client/search_by_id";
     }
 
+    @Deprecated
     public String toEnterTestResults() {
         fillTestEnrollmentToMark();
         return "/client/mark_test_enrollments";
@@ -618,6 +619,28 @@ public class ClientController implements Serializable {
         return "/lab/enter_results";
     }
 
+    public String toMohEnterResults() {
+        institution = webUserController.getLoggedUser().getInstitution();
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired<>:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.receivedAtLab=:rec "
+                + " and c.resultEntered is null "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("rec", true);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("ins", institution);
+        listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/moh/enter_results";
+    }
+
     public String toLabReviewResults() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
         String j = "select c "
@@ -687,7 +710,30 @@ public class ClientController implements Serializable {
         listedToPrint = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/print_results";
     }
+    
 
+    
+    public String toMohToSelectForPrinting() {
+        institution = webUserController.getLoggedUser().getInstitution();
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired=:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.resultConfirmed is not null "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("ins", institution);
+        listedToPrint = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/moh/print_results";
+    }
+
+    
     public void saveEncounterResults(Encounter se) {
         if (se == null) {
             return;
@@ -710,6 +756,25 @@ public class ClientController implements Serializable {
         encounterFacade.edit(se);
     }
 
+    public void saveEncounterResultsAtMoh(Encounter se) {
+        if (se == null) {
+            return;
+        }
+        se.setResultConfirmed(true);
+        se.setResultConfirmedAt(new Date());
+        se.setResultConfirmedBy(webUserController.getLoggedUser());
+        se.setResultReviewed(true);
+        se.setResultReviewedAt(new Date());
+        se.setResultReviewedBy(webUserController.getLoggedUser());
+        se.setResultEntered(true);
+        se.setResultEnteredAt(new Date());
+        se.setResultEnteredBy(webUserController.getLoggedUser());
+        se.setResultNoted(true);
+        se.setResultNotedAt(new Date());
+        se.setResultNotedBy(webUserController.getLoggedUser());
+        encounterFacade.edit(se);
+    }
+
     public String confirmSelectedResults() {
         for (Encounter e : selectedToConfirm) {
             e.setResultConfirmed(true);
@@ -729,6 +794,16 @@ public class ClientController implements Serializable {
             encounterFacade.edit(e);
         }
         return "/lab/printing_results";
+    }
+    
+    public String toMohPrintSelected() {
+        for (Encounter e : selectedToPrint) {
+            e.setResultPrinted(true);
+            e.setResultPrintedAt(new Date());
+            e.setResultPrintedBy(webUserController.getLoggedUser());
+            encounterFacade.edit(e);
+        }
+        return "/moh/printing_results";
     }
 
     public String generateLabReport(Encounter e) {
@@ -960,7 +1035,7 @@ public class ClientController implements Serializable {
         selected.getPerson().setPhone1(lastTest.getClient().getPerson().getPhone1());
         selected.getPerson().setPhone2(lastTest.getClient().getPerson().getPhone2());
     }
-    
+
     public void addLastGn() {
         if (lastTest == null) {
             return;
@@ -970,7 +1045,7 @@ public class ClientController implements Serializable {
         }
         selected.getPerson().setGnArea(lastTest.getClient().getPerson().getGnArea());
     }
-    
+
     public void addLastPhi() {
         if (lastTest == null) {
             return;
@@ -980,7 +1055,6 @@ public class ClientController implements Serializable {
         }
         selected.getPerson().setPhiArea(lastTest.getClient().getPerson().getPhiArea());
     }
-    
 
     public String toAddNewClientForTestEnrollment() {
         setSelected(new Client());
@@ -2930,7 +3004,7 @@ public class ClientController implements Serializable {
             encounterFacade.edit(clientEncounterComponentFormSetController.getSelected().getEncounter());
         }
         getInstitutionCaseEnrollmentMap().put(selected.getId(), clientEncounterComponentFormSetController.getSelected().getEncounter());
-       
+
         JsfUtil.addSuccessMessage("Saved.");
         return "/client/profile_case_enrollment";
     }
@@ -3021,8 +3095,6 @@ public class ClientController implements Serializable {
             lastTest = te;
         }
 
-        
-        
         // clientEncounterComponentFormSetController.completeFormsetForTestEnrollment();
         getInstitutionTestEnrollmentMap().put(selected.getId(), clientEncounterComponentFormSetController.getSelected().getEncounter());
 

@@ -25,12 +25,6 @@
                             <p:outputLabel value="To" ></p:outputLabel>
                             <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                            <p:outputLabel value="Ordered Institution" ></p:outputLabel>
-                            <p:autoComplete value="#{clientController.institution}"
-                                            completeMethod="#{institutionController.completeInstitutions}"
-                                            var="m" itemLabel="#{m.name}" itemValue="#{m}" >
-                            </p:autoComplete>
-
                             <p:outputLabel value="Lab" ></p:outputLabel>
                             <p:autoComplete value="#{clientController.referingInstitution}"
                                             completeMethod="#{institutionController.completeInstitutions}"
@@ -41,9 +35,7 @@
                                 <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{clientController.toLabEnterResults()}" ></p:commandButton>
-
-
+                                             action="#{clientController.toMohEnterResults()}" ></p:commandButton>
                         </p:panelGrid>
                     </h:form>
 
@@ -69,7 +61,7 @@
                             </p:column>
                             <p:column id="result" headerText="CT" >
                                 <p:inputText id="txtCt" value="#{c.ctValue}" style="width: 5rem;" >
-                                    <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
+                                    <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResultsAtMoh(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
@@ -78,14 +70,14 @@
                                     <f:selectItem itemLabel="Select Result" ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
                                                    var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
-                                    <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounterResults(c)}" >
+                                    <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounterResultsAtMoh(c)}" >
                                     </p:ajax>
                                 </p:selectOneMenu>
                             </p:column>
                             <p:column headerText="Comments" >
                                 <p:inputText id="txtComments" value="#{c.resultComments}"  >
                                     <p:ajax event="blur" process="txtComments" 
-                                            listener="#{clientController.saveEncounterResults(c)}" >
+                                            listener="#{clientController.saveEncounterResultsAtMoh(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
