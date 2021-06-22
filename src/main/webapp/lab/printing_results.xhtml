@@ -8,9 +8,7 @@
 
         <ui:repeat value="#{clientController.selectedToPrint}" var="p" >
             <div class="labReportPage" >
-                Name :    #{p.client.person.name}
-                Age :    #{p.client.person.age}
-                Sex :    #{p.client.person.sex.name}
+                #{clientController.generateLabReport(p)}
             </div>
 
         </ui:repeat>

@@ -36,18 +36,21 @@
                                 <p:dataExporter target="tbl" type="xlsx" fileName="test_enrollments" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{clientController.toLabEnterResults()}" ></p:commandButton>
+                                             action="#{clientController.toLabToSelectForPrinting()}" ></p:commandButton>
 
 
                         </p:panelGrid>
+                        
                         <p:commandButton value="PRINT SELECTED" ajax="false" 
-                                         action="#{clientController.toLabEnterResults()}" ></p:commandButton>
+                                         action="#{clientController.toLabPrintSelected()}" 
+                                         target="_blank"></p:commandButton>
 
 
                         <p:dataTable id="tbl" value="#{clientController.listedToPrint}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
-                                     selection="#{clientController.selectedToConfirm}">
+                                     selection="#{clientController.selectedToPrint}">
+                            <p:column selectionMode="multiple" ></p:column>
                             <p:column headerText="No"  sortBy="#{c.encounterNumber}">
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
                             </p:column>
@@ -66,6 +69,14 @@
                             <p:column headerText="Age"  sortBy="#{c.client.person.age}"
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="CT"  sortBy="#{c.ctValue}"
+                                      filterBy="#{c.ctValue}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.ctValue}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
+                                      filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
                     </h:form>

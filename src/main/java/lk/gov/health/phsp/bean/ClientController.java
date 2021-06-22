@@ -540,7 +540,7 @@ public class ClientController implements Serializable {
         return "/lab/receive_orders";
     }
 
-    public String toLabReports(){
+    public String toLabReports() {
         return "/lab/reports_index";
     }
 
@@ -602,7 +602,8 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.institution=:ins "
                 + " and c.referalInstitution=:rins"
-                + " and c.resultConfirmed is not null "
+                + " and c.receivedAtLab=:rec "
+                + " and c.resultEntered is null "
                 + " order by c.id";
         Map m = new HashMap();
         m.put("ret", true);
@@ -613,7 +614,7 @@ public class ClientController implements Serializable {
         m.put("ins", institution);
         m.put("rins", referingInstitution);
         listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
-        return "/lab/print_results";
+        return "/lab/enter_results";
     }
 
     public String toLabReviewResults() {
@@ -663,6 +664,28 @@ public class ClientController implements Serializable {
         listedToConfirm = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/confirm_results";
     }
+    
+    public String toLabToSelectForPrinting() {
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired=:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.referalInstitution=:rins"
+                + " and c.resultConfirmed is not null "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("ins", institution);
+        m.put("rins", referingInstitution);
+        listedToPrint = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/lab/print_results";
+    }
 
     public void saveEncounterResults(Encounter se) {
         if (se == null) {
@@ -686,7 +709,7 @@ public class ClientController implements Serializable {
         encounterFacade.edit(se);
     }
 
-    public void confirmSelectedResults() {
+    public String confirmSelectedResults() {
         for (Encounter e : selectedToConfirm) {
             e.setResultConfirmed(true);
             e.setResultConfirmedAt(new Date());
@@ -694,16 +717,38 @@ public class ClientController implements Serializable {
             encounterFacade.edit(e);
         }
         selectedToConfirm = null;
+        return toConfirmResults();
     }
-    
-    public void toLabPrintSelected() {
+
+    public String toLabPrintSelected() {
         for (Encounter e : selectedToPrint) {
             e.setResultPrinted(true);
             e.setResultPrintedAt(new Date());
             e.setResultPrintedBy(webUserController.getLoggedUser());
             encounterFacade.edit(e);
         }
-        selectedToPrint = null;
+        return "/lab/printing_results";
+    }
+
+    public String generateLabReport(Encounter e) {
+        System.out.println("generateLabReport");
+        if (e == null) {
+            return "No Encounter";
+        }
+        String html = getPreferenceController().findPreferanceValue("labReportHeader", webUserController.getLoggedUser().getInstitution());
+        if (html == null || html.trim().equals("")) {
+            return "No Report Format";
+        }
+        html = html.replaceFirst("name", e.getClient().getPerson().getName());
+        html = html.replaceFirst("age", e.getClient().getPerson().getAge());
+        html = html.replaceFirst("sex", e.getClient().getPerson().getSex().getName());
+        html = html.replaceFirst("institute", e.getInstitution().getName());
+        if (e.getPcrResult() != null) {
+            html = html.replaceFirst("pcr_result", e.getPcrResult().getName());
+        }
+        html = html.replaceFirst("pcr_ct", e.getCtValue().toString());
+         html = html.replaceFirst("pcr_comments", e.getResultComments());
+        return html;
     }
 
     public void reviewOkForSelectedResults() {
@@ -714,6 +759,7 @@ public class ClientController implements Serializable {
             encounterFacade.edit(e);
         }
         selectedToReview = null;
+        toLabReviewResults();
     }
 
     public String toLabOrderByReferringInstitutionToPrintResults() {
@@ -996,7 +1042,6 @@ public class ClientController implements Serializable {
         userTransactionController.recordTransaction("To View Corrected Duplicates");
         return "/systemAdmin/clients_with_corrected_duplicate_phn";
     }
-    
 
     public String toDetectPhnDuplicates() {
         String j;
@@ -3811,8 +3856,6 @@ public class ClientController implements Serializable {
     public List<Encounter> getCaseList() {
         return caseList;
     }
-    
-    
 
     public void setCaseList(List<Encounter> caseList) {
         this.caseList = caseList;
@@ -3933,7 +3976,7 @@ public class ClientController implements Serializable {
     public List<Encounter> getSelectedToConfirm() {
         return selectedToConfirm;
     }
-    
+
     public void setSelectedToConfirm(List<Encounter> selectedToConfirm) {
         this.selectedToConfirm = selectedToConfirm;
     }
