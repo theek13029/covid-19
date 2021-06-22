@@ -627,12 +627,9 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.institution=:ins "
-                + " and c.receivedAtLab=:rec "
-                + " and c.resultEntered is null "
                 + " order by c.id";
         Map m = new HashMap();
         m.put("ret", true);
-        m.put("rec", true);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
@@ -710,9 +707,7 @@ public class ClientController implements Serializable {
         listedToPrint = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/print_results";
     }
-    
 
-    
     public String toMohToSelectForPrinting() {
         institution = webUserController.getLoggedUser().getInstitution();
         String j = "select c "
@@ -733,7 +728,6 @@ public class ClientController implements Serializable {
         return "/moh/print_results";
     }
 
-    
     public void saveEncounterResults(Encounter se) {
         if (se == null) {
             return;
@@ -795,7 +789,7 @@ public class ClientController implements Serializable {
         }
         return "/lab/printing_results";
     }
-    
+
     public String toMohPrintSelected() {
         for (Encounter e : selectedToPrint) {
             e.setResultPrinted(true);
@@ -815,15 +809,32 @@ public class ClientController implements Serializable {
         if (html == null || html.trim().equals("")) {
             return "No Report Format";
         }
-        html = html.replaceFirst("name", e.getClient().getPerson().getName());
-        html = html.replaceFirst("age", e.getClient().getPerson().getAge());
-        html = html.replaceFirst("sex", e.getClient().getPerson().getSex().getName());
-        html = html.replaceFirst("institute", e.getInstitution().getName());
-        if (e.getPcrResult() != null) {
-            html = html.replaceFirst("pcr_result", e.getPcrResult().getName());
+        html = html.replace("{name}", e.getClient().getPerson().getName());
+        html = html.replace("{age}", e.getClient().getPerson().getAge());
+        html = html.replace("{sex}", e.getClient().getPerson().getSex().getName());
+        html = html.replace("{institute}", e.getInstitution().getName());
+        html = html.replace("{address}", e.getClient().getPerson().getAddress());
+        html = html.replace("{phone1}", e.getClient().getPerson().getAddress());
+        html = html.replace("{phone2}", e.getClient().getPerson().getAddress());
+        if (e.getClient().getPerson().getGnArea() != null) {
+            html = html.replace("{gn}", e.getClient().getPerson().getGnArea().getName());
         }
-        html = html.replaceFirst("pcr_ct", e.getCtValue().toString());
-        html = html.replaceFirst("pcr_comments", e.getResultComments());
+        if (e.getClient().getPerson().getGnArea() != null) {
+            html = html.replace("{phi}", e.getClient().getPerson().getPhiArea().getName());
+        }
+        Item test = itemController.findItemByCode("test_type");
+        ClientEncounterComponentItem testValueCi = e.getClientEncounterComponentItem(test);
+        if (testValueCi != null) {
+            Item testVal = testValueCi.getItemValue();
+            if (testVal != null) {
+                html = html.replace("{test}", testVal.getName());
+            }
+        }
+        if (e.getPcrResult() != null) {
+            html = html.replace("{pcr_result}", e.getPcrResult().getName());
+        }
+        html = html.replace("{pcr_ct}", e.getCtValue().toString());
+        html = html.replace("{pcr_comments}", e.getResultComments());
         return html;
     }
 
