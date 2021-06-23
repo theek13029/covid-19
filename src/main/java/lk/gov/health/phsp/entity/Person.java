@@ -175,7 +175,7 @@ public class Person implements Serializable {
         setAgeMonths(period.getMonths());
         setAgeDays(period.getDays());
         if (getAgeYears() > 12) {
-            setAge(period.getYears() + " years.");
+            setAge(period.getYears() + "");
         } else if (getAgeYears() > 0) {
             setAge(period.getYears() + " years and " + period.getMonths() + " months.");
         } else {
