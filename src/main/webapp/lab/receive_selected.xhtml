@@ -14,7 +14,7 @@
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Receive Samples" ></p:outputLabel>
+                        <p:outputLabel value="Receive Selected Samples" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
@@ -32,7 +32,7 @@
                             </p:autoComplete>
 
                             <p:commandButton ajax="false" value="Generate Excel">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="test_to_receive" ></p:dataExporter>
+                                <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_as_received" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
                                              action="#{clientController.toLabReceiveSelected()}" ></p:commandButton>
@@ -45,10 +45,10 @@
                     <h:form>
 
 
-                        <p:commandButton value="Receive Selected" ajax="false" 
+                        <p:commandButton value="RECEIVE SELECTED" ajax="false" 
                                          action="#{clientController.markSelectedAsReceivedResults()}" ></p:commandButton>
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToReceive}" 
+                                         <p:dataTable id="tbl" value="#{clientController.listedToReceive}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      selection="#{clientController.selectedToReceive}">
                             <p:column selectionMode="multiple" ></p:column>
@@ -66,6 +66,12 @@
                             </p:column>
                             <p:column headerText="Phone" >
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
+                            </p:column>
+                            <p:column id="result" headerText="CT" >
+                                <p:inputText id="txtCt" value="#{c.ctValue}" style="width: 5rem;" >
+                                    <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
+                                    </p:ajax>
+                                </p:inputText>
                             </p:column>
                         </p:dataTable>
                     </h:form>
