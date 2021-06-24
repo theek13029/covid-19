@@ -37,6 +37,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -111,8 +112,27 @@ public class Institution implements Serializable {
 
     private boolean pmci;
 
+    @Transient
+    InstitutionType institutionTypeRootTrans;
+
     public Long getId() {
         return id;
+    }
+
+    public InstitutionType getInstitutionTypeRootTrans() {
+        if (getInstitutionType() == null) {
+            institutionTypeRootTrans = InstitutionType.Other;
+        }
+        switch (getInstitutionType()) {
+            case MOH_Office:
+            case Regional_Department_of_Health_Department:
+            case Provincial_Department_of_Health_Services:
+                institutionTypeRootTrans = InstitutionType.MOH_Office;
+                break;
+            default:
+                institutionTypeRootTrans = InstitutionType.Hospital;
+        }
+        return institutionTypeRootTrans;
     }
 
     public void setId(Long id) {
@@ -149,11 +169,11 @@ public class Institution implements Serializable {
         if (institutionType != null) {
             to += institutionType.getLabel();
         }
-        if(province!=null){
-            to+= province.getId();
+        if (province != null) {
+            to += province.getId();
         }
-        if(district!=null){
-            to+=district.getId();
+        if (district != null) {
+            to += district.getId();
         }
         return to;
     }

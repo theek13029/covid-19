@@ -836,15 +836,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
     }
 
     public ClientEncounterComponentFormSet createNewCaseEnrollmentFormsetToDataEntry(DesignComponentFormSet dfs) {
-
-        InstitutionType insType;
-        if (getWebUserController().getLoggedUser() != null
-                && getWebUserController().getLoggedUser().getInstitution() != null) {
-            insType = getWebUserController().getLoggedUser().getInstitution().getInstitutionType();
-        } else {
-            insType = null;
-        }
-
         if (clientController.getSelected() == null) {
             JsfUtil.addErrorMessage("Please select a client");
             return null;
@@ -1032,13 +1023,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         if (clientController.getSelected() == null) {
             JsfUtil.addErrorMessage("Please select a client");
             return null;
-        }
-        InstitutionType insType;
-        if (getWebUserController().getLoggedUser() != null
-                && getWebUserController().getLoggedUser().getInstitution() != null) {
-            insType = getWebUserController().getLoggedUser().getInstitution().getInstitutionType();
-        } else {
-            insType = null;
         }
         DataFormset fs = new DataFormset();
         Map<String, ClientEncounterComponentItem> mapOfClientValues = getClientValues(clientController.getSelected());
@@ -2649,7 +2633,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         if (insType == null) {
             if (getWebUserController().getLoggedUser() != null
                     && getWebUserController().getLoggedUser().getInstitution() != null) {
-                insType = getWebUserController().getLoggedUser().getInstitution().getInstitutionType();
+                insType = getWebUserController().getLoggedUser().getInstitution().getInstitutionTypeRootTrans();
             } else {
                 insType = null;
             }

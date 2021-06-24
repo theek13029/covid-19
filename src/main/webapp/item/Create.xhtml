@@ -28,6 +28,7 @@
                                 <p:outputLabel value="Institution Type" for="insType" />
                                 <p:selectOneMenu
                                     id="insType" value="#{itemController.selected.insType}" >
+                                    <f:selectItem itemLabel="No Type" ></f:selectItem>
                                     <f:selectItems value="#{commonController.institutionTypes}"
                                                    var="insTypes"
                                                    itemValue="#{insTypes}"

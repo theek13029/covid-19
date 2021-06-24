@@ -8,6 +8,7 @@ public enum InstitutionType {
     Ministry_of_Health("Ministry of Health"),   
     Provincial_Department_of_Health_Services("Provincial Department of Health Services"),
     Regional_Department_of_Health_Department("Regional Department of Health Department"),
+    Hospital("Hospital"),
     National_Hospital("National Hospital"),
     Teaching_Hospital("Teaching Hospital"),
     District_General_Hospital("District General Hospital"),
