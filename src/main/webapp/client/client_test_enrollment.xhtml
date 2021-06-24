@@ -13,26 +13,24 @@
                                              style="float: left;"
                                              action="#{clientController.saveClientAndTestEnrollment()}" value="Save"></p:commandButton>
                         </h5>
-                        <div class="card-body m0 p0">
-                            <div class="form-row m0 p0">
-                                <div class="form-group col-md-6 m0 p0">
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
                                     <p:outputLabel  class="form-control border-0" value="Test Number"></p:outputLabel>
                                     <p:inputText class="form-control " value="#{clientEncounterComponentFormSetController.selected.encounter.encounterNumber}">
                                         <f:ajax event="blur" execute="@this" listener="#{encounterController.save(clientEncounterComponentFormSetController.selected.encounter.encounterNumber)}"></f:ajax>
                                     </p:inputText>
                                 </div>
-                                <div class="form-group col-md-6 m0 p0">
+                                <div class="form-group col-md-3">
                                     <p:outputLabel  class="form-control border-0" value="Lab"></p:outputLabel>
-                                    <div class="form-control border-0">
-                                        <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
-                                                        inputStyleClass="autocomplete"
+                                        <p:autoComplete inputStyleClass="autocomplete" class="form-control"
                                                         value="#{clientEncounterComponentFormSetController.selected.encounter.referalInstitution}"
                                                         forceSelection="true" 
                                                         completeMethod="#{institutionController.completeLab}" 
                                                         var="l" itemLabel="#{l.name}" itemValue="#{l}">
                                             <f:ajax event="blur" execute="@this" listener="#{encounterController.save(clientEncounterComponentFormSetController.selected.encounter.encounterNumber)}"></f:ajax>
                                         </p:autoComplete>
-                                    </div>
+                                    
                                 </div>
                             </div>
                             <div class="form-row">
@@ -40,13 +38,11 @@
                                     <p:outputLabel value="Name:" for="name" />
                                     <p:inputText autocomplete="off" class="form-control" tabindex="1" id="name" required="true" value="#{clientController.selected.person.name}" title="Name" />
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <p:outputLabel value="PHN No.:" for="phn" />
                                     <p:inputText id="phn" autocomplete="off" class="form-control" value="#{clientController.selected.phn}" title="Phn" placeholder="New PHN"></p:inputText>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
                                     <p:inputText id="nic" class="form-control" tabindex="2"  autocomplete="off" value="#{clientController.selected.person.nic}" title="Nic" validatorMessage="Please check the number">
                                         <!--<f:validateRegex pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})?$" ></f:validateRegex>-->
@@ -55,6 +51,8 @@
                                                 execute="@this"/>
                                     </p:inputText>
                                 </div>
+                            </div>
+                            <div class="form-row">                                
                                 <div class="form-group col-md-3">
                                     <p:outputLabel value="Gender:" for="sex" />
                                     <div class="form-control border-0">
@@ -80,19 +78,6 @@
                                         </h:panelGroup>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <p:outputLabel value="Current Residential Address:" for="address" />
-                                    <p:inputText tabindex="3" class="form-control"
-                                                 id="address" required="true" value="#{clientController.selected.person.address}"
-                                                 title="Address ****" />
-                                    <p:commandLink id="lnkLastAddress"
-                                                   style="float: right;"
-                                                   action="#{clientController.addLastAddress()}" process="lnkLastAddress" update="address" >
-                                        <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
-                                    </p:commandLink>
-                                </div>
                                 <div class="form-group col-md-6">
                                     <p:outputLabel value="Citizenship:" for="citizenship" />
                                     <div class="form-control border-0">
@@ -104,6 +89,17 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
+                                    <p:outputLabel value="Current Residential Address:" for="address" />
+                                    <p:inputText tabindex="3" class="form-control withicon"
+                                                 id="address" required="true" value="#{clientController.selected.person.address}"
+                                                 title="Address ****" />
+                                    <p:commandLink id="lnkLastAddress"
+                                                   style="float: right;"
+                                                   action="#{clientController.addLastAddress()}" process="lnkLastAddress" update="address" >
+                                        <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
+                                    </p:commandLink>
+                                </div>
+                                <div class="form-group col-md-3">
                                     <p:outputLabel value="Primary Contact Number :" for="phone1" />
                                     <div class="form-control border-0">
                                         <p:inputText tabindex="4" class="form-control" id="phone1" required="true" autocomplete="off" value="#{clientController.selected.person.phone1}" title="Mobile" validatorMessage="Please check the number">
@@ -113,13 +109,14 @@
                                         </p:commandLink>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <p:outputLabel value="Secondary Contact Number :" for="phone2" />
                                     <p:inputText id="phone2" class="form-control" autocomplete="off" value="#{clientController.selected.person.phone2}" title="Resident" validatorMessage="Please check the number">
                                         <!--<f:validateRegex pattern="^((?:0|94|\+94|0094)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|91)(0|2|3|4|5|7|9)|7(0|1|2|5|6|7|8)\d)\d{6})?$" ></f:validateRegex>-->
                                     </p:inputText>
-                                </div>
+                                </div>                                
                             </div>
+                            
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <p:outputLabel value="GN Area:" for="gn" />
