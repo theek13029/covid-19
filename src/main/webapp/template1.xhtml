@@ -36,10 +36,10 @@
                                             <h:graphicImage style="float: left;" library="image" name="sllogo.png"></h:graphicImage> 
                                             <h5>National COVID-19 Information System</h5>
                                         </div>
-                                        <div class="user_details col-sm-4 col-lg-4"  style="float: right;" >
-                                            <h:form>
-                                                <p:outputLabel class="name_title" value="#{webUserController.loggedUser.person.nameWithTitle}"></p:outputLabel>
-                                                <p:commandLink  class="name_title" action="#{webUserController.logOut()}" ajax="false" value="Logout" />
+                                        <div class="user_details col-sm-4 col-lg-4">
+                                            <h:form class="form">
+                                                <p:outputLabel class="name-title" value="#{webUserController.loggedUser.person.nameWithTitle}"></p:outputLabel>
+                                                <p:commandLink  class="btn btn-primary btn-sm" action="#{webUserController.logOut()}" ajax="false" value="Logout" />
                                             </h:form>                                              
                                         </div>
                                     </div>  
