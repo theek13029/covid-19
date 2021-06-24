@@ -8,8 +8,7 @@
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <body>
-
-        <ui:composition template="/template.xhtml">
+        <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
@@ -27,11 +26,8 @@
 
                             <p:spacer ></p:spacer>
                             <p:commandButton ajax="false" value="Process" action="#{clientController.fillTestEnrollmentToMark()}" ></p:commandButton>
-
-
                         </p:panelGrid>
                     </h:form>
-
 
                     <h:form>
                         <p:commandButton ajax="false" value="Download">
@@ -90,9 +86,6 @@
                             </p:column>
                         </p:dataTable>
                     </h:form>
-
-
-
                 </p:panelGrid>
             </ui:define>
         </ui:composition>

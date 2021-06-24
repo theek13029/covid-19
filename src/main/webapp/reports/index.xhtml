@@ -12,123 +12,114 @@
     </h:head>
     <h:body>
 
-        <ui:composition template="/template.xhtml">
+        <ui:composition template="/template1.xhtml">
             <ui:define name="content">
-
-
-                <p:panelGrid columns="2" style="width: 100%;" styleClass="alignTop">
-                    <f:facet name="header" >
+                <div class="card">
+                    <div class="card-header">
                         <h:outputLabel value="Reports" ></h:outputLabel>
-                    </f:facet>
-                    <h:form>
-                        <p:accordionPanel style="width: 24rem;" activeIndex="#{webUserController.reportTabIndex}"
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h:form class="form">
+                                <p:accordionPanel activeIndex="#{webUserController.reportTabIndex}">
+                                    <p:ajax event="tabChange" update="@this" />
+                                    <p:tab title="Excel Templates"  >
+                                        <h:panelGrid columns="1" >
+                                            <p:commandButton value="MOH Summery"   style="width:20em;margin:auto;"
+                                                             action="#{reportController.toInstitutionMonthlySummeries()}"
+                                                             ajax="false"></p:commandButton>
 
-                                          >
+                                            <p:commandButton value="Consolidated Summeries"   style="width:20em;margin:auto;"
+                                                             action="#{reportController.toConsolidateSummeries()}"
+                                                             ajax="false"></p:commandButton>
 
-                            <p:ajax event="tabChange" update="@this" />
-                            <p:tab title="Excel Templates"  >
-                                <h:panelGrid columns="1" >
-                                    <p:commandButton value="MOH Summery"   style="width:20em;margin:auto;"
-                                                     action="#{reportController.toInstitutionMonthlySummeries()}"
-                                                     ajax="false"></p:commandButton>
+                                            <p:commandButton value="My Summeries" rendered="false"   style="width:20em;margin:auto;"
+                                                             action="#{reportController.toViewMySummeries()}"
+                                                             ajax="false"></p:commandButton>
 
-                                    <p:commandButton value="Consolidated Summeries"   style="width:20em;margin:auto;"
-                                                     action="#{reportController.toConsolidateSummeries()}"
-                                                     ajax="false"></p:commandButton>
+                                        </h:panelGrid>
+                                    </p:tab>
 
-                                    <p:commandButton value="My Summeries" rendered="false"   style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewMySummeries()}"
-                                                     ajax="false"></p:commandButton>
+                                    <p:tab title="Counts"  >
+                                        <h:panelGrid columns="1" >
+                                            <p:outputLabel value="Episodes" ></p:outputLabel>
+                                            <p:commandButton value="MOH-vice"   style="width:20em;margin:auto;"
+                                                             action="#{reportController.toViewClinicVisitsByInstitution()}"
+                                                             ajax="false"></p:commandButton>
+                                            <p:commandButton value="District-vice" style="width:20em;margin:auto;"
+                                                             action="#{reportController.toViewClientRegistrationsByDistrict()}"
+                                                             rendered="#{webUserController.hasPrivilege('System_Administration')}"
+                                                             ajax="false"></p:commandButton>
+                                            <p:commandButton value="Province-vice" style="width:20em;margin:auto;"
+                                                             action="#{reportController.toViewClientRegistrationsByProvince()}"
+                                                             rendered="#{webUserController.hasPrivilege('System_Administration')}"
+                                                             ajax="false"></p:commandButton>
+                                            <p:commandButton value="By Day"   style="width:20em;margin:auto;"
+                                                             action="#{reportController.toViewDailyClinicsVisitCounts()}"
+                                                             ajax="false"></p:commandButton>
+                                            <hr/>
+                                            <p:outputLabel value="Registrations" ></p:outputLabel>
+                                            <p:commandButton value="Institution-vice"   style="width:20em;margin:auto;"
+                                                             action="#{reportController.toViewClientRegistrationsByInstitution()}"
+                                                             ajax="false"></p:commandButton>
+                                            <p:commandButton value="District-vice" style="width:20em;margin:auto;"
+                                                             action="#{reportController.toViewClientRegistrationsByDistrict()}"
+                                                             rendered="#{webUserController.hasPrivilege('System_Administration')}"
+                                                             ajax="false"></p:commandButton>
+                                            <p:commandButton value="Province-vice" style="width:20em;margin:auto;"
+                                                             action="#{reportController.toViewClientRegistrationsByProvince()}"
+                                                             rendered="#{webUserController.hasPrivilege('System_Administration')}"
+                                                             ajax="false"></p:commandButton>
+                                            <p:commandButton value="By Day"   style="width:20em;margin:auto;"
+                                                             action="#{reportController.toViewDailyClinicsRegistrationCounts()}"
+                                                             ajax="false"></p:commandButton>
+                                        </h:panelGrid>
+                                    </p:tab>
 
+                                    <p:tab title="Lists" >
 
-                                </h:panelGrid>
-                            </p:tab>
+                                        <h:panelGrid columns="1" >
+                                            <p:commandButton value="Registrations"   style="width:20em;margin:auto;"
+                                                             action="#{reportController.toViewClientRegistrations()}"
+                                                             ajax="false"></p:commandButton>
+                                            <p:commandButton value="Episodes"   style="width:20em;margin:auto;"
+                                                             action="#{reportController.toViewClinicVisits()}"
+                                                             ajax="false"></p:commandButton>
 
-                            <p:tab title="Counts"  >
-                                <h:panelGrid columns="1" >
-                                    <p:outputLabel value="Episodes" ></p:outputLabel>
-                                    <p:commandButton value="MOH-vice"   style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewClinicVisitsByInstitution()}"
-                                                     ajax="false"></p:commandButton>
-                                    <p:commandButton value="District-vice" style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewClientRegistrationsByDistrict()}"
-                                                     rendered="#{webUserController.hasPrivilege('System_Administration')}"
-                                                     ajax="false"></p:commandButton>
-                                    <p:commandButton value="Province-vice" style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewClientRegistrationsByProvince()}"
-                                                     rendered="#{webUserController.hasPrivilege('System_Administration')}"
-                                                     ajax="false"></p:commandButton>
-                                    <p:commandButton value="By Day"   style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewDailyClinicsVisitCounts()}"
-                                                     ajax="false"></p:commandButton>
-                                    <hr/>
-                                    <p:outputLabel value="Registrations" ></p:outputLabel>
-                                    <p:commandButton value="Institution-vice"   style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewClientRegistrationsByInstitution()}"
-                                                     ajax="false"></p:commandButton>
-                                    <p:commandButton value="District-vice" style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewClientRegistrationsByDistrict()}"
-                                                     rendered="#{webUserController.hasPrivilege('System_Administration')}"
-                                                     ajax="false"></p:commandButton>
-                                    <p:commandButton value="Province-vice" style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewClientRegistrationsByProvince()}"
-                                                     rendered="#{webUserController.hasPrivilege('System_Administration')}"
-                                                     ajax="false"></p:commandButton>
-                                    <p:commandButton value="By Day"   style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewDailyClinicsRegistrationCounts()}"
-                                                     ajax="false"></p:commandButton>
-                                </h:panelGrid>
-                            </p:tab>
+                                            <p:commandButton value="Episode Data"   style="width:20em;margin:auto;"
+                                                             action="#{reportController.toViewDataForms()}"
+                                                             ajax="false"></p:commandButton>
 
-                            <p:tab title="Lists" >
-
-                                <h:panelGrid columns="1" >
-                                    <p:commandButton value="Registrations"   style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewClientRegistrations()}"
-                                                     ajax="false"></p:commandButton>
-                                    <p:commandButton value="Episodes"   style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewClinicVisits()}"
-                                                     ajax="false"></p:commandButton>
-
-                                    <p:commandButton value="Episode Data"   style="width:20em;margin:auto;"
-                                                     action="#{reportController.toViewDataForms()}"
-                                                     ajax="false"></p:commandButton>
-
-                                </h:panelGrid>
+                                        </h:panelGrid>
 
 
-                            </p:tab>
+                                    </p:tab>
 
-                            <p:tab title="Data" >
-                                <h:panelGrid columns="1" >
+                                    <p:tab title="Data" >
+                                        <h:panelGrid columns="1" >
 
 
-                                    <p:commandButton value="Clinical Data"   style="width:20em;margin:auto;"
-                                                     action="#{reportController.toSingleVariableClinicalData()}"
-                                                     ajax="false"></p:commandButton>
+                                            <p:commandButton value="Clinical Data"   style="width:20em;margin:auto;"
+                                                             action="#{reportController.toSingleVariableClinicalData()}"
+                                                             ajax="false"></p:commandButton>
 
-                                </h:panelGrid>
+                                        </h:panelGrid>
 
 
 
-                            </p:tab>
+                                    </p:tab>
 
-                        </p:accordionPanel>
-                    </h:form>
-                    <p:panel style="width: calc(100vw - 28rem);">
-                        <ui:insert name="reports">
+                                </p:accordionPanel>
+                            </h:form>
+                        </div>
+                        <div class="col-md-8">
+                            <ui:insert name="reports">
 
-                        </ui:insert>
-                    </p:panel>
-
-                </p:panelGrid>
-
-
-
-
+                            </ui:insert>
+                        </div>
+                    </div>
+                </div>
             </ui:define>
-
         </ui:composition>
-
     </h:body>
 </html>

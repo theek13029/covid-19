@@ -9,12 +9,12 @@
 
     <body>
 
-        <ui:composition template="/template1.xhtml">
+        <ui:composition template="/template.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Confirm Test Results" ></p:outputLabel>
+                        <p:outputLabel value="Receive Selected Samples" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
@@ -32,10 +32,10 @@
                             </p:autoComplete>
 
                             <p:commandButton ajax="false" value="Generate Excel">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
+                                <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_as_received" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{clientController.toConfirmResults()}" ></p:commandButton>
+                                             action="#{clientController.toLabReceiveSelected()}" ></p:commandButton>
 
 
                         </p:panelGrid>
@@ -45,12 +45,12 @@
                     <h:form>
 
 
-                        <p:commandButton value="CONFIRM SELECTED" ajax="false" 
-                                         action="#{clientController.confirmSelectedResults()}" ></p:commandButton>
+                        <p:commandButton value="RECEIVE SELECTED" ajax="false" 
+                                         action="#{clientController.markSelectedAsReceivedResults()}" ></p:commandButton>
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToConfirm}" 
+                                         <p:dataTable id="tbl" value="#{clientController.listedToReceive}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
-                                     selection="#{clientController.selectedToConfirm}">
+                                     selection="#{clientController.selectedToReceive}">
                             <p:column selectionMode="multiple" ></p:column>
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
@@ -72,15 +72,6 @@
                                     <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>
-                            </p:column>
-                            <p:column headerText="Result" >
-                                <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}"  >
-                                    <f:selectItem itemLabel="Select Result" ></f:selectItem>
-                                    <f:selectItems value="#{itemApplicationController.pcrResults}"
-                                                   var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
-                                    <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounterResults(c)}" >
-                                    </p:ajax>
-                                </p:selectOneMenu>
                             </p:column>
                         </p:dataTable>
                     </h:form>

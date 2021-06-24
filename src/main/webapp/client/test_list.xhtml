@@ -9,7 +9,7 @@
 
     <body>
 
-        <ui:composition template="/template.xhtml">
+        <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
@@ -53,28 +53,30 @@
                         <p:dataTable id="tbl" value="#{clientController.testList}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
-                            <p:column rendered="false" headerText="No"  sortBy="#{c.encounterNumber}">
-                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
+                            <p:column rendered="true" headerText="No" width="80"  sortBy="#{c.encounterNumber}">
+                                <p:outputLabel value="#{c.id}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Serial" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="MOH"  sortBy="#{c.client.person.mohArea.name}"
-                                      filterBy="" filterMatchMode="contains">
+                            <p:column headerText="MOH"  sortBy="#{c.client.person.mohArea.name}" 
+                                      filterBy="#{c.client.person.mohArea.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.mohArea.name}" ></p:outputLabel>
                             </p:column>
-                            
+
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age"  sortBy="#{c.client.person.age}"
+                            <p:column headerText="Age"  sortBy="#{c.client.person.age}" width="60"
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Gender"  sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
+                            <p:column headerText="Gender"
+                                      width="80"
+                                      sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-                            
+
                             <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
                             </p:column>
@@ -92,24 +94,33 @@
                                 <p:outputLabel value="#{c.client.person.district.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="PHI"  sortBy="#{c.client.person.phiArea.name}"
-                                      filterBy="" filterMatchMode="contains">
+                                      filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.phiArea.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="GN Area"  sortBy="#{c.client.person.gnArea.name}"
-                                      filterBy="" filterMatchMode="contains">
+                                      filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}"
+                                      filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Actions" exportable="false" >
-                                <p:commandButton ajax="false" value="Convert to a case" action="#{clientController.toNewCaseEnrollmentFromEncounter()}" >
+                                <p:commandLink ajax="false" value="Convert to a case" action="#{clientController.toNewCaseEnrollmentFromEncounter()}" >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                     </f:setPropertyActionListener>
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="Delete"  action="#{clientController.toDeleteTestEncounter()}" 
+                                </p:commandLink>
+                                <p:outputLabel value=" | " ></p:outputLabel>
+                                <p:commandLink value="Edit" action="#{clientController.toFromFromEncounter()}" ajax="false" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" ></f:setPropertyActionListener>
+                                </p:commandLink>
+                                <p:outputLabel value=" | " ></p:outputLabel>
+                                <p:commandLink ajax="false" value="Delete"  action="#{clientController.toDeleteTestEncounter()}" 
                                                  onclick="return confirm('Are you sure?')" 
                                                  >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                     </f:setPropertyActionListener>
-                                </p:commandButton>
+                                </p:commandLink>
                             </p:column>
 
                         </p:dataTable>

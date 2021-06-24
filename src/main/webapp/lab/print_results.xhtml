@@ -9,7 +9,7 @@
 
     <body>
 
-        <ui:composition template="/template.xhtml">
+        <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
@@ -43,7 +43,7 @@
                         
                         <p:commandButton value="PRINT SELECTED" ajax="false" 
                                          action="#{clientController.toLabPrintSelected()}" 
-                                         target="_blank"></p:commandButton>
+                                          onclick="form.target='_blank'"></p:commandButton>
 
 
                         <p:dataTable id="tbl" value="#{clientController.listedToPrint}" 
@@ -70,9 +70,9 @@
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="CT"  sortBy="#{c.ctValue}"
-                                      filterBy="#{c.ctValue}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.ctValue}" ></p:outputLabel>
+                            <p:column headerText="CT"  sortBy="#{c.ctValueStr}"
+                                      filterBy="#{c.ctValueStr}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.ctValueStr}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
                                       filterBy="#{c.pcrResult.name}" filterMatchMode="contains">

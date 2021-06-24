@@ -38,6 +38,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.enums.SelectionDataType;
 
 /**
@@ -59,6 +60,8 @@ public class Item implements Serializable {
     private Long id;
     @Enumerated(EnumType.STRING)
     ItemType itemType;
+    @Enumerated(EnumType.STRING)
+    private InstitutionType insType;
     String name;
     private String displayName;
     private String code;
@@ -495,6 +498,14 @@ public class Item implements Serializable {
 
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
+    }
+
+    public InstitutionType getInsType() {
+        return insType;
+    }
+
+    public void setInsType(InstitutionType insType) {
+        this.insType = insType;
     }
     
     

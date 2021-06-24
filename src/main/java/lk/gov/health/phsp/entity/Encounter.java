@@ -115,6 +115,7 @@ public class Encounter implements Serializable {
     private WebUser resultNotedBy;
 
     private Double ctValue;
+    private String ctValueStr;
     @ManyToOne
     private Item pcrResult;
     private String resultComments;
@@ -703,4 +704,14 @@ public class Encounter implements Serializable {
         this.resultPrintedBy = resultPrintedBy;
     }
 
+    public String getCtValueStr() {
+        return ctValueStr;
+    }
+
+    public void setCtValueStr(String ctValueStr) {
+        this.ctValueStr = ctValueStr;
+    }
+
+    
+    
 }

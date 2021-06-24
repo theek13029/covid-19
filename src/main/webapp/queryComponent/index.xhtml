@@ -9,97 +9,90 @@
 
     <h:body>
 
-        <ui:composition template="/template.xhtml">
+        <ui:composition template="/template1.xhtml">
 
             <ui:define name="content">
+                <div class="card">
+                    <div class="card-header" >
+                        <p:outputLabel value="Manage Analysis">
+                        </p:outputLabel>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h:form>
+                                <p:panelGrid columns="1" styleClass="fullWidth">
+                                    <p:commandButton value="New Excel Template" styleClass="fullWidth"
+                                                     action="#{queryComponentController.toAddExcelTemplates()}"
+                                                     ajax="false" ></p:commandButton>
 
-                <f:view>
-
-                    <p:panelGrid columns="2" styleClass="alignTop fullWidth" columnClasses="width80percent width20percent">
-                        <f:facet name="header" >
-                            <p:outputLabel value="Manage Analysis">
-                            </p:outputLabel>
-                        </f:facet>
-                        <h:form>
-                            <p:panelGrid columns="1" styleClass="fullWidth">
-                                <p:commandButton value="New Excel Template" styleClass="fullWidth"
-
-                                                 action="#{queryComponentController.toAddExcelTemplates()}"
-                                                 ajax="false" ></p:commandButton>
-
-                                <p:commandButton value="List Excel Templates" styleClass="fullWidth"
-
-                                                 action="#{queryComponentController.toManageExcelTemplates()}"
-                                                 ajax="false" ></p:commandButton>
+                                    <p:commandButton value="List Excel Templates" styleClass="fullWidth"
+                                                     action="#{queryComponentController.toManageExcelTemplates()}"
+                                                     ajax="false" ></p:commandButton>
 
 
-                                <p:separator ></p:separator>
+                                    <p:separator ></p:separator>
 
-                                <p:commandButton value="New Count" styleClass="fullWidth"
+                                    <p:commandButton value="New Count" styleClass="fullWidth"
 
-                                                 action="#{queryComponentController.toAddCount()}"
-                                                 ajax="false" ></p:commandButton>
+                                                     action="#{queryComponentController.toAddCount()}"
+                                                     ajax="false" ></p:commandButton>
 
-                                <p:commandButton value="List Counts" styleClass="fullWidth"
+                                    <p:commandButton value="List Counts" styleClass="fullWidth"
 
-                                                 action="#{queryComponentController.toManageCounts()}"
-                                                 ajax="false" ></p:commandButton>
-
-
-                                <p:separator ></p:separator>
-
-                                <p:commandButton value="New Indicator" styleClass="fullWidth"
-
-                                                 action="#{queryComponentController.toAddIndicator()}"
-                                                 ajax="false" ></p:commandButton>
-
-                                <p:commandButton value="List Indicators" styleClass="fullWidth"
-
-                                                 action="#{queryComponentController.toManageIndicators()}"
-                                                 ajax="false" ></p:commandButton>
-                                
-                                <p:separator ></p:separator>
-
-                                <p:commandButton value="New Population" styleClass="fullWidth"
-                                                 action="#{queryComponentController.toAddPopulation()}"
-                                                 ajax="false" ></p:commandButton>
-
-                                <p:commandButton value="List Populations" styleClass="fullWidth"
-                                                 action="#{queryComponentController.toManagePopulations()}"
-                                                 ajax="false" ></p:commandButton>
+                                                     action="#{queryComponentController.toManageCounts()}"
+                                                     ajax="false" ></p:commandButton>
 
 
-                                <p:separator ></p:separator>
-                                <p:commandButton value="Manage Queries" styleClass="fullWidth"
-                                                 action="/queryComponent/excel"
+                                    <p:separator ></p:separator>
 
-                                                 ajax="false" ></p:commandButton>
+                                    <p:commandButton value="New Indicator" styleClass="fullWidth"
 
-                                <p:commandButton value="List All" styleClass="fullWidth"
-                                                 action="/queryComponent/category"
+                                                     action="#{queryComponentController.toAddIndicator()}"
+                                                     ajax="false" ></p:commandButton>
 
-                                                 ajax="false" ></p:commandButton>
+                                    <p:commandButton value="List Indicators" styleClass="fullWidth"
 
-                                <p:commandButton ajax="false" value="Reload"  styleClass="fullWidth"
-                                                 action="#{applicationController.reloadQueryComponents()}"
-                                                 ></p:commandButton>
-                            </p:panelGrid>
-                        </h:form>
-                        <ui:insert name="analysis" >
-                            <p:panel header="Manage Analysis" styleClass="fullWidth" >
+                                                     action="#{queryComponentController.toManageIndicators()}"
+                                                     ajax="false" ></p:commandButton>
 
-                            </p:panel>
-                        </ui:insert>
+                                    <p:separator ></p:separator>
 
-                    </p:panelGrid>
+                                    <p:commandButton value="New Population" styleClass="fullWidth"
+                                                     action="#{queryComponentController.toAddPopulation()}"
+                                                     ajax="false" ></p:commandButton>
+
+                                    <p:commandButton value="List Populations" styleClass="fullWidth"
+                                                     action="#{queryComponentController.toManagePopulations()}"
+                                                     ajax="false" ></p:commandButton>
 
 
-                </f:view>
+                                    <p:separator ></p:separator>
+                                    <p:commandButton value="Manage Queries" styleClass="fullWidth"
+                                                     action="/queryComponent/excel"
 
-              
+                                                     ajax="false" ></p:commandButton>
 
+                                    <p:commandButton value="List All" styleClass="fullWidth"
+                                                     action="/queryComponent/category"
+
+                                                     ajax="false" ></p:commandButton>
+
+                                    <p:commandButton ajax="false" value="Reload"  styleClass="fullWidth"
+                                                     action="#{applicationController.reloadQueryComponents()}"
+                                                     ></p:commandButton>
+                                </p:panelGrid>
+                            </h:form>
+                        </div>
+                        <div class="col-md-8">
+                            <ui:insert name="analysis" >
+                                <p:panel header="Manage Analysis" styleClass="fullWidth" >
+
+                                </p:panel>
+                            </ui:insert>
+                        </div>
+                    </div>
+                </div> 
             </ui:define>
-
         </ui:composition>
 
     </h:body>

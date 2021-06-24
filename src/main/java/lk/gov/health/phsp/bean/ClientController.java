@@ -484,10 +484,13 @@ public class ClientController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("rins", referingInstitution);
-        labOrderSummeries = new ArrayList<>();
-        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
         System.out.println("j = " + j);
         System.out.println("m = " + m);
+        System.out.println("getFromDate() = " + getFromDate());
+        System.out.println("getToDate() = " + getToDate());
+        System.out.println("referingInstitution = " + referingInstitution);
+        labOrderSummeries = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
         System.out.println("obs = " + obs.size());
         for (Object o : obs) {
             if (o instanceof InstitutionCount) {
@@ -733,6 +736,7 @@ public class ClientController implements Serializable {
             return;
         }
         String labApprovalSteps = preferenceController.findPreferanceValue("labApprovalSteps", webUserController.getLoggedUser().getInstitution());
+        
         switch (labApprovalSteps) {
             case "Entry":
                 se.setResultConfirmed(true);
@@ -746,6 +750,11 @@ public class ClientController implements Serializable {
                 se.setResultEntered(true);
                 se.setResultEnteredAt(new Date());
                 se.setResultEnteredBy(webUserController.getLoggedUser());
+                break;
+            default:
+                se.setResultConfirmed(true);
+                se.setResultConfirmedAt(new Date());
+                se.setResultConfirmedBy(webUserController.getLoggedUser());
         }
         encounterFacade.edit(se);
     }
@@ -778,6 +787,17 @@ public class ClientController implements Serializable {
         }
         selectedToConfirm = null;
         return toConfirmResults();
+    }
+
+    public String markSelectedAsReceivedResults() {
+        for (Encounter e : selectedToReceive) {
+            e.setReceivedAtLab(true);
+            e.setReceivedAtLabAt(new Date());
+            e.setReceivedAtLabBy(webUserController.getLoggedUser());
+            encounterFacade.edit(e);
+        }
+        selectedToReceive = null;
+        return toLabReceiveAll();
     }
 
     public String toLabPrintSelected() {
@@ -834,7 +854,9 @@ public class ClientController implements Serializable {
             html = html.replace("{pcr_result}", e.getPcrResult().getName());
         }
         html = html.replace("{pcr_ct}", e.getCtValue().toString());
-        html = html.replace("{pcr_comments}", e.getResultComments());
+        if (e.getResultComments() != null) {
+            html = html.replace("{pcr_comments}", e.getResultComments());
+        }
         return html;
     }
 
@@ -1128,6 +1150,8 @@ public class ClientController implements Serializable {
         }
 
         setSelected(selectedEncounter.getClient());
+        selected.getPerson().calAgeFromDob();
+
         clearRegisterNewExistsValues();
         selectedClientsClinics = null;
         selectedClientEncounters = null;
@@ -1156,7 +1180,6 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No Form");
             return "";
         }
-
     }
 
     public String toViewCorrectedDuplicates() {
@@ -3815,6 +3838,15 @@ public class ClientController implements Serializable {
                 institution = null;
                 institutionSelectable = true;
                 nationalLevel = false;
+                break;
+            case Lab_Consultant:
+            case Lab_Mlt:
+            case Lab_User:
+                institution = null;
+                institutionSelectable = true;
+                nationalLevel = true;
+                break;
+
         }
     }
 
@@ -4150,6 +4182,8 @@ public class ClientController implements Serializable {
     public Encounter getLastTest() {
         return lastTest;
     }
+    
+    
 
     public void setLastTest(Encounter lastTest) {
         this.lastTest = lastTest;

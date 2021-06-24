@@ -33,6 +33,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.ApplicationScoped;
 import lk.gov.health.phsp.entity.Item;
+import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.enums.ItemType;
 import lk.gov.health.phsp.facade.ItemFacade;
 
@@ -269,7 +270,6 @@ public class ItemApplicationController {
         return item;
     }
 
-    
     public List<Item> findItemsByCode(String code) {
         List<Item> titems = new ArrayList<>();
         for (Item ti : getItems()) {
@@ -280,12 +280,27 @@ public class ItemApplicationController {
         return titems;
     }
 
-    
     public List<Item> findChildren(String code) {
         List<Item> tis = new ArrayList<>();
         for (Item ti : getItems()) {
             if (ti.getParent() != null && ti.getParent().getCode() != null && ti.getParent().getCode().equalsIgnoreCase(code)) {
                 tis.add(ti);
+            }
+        }
+        return tis;
+    }
+
+    public List<Item> findChildren(String code, InstitutionType insType) {
+        List<Item> tis = new ArrayList<>();
+        for (Item ti : getItems()) {
+            if (ti.getParent() != null && ti.getParent().getCode() != null && ti.getParent().getCode().equalsIgnoreCase(code)) {
+                if (ti.getInsType() != null) {
+                    if (insType.equals(ti.getInsType())) {
+                        tis.add(ti);
+                    }
+                } else {
+                    tis.add(ti);
+                }
             }
         }
         return tis;
@@ -354,7 +369,7 @@ public class ItemApplicationController {
         strengthUnits = null;
         durationUnits = null;
         issueUnits = null;
-        pcrResults=null;
+        pcrResults = null;
     }
 
     public List<ItemType> getUnitsTypes() {
@@ -401,7 +416,7 @@ public class ItemApplicationController {
         }
         return issueUnits;
     }
-    
+
     public List<Item> getPcrResults() {
         if (pcrResults == null) {
             pcrResults = findChildDictionaryItems("pcr_results");

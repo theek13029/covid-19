@@ -9,7 +9,7 @@
 
     <body>
 
-        <ui:composition template="/template.xhtml">
+        <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
@@ -49,10 +49,11 @@
                         <p:dataTable id="tbl" value="#{clientController.testList}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
-                            <p:column headerText="No"  sortBy="#{c.encounterNumber}" width="20">
+                            <p:column headerText="No"  sortBy="#{c.encounterNumber}" width="40">
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Serial" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.id}"  ></p:outputLabel>
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
@@ -73,14 +74,21 @@
                             </p:column>
                             
                             <p:column headerText="Ordered"  sortBy="#{c.createdAt}">
-                                <p:outputLabel value="#{c.createdAt}" >
+                                <p:outputLabel value="#{c.createdAt}"  >
                                     <f:convertDateTime pattern="dd MM yy hh:mm" ></f:convertDateTime>
+                                </p:outputLabel>
+                                <p:outputLabel value=" by "  >
+                                </p:outputLabel>
+                                <p:outputLabel value="#{c.createdBy.person.name}"  >
                                 </p:outputLabel>
                             </p:column>
                             <p:column headerText="Received"  sortBy="#{c.receivedAtLabAt}">
-                                <p:outputLabel value="#{c.receivedAtLabAt}" >
+                                <p:outputLabel value="Not yet received." rendered="#{c.receivedAtLabAt eq null}" >
+                                </p:outputLabel>
+                                <p:outputLabel value="#{c.receivedAtLabAt}"  rendered="#{c.receivedAtLabAt ne null}" >
                                     <f:convertDateTime pattern="dd MM yy hh:mm" ></f:convertDateTime>
                                 </p:outputLabel>
+                                <p:outputLabel value=" by #{c.receivedAtLabBy.person.name}"  rendered="#{c.receivedAtLabAt ne null}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Result Entered"  sortBy="#{c.resultEnteredAt}">
                                 <p:outputLabel value="#{c.resultEnteredAt}" >

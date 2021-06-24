@@ -45,12 +45,12 @@
                     <h:form>
 
 
-                        <p:commandButton value="CONFIRM SELECTED" ajax="false" 
-                                         action="#{clientController.confirmSelectedResults()}" ></p:commandButton>
+                        <p:commandButton value="Receive Selected" ajax="false" 
+                                         action="#{clientController.markSelectedAsReceivedResults()}" ></p:commandButton>
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToConfirm}" 
+                        <p:dataTable id="tbl" value="#{clientController.listedToReceive}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
-                                     selection="#{clientController.selectedToConfirm}">
+                                     selection="#{clientController.selectedToReceive}">
                             <p:column selectionMode="multiple" ></p:column>
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
@@ -66,21 +66,6 @@
                             </p:column>
                             <p:column headerText="Phone" >
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
-                            </p:column>
-                            <p:column id="result" headerText="CT" >
-                                <p:inputText id="txtCt" value="#{c.ctValue}" style="width: 5rem;" >
-                                    <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
-                                    </p:ajax>
-                                </p:inputText>
-                            </p:column>
-                            <p:column headerText="Result" >
-                                <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}"  >
-                                    <f:selectItem itemLabel="Select Result" ></f:selectItem>
-                                    <f:selectItems value="#{itemApplicationController.pcrResults}"
-                                                   var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
-                                    <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounterResults(c)}" >
-                                    </p:ajax>
-                                </p:selectOneMenu>
                             </p:column>
                         </p:dataTable>
                     </h:form>

@@ -43,6 +43,13 @@
                             </f:facet>
                             <h:outputText value="#{item.itemType.label}"/>
                         </p:column>
+                        
+                         <p:column filterBy="#{item.itemType.label}" filterMatchMode="contains" sortBy="#{item.itemType.label}">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleClinical.ListItemTitle_itemType}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.itemType.label}"/>
+                        </p:column>
 
                         <p:column  filterBy="#{item.name}" filterMatchMode="contains" sortBy="#{item.name}">
                             <f:facet name="header">
