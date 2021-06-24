@@ -36,22 +36,25 @@
                         <p:dataTable id="tbl" value="#{clientController.listedToReceive}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      rowStyleClass="#{c.resultPositive?'redRow':''}">
-                            <p:column headerText="Name" >
+                            <p:column headerText="Test No"  sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
+                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age" >
+                            <p:column headerText="Age"  sortBy="#{c.client.person.age}" filterBy="#{c.client.person.age}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Sex" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Address" >
+                            <p:column headerText="Address"  sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Phone" >
+                            <p:column headerText="Phone" sortBy="" filterBy="" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
-                            <p:column id="result" headerText="Result" >
+                            <p:column id="result" headerText="Result" sortBy="#{c.resultPositive}" >
                                 <p:outputLabel rendered="#{c.resultPositive ne null}" value="#{c.resultPositive?'Yes':'No'}" ></p:outputLabel>
                                 <p:outputLabel rendered="#{c.resultPositive eq null}" value="Not Available" ></p:outputLabel>
                             </p:column>
