@@ -1122,12 +1122,12 @@ public class ItemController implements Serializable {
         return itemApplicationController.findChildren(parent.getCode());
     }
 
-    public List<Item> findItemList(Item parent, InstitutionType insType) {
+    public List<Item> findItemList(Item parent, InstitutionType insType, boolean filterByInsType) {
         if (parent == null || parent.getCode() == null) {
             return new ArrayList<>();
         }
-        if (insType == null) {
-            return itemApplicationController.findChildren(parent.getCode());
+        if (insType != null && filterByInsType) {
+            return itemApplicationController.findChildren(parent.getCode(),insType);
         } else {
             return itemApplicationController.findChildren(parent.getCode());
         }
