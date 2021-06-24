@@ -177,3 +177,24 @@ footer b{
     float: right;
     padding-top: 20px;
 }
+
+.form-control{
+    padding: 0px;
+    height: calc(0.75rem + .75rem + 2px);
+}
+
+label{
+    margin-bottom: 0 !important;
+}
+
+.card-body{
+    padding-top: 5px;
+}
+
+.ui-selectonemenu{
+    width: 100%;
+}
+
+.form-control .withicon{
+    width: 90% !important;
+}

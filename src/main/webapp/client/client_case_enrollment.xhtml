@@ -23,13 +23,11 @@
                                     <p:outputLabel value="Name:" for="name" />
                                     <p:inputText autocomplete="off" class="form-control" tabindex="1" id="name" required="true" value="#{clientController.selected.person.name}" title="Name" />
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <p:outputLabel value="PHN No.:" for="phn" />  
                                     <p:inputText id="phn"  autocomplete="off" class="form-control" value="#{clientController.selected.phn}" title="Phn" placeholder="New PHN"/>
                                 </div>
-                            </div>
-                            <div class="form-row">                                 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
                                     <p:inputText id="nic" tabindex="2" class="form-control" autocomplete="off" value="#{clientController.selected.person.nic}" title="Nic" validatorMessage="Please check the number">
                                         <!--<f:validateRegex pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})?$" ></f:validateRegex>-->
@@ -38,6 +36,9 @@
                                                 execute="@this"/>
                                     </p:inputText>
                                 </div>
+                            </div>
+                            <div class="form-row">                                 
+
                                 <div class="form-group col-md-3">
                                     <p:outputLabel value="Gender:" for="sex" />
                                     <div class="form-control border-0">
@@ -74,12 +75,6 @@
                                         </h:panelGroup>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-row">                                 
-                                <div class="form-group col-md-6">
-                                    <p:outputLabel value="Current Residential Address:" for="address" />
-                                    <p:inputTextarea tabindex="3" id="address" required="true" class="form-control" rows="1" value="#{clientController.selected.person.address}" title="Address" />
-                                </div>
                                 <div class="form-group col-md-6">
                                     <p:outputLabel value="Citizenship:" for="citizenship" />
                                     <div class="form-control border-0">
@@ -88,10 +83,14 @@
                                                            itemValue="#{c}" ></f:selectItems>
                                         </p:selectOneMenu>
                                     </div>
-                                </div>                                
+                                </div> 
                             </div>
                             <div class="form-row">                                 
                                 <div class="form-group col-md-6">
+                                    <p:outputLabel value="Current Residential Address:" for="address" />
+                                    <p:inputTextarea tabindex="3" id="address" required="true" class="form-control" rows="1" value="#{clientController.selected.person.address}" title="Address" />
+                                </div>
+                                <div class="form-group col-md-3">
                                     <p:outputLabel value="Primary Contact Number :" for="phone1" />
                                     <p:inputText tabindex="4" id="phone1" class="form-control" required="true" autocomplete="off" value="#{clientController.selected.person.phone1}" title="Mobile" 
                                                  validatorMessage="Please check the number">
@@ -99,14 +98,15 @@
                                                                                                      ></f:validateRegex>-->
                                     </p:inputText>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <p:outputLabel value="Secondary Contact Number :" for="phone2" /> 
                                     <p:inputText id="phone2" class="form-control" autocomplete="off" value="#{clientController.selected.person.phone2}" title="Resident" 
                                                  validatorMessage="Please check the number">
                                         <!--<f:validateRegex pattern="^((?:0|94|\+94|0094)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|91)(0|2|3|4|5|7|9)|7(0|1|2|5|6|7|8)\d)\d{6})?$" ></f:validateRegex>-->
                                     </p:inputText>
-                                </div>
+                                </div>                            
                             </div>
+
                             <div class="form-row">                                 
                                 <div class="form-group col-md-4">
                                     <p:outputLabel value="GN Area:" for="gn" />
