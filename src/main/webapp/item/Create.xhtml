@@ -24,6 +24,15 @@
                                                    itemValue="#{itemTypes}"
                                                    itemLabel="#{itemTypes.label}"></f:selectItems>
                                 </p:selectOneMenu>
+                                
+                                <p:outputLabel value="Institution Type" for="insType" />
+                                <p:selectOneMenu
+                                    id="insType" value="#{itemController.selected.insType}" >
+                                    <f:selectItems value="#{commonController.institutionTypes}"
+                                                   var="insTypes"
+                                                   itemValue="#{insTypes}"
+                                                   itemLabel="#{insTypes.label}"></f:selectItems>
+                                </p:selectOneMenu>
 
                                 <p:outputLabel value="#{bundleClinical.EditItemLabel_name}" for="name" />
                                 <p:inputText autocomplete="off" id="name" value="#{itemController.selected.name}"
