@@ -356,7 +356,7 @@ public class ItemApplicationController {
         String j = "select i "
                 + "from Item i "
                 + "where i.retired=:ret "
-                + "order by i.name";
+                + "order by i.displayName, i.name";
         Map m = new HashMap();
         m.put("ret", false);
         return facade.findByJpql(j, m);
