@@ -842,28 +842,30 @@ public class ClientController implements Serializable {
         if (e.getClient().getPerson().getPhiArea() != null) {
             html = html.replace("{phi}", e.getClient().getPerson().getPhiArea().getName());
         }
-        
+
         //Institute Properties
         html = html.replace("{institute}", e.getInstitution().getName());
-        
+
         html = html.replace("{ref_institute_name}", e.getInstitution().getName());
         html = html.replace("{ref_institute_address}", e.getInstitution().getAddress());
         html = html.replace("{ref_institute_phone}", e.getInstitution().getPhone());
         html = html.replace("{ref_institute_fax}", e.getInstitution().getFax());
         html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
-        
-        Item test = itemController.findItemByCode("test_type");
-        ClientEncounterComponentItem testValueCi = e.getClientEncounterComponentItem(test);
-        if (testValueCi != null) {
-            Item testVal = testValueCi.getItemValue();
-            if (testVal != null) {
-                html = html.replace("{test}", testVal.getName());
-            }
-        }
+
+//        Item test = itemController.findItemByCode("test_type");
+//        ClientEncounterComponentItem testValueCi = e.getClientEncounterComponentItem(test);
+//        if (testValueCi != null) {
+//            Item testVal = testValueCi.getItemValue();
+//            if (testVal != null) {
+//                html = html.replace("{test}", testVal.getName());
+//            }
+//        }
         if (e.getPcrResult() != null) {
             html = html.replace("{pcr_result}", e.getPcrResult().getName());
         }
-        html = html.replace("{pcr_ct}", e.getCtValue().toString());
+        if (e.getCtValue() != null) {
+            html = html.replace("{pcr_ct}", e.getCtValue().toString());
+        }
         if (e.getResultComments() != null) {
             html = html.replace("{pcr_comments}", e.getResultComments());
         }
