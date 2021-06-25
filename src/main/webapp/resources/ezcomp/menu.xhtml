@@ -18,7 +18,9 @@
                     <p:menuitem ajax="false" value="Add New PCR/RAT Request" action="#{clientController.toAddNewClientForTestEnrollment()}"  />
                     <p:menuitem ajax="false" value="Register New Case" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
                     <p:menuitem ajax="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
+                    
                     <p:menuitem ajax="false" value="Test Result Entering" action="#{clientController.toMohEnterResults()}" />
+                    <p:menuitem ajax="false" value="Test Result Entering (Old)" action="#{clientController.toEnterTestResults()}" />
                     <p:menuitem ajax="false" value="Test Result Printing" action="#{clientController.toMohToSelectForPrinting()}" />
                 </p:submenu>
                 <p:submenu label="Lab"  rendered="#{webUserController.hasPrivilege('Lab_Management')}"  >

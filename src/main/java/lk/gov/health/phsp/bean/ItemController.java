@@ -32,6 +32,7 @@ import lk.gov.health.phsp.entity.DesignComponentFormSet;
 import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.entity.Relationship;
+import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.enums.ItemType;
 import lk.gov.health.phsp.enums.RelationshipType;
 import org.primefaces.model.UploadedFile;
@@ -140,7 +141,7 @@ public class ItemController implements Serializable {
         }
         return "/item/amp";
     }
-    
+
     public String toEditUnit() {
         if (unit == null) {
             JsfUtil.addErrorMessage("Nothing to Edit");
@@ -166,7 +167,7 @@ public class ItemController implements Serializable {
         amp.setItemType(ItemType.Amp);
         return "/item/amp";
     }
-    
+
     public String toAddUnit() {
         unit = new Item();
         return "/item/unit";
@@ -189,7 +190,7 @@ public class ItemController implements Serializable {
         amps = null;
         getAmps();
     }
-    
+
     public void saveUnit() {
         save(unit);
         units = null;
@@ -1115,18 +1116,21 @@ public class ItemController implements Serializable {
     }
 
     public List<Item> findItemList(Item parent) {
-//        String j = "select t from Item t where t.retired=false ";
-//        Map m = new HashMap();
-//
-//        if (parent != null) {
-//            m.put("p", parent);
-//            j += " and t.parent=:p ";
-//        }
-//        j += " order by t.name";
         if (parent == null || parent.getCode() == null) {
             return new ArrayList<>();
         }
         return itemApplicationController.findChildren(parent.getCode());
+    }
+
+    public List<Item> findItemList(Item parent, InstitutionType insType, boolean filterByInsType) {
+        if (parent == null || parent.getCode() == null) {
+            return new ArrayList<>();
+        }
+        if (insType != null && filterByInsType) {
+            return itemApplicationController.findChildren(parent.getCode(),insType);
+        } else {
+            return itemApplicationController.findChildren(parent.getCode());
+        }
     }
 
     public List<Item> findItemListByCode(String parentCode) {
@@ -1410,7 +1414,7 @@ public class ItemController implements Serializable {
     }
 
     public List<Item> getUnits() {
-        if(units==null){
+        if (units == null) {
             units = itemApplicationController.findUnits();
         }
         return units;
@@ -1427,8 +1431,6 @@ public class ItemController implements Serializable {
     public void setUnit(Item unit) {
         this.unit = unit;
     }
-    
-    
 
     @FacesConverter(forClass = Item.class)
     public static class ItemControllerConverter implements Converter {

@@ -68,7 +68,7 @@
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
                             <p:column id="result" headerText="CT" >
-                                <p:inputText id="txtCt" value="#{c.ctValue}" style="width: 5rem;" >
+                                <p:inputText id="txtCt" value="#{c.ctValueStr}" style="width: 5rem;" >
                                     <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>

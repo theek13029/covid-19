@@ -115,6 +115,8 @@ public class DesignComponentFormItem extends DesignComponent {
     @ManyToOne
     private Institution parentInstitutionOfAvailableInstitutions;
 
+    private boolean limiteToInsType;
+    
     
 
     public boolean isRequired() {
@@ -265,6 +267,8 @@ public class DesignComponentFormItem extends DesignComponent {
         return panelType;
     }
 
+    
+    
     public void setPanelType(PanelType panelType) {
         this.panelType = panelType;
     }
@@ -347,6 +351,14 @@ public class DesignComponentFormItem extends DesignComponent {
 
     public void setRenderType(RenderType renderType) {
         this.renderType = renderType;
+    }
+
+    public boolean isLimiteToInsType() {
+        return limiteToInsType;
+    }
+
+    public void setLimiteToInsType(boolean limiteToInsType) {
+        this.limiteToInsType = limiteToInsType;
     }
 
     

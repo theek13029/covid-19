@@ -146,6 +146,9 @@
                                                     <p:outputLabel value="#{ic.code}" ></p:outputLabel>
                                                 </p:column>
                                             </p:autoComplete>
+                                            
+                                             <p:outputLabel value="Category of Available Items:"  />
+                                             <p:selectBooleanCheckbox value="#{designComponentFormItemController.selected.limiteToInsType}" ></p:selectBooleanCheckbox>
 
                                             <p:outputLabel value="Display Last Results" for="displayLastResults" />
                                             <p:selectBooleanCheckbox id="displayLastResults" value="#{designComponentFormItemController.selected.displayLastResult}" ></p:selectBooleanCheckbox>

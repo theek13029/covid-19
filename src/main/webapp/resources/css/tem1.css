@@ -1,13 +1,13 @@
 
 .printOnly  {
-   display : none;
-   color: red;
+    display : none;
+    color: red;
 }
 
 @media print {
     .printOnly  {
-       display : block;
-       color: green;
+        display : block;
+        color: green;
     }
 }
 
@@ -20,7 +20,7 @@
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
-  font-family: 'Poppins',Arial,sans-serif;
+    font-family: 'Poppins',Arial,sans-serif;
 }
 
 
@@ -139,13 +139,13 @@
 
 
 .footer {
-   position: fixed;
-   left: 0;
-   bottom: 0;
-   width: 100%;
-   /*background-color: red;*/
-   color: white;
-   text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    /*background-color: red;*/
+    color: white;
+    text-align: center;
 }
 
 .pageRootPanel{
@@ -228,7 +228,7 @@ table.nopadding td {
 
 .yellowRow{
     background: yellow!important;
-    
+
 }
 
 .greenRow{
@@ -247,4 +247,12 @@ table.nopadding td {
 
 .labReportPage{
     page-break-after: always;
+}
+
+.autocomplete{
+    height: calc(0.75rem + .75rem + 2px)!important;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0px !important;
+    width: 100%
 }
