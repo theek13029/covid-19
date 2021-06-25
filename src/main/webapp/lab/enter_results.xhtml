@@ -49,7 +49,7 @@
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age" >
+                            <p:column headerText="Age" width="5rem;" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Sex" >
@@ -62,7 +62,7 @@
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
                             <p:column id="result" headerText="CT" >
-                                <p:inputText id="txtCt" value="#{c.ctValueStrStr}" style="width: 5rem;" >
+                                <p:inputText id="txtCt" value="#{c.ctValueStr}" style="width: 10rem;" >
                                     <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>

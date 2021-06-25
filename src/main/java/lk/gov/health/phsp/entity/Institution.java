@@ -129,6 +129,20 @@ public class Institution implements Serializable {
             case Provincial_Department_of_Health_Services:
                 institutionTypeRootTrans = InstitutionType.MOH_Office;
                 break;
+            case Base_Hospital:
+            case Cardiology_Clinic:
+            case Clinic:
+            case District_General_Hospital:
+            case Divisional_Hospital:
+            case Hospital:
+            case Lab:
+            case Medical_Clinic:
+            case Ministry_of_Health:
+            case National_Hospital:
+            case Other:
+            case Other_Clinic:
+            case Partner:
+                institutionTypeRootTrans = InstitutionType.Hospital;
             default:
                 institutionTypeRootTrans = InstitutionType.Hospital;
         }

@@ -736,7 +736,7 @@ public class ClientController implements Serializable {
             return;
         }
         String labApprovalSteps = preferenceController.findPreferanceValue("labApprovalSteps", webUserController.getLoggedUser().getInstitution());
-        
+
         switch (labApprovalSteps) {
             case "Entry":
                 se.setResultConfirmed(true);
@@ -829,10 +829,10 @@ public class ClientController implements Serializable {
         if (html == null || html.trim().equals("")) {
             return "No Report Format";
         }
+        //Patient Properties
         html = html.replace("{name}", e.getClient().getPerson().getName());
         html = html.replace("{age}", e.getClient().getPerson().getAge());
         html = html.replace("{sex}", e.getClient().getPerson().getSex().getName());
-        html = html.replace("{institute}", e.getInstitution().getName());
         html = html.replace("{address}", e.getClient().getPerson().getAddress());
         html = html.replace("{phone1}", e.getClient().getPerson().getAddress());
         html = html.replace("{phone2}", e.getClient().getPerson().getAddress());
@@ -842,18 +842,30 @@ public class ClientController implements Serializable {
         if (e.getClient().getPerson().getPhiArea() != null) {
             html = html.replace("{phi}", e.getClient().getPerson().getPhiArea().getName());
         }
-        Item test = itemController.findItemByCode("test_type");
-        ClientEncounterComponentItem testValueCi = e.getClientEncounterComponentItem(test);
-        if (testValueCi != null) {
-            Item testVal = testValueCi.getItemValue();
-            if (testVal != null) {
-                html = html.replace("{test}", testVal.getName());
-            }
-        }
+
+        //Institute Properties
+        html = html.replace("{institute}", e.getInstitution().getName());
+
+        html = html.replace("{ref_institute_name}", e.getInstitution().getName());
+        html = html.replace("{ref_institute_address}", e.getInstitution().getAddress());
+        html = html.replace("{ref_institute_phone}", e.getInstitution().getPhone());
+        html = html.replace("{ref_institute_fax}", e.getInstitution().getFax());
+        html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
+
+//        Item test = itemController.findItemByCode("test_type");
+//        ClientEncounterComponentItem testValueCi = e.getClientEncounterComponentItem(test);
+//        if (testValueCi != null) {
+//            Item testVal = testValueCi.getItemValue();
+//            if (testVal != null) {
+//                html = html.replace("{test}", testVal.getName());
+//            }
+//        }
         if (e.getPcrResult() != null) {
             html = html.replace("{pcr_result}", e.getPcrResult().getName());
         }
-        html = html.replace("{pcr_ct}", e.getCtValue().toString());
+        if (e.getCtValue() != null) {
+            html = html.replace("{pcr_ct}", e.getCtValue().toString());
+        }
         if (e.getResultComments() != null) {
             html = html.replace("{pcr_comments}", e.getResultComments());
         }
@@ -4182,8 +4194,6 @@ public class ClientController implements Serializable {
     public Encounter getLastTest() {
         return lastTest;
     }
-    
-    
 
     public void setLastTest(Encounter lastTest) {
         this.lastTest = lastTest;

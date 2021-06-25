@@ -114,15 +114,6 @@ body .ui-datatable .ui-datatable-data tr td {
     padding: 10px;
     float: left;
 }
-
-.user_details{
-    align-content: flex-end;
-}
-
-.user_details label, .user_details button{
-    padding-top: 20px;
-}
-
 .link_menu{
     width: 100%;    
 }
@@ -178,5 +169,32 @@ footer b{
     padding-bottom: 10px;
 }
 
+.name-title{
+    padding-right: 5px;
+}
 
+.user_details .form{
+    float: right;
+    padding-top: 20px;
+}
 
+.form-control{
+    padding: 0px;
+    height: calc(0.75rem + .75rem + 2px);
+}
+
+label{
+    margin-bottom: 0 !important;
+}
+
+.card-body{
+    padding-top: 5px;
+}
+
+.ui-selectonemenu{
+    width: 100%;
+}
+
+.form-control .withicon{
+    width: 90% !important;
+}
