@@ -39,10 +39,7 @@
 
 
                         </p:panelGrid>
-                    </h:form>
-
-
-                    <h:form>
+                   
                         <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" 
                                      rowStyleClass="#{c.resultPositive?'redRow':''}">
