@@ -110,13 +110,13 @@
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                     </f:setPropertyActionListener>
                                 </p:commandLink>
-                                <p:outputLabel value=" | " ></p:outputLabel>
+                                <p:outputLabel value="&nbsp;&nbsp;|&nbsp;&nbsp;" ></p:outputLabel>
                                 <p:commandLink value="Edit" action="#{clientController.toFromFromEncounter()}" ajax="false" >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" ></f:setPropertyActionListener>
                                 </p:commandLink>
-                                <p:outputLabel value=" | " ></p:outputLabel>
+                                <p:outputLabel value="&nbsp;&nbsp;|&nbsp;&nbsp;" ></p:outputLabel>
                                 <p:commandLink ajax="false" value="Delete"  action="#{clientController.toDeleteTestEncounter()}" 
-                                                 onclick="return confirm('Are you sure?')" 
+                                                 onclick="if (! confirm('Are you sure you want to delete?')) return false" 
                                                  >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                     </f:setPropertyActionListener>

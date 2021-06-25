@@ -92,7 +92,7 @@
                                     </f:setPropertyActionListener>
                                 </p:commandButton>
                                 <p:commandButton ajax="false" value="Delete"  action="#{clientController.toDeleteCaseEncounter()}" 
-                                                 onclick="return confirm('Are you sure?')" 
+                                                 onclick="if (! confirm('Are you sure you want to delete?')) return false" 
                                                  >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                     </f:setPropertyActionListener>
