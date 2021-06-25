@@ -37,10 +37,7 @@
                             <p:commandButton ajax="false" value="Process" 
                                              action="#{clientController.toMohEnterResults()}" ></p:commandButton>
                         </p:panelGrid>
-                    </h:form>
-
-
-                    <h:form>
+                   
                         <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" 
                                      rowStyleClass="#{c.resultPositive?'redRow':''}">
@@ -65,7 +62,7 @@
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="Result" >
+                            <p:column headerText="Result" exportable="false" >
                                 <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}"  >
                                     <f:selectItem itemLabel="Select Result" ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
