@@ -127,6 +127,8 @@ public class ClientController implements Serializable {
     private List<Encounter> listedToEnterResults;
     private List<Encounter> listedToReviewResults;
     private List<Encounter> listedToConfirm;
+    private List<Encounter> listedToDispatch;
+    private List<Encounter> listedToDivert;
     private List<Encounter> listedToPrint;
     private List<Encounter> testList;
     private List<Encounter> caseList;
@@ -135,6 +137,8 @@ public class ClientController implements Serializable {
     private List<Encounter> selectedToReview;
     private List<Encounter> selectedToConfirm;
     private List<Encounter> selectedToPrint;
+    private List<Encounter> selectedToDispatch;
+    private List<Encounter> selectedToDivert;
 
     private Client selected;
     private Long selectedId;
@@ -142,6 +146,7 @@ public class ClientController implements Serializable {
     private Long idTo;
     private Institution institution;
     private Institution referingInstitution;
+    private Institution divertingLab;
     private List<Encounter> selectedClientsClinics;
     private List<Encounter> selectedClientEncounters;
     private String searchingId;
@@ -502,6 +507,75 @@ public class ClientController implements Serializable {
         return "/lab/receive_all";
     }
 
+    public String toSummaryByOrderedInstitutionVsLabToReceive() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.receivedAtLab is null "
+                + " group by c.institution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        labOrderSummeries = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+        System.out.println("obs = " + obs.size());
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labOrderSummeries.add((InstitutionCount) o);
+            }
+        }
+        return "/moh/summary_lab_vs_ordered_to_receive";
+    }
+
+    public String toSummaryByOrderedInstitutionVsLabReceived() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.receivedAtLab is null "
+                + " group by c.institution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        labOrderSummeries = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+        System.out.println("obs = " + obs.size());
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labOrderSummeries.add((InstitutionCount) o);
+            }
+        }
+        return "/moh/summary_lab_vs_ordered_received";
+    }
+
+    public String toSummaryByOrderedInstitutionVsLabConfirmed() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.receivedAtLab is null "
+                + " group by c.institution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        labOrderSummeries = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+        System.out.println("obs = " + obs.size());
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labOrderSummeries.add((InstitutionCount) o);
+            }
+        }
+        return "/moh/summary_lab_vs_ordered_results_available";
+    }
+
     public String labReceiveAll() {
         String j = "select c "
                 + " from Encounter c "
@@ -686,6 +760,46 @@ public class ClientController implements Serializable {
         return "/lab/review_results";
     }
 
+    public String toDispatchSamples() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired=:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.sentToLab is null "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("ins", institution);
+        listedToDispatch = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/moh/dispatch_samples";
+    }
+
+    public String toDivertSamples() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired=:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.referalInstitution=:rins "
+                + " and c.resultEntered is null "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("ins", institution);
+        m.put("rins", referingInstitution);
+        listedToDivert = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/moh/divert_samples";
+    }
+
     public String toConfirmResults() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
         String j = "select c "
@@ -808,6 +922,38 @@ public class ClientController implements Serializable {
         }
         selectedToConfirm = null;
         return toConfirmResults();
+    }
+
+    public String dispatchSelectedSamples() {
+        if (referingInstitution == null) {
+            JsfUtil.addErrorMessage("Please select a lab to send samples");
+            return "";
+        }
+        for (Encounter e : selectedToDispatch) {
+            e.setSentToLab(true);
+            e.setSentToLabAt(new Date());
+            e.setSentToLabBy(webUserController.getLoggedUser());
+            e.setReferalInstitution(referingInstitution);
+            encounterFacade.edit(e);
+        }
+        selectedToDispatch = null;
+        return toDispatchSamples();
+    }
+
+    public String divertSelectedSamples() {
+        if (divertingLab == null) {
+            JsfUtil.addErrorMessage("Please select a lab to divert samples");
+            return "";
+        }
+        for (Encounter e : selectedToDivert) {
+            e.setSentToLab(true);
+            e.setSentToLabAt(new Date());
+            e.setSentToLabBy(webUserController.getLoggedUser());
+            e.setReferalInstitution(divertingLab);
+            encounterFacade.edit(e);
+        }
+        selectedToDivert = null;
+        return toDivertSamples();
     }
 
     public String markSelectedAsReceivedResults() {
@@ -3155,9 +3301,9 @@ public class ClientController implements Serializable {
             te.setSampled(true);
             te.setSampledAt(new Date());
             te.setSampledBy(webUserController.getLoggedUser());
-            te.setSentToLab(true);
-            te.setSentToLabAt(new Date());
-            te.setSentToLabBy(webUserController.getLoggedUser());
+//            te.setSentToLab(true);
+//            te.setSentToLabAt(new Date());
+//            te.setSentToLabBy(webUserController.getLoggedUser());
             encounterFacade.edit(te);
             lastTest = te;
         }
@@ -4226,6 +4372,46 @@ public class ClientController implements Serializable {
 
     public void setSelectedTest(Item selectedTest) {
         this.selectedTest = selectedTest;
+    }
+
+    public List<Encounter> getListedToDispatch() {
+        return listedToDispatch;
+    }
+
+    public void setListedToDispatch(List<Encounter> listedToDispatch) {
+        this.listedToDispatch = listedToDispatch;
+    }
+
+    public List<Encounter> getListedToDivert() {
+        return listedToDivert;
+    }
+
+    public void setListedToDivert(List<Encounter> listedToDivert) {
+        this.listedToDivert = listedToDivert;
+    }
+
+    public List<Encounter> getSelectedToDispatch() {
+        return selectedToDispatch;
+    }
+
+    public void setSelectedToDispatch(List<Encounter> selectedToDispatch) {
+        this.selectedToDispatch = selectedToDispatch;
+    }
+
+    public List<Encounter> getSelectedToDivert() {
+        return selectedToDivert;
+    }
+
+    public void setSelectedToDivert(List<Encounter> selectedToDivert) {
+        this.selectedToDivert = selectedToDivert;
+    }
+
+    public Institution getDivertingLab() {
+        return divertingLab;
+    }
+
+    public void setDivertingLab(Institution divertingLab) {
+        this.divertingLab = divertingLab;
     }
 
     // </editor-fold>

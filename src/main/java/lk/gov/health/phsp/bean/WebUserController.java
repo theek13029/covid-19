@@ -411,7 +411,7 @@ public class WebUserController implements Serializable {
         userTransactionController.recordTransaction("Manage Privileges in user list By SysAdmin");
         return "/webUser/privileges";
     }
-    
+
     public String toManagePrivilegesIns() {
         if (current == null) {
             JsfUtil.addErrorMessage("Nothing Selected");
@@ -488,8 +488,8 @@ public class WebUserController implements Serializable {
         TreeNode confirm_results = new PrivilegeTreeNode("Confirm Results", labManagement, Privilege.Confirm_Results);
         TreeNode print_results = new PrivilegeTreeNode("Print Results", labManagement, Privilege.Print_Results);
         TreeNode view_orders = new PrivilegeTreeNode("View Orders", labManagement, Privilege.View_Orders);
+        TreeNode manage_Lab_Reports = new PrivilegeTreeNode("Lab Reports", labManagement, Privilege.Lab_Reports);
 
-        
         //Institution Administration
         TreeNode manage_Institution_Users = new PrivilegeTreeNode("Manage Institution Users", institutionAdministration, Privilege.Manage_Institution_Users);
         TreeNode manage_Institution_Metadata = new PrivilegeTreeNode("Manage Institution Metadata", institutionAdministration, Privilege.Manage_Institution_Metadata);
@@ -506,14 +506,10 @@ public class WebUserController implements Serializable {
         //Monitoring and Evaluation
         TreeNode me_Users = new PrivilegeTreeNode("View Reports", me, Privilege.Monitoring_and_evaluation_reports);
 
-        //Institution Administration
-        TreeNode manage_Lab_Users = new PrivilegeTreeNode("Receive Orders", labManagement, Privilege.View_Orders);
-        TreeNode manage_Lab_Enter_Results = new PrivilegeTreeNode("Enter Results", labManagement, Privilege.Enter_Results);
-        TreeNode manage_Lab_Review_Results = new PrivilegeTreeNode("Review Results", labManagement, Privilege.Review_Results);
-        TreeNode manage_Lab_Confirm_Results = new PrivilegeTreeNode("Confirm Results", labManagement, Privilege.Confirm_Results);
-        TreeNode manage_Lab_Reports = new PrivilegeTreeNode("Lab Reports", labManagement, Privilege.Lab_Reports);
+        //Sample Management
+        TreeNode dispatch_samples = new PrivilegeTreeNode("Dispatch Samples", sampleManagement, Privilege.Dispatch_Samples);
+        TreeNode divert_samples = new PrivilegeTreeNode("Divert Samples", sampleManagement, Privilege.Divert_Samples);
 
-        
     }
 
     public String toChangeMyDetails() {
@@ -1252,14 +1248,13 @@ public class WebUserController implements Serializable {
         return "/insAdmin/user_edit";
     }
 
-    
     public String prepareEditPassword() {
         password = "";
         passwordReenter = "";
         userTransactionController.recordTransaction("Edit Password user list By SysAdmin");
         return "/webUser/Password";
     }
-    
+
     public String prepareEditPasswordIns() {
         password = "";
         passwordReenter = "";
@@ -1357,8 +1352,6 @@ public class WebUserController implements Serializable {
         return "/webUser/manage_users";
     }
 
-    
-    
     public String updateUserPrivilegesIns() {
         if (current == null) {
             JsfUtil.addErrorMessage("Please select a user");
@@ -1407,7 +1400,7 @@ public class WebUserController implements Serializable {
         userTransactionController.recordTransaction("update User Privileges By SysAdmin");
         return "/insAdmin/manage_users";
     }
-    
+
     public String updateMyDetails() {
         try {
             getFacade().edit(current);
@@ -1479,7 +1472,7 @@ public class WebUserController implements Serializable {
     }
 
     public WebUserRole[] getWebUserRolesForInsAdmin() {
-        List<WebUserRole> ars=findManagableRoles(loggedUser.getWebUserRole());
+        List<WebUserRole> ars = findManagableRoles(loggedUser.getWebUserRole());
         WebUserRole[] rs = ars.toArray(new WebUserRole[0]);
         return rs;
     }
