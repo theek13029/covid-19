@@ -602,44 +602,39 @@ public class ClientController implements Serializable {
 
     private Long insLabDateCount(Institution ins, Institution lab, Date date) {
         Long c = 0l;
-        String j = "select c "
+        String j = "select count(c) "
                 + " from Encounter c "
                 + " where c.retired=false "
                 + " and c.encounterType=:type "
-                + " and c.receivedAtLabAt between :f and :t "
+                + " and c.receivedAtLabAt between :fd and :td "
                 + " and c.referalInstitution=:rins "
                 + " and c.institution=:ins ";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
-        m.put("f", CommonController.startOfTheDate(date));
-        m.put("t", CommonController.endOfTheDate(date));
+        Date fd = CommonController.startOfTheDate(date);
+        Date td = CommonController.endOfTheDate(date);
+        m.put("fd", fd);
+        m.put("td", td);
         m.put("ins", ins);
         m.put("rins", lab);
-        System.out.println("m = " + m);
-        System.out.println("j = " + j);
-        c = getEncounterFacade().findLongByJpql(j, m, TemporalType.DATE);
-        System.out.println("c = " + c);
+        c = getEncounterFacade().findLongByJpql(j, m, TemporalType.TIMESTAMP);
         c++;
         return c;
     }
 
     private Long labDateCount(Institution lab, Date date) {
         Long c = 0l;
-        String j = "select c "
+        String j = "select count(c) "
                 + " from Encounter c "
                 + " where c.retired=false "
                 + " and c.encounterType=:type "
-                + " and c.receivedAtLabAtbetween :f and :t "
+                + " and c.receivedAtLabAt=:edate "
                 + " and c.referalInstitution=:rins ";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
-        m.put("f", CommonController.startOfTheDate(date));
-        m.put("t", CommonController.endOfTheDate(date));
+        m.put("edate", date);
         m.put("rins", lab);
         c = getEncounterFacade().findLongByJpql(j, m, TemporalType.DATE);
-        if (c == null) {
-            c = 0l;
-        }
         c++;
         return c;
     }

@@ -436,8 +436,9 @@ public class CommonController implements Serializable {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
         c.set(Calendar.DAY_OF_MONTH, 1);
-        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 1);
 //        System.out.println("c = " + c);
 //        System.out.println("c.getTime() = " + c.getTime());
@@ -447,8 +448,9 @@ public class CommonController implements Serializable {
     public static Date startOfTheDate(Date d) {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
-        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND,0);
         c.set(Calendar.MILLISECOND, 1);
         return c.getTime();
     }
@@ -642,7 +644,7 @@ public class CommonController implements Serializable {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
         c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
-        c.set(Calendar.HOUR, c.getActualMaximum(Calendar.HOUR));
+        c.set(Calendar.HOUR_OF_DAY, c.getActualMaximum(Calendar.HOUR_OF_DAY));
         c.set(Calendar.MINUTE, c.getActualMaximum(Calendar.MINUTE));
         c.set(Calendar.MILLISECOND, c.getActualMaximum(Calendar.MILLISECOND));
         return c.getTime();
@@ -655,8 +657,9 @@ public class CommonController implements Serializable {
     public static Date endOfTheDate(Date d) {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
-        c.set(Calendar.HOUR, c.getActualMaximum(Calendar.HOUR));
+        c.set(Calendar.HOUR_OF_DAY, c.getActualMaximum(Calendar.HOUR_OF_DAY));
         c.set(Calendar.MINUTE, c.getActualMaximum(Calendar.MINUTE));
+        c.set(Calendar.SECOND, c.getActualMaximum(Calendar.SECOND));
         c.set(Calendar.MILLISECOND, c.getActualMaximum(Calendar.MILLISECOND));
         return c.getTime();
     }
@@ -666,8 +669,9 @@ public class CommonController implements Serializable {
         c.setTime(d);
         c.set(Calendar.MONTH, Calendar.JANUARY);
         c.set(Calendar.DAY_OF_MONTH, 1);
-        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 1);
         return c.getTime();
     }
@@ -677,8 +681,9 @@ public class CommonController implements Serializable {
         c.setTime(d);
         c.set(Calendar.MONTH, Calendar.JANUARY);
         c.set(Calendar.DAY_OF_MONTH, 1);
-        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 1);
         c.set(Calendar.YEAR, c.get(Calendar.YEAR) - 1);
         return c.getTime();
@@ -693,8 +698,9 @@ public class CommonController implements Serializable {
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, Calendar.JANUARY);
         c.set(Calendar.DAY_OF_MONTH, 1);
-        c.set(Calendar.HOUR, 0);
+        c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 1);
         return c.getTime();
     }

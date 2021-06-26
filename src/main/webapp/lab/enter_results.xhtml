@@ -43,16 +43,13 @@
                         <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" rowIndexVar="n"
                                      rowStyleClass="#{c.resultPositive?'redRow':''}">
-                            <p:column headerText="Serial" width="20" >
-                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
-                            </p:column>
                             <p:column headerText="ID" width="60">
                                 <p:outputLabel value="#{c.id}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Tube No" width="60">
+                            <p:column headerText="Tube No" width="80">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Lab No" width="60">
+                            <p:column headerText="Lab No" width="200">
                                 <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Name" >
@@ -63,12 +60,6 @@
                             </p:column>
                             <p:column headerText="Sex" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Address" >
-                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Phone" >
-                                <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
                             <p:column id="result" headerText="CT" >
                                 <p:inputText id="txtCt" value="#{c.ctValueStr}" style="width: 10rem;" >

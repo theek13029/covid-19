@@ -756,7 +756,9 @@ public class Encounter implements Serializable {
 
     public Item getTestType() {
         if (testType == null) {
-            testType = getClientEncounterComponentItemByCode("test_type").getItemValue();
+            if (getClientEncounterComponentItemByCode("test_type") != null && getClientEncounterComponentItemByCode("test_type").getItemValue() != null) {
+                testType = getClientEncounterComponentItemByCode("test_type").getItemValue();
+            }
         }
         return testType;
     }
