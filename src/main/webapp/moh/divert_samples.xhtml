@@ -70,9 +70,9 @@
 
                         </p:panelGrid>
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToDispatch}" 
+                        <p:dataTable id="tbl" value="#{clientController.listedToDivert}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
-                                     selection="#{clientController.selectedToDispatch}">
+                                     selection="#{clientController.selectedToDivert}">
                             <p:column selectionMode="multiple" ></p:column>
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
