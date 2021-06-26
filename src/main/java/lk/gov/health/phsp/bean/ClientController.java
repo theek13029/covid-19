@@ -485,6 +485,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins "
+                + " and c.sentToLab is not null "
                 + " and c.receivedAtLab is null "
                 + " group by c.institution";
         Map m = new HashMap();
@@ -531,7 +532,6 @@ public class ClientController implements Serializable {
         return "/moh/summary_lab_vs_ordered_to_receive";
     }
 
-    
     public String toSummaryByOrderedInstitution() {
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
                 + " from Encounter c "
@@ -553,7 +553,7 @@ public class ClientController implements Serializable {
         }
         return "/moh/summary_lab_ordered";
     }
-    
+
     public String toSummaryByOrderedInstitutionVsLabReceived() {
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
                 + " from Encounter c "
@@ -600,7 +600,92 @@ public class ClientController implements Serializable {
         return "/moh/summary_lab_vs_ordered_results_available";
     }
 
+    private Long insLabDateCount(Institution ins, Institution lab, Date date) {
+        Long c = 0l;
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.receivedAtLabAt between :f and :t "
+                + " and c.referalInstitution=:rins "
+                + " and c.institution=:ins ";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("f", CommonController.startOfTheDate(date));
+        m.put("t", CommonController.endOfTheDate(date));
+        m.put("ins", ins);
+        m.put("rins", lab);
+        System.out.println("m = " + m);
+        System.out.println("j = " + j);
+        c = getEncounterFacade().findLongByJpql(j, m, TemporalType.DATE);
+        System.out.println("c = " + c);
+        c++;
+        return c;
+    }
+
+    private Long labDateCount(Institution lab, Date date) {
+        Long c = 0l;
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.receivedAtLabAtbetween :f and :t "
+                + " and c.referalInstitution=:rins ";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("f", CommonController.startOfTheDate(date));
+        m.put("t", CommonController.endOfTheDate(date));
+        m.put("rins", lab);
+        c = getEncounterFacade().findLongByJpql(j, m, TemporalType.DATE);
+        if (c == null) {
+            c = 0l;
+        }
+        c++;
+        return c;
+    }
+
     public String labReceiveAll() {
+        String labPrefix;
+        Long startCount;
+        String dateString = CommonController.formatDate("ddMMyy");
+        switch (getPreferenceController().getLabNumberGeneration()) {
+            case "InsLabDateCount":
+                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix = institution.getCode()
+                        + "/"
+                        + webUserController.getLoggedUser().getInstitution().getCode()
+                        + "/"
+                        + dateString
+                        + "/";
+                break;
+            case "InsDateCount":
+                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix = institution.getCode()
+                        + "/"
+                        + dateString
+                        + "/";
+                break;
+            case "LabDateCount":
+                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix = institution.getCode()
+                        + "/"
+                        + dateString
+                        + "/";
+                break;
+            case "DateCount":
+                startCount = labDateCount(webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix
+                        = dateString
+                        + "/";
+                break;
+            case "YearCount":
+            case "MonthCount":
+            case "Count":
+            default:
+                startCount = 1l;
+                labPrefix = "NOTSET/";
+        }
+
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired=false "
@@ -608,6 +693,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins "
                 + " and c.institution=:ins "
+                + " and c.sentToLab is not null "
                 + " and c.receivedAtLab is null";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
@@ -616,11 +702,13 @@ public class ClientController implements Serializable {
         m.put("ins", institution);
         m.put("rins", webUserController.getLoggedUser().getInstitution());
         labOrderSummeries = new ArrayList<>();
-        List<Encounter> obs = encounterFacade.findByJpql(j, m);
-        for (Encounter e : obs) {
+        List<Encounter> receivingSamplesTmp = encounterFacade.findByJpql(j, m);
+        for (Encounter e : receivingSamplesTmp) {
             e.setReceivedAtLab(true);
             e.setReceivedAtLabAt(new Date());
             e.setReceivedAtLabBy(webUserController.getLoggedUser());
+            e.setLabNumber(labPrefix + startCount);
+            startCount++;
             encounterFacade.edit(e);
         }
         return toLabReceiveAll();
@@ -634,6 +722,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins "
                 + " and c.institution=:ins "
+                + " and c.sentToLab is not null "
                 + " and c.receivedAtLab is null";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
@@ -819,12 +908,11 @@ public class ClientController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("ins", institution);
-        m.put("rins", dispatchingLab);
+        m.put("rins", referingInstitution);
         listedToDispatch = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
-        return toSummaryByOrderedInstitutionVsLabToReceive();
+        return "/moh/dispatch_samples";
     }
 
-    
     public String toDivertSamples() {
         String j = "select c "
                 + " from Encounter c "
@@ -1003,10 +1091,53 @@ public class ClientController implements Serializable {
     }
 
     public String markSelectedAsReceivedResults() {
+        String labPrefix;
+        Long startCount;
+        String dateString = CommonController.formatDate("ddMMyy");
+        switch (getPreferenceController().getLabNumberGeneration()) {
+            case "InsLabDateCount":
+                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix = institution.getCode()
+                        + "/"
+                        + webUserController.getLoggedUser().getInstitution().getCode()
+                        + "/"
+                        + dateString
+                        + "/";
+                break;
+            case "InsDateCount":
+                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix = institution.getCode()
+                        + "/"
+                        + dateString
+                        + "/";
+                break;
+            case "LabDateCount":
+                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix = institution.getCode()
+                        + "/"
+                        + dateString
+                        + "/";
+                break;
+            case "DateCount":
+                startCount = labDateCount(webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix
+                        = dateString
+                        + "/";
+                break;
+            case "YearCount":
+            case "MonthCount":
+            case "Count":
+            default:
+                startCount = 1l;
+                labPrefix = "NOTSET/";
+        }
+
         for (Encounter e : selectedToReceive) {
             e.setReceivedAtLab(true);
             e.setReceivedAtLabAt(new Date());
             e.setReceivedAtLabBy(webUserController.getLoggedUser());
+            e.setLabNumber(labPrefix + startCount);
+            startCount++;
             encounterFacade.edit(e);
         }
         selectedToReceive = null;
@@ -4300,8 +4431,6 @@ public class ClientController implements Serializable {
         this.itemApplicationController = itemApplicationController;
     }
 
-    
-    
     public UserTransactionController getUserTransactionController() {
         return userTransactionController;
     }

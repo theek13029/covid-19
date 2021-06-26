@@ -268,6 +268,10 @@ public class Institution implements Serializable {
     }
 
     public String getCode() {
+        if(code==null && name !=null){
+            String tmpName = name + "    ";
+            code = tmpName.substring(0, 3);
+        }
         return code;
     }
 

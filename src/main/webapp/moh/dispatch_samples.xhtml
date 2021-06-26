@@ -69,8 +69,8 @@
                         <p:dataTable id="tbl" value="#{clientController.listedToDispatch}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      selection="#{clientController.selectedToDispatch}">
-                            <p:column selectionMode="multiple" ></p:column>
-                            <p:column headerText="Name" >
+                            <p:column selectionMode="multiple" width="30"></p:column>
+                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Age" >
@@ -79,16 +79,23 @@
                             <p:column headerText="Sex" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Address" >
+                            <p:column headerText="Address"  sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Phone" >
+                            <p:column headerText="Phone"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Test" >
-                                <p:outputLabel value="#{c.getClientEncounterComponentItemByCode('test_type').itemValue.name}" ></p:outputLabel>
+                            <p:column headerText="Test" sortBy="#{c.testType.name}" 
+                                      filterBy="#{c.testType.name}" 
+                                      filterMatchMode="contains">
+                                <p:outputLabel value="#{c.testType.name}" ></p:outputLabel>
                             </p:column>
-
+                            <p:column headerText="Current Lab" 
+                                      sortBy="#{c.referalInstitution.name}" 
+                                      filterBy="#{c.referalInstitution.name}" 
+                                      filterMatchMode="contains">
+                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
+                            </p:column>
                         </p:dataTable>
                     </h:form>
 

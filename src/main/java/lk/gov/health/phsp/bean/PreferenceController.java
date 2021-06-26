@@ -50,6 +50,11 @@ public class PreferenceController implements Serializable {
      */
     private String labReportHtml;
     private String labApprovalSteps;
+    private String pcrPositiveTerm;
+    private String pcrNegativeTerm;
+    private String pcrInconclusiveTerm;
+    private String pcrInvalidTerm;
+    String labNumberGeneration;
 
     // <editor-fold defaultstate="collapsed" desc="Getters and Setters">
     private PreferenceFacade getFacade() {
@@ -101,6 +106,32 @@ public class PreferenceController implements Serializable {
     public void loadPreferencesInstitution() {
         labApprovalSteps = findPreferanceValue("labApprovalSteps", webUserController.getLoggedUser().getInstitution());
         labReportHtml = findPreferanceValue("labReportHeader", webUserController.getLoggedUser().getInstitution());
+        pcrPositiveTerm = findPreferanceValue("pcrPositiveTerm", webUserController.getLoggedUser().getInstitution());
+        pcrNegativeTerm = findPreferanceValue("pcrNegativeTerm", webUserController.getLoggedUser().getInstitution());
+        pcrInconclusiveTerm = findPreferanceValue("pcrInconclusiveTerm", webUserController.getLoggedUser().getInstitution());
+        pcrInvalidTerm = findPreferanceValue("pcrInvalidTerm", webUserController.getLoggedUser().getInstitution());
+        labNumberGeneration = findPreferanceValue("labNumberGeneration", webUserController.getLoggedUser().getInstitution());
+        if (labNumberGeneration == null) {
+            labNumberGeneration = "InsLabDateCount";
+        }
+        if (labApprovalSteps == null) {
+            labApprovalSteps = "EntryReviewConfirm";
+        }
+        if (labReportHtml == null) {
+            labReportHtml = "";
+        }
+        if (pcrPositiveTerm == null) {
+            pcrPositiveTerm = "Positive";
+        }
+        if (pcrNegativeTerm == null) {
+            pcrNegativeTerm = "Negative";
+        }
+        if (pcrInconclusiveTerm == null) {
+            pcrInconclusiveTerm = "Inconclusive";
+        }
+        if (pcrInvalidTerm == null) {
+            pcrInvalidTerm = "Invalid";
+        }
     }
 
     public void savePreferences() {
@@ -117,8 +148,13 @@ public class PreferenceController implements Serializable {
     }
 
     public void savePreferencesInstitution() {
-        savePreference("labApprovalSteps", webUserController.getLoggedUser().getInstitution() , labApprovalSteps);
-        savePreference("labReportHeader", webUserController.getLoggedUser().getInstitution() ,labReportHtml);
+        savePreference("labApprovalSteps", webUserController.getLoggedUser().getInstitution(), labApprovalSteps);
+        savePreference("labReportHeader", webUserController.getLoggedUser().getInstitution(), labReportHtml);
+        savePreference("pcrPositiveTerm", webUserController.getLoggedUser().getInstitution(), pcrPositiveTerm);
+        savePreference("pcrNegativeTerm", webUserController.getLoggedUser().getInstitution(), pcrNegativeTerm);
+        savePreference("pcrInvalidTerm", webUserController.getLoggedUser().getInstitution(), pcrInvalidTerm);
+        savePreference("pcrInconclusiveTerm", webUserController.getLoggedUser().getInstitution(), pcrInconclusiveTerm);
+        savePreference("labNumberGeneration", webUserController.getLoggedUser().getInstitution(), labNumberGeneration);
     }
 
     public Preference findPreferance(String name) {
@@ -334,7 +370,7 @@ public class PreferenceController implements Serializable {
     }
 
     public String getLabReportHtml() {
-        if(labReportHtml==null){
+        if (labReportHtml == null) {
             loadPreferencesInstitution();
         }
         return labReportHtml;
@@ -345,7 +381,7 @@ public class PreferenceController implements Serializable {
     }
 
     public String getLabApprovalSteps() {
-        if(labApprovalSteps==null){
+        if (labApprovalSteps == null) {
             loadPreferencesInstitution();
         }
         return labApprovalSteps;
@@ -355,8 +391,61 @@ public class PreferenceController implements Serializable {
         this.labApprovalSteps = labApprovalSteps;
     }
 
-    
-    
+    public String getPcrPositiveTerm() {
+        if (pcrPositiveTerm == null) {
+            loadPreferencesInstitution();
+        }
+        return pcrPositiveTerm;
+    }
+
+    public void setPcrPositiveTerm(String pcrPositiveTerm) {
+        this.pcrPositiveTerm = pcrPositiveTerm;
+    }
+
+    public String getPcrNegativeTerm() {
+        if (pcrNegativeTerm == null) {
+            loadPreferencesInstitution();
+        }
+        return pcrNegativeTerm;
+    }
+
+    public void setPcrNegativeTerm(String pcrNegativeTerm) {
+        this.pcrNegativeTerm = pcrNegativeTerm;
+    }
+
+    public String getPcrInconclusiveTerm() {
+        if (pcrInconclusiveTerm == null) {
+            loadPreferencesInstitution();
+        }
+        return pcrInconclusiveTerm;
+    }
+
+    public void setPcrInconclusiveTerm(String pcrInconclusiveTerm) {
+        this.pcrInconclusiveTerm = pcrInconclusiveTerm;
+    }
+
+    public String getPcrInvalidTerm() {
+        if (pcrInvalidTerm == null) {
+            loadPreferencesInstitution();
+        }
+        return pcrInvalidTerm;
+    }
+
+    public String getLabNumberGeneration() {
+        if (labNumberGeneration == null) {
+            loadPreferencesInstitution();
+        }
+        return labNumberGeneration;
+    }
+
+    public void setLabNumberGeneration(String labNumberGeneration) {
+        this.labNumberGeneration = labNumberGeneration;
+    }
+
+    public void setPcrInvalidTerm(String pcrInvalidTerm) {
+        this.pcrInvalidTerm = pcrInvalidTerm;
+    }
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Converters">
     @FacesConverter(forClass = Preference.class)

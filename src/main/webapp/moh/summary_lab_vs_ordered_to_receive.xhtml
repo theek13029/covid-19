@@ -52,13 +52,17 @@
                                 <p:outputLabel value="#{c.count}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false"  >
-                                <p:commandButton  rendered="#{c.referralInstitution ne null}" ajax="false" value="To Dispatch Samples" action="#{clientController.toDispatchSamplesWithReferringLab()}" >
+                                <p:commandButton  rendered="#{c.referralInstitution ne null}" ajax="false" value="To Dispatch Samples to Designated Lab" 
+                                                  action="#{clientController.toDispatchSamplesWithReferringLab()}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
+                                    </f:setPropertyActionListener>
+                                    <f:setPropertyActionListener value="#{c.referralInstitution}" target="#{clientController.referingInstitution}" >
                                     </f:setPropertyActionListener>
                                     <f:setPropertyActionListener value="#{c.referralInstitution}" target="#{clientController.dispatchingLab}" >
                                     </f:setPropertyActionListener>
                                 </p:commandButton>
-                                <p:commandButton rendered="#{c.referralInstitution eq null}" ajax="false" value="To Dispatch Samples" action="#{clientController.toDispatchSamples}" >
+                                <p:commandButton rendered="#{c.referralInstitution eq null}" ajax="false" value="To Select Lab and Dispatch Samples"
+                                                 action="#{clientController.toDispatchSamples}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                 </p:commandButton>

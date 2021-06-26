@@ -38,6 +38,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import lk.gov.health.phsp.enums.EncounterType;
@@ -101,12 +102,15 @@ public class Encounter implements Serializable {
     private Date resultConfirmedAt;
     @ManyToOne(fetch = FetchType.LAZY)
     private WebUser resultConfirmedBy;
-    
+
     private Boolean resultPrinted;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date resultPrintedAt;
     @ManyToOne(fetch = FetchType.LAZY)
     private WebUser resultPrintedBy;
+
+    @Lob
+    private String resultPrintHtml;
 
     private Boolean resultNoted;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -118,6 +122,7 @@ public class Encounter implements Serializable {
     private String ctValueStr;
     @ManyToOne
     private Item pcrResult;
+    private String pcrResultStr;
     private String resultComments;
 
     private Boolean resultPositive;
@@ -143,6 +148,8 @@ public class Encounter implements Serializable {
     private EncounterType encounterType;
 
     private String encounterNumber;
+
+    private String labNumber;
 
     @ManyToOne
     private Encounter parentEncounter;
@@ -185,6 +192,9 @@ public class Encounter implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date completedAt;
 
+    @Transient
+    private Item testType;
+
     public Long getId() {
         return id;
     }
@@ -193,8 +203,6 @@ public class Encounter implements Serializable {
         this.id = id;
     }
 
-    
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -223,8 +231,6 @@ public class Encounter implements Serializable {
     public Client getClient() {
         return client;
     }
-    
-    
 
     public void setClient(Client client) {
         this.client = client;
@@ -447,9 +453,12 @@ public class Encounter implements Serializable {
         }
         return null;
     }
-    
+
     public ClientEncounterComponentItem getClientEncounterComponentItemByCode(String itemCode) {
+        System.out.println("itemCode = " + itemCode);
         for (ClientEncounterComponentItem i : getClientEncounterComponentItems()) {
+            System.out.println("i.getItem() = " + i.getItem());
+            System.out.println("i.getItemValue() = " + i.getItemValue());
             if (i.getItem().getCode().equals(itemCode)) {
                 return i;
             }
@@ -721,6 +730,35 @@ public class Encounter implements Serializable {
         this.ctValueStr = ctValueStr;
     }
 
-    
-    
+    public String getLabNumber() {
+        return labNumber;
+    }
+
+    public void setLabNumber(String labNumber) {
+        this.labNumber = labNumber;
+    }
+
+    public String getPcrResultStr() {
+        return pcrResultStr;
+    }
+
+    public void setPcrResultStr(String pcrResultStr) {
+        this.pcrResultStr = pcrResultStr;
+    }
+
+    public String getResultPrintHtml() {
+        return resultPrintHtml;
+    }
+
+    public void setResultPrintHtml(String resultPrintHtml) {
+        this.resultPrintHtml = resultPrintHtml;
+    }
+
+    public Item getTestType() {
+        if (testType == null) {
+            testType = getClientEncounterComponentItemByCode("test_type").getItemValue();
+        }
+        return testType;
+    }
+
 }

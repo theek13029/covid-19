@@ -498,7 +498,6 @@ public abstract class AbstractFacade<T> {
         try {
             return (long) qry.getSingleResult();
         } catch (Exception e) {
-           
             return 0l;
         }
     }
