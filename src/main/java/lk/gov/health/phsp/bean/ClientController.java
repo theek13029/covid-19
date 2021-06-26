@@ -531,13 +531,36 @@ public class ClientController implements Serializable {
         return "/moh/summary_lab_vs_ordered_to_receive";
     }
 
+    
+    public String toSummaryByOrderedInstitution() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " group by c.institution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        labOrderSummeries = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+        System.out.println("obs = " + obs.size());
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labOrderSummeries.add((InstitutionCount) o);
+            }
+        }
+        return "/moh/summary_lab_ordered";
+    }
+    
     public String toSummaryByOrderedInstitutionVsLabReceived() {
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired=false "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
-                + " and c.receivedAtLab is null "
+                + " and c.receivedAtLab is not null "
                 + " group by c.institution";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
@@ -560,7 +583,7 @@ public class ClientController implements Serializable {
                 + " where c.retired=false "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
-                + " and c.receivedAtLab is null "
+                + " and c.resultConfirmed is not null "
                 + " group by c.institution";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);

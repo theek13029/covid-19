@@ -27,6 +27,8 @@
                                     rendered="#{webUserController.hasPrivilege('Dispatch_Samples')}" />
                         <p:menuitem ajax="false" value="Divert Samples" action="#{clientController.toDivertSamples()}" 
                                     rendered="#{webUserController.hasPrivilege('Divert_Samples')}" />
+                        <p:menuitem ajax="false" value="Order Summary"
+                                    action="#{clientController.toSummaryByOrderedInstitution}" />
                         <p:menuitem ajax="false" value="Order Summary - To Receive at the Lab"
                                     action="#{clientController.toSummaryByOrderedInstitutionVsLabToReceive()}" />
                         <p:menuitem ajax="false" value="Order Summary - Received at the Lab"
