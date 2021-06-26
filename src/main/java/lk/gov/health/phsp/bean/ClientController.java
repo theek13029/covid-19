@@ -113,6 +113,8 @@ public class ClientController implements Serializable {
     Boolean institutionSelectable;
     Boolean nationalLevel;
 
+    private Item selectedTest;
+
     private List<ClientBasicData> selectedClientsBasic = null;
 
     private List<Encounter> institutionCaseEnrollments;
@@ -624,20 +626,39 @@ public class ClientController implements Serializable {
 
     public String toMohEnterResults() {
         institution = webUserController.getLoggedUser().getInstitution();
-        String j = "select c "
-                + " from Encounter c "
-                + " where c.retired<>:ret "
-                + " and c.encounterType=:type "
-                + " and c.encounterDate between :fd and :td "
-                + " and c.institution=:ins "
-                + " order by c.id";
-        Map m = new HashMap();
-        m.put("ret", true);
-        m.put("type", EncounterType.Test_Enrollment);
-        m.put("fd", fromDate);
-        m.put("td", toDate);
-        m.put("ins", institution);
-        listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        if (selectedTest == null) {
+            String j = "select c "
+                    + " from Encounter c "
+                    + " where c.retired<>:ret "
+                    + " and c.encounterType=:type "
+                    + " and c.encounterDate between :fd and :td "
+                    + " and c.institution=:ins "
+                    + " order by c.id";
+            Map m = new HashMap();
+            m.put("ret", true);
+            m.put("type", EncounterType.Test_Enrollment);
+            m.put("fd", fromDate);
+            m.put("td", toDate);
+            m.put("ins", institution);
+            listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        } else {
+            String j = "select c "
+                    + " from ClientEncounterComponentItem i join i.itemEncounter c "
+                    + " where c.retired<>:ret "
+                    + " and c.encounterType=:type "
+                    + " and c.encounterDate between :fd and :td "
+                    + " and c.institution=:ins "
+                    + " and i.itemValue=:itemValue "
+                    + " order by c.id";
+            Map m = new HashMap();
+            m.put("ret", true);
+            m.put("type", EncounterType.Test_Enrollment);
+            m.put("fd", fromDate);
+            m.put("td", toDate);
+            m.put("ins", institution);
+            m.put("itemValue", selectedTest);
+            listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        }
         return "/moh/enter_results";
     }
 
@@ -4197,6 +4218,14 @@ public class ClientController implements Serializable {
 
     public void setLastTest(Encounter lastTest) {
         this.lastTest = lastTest;
+    }
+
+    public Item getSelectedTest() {
+        return selectedTest;
+    }
+
+    public void setSelectedTest(Item selectedTest) {
+        this.selectedTest = selectedTest;
     }
 
     // </editor-fold>

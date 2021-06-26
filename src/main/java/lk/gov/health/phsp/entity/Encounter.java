@@ -447,6 +447,15 @@ public class Encounter implements Serializable {
         }
         return null;
     }
+    
+    public ClientEncounterComponentItem getClientEncounterComponentItemByCode(String itemCode) {
+        for (ClientEncounterComponentItem i : getClientEncounterComponentItems()) {
+            if (i.getItem().getCode().equals(itemCode)) {
+                return i;
+            }
+        }
+        return null;
+    }
 
     public String getRetireComments() {
         return retireComments;

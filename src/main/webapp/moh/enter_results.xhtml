@@ -31,13 +31,21 @@
                                             var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                             </p:autoComplete>
 
+                            <p:outputLabel value="Test" ></p:outputLabel>
+                            <p:selectOneMenu value="#{clientController.selectedTest}" >
+                                <f:selectItem itemLabel="All" ></f:selectItem>
+                                <f:selectItems value="#{itemController.findChildren('test_types')}" var="i" 
+                                              itemLabel="#{i.name}" 
+                                              itemValue="#{i}"></f:selectItems>
+                            </p:selectOneMenu>
+
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
                                              action="#{clientController.toMohEnterResults()}" ></p:commandButton>
                         </p:panelGrid>
-                   
+
                         <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" 
                                      rowStyleClass="#{c.resultPositive?'redRow':''}">
@@ -55,6 +63,9 @@
                             </p:column>
                             <p:column headerText="Phone" >
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
+                            </p:column>
+                             <p:column headerText="Test" >
+                                 <p:outputLabel value="#{c.getClientEncounterComponentItemByCode('test_type').itemValue.name}" ></p:outputLabel>
                             </p:column>
                             <p:column id="result" headerText="CT" >
                                 <p:inputText id="txtCt" value="#{c.ctValueStr}" style="width: 5rem;" >
