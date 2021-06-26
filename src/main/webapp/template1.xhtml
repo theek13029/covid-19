@@ -19,7 +19,7 @@
         <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
         <h:outputStylesheet library="css" name="all.min.css"></h:outputStylesheet>
         <h:outputStylesheet library="css" name="sb-admin-2.min.css"></h:outputStylesheet>
-         <h:outputStylesheet library="css" name="tem1.css"/>
+        <h:outputStylesheet library="css" name="tem1.css"/>
     </h:head>
 
     <h:body id="page-top">
@@ -62,122 +62,7 @@
                     <div class="container-fluid">
                         <div class="row content">                        
                             <div class="col-md-2 sidenav">
-                                <h:form>
-                                    <p:panelMenu>
-                                        <p:submenu label="Navigator" expanded="true">
-                                            <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="/index" />
-
-                                            <p:submenu label="Patient" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
-                                                <p:menuitem ajax="false" value="Add New PCR/RAT Request" action="#{clientController.toAddNewClientForTestEnrollment()}"  />
-                                                <p:menuitem ajax="false" value="Register New Case" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
-                                                <p:menuitem ajax="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
-                                                <p:menuitem ajax="false" value="Test Result Entering" action="#{clientController.toMohEnterResults()}" />
-                                                <p:menuitem ajax="false" value="Test Result Printing" action="#{clientController.toMohToSelectForPrinting()}" />
-                                            </p:submenu>
-                                            <p:submenu label="Lab"  rendered="#{webUserController.hasPrivilege('Lab_Management')}"  >
-                                                <p:menuitem ajax="false" value="Receive Samples" action="#{clientController.toLabReceiveAll()}"  />
-                                                <p:menuitem ajax="false" value="Enter Results" action="#{clientController.toLabEnterResults()}" />
-                                                <p:menuitem ajax="false" value="Review Results" action="#{clientController.toLabReviewResults()}" />
-                                                <p:menuitem ajax="false" value="Approve Results" action="#{clientController.toConfirmResults}" />
-                                                <p:menuitem ajax="false" value="Print Results" action="#{clientController.toLabToSelectForPrinting()}" />
-                                                <p:menuitem ajax="false" value="Search Orders" action="#{clientController.toLabOrderByReferringInstitution()}"  />
-                                                <p:menuitem ajax="false" value="Reports" action="#{clientController.toLabReports()}"  />
-                                            </p:submenu>
-                                            <p:submenu label="Reports" rendered="#{webUserController.hasPrivilege('Monitoring_and_evaluation')}">
-                                                <p:menuitem ajax="false" value="Case List" action="#{clientController.toListCases()}" />
-                                                <p:menuitem ajax="false" value="Test List" action="#{clientController.toListTests()}" />
-                                                <p:menuitem ajax="false" value="SMS" action="/sms/index" />
-                                                <p:menuitem ajax="false" value="Analysis" 
-                                                            action="#{reportController.toViewReports()}" ></p:menuitem>
-                                            </p:submenu>
-                                            <p:submenu label="Institution Administration" rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
-                                                <p:submenu label="Manage Users" rendered="#{webUserController.hasPrivilege('Institution_Administration')}">
-                                                    <p:menuitem value="New User" action="#{webUserController.toAddNewUserByInsAdmin()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                                                    <p:menuitem value="View Users" action="#{webUserController.toManageInstitutionUsers()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                                                </p:submenu>                                                
-                                                <p:menuitem value="Manage Institutions" action="/insAdmin/institution_index" rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                                                <p:menuitem value="Manage Areas" action="/insAdmin/area_index" ajax="false" rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                                                <p:menuitem value="Manage Preferences"  action="#{preferenceController.toManagePreferencesInstitution()}"    ajax="false" rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                                            </p:submenu>
-                                            <p:submenu label="System Administration"  rendered="#{webUserController.hasPrivilege('System_Administration')}">
-                                                <p:submenu label="Manage Users" rendered="#{webUserController.hasPrivilege('System_Administration')}">
-                                                    <p:menuitem value="New User" action="#{webUserController.toCreateNewUserBySysAdmin()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="View Users" action="#{webUserController.toManageAllUsers()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="View Transactions" action="#{userTransactionController.toSearchUserTransactions()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="Suspicious Login Attempts" action="#{userTransactionController.toSuspiciousLoginAttempts()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                </p:submenu>
-                                                <p:submenu label="Manage Institutions" rendered="#{webUserController.hasPrivilege('System_Administration')}">
-                                                    <p:menuitem value="New Institution" action="#{institutionController.toAddInstitution}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="List Institutions" action="#{institutionController.toListInstitutions()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="Import Institutions" action="#{institutionController.toImportInstitution()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="Relod Institutions" action="#{institutionController.resetAllInstitutions()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                </p:submenu>
-                                                <p:submenu label="Manage Areas" rendered="#{webUserController.hasPrivilege('System_Administration')}">
-                                                    <p:menuitem value="Add Area" action="#{areaController.toAddArea()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="List Area" action="#{areaController.toListAreasForSysAdmin()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="Create new GN Areas By Import" action="/area/import_gn_areas" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="Update UID of Areas by Area Code" action="/area/import_update_uid" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="Adding MOH data" action="/area/moh_adding" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="Reload" action="#{areaApplicationController.invalidateItems()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                </p:submenu>
-                                                <p:menuitem value="Manage Metadata" action="/systemAdmin/manage_metadata_index"    ajax="false" />
-                                                <p:menuitem value="Manage Data" action="/systemAdmin/manage_data_index"    ajax="false" />
-                                                <p:menuitem value="Manage Preferences" action="#{preferenceController.toManagePreferences()}"    ajax="false" />
-                                                <p:menuitem value="Manage Analysis"  action="/queryComponent/index"     ajax="false" />
-                                                <p:submenu label="Manage Analysis" rendered="#{webUserController.hasPrivilege('System_Administration')}">
-                                                    <p:menuitem value="New Excel Template" action="#{queryComponentController.toAddExcelTemplates()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="List Excel Templates" action="#{queryComponentController.toManageExcelTemplates()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    
-                                                    <p:menuitem value="New Count" action="#{queryComponentController.toAddCount()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="List Counts" action="#{queryComponentController.toManageCounts()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    
-                                                    <p:menuitem value="New Indicator" action="#{queryComponentController.toAddIndicator()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="List Indicator" action="#{queryComponentController.toManageIndicators()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    
-                                                    <p:menuitem value="New Population" action="#{queryComponentController.toAddPopulation()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    <p:menuitem value="List Populations" action="#{queryComponentController.toManagePopulations()}" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                    
-                                                    <p:menuitem value="Manage Queries" action="/queryComponent/excel" ajax="false"
-                                                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
-                                                </p:submenu>
-                                            </p:submenu>
-                                            <p:submenu label="Settings"  rendered="#{webUserController.hasPrivilege('User')}" >
-                                                <p:menuitem value="Change My Password" action="#{webUserController.toChangeMyPassword()}"    ajax="false" />
-                                                <p:menuitem value="Change My Details" action="#{webUserController.toChangeMyDetails()}"    ajax="false" />
-                                            </p:submenu>
-                                            <p:submenu label="Help" >
-                                                <p:menuitem value="User Manual" action="/wiki"   ajax="false" />
-                                                <p:menuitem value="Feedback" action="/feedback"   ajax="false" />
-                                                <p:menuitem value="Contact us" action="/contact"   ajax="false" />
-                                                <p:menuitem value="About" action="/about_us"   ajax="false" />
-                                            </p:submenu>
-                                        </p:submenu>
-                                    </p:panelMenu>
-                                </h:form>
+                               <ez:menu/>
                             </div>
                             <div class="col-md-10">
                                 <h:panelGroup rendered="#{webUserController.loggedUser ne null}">

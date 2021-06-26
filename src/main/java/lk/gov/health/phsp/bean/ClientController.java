@@ -146,6 +146,7 @@ public class ClientController implements Serializable {
     private Long idTo;
     private Institution institution;
     private Institution referingInstitution;
+    private Institution dispatchingLab;
     private Institution divertingLab;
     private List<Encounter> selectedClientsClinics;
     private List<Encounter> selectedClientEncounters;
@@ -925,7 +926,7 @@ public class ClientController implements Serializable {
     }
 
     public String dispatchSelectedSamples() {
-        if (referingInstitution == null) {
+        if (dispatchingLab == null) {
             JsfUtil.addErrorMessage("Please select a lab to send samples");
             return "";
         }
@@ -933,7 +934,7 @@ public class ClientController implements Serializable {
             e.setSentToLab(true);
             e.setSentToLabAt(new Date());
             e.setSentToLabBy(webUserController.getLoggedUser());
-            e.setReferalInstitution(referingInstitution);
+            e.setReferalInstitution(dispatchingLab);
             encounterFacade.edit(e);
         }
         selectedToDispatch = null;
@@ -4254,6 +4255,8 @@ public class ClientController implements Serializable {
         this.itemApplicationController = itemApplicationController;
     }
 
+    
+    
     public UserTransactionController getUserTransactionController() {
         return userTransactionController;
     }
@@ -4412,6 +4415,14 @@ public class ClientController implements Serializable {
 
     public void setDivertingLab(Institution divertingLab) {
         this.divertingLab = divertingLab;
+    }
+
+    public Institution getDispatchingLab() {
+        return dispatchingLab;
+    }
+
+    public void setDispatchingLab(Institution dispatchingLab) {
+        this.dispatchingLab = dispatchingLab;
     }
 
     // </editor-fold>

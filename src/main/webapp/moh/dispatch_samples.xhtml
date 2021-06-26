@@ -18,7 +18,7 @@
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columnClasses="2" >
+                        <p:panelGrid columns="2" >
 
                             <p:panelGrid columns="2" >
                                 <f:facet name="header" >
@@ -50,7 +50,7 @@
                                 </f:facet>
 
                                 <p:outputLabel value="Lab to Dispatch" ></p:outputLabel>
-                                <p:autoComplete value="#{clientController.referingInstitution}"
+                                <p:autoComplete value="#{clientController.dispatchingLab}"
                                                 completeMethod="#{institutionController.completeLab}"
                                                 var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                                 </p:autoComplete>
