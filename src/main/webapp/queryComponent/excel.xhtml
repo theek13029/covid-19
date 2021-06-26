@@ -7,11 +7,8 @@
       xmlns:p="http://primefaces.org/ui">
 
     <body>
-
-        <ui:composition template="/queryComponent/index.xhtml">
-
-            <ui:define name="analysis">
-
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content">
                 <f:view>
                     <h:form>
                         <p:panelGrid columns="2" styleClass="alignTop" >
@@ -21,13 +18,10 @@
                             </f:facet>
 
                             <p:dataTable value="#{queryComponentController.excels}" var="item"
-
                                          rowKey="#{item.id}"
                                          paginator="true"
                                          rows="10"
-                                         rowsPerPageTemplate="10,20,30,40,50"
-
-                                         >
+                                         rowsPerPageTemplate="10,20,30,40,50">
 
                                 <p:column style="width: 15rem; ">
                                     <f:facet name="header">

@@ -7,10 +7,8 @@
       xmlns:p="http://primefaces.org/ui">
 
     <body>
-
-        <ui:composition template="/queryComponent/index.xhtml">
-
-            <ui:define name="analysis">
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content">
 
                 <p:panelGrid columns="2" styleClass="alignTop"  >
                     <f:facet name="header" >
@@ -24,9 +22,7 @@
                                      rowKey="#{item.id}"
                                      paginator="true"
                                      rows="10"
-                                     rowsPerPageTemplate="10,20,30,40,50"
-
-                                     >
+                                     rowsPerPageTemplate="10,20,30,40,50">
 
                             <p:column sortBy="#{item.name}" filterBy="#{item.name}" filterMatchMode="contains">
                                 <f:facet name="header">

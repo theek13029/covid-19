@@ -26,16 +26,12 @@ THE SOFTWARE.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
 
     <body>
-        <ui:composition template="/webUser/index.xhtml">
-
-            <ui:define name="webUserContents">
-
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content"> 
                 <h:form id="WebUserEditForm">
-
                     <p:panelGrid columns="1" rendered="#{webUserController.loggedUser != null}"
                                  style="margin: auto; text-align: left; width: 100%;" styleClass="alignTop">
 

@@ -7,8 +7,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-        <ui:composition template="/institution/index.xhtml">
-            <ui:define name="insContents">
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content">
 
                 <h:form id="InstitutionCreateForm" style="padding-top: 1rem;"  enctype="multipart/form-data">
 
@@ -16,8 +16,6 @@
                         <p:commandButton ajax="false" 
                                          action="#{institutionController.importInstitutions()}" 
                                          value="Import"/>
-
-
                         <p>Start Row - 1</p>
                         <p>Institution Name Column - 1 / A</p><!-- comment -->
                         <p>POI Column - 2 / B</p>

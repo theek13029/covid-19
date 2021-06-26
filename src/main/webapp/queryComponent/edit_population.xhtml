@@ -7,48 +7,54 @@
       xmlns:p="http://primefaces.org/ui">
 
     <body>
-        <ui:composition template="/queryComponent/index.xhtml">
-            <ui:define name="analysis">     
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content"> 
                 <h:form id="QueryComponentEditForm">
-                    <p:panelGrid id="display" columns="1" style="margin: auto;" styleClass="fullWidth">
-                        <f:facet name="header" >
+                    <div class="card">
+                        <div class="card-header">
                             <p:outputLabel value="Population" />
-                            <p:commandButton  value="Save" 
-                                              action="#{queryComponentController.savePopulation()}" 
-                                              ajax="false" 
-                                              style="float: right;" >
-                            </p:commandButton>
-                        </f:facet>
+                            <p:commandButton  value="Save" action="#{queryComponentController.savePopulation()}" ajax="false" style="float: left;" ></p:commandButton>
+                        </div>
 
-
-                        <p:panelGrid columns="2"  styleClass="fullWidth">
-                            <p:outputLabel value="#{bundleQuery.CreateQueryComponentLabel_name}"
-                                           for="name" />
-                            <p:inputText id="name" required="true"  styleClass="fullWidth"
-                                         maxlength="255"
-                                         requiredMessage="Need to enter a name"
-                                         value="#{queryComponentController.selected.name}" title="#{bundleQuery.CreateQueryComponentTitle_name}" />
-
-                            <p:outputLabel value="Code" for="code" />
-                            <p:inputText id="code" value="#{queryComponentController.selected.code}" 
-                                         styleClass="fullWidth" maxlength="255"
-                                         required="true"
-                                         requiredMessage="Need to enter a code"
-                                         title="Code" />
-
-                            <p:outputLabel value="Descreption" for="descreption" />
-                            <p:inputTextarea rows="4" cols="30" id="descreption"  styleClass="fullWidth"
-                                             value="#{queryComponentController.selected.descreption}" 
-                                             title="#{bundleQuery.CreateQueryComponentTitle_descreption}" />
-
-                            <p:outputLabel value="Population Type" for="populationType" />
-                            <p:selectOneMenu id="populationType"  value="#{queryComponentController.selected.populationType}" >
-                                <f:selectItem itemLabel="Select" ></f:selectItem>
-                                <f:selectItems value="#{commonController.populationTypes}" ></f:selectItems>
-                            </p:selectOneMenu>
-                        </p:panelGrid>
-
-                    </p:panelGrid>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <p:outputLabel value="#{bundleQuery.CreateQueryComponentLabel_name}" for="name" class="col-md-2" />
+                                <div class="col-md-4">
+                                    <p:inputText id="name" required="true"  class="form-control"
+                                                 maxlength="255"
+                                                 requiredMessage="Need to enter a name"
+                                                 value="#{queryComponentController.selected.name}" title="#{bundleQuery.CreateQueryComponentTitle_name}" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <p:outputLabel value="Code" for="code" class="col-md-2" />
+                                <div class="col-md-4">
+                                    <p:inputText id="code" value="#{queryComponentController.selected.code}" 
+                                                 class="form-control" maxlength="255"
+                                                 required="true"
+                                                 requiredMessage="Need to enter a code"
+                                                 title="Code" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <p:outputLabel value="Descreption" for="descreption" class="col-md-2" />
+                                <div class="col-md-4">
+                                    <p:inputTextarea rows="4" cols="30" id="descreption"  class="form-control"
+                                                     value="#{queryComponentController.selected.descreption}" 
+                                                     title="#{bundleQuery.CreateQueryComponentTitle_descreption}" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <p:outputLabel value="Population Type" for="populationType" class="col-md-2" />
+                                <div class="col-md-4">
+                                    <p:selectOneMenu id="populationType" class="form-control" value="#{queryComponentController.selected.populationType}" >
+                                        <f:selectItem itemLabel="Select" ></f:selectItem>
+                                        <f:selectItems value="#{commonController.populationTypes}" ></f:selectItems>
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </h:form>
             </ui:define>
         </ui:composition>

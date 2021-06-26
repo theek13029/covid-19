@@ -7,8 +7,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-        <ui:composition template="/institution/index.xhtml">
-            <ui:define name="insContents">
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content">
                 <h:form id="InstitutionListForm">    
                     <p:dataTable id="datalist" value="#{institutionController.items}" var="item"
                                  selectionMode="single" selection="#{institutionController.selected}"
