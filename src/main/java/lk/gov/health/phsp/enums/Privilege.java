@@ -14,6 +14,7 @@ public enum Privilege {
     Encounter_Management("Order Management"),
     @Deprecated
     Appointment_Management("Appointment Management"),
+    Sample_Management("Sample Management"),
     Lab_Management("Lab Management"),
     @Deprecated
     Pharmacy_Management("Pharmacy Management"),
@@ -52,11 +53,16 @@ public enum Privilege {
     Monitoring_and_evaluation_reports("Monitoring & Evaluation Reports"),
     View_individual_data("View Individual Data"),
     View_aggragate_date("View Aggregate Data"),
+    //Sample Management
+    Dispatch_Samples("Dispatch Samples"),
+    Divert_Samples("Divert Samples"),
     //Lab Management
-    View_Orders("Receive Orders"),
+    View_Orders("View Orders"),
+    Receive_Samples("Receive Samples"),
     Enter_Results("Enter Results"),
     Review_Results("Review Results"),
     Confirm_Results("Approve Results"),
+    Print_Results("Approve Results"),
     Lab_Reports("Lab Reports"),;
 
     public final String label;

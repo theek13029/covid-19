@@ -467,24 +467,35 @@ public class WebUserController implements Serializable {
         allPrivilegeRoot = new PrivilegeTreeNode("Root", null);
 
         TreeNode clientManagement = new PrivilegeTreeNode("Patient Management", allPrivilegeRoot, Privilege.Client_Management);
+        TreeNode sampleManagement = new PrivilegeTreeNode("Sample Management", allPrivilegeRoot, Privilege.Sample_Management);
         TreeNode labManagement = new PrivilegeTreeNode("Lab Management", allPrivilegeRoot, Privilege.Lab_Management);
         TreeNode user = new PrivilegeTreeNode("User", allPrivilegeRoot, Privilege.Manage_Users);
         TreeNode institutionAdministration = new PrivilegeTreeNode("Institution Administration", allPrivilegeRoot, Privilege.Institution_Administration);
         TreeNode me = new PrivilegeTreeNode("Monitoring and Evaluation", allPrivilegeRoot, Privilege.Monitoring_and_evaluation);
         TreeNode systemAdministration = new PrivilegeTreeNode("System Administration", allPrivilegeRoot, Privilege.System_Administration);
-        //Client Management
 
+        //Client Management
         TreeNode add_Client = new PrivilegeTreeNode("Add Cases", clientManagement, Privilege.Add_Client);
         TreeNode add_Tests = new PrivilegeTreeNode("Add Tests", clientManagement, Privilege.Add_Tests);
         TreeNode enter_Results = new PrivilegeTreeNode("Enter Results", clientManagement, Privilege.Enter_Results);
         TreeNode search_any_Client_by_IDs = new PrivilegeTreeNode("Search any Client by IDs", clientManagement, Privilege.Search_any_Client_by_IDs);
         TreeNode search_any_Client_by_Details = new PrivilegeTreeNode("Search any Client by Details", clientManagement, Privilege.Search_any_Client_by_Details);
 
+        //Lab Management
+        TreeNode receive_samples = new PrivilegeTreeNode("Receive Samples", labManagement, Privilege.Receive_Samples);
+        TreeNode enter_results_lab = new PrivilegeTreeNode("Enter Results", labManagement, Privilege.Enter_Results);
+        TreeNode review_Results = new PrivilegeTreeNode("Review Results", labManagement, Privilege.Review_Results);
+        TreeNode confirm_results = new PrivilegeTreeNode("Confirm Results", labManagement, Privilege.Confirm_Results);
+        TreeNode print_results = new PrivilegeTreeNode("Print Results", labManagement, Privilege.Print_Results);
+        TreeNode view_orders = new PrivilegeTreeNode("View Orders", labManagement, Privilege.View_Orders);
+
+        
         //Institution Administration
         TreeNode manage_Institution_Users = new PrivilegeTreeNode("Manage Institution Users", institutionAdministration, Privilege.Manage_Institution_Users);
         TreeNode manage_Institution_Metadata = new PrivilegeTreeNode("Manage Institution Metadata", institutionAdministration, Privilege.Manage_Institution_Metadata);
         TreeNode manage_Authorised_Areas = new PrivilegeTreeNode("Manage Authorised Areas", institutionAdministration, Privilege.Manage_Authorised_Areas);
         TreeNode manage_Authorised_Institutions = new PrivilegeTreeNode("Manage Authorised Institutions", institutionAdministration, Privilege.Manage_Authorised_Institutions);
+
         //System Administration
         TreeNode manage_Users = new PrivilegeTreeNode("Manage Users", systemAdministration, Privilege.Manage_Users);
         TreeNode manage_Metadata = new PrivilegeTreeNode("Manage Metadata", systemAdministration, Privilege.Manage_Metadata);
@@ -502,6 +513,7 @@ public class WebUserController implements Serializable {
         TreeNode manage_Lab_Confirm_Results = new PrivilegeTreeNode("Confirm Results", labManagement, Privilege.Confirm_Results);
         TreeNode manage_Lab_Reports = new PrivilegeTreeNode("Lab Reports", labManagement, Privilege.Lab_Reports);
 
+        
     }
 
     public String toChangeMyDetails() {
