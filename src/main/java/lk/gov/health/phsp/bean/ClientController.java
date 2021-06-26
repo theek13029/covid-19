@@ -780,6 +780,28 @@ public class ClientController implements Serializable {
         return "/moh/dispatch_samples";
     }
 
+    public String toDispatchSamplesWithReferringLab() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired=:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.referalInstitution=:rins "
+                + " and c.sentToLab is null "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("ins", institution);
+        m.put("rins", dispatchingLab);
+        listedToDispatch = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return toSummaryByOrderedInstitutionVsLabToReceive();
+    }
+
+    
     public String toDivertSamples() {
         String j = "select c "
                 + " from Encounter c "
