@@ -26,6 +26,9 @@
         <div id="wrapper">
             <f:view locale="#{webUserController.locale}" >
                 <h:panelGroup rendered="#{webUserController.loggedUser ne null}">
+
+
+
                     <!-- Sidebar -->
                     <nav class="navbar row">
                         <div class="container-fluid">                
@@ -34,7 +37,7 @@
                                     <div class="row">
                                         <div class="col-sm-8 col-lg-8">
                                             <h:graphicImage style="float: left;" library="image" name="sllogo.png"></h:graphicImage> 
-                                            <h5>National COVID-19 Health Information System</h5>
+                                            <h5>National COVID-19 Health Information System 111</h5>
                                         </div>
                                         <div class="user_details col-sm-4 col-lg-4">
                                             <h:form class="form">
@@ -59,10 +62,12 @@
                         </div>
                     </nav>                   
 
+
+
                     <div class="container-fluid">
                         <div class="row content">                        
                             <div class="col-md-2 sidenav">
-                               <ez:menu/>
+                                <ez:menu/>
                             </div>
                             <div class="col-md-10">
                                 <h:panelGroup rendered="#{webUserController.loggedUser ne null}">
