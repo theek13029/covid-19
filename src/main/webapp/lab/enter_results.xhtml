@@ -128,7 +128,7 @@
                             </p:panelGrid>
 
                             <p:panelGrid columns="1" >
-                                <p:commandButton action="#{clientController}" ajax="false" value="Mark All Negative" onclick="if (!confirm('Are you sure you want to delete?'))
+                                <p:commandButton action="#{clientController.toMarkAllNegative()}" ajax="false" value="Mark All Negative" onclick="if (!confirm('Are you sure you want to delete?'))
                                             return false">
                                 </p:commandButton>
                             </p:panelGrid>
@@ -142,42 +142,47 @@
                             <p:column headerText="ID" width="60">
                                 <p:outputLabel value="#{c.id}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Tube No" width="80">
+                            <p:column headerText="Tube No" width="80" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Lab No" width="200">
+                            <p:column headerText="Lab No" width="200"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Name" >
+                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" 
+                                      filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age" width="5rem;" >
+                            <p:column headerText="Age" width="60"  sortBy="#{c.client.person.age}" 
+                                      filterBy="#{c.client.person.age}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Sex" >
+                            <p:column headerText="Sex" width="60"  sortBy="#{c.client.person.sex.name}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column id="result" headerText="CT" >
-                                <p:inputText id="txtCt" value="#{c.ctValueStr}" style="width: 10rem;" >
+                            <p:column id="result" headerText="CT" width="100"  sortBy="#{c.ctValueStr}" filterBy="#{c.ctValueStr}" filterMatchMode="contains" >
+                                <p:inputText id="txtCt" value="#{c.ctValueStr}" style="width: 98px;" >
                                     <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="Result" >
-                                <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}"  >
-                                    <f:selectItem itemLabel="Select Result" ></f:selectItem>
+                            <p:column headerText="Result" width="100"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
+                                <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}" style="width: 98px;" >
+                                    <f:selectItem itemLabel="Select Result"  ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
                                                    var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
-                                    <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounterResults(c)}" >
+                                    <p:ajax event="change" process="cmbResult" update="txtResultStr" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:selectOneMenu>
                             </p:column>
-                            <p:column headerText="Comments" >
-                                <p:inputText id="txtComments" value="#{c.resultComments}"  >
+                            <p:column headerText="Comments" width="150"  sortBy="#{c.resultComments}" filterBy="#{c.resultComments}" filterMatchMode="contains" >
+                                <p:inputText id="txtComments" value="#{c.resultComments}"  style="width: 148px;">
                                     <p:ajax event="blur" process="txtComments" 
                                             listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>
+                            </p:column>
+                            <p:column headerText="Result Diaplayed" width="100"  sortBy="#{c.pcrResultStr}" filterBy="#{c.pcrResultStr}" filterMatchMode="contains" >
+                                <p:outputLabel id="txtResultStr" value="#{c.pcrResultStr}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
 

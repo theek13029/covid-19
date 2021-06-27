@@ -73,7 +73,8 @@
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="Result" >
+                            <p:column headerText="Result" 
+                                      sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
                                 <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}"  >
                                     <f:selectItem itemLabel="Select Result" ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
@@ -81,6 +82,9 @@
                                     <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:selectOneMenu>
+                            </p:column>
+                            <p:column sortBy="#{c.pcrResultStr}" filterBy="#{c.pcrResultStr}" filterMatchMode="contains" headerText="Result Display" >
+                                 <p:outputLabel value="#{c.pcrResultStr}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
                     </h:form>

@@ -212,6 +212,21 @@ public class ClientController implements Serializable {
         return "/client/search_by_id";
     }
 
+    public void toMarkAllNegative(){
+        if(listedToEnterResults==null){
+            JsfUtil.addErrorMessage("Nothing to mark");
+            return ;
+        }
+        for(Encounter e:listedToEnterResults){
+            e.setPcrResult(itemApplicationController.getPcrNegative());
+            e.setPcrResultStr(preferenceController.getPcrNegativeTerm());
+            e.setResultEntered(true);
+            e.setResultEnteredAt(new Date());
+            e.setResultEnteredBy(webUserController.getLoggedUser());
+            getEncounterFacade().edit(e);
+        }
+    }
+    
     @Deprecated
     public String toEnterTestResults() {
         fillTestEnrollmentToMark();
@@ -1027,6 +1042,20 @@ public class ClientController implements Serializable {
                 se.setResultConfirmed(true);
                 se.setResultConfirmedAt(new Date());
                 se.setResultConfirmedBy(webUserController.getLoggedUser());
+        }
+    
+        if(se.getPcrResult()!=null){
+            if(se.getPcrResult().equals(itemApplicationController.getPcrPositive())){
+                se.setPcrResultStr(preferenceController.getPcrPositiveTerm());
+            }else if(se.getPcrResult().equals(itemApplicationController.getPcrInconclusive())){
+                se.setPcrResultStr(preferenceController.getPcrInconclusiveTerm());
+            }else if(se.getPcrResult().equals(itemApplicationController.getPcrInvalid())){
+                se.setPcrResultStr(preferenceController.getPcrInvalidTerm());
+            }else if(se.getPcrResult().equals(itemApplicationController.getPcrNegative())){
+                se.setPcrResultStr(preferenceController.getPcrNegativeTerm());
+            }else{
+                
+            }
         }
         encounterFacade.edit(se);
     }
