@@ -390,7 +390,6 @@ public class ClientController implements Serializable {
         // System.out.println("s = " + s);
         // System.out.println("s.getEncounter() = " + s.getEncounter());
         // System.out.println("s.getEncounter().getClient() = " + s.getEncounter().getClient());
-
         smsTemplate = smsTemplate.replace("#{name}", s.getEncounter().getClient().getPerson().getName());
         smsTemplate = smsTemplate.replace("#{institution}", s.getEncounter().getInstitution().getName());
         smsTemplate = smsTemplate.replace("#{sampled_date}", CommonController.dateTimeToString(s.getEncounter().getEncounterDate()));
@@ -1630,131 +1629,130 @@ public class ClientController implements Serializable {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Functions">
     public String importResultsFromExcel() {
+        System.out.println("importResultsFromExcel = ");
+
+        System.out.println("try 1");
+        String strId;
+        String strResult;
+        String strCtValue;
+        String strComment;
+        Long id;
+
+        int serialNoColInt;
+        int ctValueColInt;
+        int resultColInt;
+        int commentColInt;
+
+        serialNoColInt = CommonController.excelColFromHeader(serialNoColumn);
+        ctValueColInt = CommonController.excelColFromHeader(ctValueColumn);
+        resultColInt = CommonController.excelColFromHeader(resultColumn);
+        commentColInt = CommonController.excelColFromHeader(commentColumn);
+
+        File inputWorkbook;
+        Workbook w;
+        Cell cell;
+        InputStream in;
+
+        JsfUtil.addSuccessMessage(file.getFileName());
+
         try {
-            String strId;
-            String strResult;
-            String strCtValue;
-            String strComment;
-            Long id;
-
-            int serialNoColInt;
-            int ctValueColInt;
-            int resultColInt;
-            int commentColInt;
-
-            serialNoColInt = CommonController.excelColFromHeader(serialNoColumn);
-            ctValueColInt = CommonController.excelColFromHeader(ctValueColumn);
-            resultColInt = CommonController.excelColFromHeader(resultColumn);
-            commentColInt = CommonController.excelColFromHeader(commentColumn);
-
-            File inputWorkbook;
-            Workbook w;
-            Cell cell;
-            InputStream in;
-
             JsfUtil.addSuccessMessage(file.getFileName());
-
-            try {
-                JsfUtil.addSuccessMessage(file.getFileName());
-                in = file.getInputstream();
-                File f;
-                f = new File(Calendar.getInstance().getTimeInMillis() + file.getFileName());
-                FileOutputStream out = new FileOutputStream(f);
-                int read = 0;
-                byte[] bytes = new byte[1024];
-                while ((read = in.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
-                }
-                in.close();
-                out.flush();
-                out.close();
-
-                inputWorkbook = new File(f.getAbsolutePath());
-
-                JsfUtil.addSuccessMessage("Excel File Opened");
-                w = Workbook.getWorkbook(inputWorkbook);
-                Sheet sheet = w.getSheet(0);
-
-                errorCode = "";
-
-                for (int i = startRow; i < sheet.getRows(); i++) {
-
-                    cell = sheet.getCell(serialNoColInt, i);
-                    strId = cell.getContents();
-
-                    id = CommonController.getLongValue(strId);
-
-                    Encounter resultEntering = null;
-
-                    for (Encounter te : listedToEnterResults) {
-                        if (te.getId().equals(id)) {
-                            resultEntering = te;
-                        }
-                    }
-
-                    if (resultEntering == null) {
-                        JsfUtil.addErrorMessage("Could NOT find serial. Please check column numbers");
-                        continue;
-                    }
-
-                    cell = sheet.getCell(resultColInt, i);
-                    strResult = cell.getContents();
-                    strResult = strResult.trim().toLowerCase();
-
-                    resultEntering.setPcrResultStr(strResult);
-
-                    cell = sheet.getCell(ctValueColInt, i);
-                    strCtValue = cell.getContents();
-                    resultEntering.setCtValueStr(strCtValue);
-
-                    cell = sheet.getCell(commentColInt, i);
-                    strComment = cell.getContents();
-                    resultEntering.setResultComments(strComment);
-                    String localPositive = preferenceController.getPcrPositiveTerm().trim().toLowerCase();
-                    String localNegative = preferenceController.getPcrNegativeTerm().trim().toLowerCase();
-                    String localInvalid = preferenceController.getPcrInvalidTerm().trim().toLowerCase();
-                    String localInconclusive = preferenceController.getPcrInconclusiveTerm().trim().toLowerCase();
-
-                    Item pcrPositive = itemApplicationController.getPcrPositive();
-                    Item pcrNegative = itemApplicationController.getPcrNegative();
-                    Item pcrInconclusive = itemApplicationController.getPcrInconclusive();
-                    Item pcrInvalid = itemApplicationController.getPcrInvalid();
-
-                    if (strResult.contains(localNegative)) {
-                        resultEntering.setPcrResult(pcrNegative);
-                    } else if (strResult.contains(localInvalid)) {
-                        resultEntering.setPcrResult(pcrInvalid);
-                    } else if (strResult.contains(localInconclusive)) {
-                        resultEntering.setPcrResult(pcrInconclusive);
-                    } else if (strResult.contains(localPositive)) {
-                        resultEntering.setPcrResult(pcrPositive);
-                    } else {
-                        continue;
-                    }
-
-                    resultEntering.setResultEntered(true);
-                    resultEntering.setResultEnteredAt(new Date());
-                    resultEntering.setResultEnteredBy(webUserController.getLoggedUser());
-
-                    getEncounterFacade().edit(resultEntering);
-
-                }
-
-                JsfUtil.addSuccessMessage("Succesful. All the data in Excel File Impoted to the database");
-                return "";
-            } catch (IOException ex) {
-                JsfUtil.addErrorMessage(ex.getMessage());
-                System.err.println("e = " + ex.getMessage());
-                return "";
-            } catch (BiffException e) {
-                JsfUtil.addErrorMessage(e.getMessage());
-                System.err.println("e = " + e.getMessage());
-                return "";
+            in = file.getInputstream();
+            File f;
+            f = new File(Calendar.getInstance().getTimeInMillis() + file.getFileName());
+            FileOutputStream out = new FileOutputStream(f);
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            while ((read = in.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
             }
-        } catch (Exception e) {
+            in.close();
+            out.flush();
+            out.close();
+
+            inputWorkbook = new File(f.getAbsolutePath());
+
+            JsfUtil.addSuccessMessage("Excel File Opened");
+            w = Workbook.getWorkbook(inputWorkbook);
+            Sheet sheet = w.getSheet(0);
+
+            errorCode = "";
+
+            for (int i = startRow; i < sheet.getRows(); i++) {
+
+                cell = sheet.getCell(serialNoColInt, i);
+                strId = cell.getContents();
+
+                id = CommonController.getLongValue(strId);
+
+                Encounter resultEntering = null;
+
+                for (Encounter te : listedToEnterResults) {
+                    if (te.getId().equals(id)) {
+                        resultEntering = te;
+                    }
+                }
+
+                if (resultEntering == null) {
+                    JsfUtil.addErrorMessage("Could NOT find serial. Please check column numbers");
+                    continue;
+                }
+
+                cell = sheet.getCell(resultColInt, i);
+                strResult = cell.getContents();
+                strResult = strResult.trim().toLowerCase();
+
+                resultEntering.setPcrResultStr(strResult);
+
+                cell = sheet.getCell(ctValueColInt, i);
+                strCtValue = cell.getContents();
+                resultEntering.setCtValueStr(strCtValue);
+
+                cell = sheet.getCell(commentColInt, i);
+                strComment = cell.getContents();
+                resultEntering.setResultComments(strComment);
+                String localPositive = preferenceController.getPcrPositiveTerm().trim().toLowerCase();
+                String localNegative = preferenceController.getPcrNegativeTerm().trim().toLowerCase();
+                String localInvalid = preferenceController.getPcrInvalidTerm().trim().toLowerCase();
+                String localInconclusive = preferenceController.getPcrInconclusiveTerm().trim().toLowerCase();
+
+                Item pcrPositive = itemApplicationController.getPcrPositive();
+                Item pcrNegative = itemApplicationController.getPcrNegative();
+                Item pcrInconclusive = itemApplicationController.getPcrInconclusive();
+                Item pcrInvalid = itemApplicationController.getPcrInvalid();
+
+                if (strResult.contains(localNegative)) {
+                    resultEntering.setPcrResult(pcrNegative);
+                } else if (strResult.contains(localInvalid)) {
+                    resultEntering.setPcrResult(pcrInvalid);
+                } else if (strResult.contains(localInconclusive)) {
+                    resultEntering.setPcrResult(pcrInconclusive);
+                } else if (strResult.contains(localPositive)) {
+                    resultEntering.setPcrResult(pcrPositive);
+                } else {
+                    continue;
+                }
+
+                resultEntering.setResultEntered(true);
+                resultEntering.setResultEnteredAt(new Date());
+                resultEntering.setResultEnteredBy(webUserController.getLoggedUser());
+
+                getEncounterFacade().edit(resultEntering);
+
+            }
+
+            JsfUtil.addSuccessMessage("Succesful. All the data in Excel File Impoted to the database");
+            return "";
+        } catch (IOException ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+            System.err.println("e = " + ex.getMessage());
+            return "";
+        } catch (BiffException e) {
+            JsfUtil.addErrorMessage(e.getMessage());
             System.err.println("e = " + e.getMessage());
             return "";
         }
+
     }
 
     public List<Area> completeClientsGnArea(String qry) {

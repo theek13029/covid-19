@@ -22,7 +22,7 @@
                         <p:growl></p:growl>
                         <p:messages ></p:messages>
 
-                        <p:panelGrid columns="2" >
+                        <p:panelGrid columns="3" >
                             <p:panelGrid columns="2" rendered="true">
                                 <p:outputLabel value="From Date" ></p:outputLabel>
                                 <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
@@ -43,6 +43,7 @@
                                 <p:commandButton ajax="false" value="Generate Excel with Negative Results">
                                     <p:dataExporter target="tblNegative" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                                 </p:commandButton>
+
                             </p:panelGrid>
 
                             <p:panelGrid columns="2" rendered="true" >
@@ -119,12 +120,19 @@
                                 </p:selectOneMenu>
 
                                 <h:panelGroup >
-                                    <p:fileUpload value="#{relationshipController.file}" mode="simple"/>
+                                    <p:fileUpload value="#{clientController.file}" mode="simple"/>
                                     <p:commandButton ajax="false" value="Upload Results from Excel" 
                                                      action="#{clientController.importResultsFromExcel()}"  ></p:commandButton>
                                 </h:panelGroup>
 
                             </p:panelGrid>
+
+                            <p:panelGrid columns="1" >
+                                <p:commandButton action="#{clientController}" ajax="false" value="Mark All Negative" onclick="if (!confirm('Are you sure you want to delete?'))
+                                            return false">
+                                </p:commandButton>
+                            </p:panelGrid>
+
 
                         </p:panelGrid>
 
