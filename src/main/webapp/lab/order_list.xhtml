@@ -31,11 +31,11 @@
                                             var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                             </p:autoComplete>
 
-<!--                            <p:outputLabel value="Lab" ></p:outputLabel>
-                            <p:autoComplete value="#{clientController.referingInstitution}"
-                                            completeMethod="#{institutionController.completeInstitutions}"
-                                            var="m" itemLabel="#{m.name}" itemValue="#{m}" >
-                            </p:autoComplete>-->
+                            <!--                            <p:outputLabel value="Lab" ></p:outputLabel>
+                                                        <p:autoComplete value="#{clientController.referingInstitution}"
+                                                                        completeMethod="#{institutionController.completeInstitutions}"
+                                                                        var="m" itemLabel="#{m.name}" itemValue="#{m}" >
+                                                        </p:autoComplete>-->
 
                             <p:commandButton ajax="false" value="Process" 
                                              action="#{clientController.toLabOrderByReferringInstitution()}" ></p:commandButton>
@@ -72,7 +72,7 @@
                             <p:column headerText="Result"  sortBy="#{c.client.person.age}">
                                 <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
                             </p:column>
-                            
+
                             <p:column headerText="Ordered"  sortBy="#{c.createdAt}">
                                 <p:outputLabel value="#{c.createdAt}"  >
                                     <f:convertDateTime pattern="dd MM yy hh:mm" ></f:convertDateTime>
@@ -94,11 +94,21 @@
                                 <p:outputLabel value="#{c.resultEnteredAt}" >
                                     <f:convertDateTime pattern="dd MM yy hh:mm" ></f:convertDateTime>
                                 </p:outputLabel>
+                                <p:outputLabel value=" by #{c.resultEnteredBy.person.name}"  ></p:outputLabel>
+
+                            </p:column>
+                            <p:column headerText="Review"  >
+                                <p:outputLabel value="#{c.resultReviewedAt}" >
+                                    <f:convertDateTime pattern="dd MM yy hh:mm" ></f:convertDateTime>
+                                </p:outputLabel>
+                                <p:outputLabel value=" by #{c.resultReviewedBy.person.name}"  ></p:outputLabel>
+
                             </p:column>
                             <p:column headerText="Approved"  sortBy="#{c.resultConfirmedAt}">
                                 <p:outputLabel value="#{c.resultConfirmedAt}" >
                                     <f:convertDateTime pattern="dd MM yy hh:mm" ></f:convertDateTime>
                                 </p:outputLabel>
+                                <p:outputLabel value=" by #{c.resultConfirmedBy.person.name}"  ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Result Viewed"  sortBy="#{c.resultNotedAt}" >
                                 <p:outputLabel value="#{c.resultNotedAt}" >
