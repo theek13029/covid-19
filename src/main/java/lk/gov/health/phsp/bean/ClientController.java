@@ -42,10 +42,12 @@ import lk.gov.health.phsp.entity.Encounter;
 import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.entity.Person;
+import lk.gov.health.phsp.entity.Relationship;
 import lk.gov.health.phsp.entity.Sms;
 import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.EncounterType;
 import lk.gov.health.phsp.enums.InstitutionType;
+import lk.gov.health.phsp.enums.RelationshipType;
 import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.SmsFacade;
 import lk.gov.health.phsp.pojcs.ClientBasicData;
@@ -109,6 +111,11 @@ public class ClientController implements Serializable {
     private List<Client> importedClients = null;
 
     private Encounter lastTest;
+
+    private String serialNoColumn = "A";
+    private String resultColumn = "H";
+    private String ctValueColumn = "G";
+    private String commentColumn = "I";
 
     Boolean institutionSelectable;
     Boolean nationalLevel;
@@ -1620,6 +1627,108 @@ public class ClientController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Functions">
+    public String importResultsFromExcel() {
+        try {
+            String strId;
+            String strResult;
+            String strCtValue;
+            String strComment;
+            Long id;
+
+            int serialNoColInt;
+            int ctValueColInt;
+            int resultColInt;
+            int commentColInt;
+
+            serialNoColInt = CommonController.excelColFromHeader(serialNoColumn);
+            ctValueColInt = CommonController.excelColFromHeader(ctValueColumn);
+            resultColInt = CommonController.excelColFromHeader(resultColumn);
+            commentColInt = CommonController.excelColFromHeader(commentColumn);
+
+            File inputWorkbook;
+            Workbook w;
+            Cell cell;
+            InputStream in;
+
+            JsfUtil.addSuccessMessage(file.getFileName());
+
+            try {
+                JsfUtil.addSuccessMessage(file.getFileName());
+                in = file.getInputstream();
+                File f;
+                f = new File(Calendar.getInstance().getTimeInMillis() + file.getFileName());
+                FileOutputStream out = new FileOutputStream(f);
+                int read = 0;
+                byte[] bytes = new byte[1024];
+                while ((read = in.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+                in.close();
+                out.flush();
+                out.close();
+
+                inputWorkbook = new File(f.getAbsolutePath());
+
+                JsfUtil.addSuccessMessage("Excel File Opened");
+                w = Workbook.getWorkbook(inputWorkbook);
+                Sheet sheet = w.getSheet(0);
+
+                errorCode = "";
+
+                for (int i = startRow; i < sheet.getRows(); i++) {
+
+                    cell = sheet.getCell(serialNoColInt, i);
+                    strId = cell.getContents();
+
+                    id = CommonController.getLongValue(strId);
+
+                    Encounter resultEntering;
+
+                    for (Encounter te : listedToEnterResults) {
+                        if (te.getId().equals(id)) {
+                            resultEntering = te;
+                        }
+                    }
+
+                    if (resultEntering == null) {
+                        JsfUtil.addErrorMessage("Could NOT find serial. Please check column numbers");
+                        continue;
+                    }
+
+                    cell = sheet.getCell(resultColInt, i);
+                    strResult = cell.getContents();
+
+                    cell = sheet.getCell(ctValueColInt, i);
+                    strCtValue = cell.getContents();
+    
+                    cell = sheet.getCell(commentColInt, i);
+                    strComment = cell.getContents();
+    
+                    resultEntering.setResultEntered(true);
+                    resultEntering.setResultEnteredAt(new Date());
+                    resultEntering.setResultEnteredBy(webUserController.getLoggedUser());
+                    
+                    
+                    
+                    
+                    
+                    
+                }
+
+                JsfUtil.addSuccessMessage("Succesful. All the data in Excel File Impoted to the database");
+                return "";
+            } catch (IOException ex) {
+                JsfUtil.addErrorMessage(ex.getMessage());
+                return "";
+            } catch (BiffException e) {
+                JsfUtil.addErrorMessage(e.getMessage());
+                return "";
+            }
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
     public List<Area> completeClientsGnArea(String qry) {
         List<Area> areas = new ArrayList<>();
         if (selected == null) {
@@ -4592,6 +4701,38 @@ public class ClientController implements Serializable {
 
     public void setDispatchingLab(Institution dispatchingLab) {
         this.dispatchingLab = dispatchingLab;
+    }
+
+    public String getSerialNoColumn() {
+        return serialNoColumn;
+    }
+
+    public void setSerialNoColumn(String serialNoColumn) {
+        this.serialNoColumn = serialNoColumn;
+    }
+
+    public String getResultColumn() {
+        return resultColumn;
+    }
+
+    public void setResultColumn(String resultColumn) {
+        this.resultColumn = resultColumn;
+    }
+
+    public String getCtValueColumn() {
+        return ctValueColumn;
+    }
+
+    public void setCtValueColumn(String ctValueColumn) {
+        this.ctValueColumn = ctValueColumn;
+    }
+
+    public String getCommentColumn() {
+        return commentColumn;
+    }
+
+    public void setCommentColumn(String commentColumn) {
+        this.commentColumn = commentColumn;
     }
 
     // </editor-fold>

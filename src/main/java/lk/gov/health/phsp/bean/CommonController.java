@@ -450,7 +450,7 @@ public class CommonController implements Serializable {
         c.setTime(d);
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND,0);
+        c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 1);
         return c.getTime();
     }
@@ -464,6 +464,37 @@ public class CommonController implements Serializable {
         c.set(Calendar.MONTH, month - 1);
 //        System.out.println("c = " + c);
         return startOfTheMonth(c.getTime());
+    }
+
+    public static Integer excelColFromHeader(String columnName) {
+        if (columnName == null) {
+            return null;
+        }
+        columnName = columnName.toUpperCase();
+        switch (columnName) {
+            case "A": return 0;
+            case "B": return 1;
+            case "C": return 2;
+            case "D": return 3;
+            case "E": return 4;
+            case "F": return 5;
+            case "G": return 6;
+            case "H": return 7;
+            case "I": return 8;
+            case "J": return 9;
+            case "K": return 10;
+            case "L": return 11;
+            case "M": return 12;
+            case "N": return 13;
+            case "O": return 14;
+            case "P": return 15;
+            case "Q": return 16;
+            case "R": return 17;
+            case "S": return 18;
+            case "T": return 19;
+            case "U": return 20;
+        }
+        return null;
     }
 
     public static Integer monthIntFromString(String month) {
@@ -1061,8 +1092,8 @@ public class CommonController implements Serializable {
         str = str.replace("\n", "<br/>");
         return str;
     }
-    
-    public static String prepareAsCode(String str){
+
+    public static String prepareAsCode(String str) {
         String after = str.trim().replaceAll(" +", "_");
         return after.toLowerCase();
     }
