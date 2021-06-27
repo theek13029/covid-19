@@ -1684,7 +1684,7 @@ public class ClientController implements Serializable {
 
                     id = CommonController.getLongValue(strId);
 
-                    Encounter resultEntering;
+                    Encounter resultEntering = null;
 
                     for (Encounter te : listedToEnterResults) {
                         if (te.getId().equals(id)) {
