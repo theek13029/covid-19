@@ -57,6 +57,13 @@ public class ItemApplicationController {
     private List<Item> issueUnits;
 
     private List<Item> pcrResults;
+    
+    private Item pcrPositive;
+    private Item pcrNegative;
+    private Item pcrInconclusive;
+    private Item pcrInvalid;
+    
+    
 
     /**
      * Creates a new instance of ItemApplicationController
@@ -429,6 +436,50 @@ public class ItemApplicationController {
             packUnits = findItems(ItemType.Pack_Unit);
         }
         return packUnits;
+    }
+
+    public Item getPcrPositive() {
+        if(pcrPositive==null){
+            pcrPositive = findItemByCode("pcr_positive");
+        }
+        return pcrPositive;
+    }
+
+    public void setPcrPositive(Item pcrPositive) {
+        this.pcrPositive = pcrPositive;
+    }
+
+    public Item getPcrNegative() {
+        if(pcrNegative==null){
+            pcrNegative= findItemByCode("pcr_negative");
+        }
+        return pcrNegative;
+    }
+
+    public void setPcrNegative(Item pcrNegative) {
+        this.pcrNegative = pcrNegative;
+    }
+
+    public Item getPcrInconclusive() {
+        if(pcrInconclusive==null){
+            pcrInconclusive = findItemByCode("pcr_inconclusive");
+        }
+        return pcrInconclusive;
+    }
+
+    public void setPcrInconclusive(Item pcrInconclusive) {
+        this.pcrInconclusive = pcrInconclusive;
+    }
+
+    public Item getPcrInvalid() {
+        if(pcrInvalid==null){
+            pcrInvalid = findItemByCode("pcr_invalid");
+        }
+        return pcrInvalid;
+    }
+
+    public void setPcrInvalid(Item pcrInvalid) {
+        this.pcrInvalid = pcrInvalid;
     }
 
 }

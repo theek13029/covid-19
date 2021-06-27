@@ -20,7 +20,7 @@
                     <h:form enctype="multipart/form-data" >
 
                         <p:panelGrid columns="2" >
-                            <p:panelGrid columns="2" >
+                            <p:panelGrid columns="2" rendered="true">
                                 <p:outputLabel value="From Date" ></p:outputLabel>
                                 <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
                                 <p:outputLabel value="To Date" ></p:outputLabel>
@@ -42,79 +42,79 @@
                                 </p:commandButton>
                             </p:panelGrid>
 
-                            <p:panelGrid columns="2" >
+                            <p:panelGrid columns="2" rendered="true" >
                                 <p:outputLabel value="Serial No Column" ></p:outputLabel>
                                 <p:selectOneMenu value="#{clientController.serialNoColumn}" >
-                                    <f:selectItem value="A" ></f:selectItem>
-                                    <f:selectItem value="B" ></f:selectItem>
-                                    <f:selectItem value="C" ></f:selectItem>
-                                    <f:selectItem value="D" ></f:selectItem>
-                                    <f:selectItem value="E" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="F" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="G" ></f:selectItem>
-                                    <f:selectItem value="H" ></f:selectItem>
-                                    <f:selectItem value="I" ></f:selectItem>
-                                    <f:selectItem value="J" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="K" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="L" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="M" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="N" ></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
+                                    <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
+                                    <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
+                                    <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
+                                    <f:selectItem itemLabel="E" itemValue="E"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="F" itemValue="F"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
+                                    <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
+                                    <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
+                                    <f:selectItem itemLabel="J" itemValue="J"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="K" itemValue="K"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
                                 </p:selectOneMenu>
 
                                 <p:outputLabel value="CT Value Column" ></p:outputLabel>
                                 <p:selectOneMenu value="#{clientController.ctValueColumn}" >
-                                    <f:selectItem value="A" ></f:selectItem>
-                                    <f:selectItem value="B" ></f:selectItem>
-                                    <f:selectItem value="C" ></f:selectItem>
-                                    <f:selectItem value="D" ></f:selectItem>
-                                    <f:selectItem value="E" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="F" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="G" ></f:selectItem>
-                                    <f:selectItem value="H" ></f:selectItem>
-                                    <f:selectItem value="I" ></f:selectItem>
-                                    <f:selectItem value="J" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="K" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="L" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="M" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="N" ></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
+                                    <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
+                                    <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
+                                    <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
+                                    <f:selectItem itemLabel="E" itemValue="E"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="F" itemValue="F"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
+                                    <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
+                                    <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
+                                    <f:selectItem itemLabel="J" itemValue="J"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="K" itemValue="K"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
                                 </p:selectOneMenu>
 
                                 <p:outputLabel value="Result Column" ></p:outputLabel>
                                 <p:selectOneMenu value="#{clientController.resultColumn}" >
-                                    <f:selectItem value="A" ></f:selectItem>
-                                    <f:selectItem value="B" ></f:selectItem>
-                                    <f:selectItem value="C" ></f:selectItem>
-                                    <f:selectItem value="D" ></f:selectItem>
-                                    <f:selectItem value="E" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="F" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="G" ></f:selectItem>
-                                    <f:selectItem value="H" ></f:selectItem>
-                                    <f:selectItem value="I" ></f:selectItem>
-                                    <f:selectItem value="J" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="K" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="L" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="M" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="N" ></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
+                                    <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
+                                    <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
+                                    <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
+                                    <f:selectItem itemLabel="E" itemValue="E"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="F" itemValue="F"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
+                                    <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
+                                    <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
+                                    <f:selectItem itemLabel="J" itemValue="J"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="K" itemValue="K"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
                                 </p:selectOneMenu>
 
                                 <p:outputLabel value="Commnent Column" ></p:outputLabel>
-                                <p:selectOneMenu value="#{clientController.serialNoColumn}" >
-                                    <f:selectItem value="A" ></f:selectItem>
-                                    <f:selectItem value="B" ></f:selectItem>
-                                    <f:selectItem value="C" ></f:selectItem>
-                                    <f:selectItem value="D" ></f:selectItem>
-                                    <f:selectItem value="E" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="F" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="G" ></f:selectItem>
-                                    <f:selectItem value="H" ></f:selectItem>
-                                    <f:selectItem value="I" ></f:selectItem>
-                                    <f:selectItem value="J" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="K" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="L" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="M" ></f:selectItem><!-- comment -->
-                                    <f:selectItem value="N" ></f:selectItem><!-- comment -->
+                                <p:selectOneMenu value="#{clientController.commentColumn}" >
+                                    <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
+                                    <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
+                                    <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
+                                    <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
+                                    <f:selectItem itemLabel="E" itemValue="E"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="F" itemValue="F"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
+                                    <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
+                                    <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
+                                    <f:selectItem itemLabel="J" itemValue="J"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="K" itemValue="K"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
+                                    <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
                                 </p:selectOneMenu>
-                                
+
                                 <h:panelGroup >
                                     <p:fileUpload value="#{relationshipController.file}" mode="simple"/>
                                     <p:commandButton ajax="false" value="Upload Results from Excel" 
@@ -125,7 +125,7 @@
 
                         </p:panelGrid>
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}" 
+                        <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}"  rendered="true"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" rowIndexVar="n"
                                      rowStyleClass="#{c.resultPositive?'redRow':''}">
                             <p:column headerText="ID" width="60">
@@ -170,9 +170,8 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:dataTable id="tblNegative" value="#{clientController.listedToEnterResults}" 
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10" rowIndexVar="n"
-                                     style="display: none;">
+                        <p:dataTable id="tblNegative" value="#{clientController.listedToEnterResults}"  rendered="true"
+                                     var="c" paginator="true" rowKey="#{c.id}" rows="10" style="display: none;" >
                             <p:column headerText="ID" width="60">
                                 <p:outputLabel value="#{c.id}" ></p:outputLabel>
                             </p:column>
