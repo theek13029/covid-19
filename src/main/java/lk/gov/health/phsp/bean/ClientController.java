@@ -212,12 +212,12 @@ public class ClientController implements Serializable {
         return "/client/search_by_id";
     }
 
-    public void toMarkAllNegative(){
-        if(listedToEnterResults==null){
+    public void toMarkAllNegative() {
+        if (listedToEnterResults == null) {
             JsfUtil.addErrorMessage("Nothing to mark");
-            return ;
+            return;
         }
-        for(Encounter e:listedToEnterResults){
+        for (Encounter e : listedToEnterResults) {
             e.setPcrResult(itemApplicationController.getPcrNegative());
             e.setPcrResultStr(preferenceController.getPcrNegativeTerm());
             e.setResultEntered(true);
@@ -226,7 +226,7 @@ public class ClientController implements Serializable {
             getEncounterFacade().edit(e);
         }
     }
-    
+
     @Deprecated
     public String toEnterTestResults() {
         fillTestEnrollmentToMark();
@@ -1043,18 +1043,18 @@ public class ClientController implements Serializable {
                 se.setResultConfirmedAt(new Date());
                 se.setResultConfirmedBy(webUserController.getLoggedUser());
         }
-    
-        if(se.getPcrResult()!=null){
-            if(se.getPcrResult().equals(itemApplicationController.getPcrPositive())){
+
+        if (se.getPcrResult() != null) {
+            if (se.getPcrResult().equals(itemApplicationController.getPcrPositive())) {
                 se.setPcrResultStr(preferenceController.getPcrPositiveTerm());
-            }else if(se.getPcrResult().equals(itemApplicationController.getPcrInconclusive())){
+            } else if (se.getPcrResult().equals(itemApplicationController.getPcrInconclusive())) {
                 se.setPcrResultStr(preferenceController.getPcrInconclusiveTerm());
-            }else if(se.getPcrResult().equals(itemApplicationController.getPcrInvalid())){
+            } else if (se.getPcrResult().equals(itemApplicationController.getPcrInvalid())) {
                 se.setPcrResultStr(preferenceController.getPcrInvalidTerm());
-            }else if(se.getPcrResult().equals(itemApplicationController.getPcrNegative())){
+            } else if (se.getPcrResult().equals(itemApplicationController.getPcrNegative())) {
                 se.setPcrResultStr(preferenceController.getPcrNegativeTerm());
-            }else{
-                
+            } else {
+
             }
         }
         encounterFacade.edit(se);
@@ -1084,6 +1084,13 @@ public class ClientController implements Serializable {
             e.setResultConfirmed(true);
             e.setResultConfirmedAt(new Date());
             e.setResultConfirmedBy(webUserController.getLoggedUser());
+            //TODO : Remove try catch
+            try {
+                String labReport = generateLabReport(e);
+                e.setResultPrintHtml(labReport);
+            } catch (Exception ex) {
+                System.out.println("ex = " + ex);
+            }
             encounterFacade.edit(e);
         }
         selectedToConfirm = null;
@@ -1207,11 +1214,18 @@ public class ClientController implements Serializable {
         }
         //Patient Properties
         html = html.replace("{name}", e.getClient().getPerson().getName());
+        e.getClient().getPerson().calAgeFromDob();
         html = html.replace("{age}", e.getClient().getPerson().getAge());
         html = html.replace("{sex}", e.getClient().getPerson().getSex().getName());
         html = html.replace("{address}", e.getClient().getPerson().getAddress());
         html = html.replace("{phone1}", e.getClient().getPerson().getAddress());
         html = html.replace("{phone2}", e.getClient().getPerson().getAddress());
+        if (e.getLabNumber() != null) {
+            html = html.replace("{lab_no}", e.getLabNumber());
+        }
+        if (e.getEncounterNumber() != null) {
+            html = html.replace("{ref_no}", e.getEncounterNumber());
+        }
         if (e.getClient().getPerson().getGnArea() != null) {
             html = html.replace("{gn}", e.getClient().getPerson().getGnArea().getName());
         }
@@ -1228,6 +1242,28 @@ public class ClientController implements Serializable {
         html = html.replace("{ref_institute_fax}", e.getInstitution().getFax());
         html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
 
+        html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
+
+        if (e.getReceivedAtLabAt() != null) {
+            html = html.replace("{received_date}", CommonController.dateTimeToString(e.getReceivedAtLabAt()));
+        }
+
+        if (e.getResultEnteredAt() != null) {
+            html = html.replace("{entered_date}", CommonController.dateTimeToString(e.getResultEnteredAt()));
+        }
+
+        if (e.getResultConfirmedAt() != null) {
+            html = html.replace("{confirmed_date}", CommonController.dateTimeToString(e.getResultConfirmedAt()));
+        }
+
+        if (e.getResultEnteredBy() != null) {
+            html = html.replace("{entered_by}", e.getResultEnteredBy().getPerson().getName());
+        }
+
+        if (e.getResultConfirmedBy() != null) {
+            html = html.replace("{approved_by}", e.getResultConfirmedBy().getPerson().getName());
+        }
+
 //        Item test = itemController.findItemByCode("test_type");
 //        ClientEncounterComponentItem testValueCi = e.getClientEncounterComponentItem(test);
 //        if (testValueCi != null) {
@@ -1238,6 +1274,9 @@ public class ClientController implements Serializable {
 //        }
         if (e.getPcrResult() != null) {
             html = html.replace("{pcr_result}", e.getPcrResult().getName());
+        }
+        if (e.getPcrResultStr() != null) {
+            html = html.replace("{pcr_result}", e.getPcrResultStr());
         }
         if (e.getCtValue() != null) {
             html = html.replace("{pcr_ct}", e.getCtValue().toString());
