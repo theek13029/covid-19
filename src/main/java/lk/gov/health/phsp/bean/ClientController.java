@@ -525,7 +525,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.receivedAtLab is null "
-                + " group by c.institution";
+                + " group by c.institution, c.referalInstitution";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
