@@ -674,7 +674,7 @@ public class WebUserController implements Serializable {
     }
 
     public String loginNew() {
-        System.out.println("loginNew");
+        // System.out.println("loginNew");
         loggableInstitutions = null;
         loggablePmcis = null;
         loggableGnAreas = null;
@@ -695,7 +695,7 @@ public class WebUserController implements Serializable {
             return "";
         }
 
-        System.out.println("username & password correct");
+        // System.out.println("username & password correct");
 
         loggedUserPrivileges = userPrivilegeList(loggedUser);
 
@@ -708,7 +708,7 @@ public class WebUserController implements Serializable {
     }
 
     private boolean checkLoginNew() {
-        System.out.println("checkLoginNew");
+        // System.out.println("checkLoginNew");
         if (getFacade() == null) {
             JsfUtil.addErrorMessage("Server Error");
             return false;
