@@ -117,6 +117,8 @@ public class ClientController implements Serializable {
     private String ctValueColumn = "G";
     private String commentColumn = "I";
 
+    private Integer startRow=1;
+    
     Boolean institutionSelectable;
     Boolean nationalLevel;
 
@@ -4626,6 +4628,8 @@ public class ClientController implements Serializable {
     public List<Encounter> getListedToPrint() {
         return listedToPrint;
     }
+    
+    
 
     public void setListedToPrint(List<Encounter> listedToPrint) {
         this.listedToPrint = listedToPrint;
@@ -4733,6 +4737,14 @@ public class ClientController implements Serializable {
 
     public void setCommentColumn(String commentColumn) {
         this.commentColumn = commentColumn;
+    }
+
+    public Integer getStartRow() {
+        return startRow;
+    }
+
+    public void setStartRow(Integer startRow) {
+        this.startRow = startRow;
     }
 
     // </editor-fold>
