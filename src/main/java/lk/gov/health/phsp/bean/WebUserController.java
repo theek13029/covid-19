@@ -696,7 +696,6 @@ public class WebUserController implements Serializable {
         }
 
         // System.out.println("username & password correct");
-
         loggedUserPrivileges = userPrivilegeList(loggedUser);
 
         JsfUtil.addSuccessMessage("Successfully Logged");
@@ -990,10 +989,15 @@ public class WebUserController implements Serializable {
             case Lab_Consultant:
                 wups.add(Privilege.Manage_Users);
             case Lab_Mlt:
+                wups.add(Privilege.Lab_Reports);
+                wups.add(Privilege.Confirm_Results);
             case Lab_User:
                 wups.add(Privilege.Lab_Management);
                 wups.add(Privilege.View_Orders);
                 wups.add(Privilege.Enter_Results);
+                wups.add(Privilege.Receive_Samples);
+                wups.add(Privilege.Review_Results);
+                wups.add(Privilege.Print_Results);
                 break;
             case Hospital_Admin:
             case Hospital_User:
