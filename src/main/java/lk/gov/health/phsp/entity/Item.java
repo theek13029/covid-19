@@ -241,7 +241,7 @@ public class Item implements Serializable {
 
     @Override
     public String toString() {
-        return "ID = " + id + ", Name =" + name + ".";
+        return name;
     }
 
     public String getCode() {

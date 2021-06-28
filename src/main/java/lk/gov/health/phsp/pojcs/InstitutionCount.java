@@ -36,6 +36,7 @@ import lk.gov.health.phsp.enums.EncounterType;
 public class InstitutionCount {
 
     private Institution institution;
+    private Institution referralInstitution;
     private Area area;
     private Long count;
     private Date date;
@@ -59,8 +60,6 @@ public class InstitutionCount {
         this.itemValue = itemValue;
     }
 
-    
-    
     public InstitutionCount(Long count, Area area, Date date, EncounterType encounerType) {
         this.area = area;
         this.count = count;
@@ -68,21 +67,19 @@ public class InstitutionCount {
         this.encounerType = encounerType;
     }
 
-    
-    
-
-
     public InstitutionCount(Institution institution, Long count) {
         this.institution = institution;
         this.count = count;
     }
     
+    public InstitutionCount(Institution institution, Institution referralInstitution, Long count) {
+        this.institution = institution;
+        this.referralInstitution = referralInstitution;
+        this.count = count;
+    }
 
     public InstitutionCount() {
     }
-    
-    
-    
 
     public Institution getInstitution() {
         return institution;
@@ -139,7 +136,15 @@ public class InstitutionCount {
     public void setItemValue(Item itemValue) {
         this.itemValue = itemValue;
     }
+
+    public Institution getReferralInstitution() {
+        return referralInstitution;
+    }
+
+    public void setReferralInstitution(Institution referralInstitution) {
+        this.referralInstitution = referralInstitution;
+    }
     
     
-    
+
 }

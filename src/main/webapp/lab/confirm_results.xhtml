@@ -39,10 +39,7 @@
 
 
                         </p:panelGrid>
-                    </h:form>
 
-
-                    <h:form>
 
 
                         <p:commandButton value="CONFIRM SELECTED" ajax="false" 
@@ -50,9 +47,13 @@
 
                         <p:dataTable id="tbl" value="#{clientController.listedToConfirm}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
+                                     rowsPerPageTemplate="5,10,50,100,250,{ShowAll|'All'}"
                                      selection="#{clientController.selectedToConfirm}">
                             <p:column selectionMode="multiple" ></p:column>
-                            <p:column headerText="Name" >
+                            <p:column headerText="Lab No" sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Name" sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Age" >
@@ -61,10 +62,13 @@
                             <p:column headerText="Sex" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Address" >
+                            <p:column headerText="NIC" sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Address" sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}"  filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Phone" >
+                            <p:column headerText="Phone" rendered="false" >
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
                             <p:column id="result" headerText="CT" >

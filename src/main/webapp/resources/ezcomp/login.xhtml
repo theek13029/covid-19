@@ -22,8 +22,8 @@
 
                                 <!-- Nested Row within Card Body -->
                                 <div class="row">
-                                    <div class="col-lg-6 d-none d-lg-block bg-login-image">
-                                        <h:graphicImage library="image" name="login.png" ></h:graphicImage>
+                                    <div class="col-lg-6 d-none d-lg-block bg-login-image" style="text-align: center;">
+                                        <h:graphicImage library="image" name="login1.png" ></h:graphicImage>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="p-5">
@@ -38,9 +38,9 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <div class="custom-control custom-checkbox small">
-                                                    <label class="custom-control-label" for="customCheck">Remember Me</label>
-                </div>
+                                                <div class="custom-control" style="text-align: center;">
+                                                    <label  >National COVID-19 Health Information System</label>
+                                                </div>
                                             </div>
                                             <h:commandButton class="btn btn-block btn-primary" value="Login" action="#{webUserController.loginNew()}" ></h:commandButton>
 
@@ -49,7 +49,7 @@
                                                 <h:outputText value="#{session.lastAccessedTime}">
                                                     <f:convertDateTime pattern="yyyy" type="date" />
                                                 </h:outputText>
-            </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

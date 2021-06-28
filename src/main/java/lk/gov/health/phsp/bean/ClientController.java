@@ -42,10 +42,12 @@ import lk.gov.health.phsp.entity.Encounter;
 import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.entity.Person;
+import lk.gov.health.phsp.entity.Relationship;
 import lk.gov.health.phsp.entity.Sms;
 import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.EncounterType;
 import lk.gov.health.phsp.enums.InstitutionType;
+import lk.gov.health.phsp.enums.RelationshipType;
 import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.SmsFacade;
 import lk.gov.health.phsp.pojcs.ClientBasicData;
@@ -110,8 +112,17 @@ public class ClientController implements Serializable {
 
     private Encounter lastTest;
 
+    private String serialNoColumn = "A";
+    private String resultColumn = "H";
+    private String ctValueColumn = "G";
+    private String commentColumn = "I";
+
+    private Integer startRow = 1;
+
     Boolean institutionSelectable;
     Boolean nationalLevel;
+
+    private Item selectedTest;
 
     private List<ClientBasicData> selectedClientsBasic = null;
 
@@ -125,6 +136,8 @@ public class ClientController implements Serializable {
     private List<Encounter> listedToEnterResults;
     private List<Encounter> listedToReviewResults;
     private List<Encounter> listedToConfirm;
+    private List<Encounter> listedToDispatch;
+    private List<Encounter> listedToDivert;
     private List<Encounter> listedToPrint;
     private List<Encounter> testList;
     private List<Encounter> caseList;
@@ -133,6 +146,8 @@ public class ClientController implements Serializable {
     private List<Encounter> selectedToReview;
     private List<Encounter> selectedToConfirm;
     private List<Encounter> selectedToPrint;
+    private List<Encounter> selectedToDispatch;
+    private List<Encounter> selectedToDivert;
 
     private Client selected;
     private Long selectedId;
@@ -140,6 +155,8 @@ public class ClientController implements Serializable {
     private Long idTo;
     private Institution institution;
     private Institution referingInstitution;
+    private Institution dispatchingLab;
+    private Institution divertingLab;
     private List<Encounter> selectedClientsClinics;
     private List<Encounter> selectedClientEncounters;
     private String searchingId;
@@ -193,6 +210,21 @@ public class ClientController implements Serializable {
     public String toSearchClientById() {
         userTransactionController.recordTransaction("To Search Client By Id");
         return "/client/search_by_id";
+    }
+
+    public void toMarkAllNegative() {
+        if (listedToEnterResults == null) {
+            JsfUtil.addErrorMessage("Nothing to mark");
+            return;
+        }
+        for (Encounter e : listedToEnterResults) {
+            e.setPcrResult(itemApplicationController.getPcrNegative());
+            e.setPcrResultStr(preferenceController.getPcrNegativeTerm());
+            e.setResultEntered(true);
+            e.setResultEnteredAt(new Date());
+            e.setResultEnteredBy(webUserController.getLoggedUser());
+            getEncounterFacade().edit(e);
+        }
     }
 
     @Deprecated
@@ -290,7 +322,7 @@ public class ClientController implements Serializable {
         } else if (e.getClient().getPerson().getPhone2() != null && !e.getClient().getPerson().getPhone2().trim().equals("")) {
             number = e.getClient().getPerson().getPhone2().trim();
         } else {
-            System.out.println("No Phone number");
+            // System.out.println("No Phone number");
             return;
         }
         String smsType = "COVID-19 Positive SMS";
@@ -343,7 +375,7 @@ public class ClientController implements Serializable {
         } else if (e.getClient().getPerson().getPhone2() != null && !e.getClient().getPerson().getPhone2().trim().equals("")) {
             number = e.getClient().getPerson().getPhone2().trim();
         } else {
-            System.out.println("No Phone number");
+            // System.out.println("No Phone number");
             return;
         }
         String smsType = "COVID-19 Negative SMS";
@@ -369,11 +401,10 @@ public class ClientController implements Serializable {
         s.setInstitution(webUserController.getLoggedUser().getInstitution());
         s.setReceipientNumber(number);
 
-        System.out.println("smsTemplate = " + smsTemplate);
-        System.out.println("s = " + s);
-        System.out.println("s.getEncounter() = " + s.getEncounter());
-        System.out.println("s.getEncounter().getClient() = " + s.getEncounter().getClient());
-
+        // System.out.println("smsTemplate = " + smsTemplate);
+        // System.out.println("s = " + s);
+        // System.out.println("s.getEncounter() = " + s.getEncounter());
+        // System.out.println("s.getEncounter().getClient() = " + s.getEncounter().getClient());
         smsTemplate = smsTemplate.replace("#{name}", s.getEncounter().getClient().getPerson().getName());
         smsTemplate = smsTemplate.replace("#{institution}", s.getEncounter().getInstitution().getName());
         smsTemplate = smsTemplate.replace("#{sampled_date}", CommonController.dateTimeToString(s.getEncounter().getEncounterDate()));
@@ -477,6 +508,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins "
+                + " and c.sentToLab is not null "
                 + " and c.receivedAtLab is null "
                 + " group by c.institution";
         Map m = new HashMap();
@@ -484,14 +516,14 @@ public class ClientController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("rins", referingInstitution);
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
-        System.out.println("getFromDate() = " + getFromDate());
-        System.out.println("getToDate() = " + getToDate());
-        System.out.println("referingInstitution = " + referingInstitution);
+        // System.out.println("j = " + j);
+        // System.out.println("m = " + m);
+        // System.out.println("getFromDate() = " + getFromDate());
+        // System.out.println("getToDate() = " + getToDate());
+        // System.out.println("referingInstitution = " + referingInstitution);
         labOrderSummeries = new ArrayList<>();
         List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
-        System.out.println("obs = " + obs.size());
+        // System.out.println("obs = " + obs.size());
         for (Object o : obs) {
             if (o instanceof InstitutionCount) {
                 labOrderSummeries.add((InstitutionCount) o);
@@ -500,7 +532,178 @@ public class ClientController implements Serializable {
         return "/lab/receive_all";
     }
 
+    public String toSummaryByOrderedInstitutionVsLabToReceive() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.receivedAtLab is null "
+                + " group by c.institution, c.referalInstitution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        labOrderSummeries = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+        // System.out.println("obs = " + obs.size());
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labOrderSummeries.add((InstitutionCount) o);
+            }
+        }
+        return "/moh/summary_lab_vs_ordered_to_receive";
+    }
+
+    public String toSummaryByOrderedInstitution() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " group by c.institution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        labOrderSummeries = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+        // System.out.println("obs = " + obs.size());
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labOrderSummeries.add((InstitutionCount) o);
+            }
+        }
+        return "/moh/summary_lab_ordered";
+    }
+
+    public String toSummaryByOrderedInstitutionVsLabReceived() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.receivedAtLab is not null "
+                + " group by c.institution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        labOrderSummeries = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+        // System.out.println("obs = " + obs.size());
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labOrderSummeries.add((InstitutionCount) o);
+            }
+        }
+        return "/moh/summary_lab_vs_ordered_received";
+    }
+
+    public String toSummaryByOrderedInstitutionVsLabConfirmed() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.resultConfirmed is not null "
+                + " group by c.institution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        labOrderSummeries = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+        // System.out.println("obs = " + obs.size());
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labOrderSummeries.add((InstitutionCount) o);
+            }
+        }
+        return "/moh/summary_lab_vs_ordered_results_available";
+    }
+
+    private Long insLabDateCount(Institution ins, Institution lab, Date date) {
+        Long c = 0l;
+        String j = "select count(c) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.receivedAtLabAt between :fd and :td "
+                + " and c.referalInstitution=:rins "
+                + " and c.institution=:ins ";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        Date fd = CommonController.startOfTheDate(date);
+        Date td = CommonController.endOfTheDate(date);
+        m.put("fd", fd);
+        m.put("td", td);
+        m.put("ins", ins);
+        m.put("rins", lab);
+        c = getEncounterFacade().findLongByJpql(j, m, TemporalType.TIMESTAMP);
+        c++;
+        return c;
+    }
+
+    private Long labDateCount(Institution lab, Date date) {
+        Long c = 0l;
+        String j = "select count(c) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.receivedAtLabAt=:edate "
+                + " and c.referalInstitution=:rins ";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("edate", date);
+        m.put("rins", lab);
+        c = getEncounterFacade().findLongByJpql(j, m, TemporalType.DATE);
+        c++;
+        return c;
+    }
+
     public String labReceiveAll() {
+        String labPrefix;
+        Long startCount;
+        String dateString = CommonController.formatDate("ddMMyy");
+        switch (getPreferenceController().getLabNumberGeneration()) {
+            case "InsLabDateCount":
+                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix = institution.getCode()
+                        + "/"
+                        + webUserController.getLoggedUser().getInstitution().getCode()
+                        + "/"
+                        + dateString
+                        + "/";
+                break;
+            case "InsDateCount":
+                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix = institution.getCode()
+                        + "/"
+                        + dateString
+                        + "/";
+                break;
+            case "LabDateCount":
+                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix = institution.getCode()
+                        + "/"
+                        + dateString
+                        + "/";
+                break;
+            case "DateCount":
+                startCount = labDateCount(webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix
+                        = dateString
+                        + "/";
+                break;
+            case "YearCount":
+            case "MonthCount":
+            case "Count":
+            default:
+                startCount = 1l;
+                labPrefix = "NOTSET/";
+        }
+
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired=false "
@@ -508,6 +711,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins "
                 + " and c.institution=:ins "
+                + " and c.sentToLab is not null "
                 + " and c.receivedAtLab is null";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
@@ -516,11 +720,13 @@ public class ClientController implements Serializable {
         m.put("ins", institution);
         m.put("rins", webUserController.getLoggedUser().getInstitution());
         labOrderSummeries = new ArrayList<>();
-        List<Encounter> obs = encounterFacade.findByJpql(j, m);
-        for (Encounter e : obs) {
+        List<Encounter> receivingSamplesTmp = encounterFacade.findByJpql(j, m);
+        for (Encounter e : receivingSamplesTmp) {
             e.setReceivedAtLab(true);
             e.setReceivedAtLabAt(new Date());
             e.setReceivedAtLabBy(webUserController.getLoggedUser());
+            e.setLabNumber(labPrefix + startCount);
+            startCount++;
             encounterFacade.edit(e);
         }
         return toLabReceiveAll();
@@ -534,6 +740,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins "
                 + " and c.institution=:ins "
+                + " and c.sentToLab is not null "
                 + " and c.receivedAtLab is null";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
@@ -624,20 +831,39 @@ public class ClientController implements Serializable {
 
     public String toMohEnterResults() {
         institution = webUserController.getLoggedUser().getInstitution();
-        String j = "select c "
-                + " from Encounter c "
-                + " where c.retired<>:ret "
-                + " and c.encounterType=:type "
-                + " and c.encounterDate between :fd and :td "
-                + " and c.institution=:ins "
-                + " order by c.id";
-        Map m = new HashMap();
-        m.put("ret", true);
-        m.put("type", EncounterType.Test_Enrollment);
-        m.put("fd", fromDate);
-        m.put("td", toDate);
-        m.put("ins", institution);
-        listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        if (selectedTest == null) {
+            String j = "select c "
+                    + " from Encounter c "
+                    + " where c.retired<>:ret "
+                    + " and c.encounterType=:type "
+                    + " and c.encounterDate between :fd and :td "
+                    + " and c.institution=:ins "
+                    + " order by c.id";
+            Map m = new HashMap();
+            m.put("ret", true);
+            m.put("type", EncounterType.Test_Enrollment);
+            m.put("fd", fromDate);
+            m.put("td", toDate);
+            m.put("ins", institution);
+            listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        } else {
+            String j = "select c "
+                    + " from ClientEncounterComponentItem i join i.itemEncounter c "
+                    + " where c.retired<>:ret "
+                    + " and c.encounterType=:type "
+                    + " and c.encounterDate between :fd and :td "
+                    + " and c.institution=:ins "
+                    + " and i.itemValue=:itemValue "
+                    + " order by c.id";
+            Map m = new HashMap();
+            m.put("ret", true);
+            m.put("type", EncounterType.Test_Enrollment);
+            m.put("fd", fromDate);
+            m.put("td", toDate);
+            m.put("ins", institution);
+            m.put("itemValue", selectedTest);
+            listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        }
         return "/moh/enter_results";
     }
 
@@ -663,6 +889,67 @@ public class ClientController implements Serializable {
         m.put("rins", referingInstitution);
         listedToReviewResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/review_results";
+    }
+
+    public String toDispatchSamples() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired=:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.sentToLab is null "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("ins", institution);
+        listedToDispatch = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/moh/dispatch_samples";
+    }
+
+    public String toDispatchSamplesWithReferringLab() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired=:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.referalInstitution=:rins "
+                + " and c.sentToLab is null "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("ins", institution);
+        m.put("rins", referingInstitution);
+        listedToDispatch = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/moh/dispatch_samples";
+    }
+
+    public String toDivertSamples() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired=:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.referalInstitution=:rins "
+                + " and c.resultEntered is null "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("ins", institution);
+        m.put("rins", referingInstitution);
+        listedToDivert = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/moh/divert_samples";
     }
 
     public String toConfirmResults() {
@@ -756,6 +1043,20 @@ public class ClientController implements Serializable {
                 se.setResultConfirmedAt(new Date());
                 se.setResultConfirmedBy(webUserController.getLoggedUser());
         }
+
+        if (se.getPcrResult() != null) {
+            if (se.getPcrResult().equals(itemApplicationController.getPcrPositive())) {
+                se.setPcrResultStr(preferenceController.getPcrPositiveTerm());
+            } else if (se.getPcrResult().equals(itemApplicationController.getPcrInconclusive())) {
+                se.setPcrResultStr(preferenceController.getPcrInconclusiveTerm());
+            } else if (se.getPcrResult().equals(itemApplicationController.getPcrInvalid())) {
+                se.setPcrResultStr(preferenceController.getPcrInvalidTerm());
+            } else if (se.getPcrResult().equals(itemApplicationController.getPcrNegative())) {
+                se.setPcrResultStr(preferenceController.getPcrNegativeTerm());
+            } else {
+
+            }
+        }
         encounterFacade.edit(se);
     }
 
@@ -783,17 +1084,99 @@ public class ClientController implements Serializable {
             e.setResultConfirmed(true);
             e.setResultConfirmedAt(new Date());
             e.setResultConfirmedBy(webUserController.getLoggedUser());
+            //TODO : Remove try catch
+            try {
+                String labReport = generateLabReport(e);
+                e.setResultPrintHtml(labReport);
+            } catch (Exception ex) {
+                System.out.println("ex = " + ex);
+            }
             encounterFacade.edit(e);
         }
         selectedToConfirm = null;
         return toConfirmResults();
     }
 
+    public String dispatchSelectedSamples() {
+        if (dispatchingLab == null) {
+            JsfUtil.addErrorMessage("Please select a lab to send samples");
+            return "";
+        }
+        for (Encounter e : selectedToDispatch) {
+            e.setSentToLab(true);
+            e.setSentToLabAt(new Date());
+            e.setSentToLabBy(webUserController.getLoggedUser());
+            e.setReferalInstitution(dispatchingLab);
+            encounterFacade.edit(e);
+        }
+        selectedToDispatch = null;
+        return toDispatchSamples();
+    }
+
+    public String divertSelectedSamples() {
+        if (divertingLab == null) {
+            JsfUtil.addErrorMessage("Please select a lab to divert samples");
+            return "";
+        }
+        for (Encounter e : selectedToDivert) {
+            e.setSentToLab(true);
+            e.setSentToLabAt(new Date());
+            e.setSentToLabBy(webUserController.getLoggedUser());
+            e.setReferalInstitution(divertingLab);
+            encounterFacade.edit(e);
+        }
+        selectedToDivert = null;
+        return toDivertSamples();
+    }
+
     public String markSelectedAsReceivedResults() {
+        String labPrefix;
+        Long startCount;
+        String dateString = CommonController.formatDate("ddMMyy");
+        switch (getPreferenceController().getLabNumberGeneration()) {
+            case "InsLabDateCount":
+                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix = institution.getCode()
+                        + "/"
+                        + webUserController.getLoggedUser().getInstitution().getCode()
+                        + "/"
+                        + dateString
+                        + "/";
+                break;
+            case "InsDateCount":
+                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix = institution.getCode()
+                        + "/"
+                        + dateString
+                        + "/";
+                break;
+            case "LabDateCount":
+                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix = institution.getCode()
+                        + "/"
+                        + dateString
+                        + "/";
+                break;
+            case "DateCount":
+                startCount = labDateCount(webUserController.getLoggedUser().getInstitution(), new Date());
+                labPrefix
+                        = dateString
+                        + "/";
+                break;
+            case "YearCount":
+            case "MonthCount":
+            case "Count":
+            default:
+                startCount = 1l;
+                labPrefix = "NOTSET/";
+        }
+
         for (Encounter e : selectedToReceive) {
             e.setReceivedAtLab(true);
             e.setReceivedAtLabAt(new Date());
             e.setReceivedAtLabBy(webUserController.getLoggedUser());
+            e.setLabNumber(labPrefix + startCount);
+            startCount++;
             encounterFacade.edit(e);
         }
         selectedToReceive = null;
@@ -821,7 +1204,7 @@ public class ClientController implements Serializable {
     }
 
     public String generateLabReport(Encounter e) {
-        System.out.println("generateLabReport");
+        // System.out.println("generateLabReport");
         if (e == null) {
             return "No Encounter";
         }
@@ -831,11 +1214,18 @@ public class ClientController implements Serializable {
         }
         //Patient Properties
         html = html.replace("{name}", e.getClient().getPerson().getName());
+        e.getClient().getPerson().calAgeFromDob();
         html = html.replace("{age}", e.getClient().getPerson().getAge());
         html = html.replace("{sex}", e.getClient().getPerson().getSex().getName());
         html = html.replace("{address}", e.getClient().getPerson().getAddress());
         html = html.replace("{phone1}", e.getClient().getPerson().getAddress());
         html = html.replace("{phone2}", e.getClient().getPerson().getAddress());
+        if (e.getLabNumber() != null) {
+            html = html.replace("{lab_no}", e.getLabNumber());
+        }
+        if (e.getEncounterNumber() != null) {
+            html = html.replace("{ref_no}", e.getEncounterNumber());
+        }
         if (e.getClient().getPerson().getGnArea() != null) {
             html = html.replace("{gn}", e.getClient().getPerson().getGnArea().getName());
         }
@@ -852,6 +1242,28 @@ public class ClientController implements Serializable {
         html = html.replace("{ref_institute_fax}", e.getInstitution().getFax());
         html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
 
+        html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
+
+        if (e.getReceivedAtLabAt() != null) {
+            html = html.replace("{received_date}", CommonController.dateTimeToString(e.getReceivedAtLabAt()));
+        }
+
+        if (e.getResultEnteredAt() != null) {
+            html = html.replace("{entered_date}", CommonController.dateTimeToString(e.getResultEnteredAt()));
+        }
+
+        if (e.getResultConfirmedAt() != null) {
+            html = html.replace("{confirmed_date}", CommonController.dateTimeToString(e.getResultConfirmedAt()));
+        }
+
+        if (e.getResultEnteredBy() != null) {
+            html = html.replace("{entered_by}", e.getResultEnteredBy().getPerson().getName());
+        }
+
+        if (e.getResultConfirmedBy() != null) {
+            html = html.replace("{approved_by}", e.getResultConfirmedBy().getPerson().getName());
+        }
+
 //        Item test = itemController.findItemByCode("test_type");
 //        ClientEncounterComponentItem testValueCi = e.getClientEncounterComponentItem(test);
 //        if (testValueCi != null) {
@@ -862,6 +1274,9 @@ public class ClientController implements Serializable {
 //        }
         if (e.getPcrResult() != null) {
             html = html.replace("{pcr_result}", e.getPcrResult().getName());
+        }
+        if (e.getPcrResultStr() != null) {
+            html = html.replace("{pcr_result}", e.getPcrResultStr());
         }
         if (e.getCtValue() != null) {
             html = html.replace("{pcr_ct}", e.getCtValue().toString());
@@ -1238,7 +1653,7 @@ public class ClientController implements Serializable {
         List<String> duplicatedPhnNumbers = getFacade().findString(j, intNo);
         items = new ArrayList<>();
         for (String dupPhn : duplicatedPhnNumbers) {
-            System.out.println("dupPhn = " + dupPhn);
+            // System.out.println("dupPhn = " + dupPhn);
             j = "select c"
                     + " from Client c "
                     + " where c.phn=:phn";
@@ -1252,22 +1667,22 @@ public class ClientController implements Serializable {
                 } else {
                     if (c.getPerson().getLocalReferanceNo() == null || c.getPerson().getLocalReferanceNo().trim().equals("")) {
                         c.setComments("Duplicate PHN. Old PHN Stored as Local Ref");
-                        System.out.println("Duplicate PHN. Old PHN Stored as Local Ref");
-                        System.out.println("c.getPhn()");
+                        // System.out.println("Duplicate PHN. Old PHN Stored as Local Ref");
+                        // System.out.println("c.getPhn()");
                         c.getPerson().setLocalReferanceNo(c.getPhn());
-                        System.out.println("c.getPerson().getLocalReferanceNo() = " + c.getPerson().getLocalReferanceNo());
+                        // System.out.println("c.getPerson().getLocalReferanceNo() = " + c.getPerson().getLocalReferanceNo());
                         c.setPhn(generateNewPhn(c.getCreateInstitution()));
-                        System.out.println("c.getPhn()");
+                        // System.out.println("c.getPhn()");
                     } else if (c.getPerson().getSsNumber() == null || c.getPerson().getSsNumber().trim().equals("")) {
                         c.setComments("Duplicate PHN. Old PHN Stored as SC No");
-                        System.out.println("Duplicate PHN. Old PHN Stored as SC No");
-                        System.out.println("c.getPhn()");
+                        // System.out.println("Duplicate PHN. Old PHN Stored as SC No");
+                        // System.out.println("c.getPhn()");
                         c.getPerson().setSsNumber(c.getPhn());
-                        System.out.println("c.getPerson().getSsNumber() = " + c.getPerson().getSsNumber());
+                        // System.out.println("c.getPerson().getSsNumber() = " + c.getPerson().getSsNumber());
                         c.setPhn(generateNewPhn(c.getCreateInstitution()));
-                        System.out.println("c.getPhn()");
+                        // System.out.println("c.getPhn()");
                     } else {
-                        System.out.println("No Space to Store Old PHN");
+                        // System.out.println("No Space to Store Old PHN");
                     }
                     getFacade().edit(c);
                 }
@@ -1281,6 +1696,133 @@ public class ClientController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Functions">
+    public String importResultsFromExcel() {
+        System.out.println("importResultsFromExcel = ");
+
+        System.out.println("try 1");
+        String strId;
+        String strResult;
+        String strCtValue;
+        String strComment;
+        Long id;
+
+        int serialNoColInt;
+        int ctValueColInt;
+        int resultColInt;
+        int commentColInt;
+
+        serialNoColInt = CommonController.excelColFromHeader(serialNoColumn);
+        ctValueColInt = CommonController.excelColFromHeader(ctValueColumn);
+        resultColInt = CommonController.excelColFromHeader(resultColumn);
+        commentColInt = CommonController.excelColFromHeader(commentColumn);
+
+        File inputWorkbook;
+        Workbook w;
+        Cell cell;
+        InputStream in;
+
+        JsfUtil.addSuccessMessage(file.getFileName());
+
+        try {
+            JsfUtil.addSuccessMessage(file.getFileName());
+            in = file.getInputstream();
+            File f;
+            f = new File(Calendar.getInstance().getTimeInMillis() + file.getFileName());
+            FileOutputStream out = new FileOutputStream(f);
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            while ((read = in.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            in.close();
+            out.flush();
+            out.close();
+
+            inputWorkbook = new File(f.getAbsolutePath());
+
+            JsfUtil.addSuccessMessage("Excel File Opened");
+            w = Workbook.getWorkbook(inputWorkbook);
+            Sheet sheet = w.getSheet(0);
+
+            errorCode = "";
+
+            for (int i = startRow; i < sheet.getRows(); i++) {
+
+                cell = sheet.getCell(serialNoColInt, i);
+                strId = cell.getContents();
+
+                id = CommonController.getLongValue(strId);
+
+                Encounter resultEntering = null;
+
+                for (Encounter te : listedToEnterResults) {
+                    if (te.getId().equals(id)) {
+                        resultEntering = te;
+                    }
+                }
+
+                if (resultEntering == null) {
+                    JsfUtil.addErrorMessage("Could NOT find serial. Please check column numbers");
+                    continue;
+                }
+
+                cell = sheet.getCell(resultColInt, i);
+                strResult = cell.getContents();
+                strResult = strResult.trim().toLowerCase();
+
+                resultEntering.setPcrResultStr(strResult);
+
+                cell = sheet.getCell(ctValueColInt, i);
+                strCtValue = cell.getContents();
+                resultEntering.setCtValueStr(strCtValue);
+
+                cell = sheet.getCell(commentColInt, i);
+                strComment = cell.getContents();
+                resultEntering.setResultComments(strComment);
+                String localPositive = preferenceController.getPcrPositiveTerm().trim().toLowerCase();
+                String localNegative = preferenceController.getPcrNegativeTerm().trim().toLowerCase();
+                String localInvalid = preferenceController.getPcrInvalidTerm().trim().toLowerCase();
+                String localInconclusive = preferenceController.getPcrInconclusiveTerm().trim().toLowerCase();
+
+                Item pcrPositive = itemApplicationController.getPcrPositive();
+                Item pcrNegative = itemApplicationController.getPcrNegative();
+                Item pcrInconclusive = itemApplicationController.getPcrInconclusive();
+                Item pcrInvalid = itemApplicationController.getPcrInvalid();
+
+                if (strResult.contains(localNegative)) {
+                    resultEntering.setPcrResult(pcrNegative);
+                } else if (strResult.contains(localInvalid)) {
+                    resultEntering.setPcrResult(pcrInvalid);
+                } else if (strResult.contains(localInconclusive)) {
+                    resultEntering.setPcrResult(pcrInconclusive);
+                } else if (strResult.contains(localPositive)) {
+                    resultEntering.setPcrResult(pcrPositive);
+                } else {
+                    continue;
+                }
+
+                resultEntering.setResultEntered(true);
+                resultEntering.setResultEnteredAt(new Date());
+                resultEntering.setResultEnteredBy(webUserController.getLoggedUser());
+
+                getEncounterFacade().edit(resultEntering);
+
+            }
+
+            JsfUtil.addSuccessMessage("Succesful. All the data in Excel File Impoted to the database");
+            return "";
+        } catch (IOException ex) {
+            JsfUtil.addErrorMessage(ex.getMessage());
+            System.err.println("e = " + ex.getMessage());
+            return "";
+        } catch (BiffException e) {
+            JsfUtil.addErrorMessage(e.getMessage());
+            System.err.println("e = " + e.getMessage());
+            return "";
+        }
+
+    }
+
     public List<Area> completeClientsGnArea(String qry) {
         List<Area> areas = new ArrayList<>();
         if (selected == null) {
@@ -1383,7 +1925,7 @@ public class ClientController implements Serializable {
     }
 
     public void ageAndSexFromNic() {
-        System.out.println("ageAndSexFromNic");
+        // System.out.println("ageAndSexFromNic");
         if (getSelected().getPerson().getNic() != null) {
             SlNic n = new SlNic();
             n.setNic(getSelected().getPerson().getNic());
@@ -1426,7 +1968,7 @@ public class ClientController implements Serializable {
     public void addCreatedDateFromCreatedAt() {
         String j = "select c from Client c where c.createdOn is null";
         List<Client> cs = getFacade().findByJpql(j, 1000);
-        System.out.println("cs.getSize() = " + cs.size());
+        // System.out.println("cs.getSize() = " + cs.size());
         for (Client c : cs) {
             if (c.getCreatedOn() == null) {
                 c.setCreatedOn(c.getCreatedAt());
@@ -1961,8 +2503,8 @@ public class ClientController implements Serializable {
                         colNo++;
                     }
                     Area gnArea = null;
-//                    //System.out.println("gnAreaName = " + gnAreaName);
-//                    //System.out.println("gnAreaCode = " + gnAreaCode);
+//                    //// System.out.println("gnAreaName = " + gnAreaName);
+//                    //// System.out.println("gnAreaCode = " + gnAreaCode);
                     if (gnAreaName != null && gnAreaCode != null) {
                         gnArea = areaController.getGnAreaByNameAndCode(gnAreaName, gnAreaCode);
                     } else if (gnAreaName != null) {
@@ -1971,7 +2513,7 @@ public class ClientController implements Serializable {
                         gnArea = areaController.getGnAreaByCode(gnAreaCode);
                     }
                     if (gnArea != null) {
-//                        //System.out.println("gnArea = " + gnArea.getName());
+//                        //// System.out.println("gnArea = " + gnArea.getName());
                     }
 
                     colNo = 0;
@@ -2099,9 +2641,9 @@ public class ClientController implements Serializable {
                                     Calendar tc = Calendar.getInstance();
                                     thisYear = tc.get(Calendar.YEAR);
                                     ageInYears = thisYear - birthYear;
-//                                    //System.out.println("ageInYears = " + ageInYears);
+//                                    //// System.out.println("ageInYears = " + ageInYears);
                                 } catch (Exception e) {
-//                                    //System.out.println("e = " + e);
+//                                    //// System.out.println("e = " + e);
                                 }
                                 if (ageInYears < 0) {
                                     tdob = today;
@@ -2129,8 +2671,8 @@ public class ClientController implements Serializable {
                                 c.setCreatedAt(reg);
                                 break;
                             case "client_gn_area":
-                                //System.out.println("GN");
-                                //System.out.println("cellString = " + cellString);
+                                //// System.out.println("GN");
+                                //// System.out.println("cellString = " + cellString);
 
                                 Area tgn;
                                 if (gnArea == null) {
@@ -2143,7 +2685,7 @@ public class ClientController implements Serializable {
                         colNo++;
                     }
 
-                    //System.out.println("tgn = " + gnArea);
+                    //// System.out.println("tgn = " + gnArea);
                     if (gnArea != null) {
                         c.getPerson().setGnArea(gnArea);
                         c.getPerson().setDsArea(gnArea.getDsd());
@@ -2189,7 +2731,7 @@ public class ClientController implements Serializable {
 
     public void onTabChange(TabChangeEvent event) {
 
-        // ////System.out.println("profileTabActiveIndex = " + profileTabActiveIndex);
+        // ////// System.out.println("profileTabActiveIndex = " + profileTabActiveIndex);
         TabView tabView = (TabView) event.getComponent();
 
         profileTabActiveIndex = tabView.getChildren().indexOf(event.getTab());
@@ -2197,7 +2739,7 @@ public class ClientController implements Serializable {
     }
 
     public List<Encounter> fillEncounters(Client client, InstitutionType insType, EncounterType encType, boolean excludeCompleted, Integer maxRecordCount) {
-        // ////System.out.println("fillEncounters");
+        // ////// System.out.println("fillEncounters");
         String j = "select e from Encounter e where e.retired=false ";
         Map m = new HashMap();
         if (client != null) {
@@ -2276,7 +2818,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("You do not have an Institution. Please contact support.");
             return;
         }
-        //System.out.println("webUserController.getLoggedUser().getInstitution() = " + webUserController.getLoggedUser().getInstitution().getLastHin());
+        //// System.out.println("webUserController.getLoggedUser().getInstitution() = " + webUserController.getLoggedUser().getInstitution().getLastHin());
         if (webUserController.getLoggedUser().getInstitution().getPoiInstitution() != null) {
             poiIns = webUserController.getLoggedUser().getInstitution().getPoiInstitution();
         } else {
@@ -2292,7 +2834,7 @@ public class ClientController implements Serializable {
     public String generateNewPhn(Institution ins) {
         Institution poiIns;
         if (ins == null) {
-            System.out.println("Ins is null");
+            // System.out.println("Ins is null");
             return null;
         }
         if (ins.getPoiInstitution() != null) {
@@ -2301,7 +2843,7 @@ public class ClientController implements Serializable {
             poiIns = ins;
         }
         if (poiIns.getPoiNumber() == null || poiIns.getPoiNumber().trim().equals("")) {
-            System.out.println("A Point of Issue is NOT assigned to the Institution. Please discuss with the System Administrator.");
+            // System.out.println("A Point of Issue is NOT assigned to the Institution. Please discuss with the System Administrator.");
             return null;
         }
         return applicationController.createNewPersonalHealthNumberformat(poiIns);
@@ -2345,7 +2887,7 @@ public class ClientController implements Serializable {
     }
 
     public Date guessDob(YearMonthDay yearMonthDay) {
-        // ////// ////System.out.println("year string is " + docStr);
+        // ////// ////// System.out.println("year string is " + docStr);
         int years = 0;
         int month = 0;
         int day = 0;
@@ -2368,7 +2910,7 @@ public class ClientController implements Serializable {
 
             return now.getTime();
         } catch (Exception e) {
-            ////// ////System.out.println("Error is " + e.getMessage());
+            ////// ////// System.out.println("Error is " + e.getMessage());
             return new Date();
 
         }
@@ -2565,7 +3107,7 @@ public class ClientController implements Serializable {
     }
 
     public String searchByAnyIdWithBasicData() {
-        System.out.println("searchByAnyIdWithBasicData");
+        // System.out.println("searchByAnyIdWithBasicData");
         userTransactionController.recordTransaction("Search By Any Id");
         clearExistsValues();
         if (searchingId == null) {
@@ -2594,7 +3136,7 @@ public class ClientController implements Serializable {
     }
 
     public String searchByPhnWithBasicData() {
-        System.out.println("searchByPhnWithBasicData");
+        // System.out.println("searchByPhnWithBasicData");
         userTransactionController.recordTransaction("Search By PHN");
         clearExistsValues();
         if (searchingId == null) {
@@ -2747,7 +3289,7 @@ public class ClientController implements Serializable {
     }
 
     public List<Client> listPatientsByIDsStepvice(String ids) {
-        //System.out.println("ids = " + ids);
+        //// System.out.println("ids = " + ids);
         if (ids == null || ids.trim().equals("")) {
             return null;
         }
@@ -2764,12 +3306,12 @@ public class ClientController implements Serializable {
                 + " and upper(c.phn)=:q "
                 + " order by c.phn";
         m.put("q", ids.trim().toUpperCase());
-        //System.out.println("m = " + m);
-        //System.out.println("j = " + j);
+        //// System.out.println("m = " + m);
+        //// System.out.println("j = " + j);
         cs = getFacade().findByJpql(j, m);
 
         if (cs != null && !cs.isEmpty()) {
-            //System.out.println("cs.size() = " + cs.size());
+            //// System.out.println("cs.size() = " + cs.size());
             return cs;
         }
 
@@ -2784,10 +3326,10 @@ public class ClientController implements Serializable {
                 + " ) "
                 + " order by c.phn";
         cs = getFacade().findByJpql(j, m);
-        //System.out.println("m = " + m);
-        //System.out.println("j = " + j);
+        //// System.out.println("m = " + m);
+        //// System.out.println("j = " + j);
         if (cs != null && !cs.isEmpty()) {
-            //System.out.println("cs.size() = " + cs.size());
+            //// System.out.println("cs.size() = " + cs.size());
             return cs;
         }
 
@@ -2829,8 +3371,8 @@ public class ClientController implements Serializable {
                 + " and c.phn=:q "
                 + " order by c.phn";
         m.put("q", ids.trim().toUpperCase());
-        //System.out.println("m = " + m);
-        //System.out.println("j = " + j);
+        //// System.out.println("m = " + m);
+        //// System.out.println("j = " + j);
         objs = getFacade().findByJpql(j, m);
 
         if (objs != null && !objs.isEmpty()) {
@@ -2857,8 +3399,8 @@ public class ClientController implements Serializable {
                 + " ) "
                 + " order by c.phn";
         objs = getFacade().findByJpql(j, m);
-        //System.out.println("m = " + m);
-        //System.out.println("j = " + j);
+        //// System.out.println("m = " + m);
+        //// System.out.println("j = " + j);
         if (objs != null && !objs.isEmpty()) {
             cs = objectsToClientBasicDataObjects(objs);
             return cs;
@@ -3056,7 +3598,7 @@ public class ClientController implements Serializable {
     }
 
     public String saveClientAndTestEnrollment() {
-        System.out.println("saveClientAndTestEnrollment");
+        // System.out.println("saveClientAndTestEnrollment");
         if (selected == null) {
             JsfUtil.addErrorMessage("Nothing to save");
             return "";
@@ -3134,9 +3676,9 @@ public class ClientController implements Serializable {
             te.setSampled(true);
             te.setSampledAt(new Date());
             te.setSampledBy(webUserController.getLoggedUser());
-            te.setSentToLab(true);
-            te.setSentToLabAt(new Date());
-            te.setSentToLabBy(webUserController.getLoggedUser());
+//            te.setSentToLab(true);
+//            te.setSentToLabAt(new Date());
+//            te.setSentToLabBy(webUserController.getLoggedUser());
             encounterFacade.edit(te);
             lastTest = te;
         }
@@ -3601,12 +4143,12 @@ public class ClientController implements Serializable {
     }
 
     public Date getToDate() {
-        System.out.println("getTo");
-        System.out.println("to = " + toDate);
+        // System.out.println("getTo");
+        // System.out.println("to = " + toDate);
         if (toDate == null) {
             toDate = commonController.endOfTheDay();
         }
-        System.out.println("to = " + toDate);
+        // System.out.println("to = " + toDate);
         return toDate;
     }
 
@@ -4197,6 +4739,102 @@ public class ClientController implements Serializable {
 
     public void setLastTest(Encounter lastTest) {
         this.lastTest = lastTest;
+    }
+
+    public Item getSelectedTest() {
+        return selectedTest;
+    }
+
+    public void setSelectedTest(Item selectedTest) {
+        this.selectedTest = selectedTest;
+    }
+
+    public List<Encounter> getListedToDispatch() {
+        return listedToDispatch;
+    }
+
+    public void setListedToDispatch(List<Encounter> listedToDispatch) {
+        this.listedToDispatch = listedToDispatch;
+    }
+
+    public List<Encounter> getListedToDivert() {
+        return listedToDivert;
+    }
+
+    public void setListedToDivert(List<Encounter> listedToDivert) {
+        this.listedToDivert = listedToDivert;
+    }
+
+    public List<Encounter> getSelectedToDispatch() {
+        return selectedToDispatch;
+    }
+
+    public void setSelectedToDispatch(List<Encounter> selectedToDispatch) {
+        this.selectedToDispatch = selectedToDispatch;
+    }
+
+    public List<Encounter> getSelectedToDivert() {
+        return selectedToDivert;
+    }
+
+    public void setSelectedToDivert(List<Encounter> selectedToDivert) {
+        this.selectedToDivert = selectedToDivert;
+    }
+
+    public Institution getDivertingLab() {
+        return divertingLab;
+    }
+
+    public void setDivertingLab(Institution divertingLab) {
+        this.divertingLab = divertingLab;
+    }
+
+    public Institution getDispatchingLab() {
+        return dispatchingLab;
+    }
+
+    public void setDispatchingLab(Institution dispatchingLab) {
+        this.dispatchingLab = dispatchingLab;
+    }
+
+    public String getSerialNoColumn() {
+        return serialNoColumn;
+    }
+
+    public void setSerialNoColumn(String serialNoColumn) {
+        this.serialNoColumn = serialNoColumn;
+    }
+
+    public String getResultColumn() {
+        return resultColumn;
+    }
+
+    public void setResultColumn(String resultColumn) {
+        this.resultColumn = resultColumn;
+    }
+
+    public String getCtValueColumn() {
+        return ctValueColumn;
+    }
+
+    public void setCtValueColumn(String ctValueColumn) {
+        this.ctValueColumn = ctValueColumn;
+    }
+
+    public String getCommentColumn() {
+        return commentColumn;
+    }
+
+    public void setCommentColumn(String commentColumn) {
+        this.commentColumn = commentColumn;
+    }
+
+    public Integer getStartRow() {
+        return startRow;
+    }
+
+    public void setStartRow(Integer startRow) {
+        this.startRow = startRow;
     }
 
     // </editor-fold>

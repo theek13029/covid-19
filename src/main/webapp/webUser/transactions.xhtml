@@ -7,13 +7,10 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-
-        <ui:composition template="/webUser/index.xhtml">
-
-            <ui:define name="webUserContents">
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content"> 
 
                 <h:form id="WebUserEditForm">
-
                     <p:panelGrid columns="1" rendered="#{webUserController.loggedUser != null}"
                                  style="margin: auto; text-align: left; width: 100%;" styleClass="alignTop">
 

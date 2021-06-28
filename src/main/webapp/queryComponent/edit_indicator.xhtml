@@ -7,84 +7,95 @@
       xmlns:p="http://primefaces.org/ui">
 
     <body>
-        <ui:composition template="/queryComponent/index.xhtml">
-            <ui:define name="analysis">     
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content">    
                 <h:form id="QueryComponentEditForm">
-                    <p:panelGrid id="display" columns="1" style="margin: auto;" styleClass="fullWidth">
-                        <f:facet name="header" >
+                    <div class="card">
+                        <div class="card-header">
                             <p:outputLabel value="Indicator" />
                             <p:commandButton  value="Save" 
                                               action="#{queryComponentController.saveIndicator()}" 
                                               ajax="false" 
-                                              style="float: right;" >
+                                              style="float: left;" >
                             </p:commandButton>
-                        </f:facet>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <p:outputLabel value="#{bundleQuery.CreateQueryComponentLabel_name}" class="col-md-2" for="name" />
+                                <div class="col-md-4">
+                                    <p:inputText id="name" required="true"  styleClass="fullWidth" class="form-control"
+                                                 maxlength="255"
+                                                 requiredMessage="Need to enter a name"
+                                                 value="#{queryComponentController.selected.name}" title="#{bundleQuery.CreateQueryComponentTitle_name}" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <p:outputLabel value="Code" class="col-md-2" for="code" />
+                                <div class="col-md-4">
+                                    <p:inputText id="code" value="#{queryComponentController.selected.code}" class="form-control" 
+                                                 styleClass="fullWidth" maxlength="255"
+                                                 required="true"
+                                                 requiredMessage="Need to enter a code"
+                                                 title="Code" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <p:outputLabel value="Descreption" class="col-md-2" for="descreption" />
+                                <div class="col-md-4">
+                                    <p:inputTextarea rows="4" cols="30" id="descreption"  class="form-control"
+                                                     value="#{queryComponentController.selected.descreption}" 
+                                                     title="#{bundleQuery.CreateQueryComponentTitle_descreption}" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <p:outputLabel value="Formula" class="col-md-2" for="indicatorQuery" />
+                                <div class="col-md-4">
+                                    <p:inputTextarea rows="4" cols="30" id="indicatorQuery"
+                                                     required="true"
+                                                     requiredMessage="Need to have a formula"
+                                                     class="form-control"
+                                                     value="#{queryComponentController.selected.indicatorQuery}" 
+                                                     title="Indicator Query" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
-                        <p:panelGrid columns="2"  styleClass="fullWidth">
-                            <p:outputLabel value="#{bundleQuery.CreateQueryComponentLabel_name}"
-                                           for="name" />
-                            <p:inputText id="name" required="true"  styleClass="fullWidth"
-                                         maxlength="255"
-                                         requiredMessage="Need to enter a name"
-                                         value="#{queryComponentController.selected.name}" title="#{bundleQuery.CreateQueryComponentTitle_name}" />
-
-                            <p:outputLabel value="Code" for="code" />
-                            <p:inputText id="code" value="#{queryComponentController.selected.code}" 
-                                         styleClass="fullWidth" maxlength="255"
-                                         required="true"
-                                         requiredMessage="Need to enter a code"
-                                         title="Code" />
-
-                            <p:outputLabel value="Descreption" for="descreption" />
-                            <p:inputTextarea rows="4" cols="30" id="descreption"  styleClass="fullWidth"
-                                             value="#{queryComponentController.selected.descreption}" 
-                                             title="#{bundleQuery.CreateQueryComponentTitle_descreption}" />
-
-                            <p:outputLabel value="Formula" for="indicatorQuery" />
-                            <p:inputTextarea rows="4" cols="30" id="indicatorQuery"
-                                             required="true"
-                                             requiredMessage="Need to have a formula"
-                                             styleClass="fullWidth"
-                                             value="#{queryComponentController.selected.indicatorQuery}" 
-                                             title="Indicator Query" />
+                    <p:panelGrid columns="3"  styleClass="fullWidth">
+                        <p:outputLabel value="Search Counts" />
+                        <p:autoComplete 
+                            value="#{queryComponentController.selectedCount}"
+                            completeMethod="#{queryComponentController.completeCounts}"
+                            var="c" itemLabel="#{c.name}"
+                            itemValue="#{c}">
+                            <f:ajax event="itemSelect" execute="@this" render="lblCountDetails" ></f:ajax>
+                        </p:autoComplete>
+                        <p:panelGrid id="lblCountDetails"  columns="2" >
+                            <p:outputLabel value="Code" ></p:outputLabel>
+                            <p:inputText readonly="true" value="#{queryComponentController.selectedCount.code}" ></p:inputText>
+                            <p:outputLabel value="Descreption" ></p:outputLabel>
+                            <p:outputLabel value="#{queryComponentController.selectedCount.descreption}" ></p:outputLabel>
                         </p:panelGrid>
 
-                        <p:panelGrid columns="3"  styleClass="fullWidth">
-                            <p:outputLabel value="Search Counts" />
-                            <p:autoComplete 
-                                            value="#{queryComponentController.selectedCount}"
-                                            completeMethod="#{queryComponentController.completeCounts}"
-                                            var="c" itemLabel="#{c.name}"
-                                            itemValue="#{c}">
-                                <f:ajax event="itemSelect" execute="@this" render="lblCountDetails" ></f:ajax>
-                            </p:autoComplete>
-                            <p:panelGrid id="lblCountDetails"  columns="2" >
-                                 <p:outputLabel value="Code" ></p:outputLabel>
-                                 <p:inputText readonly="true" value="#{queryComponentController.selectedCount.code}" ></p:inputText>
-                                 <p:outputLabel value="Descreption" ></p:outputLabel>
-                                 <p:outputLabel value="#{queryComponentController.selectedCount.descreption}" ></p:outputLabel>
-                            </p:panelGrid>
-                           
 
-                            <p:outputLabel value="Search Populations" />
-                            <p:autoComplete  
-                                             value="#{queryComponentController.selectedPopulation}"
-                                             completeMethod="#{queryComponentController.completePopulations}"
-                                             var="c" itemLabel="#{c.name}"
-                                             itemValue="#{c}">
-                                <f:ajax event="itemSelect" execute="@this" render="lblPopDetails" ></f:ajax>
-                            </p:autoComplete>
-                            <p:panelGrid id="lblPopDetails"  columns="2" >
-                                 <p:outputLabel value="Code" ></p:outputLabel>
-                                 <p:inputText readonly="true" value="#{queryComponentController.selectedPopulation.code}" ></p:inputText>
-                                 <p:outputLabel value="Descreption" ></p:outputLabel>
-                                 <p:outputLabel value="#{queryComponentController.selectedPopulation.descreption}" ></p:outputLabel>
-                            </p:panelGrid>
-                            
+                        <p:outputLabel value="Search Populations" />
+                        <p:autoComplete  
+                            value="#{queryComponentController.selectedPopulation}"
+                            completeMethod="#{queryComponentController.completePopulations}"
+                            var="c" itemLabel="#{c.name}"
+                            itemValue="#{c}">
+                            <f:ajax event="itemSelect" execute="@this" render="lblPopDetails" ></f:ajax>
+                        </p:autoComplete>
+                        <p:panelGrid id="lblPopDetails"  columns="2" >
+                            <p:outputLabel value="Code" ></p:outputLabel>
+                            <p:inputText readonly="true" value="#{queryComponentController.selectedPopulation.code}" ></p:inputText>
+                            <p:outputLabel value="Descreption" ></p:outputLabel>
+                            <p:outputLabel value="#{queryComponentController.selectedPopulation.descreption}" ></p:outputLabel>
                         </p:panelGrid>
 
                     </p:panelGrid>
+
                 </h:form>
             </ui:define>
         </ui:composition>
