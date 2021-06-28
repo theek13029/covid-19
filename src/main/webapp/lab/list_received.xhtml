@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <body>
+
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content">
+                <h:outputStylesheet library="css" name="tem1.css"/>
+                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                    <f:facet name="header" >
+                        <p:outputLabel value="Received List" ></p:outputLabel>
+                    </f:facet>
+
+                    <h:form >
+                        <p:panelGrid columns="2" >
+                            <p:outputLabel value="From" ></p:outputLabel>
+                            <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+
+                            <p:outputLabel value="To" ></p:outputLabel>
+                            <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+
+                            <p:outputLabel value="Institution" ></p:outputLabel>
+                            <p:autoComplete value="#{clientController.institution}"
+                                            completeMethod="#{institutionController.completeInstitutions}"
+                                            var="m" itemLabel="#{m.name}" itemValue="#{m}" >
+                            </p:autoComplete>
+
+                            <p:commandButton ajax="false" value="Process" 
+                                             action="#{clientController.toLabListReceivedByInstitution()}" ></p:commandButton>
+                            <p:commandButton ajax="false" value="Generate Excel">
+                                <p:dataExporter target="tbl" type="xlsx" fileName="received list" ></p:dataExporter>
+                            </p:commandButton>
+
+                        </p:panelGrid>
+
+
+                        <p:dataTable id="tbl" value="#{clientController.testList}" 
+                                     rowIndexVar="n"
+                                     var="c" 
+                                     rowKey="#{c.id}" 
+                                     rows="10"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="10,20,50,100,500,{ShowAll|'All'}"
+                                     >
+                            <p:column headerText="No"  sortBy="#{c.encounterNumber}" width="40">
+                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Tube No." 
+                                      sortBy="#{c.encounterNumber}" 
+                                      filterBy="#{c.encounterNumber}" 
+                                      filterMatchMode="contains">
+                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Lab No." 
+                                      sortBy="#{c.labNumber}" 
+                                      filterBy="#{c.labNumber}" 
+                                      filterMatchMode="contains">
+                                <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Name"  
+                                      sortBy="#{c.client.person.name}" 
+                                      filterBy="#{c.client.person.name}" 
+                                      filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="NIC"  
+                                      sortBy="#{c.client.person.nic}" 
+                                      filterBy="#{c.client.person.nic}" 
+                                      filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Gender"  
+                                      sortBy="#{c.client.person.sex.name}"
+                                      filterBy="#{c.client.person.sex.name}" 
+                                      filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Age"  
+                                      sortBy="#{c.client.person.age}"
+                                      filterBy="#{c.client.person.age}" 
+                                      filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Ordering" filterBy="#{c.institution.name}"
+                                      sortBy="#{c.createdAt}">
+                                <p:outputLabel value="#{c.createdAt}"  >
+                                    <f:convertDateTime pattern="dd MM yy hh:mm" ></f:convertDateTime>
+                                </p:outputLabel>
+                                <p:outputLabel value=" by "  >
+                                </p:outputLabel>
+                                <p:outputLabel value="#{c.institution.name}"  >
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Received By"  sortBy="#{c.receivedAtLabBy.person.name}"
+                                      filterBy="#{c.receivedAtLabBy.person.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.receivedAtLabBy.person.name}"></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Received At"  sortBy="#{c.receivedAtLabAt}">
+                                <p:outputLabel value="#{c.receivedAtLabAt}" >
+                                    <f:convertDateTime pattern="dd MM yy hh:mm" ></f:convertDateTime>
+                                </p:outputLabel>
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+
+
+
+                </p:panelGrid>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

@@ -104,6 +104,8 @@ public class WebUserController implements Serializable {
     RelationshipController relationshipController;
     @Inject
     DashboardApplicationController dashboardApplicationController;
+    @Inject
+    DashboardController dashboardController;
     /*
     Variables
      */
@@ -703,6 +705,15 @@ public class WebUserController implements Serializable {
         if (!dashboardApplicationController.getDashboardPrepared()) {
             JsfUtil.addErrorMessage("Dashboard NOT ready");
         }
+        Calendar c =Calendar.getInstance();
+        toDate = c.getTime();
+        c.add(Calendar.DAY_OF_MONTH, -7);
+        fromDate = c.getTime();
+        if(loggedUser.isLabDashboard()){
+            dashboardController.setFromDate(fromDate);
+            dashboardController.setToDate(toDate);
+            dashboardController.prepareLabDashboard();
+        }
         return "/index";
     }
 
@@ -987,6 +998,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.View_aggragate_date);
                 break;
             case Lab_Consultant:
+            case Lab_Mo:
                 wups.add(Privilege.Manage_Users);
             case Lab_Mlt:
                 wups.add(Privilege.Lab_Reports);
@@ -1534,9 +1546,16 @@ public class WebUserController implements Serializable {
                 break;
             case Lab_Consultant:
                 urs.add(WebUserRole.Lab_Consultant);
+                urs.add(WebUserRole.Lab_Mo);
                 urs.add(WebUserRole.Lab_Mlt);
                 urs.add(WebUserRole.Lab_User);
                 break;
+            case Lab_Mo:
+                urs.add(WebUserRole.Lab_Mo);
+                urs.add(WebUserRole.Lab_Mlt);
+                urs.add(WebUserRole.Lab_User);
+                break;
+
             case Lab_Mlt:
                 urs.add(WebUserRole.Lab_Mlt);
                 urs.add(WebUserRole.Lab_User);

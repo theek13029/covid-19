@@ -144,6 +144,11 @@ public class ClientController implements Serializable {
     private List<Encounter> listedToPrint;
     private List<Encounter> testList;
     private List<Encounter> caseList;
+    
+    private List<Encounter> listReceived;
+    private List<Encounter> listReviewed;
+    private List<Encounter> listConfirmed;
+    private List<Encounter> listPositives;
 
     private List<Encounter> selectedToReceive;
     private List<Encounter> selectedToReview;
@@ -199,7 +204,11 @@ public class ClientController implements Serializable {
     private List<String> reservePhnList;
     private int intNo;
 
-    private List<InstitutionCount> labOrderSummeries;
+    private List<InstitutionCount> labSummariesToReceive;
+    private List<InstitutionCount> labSummariesReceived;
+    private List<InstitutionCount> labSummariesReviewed;
+    private List<InstitutionCount> labSummariesConfirmed;
+    private List<InstitutionCount> labSummariesPositive;
 
     private Institution continuedLab;
 
@@ -524,15 +533,39 @@ public class ClientController implements Serializable {
         // // System.out.println("getFromDate() = " + getFromDate());
         // // System.out.println("getToDate() = " + getToDate());
         // // System.out.println("referingInstitution = " + referingInstitution);
-        labOrderSummeries = new ArrayList<>();
+        labSummariesToReceive = new ArrayList<>();
         List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
         // // System.out.println("obs = " + obs.size());
         for (Object o : obs) {
             if (o instanceof InstitutionCount) {
-                labOrderSummeries.add((InstitutionCount) o);
+                labSummariesToReceive.add((InstitutionCount) o);
             }
         }
         return "/lab/receive_all";
+    }
+
+    public String toLabSummarySamplesReceived() {
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.receivedAtLabAt between :fd and :td "
+                + " and c.referalInstitution=:rins "
+                + " group by c.institution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", CommonController.startOfTheDate(getFromDate()));
+        m.put("td", CommonController.endOfTheDate(getToDate()));
+        m.put("rins", referingInstitution);
+        labSummariesReceived = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labSummariesReceived.add((InstitutionCount) o);
+            }
+        }
+        return "/lab/summary_samples_received";
     }
 
     public String toSummaryByOrderedInstitutionVsLabToReceive() {
@@ -547,12 +580,12 @@ public class ClientController implements Serializable {
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
-        labOrderSummeries = new ArrayList<>();
+        labSummariesToReceive = new ArrayList<>();
         List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
         // // System.out.println("obs = " + obs.size());
         for (Object o : obs) {
             if (o instanceof InstitutionCount) {
-                labOrderSummeries.add((InstitutionCount) o);
+                labSummariesToReceive.add((InstitutionCount) o);
             }
         }
         return "/moh/summary_lab_vs_ordered_to_receive";
@@ -569,12 +602,12 @@ public class ClientController implements Serializable {
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
-        labOrderSummeries = new ArrayList<>();
+        labSummariesToReceive = new ArrayList<>();
         List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
         // // System.out.println("obs = " + obs.size());
         for (Object o : obs) {
             if (o instanceof InstitutionCount) {
-                labOrderSummeries.add((InstitutionCount) o);
+                labSummariesToReceive.add((InstitutionCount) o);
             }
         }
         return "/moh/summary_lab_ordered";
@@ -592,12 +625,12 @@ public class ClientController implements Serializable {
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
-        labOrderSummeries = new ArrayList<>();
+        labSummariesToReceive = new ArrayList<>();
         List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
         // // System.out.println("obs = " + obs.size());
         for (Object o : obs) {
             if (o instanceof InstitutionCount) {
-                labOrderSummeries.add((InstitutionCount) o);
+                labSummariesToReceive.add((InstitutionCount) o);
             }
         }
         return "/moh/summary_lab_vs_ordered_received";
@@ -615,12 +648,12 @@ public class ClientController implements Serializable {
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
-        labOrderSummeries = new ArrayList<>();
+        labSummariesToReceive = new ArrayList<>();
         List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
         // // System.out.println("obs = " + obs.size());
         for (Object o : obs) {
             if (o instanceof InstitutionCount) {
-                labOrderSummeries.add((InstitutionCount) o);
+                labSummariesToReceive.add((InstitutionCount) o);
             }
         }
         return "/moh/summary_lab_vs_ordered_results_available";
@@ -749,7 +782,7 @@ public class ClientController implements Serializable {
         m.put("td", toDate);
         m.put("ins", institution);
         m.put("rins", webUserController.getLoggedUser().getInstitution());
-        labOrderSummeries = new ArrayList<>();
+        labSummariesToReceive = new ArrayList<>();
         List<Encounter> receivingSamplesTmp = encounterFacade.findByJpql(j, m);
         for (Encounter e : receivingSamplesTmp) {
             e.setReceivedAtLab(true);
@@ -807,6 +840,25 @@ public class ClientController implements Serializable {
         m.put("rins", referingInstitution);
         testList = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/order_list";
+    }
+
+    public String toLabListReceivedByInstitution() {
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        Map m = new HashMap();
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired<>:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.referalInstitution=:rins"
+                + " order by c.id";
+        m.put("ret", true);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("rins", referingInstitution);
+        listReceived = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/lab/list_received";
     }
 
     public String markAllAsReceived() {
@@ -1090,7 +1142,6 @@ public class ClientController implements Serializable {
         encounterFacade.edit(se);
     }
 
-    
     public void saveLabNo(Encounter se) {
         if (se == null) {
             return;
@@ -1098,7 +1149,6 @@ public class ClientController implements Serializable {
         encounterFacade.edit(se);
     }
 
-    
     public void saveEncounterResultsAtMoh(Encounter se) {
         if (se == null) {
             return;
@@ -1172,7 +1222,7 @@ public class ClientController implements Serializable {
         String labPrefix;
         Long startCount;
         String dateString = CommonController.formatDate("ddMMyy");
-        
+
         String labNoGen = getPreferenceController().getLabNumberGeneration();
         // System.out.println("labNoGen = " + labNoGen);
         switch (labNoGen) {
@@ -4461,6 +4511,7 @@ public class ClientController implements Serializable {
                 nationalLevel = false;
                 break;
             case Lab_Consultant:
+            case Lab_Mo:
             case Lab_Mlt:
             case Lab_User:
                 institution = null;
@@ -4656,12 +4707,12 @@ public class ClientController implements Serializable {
         this.smsFacade = smsFacade;
     }
 
-    public List<InstitutionCount> getLabOrderSummeries() {
-        return labOrderSummeries;
+    public List<InstitutionCount> getLabSummariesToReceive() {
+        return labSummariesToReceive;
     }
 
-    public void setLabOrderSummeries(List<InstitutionCount> labOrderSummeries) {
-        this.labOrderSummeries = labOrderSummeries;
+    public void setLabSummariesToReceive(List<InstitutionCount> labSummariesToReceive) {
+        this.labSummariesToReceive = labSummariesToReceive;
     }
 
     public Institution getReferingInstitution() {
@@ -4918,6 +4969,72 @@ public class ClientController implements Serializable {
 
     public void setLastTestPcrOrRat(Item lastTestPcrOrRat) {
         this.lastTestPcrOrRat = lastTestPcrOrRat;
+    }
+
+    public List<InstitutionCount> getLabSummariesReceived() {
+        return labSummariesReceived;
+    }
+
+    public void setLabSummariesReceived(List<InstitutionCount> labSummariesReceived) {
+        this.labSummariesReceived = labSummariesReceived;
+    }
+
+    public List<InstitutionCount> getLabSummariesReviewed() {
+        return labSummariesReviewed;
+    }
+
+    public void setLabSummariesReviewed(List<InstitutionCount> labSummariesReviewed) {
+        this.labSummariesReviewed = labSummariesReviewed;
+    }
+
+    public List<InstitutionCount> getLabSummariesConfirmed() {
+        return labSummariesConfirmed;
+    }
+
+    public void setLabSummariesConfirmed(List<InstitutionCount> labSummariesConfirmed) {
+        this.labSummariesConfirmed = labSummariesConfirmed;
+    }
+
+    public List<InstitutionCount> getLabSummariesPositive() {
+        return labSummariesPositive;
+    }
+
+    
+    
+    public void setLabSummariesPositive(List<InstitutionCount> labSummariesPositive) {
+        this.labSummariesPositive = labSummariesPositive;
+    }
+
+    public List<Encounter> getListReceived() {
+        return listReceived;
+    }
+
+    public void setListReceived(List<Encounter> listReceived) {
+        this.listReceived = listReceived;
+    }
+
+    public List<Encounter> getListReviewed() {
+        return listReviewed;
+    }
+
+    public void setListReviewed(List<Encounter> listReviewed) {
+        this.listReviewed = listReviewed;
+    }
+
+    public List<Encounter> getListConfirmed() {
+        return listConfirmed;
+    }
+
+    public void setListConfirmed(List<Encounter> listConfirmed) {
+        this.listConfirmed = listConfirmed;
+    }
+
+    public List<Encounter> getListPositives() {
+        return listPositives;
+    }
+
+    public void setListPositives(List<Encounter> listPositives) {
+        this.listPositives = listPositives;
     }
 
     // </editor-fold>
