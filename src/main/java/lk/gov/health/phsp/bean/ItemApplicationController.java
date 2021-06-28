@@ -58,6 +58,12 @@ public class ItemApplicationController {
 
     private List<Item> pcrResults;
     
+    private List<Item> covidTestOrderingCategories;
+    private List<Item> covidTestTypes
+;    
+    private Item pcr;
+    private Item rat;
+    
     private Item pcrPositive;
     private Item pcrNegative;
     private Item pcrInconclusive;
@@ -347,6 +353,10 @@ public class ItemApplicationController {
     public Item getFemale() {
         return findItemByCode("sex_female");
     }
+    
+    
+    
+    
 
     public List<Item> getItems() {
         if (items == null) {
@@ -480,6 +490,50 @@ public class ItemApplicationController {
 
     public void setPcrInvalid(Item pcrInvalid) {
         this.pcrInvalid = pcrInvalid;
+    }
+
+    public Item getPcr() {
+        if(pcr==null){
+            pcr = findItemByCode("covid19_pcr_test");
+        }
+        return pcr;
+    }
+
+    public void setPcr(Item pcr) {
+        this.pcr = pcr;
+    }
+
+    public Item getRat() {
+        if(rat==null){
+            rat = findItemByCode("covid19_rat");
+        }
+        return rat;
+    }
+
+    public void setRat(Item rat) {
+        this.rat = rat;
+    }
+
+    public List<Item> getCovidTestOrderingCategories() {
+        if(covidTestOrderingCategories==null){
+            covidTestOrderingCategories = findChildDictionaryItems("patients_covid_19_test_ordering_context_category");
+        }
+        return covidTestOrderingCategories;
+    }
+
+    public void setCovidTestOrderingCategories(List<Item> covidTestOrderingCategories) {
+        this.covidTestOrderingCategories = covidTestOrderingCategories;
+    }
+
+    public List<Item> getCovidTestTypes() {
+        if(covidTestTypes==null){
+            covidTestTypes= findChildDictionaryItems("test_types");
+        }
+        return covidTestTypes;
+    }
+
+    public void setCovidTestTypes(List<Item> covidTestTypes) {
+        this.covidTestTypes = covidTestTypes;
     }
 
 }

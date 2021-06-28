@@ -26,6 +26,7 @@ package lk.gov.health.phsp.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.enterprise.context.Dependent;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -149,6 +150,13 @@ public class Encounter implements Serializable {
 
     private String encounterNumber;
 
+    @ManyToOne
+    private Item pcrTestType;
+    @ManyToOne
+    private Item pcrOrderingCategory;
+    private String pcrOrderingCategoryOther;
+    private Boolean symptomatic;
+
     private String labNumber;
 
     @ManyToOne
@@ -193,6 +201,7 @@ public class Encounter implements Serializable {
     private Date completedAt;
 
     @Transient
+    @Deprecated
     private Item testType;
 
     public Long getId() {
@@ -754,6 +763,7 @@ public class Encounter implements Serializable {
         this.resultPrintHtml = resultPrintHtml;
     }
 
+    @Deprecated
     public Item getTestType() {
         if (testType == null) {
             if (getClientEncounterComponentItemByCode("test_type") != null && getClientEncounterComponentItemByCode("test_type").getItemValue() != null) {
@@ -761,6 +771,42 @@ public class Encounter implements Serializable {
             }
         }
         return testType;
+    }
+
+    public Item getPcrTestType() {
+        return pcrTestType;
+    }
+
+    public void setPcrTestType(Item pcrTestType) {
+        this.pcrTestType = pcrTestType;
+    }
+
+    public Item getPcrOrderingCategory() {
+        return pcrOrderingCategory;
+    }
+
+    public void setPcrOrderingCategory(Item pcrOrderingCategory) {
+        this.pcrOrderingCategory = pcrOrderingCategory;
+    }
+
+    public String getPcrOrderingCategoryOther() {
+        return pcrOrderingCategoryOther;
+    }
+
+    public void setPcrOrderingCategoryOther(String pcrOrderingCategoryOther) {
+        this.pcrOrderingCategoryOther = pcrOrderingCategoryOther;
+    }
+
+    public Boolean getSymptomatic() {
+        return symptomatic;
+    }
+
+    public void setSymptomatic(Boolean symptomatic) {
+        this.symptomatic = symptomatic;
+    }
+
+    public void setTestType(Item testType) {
+        this.testType = testType;
     }
 
 }
