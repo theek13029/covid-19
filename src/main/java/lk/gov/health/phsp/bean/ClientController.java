@@ -109,6 +109,10 @@ public class ClientController implements Serializable {
     private List<Client> selectedClients = null;
     private List<ClientBasicData> selectedClientsWithBasicData = null;
     private List<Client> importedClients = null;
+    
+    private Item lastTestOrderingCategory;
+    private Item lastTestPcrOrRat;
+    
 
     private Encounter lastTest;
 
@@ -1541,6 +1545,8 @@ public class ClientController implements Serializable {
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
         clientEncounterComponentFormSetController.getSelected().getEncounter().setReferalInstitution(continuedLab);
+        clientEncounterComponentFormSetController.getSelected().getEncounter().setPcrOrderingCategory(lastTestOrderingCategory);
+        clientEncounterComponentFormSetController.getSelected().getEncounter().setPcrTestType(lastTestPcrOrRat);
         return "/client/client_test_enrollment";
     }
 
@@ -3680,6 +3686,8 @@ public class ClientController implements Serializable {
 //            te.setSentToLabAt(new Date());
 //            te.setSentToLabBy(webUserController.getLoggedUser());
             encounterFacade.edit(te);
+            lastTestOrderingCategory=te.getPcrOrderingCategory();
+            lastTestPcrOrRat = te.getPcrTestType();
             lastTest = te;
         }
 
@@ -3824,11 +3832,20 @@ public class ClientController implements Serializable {
     }
 
     // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Functions - Temporary">
+        public void convertFormsetDataInToEncounterDate(){
+            
+        }
+    // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="Getters & Setters">
     public String getSearchingId() {
         return searchingId;
     }
 
+    
+    
     public void setSearchingId(String searchingId) {
         this.searchingId = searchingId;
     }
@@ -4835,6 +4852,22 @@ public class ClientController implements Serializable {
 
     public void setStartRow(Integer startRow) {
         this.startRow = startRow;
+    }
+
+    public Item getLastTestOrderingCategory() {
+        return lastTestOrderingCategory;
+    }
+
+    public void setLastTestOrderingCategory(Item lastTestOrderingCategory) {
+        this.lastTestOrderingCategory = lastTestOrderingCategory;
+    }
+
+    public Item getLastTestPcrOrRat() {
+        return lastTestPcrOrRat;
+    }
+
+    public void setLastTestPcrOrRat(Item lastTestPcrOrRat) {
+        this.lastTestPcrOrRat = lastTestPcrOrRat;
     }
 
     // </editor-fold>

@@ -9,7 +9,8 @@
                     <div class="card">
                         <h5 class="card-header">
                             <p:outputLabel value="Test Order Details"></p:outputLabel>
-                            <p:commandButton class="btn btn-primary" ajax="false" style="float: left;" action="#{clientController.saveClientAndTestEnrollment()}" value="Save"></p:commandButton>
+                            <p:commandButton class="btn btn-primary" ajax="false" style="float: left;" 
+                                             action="#{clientController.saveClientAndTestEnrollment()}" value="Save"></p:commandButton>
                         </h5>
                         <div class="card-body">
                             <h:panelGrid columns="5" >
@@ -266,6 +267,30 @@
                                     </p:row>
                                 </p:panelGrid>
                             </p:panelGrid>
+
+                            <h:panelGrid columns="11" >
+                                <p:outputLabel value="Test" ></p:outputLabel>
+                                <p:selectOneMenu value="#{clientEncounterComponentFormSetController.selected.encounter.pcrTestType}" >
+                                    <f:selectItem itemLabel="Select" ></f:selectItem>
+                                    <f:selectItems value="#{itemApplicationController.covidTestTypes}" var="tt" itemLabel="#{tt.name}"
+                                                   itemValue="#{tt}" ></f:selectItems>
+                                </p:selectOneMenu>
+                                <p:spacer height="1" width="20" ></p:spacer>
+                                <p:outputLabel value="Ordering Category" ></p:outputLabel>
+                                <p:selectOneMenu value="#{clientEncounterComponentFormSetController.selected.encounter.pcrOrderingCategory}" >
+                                    <f:selectItem itemLabel="Select" ></f:selectItem>
+                                    <f:selectItems value="#{itemApplicationController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
+                                                   itemValue="#{tt}" ></f:selectItems>
+                                </p:selectOneMenu>
+                                <p:spacer height="1" width="20" ></p:spacer>
+                                <p:outputLabel value="Ordering Category" ></p:outputLabel>
+                                <p:inputText value="#{clientEncounterComponentFormSetController.selected.encounter.pcrOrderingCategoryOther}"  ></p:inputText>
+                                <p:spacer height="1" width="20" ></p:spacer>
+                                <p:outputLabel value="Symptomatic" ></p:outputLabel>
+                                <p:selectBooleanButton value="#{clientEncounterComponentFormSetController.selected.encounter.symptomatic}"  offLabel="No" onLabel="Yes"></p:selectBooleanButton>
+                                
+                            </h:panelGrid>
+
                         </div>
                         <div class="card">
                             <div class="col-md-4">
