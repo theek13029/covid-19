@@ -109,10 +109,9 @@ public class ClientController implements Serializable {
     private List<Client> selectedClients = null;
     private List<ClientBasicData> selectedClientsWithBasicData = null;
     private List<Client> importedClients = null;
-    
+
     private Item lastTestOrderingCategory;
     private Item lastTestPcrOrRat;
-    
 
     private Encounter lastTest;
 
@@ -666,6 +665,22 @@ public class ClientController implements Serializable {
         return c;
     }
 
+    private Long labCount(Institution lab) {
+        Long c = 0l;
+        String j = "select count(c) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.referalInstitution=:rins "
+                + " and c.receivedAtLab is not null";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("rins", lab);
+        c = getEncounterFacade().findLongByJpql(j, m, TemporalType.DATE);
+        c++;
+        return c;
+    }
+
     public String labReceiveAll() {
         String labPrefix;
         Long startCount;
@@ -700,9 +715,20 @@ public class ClientController implements Serializable {
                         = dateString
                         + "/";
                 break;
+            case "Count":
+                startCount = labCount(webUserController.getLoggedUser().getInstitution());
+                Long add = 0l;
+                try {
+                    add = Long.parseLong(preferenceController.getStartingSerialCount());
+                } catch (Exception e) {
+                    add = 0l;
+                }
+                startCount += add;
+                labPrefix
+                        = webUserController.getLoggedUser().getInstitution().getCode();
+                break;
             case "YearCount":
             case "MonthCount":
-            case "Count":
             default:
                 startCount = 1l;
                 labPrefix = "NOTSET/";
@@ -716,7 +742,7 @@ public class ClientController implements Serializable {
                 + " and c.referalInstitution=:rins "
                 + " and c.institution=:ins "
                 + " and c.sentToLab is not null "
-                + " and c.receivedAtLab is null";
+                + " and c.receivedAtLab=true";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
@@ -1064,6 +1090,15 @@ public class ClientController implements Serializable {
         encounterFacade.edit(se);
     }
 
+    
+    public void saveLabNo(Encounter se) {
+        if (se == null) {
+            return;
+        }
+        encounterFacade.edit(se);
+    }
+
+    
     public void saveEncounterResultsAtMoh(Encounter se) {
         if (se == null) {
             return;
@@ -1137,7 +1172,10 @@ public class ClientController implements Serializable {
         String labPrefix;
         Long startCount;
         String dateString = CommonController.formatDate("ddMMyy");
-        switch (getPreferenceController().getLabNumberGeneration()) {
+        
+        String labNoGen = getPreferenceController().getLabNumberGeneration();
+        System.out.println("labNoGen = " + labNoGen);
+        switch (labNoGen) {
             case "InsLabDateCount":
                 startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
                 labPrefix = institution.getCode()
@@ -1167,9 +1205,24 @@ public class ClientController implements Serializable {
                         = dateString
                         + "/";
                 break;
+            case "Count":
+                startCount = labCount(webUserController.getLoggedUser().getInstitution());
+                System.out.println("startCount = " + startCount);
+                Long add = 0l;
+                try {
+                    add = Long.parseLong(preferenceController.getStartingSerialCount());
+                } catch (Exception e) {
+                    add = 0l;
+                }
+                System.out.println("add = " + add);
+                startCount += add;
+                System.out.println("startCount = " + startCount);
+                labPrefix
+                        = webUserController.getLoggedUser().getInstitution().getCode();
+                break;
             case "YearCount":
             case "MonthCount":
-            case "Count":
+
             default:
                 startCount = 1l;
                 labPrefix = "NOTSET/";
@@ -3686,7 +3739,7 @@ public class ClientController implements Serializable {
 //            te.setSentToLabAt(new Date());
 //            te.setSentToLabBy(webUserController.getLoggedUser());
             encounterFacade.edit(te);
-            lastTestOrderingCategory=te.getPcrOrderingCategory();
+            lastTestOrderingCategory = te.getPcrOrderingCategory();
             lastTestPcrOrRat = te.getPcrTestType();
             lastTest = te;
         }
@@ -3832,20 +3885,17 @@ public class ClientController implements Serializable {
     }
 
     // </editor-fold>
-    
     // <editor-fold defaultstate="collapsed" desc="Functions - Temporary">
-        public void convertFormsetDataInToEncounterDate(){
-            
-        }
+    public void convertFormsetDataInToEncounterDate() {
+
+    }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="Getters & Setters">
     public String getSearchingId() {
         return searchingId;
     }
 
-    
-    
     public void setSearchingId(String searchingId) {
         this.searchingId = searchingId;
     }

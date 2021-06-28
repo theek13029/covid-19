@@ -26,6 +26,9 @@
                             <f:selectItem  itemLabel="Entry and Confirm" itemValue="EntryConfirm" ></f:selectItem>
                             <f:selectItem  itemLabel="Entry, Review and Confirm"  itemValue="EntryReviewConfirm" ></f:selectItem>
                         </p:selectOneMenu>
+                        
+                         <p:outputLabel value="Starting No" ></p:outputLabel><!-- comment -->
+                         <p:inputText value="#{preferenceController.startingSerialCount}" ></p:inputText>
 
                         <p:outputLabel value="PCR Positive Term" ></p:outputLabel><!-- comment -->
                         <p:inputText value="#{preferenceController.pcrPositiveTerm}" ></p:inputText>

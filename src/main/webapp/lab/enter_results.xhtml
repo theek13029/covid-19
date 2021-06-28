@@ -131,7 +131,7 @@
                                 <p:commandButton action="#{clientController.toMarkAllNegative()}" ajax="false" value="Mark All Negative" onclick="if (!confirm('Are you sure you want mark all Negative?'))
                                             return false">
                                 </p:commandButton>
-                                 <p:commandButton action="/lab/enter_recorrection" actionListener="#{clientController.toLabReviewResults}" ajax="false" value="Enter Recorrection" >
+                                <p:commandButton action="/lab/enter_recorrection" actionListener="#{clientController.toLabReviewResults}" ajax="false" value="Enter Recorrection" >
                                 </p:commandButton>
                             </p:panelGrid>
 
@@ -147,8 +147,12 @@
                             <p:column headerText="Tube No" width="140" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Lab No" width="200"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
-                                <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
+                            <p:column  headerText="Lab No" width="200"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
+                                <p:inputText value="#{c.labNumber}" id="txtLabNo" >
+                                    <p:ajax event="blur" process="txtLabNo" 
+                                            listener="#{clientController.saveLabNo(c)}" >
+                                    </p:ajax>
+                                </p:inputText>
                             </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" 
                                       filterMatchMode="contains" >
