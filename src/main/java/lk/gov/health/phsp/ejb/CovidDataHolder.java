@@ -123,11 +123,11 @@ public class CovidDataHolder {
             cd.setTodaysPcrs(findCount(ins, null, today, "pcr"));
             cd.setTodaysRats(findCount(ins, null, today, "rat"));
 
-            // System.out.println("firstDayOfMonth = " + firstDayOfMonth);
-            // System.out.println("today = " + today);
+            // // System.out.println("firstDayOfMonth = " + firstDayOfMonth);
+            // // System.out.println("today = " + today);
             
-            // System.out.println("CommonController.dateTimeToString(firstDayOfMonth); = " + CommonController.dateTimeToString(firstDayOfMonth));
-            // System.out.println("CommonController.dateTimeToString(today) = " + CommonController.dateTimeToString(today));
+            // // System.out.println("CommonController.dateTimeToString(firstDayOfMonth); = " + CommonController.dateTimeToString(firstDayOfMonth));
+            // // System.out.println("CommonController.dateTimeToString(today) = " + CommonController.dateTimeToString(today));
             
             cd.setThisMonthCases(findCount(ins, null, firstDayOfMonth, today, "case"));
             cd.setThisMonthTests(findCount(ins, null, firstDayOfMonth, today, "test orders"));
@@ -153,7 +153,7 @@ public class CovidDataHolder {
     }
 
     public void calculateNumbersByOrderedTest(Date fromDate, Date toDate) {
-        // System.out.println("calculateNumbersByOrderedTest");
+        // // System.out.println("calculateNumbersByOrderedTest");
         ClientEncounterComponentItem i = new ClientEncounterComponentItem();
         i.getItemEncounter();
         i.getItem();
@@ -174,13 +174,13 @@ public class CovidDataHolder {
         m.put("td", toDate);
         m.put("items", items);
         m.put("test", EncounterType.Test_Enrollment);
-        // System.out.println("m = " + m);
-        // System.out.println("j = " + j);
+        // // System.out.println("m = " + m);
+        // // System.out.println("j = " + j);
         List<Object> os = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
         for (Object o : os) {
             if (o instanceof InstitutionCount) {
                 InstitutionCount ic = (InstitutionCount) o;
-                // System.out.println("ic = " + ic);
+                // // System.out.println("ic = " + ic);
                 String name = "";
 
                 if (ic.getEncounerType() == null) {
@@ -293,7 +293,7 @@ public class CovidDataHolder {
     }
 
     public Long findCount(Institution ins, Area a, Date date, String name) {
-        // System.out.println("findCount");
+        // // System.out.println("findCount");
         Numbers databaseNumbers;
         Map m = new HashMap();
         String j = "select n "
@@ -325,10 +325,10 @@ public class CovidDataHolder {
     }
 
     public Long findCount(Institution ins, Area a, Date fromDate, Date toDate, String name) {
-        // System.out.println("findCountForPeriod");
-        // System.out.println("name = " + name);
-        // System.out.println("fromDate = " + fromDate);
-        // System.out.println("toDate = " + toDate);
+        // // System.out.println("findCountForPeriod");
+        // // System.out.println("name = " + name);
+        // // System.out.println("fromDate = " + fromDate);
+        // // System.out.println("toDate = " + toDate);
         Map m = new HashMap();
         String j = "select sum(n.count) "
                 + " from Numbers n "
@@ -340,8 +340,8 @@ public class CovidDataHolder {
         if (ins != null) {
             j += " and n.institution=:ins ";
             m.put("ins", ins);
-            // System.out.println("ins Name = " + ins.getName());
-            // System.out.println("ins ID = " + ins.getId());
+            // // System.out.println("ins Name = " + ins.getName());
+            // // System.out.println("ins ID = " + ins.getId());
         } else if (a != null) {
             j += " and n.area=:area ";
             m.put("area", a);
@@ -349,7 +349,7 @@ public class CovidDataHolder {
             return null;
         }
         Long count = numbersFacade.findLongByJpql(j, m);
-        // System.out.println("count = " + count);
+        // // System.out.println("count = " + count);
         return count;
     }
 

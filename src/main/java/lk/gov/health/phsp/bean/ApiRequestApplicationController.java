@@ -41,11 +41,11 @@ public class ApiRequestApplicationController implements Serializable {
         if (r == null) {
             return false;
         }
-        // System.out.println("r.isConvaied() = " + r.isConvaied());
+        // // System.out.println("r.isConvaied() = " + r.isConvaied());
         r.setConvaied(true);
         r.setConvaiedAt(new Date());
         ejbFacade.edit(r);
-        // System.out.println("r.isConvaied() = " + r.isConvaied());
+        // // System.out.println("r.isConvaied() = " + r.isConvaied());
         return true;
     }
 
@@ -58,8 +58,8 @@ public class ApiRequestApplicationController implements Serializable {
     }
 
     public List<ApiRequest> getPendingProcedure(String id) {
-        // System.out.println("getPendingProcedure");
-        // System.out.println("id = " + id);
+        // // System.out.println("getPendingProcedure");
+        // // System.out.println("id = " + id);
         Map m = new HashMap();
         m.put("ret", false);
         m.put("con", false);
