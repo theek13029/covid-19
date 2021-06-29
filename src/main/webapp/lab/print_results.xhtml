@@ -50,9 +50,13 @@
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      selection="#{clientController.selectedToPrint}">
-                            <p:column selectionMode="multiple" ></p:column>
-                            <p:column headerText="No"  sortBy="#{c.encounterNumber}">
+                            <p:column selectionMode="multiple" width="30" >
+                            </p:column>
+                            <p:column width="50" >
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="ID"  sortBy="#{c.id}">
+                                <p:outputLabel value="#{c.id}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>

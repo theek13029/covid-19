@@ -1212,6 +1212,8 @@ public class ClientController implements Serializable {
             } else {
 
             }
+        }else{
+            se.setPcrResultStr("");
         }
         encounterFacade.edit(se);
     }

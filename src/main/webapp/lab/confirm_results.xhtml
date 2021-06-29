@@ -49,10 +49,17 @@
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      rowsPerPageTemplate="5,10,50,100,250,{ShowAll|'All'}"
                                      selection="#{clientController.selectedToConfirm}">
-                            <p:column selectionMode="multiple" ></p:column>
-                             <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" 
-                                       filterBy="#{c.encounterNumber}" filterMatchMode="contains">
-                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                            <p:column selectionMode="multiple" width="30" >
+                            </p:column>
+                            <p:column width="50" >
+                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="ID"  sortBy="#{c.id}">
+                                <p:outputLabel value="#{c.id}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" 
+                                      filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>`
                             <p:column headerText="Lab No" sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
