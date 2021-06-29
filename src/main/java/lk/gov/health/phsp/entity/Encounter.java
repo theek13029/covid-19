@@ -86,12 +86,27 @@ public class Encounter implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private WebUser receivedAtLabBy;
 
+    private Boolean sampleRejectedAtLab;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date sampleRejectedAtLabAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebUser sampleRejectedAtLabBy;
+
+    
+    
     private Boolean resultEntered;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date resultEnteredAt;
     @ManyToOne(fetch = FetchType.LAZY)
     private WebUser resultEnteredBy;
 
+    private Boolean pendingAtLab;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date pendingAtLabAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebUser pendingAtLabBy;
+
+    
     private Boolean resultReviewed;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date resultReviewedAt;
@@ -120,6 +135,7 @@ public class Encounter implements Serializable {
     private WebUser resultNotedBy;
 
     private Double ctValue;
+    private Double ctValue2;
     private String ctValueStr;
     @ManyToOne
     private Item pcrResult;
@@ -535,6 +551,8 @@ public class Encounter implements Serializable {
         return sentToLab;
     }
 
+    
+    
     public void setSentToLab(Boolean sentToLab) {
         this.sentToLab = sentToLab;
     }
@@ -807,6 +825,62 @@ public class Encounter implements Serializable {
 
     public void setTestType(Item testType) {
         this.testType = testType;
+    }
+
+    public Double getCtValue2() {
+        return ctValue2;
+    }
+
+    public void setCtValue2(Double ctValue2) {
+        this.ctValue2 = ctValue2;
+    }
+
+    public Boolean getSampleRejectedAtLab() {
+        return sampleRejectedAtLab;
+    }
+
+    public void setSampleRejectedAtLab(Boolean sampleRejectedAtLab) {
+        this.sampleRejectedAtLab = sampleRejectedAtLab;
+    }
+
+    public Date getSampleRejectedAtLabAt() {
+        return sampleRejectedAtLabAt;
+    }
+
+    public void setSampleRejectedAtLabAt(Date sampleRejectedAtLabAt) {
+        this.sampleRejectedAtLabAt = sampleRejectedAtLabAt;
+    }
+
+    public WebUser getSampleRejectedAtLabBy() {
+        return sampleRejectedAtLabBy;
+    }
+
+    public void setSampleRejectedAtLabBy(WebUser sampleRejectedAtLabBy) {
+        this.sampleRejectedAtLabBy = sampleRejectedAtLabBy;
+    }
+
+    public Boolean getPendingAtLab() {
+        return pendingAtLab;
+    }
+
+    public void setPendingAtLab(Boolean pendingAtLab) {
+        this.pendingAtLab = pendingAtLab;
+    }
+
+    public Date getPendingAtLabAt() {
+        return pendingAtLabAt;
+    }
+
+    public void setPendingAtLabAt(Date pendingAtLabAt) {
+        this.pendingAtLabAt = pendingAtLabAt;
+    }
+
+    public WebUser getPendingAtLabBy() {
+        return pendingAtLabBy;
+    }
+
+    public void setPendingAtLabBy(WebUser pendingAtLabBy) {
+        this.pendingAtLabBy = pendingAtLabBy;
     }
 
 }
