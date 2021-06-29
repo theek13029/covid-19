@@ -169,6 +169,9 @@
                     <h:form>
                         <p:dataTable value="#{clientController.institutionTestEnrollments}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" >
+                             <p:column headerText="Test No." >
+                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>

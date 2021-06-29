@@ -13,9 +13,8 @@
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 
-                Under Construction
                 
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" rendered="false" >
+                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" rendered="true" >
                     <f:facet name="header" >
                         <p:outputLabel value="Entering Test Results" ></p:outputLabel>
                     </f:facet>
@@ -89,7 +88,7 @@
                                 </p:inputText>
                             </p:column>
                             <p:column headerText="Result" exportable="false" >
-                                <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}"  >
+                                <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}" disabled="#{c.receivedAtLab}" >
                                     <f:selectItem itemLabel="Select Result" ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
                                                    var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
