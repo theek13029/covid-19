@@ -52,6 +52,12 @@
                                      rowStyleClass="#{c.resultPositive?'redRow':''}"
                                      selection="#{clientController.selectedToReview}">
                             <p:column selectionMode="multiple" ></p:column>
+                            <p:column headerText="Lab No"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>

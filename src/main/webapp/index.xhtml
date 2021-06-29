@@ -13,13 +13,13 @@
             <ui:define name="content" >
                 <div style="width: 100%;margin:10px;" >
 
-                    <ez:dashboardLab rendered="#{webUserController.loggedUser.labDashboard}"/>
+                    <ez:dashboardLab  rendered="#{webUserController.loggedUser.labDashboard}"/>
 
 
                     <h:panelGroup>
                         <ez:dashboardNational rendered="#{webUserController.loggedUser.nationalDashboard}"/>
                     </h:panelGroup>
-                    <h:panelGroup rendered="true">
+                    <h:panelGroup rendered="false">
                         <ez:dashboardNational rendered="#{webUserController.loggedUser.nationalDashboard}"/>
                         <ez:dashboardProvincial rendered="#{webUserController.loggedUser.provincialDashboard}"/>
                         <ez:dashboardRegional rendered="#{webUserController.loggedUser.regionalDashboard}"/>
