@@ -63,6 +63,8 @@ public class DashboardController implements Serializable {
     @Inject
     private EncounterController encounterController;
     @Inject
+    ClientController clientController;
+    @Inject
     private ItemController itemController;
     @Inject
     private DashboardApplicationController dashboardApplicationController;
@@ -99,6 +101,7 @@ public class DashboardController implements Serializable {
                 + " from Encounter e "
                 + " where e.retired=false "
                 + " and e.sentToLabAt between :fd and :td "
+                + " and e.receivedAtLab is null "
                 + " and e.referalInstitution=:lab";
         m = new HashMap();
         m.put("fd", CommonController.startOfTheDate(fromDate));
@@ -180,6 +183,36 @@ public class DashboardController implements Serializable {
         return "/systemAdmin/calculate_numbers";
     }
 
+    public String toReceiveLabSamples(){
+        clientController.setFromDate(fromDate);
+        clientController.setToDate(toDate);
+        return clientController.toLabReceiveAll();
+    }
+    
+    public String toLabSummarySamplesReceived(){
+        clientController.setFromDate(fromDate);
+        clientController.setToDate(toDate);
+        return clientController.toLabSummarySamplesReceived();
+    }
+    
+    public String toLabSummaryResultsEntered(){
+        clientController.setFromDate(fromDate);
+        clientController.setToDate(toDate);
+        return clientController.toLabSummaryResultsEntered();
+    }
+    
+    public String toLabSummarySamplesReviewed(){
+        clientController.setFromDate(fromDate);
+        clientController.setToDate(toDate);
+        return clientController.toLabSummarySamplesReviewed();
+    }
+    
+    public String toLabSummarySamplesConfirmed(){
+        clientController.setFromDate(fromDate);
+        clientController.setToDate(toDate);
+        return clientController.toLabSummarySamplesConfirmed();
+    }
+    
     /**
      * Creates a new instance of DashboardController
      */

@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <body>
+
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content">
+                <h:outputStylesheet library="css" name="tem1.css"/>
+                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                    <f:facet name="header" >
+                        <p:outputLabel value="Confirmed Results" ></p:outputLabel>
+                    </f:facet>
+
+                    <h:form >
+                        <p:panelGrid columns="2" >
+                            <p:outputLabel value="From Date" ></p:outputLabel>
+                            <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+
+                            <p:outputLabel value="To Date" ></p:outputLabel>
+                            <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+
+                            <p:commandButton ajax="false" value="Process" 
+                                             action="#{clientController.toLabSummarySamplesReceived()}" ></p:commandButton>
+                            <p:commandButton ajax="false" value="Generate Excel" >
+                                <p:dataExporter type="xlsx" fileName="Confirmed Results" target="tbl" ></p:dataExporter>
+                            </p:commandButton>
+
+                        </p:panelGrid>
+
+
+                        <p:dataTable id="tbl" value="#{clientController.labSummariesConfirmed}" 
+                                     rowIndexVar="n"
+                                     var="c" paginator="true" rowKey="#{c.id}" rows="10">
+                            <p:column headerText="No" width="50" >
+                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Samples Sent From"
+                                      sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Number of Samples Confirmed"  sortBy="#{c.count}" width="170">
+                                <p:outputLabel value="#{c.count}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Actions" exportable="false" >
+                                <p:commandButton ajax="false" value="To Print" action="#{clientController.toLabToSelectForPrinting()}" >
+                                    <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
+                                    </f:setPropertyActionListener>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:panelGrid>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

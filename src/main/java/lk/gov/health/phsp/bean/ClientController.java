@@ -144,7 +144,7 @@ public class ClientController implements Serializable {
     private List<Encounter> listedToPrint;
     private List<Encounter> testList;
     private List<Encounter> caseList;
-    
+
     private List<Encounter> listReceived;
     private List<Encounter> listReviewed;
     private List<Encounter> listConfirmed;
@@ -206,6 +206,7 @@ public class ClientController implements Serializable {
 
     private List<InstitutionCount> labSummariesToReceive;
     private List<InstitutionCount> labSummariesReceived;
+    private List<InstitutionCount> labSummariesEntered;
     private List<InstitutionCount> labSummariesReviewed;
     private List<InstitutionCount> labSummariesConfirmed;
     private List<InstitutionCount> labSummariesPositive;
@@ -568,6 +569,79 @@ public class ClientController implements Serializable {
         return "/lab/summary_samples_received";
     }
 
+    public String toLabSummaryResultsEntered() {
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.resultEnteredAt between :fd and :td "
+                + " and c.referalInstitution=:rins "
+                + " group by c.institution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", CommonController.startOfTheDate(getFromDate()));
+        m.put("td", CommonController.endOfTheDate(getToDate()));
+        m.put("rins", referingInstitution);
+        labSummariesEntered = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labSummariesEntered.add((InstitutionCount) o);
+            }
+        }
+        return "/lab/summary_samples_entered";
+    }
+
+    public String toLabSummarySamplesReviewed() {
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.resultReviewedAt between :fd and :td "
+                + " and c.referalInstitution=:rins "
+                + " group by c.institution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", CommonController.startOfTheDate(getFromDate()));
+        m.put("td", CommonController.endOfTheDate(getToDate()));
+        m.put("rins", referingInstitution);
+        labSummariesReviewed = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labSummariesReviewed.add((InstitutionCount) o);
+            }
+        }
+        return "/lab/summary_samples_reviewed";
+    }
+
+    public String toLabSummarySamplesConfirmed() {
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.resultConfirmedAt between :fd and :td "
+                + " and c.referalInstitution=:rins "
+                + " group by c.institution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", CommonController.startOfTheDate(getFromDate()));
+        m.put("td", CommonController.endOfTheDate(getToDate()));
+        m.put("rins", referingInstitution);
+        labSummariesConfirmed = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labSummariesConfirmed.add((InstitutionCount) o);
+            }
+        }
+        return "/lab/summary_samples_confirmed";
+    }
+
+    
     public String toSummaryByOrderedInstitutionVsLabToReceive() {
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
                 + " from Encounter c "
@@ -4786,7 +4860,7 @@ public class ClientController implements Serializable {
     public void setContinuedLab(Institution continuedLab) {
         this.continuedLab = continuedLab;
     }
-
+    
     public List<Encounter> getSelectedToReceive() {
         return selectedToReceive;
     }
@@ -4999,8 +5073,6 @@ public class ClientController implements Serializable {
         return labSummariesPositive;
     }
 
-    
-    
     public void setLabSummariesPositive(List<InstitutionCount> labSummariesPositive) {
         this.labSummariesPositive = labSummariesPositive;
     }
@@ -5035,6 +5107,14 @@ public class ClientController implements Serializable {
 
     public void setListPositives(List<Encounter> listPositives) {
         this.listPositives = listPositives;
+    }
+
+    public List<InstitutionCount> getLabSummariesEntered() {
+        return labSummariesEntered;
+    }
+
+    public void setLabSummariesEntered(List<InstitutionCount> labSummariesEntered) {
+        this.labSummariesEntered = labSummariesEntered;
     }
 
     // </editor-fold>
