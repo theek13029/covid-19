@@ -54,6 +54,7 @@ public class PreferenceController implements Serializable {
     private String pcrNegativeTerm;
     private String pcrInconclusiveTerm;
     private String pcrInvalidTerm;
+    private String startingSerialCount;
     String labNumberGeneration;
 
     // <editor-fold defaultstate="collapsed" desc="Getters and Setters">
@@ -90,7 +91,7 @@ public class PreferenceController implements Serializable {
     }
 
     public void loadPreferences() {
-        // System.out.println("loadPreferences");
+        // // System.out.println("loadPreferences");
         positiveRatSmsTemplate = findPreferanceValue("positiveRatSmsTemplate");
         negativePcrSmsTemplate = findPreferanceValue("negativePcrSmsTemplate");
         negativeRatSmsTemplate = findPreferanceValue("negativeRatSmsTemplate");
@@ -110,6 +111,8 @@ public class PreferenceController implements Serializable {
         pcrNegativeTerm = findPreferanceValue("pcrNegativeTerm", webUserController.getLoggedUser().getInstitution());
         pcrInconclusiveTerm = findPreferanceValue("pcrInconclusiveTerm", webUserController.getLoggedUser().getInstitution());
         pcrInvalidTerm = findPreferanceValue("pcrInvalidTerm", webUserController.getLoggedUser().getInstitution());
+        startingSerialCount = findPreferanceValue("startingSerialCount", webUserController.getLoggedUser().getInstitution());
+        
         labNumberGeneration = findPreferanceValue("labNumberGeneration", webUserController.getLoggedUser().getInstitution());
         if (labNumberGeneration == null) {
             labNumberGeneration = "InsLabDateCount";
@@ -132,6 +135,9 @@ public class PreferenceController implements Serializable {
         if (pcrInvalidTerm == null) {
             pcrInvalidTerm = "Invalid";
         }
+        if(startingSerialCount==null){
+            startingSerialCount="1";
+        }
     }
 
     public void savePreferences() {
@@ -153,6 +159,8 @@ public class PreferenceController implements Serializable {
         savePreference("pcrPositiveTerm", webUserController.getLoggedUser().getInstitution(), pcrPositiveTerm);
         savePreference("pcrNegativeTerm", webUserController.getLoggedUser().getInstitution(), pcrNegativeTerm);
         savePreference("pcrInvalidTerm", webUserController.getLoggedUser().getInstitution(), pcrInvalidTerm);
+        savePreference("startingSerialCount", webUserController.getLoggedUser().getInstitution(), startingSerialCount);
+        
         savePreference("pcrInconclusiveTerm", webUserController.getLoggedUser().getInstitution(), pcrInconclusiveTerm);
         savePreference("labNumberGeneration", webUserController.getLoggedUser().getInstitution(), labNumberGeneration);
     }
@@ -430,6 +438,9 @@ public class PreferenceController implements Serializable {
         }
         return pcrInvalidTerm;
     }
+    
+    
+    
 
     public String getLabNumberGeneration() {
         if (labNumberGeneration == null) {
@@ -444,6 +455,17 @@ public class PreferenceController implements Serializable {
 
     public void setPcrInvalidTerm(String pcrInvalidTerm) {
         this.pcrInvalidTerm = pcrInvalidTerm;
+    }
+
+    public String getStartingSerialCount() {
+        if(startingSerialCount==null){
+            loadPreferencesInstitution();
+        }
+        return startingSerialCount;
+    }
+
+    public void setStartingSerialCount(String startingSerialCount) {
+        this.startingSerialCount = startingSerialCount;
     }
 
     // </editor-fold>

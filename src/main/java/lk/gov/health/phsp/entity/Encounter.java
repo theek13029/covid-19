@@ -464,10 +464,10 @@ public class Encounter implements Serializable {
     }
 
     public ClientEncounterComponentItem getClientEncounterComponentItemByCode(String itemCode) {
-        // System.out.println("itemCode = " + itemCode);
+        // // System.out.println("itemCode = " + itemCode);
         for (ClientEncounterComponentItem i : getClientEncounterComponentItems()) {
-            // System.out.println("i.getItem() = " + i.getItem());
-            // System.out.println("i.getItemValue() = " + i.getItemValue());
+            // // System.out.println("i.getItem() = " + i.getItem());
+            // // System.out.println("i.getItemValue() = " + i.getItemValue());
             if (i.getItem().getCode().equals(itemCode)) {
                 return i;
             }

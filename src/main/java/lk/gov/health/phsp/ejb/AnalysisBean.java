@@ -87,7 +87,7 @@ public class AnalysisBean {
     
 //    @Schedule(dayOfWeek = "Mon-Fri", month = "*", hour = "9-17", dayOfMonth = "*", year = "*", minute = "*", second = "0", persistent = false)
 //    public void myTimer() {
-//        // System.out.println("Timer event: " + new Date());
+//        // // System.out.println("Timer event: " + new Date());
 //    }
 
 

@@ -39,7 +39,7 @@ public class SlNic {
     private String sex;
 
     public void processNic() {
-        // System.out.println("processNic");
+        // // System.out.println("processNic");
         oldNic = false;
         newNic = false;
         if (nic == null || nic.trim().equals("")) {
@@ -48,15 +48,15 @@ public class SlNic {
         nic = nic.trim().toLowerCase();
         if (nic.length() == 10) {
             String lastCharactor = nic.substring(9);
-            // System.out.println("lastCharactor = " + lastCharactor);
+            // // System.out.println("lastCharactor = " + lastCharactor);
             if (!lastCharactor.equals("v") && !lastCharactor.equals("x")) {
                 return;
             }
             String strYear = nic.substring(0, 2);
-            // System.out.println("strYear = " + strYear);
+            // // System.out.println("strYear = " + strYear);
             Integer year = Integer.parseInt(strYear);
             String strDates = nic.substring(2, 5);
-            // System.out.println("strDates = " + strDates);
+            // // System.out.println("strDates = " + strDates);
             Integer dates = Integer.parseInt(strDates);
             if (dates > 499) {
                 sex = "Female";
@@ -74,10 +74,10 @@ public class SlNic {
             dateOfBirth = c.getTime();
         } else if (nic.length() == 12) {
             String strYear = nic.substring(0, 4);
-            // System.out.println("strYear = " + strYear);
+            // // System.out.println("strYear = " + strYear);
             Integer year = Integer.parseInt(strYear);
             String strDates = nic.substring(4, 7);
-            // System.out.println("strDates = " + strDates);
+            // // System.out.println("strDates = " + strDates);
             Integer dates = Integer.parseInt(strDates);
             if (dates > 499) {
                 sex = "Male";

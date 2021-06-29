@@ -108,7 +108,7 @@ public class ApiResource {
             @Context SecurityContext context) {
 
         String ipadd = requestContext.getHeader("X-FORWARDED-FOR");
-        // System.out.println("ipadd = " + ipadd);
+        // // System.out.println("ipadd = " + ipadd);
 
         JSONObject jSONObjectOut;
         if (name == null || name.trim().equals("")) {
@@ -303,7 +303,7 @@ public class ApiResource {
         try {
             intYear = Integer.parseInt(year);
         } catch (NumberFormatException e) {
-            // System.out.println("e = " + e);
+            // // System.out.println("e = " + e);
             return errorMessageNoYear();
         }
         if (intYear == null || intYear < 2000 || intYear > 2030) {
@@ -341,7 +341,7 @@ public class ApiResource {
         try {
             intYear = Integer.parseInt(year);
         } catch (NumberFormatException e) {
-            // System.out.println("e = " + e);
+            // // System.out.println("e = " + e);
             return errorMessageNoYear();
         }
         if (intYear < 2000 || intYear > 2030) {
@@ -358,7 +358,7 @@ public class ApiResource {
             try {
                 intMonth = Integer.parseInt(month);
             } catch (NumberFormatException e) {
-                // System.out.println("e = " + e);
+                // // System.out.println("e = " + e);
                 return errorMessageNoMonth();
             }
         }
@@ -407,7 +407,7 @@ public class ApiResource {
         try {
             intYear = Integer.parseInt(year);
         } catch (NumberFormatException e) {
-            // System.out.println("e = " + e);
+            // // System.out.println("e = " + e);
             return errorMessageNoYear();
         }
         if (intYear < 2000 || intYear > 2030) {
@@ -424,7 +424,7 @@ public class ApiResource {
             try {
                 intMonth = Integer.parseInt(month);
             } catch (NumberFormatException e) {
-                // System.out.println("e = " + e);
+                // // System.out.println("e = " + e);
                 return errorMessageNoMonth();
             }
         }
@@ -487,7 +487,7 @@ public class ApiResource {
         try {
             intYear = Integer.parseInt(year);
         } catch (NumberFormatException e) {
-            // System.out.println("e = " + e);
+            // // System.out.println("e = " + e);
             return errorMessageNoYear();
         }
         if (intYear < 2000 || intYear > 2050) {
@@ -504,7 +504,7 @@ public class ApiResource {
             try {
                 intMonth = Integer.parseInt(month);
             } catch (NumberFormatException e) {
-                // System.out.println("e = " + e);
+                // // System.out.println("e = " + e);
                 return errorMessageNoMonth();
             }
         }
@@ -527,14 +527,14 @@ public class ApiResource {
             Long femaleCount = analysisController.findRegistrationCount(from, to, pIns, itemApplicationController.getFemale());
             Long totalCount = analysisController.findRegistrationCount(from, to, pIns, null);
 
-//            // System.out.println("Institution = " + a.getName());
-//            // System.out.println("maleCount = " + maleCount);
-//            // System.out.println("femaleCount = " + femaleCount);
-//            // System.out.println("totalCount = " + totalCount);
-//            // System.out.println("intYear = " + intYear);
-//            // System.out.println("intMonth = " + intMonth);
-//            // System.out.println("from = " + CommonController.dateTimeToString(from, "dd MMMM yyyy hh:mm"));
-//            // System.out.println("to = " + CommonController.dateTimeToString(to, "dd MMMM yyyy hh:mm"));
+//            // // System.out.println("Institution = " + a.getName());
+//            // // System.out.println("maleCount = " + maleCount);
+//            // // System.out.println("femaleCount = " + femaleCount);
+//            // // System.out.println("totalCount = " + totalCount);
+//            // // System.out.println("intYear = " + intYear);
+//            // // System.out.println("intMonth = " + intMonth);
+//            // // System.out.println("from = " + CommonController.dateTimeToString(from, "dd MMMM yyyy hh:mm"));
+//            // // System.out.println("to = " + CommonController.dateTimeToString(to, "dd MMMM yyyy hh:mm"));
 //            
             if (totalCount != null && totalCount > 0) {
                 JSONObject ja = new JSONObject();
@@ -565,7 +565,7 @@ public class ApiResource {
         try {
             intYear = Integer.parseInt(year);
         } catch (Exception e) {
-            // System.out.println("e = " + e);
+            // // System.out.println("e = " + e);
             return errorMessageNoYear();
         }
         if (intYear == null || intYear < 2000 || intYear > 2030) {
@@ -581,7 +581,7 @@ public class ApiResource {
         try {
             lngInsId = Long.parseLong(insId);
         } catch (Exception e) {
-            // System.out.println("e = " + e);
+            // // System.out.println("e = " + e);
             return errorMessageNoInstituteId();
         }
         if (lngInsId == null || lngInsId < 1) {
@@ -627,7 +627,7 @@ public class ApiResource {
         try {
             intYear = Integer.parseInt(year);
         } catch (Exception e) {
-            // System.out.println("e = " + e);
+            // // System.out.println("e = " + e);
             return errorMessageNoYear();
         }
         if (intYear == null || intYear < 2000 || intYear > 2030) {
@@ -642,7 +642,7 @@ public class ApiResource {
         try {
             intMonth = Integer.parseInt(month);
         } catch (NumberFormatException e) {
-            // System.out.println("e = " + e);
+            // // System.out.println("e = " + e);
             return errorMessageNoMonth();
         }
         if (intMonth < 1 || intMonth > 12) {
@@ -657,7 +657,7 @@ public class ApiResource {
         try {
             lngInsId = Long.parseLong(insId);
         } catch (Exception e) {
-            // System.out.println("e = " + e);
+            // // System.out.println("e = " + e);
             return errorMessageNoInstituteId();
         }
         if (lngInsId == null || lngInsId < 1) {
@@ -800,7 +800,7 @@ public class ApiResource {
                     u = ci.getEncounter().getCreatedBy();
                 }
             } else {
-                // System.out.println("ci.getEncounter() is null");
+                // // System.out.println("ci.getEncounter() is null");
                 continue;
             }
 

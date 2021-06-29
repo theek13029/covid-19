@@ -14,27 +14,27 @@
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Samples to Receive" ></p:outputLabel>
+                        <p:outputLabel value="Samples Reviewed" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
                         <p:panelGrid columns="2" >
-                            <p:outputLabel value="Sample Sent From Date" ></p:outputLabel>
+                            <p:outputLabel value="From Date" ></p:outputLabel>
                             <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <p:outputLabel value="Sample Sent To Date" ></p:outputLabel>
+                            <p:outputLabel value="To Date" ></p:outputLabel>
                             <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{clientController.toLabReceiveAll()}" ></p:commandButton>
+                                             action="#{clientController.toLabSummarySamplesReceived()}" ></p:commandButton>
                             <p:commandButton ajax="false" value="Generate Excel" >
-                                <p:dataExporter type="xlsx" fileName="Samples to receive" target="tbl" ></p:dataExporter>
+                                <p:dataExporter type="xlsx" fileName="Samples Reviewed" target="tbl" ></p:dataExporter>
                             </p:commandButton>
 
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{clientController.labSummariesToReceive}" 
+                        <p:dataTable id="tbl" value="#{clientController.labSummariesReviewed}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
                             <p:column headerText="No" width="50" >
@@ -44,19 +44,11 @@
                                       sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Number of Samples to Receive"  sortBy="#{c.count}" width="170">
+                            <p:column headerText="Number of Samples Reviewed"  sortBy="#{c.count}" width="170">
                                 <p:outputLabel value="#{c.count}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false" >
-                                <p:commandButton ajax="false" value="Mark All as Received" action="#{clientController.labReceiveAll()}" >
-                                    <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
-                                    </f:setPropertyActionListener>
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="To Selectively Mark as Received" action="#{clientController.toLabReceiveSelected()}" >
-                                    <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
-                                    </f:setPropertyActionListener>
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="View all" action="#{clientController.toLabOrderByReferringInstitution()}" >
+                                <p:commandButton ajax="false" value="View" action="#{clientController.toLabListReceivedByInstitution()}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                 </p:commandButton>

@@ -44,6 +44,7 @@ public enum WebUserRole {
     Hospital_Admin("Hospital User"),
     Hospital_User("Hospital Admin"),
     Lab_Consultant("Lab Consultant"),
+    Lab_Mo("Lab Medical Officer"),
     Lab_Mlt("MLT"),
     Lab_User("Lab Assistant"),
     Lab_National("Lab National");
