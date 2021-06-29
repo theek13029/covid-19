@@ -66,6 +66,8 @@ public class Encounter implements Serializable {
     @ManyToOne
     private Area area;
 
+    private String unitWard;
+    
     private boolean firstEncounter;
 
     private Boolean sampled;
@@ -763,7 +765,15 @@ public class Encounter implements Serializable {
 
     public void setLabNumber(String labNumber) {
         this.labNumber = labNumber;
+     }
+
+    public String getUnitWard() {
+        return unitWard;
     }
+
+    public void setUnitWard(String unitWard) {
+        this.unitWard = unitWard;
+   }
 
     public String getPcrResultStr() {
         return pcrResultStr;
@@ -835,6 +845,8 @@ public class Encounter implements Serializable {
         this.ctValue2 = ctValue2;
     }
 
+    
+    
     public Boolean getSampleRejectedAtLab() {
         return sampleRejectedAtLab;
     }
