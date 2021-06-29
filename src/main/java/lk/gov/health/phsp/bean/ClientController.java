@@ -2920,6 +2920,23 @@ public class ClientController implements Serializable {
 
     }
 
+    public List<Encounter> fillEncounters(Client client,
+            EncounterType encType, Integer maxRecordCount) {
+        // ////// // System.out.println("fillEncounters");
+        String j = "select e from Encounter e where e.retired=false ";
+        Map m = new HashMap();
+        if (client != null) {
+            j += " and e.client=:c ";
+            m.put("c", client);
+        }
+        if (maxRecordCount == null) {
+            return encounterFacade.findByJpql(j, m);
+        } else {
+            return encounterFacade.findByJpql(j, m, maxRecordCount);
+        }
+
+    }
+
     public List<Encounter> fillEncounters(Client client, InstitutionType insType, EncounterType encType, boolean excludeCompleted, Integer maxRecordCount) {
         // ////// // System.out.println("fillEncounters");
         String j = "select e from Encounter e where e.retired=false ";
@@ -3289,7 +3306,6 @@ public class ClientController implements Serializable {
     }
 
     public String searchByAnyIdWithBasicData() {
-        // // System.out.println("searchByAnyIdWithBasicData");
         userTransactionController.recordTransaction("Search By Any Id");
         clearExistsValues();
         if (searchingId == null) {
@@ -4012,32 +4028,56 @@ public class ClientController implements Serializable {
     public void convertFormsetDataInToEncounterDate() {
         String j = "select e "
                 + " from Encounter e "
-                + " where e.pcrTestType is null ";
-        List<Encounter> cs = encounterFacade.findByJpql(j, 100);
+                + " where "
+                + " e.pcrTestType is null "
+                + " and e.retired=false "
+                + " and e.institution is not null "
+                + " and e.encounterDate is not null"
+                + " and e.encounterType=:t";
+        Map m = new HashMap();
+        m.put("t", EncounterType.Test_Enrollment);
+        if (idFrom == null) {
+            idFrom = 1000l;
+        }
+        List<Encounter> cs = encounterFacade.findByJpql(j, m, idFrom.intValue());
         errorCode = "";
-        for(Encounter e:cs){
-            errorCode += "\n Institution = " + e.getInstitution().getName() + "\n Date : " + e.getEncounterDate() +
-                    "\n Patient = " + e.getClient().getPerson().getName();
-            ClientEncounterComponentItem eTestType = e.getClientEncounterComponentItemByCode("test_type");
-            
-            if(eTestType==null || eTestType.getItemValue()==null){
-                e.setTestType(itemApplicationController.getPcr());
-                errorCode += "PCR Type Not Found";
-            }else{
-                e.setTestType(eTestType.getItemValue());
+        for (Encounter e : cs) {
+
+            System.out.println("e = " + e.getId());
+
+            if (e.getInstitution() == null) {
+                errorCode += "No Institution";
+                continue;
             }
-            
+            if (e.getEncounterDate() == null) {
+                continue;
+            }
+            if (e.getClient() == null || e.getClient().getPerson() == null) {
+                continue;
+            }
+
+            errorCode += "\n Institution = " + e.getInstitution().getName() + "\n Date : " + e.getEncounterDate()
+                    + "\n Patient = " + e.getClient().getPerson().getName();
+            ClientEncounterComponentItem eTestType = e.getClientEncounterComponentItemByCode("test_type");
+
+            if (eTestType == null || eTestType.getItemValue() == null) {
+                e.setPcrTestType(itemApplicationController.getPcr());
+                errorCode += "PCR Type Not Found";
+            } else {
+                e.setPcrTestType(eTestType.getItemValue());
+            }
+
             eTestType = e.getClientEncounterComponentItemByCode("covid_19_test_ordering_context_category");
-            
-            if(eTestType==null || eTestType.getItemValue()==null){
-                e.setTestType(itemApplicationController.getPcr());
+
+            if (eTestType == null || eTestType.getItemValue() == null) {
+                e.setPcrOrderingCategory(itemApplicationController.getPcr());
                 errorCode += "Ordering Category Not Found";
-            }else{
+            } else {
                 e.setPcrOrderingCategory(eTestType.getItemValue());
             }
-            
+
             encounterFacade.edit(e);
-            
+
         }
     }
     // </editor-fold>
@@ -4472,7 +4512,7 @@ public class ClientController implements Serializable {
 
     public List<Encounter> getSelectedClientEncounters() {
         if (selectedClientEncounters == null) {
-            selectedClientEncounters = fillEncounters(selected, InstitutionType.Clinic, EncounterType.Test_Enrollment, true, 5);
+            selectedClientEncounters = fillEncounters(selected, EncounterType.Test_Enrollment, 5);
 
         }
         return selectedClientEncounters;

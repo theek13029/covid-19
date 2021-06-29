@@ -9,8 +9,7 @@
                     <div class="card">
                         <h5 class="card-header">
                             <p:outputLabel value="Test Order Details"></p:outputLabel>
-                            <p:commandButton class="btn btn-primary" ajax="false" style="float: left;" 
-                                             action="#{clientController.saveClientAndTestEnrollment()}" value="Save"></p:commandButton>
+                            <p:commandButton class="btn btn-primary" ajax="false" style="float: left;" action="#{clientController.saveClientAndTestEnrollment()}" value="Save"></p:commandButton>
                         </h5>
                         <div class="card-body">
                             <h:panelGrid columns="5" >
@@ -267,32 +266,80 @@
                                     </p:row>
                                 </p:panelGrid>
                             </p:panelGrid>
-
-                            <h:panelGrid columns="11" >
-                                <p:outputLabel value="Test" ></p:outputLabel>
-                                <p:selectOneMenu value="#{clientEncounterComponentFormSetController.selected.encounter.pcrTestType}" >
-                                    <f:selectItem itemLabel="Select" ></f:selectItem>
-                                    <f:selectItems value="#{itemApplicationController.covidTestTypes}" var="tt" itemLabel="#{tt.name}"
-                                                   itemValue="#{tt}" ></f:selectItems>
-                                </p:selectOneMenu>
-                                <p:spacer height="1" width="20" ></p:spacer>
-                                <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                                <p:selectOneMenu value="#{clientEncounterComponentFormSetController.selected.encounter.pcrOrderingCategory}" >
-                                    <f:selectItem itemLabel="Select" ></f:selectItem>
-                                    <f:selectItems value="#{itemApplicationController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
-                                                   itemValue="#{tt}" ></f:selectItems>
-                                </p:selectOneMenu>
-                                <p:spacer height="1" width="20" ></p:spacer>
-                                <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                                <p:inputText value="#{clientEncounterComponentFormSetController.selected.encounter.pcrOrderingCategoryOther}"  ></p:inputText>
-                                <p:spacer height="1" width="20" ></p:spacer>
-                                <p:outputLabel value="Symptomatic" ></p:outputLabel>
-                                <p:selectBooleanButton value="#{clientEncounterComponentFormSetController.selected.encounter.symptomatic}"  offLabel="No" onLabel="Yes"></p:selectBooleanButton>
-                                
-                            </h:panelGrid>
-
                         </div>
-                     
+                        <div class="card">
+                            <div class="col-md-4">
+                                <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.forms.size() eq 1}">
+                                    <div style="#{clientEncounterComponentFormSetController.dataFormset.forms.get(0).df.css}">
+                                        <ez:dataform form="#{clientEncounterComponentFormSetController.dataFormset.forms.get(0)}"></ez:dataform>
+                                    </div>
+                                </h:panelGroup>
+                            </div>
+                            <div class="col-md-8">
+                                <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.forms.size() gt 1}">
+                                    <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.dfs.panelType  eq 'TabView_Left_Oriented' }">
+                                        <p:tabView activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}" orientation="left" style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
+                                            <p:tab title="#{f.df.name}">
+                                                <div style="#{f.df.css}">
+                                                    <ez:dataform form="#{f}"></ez:dataform>
+                                                </div>
+                                            </p:tab>
+                                            <p:ajax event="tabChange" process="@this" />
+                                        </p:tabView>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'TabView_Bottom_Oriented'}">
+                                        <p:tabView activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}" orientation="bottom" style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
+                                            <p:tab title="#{f.df.name}">
+                                                <div style="#{f.df.css}">
+                                                    <ez:dataform form="#{f}"></ez:dataform>
+                                                </div>
+                                            </p:tab>
+                                            <p:ajax event="tabChange" process="@this" />
+                                        </p:tabView>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'Tabview_Top_Oriented'}">
+                                        <p:tabView activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}" orientation="top" style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
+                                            <p:tab title="#{f.df.name}">
+                                                <div style="#{f.df.css}">
+                                                    <ez:dataform form="#{f}"></ez:dataform>
+                                                </div>
+                                            </p:tab>
+                                            <p:ajax event="tabChange" process="@this" />
+                                        </p:tabView>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'TabView_Right_Oriented'}">
+                                        <p:tabView activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}" orientation="right" style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
+                                            <p:tab title="#{f.df.name}">
+                                                <div style="#{f.df.css}">
+                                                    <ez:dataform form="#{f}"></ez:dataform>
+                                                </div>
+                                            </p:tab>
+                                            <p:ajax event="tabChange" process="@this" />
+                                        </p:tabView>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'Accordion_Basic'}">
+                                        <p:accordionPanel activeIndex="#{clientEncounterComponentFormSetController.selectedTabIndex}" style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
+                                            <p:tab title="#{f.df.name}">
+                                                <div style="#{f.df.css}">
+                                                    <ez:dataform form="#{f}"></ez:dataform>
+                                                </div>
+                                            </p:tab>
+                                            <p:ajax event="tabChange" process="@this" />
+                                        </p:accordionPanel>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{clientEncounterComponentFormSetController.selected.referanceDesignComponentFormSet.panelType eq 'Accordion_Multiple'}">
+                                        <p:accordionPanel multiple="true" style="width: 100%; padding: 5px;" value="#{clientEncounterComponentFormSetController.dataFormset.forms}" var="f">
+                                            <p:tab title="#{f.df.name}">
+                                                <div style="#{f.df.css}">
+                                                    <ez:dataform form="#{f}"></ez:dataform>
+                                                </div>
+                                            </p:tab>
+                                            <p:ajax event="tabChange" process="@this" />
+                                        </p:accordionPanel>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </div>
+                        </div>
                     </div>
                 </h:form>
             </ui:define>

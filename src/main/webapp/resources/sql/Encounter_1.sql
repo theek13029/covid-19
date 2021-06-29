@@ -1,1 +1,1 @@
-select id, `ENCOUNTERNUMBER`, `RECEIVEDATLAB` from encounter where id= 96808;
+select id,  `ENCOUNTERNUMBER`, `RECEIVEDATLAB` from encounter where id= 52429;
