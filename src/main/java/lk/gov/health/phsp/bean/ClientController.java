@@ -641,7 +641,6 @@ public class ClientController implements Serializable {
         return "/lab/summary_samples_confirmed";
     }
 
-    
     public String toSummaryByOrderedInstitutionVsLabToReceive() {
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
                 + " from Encounter c "
@@ -4011,7 +4010,35 @@ public class ClientController implements Serializable {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Functions - Temporary">
     public void convertFormsetDataInToEncounterDate() {
-
+        String j = "select e "
+                + " from Encounter e "
+                + " where e.pcrTestType is null ";
+        List<Encounter> cs = encounterFacade.findByJpql(j, 100);
+        errorCode = "";
+        for(Encounter e:cs){
+            errorCode += "\n Institution = " + e.getInstitution().getName() + "\n Date : " + e.getEncounterDate() +
+                    "\n Patient = " + e.getClient().getPerson().getName();
+            ClientEncounterComponentItem eTestType = e.getClientEncounterComponentItemByCode("test_type");
+            
+            if(eTestType==null || eTestType.getItemValue()==null){
+                e.setTestType(itemApplicationController.getPcr());
+                errorCode += "PCR Type Not Found";
+            }else{
+                e.setTestType(eTestType.getItemValue());
+            }
+            
+            eTestType = e.getClientEncounterComponentItemByCode("covid_19_test_ordering_context_category");
+            
+            if(eTestType==null || eTestType.getItemValue()==null){
+                e.setTestType(itemApplicationController.getPcr());
+                errorCode += "Ordering Category Not Found";
+            }else{
+                e.setPcrOrderingCategory(eTestType.getItemValue());
+            }
+            
+            encounterFacade.edit(e);
+            
+        }
     }
     // </editor-fold>
 
@@ -4860,7 +4887,7 @@ public class ClientController implements Serializable {
     public void setContinuedLab(Institution continuedLab) {
         this.continuedLab = continuedLab;
     }
-    
+
     public List<Encounter> getSelectedToReceive() {
         return selectedToReceive;
     }
