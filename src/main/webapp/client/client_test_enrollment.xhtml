@@ -16,7 +16,8 @@
                         </h5>
                         <div class="card-body">
                             <div class="form-group row">
-                                <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <p:messages ></p:messages>
                                 </div>
                             </div>
                                 
@@ -128,7 +129,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <p:outputLabel value="Gender:"  for="sex" />
-                                    <p:selectOneMenu id="sex" value="#{clientController.selected.person.sex}" required="true"
+                                    <p:selectOneMenu
+                                        id="sex" value="#{clientController.selected.person.sex}" required="true"
                                                      tabindex="107" requiredMessage="Please select Gender"
                                                      style="width: 100%;">
                                         <f:selectItems value="#{itemController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
