@@ -6,19 +6,27 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:form class="form">
+                    <p:focus for="txtTestNo" ></p:focus>
                     <div class="card">
                         <h5 class="card-header">
                             <p:outputLabel value="Test Order Details" ></p:outputLabel>
                             <p:commandButton class="btn btn-primary"  ajax="false"
-                                             style="float: left;"
+                                             style="float: left;" tabindex="7"
                                              action="#{clientController.saveClientAndTestEnrollment()}" value="Save"></p:commandButton>
                         </h5>
                         <div class="card-body">
                             <div class="form-group row">
+                                <div class="col-md-3">
+                                </div>
+                            </div>
+                                
+                            <div class="form-group row">
 
                                 <div class="col-md-3">
                                     <p:outputLabel value="Test Number"></p:outputLabel>
-                                    <p:inputText class="form-control " value="#{clientEncounterComponentFormSetController.selected.encounter.encounterNumber}">
+                                    <p:inputText id="txtTestNo" class="form-control " 
+                                                 value="#{clientEncounterComponentFormSetController.selected.encounter.encounterNumber}"
+                                                 tabindex="1" >
                                         <f:ajax event="blur" execute="@this" listener="#{encounterController.save(clientEncounterComponentFormSetController.selected.encounter.encounterNumber)}"></f:ajax>
                                     </p:inputText>
                                 </div>
@@ -29,7 +37,7 @@
                                     <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
                                                     inputStyleClass="autocomplete"
                                                     value="#{clientEncounterComponentFormSetController.selected.encounter.referalInstitution}"
-                                                    forceSelection="true" 
+                                                    forceSelection="true" tabindex="100" 
                                                     completeMethod="#{institutionController.completeLab}" 
                                                     var="l" itemLabel="#{l.name}" itemValue="#{l}">
                                         <f:ajax event="blur" execute="@this" listener="#{encounterController.save(clientEncounterComponentFormSetController.selected.encounter.encounterNumber)}"></f:ajax>
@@ -38,9 +46,13 @@
 
 
                                 <div class="col-md-3" >
-                                    <p:outputLabel  value="Test"></p:outputLabel>
-                                    <p:selectOneMenu value="#{clientEncounterComponentFormSetController.selected.encounter.pcrTestType}" 
-                                                     style="margin: 0px; padding: 0px; width: 100%;">
+                                    <p:outputLabel for="test" value="Test"></p:outputLabel>
+                                    <p:selectOneMenu id="test"
+                                                     required="true"
+                                                     requiredMessage="Please select PCR or RAT"
+                                                     value="#{clientEncounterComponentFormSetController.selected.encounter.pcrTestType}" 
+                                                     style="margin: 0px; padding: 0px; width: 100%;"
+                                                     tabindex="101" >
                                         <f:selectItem itemLabel="Select" ></f:selectItem>
                                         <f:selectItems value="#{itemApplicationController.covidTestTypes}" var="tt" itemLabel="#{tt.name}"
                                                        itemValue="#{tt}" ></f:selectItems>
@@ -49,8 +61,13 @@
 
 
                                 <div class="col-md-3">
-                                    <p:outputLabel  value="Ordering Category"></p:outputLabel>
-                                    <p:selectOneMenu value="#{clientEncounterComponentFormSetController.selected.encounter.pcrOrderingCategory}" 
+                                    <p:outputLabel  value="Ordering Category"
+                                                    for="orderingCat"></p:outputLabel>
+                                    <p:selectOneMenu id="orderingCat"
+                                                     required="true" 
+                                                     requiredMessage="Please select the category for ordering the test. If you select other, please give that reason under the other area."
+                                                     value="#{clientEncounterComponentFormSetController.selected.encounter.pcrOrderingCategory}" 
+                                                     tabindex="102" 
                                                      style="margin: 0px; padding: 0px; width: 100%;" >
                                         <f:selectItem itemLabel="Select" ></f:selectItem>
                                         <f:selectItems value="#{itemApplicationController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
@@ -62,26 +79,37 @@
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <p:outputLabel value="Name:" for="name" />
-                                    <p:inputText autocomplete="off" class="form-control" tabindex="1" id="name" required="true" value="#{clientController.selected.person.name}" title="Name" />
+                                    <p:inputText autocomplete="off" 
+                                                 class="form-control" 
+                                                 tabindex="2" 
+                                                 id="name" 
+                                                 required="true" 
+                                                 requiredMessage="Please give a name"
+                                                 value="#{clientController.selected.person.name}" title="Name" />
                                 </div>
                                 <div class="col-md-1">
                                     <p:outputLabel value="Citizenship:" for="citizenship" />
-                                    <p:selectOneMenu id="citizenship" value="#{clientController.selected.person.citizenship}">
+                                    <p:selectOneMenu id="citizenship" value="#{clientController.selected.person.citizenship}"
+                                                     tabindex="103" >
                                         <f:selectItems value="#{itemController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}"></f:selectItems>
                                     </p:selectOneMenu>
                                 </div>
                                 <div class="col-md-2">
                                     <p:outputLabel value="PHN No.:" for="phn" />
-                                    <p:inputText id="phn" autocomplete="off" class="form-control" value="#{clientController.selected.phn}" title="Phn" placeholder="New PHN"
+                                    <p:inputText id="phn" autocomplete="off"
+                                                 tabindex="104" 
+                                                 class="form-control" value="#{clientController.selected.phn}" title="Phn" placeholder="New PHN"
                                                  style="width: 100%;"></p:inputText>
                                 </div>
                                 <div class="col-md-2">
                                     <p:outputLabel value="Other Ordering Category:"  />
-                                    <p:inputText value="#{clientEncounterComponentFormSetController.selected.encounter.pcrOrderingCategoryOther}"  ></p:inputText>
+                                    <p:inputText value="#{clientEncounterComponentFormSetController.selected.encounter.pcrOrderingCategoryOther}" 
+                                                 tabindex="105" ></p:inputText>
                                 </div>
                                 <div class="col-md-1">
                                     <p:outputLabel value="Symptomatic:"  />
-                                    <p:selectBooleanButton value="#{clientEncounterComponentFormSetController.selected.encounter.symptomatic}"  offLabel="No" onLabel="Yes"></p:selectBooleanButton>
+                                    <p:selectBooleanButton tabindex="106" 
+                                                           value="#{clientEncounterComponentFormSetController.selected.encounter.symptomatic}"  offLabel="No" onLabel="Yes"></p:selectBooleanButton>
                                 </div>
 
 
@@ -91,7 +119,7 @@
                                 <div class="col-md-6">
                                     <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
                                     <p:inputText id="nic" class="form-control"
-                                                 style="width: 100%;" tabindex="2"  autocomplete="off" value="#{clientController.selected.person.nic}" title="Nic" validatorMessage="Please check the number">
+                                                 style="width: 100%;" tabindex="3"  autocomplete="off" value="#{clientController.selected.person.nic}" title="Nic" validatorMessage="Please check the number">
                                         <!--<f:validateRegex pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})?$" ></f:validateRegex>-->
                                         <f:ajax event="blur" listener="#{clientController.ageAndSexFromNic}"
                                                 render="year month sex" 
@@ -101,6 +129,7 @@
                                 <div class="col-md-3">
                                     <p:outputLabel value="Gender:"  for="sex" />
                                     <p:selectOneMenu id="sex" value="#{clientController.selected.person.sex}" required="true"
+                                                     tabindex="107" requiredMessage="Please select Gender"
                                                      style="width: 100%;">
                                         <f:selectItems value="#{itemController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
                                     </p:selectOneMenu>
@@ -108,15 +137,22 @@
                                 <div class="col-md-3">
                                     <p:outputLabel value="Age: (Years/Months)*" style="width: 100%;"/>
                                     <h:panelGroup>
-                                        <p:inputText autocomplete="off" id="year" placeholder="Years" value="#{clientController.yearMonthDay.year}" required="true" style="width: 90px;">
+                                        <p:inputText autocomplete="off" id="year" 
+                                                     tabindex="108" 
+                                                     requiredMessage="Please enter the age"
+                                                     placeholder="Years"
+                                                     value="#{clientController.yearMonthDay.year}"
+                                                     required="true" style="width: 90px;">
                                             <f:validateRegex pattern="^((0|1|2|3|4|5|6|7|8|9){1}|(0|1|2|3|4|5|6|7|8|9){2}|(0|1|2|3|4|5|6|7|8|9){3})?$"></f:validateRegex>
                                             <f:ajax event="keyup" execute="@this month day" render="calDob" listener="#{clientController.yearMonthDateChanged()}" />
                                         </p:inputText>
                                         <p:spacer height="1" width="20" ></p:spacer>
-                                        <p:inputText autocomplete="off" id="month" placeholder="Months" style="width: 90px; " value="#{clientController.yearMonthDay.month}">
+                                        <p:inputText tabindex="108"  autocomplete="off" id="month" placeholder="Months" style="width: 90px; " value="#{clientController.yearMonthDay.month}">
                                             <f:ajax event="keyup" execute="@this year day" render="calDob" listener="#{clientController.yearMonthDateChanged()}" />
                                         </p:inputText>
-                                        <p:inputText autocomplete="off" id="day" style="width: 90px;" rendered="false" value="#{clientController.yearMonthDay.day}">
+                                        <p:inputText
+                                            tabindex="109" 
+                                            autocomplete="off" id="day" style="width: 90px;" rendered="false" value="#{clientController.yearMonthDay.day}">
                                             <f:ajax event="keyup" execute="@this year month" render="calDob" listener="#{clientController.yearMonthDateChanged()}" />
                                         </p:inputText>
                                     </h:panelGroup>
@@ -129,8 +165,10 @@
                                                    action="#{clientController.addLastAddress()}" process="lnkLastAddress" update="address" >
                                         <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
                                     </p:commandLink>
-                                    <p:inputText tabindex="3" 
-                                                 id="address" required="true" value="#{clientController.selected.person.address}"
+                                    <p:inputText tabindex="4" 
+                                                 id="address" required="true" 
+                                                 requiredMessage="Please enter the address"
+                                                 value="#{clientController.selected.person.address}"
                                                  title="Address ****" style="width:100%;"/>
 
                                 </div>
@@ -138,6 +176,8 @@
                                 <div class="col-md-3">
                                     <p:outputLabel value="District:"  for="district" />
                                     <p:autoComplete required="true" 
+                                                    requiredMessage="Please select a district"
+                                                    tabindex="110" 
                                                     style="width: 100%;" inputStyle="width:100%;"
                                                     id="district"
                                                     value="#{clientController.selected.person.district}" 
@@ -152,7 +192,9 @@
 
                                 <div class="col-md-3">
                                     <p:outputLabel value="MOH Area:" for="moh" />
-                                    <p:autoComplete id="moh" value="#{clientController.selected.person.mohArea}" completeMethod="#{areaController.completeMohAreas}" var="m" itemLabel="#{m.name}" itemValue="#{m}" inputStyle="width:20rem;" maxResults="15" forceSelection="true" minQueryLength="3">
+                                    <p:autoComplete id="moh" 
+                                                    tabindex="111" 
+                                                    value="#{clientController.selected.person.mohArea}" completeMethod="#{areaController.completeMohAreas}" var="m" itemLabel="#{m.name}" itemValue="#{m}" inputStyle="width:20rem;" maxResults="15" forceSelection="true" minQueryLength="3">
                                         <f:ajax event="itemSelect" execute="moh"></f:ajax>
                                         <f:ajax event="blur" execute="moh"></f:ajax>
                                     </p:autoComplete>
@@ -162,23 +204,26 @@
                             <div class="form-group row">
                                 <div class="col-md-3">
                                     <p:outputLabel value="Contact Number :" for="phone1" />
-                                    <p:commandLink id="lnkLastphone1" style="float: right;" action="#{clientController.addLastPhones()}" process="lnkLastphone1" update="phone1">
+                                    <p:commandLink id="lnkLastphone1" style="float: right;" 
+
+                                                   action="#{clientController.addLastPhones()}" process="lnkLastphone1" update="phone1">
                                         <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
                                     </p:commandLink>
-                                    <p:inputText tabindex="4" class="form-control" 
+                                    <p:inputText tabindex="5" class="form-control" 
                                                  id="phone1" required="true" 
+                                                 requiredMessage="Please select a contact number"
                                                  autocomplete="off" 
                                                  value="#{clientController.selected.person.phone1}" title="Mobile" 
                                                  validatorMessage="Please check the number">
                                     </p:inputText>
-                                    
+
                                 </div>
                                 <div class="col-md-3">
                                     <p:outputLabel value="GN Area:" for="gn" />
                                     <p:commandLink id="lnkLastGn" style="float: right;"  action="#{clientController.addLastGn()}" process="lnkLastGn" update="gn">
                                         <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
                                     </p:commandLink>
-                                    <p:autoComplete tabindex="5" style="width: 100%;"
+                                    <p:autoComplete tabindex="6" style="width: 100%;"
                                                     inputStyle="width:100%;"
                                                     id="gn" value="#{clientController.selected.person.gnArea}" 
                                                     completeMethod="#{clientController.completeClientsMohArea}" 
@@ -187,10 +232,10 @@
                                                     minQueryLength="2">
                                     </p:autoComplete>
                                 </div>
-                                
+
                                 <div class="col-md-3">
                                     <p:outputLabel value="PHI Area:" for="phi" />
-                                    <p:autoComplete tabindex="5" 
+                                    <p:autoComplete tabindex="113" 
                                                     id="phi" 
                                                     value="#{clientController.selected.person.phiArea}" 
                                                     completeMethod="#{clientController.completeClientsPhiArea}"
@@ -204,12 +249,12 @@
                                                     placeholder="Not Known" minQueryLength="2">
                                     </p:autoComplete>
                                 </div>
-                                
-                                 <div class="col-md-2">
+
+                                <div class="col-md-2">
                                     <p:outputLabel value="Unit/Ward:"  />
-                                    <p:inputText tabindex="5" value="#{clientEncounterComponentFormSetController.selected.encounter.unitWard}"
-                                                    style="width:100%;"
-                                                    placeholder="Not Known" >
+                                    <p:inputText tabindex="114" value="#{clientEncounterComponentFormSetController.selected.encounter.unitWard}"
+                                                 style="width:100%;"
+                                                 placeholder="Not Known" >
                                     </p:inputText>
                                 </div>
 
