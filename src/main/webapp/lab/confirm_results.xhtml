@@ -82,9 +82,17 @@
                             <p:column headerText="Phone" rendered="false" >
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
-                            <p:column id="result" headerText="CT" >
-                                <p:inputText id="txtCt" value="#{c.ctValueStr}" style="width: 5rem;" >
-                                    <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
+                            <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
+                                      filterBy="#{c.ctValue}" filterMatchMode="contains" >
+                                <p:inputText id="txtCt2" value="#{c.ctValue}" style="width: 98px;" >
+                                    <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResults(c)}" >
+                                    </p:ajax>
+                                </p:inputText>
+                            </p:column>
+                            <p:column headerText="CT 2" width="100"  sortBy="#{c.ctValue2}"
+                                      filterBy="#{c.ctValue2}" filterMatchMode="contains" >
+                                <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 98px;" >
+                                    <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>

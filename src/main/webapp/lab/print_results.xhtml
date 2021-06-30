@@ -77,9 +77,19 @@
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="CT"  sortBy="#{c.ctValueStr}"
-                                      filterBy="#{c.ctValueStr}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.ctValueStr}" ></p:outputLabel>
+                             <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
+                                      filterBy="#{c.ctValue}" filterMatchMode="contains" >
+                                <p:inputText id="txtCt2" value="#{c.ctValue}" style="width: 98px;" >
+                                    <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResults(c)}" >
+                                    </p:ajax>
+                                </p:inputText>
+                            </p:column>
+                            <p:column headerText="CT 2" width="100"  sortBy="#{c.ctValue2}"
+                                      filterBy="#{c.ctValue2}" filterMatchMode="contains" >
+                                <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 98px;" >
+                                    <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResults(c)}" >
+                                    </p:ajax>
+                                </p:inputText>
                             </p:column>
                             <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
                                       filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
