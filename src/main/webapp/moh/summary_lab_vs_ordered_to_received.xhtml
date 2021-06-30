@@ -34,7 +34,7 @@
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{clientController.labOrderSummeries}" 
+                        <p:dataTable id="tbl" value="#{clientController.labSummariesToReceive}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
                             <p:column headerText="No" width="50" >
@@ -47,6 +47,11 @@
                             <p:column headerText="Lab"
                                       sortBy="#{c.referralInstitution.name}" filterBy="#{c.referralInstitution.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.referralInstitution.name}" ></p:outputLabel>
+                            </p:column>
+                             <p:column headerText="District"
+                                      sortBy="#{c.institution.district.name}" 
+                                      filterBy="#{c.institution.district.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.institution.district.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Number of Orders"  sortBy="#{c.count}" width="70">
                                 <p:outputLabel value="#{c.count}" ></p:outputLabel>

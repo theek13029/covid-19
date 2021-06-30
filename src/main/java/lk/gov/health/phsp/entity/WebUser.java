@@ -357,6 +357,7 @@ public class WebUser implements Serializable {
             case Hospital_Admin:
             case Hospital_User:
             case Lab_Consultant:
+            case Lab_Mo:
             case Lab_Mlt:
             case Lab_User:
             case Nurse:
@@ -387,6 +388,7 @@ public class WebUser implements Serializable {
             case Hospital_Admin:
             case Hospital_User:
             case Lab_Consultant:
+            case Lab_Mo:
             case Lab_Mlt:
             case Lab_User:
             case Nurse:
@@ -417,6 +419,7 @@ public class WebUser implements Serializable {
             case Hospital_Admin:
             case Hospital_User:
             case Lab_Consultant:
+            case Lab_Mo:
             case Lab_Mlt:
             case Lab_User:
             case Nurse:
@@ -445,6 +448,7 @@ public class WebUser implements Serializable {
             case Hospital_Admin:
             case Hospital_User:
             case Lab_Consultant:
+            case Lab_Mo:
             case Lab_Mlt:
             case Lab_User:
             case Nurse:
@@ -473,6 +477,7 @@ public class WebUser implements Serializable {
         switch (getWebUserRole()) {
             case Client:
             case Lab_Consultant:
+            case Lab_Mo:
             case Lab_Mlt:
             case Lab_User:
             case Phi:
@@ -518,6 +523,7 @@ public class WebUser implements Serializable {
             case Nurse:
                 return false;
             case Lab_Consultant:
+            case Lab_Mo:
             case Lab_Mlt:
             case Lab_User:
                 return true;

@@ -10,18 +10,25 @@
 
         <ui:composition template="./template1.xhtml">
 
-            <ui:define name="content">
-                <h:panelGroup>
-                    <ez:dashboardNational rendered="#{webUserController.loggedUser.nationalDashboard}"/>
-                </h:panelGroup>
-                <h:panelGroup rendered="false">
-                    <ez:dashboardNational rendered="#{webUserController.loggedUser.nationalDashboard}"/>
-                    <ez:dashboardProvincial rendered="#{webUserController.loggedUser.provincialDashboard}"/>
-                    <ez:dashboardRegional rendered="#{webUserController.loggedUser.regionalDashboard}"/>
-                    <ez:dashboardLab rendered="#{webUserController.loggedUser.labDashboard}"/>
-                    <ez:dashboardHospital rendered="#{webUserController.loggedUser.hospitalDashboard}"/>
-                    <ez:dashboardMoh rendered="#{webUserController.loggedUser.mohDashboard}"/>
-                </h:panelGroup>
+            <ui:define name="content" >
+                <div style="width: 100%;margin:10px;" >
+
+                    <ez:dashboardLab  rendered="#{webUserController.loggedUser.labDashboard}"/>
+
+
+                    <h:panelGroup>
+                        <ez:dashboardNational rendered="#{webUserController.loggedUser.nationalDashboard}"/>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="false">
+                        <ez:dashboardNational rendered="#{webUserController.loggedUser.nationalDashboard}"/>
+                        <ez:dashboardProvincial rendered="#{webUserController.loggedUser.provincialDashboard}"/>
+                        <ez:dashboardRegional rendered="#{webUserController.loggedUser.regionalDashboard}"/>
+
+                        <ez:dashboardHospital rendered="#{webUserController.loggedUser.hospitalDashboard}"/>
+                        <ez:dashboardMoh rendered="#{webUserController.loggedUser.mohDashboard}"/>
+                    </h:panelGroup>
+
+                </div>
             </ui:define>
         </ui:composition>
     </h:body>

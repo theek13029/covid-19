@@ -128,7 +128,7 @@
                             </p:panelGrid>
 
                             <p:panelGrid columns="1" >
-                                <p:commandButton action="#{clientController.toMarkAllNegative()}" ajax="false" value="Mark All Negative" onclick="if (!confirm('Are you sure you want mark all Negative?'))
+                                <p:commandButton action="#{clientController.toMarkAllNegative()}" ajax="false" value="Mark All Negative" onclick="if (!confirm('Are you sure you want mark all as NEGATIVE?'))
                                             return false">
                                 </p:commandButton>
                                 <p:commandButton action="/lab/enter_recorrection" actionListener="#{clientController.toLabReviewResults}" ajax="false" value="Enter Recorrection" >
@@ -138,7 +138,7 @@
 
                         </p:panelGrid>
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}"  rendered="true"
+                        <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}"  rendered="true"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" rowIndexVar="n"
                                      rowStyleClass="#{c.resultPositive?'redRow':''}">
                             <p:column headerText="ID" width="60">
@@ -147,12 +147,8 @@
                             <p:column headerText="Tube No" width="140" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column  headerText="Lab No" width="200"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
-                                <p:inputText value="#{c.labNumber}" id="txtLabNo" >
-                                    <p:ajax event="blur" process="txtLabNo" 
-                                            listener="#{clientController.saveLabNo(c)}" >
-                                    </p:ajax>
-                                </p:inputText>
+                            <p:column headerText="Lab No" width="200"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
+                                <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" 
                                       filterMatchMode="contains" >

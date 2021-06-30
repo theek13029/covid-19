@@ -56,6 +56,7 @@
                     <p:submenu label="Reports" rendered="#{webUserController.hasPrivilege('Monitoring_and_evaluation')}">
                         <p:menuitem ajax="false" value="Case List" action="#{clientController.toListCases()}" />
                         <p:menuitem ajax="false" value="Test List" action="#{clientController.toListTests()}" />
+                        <p:menuitem ajax="false" value="Result List" action="/national/result_list" />
                         <p:menuitem ajax="false" value="SMS" action="/sms/index" />
                         <p:menuitem ajax="false" value="Analysis" 
                                     action="#{reportController.toViewReports()}" ></p:menuitem>
@@ -135,7 +136,7 @@
                                         rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
                         </p:submenu>
                     </p:submenu>
-                    <p:submenu label="Settings"  rendered="#{webUserController.hasPrivilege('User')}" >
+                    <p:submenu label="Settings" >
                         <p:menuitem value="Change My Password" action="#{webUserController.toChangeMyPassword()}"    ajax="false" />
                         <p:menuitem value="Change My Details" action="#{webUserController.toChangeMyDetails()}"    ajax="false" />
                     </p:submenu>

@@ -50,12 +50,19 @@
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      selection="#{clientController.selectedToPrint}">
-                            <p:column selectionMode="multiple" ></p:column>
-                            <p:column headerText="No"  sortBy="#{c.encounterNumber}">
+                            <p:column selectionMode="multiple" width="30" >
+                            </p:column>
+                            <p:column width="50" >
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Serial" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                            <p:column headerText="ID"  sortBy="#{c.id}">
+                                <p:outputLabel value="#{c.id}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Lab No" sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>

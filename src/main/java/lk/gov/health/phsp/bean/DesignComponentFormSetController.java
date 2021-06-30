@@ -174,7 +174,7 @@ public class DesignComponentFormSetController implements Serializable {
             return;
         }
 
-        // System.out.println("referanceSet = " + referanceSet);
+        // // System.out.println("referanceSet = " + referanceSet);
 
         referanceSet.getReferenceComponent();
         referanceSet.getParentComponent();

@@ -58,14 +58,20 @@ public class DashboardController implements Serializable {
     @EJB
     private EncounterFacade encounterFacade;
     @EJB
-    CovidDataHolder covidDataHolder;
+    private CovidDataHolder covidDataHolder;
 
     @Inject
     private EncounterController encounterController;
     @Inject
-    ItemController itemController;
+    ClientController clientController;
     @Inject
-    DashboardApplicationController dashboardApplicationController;
+    private ItemController itemController;
+    @Inject
+    private DashboardApplicationController dashboardApplicationController;
+    @Inject
+    private WebUserController webUserController;
+    @Inject
+    private ItemApplicationController itemApplicationController;
 
     private Date fromDate;
     private Date toDate;
@@ -79,10 +85,134 @@ public class DashboardController implements Serializable {
     private List<CovidData> covidDatasForPdhs;
     private List<CovidData> covidDatasForCountry;
 
+    private Long samplesToReceive;
+    private Long samplesReceived;
+    private Long samplesRejected;
+    private Long samplesResultEntered;
+    private Long samplesResultReviewed;
+    private Long samplesResultsConfirmed;
+    private Long samplesPositive;
+
+    public void prepareLabDashboard() {
+        String j;
+        Map m;
+
+        j = "select count(e) "
+                + " from Encounter e "
+                + " where e.retired=false "
+                + " and e.sentToLabAt between :fd and :td "
+                + " and e.receivedAtLab is null "
+                + " and e.referalInstitution=:lab";
+        m = new HashMap();
+        m.put("fd", CommonController.startOfTheDate(fromDate));
+        m.put("td", CommonController.endOfTheDate(toDate));
+        m.put("lab", webUserController.getLoggedUser().getInstitution());
+        samplesToReceive = encounterFacade.countByJpql(j, m, TemporalType.TIMESTAMP);
+        
+        j = "select count(e) "
+                + " from Encounter e "
+                + " where e.retired=false "
+                + " and e.sampledAt between :fd and :td "
+                + " and e.referalInstitution=:lab";
+        m = new HashMap();
+        m.put("fd", CommonController.startOfTheDate(fromDate));
+        m.put("td", CommonController.endOfTheDate(toDate));
+        m.put("lab", webUserController.getLoggedUser().getInstitution());
+        samplesReceived = encounterFacade.countByJpql(j, m, TemporalType.TIMESTAMP);
+
+        j = "select count(e) "
+                + " from Encounter e "
+                + " where e.retired=false "
+                + " and e.resultEnteredAt between :fd and :td "
+                + " and e.referalInstitution=:lab";
+        m = new HashMap();
+        m.put("fd", CommonController.startOfTheDate(fromDate));
+        m.put("td", CommonController.endOfTheDate(toDate));
+        m.put("lab", webUserController.getLoggedUser().getInstitution());
+        samplesResultEntered = encounterFacade.countByJpql(j, m, TemporalType.TIMESTAMP);
+
+        j = "select count(e) "
+                + " from Encounter e "
+                + " where e.retired=false "
+                + " and e.resultEnteredAt between :fd and :td "
+                + " and e.referalInstitution=:lab";
+        m = new HashMap();
+        m.put("fd", CommonController.startOfTheDate(fromDate));
+        m.put("td", CommonController.endOfTheDate(toDate));
+        m.put("lab", webUserController.getLoggedUser().getInstitution());
+        samplesResultEntered = encounterFacade.countByJpql(j, m, TemporalType.TIMESTAMP);
+
+        j = "select count(e) "
+                + " from Encounter e "
+                + " where e.retired=false "
+                + " and e.resultReviewedAt between :fd and :td "
+                + " and e.referalInstitution=:lab";
+        m = new HashMap();
+        m.put("fd", CommonController.startOfTheDate(fromDate));
+        m.put("td", CommonController.endOfTheDate(toDate));
+        m.put("lab", webUserController.getLoggedUser().getInstitution());
+        samplesResultReviewed = encounterFacade.countByJpql(j, m, TemporalType.TIMESTAMP);
+
+        j = "select count(e) "
+                + " from Encounter e "
+                + " where e.retired=false "
+                + " and e.resultConfirmedAt between :fd and :td "
+                + " and e.referalInstitution=:lab";
+        m = new HashMap();
+        m.put("fd", CommonController.startOfTheDate(fromDate));
+        m.put("td", CommonController.endOfTheDate(toDate));
+        m.put("lab", webUserController.getLoggedUser().getInstitution());
+        samplesResultsConfirmed = encounterFacade.countByJpql(j, m, TemporalType.TIMESTAMP);
+
+        j = "select count(e) "
+                + " from Encounter e "
+                + " where e.retired=false "
+                + " and e.resultConfirmedAt between :fd and :td "
+                + " and e.referalInstitution=:lab "
+                + " and e.pcrResult=:pos";
+        m = new HashMap();
+        m.put("fd", CommonController.startOfTheDate(fromDate));
+        m.put("td", CommonController.endOfTheDate(toDate));
+        m.put("lab", webUserController.getLoggedUser().getInstitution());
+        m.put("pos", itemApplicationController.getPcrPositive());
+        samplesPositive = encounterFacade.countByJpql(j, m, TemporalType.TIMESTAMP);
+
+    }
+
     public String toCalculateNumbers() {
         return "/systemAdmin/calculate_numbers";
     }
 
+    public String toReceiveLabSamples(){
+        clientController.setFromDate(fromDate);
+        clientController.setToDate(toDate);
+        return clientController.toLabReceiveAll();
+    }
+    
+    public String toLabSummarySamplesReceived(){
+        clientController.setFromDate(fromDate);
+        clientController.setToDate(toDate);
+        return clientController.toLabSummarySamplesReceived();
+    }
+    
+    public String toLabSummaryResultsEntered(){
+        clientController.setFromDate(fromDate);
+        clientController.setToDate(toDate);
+        return clientController.toLabSummaryResultsEntered();
+    }
+    
+    public String toLabSummarySamplesReviewed(){
+        clientController.setFromDate(fromDate);
+        clientController.setToDate(toDate);
+        return clientController.toLabSummarySamplesReviewed();
+    }
+    
+    public String toLabSummarySamplesConfirmed(){
+        clientController.setFromDate(fromDate);
+        clientController.setToDate(toDate);
+        return clientController.toLabSummarySamplesConfirmed();
+    }
+    
     /**
      * Creates a new instance of DashboardController
      */
@@ -92,11 +222,10 @@ public class DashboardController implements Serializable {
     public void calculateNumbers() {
         covidDataHolder.calculateNumbers(fromDate, toDate);
     }
-    
-    public void updateDashboard(){
+
+    public void updateDashboard() {
         dashboardApplicationController.updateDashboard();
     }
-   
 
     public NumbersFacade getNumbersFacade() {
         return numbersFacade;
@@ -173,6 +302,104 @@ public class DashboardController implements Serializable {
 
     public List<CovidData> getCovidDatasForCountry() {
         return covidDatasForCountry;
+    }
+
+    public CovidDataHolder getCovidDataHolder() {
+        return covidDataHolder;
+    }
+
+    public void setCovidDataHolder(CovidDataHolder covidDataHolder) {
+        this.covidDataHolder = covidDataHolder;
+    }
+
+    public ItemController getItemController() {
+        return itemController;
+    }
+
+    public void setItemController(ItemController itemController) {
+        this.itemController = itemController;
+    }
+
+    public DashboardApplicationController getDashboardApplicationController() {
+        return dashboardApplicationController;
+    }
+
+    public void setDashboardApplicationController(DashboardApplicationController dashboardApplicationController) {
+        this.dashboardApplicationController = dashboardApplicationController;
+    }
+
+    public Long getSamplesReceived() {
+        return samplesReceived;
+    }
+
+    public void setSamplesReceived(Long samplesReceived) {
+        this.samplesReceived = samplesReceived;
+    }
+
+    public Long getSamplesRejected() {
+        return samplesRejected;
+    }
+
+    public void setSamplesRejected(Long samplesRejected) {
+        this.samplesRejected = samplesRejected;
+    }
+
+    public Long getSamplesResultEntered() {
+        return samplesResultEntered;
+    }
+
+    public void setSamplesResultEntered(Long samplesResultEntered) {
+        this.samplesResultEntered = samplesResultEntered;
+    }
+
+    public Long getSamplesResultReviewed() {
+        return samplesResultReviewed;
+    }
+
+    public void setSamplesResultReviewed(Long samplesResultReviewed) {
+        this.samplesResultReviewed = samplesResultReviewed;
+    }
+
+    public Long getSamplesResultsConfirmed() {
+        return samplesResultsConfirmed;
+    }
+
+    public void setSamplesResultsConfirmed(Long samplesResultsConfirmed) {
+        this.samplesResultsConfirmed = samplesResultsConfirmed;
+    }
+    
+    
+
+    public Long getSamplesPositive() {
+        return samplesPositive;
+    }
+
+    public void setSamplesPositive(Long samplesPositive) {
+        this.samplesPositive = samplesPositive;
+    }
+
+    public WebUserController getWebUserController() {
+        return webUserController;
+    }
+
+    public void setWebUserController(WebUserController webUserController) {
+        this.webUserController = webUserController;
+    }
+
+    public ItemApplicationController getItemApplicationController() {
+        return itemApplicationController;
+    }
+
+    public void setItemApplicationController(ItemApplicationController itemApplicationController) {
+        this.itemApplicationController = itemApplicationController;
+    }
+
+    public Long getSamplesToReceive() {
+        return samplesToReceive;
+    }
+
+    public void setSamplesToReceive(Long samplesToReceive) {
+        this.samplesToReceive = samplesToReceive;
     }
 
 }

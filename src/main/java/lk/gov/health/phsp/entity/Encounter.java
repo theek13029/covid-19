@@ -26,6 +26,7 @@ package lk.gov.health.phsp.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.enterprise.context.Dependent;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -65,6 +66,8 @@ public class Encounter implements Serializable {
     @ManyToOne
     private Area area;
 
+    private String unitWard;
+    
     private boolean firstEncounter;
 
     private Boolean sampled;
@@ -85,12 +88,27 @@ public class Encounter implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private WebUser receivedAtLabBy;
 
+    private Boolean sampleRejectedAtLab;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date sampleRejectedAtLabAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebUser sampleRejectedAtLabBy;
+
+    
+    
     private Boolean resultEntered;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date resultEnteredAt;
     @ManyToOne(fetch = FetchType.LAZY)
     private WebUser resultEnteredBy;
 
+    private Boolean pendingAtLab;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date pendingAtLabAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebUser pendingAtLabBy;
+
+    
     private Boolean resultReviewed;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date resultReviewedAt;
@@ -119,6 +137,7 @@ public class Encounter implements Serializable {
     private WebUser resultNotedBy;
 
     private Double ctValue;
+    private Double ctValue2;
     private String ctValueStr;
     @ManyToOne
     private Item pcrResult;
@@ -148,6 +167,13 @@ public class Encounter implements Serializable {
     private EncounterType encounterType;
 
     private String encounterNumber;
+
+    @ManyToOne
+    private Item pcrTestType;
+    @ManyToOne
+    private Item pcrOrderingCategory;
+    private String pcrOrderingCategoryOther;
+    private Boolean symptomatic;
 
     private String labNumber;
 
@@ -193,6 +219,7 @@ public class Encounter implements Serializable {
     private Date completedAt;
 
     @Transient
+    @Deprecated
     private Item testType;
 
     public Long getId() {
@@ -455,10 +482,10 @@ public class Encounter implements Serializable {
     }
 
     public ClientEncounterComponentItem getClientEncounterComponentItemByCode(String itemCode) {
-        // System.out.println("itemCode = " + itemCode);
+        // // System.out.println("itemCode = " + itemCode);
         for (ClientEncounterComponentItem i : getClientEncounterComponentItems()) {
-            // System.out.println("i.getItem() = " + i.getItem());
-            // System.out.println("i.getItemValue() = " + i.getItemValue());
+            // // System.out.println("i.getItem() = " + i.getItem());
+            // // System.out.println("i.getItemValue() = " + i.getItemValue());
             if (i.getItem().getCode().equals(itemCode)) {
                 return i;
             }
@@ -526,6 +553,8 @@ public class Encounter implements Serializable {
         return sentToLab;
     }
 
+    
+    
     public void setSentToLab(Boolean sentToLab) {
         this.sentToLab = sentToLab;
     }
@@ -736,7 +765,15 @@ public class Encounter implements Serializable {
 
     public void setLabNumber(String labNumber) {
         this.labNumber = labNumber;
+     }
+
+    public String getUnitWard() {
+        return unitWard;
     }
+
+    public void setUnitWard(String unitWard) {
+        this.unitWard = unitWard;
+   }
 
     public String getPcrResultStr() {
         return pcrResultStr;
@@ -754,6 +791,7 @@ public class Encounter implements Serializable {
         this.resultPrintHtml = resultPrintHtml;
     }
 
+    @Deprecated
     public Item getTestType() {
         if (testType == null) {
             if (getClientEncounterComponentItemByCode("test_type") != null && getClientEncounterComponentItemByCode("test_type").getItemValue() != null) {
@@ -761,6 +799,100 @@ public class Encounter implements Serializable {
             }
         }
         return testType;
+    }
+
+    public Item getPcrTestType() {
+        return pcrTestType;
+    }
+
+    public void setPcrTestType(Item pcrTestType) {
+        this.pcrTestType = pcrTestType;
+    }
+
+    public Item getPcrOrderingCategory() {
+        return pcrOrderingCategory;
+    }
+
+    public void setPcrOrderingCategory(Item pcrOrderingCategory) {
+        this.pcrOrderingCategory = pcrOrderingCategory;
+    }
+
+    public String getPcrOrderingCategoryOther() {
+        return pcrOrderingCategoryOther;
+    }
+
+    public void setPcrOrderingCategoryOther(String pcrOrderingCategoryOther) {
+        this.pcrOrderingCategoryOther = pcrOrderingCategoryOther;
+    }
+
+    public Boolean getSymptomatic() {
+        return symptomatic;
+    }
+
+    public void setSymptomatic(Boolean symptomatic) {
+        this.symptomatic = symptomatic;
+    }
+
+    public void setTestType(Item testType) {
+        this.testType = testType;
+    }
+
+    public Double getCtValue2() {
+        return ctValue2;
+    }
+
+    public void setCtValue2(Double ctValue2) {
+        this.ctValue2 = ctValue2;
+    }
+
+    
+    
+    public Boolean getSampleRejectedAtLab() {
+        return sampleRejectedAtLab;
+    }
+
+    public void setSampleRejectedAtLab(Boolean sampleRejectedAtLab) {
+        this.sampleRejectedAtLab = sampleRejectedAtLab;
+    }
+
+    public Date getSampleRejectedAtLabAt() {
+        return sampleRejectedAtLabAt;
+    }
+
+    public void setSampleRejectedAtLabAt(Date sampleRejectedAtLabAt) {
+        this.sampleRejectedAtLabAt = sampleRejectedAtLabAt;
+    }
+
+    public WebUser getSampleRejectedAtLabBy() {
+        return sampleRejectedAtLabBy;
+    }
+
+    public void setSampleRejectedAtLabBy(WebUser sampleRejectedAtLabBy) {
+        this.sampleRejectedAtLabBy = sampleRejectedAtLabBy;
+    }
+
+    public Boolean getPendingAtLab() {
+        return pendingAtLab;
+    }
+
+    public void setPendingAtLab(Boolean pendingAtLab) {
+        this.pendingAtLab = pendingAtLab;
+    }
+
+    public Date getPendingAtLabAt() {
+        return pendingAtLabAt;
+    }
+
+    public void setPendingAtLabAt(Date pendingAtLabAt) {
+        this.pendingAtLabAt = pendingAtLabAt;
+    }
+
+    public WebUser getPendingAtLabBy() {
+        return pendingAtLabBy;
+    }
+
+    public void setPendingAtLabBy(WebUser pendingAtLabBy) {
+        this.pendingAtLabBy = pendingAtLabBy;
     }
 
 }
