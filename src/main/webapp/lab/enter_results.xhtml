@@ -167,8 +167,8 @@
                             </p:column>
                             <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
                                       filterBy="#{c.ctValue}" filterMatchMode="contains" >
-                                <p:inputText id="txtCt2" value="#{c.ctValue}" style="width: 98px;" >
-                                    <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResults(c)}" >
+                                <p:inputText id="txtCt1" value="#{c.ctValue}" style="width: 98px;" >
+                                    <p:ajax event="keyup" process="txtCt1" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
