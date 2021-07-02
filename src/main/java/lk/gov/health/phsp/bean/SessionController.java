@@ -27,7 +27,9 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lk.gov.health.phsp.entity.Encounter;
 import lk.gov.health.phsp.entity.Item;
 
@@ -54,8 +56,8 @@ public class SessionController implements Serializable {
     private Item lastRatOrderingCategory;
     private Item lastPcrOrdringCategory;
 
-    private List<Encounter> rats;
-    private List<Encounter> pcrs;
+    private Map<Long,Encounter> rats;
+    private Map<Long,Encounter> pcrs;
     
     
     public Encounter getLastRat() {
@@ -90,27 +92,21 @@ public class SessionController implements Serializable {
         this.lastPcrOrdringCategory = lastPcrOrdringCategory;
     }
 
-    public List<Encounter> getRats() {
+    public Map<Long,Encounter> getRats() {
         if(rats==null){
-            rats = new ArrayList<>();
+            rats = new HashMap<>();
         }
         return rats;
     }
 
-    public void setRats(List<Encounter> rats) {
-        this.rats = rats;
-    }
 
-    public List<Encounter> getPcrs() {
+    public Map<Long,Encounter> getPcrs() {
         if(pcrs==null){
-            pcrs = new ArrayList<>();
+            pcrs = new HashMap<>();
         }
         return pcrs;
     }
 
-    public void setPcrs(List<Encounter> pcrs) {
-        this.pcrs = pcrs;
-    }
     
     
     

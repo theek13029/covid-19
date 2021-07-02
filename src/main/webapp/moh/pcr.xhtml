@@ -19,15 +19,8 @@
                                              style="float: left;" tabindex="8"
                                              action="#{mohController.savePcrAndToPcrView()}" value="Save and View PCR"></p:commandButton>
                         </h5>
-
                         <h:panelGroup id="gpTest" >
                             <div class="card-body">
-                                <div class="form-group row">
-                                    <div class="col-md-12">
-                                        <p:messages ></p:messages>
-                                    </div>
-                                </div>
-
                                 <div class="form-group row">
 
 
@@ -111,8 +104,6 @@
 
 
                                 </div>
-
-
                                 <div class="form-group row">
                                     <div class="col-md-6">
                                         <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
@@ -162,8 +153,6 @@
 
 
                                 </div>
-
-
                                 <div class="form-group row">
                                     <div class="col-md-6">
                                         <p:outputLabel value="Current Residential Address:" for="address" />
@@ -268,11 +257,13 @@
 
 
                                 </div>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <p:messages ></p:messages>
+                                    </div>
+                                </div>
                             </div>
                         </h:panelGroup>
-
-
-
                     </div>
                 </h:form>
             </ui:define>

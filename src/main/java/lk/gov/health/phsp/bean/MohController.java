@@ -408,7 +408,7 @@ public class MohController implements Serializable {
         sessionController.setLastRatOrderingCategory(rat.getPcrOrderingCategory());
         sessionController.setLastRat(rat);
 
-        sessionController.getRats().add(rat);
+        sessionController.getRats().put(rat.getId(), rat);
 
         JsfUtil.addSuccessMessage("Saved.");
         return "/moh/rat_view";
@@ -488,7 +488,7 @@ public class MohController implements Serializable {
         sessionController.setLastPcrOrdringCategory(pcr.getPcrOrderingCategory());
         sessionController.setLastPcr(pcr);
         lab = pcr.getReferalInstitution();
-        sessionController.getPcrs().add(pcr);
+        sessionController.getPcrs().put(pcr.getId(), pcr);
 
         JsfUtil.addSuccessMessage("PCR Saved.");
         return "/moh/pcr_view";
