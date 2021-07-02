@@ -1211,7 +1211,7 @@ public class ClientController implements Serializable {
             } else {
 
             }
-        }else{
+        } else {
             se.setPcrResultStr("");
         }
         encounterFacade.edit(se);
@@ -4693,26 +4693,8 @@ public class ClientController implements Serializable {
         Map m = new HashMap();
         String j = "select c from Encounter c "
                 + " where c.retired=false";
-        if (getInstitutionSelectable()) {
-            if (getNationalLevel()) {
-                if (getInstitution() == null) {
-                } else {
-                    j += " and c.institution = :ins ";
-                    m.put("ins", getInstitution());
-                }
-            } else {
-                if (getInstitution() == null) {
-                    j += " and c.institution in :inss ";
-                    m.put("inss", webUserController.getLoggableInstitutions());
-                } else {
-                    j += " and c.institution = :ins ";
-                    m.put("ins", getInstitution());
-                }
-            }
-        } else {
-            j += " and c.institution=:ins ";
-            m.put("ins", webUserController.getLoggedUser().getInstitution());
-        }
+        j += " and c.institution in :inss ";
+        m.put("inss", webUserController.getLoggableInstitutions());
         j += " and c.encounterDate between :fd and :td "
                 + " and c.encounterType=:t "
                 + " order by c.id";

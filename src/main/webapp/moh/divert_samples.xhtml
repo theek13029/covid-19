@@ -71,11 +71,16 @@
                         </p:panelGrid>
 
                         <p:dataTable id="tbl" value="#{clientController.listedToDivert}" 
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10"
+                                     var="c" paginator="true" rowKey="#{c.id}" rows="1000"
+                                     
+                                     
                                      selection="#{clientController.selectedToDivert}">
                             <p:column selectionMode="multiple" ></p:column>
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" >
+                                 <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Age" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
