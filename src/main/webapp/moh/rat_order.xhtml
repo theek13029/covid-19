@@ -6,20 +6,20 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:form class="form" >
-                    <p:focus for="result" ></p:focus>
+                    <p:focus for="txtTestNo" ></p:focus>
                     <div class="card">
                         <h5 class="card-header">
                             <p:outputLabel value="RAT Order Details" ></p:outputLabel>
                             <p:commandButton class="btn btn-primary"  ajax="false"
                                              style="float: left;" tabindex="7"
-                                             action="#{mohController.saveRatAndToNewRatOrder()}" value="Save and NEW RAT"></p:commandButton>
+                                             action="#{mohController.saveRatAndToNewRatOrder()}" value="Save and NEW RAT Order"></p:commandButton>
                             <p:commandButton class="btn btn-secondary"  ajax="false"
                                              style="float: left;" tabindex="8"
-                                             action="#{mohController.saveRatAndToRatView()}" value="Save and View RAT"></p:commandButton>
+                                             action="#{mohController.saveRatAndToRatOrderView()}" value="Save and View RAT Order"></p:commandButton>
                         </h5>
 
                         <h:panelGroup id="gpTest" >
-                            <div class="card-body #{mohController.rat.pcrResult.name eq 'Positive'?'text-danger':''}">
+                            <div class="card-body">
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <p:messages ></p:messages>
@@ -29,24 +29,24 @@
                                 <div class="form-group row">
 
 
-                                    <div class="col-md-3" >
-                                        <p:outputLabel for="result" value="Result"></p:outputLabel>
-                                        <p:selectOneMenu id="result"
-                                                         required="true"
-                                                         requiredMessage="Please select result"
-                                                         value="#{mohController.rat.pcrResult}"  var="r"
-                                                         style="margin: 0px; padding: 0px; width: 100%;"
-                                                         tabindex="101" >
-                                            <f:selectItem itemLabel="Select" ></f:selectItem>
-                                            <f:selectItems value="#{itemApplicationController.pcrResults}" var="tt" itemLabel="#{tt.name}"
-                                                           itemValue="#{tt}"  >
-                                            </f:selectItems>
-                                            <p:column style="#{r.name eq 'Positive'?'background-color:yellow;':''}">
-                                                <p:outputLabel value="${r.name}" 
-                                                               style="#{r.name eq 'Positive'?'color:red;':''}" ></p:outputLabel>
-                                            </p:column>
-                                            <p:ajax event="change" update="gpTest" process="result" ></p:ajax>
-                                        </p:selectOneMenu>
+                                
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="Test Number"></p:outputLabel>
+                                        <p:inputText id="txtTestNo" class="form-control " 
+                                                     value="#{mohController.rat.encounterNumber}"
+                                                     tabindex="1" >
+                                        </p:inputText>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <p:outputLabel  value="Lab"></p:outputLabel>
+                                        <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
+                                                        inputStyleClass="autocomplete"
+                                                        value="#{mohController.rat.referalInstitution}"
+                                                        forceSelection="true" tabindex="100" 
+                                                        completeMethod="#{mohController.completeLab}" 
+                                                        var="l" itemLabel="#{l.name}" itemValue="#{l}">
+                                        </p:autoComplete>
                                     </div>
 
                                     <div class="col-md-3">
@@ -68,14 +68,6 @@
                                         <p:outputLabel value="Sampled at"></p:outputLabel>
                                         <p:calendar style="width: 100%;" inputStyle="width:100%;"  value="#{mohController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
                                     </div>
-
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Result at"></p:outputLabel>
-                                        <p:calendar  style="width: 100%;" inputStyle="width:100%;"  value="#{mohController.rat.resultConfirmedAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
-                                    </div>
-
-
-
 
                                 </div>
                                 <div class="form-group row">

@@ -102,6 +102,9 @@ public class SessionController implements Serializable {
     }
 
     public List<Encounter> getPcrs() {
+        if(pcrs==null){
+            pcrs = new ArrayList<>();
+        }
         return pcrs;
     }
 

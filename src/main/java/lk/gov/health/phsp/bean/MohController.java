@@ -219,7 +219,7 @@ public class MohController implements Serializable {
         Client c = new Client();
         c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
         c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
-        rat.setPcrTestType(itemApplicationController.getPcr());
+        rat.setPcrTestType(itemApplicationController.getRat());
         rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
         rat.setClient(c);
         rat.setInstitution(webUserController.getLoggedUser().getInstitution());
@@ -249,7 +249,7 @@ public class MohController implements Serializable {
         Client c = new Client();
         c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
         c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
-        rat.setPcrTestType(itemApplicationController.getPcr());
+        rat.setPcrTestType(itemApplicationController.getRat());
         rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
         rat.setClient(c);
         rat.setInstitution(webUserController.getLoggedUser().getInstitution());
@@ -273,7 +273,7 @@ public class MohController implements Serializable {
         c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
         c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
         pcr.setPcrTestType(itemApplicationController.getPcr());
-        pcr.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
+        pcr.setPcrOrderingCategory(sessionController.getLastPcrOrdringCategory());
         pcr.setClient(c);
         pcr.setInstitution(webUserController.getLoggedUser().getInstitution());
         pcr.setReferalInstitution(lab);
@@ -485,12 +485,12 @@ public class MohController implements Serializable {
 
         encounterController.save(pcr);
 
-        sessionController.setLastRatOrderingCategory(pcr.getPcrOrderingCategory());
-        sessionController.setLastRat(pcr);
+        sessionController.setLastPcrOrdringCategory(pcr.getPcrOrderingCategory());
+        sessionController.setLastPcr(pcr);
         lab = pcr.getReferalInstitution();
         sessionController.getPcrs().add(pcr);
 
-        JsfUtil.addSuccessMessage("Saved.");
+        JsfUtil.addSuccessMessage("PCR Saved.");
         return "/moh/pcr_view";
     }
 
