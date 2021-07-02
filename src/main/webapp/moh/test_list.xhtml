@@ -28,7 +28,8 @@
                             <p:outputLabel value="Ordering Category" ></p:outputLabel>
                             <p:selectOneMenu value="#{mohController.orderingCategory}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{mohController.covidTestOrderingCategories}" var="c" itemLabel="#{c.name}"
+                                <f:selectItems value="#{mohController.covidTestOrderingCategories}" 
+                                               var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
@@ -63,7 +64,7 @@
                         <p:dataTable id="tbl" value="#{mohController.tests}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
-                            <p:column rendered="true" headerText="No" width="80"  sortBy="#{c.encounterNumber}">
+                            <p:column rendered="true" headerText="No." width="80"  >
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">

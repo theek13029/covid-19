@@ -173,9 +173,6 @@ public class MohController implements Serializable {
         return toTestList();
     }
 
-    
-    
-    
     public String toRatEdit() {
         if (rat == null) {
             JsfUtil.addErrorMessage("No RAT");
@@ -189,11 +186,11 @@ public class MohController implements Serializable {
     }
 
     public String toPcrEdit() {
-        if (rat == null) {
+        if (pcr == null) {
             JsfUtil.addErrorMessage("No PCR");
             return "";
         }
-        if (!rat.getPcrTestType().equals(itemApplicationController.getRat())) {
+        if (!pcr.getPcrTestType().equals(itemApplicationController.getPcr())) {
             JsfUtil.addErrorMessage("Not a PCR");
             return "";
         }
@@ -256,6 +253,7 @@ public class MohController implements Serializable {
         rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
         rat.setClient(c);
         rat.setInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setReferalInstitution(lab);
         rat.setEncounterType(EncounterType.Test_Enrollment);
         rat.setEncounterDate(d);
         rat.setEncounterFrom(d);
@@ -278,6 +276,7 @@ public class MohController implements Serializable {
         pcr.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
         pcr.setClient(c);
         pcr.setInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setReferalInstitution(lab);
         pcr.setEncounterType(EncounterType.Test_Enrollment);
         pcr.setEncounterDate(d);
         pcr.setEncounterFrom(d);
@@ -291,12 +290,18 @@ public class MohController implements Serializable {
     }
 
     public String saveRatAndToNewRat() {
-        saveRat();
+        if (saveRat() == null) {
+            return "";
+        }
+        JsfUtil.addSuccessMessage("Ready to enter a new RAT");
         return toAddNewRatWithNewClient();
     }
 
     public String saveRatAndToNewRatOrder() {
-        saveRat();
+        if (saveRat() == null) {
+            return "";
+        }
+        JsfUtil.addSuccessMessage("Ready to enter a new RAT Order");
         return toAddNewRatOrderWithNewClient();
     }
 
@@ -482,8 +487,8 @@ public class MohController implements Serializable {
 
         sessionController.setLastRatOrderingCategory(pcr.getPcrOrderingCategory());
         sessionController.setLastRat(pcr);
-
-        sessionController.getRats().add(pcr);
+        lab = pcr.getReferalInstitution();
+        sessionController.getPcrs().add(pcr);
 
         JsfUtil.addSuccessMessage("Saved.");
         return "/moh/pcr_view";
@@ -496,6 +501,15 @@ public class MohController implements Serializable {
         rat.getClient().getPerson().setAddress(sessionController.getLastRat().getClient().getPerson().getAddress());
     }
 
+    public void retrieveLastAddressForPcr() {
+        if (pcr == null || pcr.getClient() == null
+                || sessionController.getLastPcr() == null
+                || sessionController.getLastPcr().getClient() == null) {
+            return;
+        }
+        pcr.getClient().getPerson().setAddress(sessionController.getLastPcr().getClient().getPerson().getAddress());
+    }
+
     public void retrieveLastPhoneForRat() {
         if (rat == null || rat.getClient() == null || sessionController.getLastRat() == null || sessionController.getLastRat().getClient() == null) {
             return;
@@ -503,11 +517,34 @@ public class MohController implements Serializable {
         rat.getClient().getPerson().setPhone1(sessionController.getLastRat().getClient().getPerson().getPhone1());
     }
 
+    public void retrieveLastPhoneForPcr() {
+        if (pcr == null
+                || pcr.getClient() == null
+                || sessionController.getLastPcr() == null
+                || sessionController.getLastPcr().getClient() == null) {
+            return;
+        }
+        pcr.getClient().getPerson().setPhone1(sessionController.getLastPcr().getClient().getPerson().getPhone1());
+    }
+
     public void retrieveLastGnRat() {
         if (rat == null || rat.getClient() == null || sessionController.getLastRat() == null || sessionController.getLastRat().getClient() == null) {
             return;
         }
         rat.getClient().getPerson().setGnArea(sessionController.getLastRat().getClient().getPerson().getGnArea());
+    }
+
+    public void retrieveLastGnPcr() {
+        if (pcr == null 
+                || 
+                pcr.getClient() == null 
+                || 
+                sessionController.getLastPcr() == null 
+                || 
+                sessionController.getLastPcr().getClient() == null) {
+            return;
+        }
+        pcr.getClient().getPerson().setGnArea(sessionController.getLastPcr().getClient().getPerson().getGnArea());
     }
 
     public List<Area> completePhiAreasForRat(String qry) {
@@ -525,8 +562,28 @@ public class MohController implements Serializable {
         }
     }
 
+    public List<Area> completePhiAreasForPcr(String qry) {
+        List<Area> areas = new ArrayList<>();
+        if (pcr == null) {
+            return areas;
+        }
+        if (pcr.getClient() == null) {
+            return areas;
+        }
+        if (pcr.getClient().getPerson().getMohArea() == null) {
+            return areaApplicationController.completePhiAreas(qry);
+        } else {
+            return areaApplicationController.completePhiAreasOfMoh(qry, pcr.getClient().getPerson().getMohArea());
+        }
+    }
+
+    
     public List<Area> completeGnAreasForRat(String qry) {
         return completeGnAreas(qry, rat);
+    }
+
+    public List<Area> completeGnAreasForPcr(String qry) {
+        return completeGnAreas(qry, pcr);
     }
 
     private List<Area> completeGnAreas(String qry, Encounter e) {
@@ -555,6 +612,10 @@ public class MohController implements Serializable {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
         }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
         if (result != null) {
             j += " and c.pcrResult=:tt ";
             m.put("result", result);
@@ -577,7 +638,7 @@ public class MohController implements Serializable {
     public List<Item> getCovidTestOrderingCategories() {
         return itemApplicationController.getCovidTestOrderingCategories();
     }
-    
+
     public List<Item> getCovidTestTypes() {
         return itemApplicationController.getCovidTestTypes();
     }
@@ -587,7 +648,7 @@ public class MohController implements Serializable {
         its.add(InstitutionType.Lab);
         return institutionController.fillInstitutions(its, qry, null);
     }
-    
+
 // </editor-fold>  
 // <editor-fold defaultstate="collapsed" desc="Getters & Setters">  
 // </editor-fold>  

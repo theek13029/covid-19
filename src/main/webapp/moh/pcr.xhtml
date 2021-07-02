@@ -1,15 +1,17 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
-
     <h:body>
         <ui:composition template="/template1.xhtml">
+            <ui:define name="title" >
+               PCR Order
+            </ui:define>
             <ui:define name="content">
                 <h:form class="form" >
                     <p:focus for="txtTestNo" ></p:focus>
                     <div class="card">
                         <h5 class="card-header">
-                            <p:outputLabel value="PCR Details" ></p:outputLabel>
+                            <p:outputLabel value="PCR Order" ></p:outputLabel>
                             <p:commandButton class="btn btn-primary"  ajax="false"
                                              style="float: left;" tabindex="7"
                                              action="#{mohController.savePcrAndToNewPcr()}" value="Save and NEW PCR"></p:commandButton>
@@ -166,7 +168,7 @@
                                     <div class="col-md-6">
                                         <p:outputLabel value="Current Residential Address:" for="address" />
                                         <p:commandLink id="lnkLastAddress" style="width: 5%; float: right;"
-                                                       action="#{mohController.retrieveLastAddressForRat()}" process="lnkLastAddress" update="address" >
+                                                       action="#{mohController.retrieveLastAddressForPcr()}" process="lnkLastAddress" update="address" >
                                             <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
                                         </p:commandLink>
                                         <p:inputText tabindex="4" 
@@ -211,7 +213,7 @@
                                     <div class="col-md-3">
                                         <p:outputLabel value="Contact Number :" for="phone1" />
                                         <p:commandLink id="lnkLastphone1" style="float: right;" 
-                                                       action="#{mohController.retrieveLastPhoneForRat()}" process="lnkLastphone1" update="phone1">
+                                                       action="#{mohController.retrieveLastPhoneForPcr()}" process="lnkLastphone1" update="phone1">
                                             <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
                                         </p:commandLink>
                                         <p:inputText tabindex="5" class="form-control" 
@@ -226,13 +228,13 @@
                                     <div class="col-md-3">
                                         <p:outputLabel value="GN Area:" for="gn" />
                                         <p:commandLink id="lnkLastGn" style="float: right;"  
-                                                       action="#{mohController.retrieveLastGnRat()}" process="lnkLastGn" update="gn">
+                                                       action="#{mohController.retrieveLastGnPcr()}" process="lnkLastGn" update="gn">
                                             <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
                                         </p:commandLink>
                                         <p:autoComplete tabindex="6" style="width: 100%;"
                                                         inputStyle="width:100%;"
                                                         id="gn" value="#{mohController.pcr.client.person.gnArea}" 
-                                                        completeMethod="#{mohController.completeGnAreasForRat}" 
+                                                        completeMethod="#{mohController.completeGnAreasForPcr}" 
                                                         var="gn" itemLabel="#{gn.name}" itemValue="#{gn}"
                                                         maxResults="20" forceSelection="true" placeholder="Not Known"
                                                         minQueryLength="2">
@@ -244,7 +246,7 @@
                                         <p:autoComplete tabindex="113" 
                                                         id="phi" 
                                                         value="#{mohController.pcr.client.person.phiArea}" 
-                                                        completeMethod="#{mohController.completePhiAreasForRat}"
+                                                        completeMethod="#{mohController.completePhiAreasForPcr}"
                                                         var="gn" 
                                                         itemLabel="#{gn.name}" 
                                                         itemValue="#{gn}" 

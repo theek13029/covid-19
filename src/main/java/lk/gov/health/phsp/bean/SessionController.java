@@ -55,7 +55,7 @@ public class SessionController implements Serializable {
     private Item lastPcrOrdringCategory;
 
     private List<Encounter> rats;
-    
+    private List<Encounter> pcrs;
     
     
     public Encounter getLastRat() {
@@ -99,6 +99,14 @@ public class SessionController implements Serializable {
 
     public void setRats(List<Encounter> rats) {
         this.rats = rats;
+    }
+
+    public List<Encounter> getPcrs() {
+        return pcrs;
+    }
+
+    public void setPcrs(List<Encounter> pcrs) {
+        this.pcrs = pcrs;
     }
     
     

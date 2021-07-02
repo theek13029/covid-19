@@ -15,13 +15,14 @@
                 <p:submenu label="Navigator" expanded="true">
                     <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="/index" />
                     <p:submenu label="Patient" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
-                        <p:menuitem ajax="false" value="Add New PCR Order" action="#{mohController.toAddNewPcrWithNewClient()}"  />
-                        <p:menuitem ajax="false" value="Add New RAT Result" action="#{mohController.toAddNewRatWithNewClient()}"  />
+                        <p:menuitem ajax="false" value="Add New PCR Order" action="#{mohController.toAddNewPcrWithNewClient()}" />
+                        <p:menuitem ajax="false" value="Add New RAT Result" action="#{mohController.toAddNewRatWithNewClient()}" />
                         <p:menuitem ajax="false" value="Add New RAT Order" action="#{mohController.toAddNewRatOrderWithNewClient()}"  />
                         <p:menuitem ajax="false" value="Register New Case" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
                         <p:menuitem ajax="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
                         <p:menuitem ajax="false" value="Test Result Entering" action="#{clientController.toMohEnterResults()}" />
                         <p:menuitem ajax="false" value="Test Result Printing" action="#{clientController.toMohToSelectForPrinting()}" />
+                        <p:menuitem ajax="false" value="Test List" action="#{mohController.toTestList()}" />
                     </p:submenu>
                     <p:submenu label="Samples" rendered="#{webUserController.hasPrivilege('Sample_Management')}" >
                         <p:menuitem ajax="false" value="Dispatch Samples"
@@ -56,8 +57,9 @@
                     </p:submenu>
 
                     <p:submenu label="Reports" rendered="#{webUserController.hasPrivilege('Monitoring_and_evaluation')}">
+                        
                         <p:menuitem ajax="false" value="Case List" action="#{clientController.toListCases()}" />
-                        <p:menuitem ajax="false" value="Test List" action="#{clientController.toListTests()}" />
+                        
                         <p:menuitem ajax="false" value="Result List" action="/national/result_list" />
                         <p:menuitem ajax="false" value="SMS" action="/sms/index" />
                         <p:menuitem ajax="false" value="Analysis" 
