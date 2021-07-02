@@ -24,7 +24,12 @@
 package lk.gov.health.phsp.entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
+import javax.enterprise.inject.spi.CDI;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -36,6 +41,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import lk.gov.health.phsp.bean.ItemApplicationController;
+import lk.gov.health.phsp.pojcs.SlNic;
+import lk.gov.health.phsp.pojcs.YearMonthDay;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -158,61 +166,61 @@ public class Person implements Serializable {
 
     public void calAgeFromDob() {
         ageCalculated = true;
-        setAge("");
-        setAgeInDays(0l);
-        setAgeMonths(0);
-        setAgeDays(0);
-        setAgeYears(0);
-        if (getDateOfBirth() == null) {
+        age = "";
+        ageInDays = 0l;
+        ageMonths = 0;
+        ageDays = 0;
+        ageYears = 0;
+        if (dateOfBirth == null) {
             return;
         }
-
-        LocalDate dob = new LocalDate(getDateOfBirth());
+        LocalDate dob = new LocalDate(dateOfBirth);
         LocalDate date = new LocalDate(new Date());
-
         Period period = new Period(dob, date, PeriodType.yearMonthDay());
-        setAgeYears(period.getYears());
-        setAgeMonths(period.getMonths());
-        setAgeDays(period.getDays());
-        if (getAgeYears() > 12) {
-            setAge(period.getYears() + "");
-        } else if (getAgeYears() > 0) {
-            setAge(period.getYears() + " years and " + period.getMonths() + " months.");
+        ageYears = period.getYears();
+        ageMonths = period.getMonths();
+        ageDays = period.getDays();
+        if (ageYears > 12) {
+            age = (period.getYears() + "");
+        } else if (ageYears > 0) {
+            age = (period.getYears() + " years and " + period.getMonths() + " months.");
         } else {
-            setAge(period.getMonths() + " months and " + period.getDays() + " days.");
+            age = (period.getMonths() + " months and " + period.getDays() + " days.");
         }
         period = new Period(dob, date, PeriodType.days());
-        setAgeInDays((long) period.getDays());
+        ageInDays = ((long) period.getDays());
     }
 
     public String getAge() {
-        calAgeFromDob();
+        if (dateOfBirth != null) {
+            calAgeFromDob();
+        }
         return age;
     }
 
     public Long getAgeInDays() {
-        if (!ageCalculated) {
+        if (dateOfBirth != null) {
             calAgeFromDob();
         }
         return ageInDays;
     }
 
     public int getAgeMonths() {
-        if (!ageCalculated) {
+        if (dateOfBirth != null) {
             calAgeFromDob();
         }
         return ageMonths;
     }
 
     public int getAgeDays() {
-        if (!ageCalculated) {
+        if (dateOfBirth != null) {
             calAgeFromDob();
         }
         return ageDays;
     }
 
     public int getAgeYears() {
-        if (!ageCalculated) {
+        if (dateOfBirth != null) {
             calAgeFromDob();
         }
         return ageYears;
@@ -319,6 +327,7 @@ public class Person implements Serializable {
      */
     public void setAgeMonths(int ageMonths) {
         this.ageMonths = ageMonths;
+        guessDob();
     }
 
     /**
@@ -326,6 +335,7 @@ public class Person implements Serializable {
      */
     public void setAgeDays(int ageDays) {
         this.ageDays = ageDays;
+        guessDob();
     }
 
     /**
@@ -333,6 +343,37 @@ public class Person implements Serializable {
      */
     public void setAgeYears(int ageYears) {
         this.ageYears = ageYears;
+        guessDob();
+    }
+
+    private void guessDob() {
+        int years = ageYears;
+        int month = ageMonths;
+        int day = ageDays;
+        Calendar now = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+        now.add(Calendar.YEAR, -years);
+        now.add(Calendar.MONTH, -month);
+        now.add(Calendar.DATE, -day);
+        dateOfBirth = now.getTime();
+    }
+
+    private void ageAndSexFromNic() {
+        if (nic == null) {
+            return;
+        }
+        SlNic n = new SlNic();
+        n.setNic(nic);
+        if (n.getDateOfBirth() != null) {
+            dateOfBirth = n.getDateOfBirth();
+        }
+        ItemApplicationController itemApplicationController = CDI.current().select(ItemApplicationController.class).get();
+        if (n.getSex() != null) {
+            if (n.getSex().equalsIgnoreCase("male")) {
+                sex = itemApplicationController.getMale();
+            } else {
+                sex = itemApplicationController.getFemale();
+            }
+        }
     }
 
     /**
@@ -477,8 +518,6 @@ public class Person implements Serializable {
         this.website = website;
     }
 
-    
-    
     public String getDrivingLicenseNumber() {
         return drivingLicenseNumber;
     }
@@ -518,6 +557,9 @@ public class Person implements Serializable {
 
     public void setNic(String nic) {
         this.nic = nic;
+
+        ageAndSexFromNic();
+
     }
 
     public int getSerealNumber() {

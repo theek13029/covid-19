@@ -344,7 +344,13 @@ public class AreaApplicationController {
         qry = qry.trim().toLowerCase();
         for (Area a : getPhiAreas()) {
             if (a.getName().toLowerCase().contains(qry)) {
-                if (a.getParentArea() != null & a.getParentArea().getParentArea() != null && a.getParentArea().getParentArea().equals(moh)) {
+                if (a.getParentArea() != null && a.getParentArea().equals(moh)) {
+                    tas.add(a);
+                    continue;
+                }
+                if (a.getParentArea() != null 
+                        && a.getParentArea().getParentArea() != null 
+                        && a.getParentArea().getParentArea().equals(moh)) {
                     tas.add(a);
                     continue;
                 }

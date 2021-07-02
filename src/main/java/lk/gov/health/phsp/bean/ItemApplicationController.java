@@ -58,6 +58,10 @@ public class ItemApplicationController {
 
     private List<Item> pcrResults;
     
+     private List<Item> citizenships;
+     
+     private List<Item> sexes;
+    
     private List<Item> covidTestOrderingCategories;
     private List<Item> covidTestTypes
 ;    
@@ -535,5 +539,23 @@ public class ItemApplicationController {
     public void setCovidTestTypes(List<Item> covidTestTypes) {
         this.covidTestTypes = covidTestTypes;
     }
+
+    public List<Item> getCitizenships() {
+        if(citizenships==null){
+            citizenships = findChildDictionaryItems("citizenship");
+        }
+        return citizenships;
+    }
+
+    public List<Item> getSexes() {
+        if(sexes==null){
+            sexes = findChildDictionaryItems("sex");
+        }
+        return sexes;
+    }
+    
+    
+    
+    
 
 }

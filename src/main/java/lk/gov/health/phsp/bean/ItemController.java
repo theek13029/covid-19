@@ -1200,8 +1200,7 @@ public class ItemController implements Serializable {
 
     public List<Item> getCitizenships() {
         if (citizenships == null) {
-//            citizenships = findItemList("citizenship", ItemType.Dictionary_Item);
-            citizenships = itemApplicationController.findChildDictionaryItems("citizenship");
+            citizenships = itemApplicationController.getCitizenships();
         }
         return citizenships;
     }

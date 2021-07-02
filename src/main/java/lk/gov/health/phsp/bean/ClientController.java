@@ -2126,6 +2126,9 @@ public class ClientController implements Serializable {
         }
         updateYearDateMonth();
     }
+    
+    
+    
 
     public Boolean checkNicExists(String nic, Client c) {
         String jpql = "select count(c) from Client c "
@@ -3088,7 +3091,6 @@ public class ClientController implements Serializable {
     }
 
     public Date guessDob(YearMonthDay yearMonthDay) {
-        // ////// ////// // System.out.println("year string is " + docStr);
         int years = 0;
         int month = 0;
         int day = 0;

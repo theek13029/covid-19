@@ -15,7 +15,9 @@
                 <p:submenu label="Navigator" expanded="true">
                     <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="/index" />
                     <p:submenu label="Patient" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
-                        <p:menuitem ajax="false" value="Add New PCR/RAT Request" action="#{clientController.toAddNewClientForTestEnrollment()}"  />
+                        <p:menuitem ajax="false" value="Add New PCR Order" action="#{mohController.toAddNewPcrWithNewClient()}"  />
+                        <p:menuitem ajax="false" value="Add New RAT Result" action="#{mohController.toAddNewRatWithNewClient()}"  />
+                        <p:menuitem ajax="false" value="Add New RAT Order" action="#{mohController.toAddNewRatOrderWithNewClient()}"  />
                         <p:menuitem ajax="false" value="Register New Case" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
                         <p:menuitem ajax="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
                         <p:menuitem ajax="false" value="Test Result Entering" action="#{clientController.toMohEnterResults()}" />
