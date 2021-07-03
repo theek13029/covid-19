@@ -4,6 +4,9 @@
 
     <h:body>
         <ui:composition template="/template1.xhtml">
+            <ui:define name="title" >
+                PCR Order
+            </ui:define>
             <ui:define name="content">
                 <h:form class="form" >
                     <p:focus for="txtTestNo" ></p:focus>
@@ -29,7 +32,7 @@
                                 <div class="form-group row">
 
 
-                                
+
                                     <div class="col-md-3">
                                         <p:outputLabel value="Test Number"></p:outputLabel>
                                         <p:inputText id="txtTestNo" class="form-control " 
@@ -135,9 +138,9 @@
                                             <f:selectItems value="#{mohController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
                                         </p:selectOneMenu>
                                     </div>
-                                    
-                                    
-                                    
+
+
+
                                     <div class="col-md-3">
                                         <p:outputLabel value="Age: (Years/Months)*" style="width: 100%;"/>
                                         <h:panelGroup>
@@ -156,9 +159,9 @@
                                             </p:inputText>
                                         </h:panelGroup>
                                     </div>
-                                    
-                                    
-                                    
+
+
+
                                 </div>
 
 
