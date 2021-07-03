@@ -67,7 +67,7 @@ public class Encounter implements Serializable {
     private Area area;
 
     private String unitWard;
-    
+
     private boolean firstEncounter;
 
     private Boolean sampled;
@@ -94,8 +94,6 @@ public class Encounter implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private WebUser sampleRejectedAtLabBy;
 
-    
-    
     private Boolean resultEntered;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date resultEnteredAt;
@@ -108,7 +106,6 @@ public class Encounter implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private WebUser pendingAtLabBy;
 
-    
     private Boolean resultReviewed;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date resultReviewedAt;
@@ -221,6 +218,9 @@ public class Encounter implements Serializable {
     @Transient
     @Deprecated
     private Item testType;
+
+    @Transient
+    private String resultCssClass;
 
     public Long getId() {
         return id;
@@ -553,8 +553,6 @@ public class Encounter implements Serializable {
         return sentToLab;
     }
 
-    
-    
     public void setSentToLab(Boolean sentToLab) {
         this.sentToLab = sentToLab;
     }
@@ -765,7 +763,7 @@ public class Encounter implements Serializable {
 
     public void setLabNumber(String labNumber) {
         this.labNumber = labNumber;
-     }
+    }
 
     public String getUnitWard() {
         return unitWard;
@@ -773,7 +771,7 @@ public class Encounter implements Serializable {
 
     public void setUnitWard(String unitWard) {
         this.unitWard = unitWard;
-   }
+    }
 
     public String getPcrResultStr() {
         return pcrResultStr;
@@ -845,8 +843,6 @@ public class Encounter implements Serializable {
         this.ctValue2 = ctValue2;
     }
 
-    
-    
     public Boolean getSampleRejectedAtLab() {
         return sampleRejectedAtLab;
     }
@@ -893,6 +889,43 @@ public class Encounter implements Serializable {
 
     public void setPendingAtLabBy(WebUser pendingAtLabBy) {
         this.pendingAtLabBy = pendingAtLabBy;
+    }
+
+    public String getResultCssClass() {
+        resultCssClass = "";
+        if (pcrResult == null || pcrTestType == null) {
+            return resultCssClass;
+        }
+        if (pcrTestType.getCode().equalsIgnoreCase("covid19_pcr_test")) {
+            switch (pcrResult.getCode()) {
+                case "pcr_positive":
+                    resultCssClass = "pcr_positive";
+                    break;
+                case "pcr_negative":
+                    resultCssClass = "pcr_negative";
+                    break;
+                case "pcr_inconclusive":
+                    resultCssClass = "pcr_inconclusive";
+                    break;
+                case "pcr_invalid":
+                    resultCssClass = "pcr_invalid";
+            }
+        } else if (pcrTestType.getCode().equalsIgnoreCase("covid19_rat")) {
+            switch (pcrResult.getCode()) {
+                case "pcr_positive":
+                    resultCssClass = "rat_positive";
+                    break;
+                case "pcr_negative":
+                    resultCssClass = "rat_negative";
+                    break;
+                case "pcr_inconclusive":
+                    resultCssClass = "rat_inconclusive";
+                    break;
+                case "pcr_invalid":
+                    resultCssClass = "rat_invalid";
+            }
+        }
+        return resultCssClass;
     }
 
 }

@@ -79,7 +79,7 @@
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Test" >
-                                <p:outputLabel value="#{c.getClientEncounterComponentItemByCode('test_type').itemValue.name}" ></p:outputLabel>
+                                <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
                             </p:column>
                             <p:column id="result" headerText="CT" >
                                 <p:inputText id="txtCt" value="#{c.ctValueStr}" style="width: 5rem;" >

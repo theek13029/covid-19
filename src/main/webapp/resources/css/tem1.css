@@ -256,3 +256,43 @@ table.nopadding td {
     margin: 0px !important;
     width: 100%
 }
+
+.pcr_positive{
+    background-color: bisque;
+    color: red;
+}
+
+.pcr_negative{
+    background-color: #86e29b;
+    color: darkolivegreen;
+}
+
+.pcr_inconclusive{
+    background-color: appworkspace;
+    color: violet;
+}
+
+.pcr_invalid{
+    background-color: wheat;
+    color: violet;
+}
+
+.rat_positive{
+    background-color: cornsilk;
+    color: chocolate;
+}
+
+.rat_negative{
+    background-color: #c3e6cb;
+    color: green;
+}
+
+.rat_inconclusive{
+    background-color: appworkspace;
+    color: blueviolet;
+}
+
+.rat_invalid{
+    background-color: wheat;
+    color: blueviolet;
+}

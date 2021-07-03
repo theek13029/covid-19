@@ -40,6 +40,13 @@
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
+                            <p:outputLabel value="Result" ></p:outputLabel>
+                            <p:selectOneMenu value="#{mohController.result}" >
+                                <f:selectItem itemLabel="All" ></f:selectItem>
+                                <f:selectItems value="#{mohController.resultTypes}" var="c" itemLabel="#{c.name}"
+                                               itemValue="#{c}" ></f:selectItems>
+                            </p:selectOneMenu>
+
                             <p:outputLabel  value="Lab"></p:outputLabel>
                             <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
                                             inputStyleClass="autocomplete"
@@ -63,15 +70,24 @@
 
                         <p:dataTable id="tbl" value="#{mohController.tests}" 
                                      rowIndexVar="n"
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10">
-                            <p:column rendered="true" headerText="No." width="80"  >
+                                     var="c" 
+                                     rowKey="#{c.id}" 
+                                     rowStyleClass="#{c.resultCssClass}"
+                                     paginator="true" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
+                                     rows="10"
+                                     >
+                            <p:column rendered="true" headerText="No." width="60"  >
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                                #{c.pcrResult.code}
                             </p:column>
-                             <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
-                                 <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
+                            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
@@ -109,6 +125,10 @@
                                       filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
+                                      filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Actions" exportable="false" >
                                 <p:commandLink ajax="false" value="Convert to a case" action="#{clientController.toNewCaseEnrollmentFromEncounter()}" >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
@@ -127,7 +147,6 @@
                                     </f:setPropertyActionListener>
                                 </p:commandLink>
                             </p:column>
-
                         </p:dataTable>
                     </h:form>
 

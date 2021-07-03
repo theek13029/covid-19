@@ -674,6 +674,10 @@ public class MohController implements Serializable {
     public List<Item> getCovidTestTypes() {
         return itemApplicationController.getCovidTestTypes();
     }
+    
+    public List<Item> getResultTypes() {
+        return itemApplicationController.getPcrResults();
+    }
 
     public List<Institution> completeLab(String qry) {
         List<InstitutionType> its = new ArrayList<>();
