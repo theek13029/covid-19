@@ -3,21 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <h:body>
+    <body>
 
-        <h:form >
-            <p:commandButton ajax="false" value="Press" action="#" ></p:commandButton>
-        </h:form>
+        <ui:composition template="./../template1.xhtml">
 
-        <h:panelGroup rendered="false" >
+            <ui:define name="title">
+                List of Tests
+            </ui:define>
 
-            <ui:composition template="/template1.xhtml" rendered="false">
-                <ui:define name="content">
-                    <h:outputStylesheet library="css" name="tem1.css"/>
-                    <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+            <ui:define name="content">
+                <h1>List of Tests</h1>
+                  <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                         <f:facet name="header" >
                             <p:outputLabel value="Test Order List" ></p:outputLabel>
                         </f:facet>
@@ -61,7 +60,9 @@
                                                 var="l" itemLabel="#{l.name}" itemValue="#{l}">
                                 </p:autoComplete>
 
-                                <p:commandButton ajax="false" value="Process" 
+                                <p:commandButton ajax="false" value="Process 1" 
+                                                 action="#" ></p:commandButton>
+                                <p:commandButton ajax="false" value="Process 2" 
                                                  action="#" ></p:commandButton>
 
                                 <p:commandButton ajax="false" value="Generate Excel">
@@ -159,10 +160,9 @@
 
 
                     </p:panelGrid>
-                </ui:define>
-            </ui:composition>
-        </h:panelGroup>
+            </ui:define>
 
+        </ui:composition>
 
-    </h:body>
+    </body>
 </html>

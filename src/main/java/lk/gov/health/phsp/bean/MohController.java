@@ -664,7 +664,12 @@ public class MohController implements Serializable {
         m.put("td", getToDate());
         m.put("t", EncounterType.Test_Enrollment);
         tests = encounterFacade.findByJpql(j, m);
-        return "/moh/test_list";
+        return "/moh/list_of_tests";
+    }
+    
+    public String toListOfTests(){
+        tests = null;
+        return "/moh/list_of_tests";
     }
 
     public List<Item> getCovidTestOrderingCategories() {
