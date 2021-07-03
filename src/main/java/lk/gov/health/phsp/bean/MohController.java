@@ -276,6 +276,7 @@ public class MohController implements Serializable {
         rat.setResultConfirmedAt(d);
         rat.setResultConfirmedBy(webUserController.getLoggedUser());
 
+        rat.setCreatedAt(new Date());
         return "/moh/rat";
     }
 
@@ -299,6 +300,7 @@ public class MohController implements Serializable {
         rat.setSampled(true);
         rat.setSampledAt(new Date());
         rat.setSampledBy(webUserController.getLoggedUser());
+        rat.setCreatedAt(new Date());
         return "/moh/rat_order";
     }
 
@@ -322,6 +324,7 @@ public class MohController implements Serializable {
         pcr.setSampled(true);
         pcr.setSampledAt(new Date());
         pcr.setSampledBy(webUserController.getLoggedUser());
+        pcr.setCreatedAt(new Date());
         return "/moh/pcr";
     }
 
@@ -649,7 +652,7 @@ public class MohController implements Serializable {
             m.put("oc", orderingCategory);
         }
         if (result != null) {
-            j += " and c.pcrResult=:tt ";
+            j += " and c.pcrResult=:result ";
             m.put("result", result);
         }
         if (lab != null) {
