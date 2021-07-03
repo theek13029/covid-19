@@ -127,6 +127,10 @@ public class MohController implements Serializable {
         encounterFacade.edit(deleting);
     }
 
+    public void toListOfTests(){
+        return "/moh/list_of_tests";
+    }
+    
     public void toDeleteTestFromLastPcrList() {
         deleteTest();
         sessionController.getPcrs().remove(deleting.getId());
