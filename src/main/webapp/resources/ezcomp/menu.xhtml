@@ -22,7 +22,7 @@
                         <p:menuitem ajax="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
                         <p:menuitem ajax="false" value="Test Result Entering" action="#{clientController.toMohEnterResults()}" />
                         <p:menuitem ajax="false" value="Test Result Printing" action="#{clientController.toMohToSelectForPrinting()}" />
-                        <p:menuitem ajax="false" value="Test List" action="#{mohController.toTestList()}" />
+                        <p:menuitem ajax="false" value="Test List*" action="#{mohController.toListOfTests()}" />
                     </p:submenu>
                     <p:submenu label="Samples" rendered="#{webUserController.hasPrivilege('Sample_Management')}" >
                         <p:menuitem ajax="false" value="Dispatch Samples"
