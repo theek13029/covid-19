@@ -41,25 +41,20 @@ import lk.gov.health.phsp.entity.Item;
 @SessionScoped
 public class SessionController implements Serializable {
 
-    
-    
-    
     /**
      * Creates a new instance of SessionController
      */
     public SessionController() {
     }
-    
-    
+
     private Encounter lastRat;
     private Encounter lastPcr;
     private Item lastRatOrderingCategory;
     private Item lastPcrOrdringCategory;
 
-    private Map<Long,Encounter> rats;
-    private Map<Long,Encounter> pcrs;
-    
-    
+    private Map<Long, Encounter> rats;
+    private Map<Long, Encounter> pcrs;
+
     public Encounter getLastRat() {
         return lastRat;
     }
@@ -92,25 +87,26 @@ public class SessionController implements Serializable {
         this.lastPcrOrdringCategory = lastPcrOrdringCategory;
     }
 
-    public Map<Long,Encounter> getRats() {
-        if(rats==null){
+    public Map<Long, Encounter> getRats() {
+        if (rats == null) {
             rats = new HashMap<>();
         }
         return rats;
     }
 
-
-    public Map<Long,Encounter> getPcrs() {
-        if(pcrs==null){
+    public Map<Long, Encounter> getPcrs() {
+        if (pcrs == null) {
             pcrs = new HashMap<>();
         }
         return pcrs;
     }
 
-    
-    
-    
-    
-    
+    public List<Encounter> getPcrList() {
+        return new ArrayList<>(getPcrs().values());
+    }
+
+    public List<Encounter> getRatList() {
+        return new ArrayList<>(getRats().values());
+    }
     
 }

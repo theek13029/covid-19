@@ -102,6 +102,7 @@ public class MohController implements Serializable {
     private Encounter pcr;
     private Encounter covidCase;
     private Encounter test;
+    private Encounter deleting;
 
     private List<Encounter> tests;
     private Date fromDate;
@@ -119,6 +120,28 @@ public class MohController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
+    public void deleteTest() {
+        deleting.setRetired(true);
+        deleting.setRetiredAt(new Date());
+        deleting.setRetiredBy(webUserController.getLoggedUser());
+        encounterFacade.edit(deleting);
+    }
+
+    public void toDeleteTestFromLastPcrList() {
+        deleteTest();
+        sessionController.getPcrs().remove(deleting.getId());
+    }
+
+    public void toDeleteTestFromLastRatList() {
+        deleteTest();
+        sessionController.getRats().remove(deleting.getId());
+    }
+
+    public String toDeleteTestFromTestList() {
+        deleteTest();
+        return toTestList();
+    }
+    
     public String toRatView() {
         if (rat == null) {
             JsfUtil.addErrorMessage("No RAT");
@@ -159,18 +182,6 @@ public class MohController implements Serializable {
             JsfUtil.addErrorMessage("Not a RAT or PCR.");
             return "";
         }
-    }
-
-    public String deleteTest() {
-        if (test == null) {
-            JsfUtil.addErrorMessage("No Test");
-            return "";
-        }
-        test.setRetired(true);
-        test.setRetiredAt(new Date());
-        test.setRetiredBy(webUserController.getLoggedUser());
-        encounterFacade.edit(test);
-        return toTestList();
     }
 
     public String toRatEdit() {
@@ -535,13 +546,10 @@ public class MohController implements Serializable {
     }
 
     public void retrieveLastGnPcr() {
-        if (pcr == null 
-                || 
-                pcr.getClient() == null 
-                || 
-                sessionController.getLastPcr() == null 
-                || 
-                sessionController.getLastPcr().getClient() == null) {
+        if (pcr == null
+                || pcr.getClient() == null
+                || sessionController.getLastPcr() == null
+                || sessionController.getLastPcr().getClient() == null) {
             return;
         }
         pcr.getClient().getPerson().setGnArea(sessionController.getLastPcr().getClient().getPerson().getGnArea());
@@ -577,7 +585,6 @@ public class MohController implements Serializable {
         }
     }
 
-    
     public List<Area> completeGnAreasForRat(String qry) {
         return completeGnAreas(qry, rat);
     }
@@ -744,6 +751,14 @@ public class MohController implements Serializable {
 
     public void setLab(Institution lab) {
         this.lab = lab;
+    }
+
+    public Encounter getDeleting() {
+        return deleting;
+    }
+
+    public void setDeleting(Encounter deleting) {
+        this.deleting = deleting;
     }
 
 }

@@ -10,7 +10,7 @@
     <body>
 
         <ui:composition template="/template1.xhtml">
-            <ui:define name="content">
+            <ui:define name="title">
                 View PCR Order
             </ui:define>
             <ui:define name="content">
@@ -58,7 +58,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy hh:mm" ></f:convertDateTime>
                                 </p:outputLabel>
                             </div>
-                            
+
 
                         </div>
                         <div class="form-group row">
@@ -159,7 +159,48 @@
                     </div>
                 </div>
 
-    
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h:form>
+                            <p:dataTable value="#{sessionController.pcrList}" id="tbl"
+                                         var="c" paginator="true" rowKey="#{c.id}" rows="10" >
+                                <f:facet name="header">
+                                    Last Entries
+                                </f:facet>
+                                <p:column headerText="Test No" sortBy="#{c.encounterNumber}">
+                                    <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Name" sortBy="#{c.client.person.name}" >
+                                    <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Age" sortBy="#{c.client.person.ageInDays}" >
+                                    <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Sex" sortBy="#{c.client.person.sex.name}">
+                                    <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="NIC" sortBy="#{c.client.person.nic}" >
+                                    <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Address" >
+                                    <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Actions" >
+                                    <p:commandButton value="Edit" ajax="false" action="#{mohController.toPcrEdit()}" >
+                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.pcr}" ></f:setPropertyActionListener>
+                                    </p:commandButton>
+                                    <p:commandButton value="Delete" ajax="false" action="#{mohController.toDeleteTestFromLastPcrList()}" >
+                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.deleting}" ></f:setPropertyActionListener>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                    </div>
+                </div>
+
+
+
 
 
             </ui:define>
