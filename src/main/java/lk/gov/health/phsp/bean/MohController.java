@@ -127,7 +127,7 @@ public class MohController implements Serializable {
         encounterFacade.edit(deleting);
     }
 
-    public void toListOfTests(){
+    public String toListOfTests(){
         return "/moh/list_of_tests";
     }
     
@@ -671,11 +671,6 @@ public class MohController implements Serializable {
         return "/moh/list_of_tests";
     }
     
-    public String toListOfTests(){
-        tests = null;
-        return "/moh/list_of_tests";
-    }
-
     public List<Item> getCovidTestOrderingCategories() {
         return itemApplicationController.getCovidTestOrderingCategories();
     }
