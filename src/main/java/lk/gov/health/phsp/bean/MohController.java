@@ -127,6 +127,10 @@ public class MohController implements Serializable {
         encounterFacade.edit(deleting);
     }
 
+    public String toListOfTests(){
+        return "/moh/list_of_tests";
+    }
+    
     public void toDeleteTestFromLastPcrList() {
         deleteTest();
         sessionController.getPcrs().remove(deleting.getId());
@@ -670,11 +674,6 @@ public class MohController implements Serializable {
         return "/moh/list_of_tests";
     }
     
-    public String toListOfTests(){
-        tests = null;
-        return "/moh/list_of_tests";
-    }
-
     public List<Item> getCovidTestOrderingCategories() {
         return itemApplicationController.getCovidTestOrderingCategories();
     }
