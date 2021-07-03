@@ -154,6 +154,19 @@ public class MohController implements Serializable {
         return "/moh/rat_view";
     }
 
+    public String toRatOrderView() {
+        if (rat == null) {
+            JsfUtil.addErrorMessage("No RAT");
+            return "";
+        }
+        if (rat.getClient() == null) {
+            JsfUtil.addErrorMessage("No Client");
+            return "";
+        }
+        return "/moh/rat_order_view";
+    }
+
+    
     public String toPcrView() {
         if (pcr == null) {
             JsfUtil.addErrorMessage("No RAT");
@@ -194,6 +207,18 @@ public class MohController implements Serializable {
             return "";
         }
         return "/moh/rat";
+    }
+    
+    public String toRatOrderEdit() {
+        if (rat == null) {
+            JsfUtil.addErrorMessage("No RAT");
+            return "";
+        }
+        if (!rat.getPcrTestType().equals(itemApplicationController.getRat())) {
+            JsfUtil.addErrorMessage("Not a RAT");
+            return "";
+        }
+        return "/moh/rat_order";
     }
 
     public String toPcrEdit() {

@@ -5,7 +5,7 @@
     <h:body>
         <ui:composition template="/template1.xhtml">
             <ui:define name="title" >
-                PCR Order
+                RAT Order
             </ui:define>
             <ui:define name="content">
                 <h:form class="form" >
@@ -24,15 +24,6 @@
                         <h:panelGroup id="gpTest" >
                             <div class="card-body">
                                 <div class="form-group row">
-                                    <div class="col-md-12">
-                                        <p:messages ></p:messages>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-
-
-
                                     <div class="col-md-3">
                                         <p:outputLabel value="Test Number"></p:outputLabel>
                                         <p:inputText id="txtTestNo" class="form-control " 
@@ -112,8 +103,6 @@
 
 
                                 </div>
-
-
                                 <div class="form-group row">
                                     <div class="col-md-6">
                                         <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
@@ -163,8 +152,6 @@
 
 
                                 </div>
-
-
                                 <div class="form-group row">
                                     <div class="col-md-6">
                                         <p:outputLabel value="Current Residential Address:" for="address" />
@@ -268,6 +255,11 @@
                                     </div>
 
 
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <p:messages ></p:messages>
+                                    </div>
                                 </div>
                             </div>
                         </h:panelGroup>
