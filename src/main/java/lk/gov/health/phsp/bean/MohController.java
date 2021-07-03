@@ -43,6 +43,7 @@ import lk.gov.health.phsp.enums.EncounterType;
 import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.SmsFacade;
 import javax.inject.Named;
+import javax.persistence.TemporalType;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.enums.InstitutionType;
 // </editor-fold>
@@ -127,10 +128,10 @@ public class MohController implements Serializable {
         encounterFacade.edit(deleting);
     }
 
-    public String toListOfTests(){
+    public String toListOfTests() {
         return "/moh/list_of_tests";
     }
-    
+
     public void toDeleteTestFromLastPcrList() {
         deleteTest();
         sessionController.getPcrs().remove(deleting.getId());
@@ -145,7 +146,7 @@ public class MohController implements Serializable {
         deleteTest();
         return toTestList();
     }
-    
+
     public String toRatView() {
         if (rat == null) {
             JsfUtil.addErrorMessage("No RAT");
@@ -170,7 +171,6 @@ public class MohController implements Serializable {
         return "/moh/rat_order_view";
     }
 
-    
     public String toPcrView() {
         if (pcr == null) {
             JsfUtil.addErrorMessage("No RAT");
@@ -212,7 +212,7 @@ public class MohController implements Serializable {
         }
         return "/moh/rat";
     }
-    
+
     public String toRatOrderEdit() {
         if (rat == null) {
             JsfUtil.addErrorMessage("No RAT");
@@ -641,39 +641,50 @@ public class MohController implements Serializable {
     }
 
     public String toTestList() {
+        System.out.println("toTestList");
         Map m = new HashMap();
-        String j = "select c from Encounter c "
-                + " where c.retired=false";
-        j += " and c.institution =:ins ";
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
 
-        if (testType != null) {
-            j += " and c.pcrTestType=:tt ";
-            m.put("tt", testType);
-        }
-        if (orderingCategory != null) {
-            j += " and c.pcrOrderingCategory=:oc ";
-            m.put("oc", orderingCategory);
-        }
-        if (result != null) {
-            j += " and c.pcrResult=:result ";
-            m.put("result", result);
-        }
-        if (lab != null) {
-            j += " and c.referalInstitution=:ri ";
-            m.put("ri", lab);
-        }
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired<>:ret ";
+        m.put("ret", true);
 
-        j += " and c.encounterDate between :fd and :td "
-                + " and c.encounterType=:t "
-                + " order by c.id";
-        m.put("fd", getFromDate());
-        m.put("td", getToDate());
-        m.put("t", EncounterType.Test_Enrollment);
-        tests = encounterFacade.findByJpql(j, m);
+//        j += " and c.encounterType=:etype ";
+//        m.put("etype", EncounterType.Test_Enrollment);
+//
+//        j += " and c.institution=:ins ";
+//        m.put("ins", webUserController.getLoggedUser().getInstitution());
+//
+//        j += " and c.createdAt between :fd and :td ";
+//        m.put("fd", getFromDate());
+//        System.out.println("getFromDate() = " + getFromDate());
+//        m.put("td", getToDate());
+//        System.out.println(" getToDate() = " + getToDate());
+
+//        if (testType != null) {
+//            j += " and c.pcrTestType=:tt ";
+//            m.put("tt", testType);
+//        }
+//        if (orderingCategory != null) {
+//            j += " and c.pcrOrderingCategory=:oc ";
+//            m.put("oc", orderingCategory);
+//        }
+//        if (result != null) {
+//            j += " and c.pcrResult=:result ";
+//            m.put("result", result);
+//        }
+//        if (lab != null) {
+//            j += " and c.referalInstitution=:ri ";
+//            m.put("ri", lab);
+//        }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+
+        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("tests = " + tests.size());
         return "/moh/list_of_tests";
     }
-    
+
     public List<Item> getCovidTestOrderingCategories() {
         return itemApplicationController.getCovidTestOrderingCategories();
     }
@@ -681,7 +692,7 @@ public class MohController implements Serializable {
     public List<Item> getCovidTestTypes() {
         return itemApplicationController.getCovidTestTypes();
     }
-    
+
     public List<Item> getResultTypes() {
         return itemApplicationController.getPcrResults();
     }

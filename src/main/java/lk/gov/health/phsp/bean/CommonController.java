@@ -218,14 +218,12 @@ public class CommonController implements Serializable {
     }
 
     public Date endOfTheDay(Date date) {
-        // // System.out.println("endOfTheDay");
         Calendar d = Calendar.getInstance();
-        d.setTime(startOfTheDay(date));
-        // // System.out.println("1 d.getTime() = " + d.getTime());
-        d.add(Calendar.DATE, 1);
-        // // System.out.println("2 d.getTime() = " + d.getTime());
-        d.add(Calendar.MILLISECOND, -1);
-        // // System.out.println("3 d.getTime() = " + d.getTime());
+        d.setTime(date);
+        d.set(Calendar.HOUR_OF_DAY, d.getActualMaximum(Calendar.HOUR_OF_DAY));
+        d.set(Calendar.MINUTE, d.getActualMaximum(Calendar.MINUTE));
+        d.set(Calendar.SECOND, d.getActualMaximum(Calendar.SECOND));
+        d.set(Calendar.MILLISECOND, d.getActualMaximum(Calendar.MILLISECOND));
         return d.getTime();
     }
 
