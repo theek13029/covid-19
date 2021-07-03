@@ -24,10 +24,12 @@
                         <h:form >
                             <p:panelGrid columns="2" >
                                 <p:outputLabel value="Ordered From" ></p:outputLabel>
-                                <p:calendar value="#{mohController.fromDate}" pattern="dd MMMM yyyy hh:mm"></p:calendar><!-- comment -->
+                                <p:calendar value="#{mohController.fromDate}" 
+                                            pattern="dd MMMM yyyy hh:mm a">
+                                </p:calendar><!-- comment -->
 
                                 <p:outputLabel value="Ordered To" ></p:outputLabel>
-                                <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm"></p:calendar>
+                                <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
                                 <p:outputLabel value="Ordering Category" ></p:outputLabel>
                                 <p:selectOneMenu value="#{mohController.orderingCategory}" >
@@ -70,7 +72,7 @@
                             </p:panelGrid>
 
 
-                            <p:dataTable id="tbl" value="#{mohController.tests}" rendered="false"
+                            <p:dataTable id="tbl" value="#{mohController.tests}" 
                                          rowIndexVar="n"
                                          var="c" 
                                          rowKey="#{c.id}" 
