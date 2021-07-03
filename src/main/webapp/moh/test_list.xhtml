@@ -74,79 +74,81 @@
                             </p:panelGrid>
 
 
-                            <p:dataTable id="tbl" value="#{mohController.tests}" rendered="false"
-                                         rowIndexVar="n"
-                                         var="c" 
-                                         rowKey="#{c.id}" 
-                                         rowStyleClass="#{c.resultCssClass}"
-                                         paginator="true" 
-                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                         rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
-                                         rows="10"
-                                         >
-                                <p:column rendered="true" headerText="No." width="60"  >
-                                    <p:outputLabel value="#{n+1}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
-                                    <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
-                                        #{c.pcrResult.code}
-                                </p:column>
-                                <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
-                                    <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
-                                    <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Age"  sortBy="#{c.client.person.age}" width="60"
-                                          filterBy="#{c.client.person.age}" filterMatchMode="contains">
-                                    <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Gender"
-                                          width="80"
-                                          sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
-                                    <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
-                                    <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Contact Numbers" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
-                                    <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
-                                    <p:outputLabel rendered="#{c.client.person.phone2 ne null}" value=", " ></p:outputLabel>
-                                    <p:outputLabel rendered="#{c.client.person.phone2 ne null}" value="#{c.client.person.phone2}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Address"  sortBy="#{c.client.person.address}"
-                                          filterBy="#{c.client.person.address}" filterMatchMode="contains">
-                                    <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="PHI"  sortBy="#{c.client.person.phiArea.name}"
-                                          filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains">
-                                    <p:outputLabel value="#{c.client.person.phiArea.name}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="GN Area"  sortBy="#{c.client.person.gnArea.name}"
-                                          filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
-                                    <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}"
-                                          filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
-                                    <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
-                                          filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
-                                    <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Actions" exportable="false" >
-                                    <p:commandLink ajax="false" value="Convert to a case" action="#{clientController.toNewCaseEnrollmentFromEncounter()}" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
-                                        </f:setPropertyActionListener>
-                                    </p:commandLink>
-                                    <p:outputLabel value="&nbsp;&nbsp;|&nbsp;&nbsp;" ></p:outputLabel>
-                                    <p:commandLink value="Edit" action="#{mohController.toEditTest()}" ajax="false" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
-                                    </p:commandLink>
-                                    <p:outputLabel value="&nbsp;&nbsp;|&nbsp;&nbsp;" ></p:outputLabel>
-                                    <p:commandLink ajax="false" value="Delete"  action="#{mohController.deleteTest()}" 
-                                                   onclick="if (!confirm('Are you sure you want to delete?'))
+                        </p:panelGrid>
+
+
+                        <p:dataTable id="tbl" value="#{mohController.tests}" 
+                                     rowIndexVar="n"
+                                     var="c" 
+                                     rowKey="#{c.id}" 
+                                     rowStyleClass="#{c.resultCssClass}"
+                                     paginator="true" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
+                                     rows="10"
+                                     >
+                            <p:column rendered="true" headerText="No." width="60"  >
+                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Age"  sortBy="#{c.client.person.age}" width="60"
+                                      filterBy="#{c.client.person.age}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Gender"
+                                      width="80"
+                                      sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Contact Numbers" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
+                                <p:outputLabel rendered="#{c.client.person.phone2 ne null}" value=", " ></p:outputLabel>
+                                <p:outputLabel rendered="#{c.client.person.phone2 ne null}" value="#{c.client.person.phone2}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Address"  sortBy="#{c.client.person.address}"
+                                      filterBy="#{c.client.person.address}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="PHI"  sortBy="#{c.client.person.phiArea.name}"
+                                      filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.phiArea.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="GN Area"  sortBy="#{c.client.person.gnArea.name}"
+                                      filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}"
+                                      filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
+                                      filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Actions" exportable="false" >
+                                <p:commandLink ajax="false" value="Convert to a case" action="#{clientController.toNewCaseEnrollmentFromEncounter()}" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
+                                    </f:setPropertyActionListener>
+                                </p:commandLink>
+                                <p:outputLabel value="&nbsp;&nbsp;|&nbsp;&nbsp;" ></p:outputLabel>
+                                <p:commandLink value="Edit" action="#{mohController.toEditTest()}" ajax="false" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
+                                </p:commandLink>
+                                <p:outputLabel value="&nbsp;&nbsp;|&nbsp;&nbsp;" ></p:outputLabel>
+                                <p:commandLink ajax="false" value="Delete"  action="#{mohController.deleteTest()}" 
+                                               onclick="if (!confirm('Are you sure you want to delete?'))
                                                            return false" 
                                                    >
                                         <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" >
