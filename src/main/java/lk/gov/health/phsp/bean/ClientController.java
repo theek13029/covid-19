@@ -1288,8 +1288,7 @@ public class ClientController implements Serializable {
                 + " and c.institution=:ins "
                 + " and c.referalInstitution=:rins"
                 + " and c.resultConfirmed is not null "
-                + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
-                + " order by c.id";
+                + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) ";
         Map m = new HashMap();
         m.put("ret", false);
         m.put("rej", false);
@@ -1302,6 +1301,7 @@ public class ClientController implements Serializable {
             m.put("pn", plateNo);
             j += " and c.plateNumber=:pn ";
         }
+           j+= " order by c.encounterNumber";
         listedToPrint = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/print_results";
     }
@@ -1315,7 +1315,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.institution=:ins "
                 + " and c.resultConfirmed is not null "
-                + " order by c.id";
+                + " order by c.encounterNumber";
         Map m = new HashMap();
         m.put("ret", false);
         m.put("type", EncounterType.Test_Enrollment);
@@ -1691,7 +1691,7 @@ public class ClientController implements Serializable {
                 + " and c.institution=:ins "
                 + " and c.referalInstitution=:rins "
                 + " and c.resultConfirmed=:con "
-                + " order by c.id";
+                + " order by c.encounterNumber";
         Map m = new HashMap();
         m.put("ret", true);
         m.put("type", EncounterType.Test_Enrollment);
