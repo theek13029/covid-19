@@ -36,21 +36,22 @@
 
                                 <p:spacer ></p:spacer>
                                 <p:commandButton ajax="false" value="Process" 
-                                                 action="#{clientController.toLabEnterResults()}" ></p:commandButton>
-                                <p:commandButton ajax="false" value="Generate Excel">
-                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="Generate Excel with Negative Results">
-                                    <p:dataExporter target="tblNegative" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
-                                </p:commandButton>
+                                                 action="#{clientController.toLabEnterResults()}"  style="width: 98%;"></p:commandButton>
+
 
                             </p:panelGrid>
 
                             <p:panelGrid columns="1" >
-                                <p:commandButton action="#{clientController.toMarkAllNegative()}" ajax="false" value="Mark All Negative" onclick="if (!confirm('Are you sure you want mark all Negative?'))
+                                <p:commandButton ajax="false" value="Generate Excel" style="width: 98%;">
+                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
+                                </p:commandButton>
+                                <p:commandButton ajax="false" value="Generate Excel with Negative Results"  style="width: 98%;">
+                                    <p:dataExporter target="tblNegative" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
+                                </p:commandButton>
+                                <p:commandButton  style="width: 98%;" action="#{clientController.toMarkAllNegative()}" ajax="false" value="Mark All Negative" onclick="if (!confirm('Are you sure you want mark all Negative?'))
                                             return false">
                                 </p:commandButton>
-                                <p:commandButton action="#{clientController.toLabEditResults()}" ajax="false" value="Edit Entered Results" >
+                                <p:commandButton  style="width: 98%;" action="#{clientController.toLabEditResults()}" ajax="false" value="Edit Entered Results" >
                                 </p:commandButton>
                             </p:panelGrid>
 
@@ -146,11 +147,11 @@
                             <p:column headerText="ID" width="60">
                                 <p:outputLabel value="#{c.id}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Tube No" width="140" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
+                            <p:column headerText="Tube No" width="100" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column  headerText="Lab No" width="200"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
-                                <p:inputText value="#{c.labNumber}" id="txtLabNo" >
+                            <p:column  headerText="Lab No" width="100"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
+                                <p:inputText value="#{c.labNumber}" id="txtLabNo" style="width: 98%;" >
                                     <p:ajax event="blur" process="txtLabNo" 
                                             listener="#{clientController.saveLabNo(c)}" >
                                     </p:ajax>
@@ -169,20 +170,20 @@
                             </p:column>
                             <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
                                        filterBy="#{c.ctValue}" filterMatchMode="contains" >
-                                <p:inputText id="txtCt1" value="#{c.ctValue}" style="width: 98px;" >
+                                <p:inputText id="txtCt1" value="#{c.ctValue}" style="width: 98%;" >
                                     <p:ajax event="keyup" process="txtCt1" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
                             <p:column headerText="CT 2" width="100"  sortBy="#{c.ctValue2}"
                                       filterBy="#{c.ctValue2}" filterMatchMode="contains" >
-                                <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 98px;" >
+                                <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 98%;" >
                                     <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
                             <p:column headerText="Result" width="100"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
-                                <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}" style="width: 98px;" >
+                                <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}" style="width: 98%;" >
                                     <f:selectItem itemLabel="Select Result"  ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
                                                    var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
@@ -191,7 +192,7 @@
                                 </p:selectOneMenu>
                             </p:column>
                             <p:column headerText="Comments" width="150"  sortBy="#{c.resultComments}" filterBy="#{c.resultComments}" filterMatchMode="contains" >
-                                <p:inputText id="txtComments" value="#{c.resultComments}"  style="width: 148px;">
+                                <p:inputText id="txtComments" value="#{c.resultComments}"  style="width: 98%;">
                                     <p:ajax event="blur" process="txtComments" 
                                             listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>

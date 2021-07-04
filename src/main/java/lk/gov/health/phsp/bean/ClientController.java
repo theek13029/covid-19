@@ -1039,7 +1039,6 @@ public class ClientController implements Serializable {
                 + " where c.retired<>:ret "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
-                + " and c.institution=:ins "
                 + " and c.referalInstitution=:rins"
                 + " and c.resultEntered=:rec "
                 + " and c.resultReviewed is null "
@@ -1050,7 +1049,10 @@ public class ClientController implements Serializable {
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
-        m.put("ins", institution);
+        if (institution != null) {
+            j += " and c.institution=:ins ";
+            m.put("ins", institution);
+        }
         m.put("rins", referingInstitution);
         listedToReviewResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/review_results";
@@ -1063,7 +1065,6 @@ public class ClientController implements Serializable {
                 + " where c.retired<>:ret "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
-                + " and c.institution=:ins "
                 + " and c.referalInstitution=:rins"
                 + " and c.resultEntered=:rec "
                 + " and c.resultReviewed is null "
@@ -1074,7 +1075,10 @@ public class ClientController implements Serializable {
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
-        m.put("ins", institution);
+        if (institution != null) {
+            m.put("ins", institution);
+            j += " and c.institution=:ins ";
+        }
         m.put("rins", referingInstitution);
         listedToReviewResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/edit_results";

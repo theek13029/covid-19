@@ -36,111 +36,20 @@
 
                                 <p:spacer ></p:spacer>
                                 <p:commandButton ajax="false" value="Process" 
-                                                 action="#{clientController.toLabEnterResults()}" ></p:commandButton>
+                                                 action="#{clientController.toLabEditResults()}" ></p:commandButton>
                                 <p:commandButton ajax="false" value="Generate Excel">
-                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
+                                    <p:dataExporter target="tbl" type="xlsx" fileName="entered_results" ></p:dataExporter>
                                 </p:commandButton>
                                 <p:commandButton ajax="false" value="Generate Excel with Negative Results">
                                     <p:dataExporter target="tblNegative" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                                 </p:commandButton>
 
                             </p:panelGrid>
-
-                            <p:panelGrid columns="2" rendered="true" >
-                                <p:outputLabel value="Serial No Column" ></p:outputLabel>
-                                <p:selectOneMenu value="#{clientController.serialNoColumn}" >
-                                    <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
-                                    <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
-                                    <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
-                                    <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
-                                    <f:selectItem itemLabel="E" itemValue="E"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="F" itemValue="F"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
-                                    <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
-                                    <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
-                                    <f:selectItem itemLabel="J" itemValue="J"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="K" itemValue="K"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                                </p:selectOneMenu>
-
-                                <p:outputLabel value="CT Value Column" ></p:outputLabel>
-                                <p:selectOneMenu value="#{clientController.ctValueColumn}" >
-                                    <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
-                                    <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
-                                    <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
-                                    <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
-                                    <f:selectItem itemLabel="E" itemValue="E"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="F" itemValue="F"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
-                                    <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
-                                    <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
-                                    <f:selectItem itemLabel="J" itemValue="J"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="K" itemValue="K"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                                </p:selectOneMenu>
-
-                                <p:outputLabel value="Result Column" ></p:outputLabel>
-                                <p:selectOneMenu value="#{clientController.resultColumn}" >
-                                    <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
-                                    <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
-                                    <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
-                                    <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
-                                    <f:selectItem itemLabel="E" itemValue="E"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="F" itemValue="F"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
-                                    <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
-                                    <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
-                                    <f:selectItem itemLabel="J" itemValue="J"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="K" itemValue="K"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                                </p:selectOneMenu>
-
-                                <p:outputLabel value="Commnent Column" ></p:outputLabel>
-                                <p:selectOneMenu value="#{clientController.commentColumn}" >
-                                    <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
-                                    <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
-                                    <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
-                                    <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
-                                    <f:selectItem itemLabel="E" itemValue="E"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="F" itemValue="F"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
-                                    <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
-                                    <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
-                                    <f:selectItem itemLabel="J" itemValue="J"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="K" itemValue="K"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                                </p:selectOneMenu>
-
-                                <h:panelGroup >
-                                    <p:fileUpload value="#{clientController.file}" mode="simple"/>
-                                    <p:commandButton ajax="false" value="Upload Results from Excel" 
-                                                     action="#{clientController.importResultsFromExcel()}"  ></p:commandButton>
-                                </h:panelGroup>
-
-                            </p:panelGrid>
-
-                            <p:panelGrid columns="1" >
-                                <p:commandButton action="#{clientController.toMarkAllNegative()}" ajax="false" value="Mark All Negative" onclick="if (!confirm('Are you sure you want mark all as NEGATIVE?'))
-                                            return false">
-                                </p:commandButton>
-                                <p:commandButton action="/lab/enter_recorrection" actionListener="#{clientController.toLabReviewResults}" ajax="false" value="Enter Recorrection" >
-                                </p:commandButton>
-                            </p:panelGrid>
-
-
+                         
                         </p:panelGrid>
 
                         <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}"  rendered="true"
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10" rowIndexVar="n"
-                                     rowStyleClass="#{c.resultPositive?'redRow':''}">
+                                     var="c" paginator="true" rowKey="#{c.id}" rows="10" rowIndexVar="n">
                             <p:column headerText="ID" width="60">
                                 <p:outputLabel value="#{c.id}" ></p:outputLabel>
                             </p:column>
