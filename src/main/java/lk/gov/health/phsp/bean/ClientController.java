@@ -524,6 +524,7 @@ public class ClientController implements Serializable {
                 + " and c.sentToLab is not null "
                 + " and c.sampleRejectedAtLab is not null "
                 + " and c.receivedAtLab is null "
+                + " and c.sampleRejectedAtLab is not null "
                 + " group by c.institution";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
@@ -879,6 +880,7 @@ public class ClientController implements Serializable {
                 + " and c.referalInstitution=:rins "
                 + " and c.institution=:ins "
                 + " and c.sentToLab is not null "
+                + " and c.sampleRejectedAtLab is not null "
                 + " and c.receivedAtLab is null";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
@@ -1387,7 +1389,6 @@ public class ClientController implements Serializable {
         return toLabReceiveAll();
     }
 
-    
     public String toLabPrintSelected() {
         for (Encounter e : selectedToPrint) {
             e.setResultPrinted(true);
