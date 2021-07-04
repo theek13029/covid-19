@@ -522,7 +522,6 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins "
                 + " and c.sentToLab is not null "
-                + " and c.sampleRejectedAtLab is not null "
                 + " and c.receivedAtLab is null "
                 + " and c.sampleRejectedAtLab is not null "
                 + " group by c.institution";
@@ -879,7 +878,6 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins "
                 + " and c.sentToLab is not null "
-                + " and c.sampleRejectedAtLab is not null "
                 + " and c.receivedAtLab is null";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
@@ -977,8 +975,7 @@ public class ClientController implements Serializable {
                 + " and c.referalInstitution=:rins"
                 + " and c.receivedAtLab=:rec "
                 + " and c.resultEntered is null "
-                + " and c.sampleRejectedAtLab is not null "
-                + " order by c.id";
+                + " and c.sampleRejectedAtLab is not null ";
         Map m = new HashMap();
         m.put("ret", true);
         m.put("rec", true);
@@ -1041,8 +1038,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins"
                 + " and c.resultEntered=:rec "
-                + " and c.resultReviewed is null "
-                + " order by c.id";
+                + " and c.resultReviewed is null ";
         Map m = new HashMap();
         m.put("ret", true);
         m.put("rec", true);
@@ -1067,8 +1063,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins"
                 + " and c.resultEntered=:rec "
-                + " and c.resultReviewed is null "
-                + " order by c.id";
+                + " and c.resultReviewed is null ";
         Map m = new HashMap();
         m.put("ret", true);
         m.put("rec", true);
