@@ -49,36 +49,30 @@
                                                  action="#{clientController.markUnassigned()}" ></p:commandButton>
                             </h:panelGrid>
                         </p:panelGrid>
-                  
 
-
-                        <p:commandButton value="Receive Selected" ajax="false" 
-                                         action="#{clientController.markSelectedAsReceivedResults()}" ></p:commandButton>
 
                         <p:dataTable id="tbl" value="#{clientController.listedToReceive}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      selection="#{clientController.selectedToReceive}"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="5,10,25,100,1000"
                                      >
-                            <p:column selectionMode="multiple" ></p:column>
-                            <p:column headerText="Test No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
+                            <p:column selectionMode="multiple" width="40" ></p:column>
+                            <p:column headerText="Test No" width="90" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Name" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}"  filterMatchMode="contains" >
+                            <p:column headerText="Age" width="80" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}"  filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Sex"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}"  filterMatchMode="contains" >
+                            <p:column headerText="Sex" width="80" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}"  filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Address"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}"  filterMatchMode="contains" >
-                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Phone"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" >
-                                <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
+                            <p:column headerText="MOH/Hospital"  sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" >
+                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
                     </h:form>

@@ -44,6 +44,8 @@
                                     rendered="#{webUserController.hasPrivilege('Receive_Samples')}"/>
                         <p:menuitem ajax="false" value="Enter Results" action="#{clientController.toLabEnterResults()}" 
                                     rendered="#{webUserController.hasPrivilege('Enter_Results')}"/>
+                        <p:menuitem ajax="false" value="Edit Results" action="#{clientController.toLabEditResults()}" 
+                                    rendered="#{webUserController.hasPrivilege('Enter_Results')}"/>
                         <p:menuitem ajax="false" value="Review Results" action="#{clientController.toLabReviewResults()}" 
                                     rendered="#{webUserController.hasPrivilege('Review_Results')}"/>
                         <p:menuitem ajax="false" value="Approve Results" action="#{clientController.toConfirmResults}" 
