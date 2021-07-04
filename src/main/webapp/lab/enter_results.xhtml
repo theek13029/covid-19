@@ -33,15 +33,13 @@
                                                 completeMethod="#{institutionController.completeInstitutions}"
                                                 var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                                 </p:autoComplete>
-
-                                <p:spacer ></p:spacer>
-                                <p:commandButton ajax="false" value="Process" 
-                                                 action="#{clientController.toLabEnterResults()}"  style="width: 98%;"></p:commandButton>
-
-
+                                <p:outputLabel value="Plate No." ></p:outputLabel>
+                                <p:inputText value="#{clientController.plateNo}" ></p:inputText>
                             </p:panelGrid>
 
                             <p:panelGrid columns="1" >
+                                <p:commandButton ajax="false" value="Process" 
+                                                 action="#{clientController.toLabEnterResults()}"  style="width: 98%;"></p:commandButton>
                                 <p:commandButton ajax="false" value="Generate Excel" style="width: 98%;">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                                 </p:commandButton>
@@ -198,8 +196,16 @@
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="Result Diaplayed" width="100"  sortBy="#{c.pcrResultStr}" filterBy="#{c.pcrResultStr}" filterMatchMode="contains" >
+                            <p:column headerText="Result Diaplayed" 
+                                      width="100"  
+                                      sortBy="#{c.pcrResultStr}" 
+                                      filterBy="#{c.pcrResultStr}" 
+                                      filterMatchMode="contains" >
                                 <p:outputLabel id="txtResultStr" value="#{c.pcrResultStr}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Actions" >
+                                <p:commandButton value="Reject" ajax="false" action="#{clientController.markSelectedAsRejectedAtDataEntry(c)}" >
+                                </p:commandButton>
                             </p:column>
                         </p:dataTable>
 

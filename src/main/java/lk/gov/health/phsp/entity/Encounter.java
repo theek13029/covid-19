@@ -173,6 +173,7 @@ public class Encounter implements Serializable {
     private Boolean symptomatic;
 
     private String labNumber;
+    private String plateNumber;
 
     @ManyToOne
     private Encounter parentEncounter;
@@ -927,5 +928,15 @@ public class Encounter implements Serializable {
         }
         return resultCssClass;
     }
+
+    public String getPlateNumber() {
+        return plateNumber;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
+    }
+    
+    
 
 }

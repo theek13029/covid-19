@@ -31,6 +31,8 @@
                                             var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                             </p:autoComplete>
 
+                            <p:outputLabel value="Plate No." ></p:outputLabel>
+                            <p:inputText value="#{clientController.plateNo}" ></p:inputText>
 
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="test_enrollments" ></p:dataExporter>
@@ -40,10 +42,10 @@
 
 
                         </p:panelGrid>
-                        
+
                         <p:commandButton value="PRINT SELECTED" ajax="false" 
                                          action="#{clientController.toLabPrintSelected()}" 
-                                          onclick="form.target='_blank'"></p:commandButton>
+                                         onclick="form.target = '_blank'"></p:commandButton>
 
 
                         <p:dataTable id="tbl" value="#{clientController.listedToPrint}" 
@@ -77,8 +79,8 @@
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
-                             <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
-                                      filterBy="#{c.ctValue}" filterMatchMode="contains" >
+                            <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
+                                       filterBy="#{c.ctValue}" filterMatchMode="contains" >
                                 <p:inputText id="txtCt1" value="#{c.ctValue}" style="width: 98px;" >
                                     <p:ajax event="keyup" process="txtCt1" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>

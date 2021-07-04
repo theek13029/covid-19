@@ -25,6 +25,16 @@
                             <p:outputLabel value="Sample Sent To Date" ></p:outputLabel>
                             <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
+                            <p:outputLabel value="Serial No Prefix" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:outputLabel>
+                            <p:inputText value="#{clientController.serialPrefix}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:inputText>
+
+                            <p:outputLabel value="Serial No Starts from" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:outputLabel>
+                            <p:inputText value="#{clientController.serialStart}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:inputText>
+
+                            <p:outputLabel value="Plate No" ></p:outputLabel>
+                            <p:inputText value="#{clientController.plateNo}" ></p:inputText>
+
+
                             <p:commandButton ajax="false" value="Process" 
                                              action="#{clientController.toLabReceiveAll()}" ></p:commandButton>
                             <p:commandButton ajax="false" value="Generate Excel" >

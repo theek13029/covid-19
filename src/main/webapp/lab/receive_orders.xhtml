@@ -32,22 +32,35 @@
                                                 var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                                 </p:autoComplete>
 
-                                <p:commandButton ajax="false" value="Generate Excel">
-                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_to_receive" ></p:dataExporter>
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="Process" 
-                                                 action="#{clientController.toLabReceiveSelected()}" ></p:commandButton>
-
 
                             </p:panelGrid>
                             <h:panelGrid columns="1" >
-                                <p:commandButton value="Receive Selected" ajax="false" 
-                                                 action="#{clientController.markSelectedAsReceivedResults()}" ></p:commandButton>
+                                <p:commandButton ajax="false" value="Process" 
+                                                 action="#{clientController.toLabReceiveSelected()}" ></p:commandButton>
+                                <p:commandButton ajax="false" value="Generate Excel">
+                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_to_receive" ></p:dataExporter>
+                                </p:commandButton>
+                                <p:panelGrid columns="2" >
+                                    <f:facet name="header" >
+                                        <p:commandButton value="Receive Selected" ajax="false" 
+                                                         action="#{clientController.markSelectedAsReceivedResults()}" ></p:commandButton>
+                                    </f:facet>
+                                    <p:outputLabel value="Serial No Prefix" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:outputLabel>
+                                    <p:inputText value="#{clientController.serialPrefix}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:inputText>
+
+                                    <p:outputLabel value="Serial No Starts from" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:outputLabel>
+                                    <p:inputText value="#{clientController.serialStart}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:inputText>
+
+                                    <p:outputLabel value="Plate No" ></p:outputLabel>
+                                    <p:inputText value="#{clientController.plateNo}" ></p:inputText>
+                                </p:panelGrid>
+
                                 <p:commandButton value="Reject Selected" ajax="false" 
-                                                 action="#{clientController.markSelectedAsReject()}" ></p:commandButton>
+                                                 action="#{clientController.markSelectedAsRejectAtReceive()}" ></p:commandButton>
                                 <p:commandButton value="Mark not expected at the Lab" ajax="false" 
                                                  action="#{clientController.markUnassigned()}" ></p:commandButton>
                             </h:panelGrid>
+
                         </p:panelGrid>
 
 

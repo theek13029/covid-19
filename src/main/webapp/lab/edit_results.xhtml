@@ -33,6 +33,8 @@
                                                 completeMethod="#{institutionController.completeInstitutions}"
                                                 var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                                 </p:autoComplete>
+                                <p:outputLabel value="Plate No." ></p:outputLabel>
+                                <p:inputText value="#{clientController.plateNo}" ></p:inputText>
 
                                 <p:spacer ></p:spacer>
                                 <p:commandButton ajax="false" value="Process" 
@@ -45,7 +47,7 @@
                                 </p:commandButton>
 
                             </p:panelGrid>
-                         
+
                         </p:panelGrid>
 
                         <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}"  rendered="true"

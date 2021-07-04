@@ -49,11 +49,23 @@ public class PreferenceController implements Serializable {
     Institution Preferences
      */
     private String labReportHtml;
+    private String labReportBulkHtml;
     private String labApprovalSteps;
     private String pcrPositiveTerm;
     private String pcrNegativeTerm;
     private String pcrInconclusiveTerm;
     private String pcrInvalidTerm;
+    private String ct1Term;
+    private String ct2Term;
+    private String bulkExcelTitle;
+    private String bulkExcelSubtitle;
+    private String bulkExcelLeftColTop;
+    private String bulkExcelRightColTop;
+    private String bulkExcelFooter;
+    private String bulkExcelSubFooter;
+    private String bulkExcelLeftColBottom;
+    private String bulkExcelRightColBottom;
+
     private String startingSerialCount;
     String labNumberGeneration;
 
@@ -77,6 +89,15 @@ public class PreferenceController implements Serializable {
             return p.getLongTextValue();
         } else {
             return "";
+        }
+    }
+
+    public String findPreferanceValue(String name, Institution ins, String defaultValue) {
+        Preference p = findPreferance(name, ins);
+        if (p != null) {
+            return p.getLongTextValue();
+        } else {
+            return defaultValue;
         }
     }
 
@@ -112,7 +133,19 @@ public class PreferenceController implements Serializable {
         pcrInconclusiveTerm = findPreferanceValue("pcrInconclusiveTerm", webUserController.getLoggedUser().getInstitution());
         pcrInvalidTerm = findPreferanceValue("pcrInvalidTerm", webUserController.getLoggedUser().getInstitution());
         startingSerialCount = findPreferanceValue("startingSerialCount", webUserController.getLoggedUser().getInstitution());
-        
+
+        ct1Term = findPreferanceValue("ct1Term", webUserController.getLoggedUser().getInstitution(), "");
+        ct2Term = findPreferanceValue("ct2Term", webUserController.getLoggedUser().getInstitution(), "");
+        bulkExcelTitle = findPreferanceValue("bulkExcelTitle", webUserController.getLoggedUser().getInstitution(), "");
+        bulkExcelSubtitle = findPreferanceValue("bulkExcelSubtitle", webUserController.getLoggedUser().getInstitution(), "");
+        bulkExcelLeftColTop = findPreferanceValue("bulkExcelLeftColTop", webUserController.getLoggedUser().getInstitution(), "");
+        bulkExcelRightColTop = findPreferanceValue("bulkExcelRightColTop", webUserController.getLoggedUser().getInstitution(), "");
+        bulkExcelFooter = findPreferanceValue("bulkExcelFooter", webUserController.getLoggedUser().getInstitution(), "");
+        bulkExcelSubFooter = findPreferanceValue("bulkExcelSubFooter", webUserController.getLoggedUser().getInstitution(), "");
+        bulkExcelLeftColBottom = findPreferanceValue("bulkExcelLeftColBottom", webUserController.getLoggedUser().getInstitution(), "");
+        bulkExcelRightColBottom = findPreferanceValue("bulkExcelRightColBottom", webUserController.getLoggedUser().getInstitution(), "");
+        labReportBulkHtml = findPreferanceValue("labReportBulkHtml", webUserController.getLoggedUser().getInstitution(), "");
+
         labNumberGeneration = findPreferanceValue("labNumberGeneration", webUserController.getLoggedUser().getInstitution());
         if (labNumberGeneration == null) {
             labNumberGeneration = "InsLabDateCount";
@@ -135,8 +168,8 @@ public class PreferenceController implements Serializable {
         if (pcrInvalidTerm == null) {
             pcrInvalidTerm = "Invalid";
         }
-        if(startingSerialCount==null){
-            startingSerialCount="1";
+        if (startingSerialCount == null) {
+            startingSerialCount = "1";
         }
     }
 
@@ -160,9 +193,22 @@ public class PreferenceController implements Serializable {
         savePreference("pcrNegativeTerm", webUserController.getLoggedUser().getInstitution(), pcrNegativeTerm);
         savePreference("pcrInvalidTerm", webUserController.getLoggedUser().getInstitution(), pcrInvalidTerm);
         savePreference("startingSerialCount", webUserController.getLoggedUser().getInstitution(), startingSerialCount);
-        
+
         savePreference("pcrInconclusiveTerm", webUserController.getLoggedUser().getInstitution(), pcrInconclusiveTerm);
         savePreference("labNumberGeneration", webUserController.getLoggedUser().getInstitution(), labNumberGeneration);
+
+        savePreference("ct1Term", webUserController.getLoggedUser().getInstitution(), ct1Term);
+        savePreference("ct2Term", webUserController.getLoggedUser().getInstitution(), ct2Term);
+        savePreference("bulkExcelTitle", webUserController.getLoggedUser().getInstitution(), bulkExcelTitle);
+        savePreference("bulkExcelSubtitle", webUserController.getLoggedUser().getInstitution(), bulkExcelSubtitle);
+        savePreference("bulkExcelLeftColTop", webUserController.getLoggedUser().getInstitution(), bulkExcelLeftColTop);
+        savePreference("bulkExcelRightColTop", webUserController.getLoggedUser().getInstitution(), bulkExcelRightColTop);
+        savePreference("bulkExcelFooter", webUserController.getLoggedUser().getInstitution(), bulkExcelFooter);
+        savePreference("bulkExcelSubFooter", webUserController.getLoggedUser().getInstitution(), bulkExcelSubFooter);
+        savePreference("bulkExcelLeftColBottom", webUserController.getLoggedUser().getInstitution(), bulkExcelLeftColBottom);
+        savePreference("bulkExcelRightColBottom", webUserController.getLoggedUser().getInstitution(), bulkExcelRightColBottom);
+        savePreference("labReportBulkHtml", webUserController.getLoggedUser().getInstitution(), labReportBulkHtml);
+
     }
 
     public Preference findPreferance(String name) {
@@ -438,9 +484,6 @@ public class PreferenceController implements Serializable {
         }
         return pcrInvalidTerm;
     }
-    
-    
-    
 
     public String getLabNumberGeneration() {
         if (labNumberGeneration == null) {
@@ -458,7 +501,7 @@ public class PreferenceController implements Serializable {
     }
 
     public String getStartingSerialCount() {
-        if(startingSerialCount==null){
+        if (startingSerialCount == null) {
             loadPreferencesInstitution();
         }
         return startingSerialCount;
@@ -466,6 +509,127 @@ public class PreferenceController implements Serializable {
 
     public void setStartingSerialCount(String startingSerialCount) {
         this.startingSerialCount = startingSerialCount;
+    }
+
+    public String getCt2Term() {
+        if (ct2Term == null) {
+            loadPreferencesInstitution();
+        }
+        return ct2Term;
+    }
+
+    public void setCt2Term(String ct2Term) {
+        this.ct2Term = ct2Term;
+    }
+
+    public String getBulkExcelTitle() {
+        if (bulkExcelTitle == null) {
+            loadPreferencesInstitution();
+        }
+        return bulkExcelTitle;
+    }
+
+    public void setBulkExcelTitle(String bulkExcelTitle) {
+        this.bulkExcelTitle = bulkExcelTitle;
+    }
+
+    public String getBulkExcelSubtitle() {
+        if (bulkExcelSubtitle == null) {
+            loadPreferencesInstitution();
+        }
+        return bulkExcelSubtitle;
+    }
+
+    public void setBulkExcelSubtitle(String bulkExcelSubtitle) {
+        this.bulkExcelSubtitle = bulkExcelSubtitle;
+    }
+
+    public String getBulkExcelLeftColTop() {
+        if (bulkExcelLeftColTop == null) {
+            loadPreferencesInstitution();
+        }
+        return bulkExcelLeftColTop;
+    }
+
+    public void setBulkExcelLeftColTop(String bulkExcelLeftColTop) {
+        this.bulkExcelLeftColTop = bulkExcelLeftColTop;
+    }
+
+    public String getBulkExcelRightColTop() {
+        if (bulkExcelRightColTop == null) {
+            loadPreferencesInstitution();
+        }
+        return bulkExcelRightColTop;
+    }
+
+    public void setBulkExcelRightColTop(String bulkExcelRightColTop) {
+        this.bulkExcelRightColTop = bulkExcelRightColTop;
+    }
+
+    public String getBulkExcelFooter() {
+        if (bulkExcelFooter == null) {
+            loadPreferencesInstitution();
+        }
+        return bulkExcelFooter;
+    }
+
+    public void setBulkExcelFooter(String bulkExcelFooter) {
+        this.bulkExcelFooter = bulkExcelFooter;
+    }
+
+    public String getBulkExcelSubFooter() {
+        if (bulkExcelSubFooter == null) {
+            loadPreferencesInstitution();
+        }
+        return bulkExcelSubFooter;
+    }
+
+    public void setBulkExcelSubFooter(String bulkExcelSubFooter) {
+        this.bulkExcelSubFooter = bulkExcelSubFooter;
+    }
+
+    public String getBulkExcelLeftColBottom() {
+        if (bulkExcelLeftColBottom == null) {
+            loadPreferencesInstitution();
+        }
+        return bulkExcelLeftColBottom;
+    }
+
+    public void setBulkExcelLeftColBottom(String bulkExcelLeftColBottom) {
+        this.bulkExcelLeftColBottom = bulkExcelLeftColBottom;
+    }
+
+    public String getBulkExcelRightColBottom() {
+        if (bulkExcelRightColBottom == null) {
+            loadPreferencesInstitution();
+        }
+        return bulkExcelRightColBottom;
+    }
+
+    public void setBulkExcelRightColBottom(String bulkExcelRightColBottom) {
+        this.bulkExcelRightColBottom = bulkExcelRightColBottom;
+    }
+
+    public String getLabReportBulkHtml() {
+        if (labReportBulkHtml == null) {
+            loadPreferencesInstitution();
+        }
+        return labReportBulkHtml;
+    }
+
+    public void setLabReportBulkHtml(String labReportBulkHtml) {
+        this.labReportBulkHtml = labReportBulkHtml;
+    }
+
+    public String getCt1Term() {
+        if (ct1Term == null) {
+            loadPreferences();
+        }
+        return ct1Term;
+    }
+
+    public void setCt1Term(String ct1Term) {
+        this.ct1Term = ct1Term;
     }
 
     // </editor-fold>

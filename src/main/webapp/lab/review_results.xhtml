@@ -31,6 +31,9 @@
                                             var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                             </p:autoComplete>
 
+                            <p:outputLabel value="Plate No." ></p:outputLabel>
+                            <p:inputText value="#{clientController.plateNo}" ></p:inputText>
+
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                             </p:commandButton>
@@ -43,10 +46,10 @@
 
 
                     <h:form>
-                         <p:commandButton value="MARK AS REVIEWED FOR SELECTED" ajax="false" 
-                                          action="#{clientController.reviewOkForSelectedResults()}" ></p:commandButton>
+                        <p:commandButton value="MARK AS REVIEWED FOR SELECTED" ajax="false" 
+                                         action="#{clientController.reviewOkForSelectedResults()}" ></p:commandButton>
 
-                       
+
                         <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" 
                                      rowStyleClass="#{c.resultPositive?'redRow':''}"
@@ -73,8 +76,8 @@
                             <p:column headerText="Phone" >
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
-                             <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
-                                      filterBy="#{c.ctValue}" filterMatchMode="contains" >
+                            <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
+                                       filterBy="#{c.ctValue}" filterMatchMode="contains" >
                                 <p:inputText id="txtCt1" value="#{c.ctValue}" style="width: 98px;" >
                                     <p:ajax event="keyup" process="txtCt1" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
@@ -98,7 +101,7 @@
                                 </p:selectOneMenu>
                             </p:column>
                             <p:column sortBy="#{c.pcrResultStr}" filterBy="#{c.pcrResultStr}" filterMatchMode="contains" headerText="Result Display" >
-                                 <p:outputLabel value="#{c.pcrResultStr}" ></p:outputLabel>
+                                <p:outputLabel value="#{c.pcrResultStr}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
                     </h:form>

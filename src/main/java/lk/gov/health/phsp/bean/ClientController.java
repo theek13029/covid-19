@@ -109,6 +109,9 @@ public class ClientController implements Serializable {
     private List<Client> selectedClients = null;
     private List<ClientBasicData> selectedClientsWithBasicData = null;
     private List<Client> importedClients = null;
+    private String serialPrefix;
+    private Long serialStart;
+    String plateNo;
 
     private Item lastTestOrderingCategory;
     private Item lastTestPcrOrRat;
@@ -522,8 +525,41 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins "
                 + " and c.sentToLab is not null "
+                + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
                 + " and c.receivedAtLab is null "
-                + " and c.sampleRejectedAtLab is not null "
+                + " group by c.institution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("rej", false);
+        m.put("rins", referingInstitution);
+        // // System.out.println("j = " + j);
+        // // System.out.println("m = " + m);
+        // // System.out.println("getFromDate() = " + getFromDate());
+        // // System.out.println("getToDate() = " + getToDate());
+        // // System.out.println("referingInstitution = " + referingInstitution);
+        labSummariesToReceive = new ArrayList<>();
+        List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
+        // // System.out.println("obs = " + obs.size());
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labSummariesToReceive.add((InstitutionCount) o);
+            }
+        }
+        return "/lab/receive_all";
+    }
+
+    public String toLabReceiveAll1() {
+        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.referalInstitution=:rins "
+                + " and c.sentToLab is not null "
+                + " and c.receivedAtLab is null "
                 + " group by c.institution";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
@@ -772,6 +808,24 @@ public class ClientController implements Serializable {
         return c;
     }
 
+    private Long labPeriodCount(Institution lab, Date from, Date to) {
+        Long c = 0l;
+        String j = "select count(c) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.receivedAtLabAt between :fdate and :tdate "
+                + " and c.referalInstitution=:rins ";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fdate", from);
+        m.put("tdate", to);
+        m.put("rins", lab);
+        c = getEncounterFacade().findLongByJpql(j, m, TemporalType.DATE);
+        c++;
+        return c;
+    }
+
     private Long labCount(Institution lab) {
         Long c = 0l;
         String j = "select count(c) "
@@ -792,6 +846,8 @@ public class ClientController implements Serializable {
         String labPrefix;
         Long startCount;
         String dateString = CommonController.formatDate("ddMMyy");
+        String monthString = CommonController.formatDate("MM/yy");
+        String yearString = CommonController.formatDate("yy");
         switch (getPreferenceController().getLabNumberGeneration()) {
             case "InsLabDateCount":
                 startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
@@ -835,7 +891,25 @@ public class ClientController implements Serializable {
                         = webUserController.getLoggedUser().getInstitution().getCode();
                 break;
             case "YearCount":
+                startCount = labPeriodCount(webUserController.getLoggedUser().getInstitution(),
+                        CommonController.startOfTheYear(),
+                        CommonController.endOfYear());
+                labPrefix
+                        = yearString
+                        + "/";
+                break;
             case "MonthCount":
+                startCount = labPeriodCount(webUserController.getLoggedUser().getInstitution(),
+                        CommonController.startOfTheMonth(),
+                        CommonController.endOfTheMonth());
+                labPrefix
+                        = monthString
+                        + "/";
+                break;
+            case "CustomCount":
+                startCount = this.serialStart;
+                labPrefix = this.serialPrefix;
+                break;
             default:
                 startCount = 1l;
                 labPrefix = "NOTSET/";
@@ -849,10 +923,12 @@ public class ClientController implements Serializable {
                 + " and c.referalInstitution=:rins "
                 + " and c.institution=:ins "
                 + " and c.sentToLab is not null "
-                + " and c.sampleRejectedAtLab is not null "
-                + " and c.receivedAtLab is null";
+                + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
+                + " and c.receivedAtLab is null"
+                + "order by c.encounterNumber";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
+        m.put("rej", false);
         m.put("fd", fromDate);
         m.put("td", toDate);
         m.put("ins", institution);
@@ -860,6 +936,7 @@ public class ClientController implements Serializable {
         labSummariesToReceive = new ArrayList<>();
         List<Encounter> receivingSamplesTmp = encounterFacade.findByJpql(j, m);
         for (Encounter e : receivingSamplesTmp) {
+            e.setPlateNumber(plateNo);
             e.setReceivedAtLab(true);
             e.setReceivedAtLabAt(new Date());
             e.setReceivedAtLabBy(webUserController.getLoggedUser());
@@ -889,6 +966,7 @@ public class ClientController implements Serializable {
             m.put("ins", institution);
         }
 
+        j += " order by c.encounterNumber";
         listedToReceive = encounterFacade.findByJpql(j, m);
         return "/lab/receive_orders";
     }
@@ -910,7 +988,7 @@ public class ClientController implements Serializable {
             m.put("ins", institution);
         }
         j += " and c.referalInstitution=:rins"
-                + " order by c.id";
+                + " order by c.encounterNumber";
         m.put("ret", true);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
@@ -975,18 +1053,24 @@ public class ClientController implements Serializable {
                 + " and c.referalInstitution=:rins"
                 + " and c.receivedAtLab=:rec "
                 + " and c.resultEntered is null "
-                + " and c.sampleRejectedAtLab is not null ";
+                + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) ";
         Map m = new HashMap();
         m.put("ret", true);
         m.put("rec", true);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
+        m.put("rej", false);
+        m.put("rins", referingInstitution);
         if (institution != null) {
             m.put("ins", institution);
             j += " and c.institution=:ins ";
         }
-        m.put("rins", referingInstitution);
+        if (plateNo != null && !plateNo.trim().equals("")) {
+            m.put("pn", plateNo);
+            j += " and c.plateNumber=:pn ";
+        }
+        j += " order by c.encounterNumber";
         listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/enter_results";
     }
@@ -1038,18 +1122,25 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins"
                 + " and c.resultEntered=:rec "
+                + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
                 + " and c.resultReviewed is null ";
         Map m = new HashMap();
         m.put("ret", true);
         m.put("rec", true);
+        m.put("rej", false);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
+        m.put("rins", referingInstitution);
         if (institution != null) {
             j += " and c.institution=:ins ";
             m.put("ins", institution);
         }
-        m.put("rins", referingInstitution);
+        if (plateNo != null && !plateNo.trim().equals("")) {
+            m.put("pn", plateNo);
+            j += " and c.plateNumber=:pn ";
+        }
+        j+= " order by c.encounterNumber";
         listedToReviewResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/review_results";
     }
@@ -1063,18 +1154,25 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins"
                 + " and c.resultEntered=:rec "
+                + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
                 + " and c.resultReviewed is null ";
         Map m = new HashMap();
         m.put("ret", true);
         m.put("rec", true);
+        m.put("rej", false);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
         m.put("td", toDate);
+        m.put("rins", referingInstitution);
         if (institution != null) {
             m.put("ins", institution);
             j += " and c.institution=:ins ";
         }
-        m.put("rins", referingInstitution);
+        if (plateNo != null && !plateNo.trim().equals("")) {
+            m.put("pn", plateNo);
+            j += " and c.plateNumber=:pn ";
+        }
+        j += " order by c.encounterNumber";
         listedToReviewResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/edit_results";
     }
@@ -1147,19 +1245,28 @@ public class ClientController implements Serializable {
                 + " where c.retired=:ret "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
-                + " and c.institution=:ins "
                 + " and c.referalInstitution=:rins"
                 + " and c.resultReviewed=:rec "
-                + " and c.resultConfirmed is null "
-                + " order by c.id";
+                + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
+                + " and c.resultConfirmed is null ";
+
         Map m = new HashMap();
         m.put("ret", false);
         m.put("rec", true);
+        m.put("rej", false);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
-        m.put("ins", institution);
         m.put("rins", referingInstitution);
+        if (institution != null) {
+            m.put("ins", institution);
+            j += " and c.institution=:ins ";
+        }
+        if (plateNo != null && !plateNo.trim().equals("")) {
+            m.put("pn", plateNo);
+            j += " and c.plateNumber=:pn ";
+        }
+        j += " order by c.encounterNumber";
         listedToConfirm = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/confirm_results";
     }
@@ -1174,14 +1281,20 @@ public class ClientController implements Serializable {
                 + " and c.institution=:ins "
                 + " and c.referalInstitution=:rins"
                 + " and c.resultConfirmed is not null "
+                + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
                 + " order by c.id";
         Map m = new HashMap();
         m.put("ret", false);
+        m.put("rej", false);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("ins", institution);
         m.put("rins", referingInstitution);
+        if (plateNo != null && !plateNo.trim().equals("")) {
+            m.put("pn", plateNo);
+            j += " and c.plateNumber=:pn ";
+        }
         listedToPrint = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/print_results";
     }
@@ -1330,7 +1443,8 @@ public class ClientController implements Serializable {
         String labPrefix;
         Long startCount;
         String dateString = CommonController.formatDate("ddMMyy");
-
+        String monthString = CommonController.formatDate("MM/yy");
+        String yearString = CommonController.formatDate("yy");
         String labNoGen = getPreferenceController().getLabNumberGeneration();
         // System.out.println("labNoGen = " + labNoGen);
         switch (labNoGen) {
@@ -1379,7 +1493,25 @@ public class ClientController implements Serializable {
                         = webUserController.getLoggedUser().getInstitution().getCode();
                 break;
             case "YearCount":
+                startCount = labPeriodCount(webUserController.getLoggedUser().getInstitution(),
+                        CommonController.startOfTheYear(),
+                        CommonController.endOfYear());
+                labPrefix
+                        = yearString
+                        + "/";
+                break;
             case "MonthCount":
+                startCount = labPeriodCount(webUserController.getLoggedUser().getInstitution(),
+                        CommonController.startOfTheMonth(),
+                        CommonController.endOfTheMonth());
+                labPrefix
+                        = monthString
+                        + "/";
+                break;
+            case "CustomCount":
+                startCount = this.serialStart;
+                labPrefix = this.serialPrefix;
+                break;
 
             default:
                 startCount = 1l;
@@ -1391,6 +1523,7 @@ public class ClientController implements Serializable {
             e.setReceivedAtLabAt(new Date());
             e.setReceivedAtLabBy(webUserController.getLoggedUser());
             e.setLabNumber(labPrefix + startCount);
+            e.setPlateNumber(plateNo);
             startCount++;
             encounterFacade.edit(e);
         }
@@ -1398,7 +1531,7 @@ public class ClientController implements Serializable {
         return toLabReceiveAll();
     }
 
-    public String markSelectedAsReject() {
+    public String markSelectedAsRejectAtReceive() {
         for (Encounter e : selectedToReceive) {
             e.setSampleRejectedAtLab(true);
             e.setSampleRejectedAtLabAt(new Date());
@@ -1407,6 +1540,14 @@ public class ClientController implements Serializable {
         }
         selectedToReceive = null;
         return toLabReceiveAll();
+    }
+
+    public String markSelectedAsRejectedAtDataEntry(Encounter e) {
+        e.setSampleRejectedAtLab(true);
+        e.setSampleRejectedAtLabAt(new Date());
+        e.setSampleRejectedAtLabBy(webUserController.getLoggedUser());
+        encounterFacade.edit(e);
+        return toLabEnterResults();
     }
 
     public String markUnassigned() {
@@ -5215,6 +5356,30 @@ public class ClientController implements Serializable {
 
     public void setLabSummariesEntered(List<InstitutionCount> labSummariesEntered) {
         this.labSummariesEntered = labSummariesEntered;
+    }
+
+    public String getSerialPrefix() {
+        return serialPrefix;
+    }
+
+    public void setSerialPrefix(String serialPrefix) {
+        this.serialPrefix = serialPrefix;
+    }
+
+    public Long getSerialStart() {
+        return serialStart;
+    }
+
+    public String getPlateNo() {
+        return plateNo;
+    }
+
+    public void setPlateNo(String plateNo) {
+        this.plateNo = plateNo;
+    }
+
+    public void setSerialStart(Long serialStart) {
+        this.serialStart = serialStart;
     }
 
     // </editor-fold>
