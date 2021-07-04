@@ -522,6 +522,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.referalInstitution=:rins "
                 + " and c.sentToLab is not null "
+                + " and c.sampleRejectedAtLab is not null "
                 + " and c.receivedAtLab is null "
                 + " group by c.institution";
         Map m = new HashMap();
@@ -848,7 +849,8 @@ public class ClientController implements Serializable {
                 + " and c.referalInstitution=:rins "
                 + " and c.institution=:ins "
                 + " and c.sentToLab is not null "
-                + " and c.receivedAtLab=true";
+                + " and c.sampleRejectedAtLab is not null "
+                + " and c.receivedAtLab is null";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", fromDate);
@@ -1365,6 +1367,27 @@ public class ClientController implements Serializable {
         return toLabReceiveAll();
     }
 
+    public String markSelectedAsReject() {
+        for (Encounter e : selectedToReceive) {
+            e.setSampleRejectedAtLab(true);
+            e.setSampleRejectedAtLabAt(new Date());
+            e.setSampleRejectedAtLabBy(webUserController.getLoggedUser());
+            encounterFacade.edit(e);
+        }
+        selectedToReceive = null;
+        return toLabReceiveAll();
+    }
+
+    public String markUnassigned() {
+        for (Encounter e : selectedToReceive) {
+            e.setReferalInstitution(null);
+            encounterFacade.edit(e);
+        }
+        selectedToReceive = null;
+        return toLabReceiveAll();
+    }
+
+    
     public String toLabPrintSelected() {
         for (Encounter e : selectedToPrint) {
             e.setResultPrinted(true);
@@ -2126,9 +2149,6 @@ public class ClientController implements Serializable {
         }
         updateYearDateMonth();
     }
-    
-    
-    
 
     public Boolean checkNicExists(String nic, Client c) {
         String jpql = "select count(c) from Client c "

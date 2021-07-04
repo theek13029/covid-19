@@ -122,6 +122,10 @@ public class MohController implements Serializable {
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
     public void deleteTest() {
+        if(deleting.getReceivedAtLab() && deleting.getReferalInstitution()!=webUserController.getLoggedUser().getInstitution()){
+            JsfUtil.addErrorMessage("Already receievd by the Lab. Can't delete.");
+            return ;
+        }
         deleting.setRetired(true);
         deleting.setRetiredAt(new Date());
         deleting.setRetiredBy(webUserController.getLoggedUser());

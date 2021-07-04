@@ -15,10 +15,9 @@
             </ui:define>
 
             <ui:define name="content">
-                <h1>List of Tests</h1>
                   <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                         <f:facet name="header" >
-                            <p:outputLabel value="Test Order List" ></p:outputLabel>
+                            <p:outputLabel value="Test List" ></p:outputLabel>
                         </f:facet>
 
                         <h:form >
@@ -83,12 +82,8 @@
                                          rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                          rows="10"
                                          >
-                                <p:column rendered="true" headerText="No." width="60"  >
-                                    <p:outputLabel value="#{n+1}" ></p:outputLabel>
-                                </p:column>
                                 <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                     <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
-                                        #{c.pcrResult.code}
                                 </p:column>
                                 <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
                                     <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
@@ -131,7 +126,7 @@
                                 </p:column>
                                 <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
                                           filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
-                                    <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
+                                    <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></p:outputLabel>
                                 </p:column>
                                 <p:column headerText="Actions" exportable="false" >
                                     <p:commandLink ajax="false" value="Convert to a case" action="#{clientController.toNewCaseEnrollmentFromEncounter()}" >
