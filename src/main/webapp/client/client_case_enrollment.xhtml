@@ -24,6 +24,14 @@
                                         <p:inputText id="phn" autocomplete="off" class="form-control" value="#{clientController.selected.phn}" title="Phn" placeholder="New PHN"/>
                                     </div>
                                     <div class="col-md-3">
+                                        <p:outputLabel value="Citizenship:" for="citizenship" />
+                                        <p:selectOneMenu id="citizenship" value="#{clientController.selected.person.citizenship}" style="width:100%;">
+                                            <f:selectItems value="#{itemController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}" ></f:selectItems>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-6">
                                         <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic"/>
                                         <p:inputText id="nic" tabindex="2"  autocomplete="off" class="form-control" value="#{clientController.selected.person.nic}" title="Nic" validatorMessage="Please check the number">
                                             <!--<f:validateRegex pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})?$" ></f:validateRegex>-->
@@ -31,12 +39,6 @@
                                                     render="year month sex" 
                                                     execute="@this"/>
                                         </p:inputText>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-6">
-                                        <p:outputLabel value="Current Residential Address:" for="address" />
-                                        <p:inputText tabindex="3" id="address" required="true" class="form-control" value="#{clientController.selected.person.address}" title="Address" />
                                     </div>
                                     <div class="col-md-3">
                                         <p:outputLabel value="Gender:" for="sex" />
@@ -70,48 +72,11 @@
                                         </h:panelGroup>
                                     </div>
                                 </div>
+
                                 <div class="form-group row">
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Primary Contact Number :" for="phone1" />
-                                        <p:inputText tabindex="4" class="form-control" id="phone1" required="true" 
-                                                     autocomplete="off" value="#{clientController.selected.person.phone1}" title="Mobile" 
-                                                     validatorMessage="Please check the number">
-                                            <!--     <f:validateRegex pattern="^((?:0|94|\+94|0094)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|91)(0|2|3|4|5|7|9)|7(0|1|2|4|5|6|7|8)\d)\d{6})?$"
-                                                                                                         ></f:validateRegex>-->
-                                        </p:inputText>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Secondary Contact Number :" for="phone2" />
-                                        <p:inputText id="phone2" class="form-control" autocomplete="off" value="#{clientController.selected.person.phone2}" title="Resident" 
-                                                     validatorMessage="Please check the number">
-                                            <!--<f:validateRegex pattern="^((?:0|94|\+94|0094)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|91)(0|2|3|4|5|7|9)|7(0|1|2|5|6|7|8)\d)\d{6})?$" ></f:validateRegex>-->
-                                        </p:inputText>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <p:outputLabel value="Citizenship:" for="citizenship" />
-                                        <p:selectOneMenu id="citizenship" value="#{clientController.selected.person.citizenship}" style="width:100%;">
-                                            <f:selectItems value="#{itemController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}" ></f:selectItems>
-                                        </p:selectOneMenu>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="GN Area:" for="gn" />
-                                        <p:autoComplete tabindex="5" id="gn" value="#{clientController.selected.person.gnArea}"
-                                                        completeMethod="#{clientController.completeClientsMohArea}"
-                                                        var="gn" itemLabel="#{gn.name}" itemValue="#{gn}" style="width:100%;" inputStyle="width:100%;"
-                                                        maxResults="20" forceSelection="true" placeholder="Not Known"
-                                                        minQueryLength="2">
-                                            <p:column headerText="Name">
-                                                <p:outputLabel value="#{gn.name}"></p:outputLabel>
-                                            </p:column>
-                                            <p:column headerText="DS Division">
-                                                <p:outputLabel value="#{gn.parentArea.name}"></p:outputLabel>
-                                            </p:column>
-                                            <p:column headerText="District">
-                                                <p:outputLabel value="#{gn.parentArea.parentArea.name}"></p:outputLabel>
-                                            </p:column>
-                                        </p:autoComplete>
+                                    <div class="col-md-6">
+                                        <p:outputLabel value="Current Residential Address:" for="address" />
+                                        <p:inputText tabindex="3" id="address" required="true" class="form-control" value="#{clientController.selected.person.address}" title="Address" />
                                     </div>
                                     <div class="col-md-3">
                                         <p:outputLabel value="District:" for="district" />
@@ -137,10 +102,41 @@
                                     </div>                                    
                                 </div>
                                 <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="Primary Contact Number :" for="phone1" />
+                                        <p:inputText tabindex="4" class="form-control" id="phone1" required="true" 
+                                                     autocomplete="off" value="#{clientController.selected.person.phone1}" title="Mobile" 
+                                                     validatorMessage="Please check the number">
+                                        </p:inputText>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="GN Area:" for="gn" />
+                                        <p:autoComplete tabindex="5" id="gn" value="#{clientController.selected.person.gnArea}"
+                                                        completeMethod="#{clientController.completeClientsMohArea}"
+                                                        var="gn" itemLabel="#{gn.name}" itemValue="#{gn}" style="width:100%;" inputStyle="width:100%;"
+                                                        maxResults="20" forceSelection="true" placeholder="Not Known"
+                                                        minQueryLength="2">
+                                            <p:column headerText="Name">
+                                                <p:outputLabel value="#{gn.name}"></p:outputLabel>
+                                            </p:column>
+                                            <p:column headerText="DS Division">
+                                                <p:outputLabel value="#{gn.parentArea.name}"></p:outputLabel>
+                                            </p:column>
+                                            <p:column headerText="District">
+                                                <p:outputLabel value="#{gn.parentArea.parentArea.name}"></p:outputLabel>
+                                            </p:column>
+                                        </p:autoComplete>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
                                     <div class="col-md-12">
                                         <p:messages ></p:messages>
                                     </div>
-                                </div>                                
+                                </div>  
                             </div>
                         </h:panelGroup>
                     </div>

@@ -19,27 +19,38 @@
 
                     <h:form >
                         <p:panelGrid columns="2" >
-                            <p:outputLabel value="Sample Sent From Date" ></p:outputLabel>
-                            <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <p:outputLabel value="Sample Sent To Date" ></p:outputLabel>
-                            <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                            <p:panelGrid columns="2" >
 
-                            <p:outputLabel value="Serial No Prefix" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:outputLabel>
-                            <p:inputText value="#{clientController.serialPrefix}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:inputText>
+                                <p:outputLabel value="Sample Sent From Date" ></p:outputLabel>
+                                <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <p:outputLabel value="Serial No Starts from" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:outputLabel>
-                            <p:inputText value="#{clientController.serialStart}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:inputText>
+                                <p:outputLabel value="Sample Sent To Date" ></p:outputLabel>
+                                <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                                <p:commandButton ajax="false" value="Process" 
+                                                 action="#{clientController.toLabReceiveAll()}" ></p:commandButton>
+                                <p:commandButton ajax="false" value="Generate Excel" >
+                                    <p:dataExporter type="xlsx" fileName="Samples to receive" target="tbl" ></p:dataExporter>
+                                </p:commandButton>
 
-                            <p:outputLabel value="Plate No" ></p:outputLabel>
-                            <p:inputText value="#{clientController.plateNo}" ></p:inputText>
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="2" >
+                                <f:facet name="header" >
+                                    <p:outputLabel value="Lab number generation" ></p:outputLabel>
+                                </f:facet>
+                                <p:outputLabel value="Serial No Prefix" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:outputLabel>
+                                <p:inputText value="#{clientController.serialPrefix}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:inputText>
+
+                                <p:outputLabel value="Serial No Starts from" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:outputLabel>
+                                <p:inputText value="#{clientController.serialStart}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:inputText>
+
+                                <p:outputLabel value="Plate No" ></p:outputLabel>
+                                <p:inputText value="#{clientController.plateNo}" ></p:inputText>
+
+                            </p:panelGrid>
 
 
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{clientController.toLabReceiveAll()}" ></p:commandButton>
-                            <p:commandButton ajax="false" value="Generate Excel" >
-                                <p:dataExporter type="xlsx" fileName="Samples to receive" target="tbl" ></p:dataExporter>
-                            </p:commandButton>
 
                         </p:panelGrid>
 

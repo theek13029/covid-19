@@ -914,6 +914,13 @@ public class ClientController implements Serializable {
                 startCount = 1l;
                 labPrefix = "NOTSET/";
         }
+        
+        if(startCount==null){
+            startCount=0l;
+        }
+        if(labPrefix==null){
+            labPrefix = "";
+        }
 
         String j = "select c "
                 + " from Encounter c "
@@ -924,8 +931,8 @@ public class ClientController implements Serializable {
                 + " and c.institution=:ins "
                 + " and c.sentToLab is not null "
                 + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
-                + " and c.receivedAtLab is null"
-                + "order by c.encounterNumber";
+                + " and c.receivedAtLab is null "
+                + " order by c.encounterNumber";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
         m.put("rej", false);
