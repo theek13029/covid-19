@@ -122,9 +122,9 @@ public class MohController implements Serializable {
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
     public void deleteTest() {
-        if(deleting.getReceivedAtLab() && deleting.getReferalInstitution()!=webUserController.getLoggedUser().getInstitution()){
+        if (deleting.getReceivedAtLab() && deleting.getReferalInstitution() != webUserController.getLoggedUser().getInstitution()) {
             JsfUtil.addErrorMessage("Already receievd by the Lab. Can't delete.");
-            return ;
+            return;
         }
         deleting.setRetired(true);
         deleting.setRetiredAt(new Date());
@@ -686,6 +686,50 @@ public class MohController implements Serializable {
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
         return "/moh/list_of_tests";
+    }
+
+    public String toEnterResults() {
+        System.out.println("toTestList");
+        Map m = new HashMap();
+
+        String j = "select c "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and c.institution=:ins ";
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
+
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        System.out.println("getFromDate() = " + getFromDate());
+        m.put("td", getToDate());
+        System.out.println(" getToDate() = " + getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+
+        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("tests = " + tests.size());
+        return "/moh/enter_results";
     }
 
     public List<Item> getCovidTestOrderingCategories() {
