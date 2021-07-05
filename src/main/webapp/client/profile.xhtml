@@ -100,7 +100,8 @@
                                 </p:outputLabel>
                             </p:column>
                             <p:column headerText="Type" >
-                                <p:outputLabel value="#{c.encounterType.label}" ></p:outputLabel>
+                                <p:outputLabel value="#{c.encounterType}"  rendered="#{c.encounterType ne 'Test_Enrollment'}" ></p:outputLabel>
+                                <p:outputLabel value="#{c.pcrTestType.name}" rendered="#{c.encounterType eq 'Test_Enrollment'}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Number" >
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
@@ -108,12 +109,18 @@
                             <p:column headerText="Institution" >
                                 <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Institution" >
-                                <p:commandButton value="View" ajax="false" action="#{clientController.toFromFromEncounter()}" >
+                            <p:column headerText="Actions" >
+                                <p:commandButton value="View Order" ajax="false" action="#{mohController.toViewTest()}" rendered="#{c.encounterType eq 'Test_Enrollment'}" >
                                     <f:setPropertyActionListener value="#{c}" 
-                                                                 target="#{clientController.selectedEncounter}" >
+                                                                 target="#{mohController.test}" >
                                     </f:setPropertyActionListener>
                                 </p:commandButton>
+                                <p:commandButton value="View Results" ajax="false" action="#{mohController.toViewResult()}" rendered="#{c.encounterType eq 'Test_Enrollment'}" >
+                                    <f:setPropertyActionListener value="#{c}" 
+                                                                 target="#{mohController.test}" >
+                                    </f:setPropertyActionListener>
+                                </p:commandButton>
+                                
                             </p:column>
                         </p:dataTable>
 

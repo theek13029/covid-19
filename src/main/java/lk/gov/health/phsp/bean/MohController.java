@@ -174,6 +174,31 @@ public class MohController implements Serializable {
         }
         return "/moh/rat_order_view";
     }
+    
+    public String toRatResultView() {
+        if (rat == null) {
+            JsfUtil.addErrorMessage("No RAT");
+            return "";
+        }
+        if (rat.getClient() == null) {
+            JsfUtil.addErrorMessage("No Client");
+            return "";
+        }
+        return "/moh/rat_result_view";
+    }
+
+    public String toPcrResultView() {
+        if (rat == null) {
+            JsfUtil.addErrorMessage("No RAT");
+            return "";
+        }
+        if (rat.getClient() == null) {
+            JsfUtil.addErrorMessage("No Client");
+            return "";
+        }
+        return "/moh/pcr_result_view";
+    }
+    
 
     public String toPcrView() {
         if (pcr == null) {
@@ -205,6 +230,42 @@ public class MohController implements Serializable {
         }
     }
 
+    public String toViewTest() {
+        if (test == null) {
+            JsfUtil.addErrorMessage("No Test");
+            return "";
+        }
+        if (test.getPcrTestType().equals(itemApplicationController.getRat())) {
+            rat = test;
+            return toRatOrderView();
+        } else if (test.getPcrTestType().equals(itemApplicationController.getPcr())) {
+            pcr = test;
+            return toPcrView();
+        } else {
+            //TODO: add to edit test when test type not given
+            JsfUtil.addErrorMessage("Not a RAT or PCR.");
+            return "";
+        }
+    }
+
+    public String toViewResult() {
+        if (test == null) {
+            JsfUtil.addErrorMessage("No Test");
+            return "";
+        }
+        if (test.getPcrTestType().equals(itemApplicationController.getRat())) {
+            rat = test;
+            return toRatResultView();
+        } else if (test.getPcrTestType().equals(itemApplicationController.getPcr())) {
+            pcr = test;
+            return toPcrResultView();
+        } else {
+            //TODO: add to edit test when test type not given
+            JsfUtil.addErrorMessage("Not a RAT or PCR.");
+            return "";
+        }
+    }
+    
     public String toRatEdit() {
         if (rat == null) {
             JsfUtil.addErrorMessage("No RAT");

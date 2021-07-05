@@ -135,7 +135,11 @@
                                         </f:setPropertyActionListener>
                                     </p:commandLink>
                                     <p:outputLabel value="&nbsp;&nbsp;|&nbsp;&nbsp;" ></p:outputLabel>
-                                    <p:commandLink value="Edit" action="#{mohController.toEditTest()}" ajax="false" >
+                                    <p:commandLink value="Edit Order" action="#{mohController.toEditTest()}" ajax="false" >
+                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
+                                    </p:commandLink>
+                                    <p:outputLabel value="&nbsp;&nbsp;|&nbsp;&nbsp;" ></p:outputLabel>
+                                    <p:commandLink value="View Results" action="#{mohController.toViewTest()}" ajax="false" >
                                         <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
                                     </p:commandLink>
                                     <p:outputLabel value="&nbsp;&nbsp;|&nbsp;&nbsp;" ></p:outputLabel>

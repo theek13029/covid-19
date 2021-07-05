@@ -1756,6 +1756,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No encounter");
             return "";
         }
+        Encounter testEncounter=selectedEncounter;
         if (selectedEncounter.getClient() == null) {
             JsfUtil.addErrorMessage("No Client");
             return "";
@@ -1779,6 +1780,12 @@ public class ClientController implements Serializable {
             return "";
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        if(cefs.getEncounter()!=null){
+            testEncounter.setReferenceCase(cefs.getEncounter());
+            encounterFacade.edit(testEncounter);
+            
+            cefs.getEncounter().setReferenceTest(testEncounter);
+        }
         updateYearDateMonth();
         return "/client/client_case_enrollment";
     }

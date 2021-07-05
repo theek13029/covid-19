@@ -12,8 +12,8 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                
-                
+
+
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" rendered="true" >
                     <f:facet name="header" >
                         <p:outputLabel value="Entering Test Results" ></p:outputLabel>
@@ -21,11 +21,11 @@
 
                     <h:form >
                         <p:panelGrid columns="2" >
-                         <p:panelGrid columns="2" >
+                            <p:panelGrid columns="2" >
                                 <p:outputLabel value="Ordered From" ></p:outputLabel>
                                 <p:calendar value="#{mohController.fromDate}" 
                                             pattern="dd MMMM yyyy hh:mm a">
-                                </p:calendar><!-- comment -->
+                                </p:calendar>
 
                                 <p:outputLabel value="Ordered To" ></p:outputLabel>
                                 <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
@@ -65,7 +65,7 @@
                                     <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                                 </p:commandButton>
                                 <p:commandButton ajax="false" value="Process" 
-                                                 action="#{mohController.toTestList()}" ></p:commandButton>
+                                                 action="#{mohController.toEnterResults()}" ></p:commandButton>
 
 
                             </p:panelGrid>
@@ -75,49 +75,53 @@
 
 
                         <p:dataTable id="tbl" value="#{mohController.tests}" 
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10" 
+                                     var="c" rowKey="#{c.id}" 
+                                     rows="10" 
+                                     paginator="true" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="10,50,100,{ShowAll|'All'}"
                                      rowStyleClass="#{c.resultCssClass}">
-                            <p:column headerText="Tube No" >
-                                #{c.resultCssClass}
+                            <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Lab No" >
+                            <p:column headerText="Lab No"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Name" >
+                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age" >
+                            <p:column headerText="Age"  sortBy="#{c.client.person.age}" filterBy="#{c.client.person.age}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Sex" >
+                            <p:column headerText="Sex"  sortBy="#{c.client.person.sex.name}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Address" >
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Phone" >
+                            <p:column headerText="Phone"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Test" >
+                            <p:column headerText="Test"  sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Lab" >
+                            <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}" filterBy="#{c.referalInstitution.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column id="result" headerText="CT 1" >
+                            <p:column id="ct1" headerText="CT 1" >
                                 <p:inputText id="txtCt" value="#{c.ctValue}" style="width: 5rem;" disabled="#{c.receivedAtLab}" >
                                     <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResultsAtMoh(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                             <p:column id="result" headerText="CT 2" >
-                                 <p:inputText id="txtCt" value="#{c.ctValue2}" style="width: 5rem;"  disabled="#{c.receivedAtLab}" >
-                                    <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResultsAtMoh(c)}" >
+                            <p:column id="ct2" headerText="CT 2" >
+                                <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 5rem;"  disabled="#{c.receivedAtLab}" >
+                                    <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResultsAtMoh(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="Result" exportable="false" >
+                            <p:column headerText="Result" exportable="false"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
                                 <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}" disabled="#{c.receivedAtLab}" >
                                     <f:selectItem itemLabel="Select Result" ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"

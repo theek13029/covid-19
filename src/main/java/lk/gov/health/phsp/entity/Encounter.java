@@ -69,6 +69,11 @@ public class Encounter implements Serializable {
     private String unitWard;
 
     private boolean firstEncounter;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Encounter referenceTest;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Encounter referenceCase;
 
     private Boolean sampled;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -941,6 +946,23 @@ public class Encounter implements Serializable {
     public void setPlateNumber(String plateNumber) {
         this.plateNumber = plateNumber;
     }
+
+    public Encounter getReferenceTest() {
+        return referenceTest;
+    }
+
+    public void setReferenceTest(Encounter referenceTest) {
+        this.referenceTest = referenceTest;
+    }
+
+    public Encounter getReferenceCase() {
+        return referenceCase;
+    }
+
+    public void setReferenceCase(Encounter referenceCase) {
+        this.referenceCase = referenceCase;
+    }
+    
     
     
 
