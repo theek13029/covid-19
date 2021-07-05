@@ -105,8 +105,14 @@
                             <p:column headerText="Lab" >
                                 <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column id="result" headerText="CT" >
-                                <p:inputText id="txtCt" value="#{c.ctValueStr}" style="width: 5rem;" >
+                            <p:column id="result" headerText="CT 1" >
+                                <p:inputText id="txtCt" value="#{c.ctValue}" style="width: 5rem;" disabled="#{c.receivedAtLab}" >
+                                    <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResultsAtMoh(c)}" >
+                                    </p:ajax>
+                                </p:inputText>
+                            </p:column>
+                             <p:column id="result" headerText="CT 2" >
+                                 <p:inputText id="txtCt" value="#{c.ctValue2}" style="width: 5rem;"  disabled="#{c.receivedAtLab}" >
                                     <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResultsAtMoh(c)}" >
                                     </p:ajax>
                                 </p:inputText>
@@ -121,7 +127,7 @@
                                 </p:selectOneMenu>
                             </p:column>
                             <p:column headerText="Comments" >
-                                <p:inputText id="txtComments" value="#{c.resultComments}"  >
+                                <p:inputText id="txtComments" value="#{c.resultComments}"  disabled="#{c.receivedAtLab}"  >
                                     <p:ajax event="blur" process="txtComments" 
                                             listener="#{clientController.saveEncounterResultsAtMoh(c)}" >
                                     </p:ajax>
