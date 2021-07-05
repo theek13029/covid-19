@@ -81,6 +81,9 @@
                             <p:column headerText="Test" >
                                 <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Lab" >
+                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
+                            </p:column>
                             <p:column id="result" headerText="CT" >
                                 <p:inputText id="txtCt" value="#{c.ctValueStr}" style="width: 5rem;" >
                                     <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResultsAtMoh(c)}" >

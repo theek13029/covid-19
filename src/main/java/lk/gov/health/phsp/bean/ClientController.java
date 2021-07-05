@@ -914,11 +914,11 @@ public class ClientController implements Serializable {
                 startCount = 1l;
                 labPrefix = "NOTSET/";
         }
-        
-        if(startCount==null){
-            startCount=0l;
+
+        if (startCount == null) {
+            startCount = 0l;
         }
-        if(labPrefix==null){
+        if (labPrefix == null) {
             labPrefix = "";
         }
 
@@ -1084,39 +1084,32 @@ public class ClientController implements Serializable {
 
     public String toMohEnterResults() {
         institution = webUserController.getLoggedUser().getInstitution();
-        if (selectedTest == null) {
-            String j = "select c "
-                    + " from Encounter c "
-                    + " where c.retired<>:ret "
-                    + " and c.encounterType=:type "
-                    + " and c.encounterDate between :fd and :td "
-                    + " and c.institution=:ins "
-                    + " order by c.id";
-            Map m = new HashMap();
-            m.put("ret", true);
-            m.put("type", EncounterType.Test_Enrollment);
-            m.put("fd", fromDate);
-            m.put("td", toDate);
-            m.put("ins", institution);
-            listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
-        } else {
-            String j = "select c "
-                    + " from ClientEncounterComponentItem i join i.itemEncounter c "
-                    + " where c.retired<>:ret "
-                    + " and c.encounterType=:type "
-                    + " and c.encounterDate between :fd and :td "
-                    + " and c.institution=:ins "
-                    + " and i.itemValue=:itemValue "
-                    + " order by c.id";
-            Map m = new HashMap();
-            m.put("ret", true);
-            m.put("type", EncounterType.Test_Enrollment);
-            m.put("fd", fromDate);
-            m.put("td", toDate);
-            m.put("ins", institution);
-            m.put("itemValue", selectedTest);
-            listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired<>:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins ";
+        Map m = new HashMap();
+        m.put("ret", true);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("ins", institution);
+
+        if(referingInstitution!=null){
+            j+= " and c.referalInstitution=:ri ";
+            m.put("ri", referingInstitution);
         }
+        
+        if(selectedTest!=null){
+            
+        }
+        
+        
+        j+= " order by c.id";
+        listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+
         return "/moh/enter_results";
     }
 
@@ -1147,7 +1140,7 @@ public class ClientController implements Serializable {
             m.put("pn", plateNo);
             j += " and c.plateNumber=:pn ";
         }
-        j+= " order by c.encounterNumber";
+        j += " order by c.encounterNumber";
         listedToReviewResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/review_results";
     }
@@ -1301,7 +1294,7 @@ public class ClientController implements Serializable {
             m.put("pn", plateNo);
             j += " and c.plateNumber=:pn ";
         }
-           j+= " order by c.encounterNumber";
+        j += " order by c.encounterNumber";
         listedToPrint = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/lab/print_results";
     }
