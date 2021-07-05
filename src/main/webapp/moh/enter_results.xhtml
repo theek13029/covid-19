@@ -74,10 +74,11 @@
 
 
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}" 
+                        <p:dataTable id="tbl" value="#{mohController.tests}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" 
-                                     rowStyleClass="#{c.resultPositive?'redRow':''}">
+                                     rowStyleClass="#{c.resultCssClass}">
                             <p:column headerText="Tube No" >
+                                #{c.resultCssClass}
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Lab No" >

@@ -83,6 +83,7 @@
                                          rows="10"
                                          >
                                 <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                                    #{c.pcrResult.code}
                                     <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                                 </p:column>
                                 <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
@@ -140,9 +141,8 @@
                                     <p:outputLabel value="&nbsp;&nbsp;|&nbsp;&nbsp;" ></p:outputLabel>
                                     <p:commandLink ajax="false" value="Delete"  action="#{mohController.deleteTest()}" 
                                                    onclick="if (!confirm('Are you sure you want to delete?'))
-                                                           return false" 
-                                                   >
-                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" >
+                                                           return false" >
+                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.deleting}" >
                                         </f:setPropertyActionListener>
                                     </p:commandLink>
                                 </p:column>

@@ -194,7 +194,7 @@ public class MohController implements Serializable {
         }
         if (test.getPcrTestType().equals(itemApplicationController.getRat())) {
             rat = test;
-            return toRatEdit();
+            return toRatOrderEdit();
         } else if (test.getPcrTestType().equals(itemApplicationController.getPcr())) {
             pcr = test;
             return toPcrEdit();

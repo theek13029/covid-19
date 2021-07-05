@@ -893,10 +893,15 @@ public class Encounter implements Serializable {
     }
 
     public String getResultCssClass() {
+        System.out.println("getResultCssClass");
         resultCssClass = "";
+        System.out.println("pcrResult = " + pcrResult);
+        System.out.println("pcrTestType = " + pcrTestType);
         if (pcrResult == null || pcrTestType == null) {
             return resultCssClass;
         }
+        System.out.println("pcrTestType.getCode() = " + pcrTestType.getCode());
+        System.out.println("pcrResult.getCode() = " + pcrResult.getCode());
         if (pcrTestType.getCode().equalsIgnoreCase("covid19_pcr_test")) {
             switch (pcrResult.getCode()) {
                 case "pcr_positive":
