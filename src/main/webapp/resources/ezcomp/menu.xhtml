@@ -60,9 +60,7 @@
                     </p:submenu>
 
                     <p:submenu label="Reports" rendered="#{webUserController.hasPrivilege('Monitoring_and_evaluation')}">
-                        
-                        <p:menuitem ajax="false" value="Case List" action="#{clientController.toListCases()}" />
-                        
+                        <p:menuitem ajax="false" value="Case Reports" action="#{mohController.toListOfTests()}" />
                         <p:menuitem ajax="false" value="Result List" action="/national/result_list" />
                         <p:menuitem ajax="false" value="SMS" action="/sms/index" />
                         <p:menuitem ajax="false" value="Analysis" 

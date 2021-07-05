@@ -113,6 +113,9 @@ public class MohController implements Serializable {
     private Item result;
     private Item testType;
     private Institution lab;
+    
+    private List<Institution> regionalMohsAndHospitals;
+    
 // </editor-fold>    
 // <editor-fold defaultstate="collapsed" desc="Constructors">
 
@@ -132,7 +135,47 @@ public class MohController implements Serializable {
         encounterFacade.edit(deleting);
     }
 
+    private void fillRegionalMohsAndHospitals(){
+        List<InstitutionType> its = new ArrayList<>();
+        its.add(InstitutionType.Hospital);
+        its.add(InstitutionType.MOH_Office);
+        Area rdhs;
+        if(webUserController.getLoggedUser().getInstitution()!=null && webUserController.getLoggedUser().getInstitution().getRdhsArea()!=null){
+            rdhs = webUserController.getLoggedUser().getInstitution().getRdhsArea();
+            regionalMohsAndHospitals = institutionApplicationController.findRegionalInstitutions(its,rdhs);
+        }else{
+            regionalMohsAndHospitals = new ArrayList<>();
+        }
+        
+    }
+    
     public String toListOfTests() {
+        return "/moh/list_of_tests";
+    }
+    
+    public String toCaseReports() {
+        switch(webUserController.getLoggedUser().getWebUserRole()){
+            case ChiefEpidemiologist:
+            case Client:
+            case Epidemiologist:
+            case Hospital_Admin:
+            case Hospital_User:
+            case Lab_Consultant:
+            case Lab_Mlt:
+            case Lab_Mo:
+            case Lab_National:
+            case Lab_User:
+            case Moh:
+            case Nurse:
+            case Pdhs:
+            case Phi:
+            case Phm:
+            case Rdhs:
+            case Re:
+            case Super_User:
+            case System_Administrator:
+            case User:
+        }
         return "/moh/list_of_tests";
     }
 
@@ -868,6 +911,8 @@ public class MohController implements Serializable {
         this.toDate = toDate;
     }
 
+    
+    
     public Encounter getTest() {
         return test;
     }
@@ -914,6 +959,17 @@ public class MohController implements Serializable {
 
     public void setDeleting(Encounter deleting) {
         this.deleting = deleting;
+    }
+
+    public List<Institution> getRegionalMohsAndHospitals() {
+        if(regionalMohsAndHospitals==null){
+            fillRegionalMohsAndHospitals();
+        }
+        return regionalMohsAndHospitals;
+    }
+
+    public void setRegionalMohsAndHospitals(List<Institution> regionalMohsAndHospitals) {
+        this.regionalMohsAndHospitals = regionalMohsAndHospitals;
     }
 
 }

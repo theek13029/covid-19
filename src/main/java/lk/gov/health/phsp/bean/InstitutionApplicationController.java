@@ -31,6 +31,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.ApplicationScoped;
+import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Relationship;
 import lk.gov.health.phsp.enums.InstitutionType;
@@ -127,6 +128,33 @@ public class InstitutionApplicationController {
         return tins;
     }
 
+    
+    public List<Institution> findRegionalInstitutions(List<InstitutionType> types, Area rdhs) {
+        List<Institution> cins = getInstitutions();
+        List<Institution> tins = new ArrayList<>();
+        for (Institution i : cins) {
+            boolean canInclude = false;
+            if (i.getInstitutionType() == null) {
+                continue;
+            }
+            for (InstitutionType type : types) {
+                if (i.getInstitutionType().equals(type)) {
+                    canInclude=true;
+                }
+            }
+            if(i.getRdhsArea().equals(rdhs)){
+                canInclude=true;
+            }else{
+                canInclude=false;
+            }
+            if (canInclude) {
+                tins.add(i);
+            }
+        }
+        return tins;
+    }
+
+    
     public String getInstitutionHash() {
         return DigestUtils.md5Hex(getInstitutions().toString()).toUpperCase();
     }
