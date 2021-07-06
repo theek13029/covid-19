@@ -1193,7 +1193,7 @@ public class ClientController implements Serializable {
         m.put("td", getToDate());
         m.put("ins", institution);
         listedToDispatch = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
-        return "/moh/dispatch_samples";
+        return "/regional/dispatch_samples";
     }
     
     public String toDispatchSamplesByMohOrHospital() {

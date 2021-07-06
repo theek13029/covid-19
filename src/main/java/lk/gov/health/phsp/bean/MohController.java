@@ -113,12 +113,12 @@ public class MohController implements Serializable {
     private Item result;
     private Item testType;
     private Institution lab;
-    
+    private Institution mohOrHospital;
+
     private List<Institution> regionalMohsAndHospitals;
-    
+
 // </editor-fold>    
 // <editor-fold defaultstate="collapsed" desc="Constructors">
-
     public MohController() {
     }
 // </editor-fold>
@@ -135,26 +135,30 @@ public class MohController implements Serializable {
         encounterFacade.edit(deleting);
     }
 
-    private void fillRegionalMohsAndHospitals(){
+    private void fillRegionalMohsAndHospitals() {
         List<InstitutionType> its = new ArrayList<>();
         its.add(InstitutionType.Hospital);
         its.add(InstitutionType.MOH_Office);
         Area rdhs;
-        if(webUserController.getLoggedUser().getInstitution()!=null && webUserController.getLoggedUser().getInstitution().getRdhsArea()!=null){
+        if (webUserController.getLoggedUser().getInstitution() != null && webUserController.getLoggedUser().getInstitution().getRdhsArea() != null) {
             rdhs = webUserController.getLoggedUser().getInstitution().getRdhsArea();
-            regionalMohsAndHospitals = institutionApplicationController.findRegionalInstitutions(its,rdhs);
-        }else{
+            regionalMohsAndHospitals = institutionApplicationController.findRegionalInstitutions(its, rdhs);
+        } else {
             regionalMohsAndHospitals = new ArrayList<>();
         }
-        
+
     }
-    
+
     public String toListOfTests() {
         return "/moh/list_of_tests";
     }
     
+    public String toListOfTestsRegional(){
+        return "/regional/list_of_tests";
+    }
+
     public String toCaseReports() {
-        switch(webUserController.getLoggedUser().getWebUserRole()){
+        switch (webUserController.getLoggedUser().getWebUserRole()) {
             case ChiefEpidemiologist:
             case Client:
             case Epidemiologist:
@@ -172,6 +176,35 @@ public class MohController implements Serializable {
             case Phm:
             case Rdhs:
             case Re:
+            case Super_User:
+            case System_Administrator:
+            case User:
+        }
+        return "/moh/list_of_tests";
+    }
+
+    public String toListsIndex() {
+        switch (webUserController.getLoggedUser().getWebUserRole()) {
+            case Rdhs:
+            case Re:
+                return "/regional/lists_index";
+
+            case ChiefEpidemiologist:
+            case Client:
+            case Epidemiologist:
+            case Hospital_Admin:
+            case Hospital_User:
+            case Lab_Consultant:
+            case Lab_Mlt:
+            case Lab_Mo:
+            case Lab_National:
+            case Lab_User:
+            case Moh:
+            case Nurse:
+            case Pdhs:
+            case Phi:
+            case Phm:
+
             case Super_User:
             case System_Administrator:
             case User:
@@ -217,7 +250,7 @@ public class MohController implements Serializable {
         }
         return "/moh/rat_order_view";
     }
-    
+
     public String toRatResultView() {
         if (rat == null) {
             JsfUtil.addErrorMessage("No RAT");
@@ -241,7 +274,6 @@ public class MohController implements Serializable {
         }
         return "/moh/pcr_result_view";
     }
-    
 
     public String toPcrView() {
         if (pcr == null) {
@@ -308,7 +340,7 @@ public class MohController implements Serializable {
             return "";
         }
     }
-    
+
     public String toRatEdit() {
         if (rat == null) {
             JsfUtil.addErrorMessage("No RAT");
@@ -791,6 +823,96 @@ public class MohController implements Serializable {
         System.out.println("tests = " + tests.size());
         return "/moh/list_of_tests";
     }
+    
+    public String toTestListWithoutResults() {
+        System.out.println("toTestList");
+        Map m = new HashMap();
+
+        String j = "select c "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and c.institution=:ins ";
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
+
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        System.out.println("getFromDate() = " + getFromDate());
+        m.put("td", getToDate());
+        System.out.println(" getToDate() = " + getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+
+        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("tests = " + tests.size());
+        return "/moh/list_of_tests_without_results";
+    }
+
+    public String toTestListRegional() {
+        System.out.println("toTestList");
+        Map m = new HashMap();
+
+        String j = "select c "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        if (mohOrHospital != null) {
+            j += " and c.institution=:ins ";
+            m.put("ins", mohOrHospital);
+        }
+
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        System.out.println("getFromDate() = " + getFromDate());
+        m.put("td", getToDate());
+        System.out.println(" getToDate() = " + getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+
+        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("tests = " + tests.size());
+        return "/regional/list_of_tests";
+    }
 
     public String toEnterResults() {
         System.out.println("toTestList");
@@ -911,8 +1033,6 @@ public class MohController implements Serializable {
         this.toDate = toDate;
     }
 
-    
-    
     public Encounter getTest() {
         return test;
     }
@@ -962,7 +1082,7 @@ public class MohController implements Serializable {
     }
 
     public List<Institution> getRegionalMohsAndHospitals() {
-        if(regionalMohsAndHospitals==null){
+        if (regionalMohsAndHospitals == null) {
             fillRegionalMohsAndHospitals();
         }
         return regionalMohsAndHospitals;
@@ -970,6 +1090,14 @@ public class MohController implements Serializable {
 
     public void setRegionalMohsAndHospitals(List<Institution> regionalMohsAndHospitals) {
         this.regionalMohsAndHospitals = regionalMohsAndHospitals;
+    }
+
+    public Institution getMohOrHospital() {
+        return mohOrHospital;
+    }
+
+    public void setMohOrHospital(Institution mohOrHospital) {
+        this.mohOrHospital = mohOrHospital;
     }
 
 }
