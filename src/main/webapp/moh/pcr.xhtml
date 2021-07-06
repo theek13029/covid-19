@@ -4,7 +4,7 @@
     <h:body>
         <ui:composition template="/template1.xhtml">
             <ui:define name="title" >
-               PCR Order
+               NCHIS - PCR Order
             </ui:define>
             <ui:define name="content">
                 <h:form class="form" >
@@ -191,7 +191,8 @@
                                                         tabindex="111" 
                                                         value="#{mohController.pcr.client.person.mohArea}" 
                                                         completeMethod="#{mohController.completeMohAreas}"
-                                                        var="m" itemLabel="#{m.name}" itemValue="#{m}" inputStyle="width:20rem;" maxResults="15" forceSelection="true" minQueryLength="3">
+                                                        style="width: 100%;" inputStyle="width:100%;"
+                                                        var="m" itemLabel="#{m.name}" itemValue="#{m}" maxResults="15" forceSelection="true" minQueryLength="3">
                                             <f:ajax event="itemSelect" execute="moh"></f:ajax>
                                             <f:ajax event="blur" execute="moh"></f:ajax>
                                         </p:autoComplete>
