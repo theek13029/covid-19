@@ -74,7 +74,7 @@
                             <p:menuitem value="New User" action="#{webUserController.toAddNewUserByInsAdmin()}" ajax="false"
                                         rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
                             <p:menuitem value="View Users" action="#{webUserController.toManageInstitutionUsers()}" ajax="false"
-                                        rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
+                                        rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />                            
                         </p:submenu>                                                
                         <p:menuitem value="Manage Institutions" action="/insAdmin/institution_index" rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
                         <p:menuitem value="Manage Areas" action="/insAdmin/area_index" ajax="false" rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
@@ -83,13 +83,15 @@
                     <p:submenu label="System Administration"  rendered="#{webUserController.hasPrivilege('System_Administration')}">
                         <p:submenu label="Manage Users" rendered="#{webUserController.hasPrivilege('System_Administration')}">
                             <p:menuitem value="New User" action="#{webUserController.toCreateNewUserBySysAdmin()}" ajax="false"
-                                        rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
+                                        rendered="#{webUserController.hasPrivilege('System_Administration')}"/>
                             <p:menuitem value="View Users" action="#{webUserController.toManageAllUsers()}" ajax="false"
-                                        rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
+                                        rendered="#{webUserController.hasPrivilege('System_Administration')}"/>
+                            <p:menuitem value="Set User Privilages" action="#{webUserController.toSetUserPrivilages()}" ajax="false"
+                                        rendered="#{webUserController.hasPrivilege('System_Administration')}" />
                             <p:menuitem value="View Transactions" action="#{userTransactionController.toSearchUserTransactions()}" ajax="false"
-                                        rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
+                                        rendered="#{webUserController.hasPrivilege('System_Administration')}"/>
                             <p:menuitem value="Suspicious Login Attempts" action="#{userTransactionController.toSuspiciousLoginAttempts()}" ajax="false"
-                                        rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
+                                        rendered="#{webUserController.hasPrivilege('System_Administration')}"/>
                         </p:submenu>
                         <p:submenu label="Manage Institutions" rendered="#{webUserController.hasPrivilege('System_Administration')}">
                             <p:menuitem value="New Institution" action="#{institutionController.toAddInstitution}" ajax="false"
