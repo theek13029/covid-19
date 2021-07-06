@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+The MIT License
+
+Copyright 2021 user.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content">
+                <h:form>                    
+                    <div class="row">                        
+                        <div class="card col-md-8">
+                            <div class="card-header">
+                                <p:outputLabel value="User List" ></p:outputLabel>
+                            </div>
+                            <div class="card-body">
+                                <p:dataTable value="#{webUserController.items}" var="item"  
+                                             rowKey="#{item.id}" 
+                                             rows="10"
+                                             paginator="true"
+                                             selection="#{webUserController.selectedUsers}"
+                                             rowSelectMode="add"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="10,20,25">
+                                    
+                                    <p:column selectionMode="multiple" width="30px;" exportable="false"></p:column>
+                                    <p:column sortBy="#{item.person.name}" filterBy="#{item.person.name}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Name"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.person.name}"/>
+                                    </p:column>
+                                    <p:column sortBy="#{item.name}" filterBy="#{item.name}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Username"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.name}"/>
+                                    </p:column>
+                                    <p:column sortBy="#{item.institution.name}" filterBy="#{item.institution.name}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Institution"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.institution.name}"/>
+                                    </p:column>  
+                                    <p:column sortBy="#{item.webUserRole.label}" filterBy="#{item.webUserRole.label}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Role"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.webUserRole.label}"/>
+                                    </p:column>                            
+                                </p:dataTable>
+                            </div>
+                        </div>
+                        <div class="card col-md-4">
+                            <div class="card-header">
+                                <p:outputLabel value="Privilages" ></p:outputLabel>
+                                <p:commandButton style="float: left;" ajax="false" action="#{webUserController.updatePrivilagesPerUsers()}" value="#{bundleClinical.Save}"/>
+                            </div>
+                            <div class="card-body">
+                                 <p:tree id="tree" value="#{webUserController.allPrivilegeRoot}" var="node" selectionMode="checkbox" selection="#{webUserController.selectedNodeSet}">  
+                                    <p:treeNode>  
+                                        <h:outputText value="#{node}"/>  
+                                    </p:treeNode> 
+                                </p:tree>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
