@@ -94,10 +94,15 @@
                                 <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false" >
-                                <p:commandLink ajax="false" value="Convert to a case" action="#{clientController.toNewCaseEnrollmentFromEncounter()}" >
+                                <p:commandLink rendered="#{c.referenceCase eq null}" ajax="false" value="Convert to a case" action="#{clientController.toNewCaseEnrollmentFromEncounter()}" >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                     </f:setPropertyActionListener>
                                 </p:commandLink>
+                                <p:commandLink rendered="#{c.referenceCase ne null}" ajax="false" value="View case" disabled="true" >
+                                     <f:setPropertyActionListener value="#{clientController.selectedEncounter.referenceCase}" target="#{clientController.selectedEncounter}" >
+                                    </f:setPropertyActionListener>
+                                </p:commandLink>
+                                
                                 <p:outputLabel value="&nbsp;&nbsp;|&nbsp;&nbsp;" ></p:outputLabel>
                                 <p:commandLink value="Edit" action="#{clientController.toFromFromEncounter()}" ajax="false" >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" ></f:setPropertyActionListener>

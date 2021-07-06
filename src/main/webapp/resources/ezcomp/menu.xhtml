@@ -21,8 +21,7 @@
                         <p:menuitem ajax="false" value="Register COVID-19 Patient" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
                         <p:menuitem ajax="false" rendered="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
                         <p:menuitem ajax="false" value="Dispatch Samples"
-                                    action="#{clientController.toDispatchSamplesByMohOrHospital()}"
-                                    rendered="#{webUserController.hasPrivilege('Dispatch_Samples')}" />
+                                    action="#{clientController.toDispatchSamplesByMohOrHospital()}"/>
                         <p:menuitem ajax="false" value="Enter Results" action="#{mohController.toEnterResults()}" />
                         <p:menuitem ajax="false" rendered="false" value="Print Results" action="#{clientController.toMohToSelectForPrinting()}" />
                         <p:menuitem ajax="false" value="View PCR/RATs" action="#{mohController.toListOfTests()}" />
