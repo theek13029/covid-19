@@ -97,12 +97,6 @@
                             <p:column headerText="Sex"  sortBy="#{c.client.person.sex.name}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Address" >
-                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Phone"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains" >
-                                <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
-                            </p:column>
                             <p:column headerText="Test"  sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
                             </p:column>
@@ -110,19 +104,19 @@
                                 <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
                             </p:column>
                             <p:column id="ct1" headerText="CT 1" >
-                                <p:inputText id="txtCt" value="#{c.ctValue}" style="width: 5rem;" disabled="#{c.receivedAtLab}" >
+                                <p:inputText id="txtCt" value="#{c.ctValue}" style="width:99%;" disabled="#{c.receivedAtLab}"  rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
                                     <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResultsAtMoh(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
                             <p:column id="ct2" headerText="CT 2" >
-                                <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 5rem;"  disabled="#{c.receivedAtLab}" >
+                                <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width:99%;"  disabled="#{c.receivedAtLab}" rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
                                     <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResultsAtMoh(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
                             <p:column headerText="Result" exportable="false"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
-                                <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}" disabled="#{c.receivedAtLab}" >
+                                <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}" disabled="#{c.receivedAtLab}" style="width: 98%;" >
                                     <f:selectItem itemLabel="Select Result" ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
                                                    var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
@@ -131,7 +125,7 @@
                                 </p:selectOneMenu>
                             </p:column>
                             <p:column headerText="Comments" >
-                                <p:inputText id="txtComments" value="#{c.resultComments}"  disabled="#{c.receivedAtLab}"  >
+                                <p:inputText id="txtComments" value="#{c.resultComments}"  disabled="#{c.receivedAtLab}" style="width: 98%;" >
                                     <p:ajax event="blur" process="txtComments" 
                                             listener="#{clientController.saveEncounterResultsAtMoh(c)}" >
                                     </p:ajax>
