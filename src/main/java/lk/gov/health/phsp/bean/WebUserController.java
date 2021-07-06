@@ -110,6 +110,7 @@ public class WebUserController implements Serializable {
     Variables
      */
     private List<WebUser> items = null;
+    private List<WebUser> selectedUsers;
     private List<Upload> companyUploads;
 
     private List<Institution> loggableInstitutions;
@@ -183,6 +184,7 @@ public class WebUserController implements Serializable {
     private TreeNode allPrivilegeRoot;
     private TreeNode myPrivilegeRoot;
     private TreeNode[] selectedNodes;
+    private TreeNode[] selectedNodeSet;
 
     @PostConstruct
     public void init() {
@@ -304,6 +306,26 @@ public class WebUserController implements Serializable {
         }
         ins.addAll(institutionController.findChildrenPmcis(loggedUser.getInstitution()));
         return ins;
+    }
+
+    public String toSetUserPrivilages() {
+        String j = "select u from WebUser u where u.retired=false";
+        items = getFacade().findByJpql(j);
+
+        for (TreeNode n : allPrivilegeRoot.getChildren()) {
+            n.setSelected(false);
+            for (TreeNode n1 : n.getChildren()) {
+                n1.setSelected(false);
+                for (TreeNode n2 : n1.getChildren()) {
+                    n2.setSelected(false);
+                }
+            }
+        }
+        return "/insAdmin/set_user_privilages";
+    }
+
+    public boolean hasSelectedUsers() {
+        return this.selectedUsers != null && !this.selectedUsers.isEmpty();
     }
 
     public String toManageInstitutionUsers() {
@@ -705,11 +727,11 @@ public class WebUserController implements Serializable {
         if (!dashboardApplicationController.getDashboardPrepared()) {
             JsfUtil.addErrorMessage("Dashboard NOT ready");
         }
-        Calendar c =Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
         toDate = c.getTime();
         c.add(Calendar.DAY_OF_MONTH, -7);
         fromDate = c.getTime();
-        if(loggedUser.isLabDashboard()){
+        if (loggedUser.isLabDashboard()) {
             dashboardController.setFromDate(fromDate);
             dashboardController.setToDate(toDate);
             dashboardController.prepareLabDashboard();
@@ -1366,6 +1388,37 @@ public class WebUserController implements Serializable {
         }
         userTransactionController.recordTransaction("update User Privileges By SysAdmin");
         return "/webUser/manage_users";
+    }
+
+    public String updatePrivilagesPerUsers() {
+        if (this.hasSelectedUsers()) {
+            for (WebUser wu : selectedUsers) {
+                List<UserPrivilege> userps = new ArrayList<>();
+                userps = userPrivilegeList(wu);
+                List<Privilege> tps = new ArrayList<>();
+                if (selectedNodeSet != null && selectedNodeSet.length > 0) {
+                    for (TreeNode node : selectedNodeSet) {
+                        Privilege p = ((PrivilegeTreeNode) node).getP();
+                        if (p != null) {
+                            tps.add(p);
+                        }
+                    }
+                }
+
+                for (Privilege p : tps) {
+                    boolean found = false;
+                    for (UserPrivilege tup : userps) {
+                        if (p != null && tup.getPrivilege() != null && p.equals(tup.getPrivilege())) {
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        addWebUserPrivileges(wu, p);
+                    }
+                }
+            }
+        }
+        return "";
     }
 
     public String updateUserPrivilegesIns() {
@@ -2086,6 +2139,22 @@ public class WebUserController implements Serializable {
 
     public void setMetadataTabIndex(int metadataTabIndex) {
         this.metadataTabIndex = metadataTabIndex;
+    }
+
+    public List<WebUser> getSelectedUsers() {
+        return selectedUsers;
+    }
+
+    public void setSelectedUsers(List<WebUser> selectedUsers) {
+        this.selectedUsers = selectedUsers;
+    }
+
+    public TreeNode[] getSelectedNodeSet() {
+        return selectedNodeSet;
+    }
+
+    public void setSelectedNodeSet(TreeNode[] selectedNodeSet) {
+        this.selectedNodeSet = selectedNodeSet;
     }
 
     @FacesConverter(forClass = WebUser.class)
