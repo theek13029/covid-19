@@ -1195,6 +1195,26 @@ public class ClientController implements Serializable {
         listedToDispatch = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/moh/dispatch_samples";
     }
+    
+    public String toDispatchSamplesByMohOrHospital() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret ) "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and (c.sentToLab is null or c.sentToLab=:stl) "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("stl", false);
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        listedToDispatch = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
+        return "/moh/dispatch_samples";
+    }
 
     public String toDispatchSamplesWithReferringLab() {
         String j = "select c "
@@ -1421,6 +1441,22 @@ public class ClientController implements Serializable {
         }
         selectedToDispatch = null;
         return toDispatchSamples();
+    }
+    
+    public String dispatchSelectedSamplesAtMohOrHospital() {
+        if (dispatchingLab == null) {
+            JsfUtil.addErrorMessage("Please select a lab to send samples");
+            return "";
+        }
+        for (Encounter e : selectedToDispatch) {
+            e.setSentToLab(true);
+            e.setSentToLabAt(new Date());
+            e.setSentToLabBy(webUserController.getLoggedUser());
+            e.setReferalInstitution(dispatchingLab);
+            encounterFacade.edit(e);
+        }
+        selectedToDispatch = null;
+        return toDispatchSamplesByMohOrHospital();
     }
 
     public String divertSelectedSamples() {

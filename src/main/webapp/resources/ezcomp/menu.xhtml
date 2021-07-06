@@ -19,7 +19,10 @@
                         <p:menuitem rendered="false" ajax="false" value="New RAT Result" action="#{mohController.toAddNewRatWithNewClient()}" />
                         <p:menuitem ajax="false" value="New RAT" action="#{mohController.toAddNewRatOrderWithNewClient()}"  />
                         <p:menuitem ajax="false" value="Register COVID-19 Patient" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
-                        <p:menuitem ajax="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
+                        <p:menuitem ajax="false" rendered="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
+                        <p:menuitem ajax="false" value="Dispatch Samples"
+                                    action="#{clientController.toDispatchSamplesByMohOrHospital()}"
+                                    rendered="#{webUserController.hasPrivilege('Dispatch_Samples')}" />
                         <p:menuitem ajax="false" value="Enter Results" action="#{mohController.toEnterResults()}" />
                         <p:menuitem ajax="false" rendered="false" value="Print Results" action="#{clientController.toMohToSelectForPrinting()}" />
                         <p:menuitem ajax="false" value="View PCR/RATs" action="#{mohController.toListOfTests()}" />
