@@ -9,24 +9,26 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <h:form>
-            <div class="form-group row">
+            <div class="row p-4">
                 <div class="col-md-3" >
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header bg-gradient-blue">
                             PCR Requests
                             <sub>Last 24H</sub>
                         </div>
-                        <div class="card-body">
-                            <h:outputLabel value="#{dashboardApplicationController.last24hourPcr}" ></h:outputLabel>
+                        <div class="card-body text-center">
+                            <h5>
+                                <h:outputLabel value="#{dashboardApplicationController.last24hourPcr}" ></h:outputLabel>
+                            </h5>
                         </div>
-                        <div class="card-footer">
-                            More ..
+                        <div class="card-footer text-right ">
+                             <h:commandLink value="Find more details .." class="text-blue"></h:commandLink>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3" >
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header bg-cyan text-white">
                             RATs
                             <sub>Last 24H</sub>
                         </div>
@@ -36,44 +38,46 @@
                             </h5>
                             
                         </div>
-                        <div class="card-footer">
-                            More ..
+                        <div class="card-footer text-right ">
+                             <h:commandLink value="Find more details .." class="text-cyan"></h:commandLink>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3" >
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header text-white bg-danger">
                             PCR Positives
                             <sub>Last 24H</sub>
                         </div>
-                        <div class="card-body">
-                            <h:outputLabel value="#{dashboardApplicationController.last24hourPositivePcr}" ></h:outputLabel>
+                        <div class="card-body text-center">
+                            <h5>
+                                <h:outputLabel value="#{dashboardApplicationController.last24hourPositivePcr}" ></h:outputLabel>
+                            </h5>
                         </div>
-                        <div class="card-footer">
-                            More ..
+                        <div class="card-footer text-right ">
+                            <h:commandLink value="Find more details .." action="#{mohController.toPcrPositiveReportsIndexNational()}" class="text-danger"></h:commandLink>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3" >
-                    <div class="card text-white bg-danger">
-                        <div class="card-header text-center">
+                    <div class="card ">
+                        <div class="card-header text-white bg-warning">
                             RAT Positives
                             <sub>Last 24H</sub>
                         </div>
-                        <div class="card-body">
-                            <h2>
+                        <div class="card-body text-center">
+                            <h5>
                                 <h:outputLabel value="#{dashboardApplicationController.last24hourPositiveRat}" ></h:outputLabel>
-                            </h2>
+                            </h5>
+                        </div>
+                        <div class="card-footer text-right">
+                            <h:commandLink value="Find more details .." class="text-warning"></h:commandLink>
                         </div>
                     </div>
                 </div>
 
             </div>
             
-            <h:commandButton value="Refresh" action="${dashboardApplicationController.updateDashboard()}" >
-            </h:commandButton>
-
         </h:form>
     </cc:implementation>
 

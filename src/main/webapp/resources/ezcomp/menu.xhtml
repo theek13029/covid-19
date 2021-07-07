@@ -62,15 +62,9 @@
                                     rendered="#{webUserController.hasPrivilege('Lab_Reports')}"/>
                     </p:submenu>
 
-                    <p:submenu label="Reports" rendered="#{webUserController.hasPrivilege('Monitoring_and_evaluation')}">
-                        <p:menuitem ajax="false" value="Order Summary"
-                                    action="#{clientController.toSummaryByOrderedInstitution}" />
-                        <p:menuitem ajax="false" value="Lists" action="#{mohController.toListsIndex()}" />
-                        <p:menuitem ajax="false" value="Counts" action="/national/result_list" />
-                        <p:menuitem ajax="false" value="SMS" action="/sms/index" />
-                        <p:menuitem ajax="false" value="Analysis" 
-                                    action="#{reportController.toViewReports()}" ></p:menuitem>
-                    </p:submenu>
+                    <p:menuitem ajax="false" value="Reports"
+                                action="#{mohController.toReportsIndex()}" />
+
                     <p:submenu label="Institution Administration" rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
                         <p:submenu label="Manage Users" rendered="#{webUserController.hasPrivilege('Institution_Administration')}">
                             <p:menuitem value="New User" action="#{webUserController.toAddNewUserByInsAdmin()}" ajax="false"

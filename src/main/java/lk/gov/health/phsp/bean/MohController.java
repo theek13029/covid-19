@@ -124,14 +124,54 @@ public class MohController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
+    public String toPcrPositiveReportsIndexNational() {
+        fromDate = CommonController.startOfTheDate();
+        toDate = CommonController.endOfTheDate();
+        return "/national/pcr_positive_links";
+    }
+
+    public String toPcrPositiveCasesList() {
+        result = itemApplicationController.getPcrPositive();
+        testType = itemApplicationController.getPcr();
+        Map m = new HashMap();
+        String j = "select c "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        System.out.println("getFromDate() = " + getFromDate());
+        m.put("td", getToDate());
+        System.out.println(" getToDate() = " + getToDate());
+        j += " and c.pcrTestType=:tt ";
+        m.put("tt", testType);
+        j += " and c.pcrResult=:result ";
+        m.put("result", result);
+        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        return "/national/result_list_pcr_positive";
+    }
+
     public void deleteTest() {
-        if (deleting.getReceivedAtLab() && deleting.getReferalInstitution() != webUserController.getLoggedUser().getInstitution()) {
-            JsfUtil.addErrorMessage("Already receievd by the Lab. Can't delete.");
+        if (deleting == null) {
+            JsfUtil.addErrorMessage("Nothing to delete");
             return;
+        }
+        if (deleting.getInstitution() == null) {
+            JsfUtil.addErrorMessage("No Institution");
+            return;
+        }
+        if (deleting.getReceivedAtLab() != null && deleting.getReferalInstitution() != null) {
+            if (deleting.getReceivedAtLab() != null && deleting.getReferalInstitution() != webUserController.getLoggedUser().getInstitution()) {
+                JsfUtil.addErrorMessage("Already receievd by the Lab. Can't delete.");
+                return;
+            }
         }
         deleting.setRetired(true);
         deleting.setRetiredAt(new Date());
         deleting.setRetiredBy(webUserController.getLoggedUser());
+        JsfUtil.addSuccessMessage("Removed");
         encounterFacade.edit(deleting);
     }
 
@@ -152,8 +192,8 @@ public class MohController implements Serializable {
     public String toListOfTests() {
         return "/moh/list_of_tests";
     }
-    
-    public String toListOfTestsRegional(){
+
+    public String toListOfTestsRegional() {
         return "/regional/list_of_tests";
     }
 
@@ -183,33 +223,37 @@ public class MohController implements Serializable {
         return "/moh/list_of_tests";
     }
 
-    public String toListsIndex() {
+    public String toReportsIndex() {
         switch (webUserController.getLoggedUser().getWebUserRole()) {
             case Rdhs:
             case Re:
-                return "/regional/lists_index";
-
+                return "/regional/reports_index";
             case ChiefEpidemiologist:
             case Client:
             case Epidemiologist:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mlt:
-            case Lab_Mo:
-            case Lab_National:
-            case Lab_User:
-            case Moh:
-            case Nurse:
-            case Pdhs:
-            case Phi:
-            case Phm:
-
             case Super_User:
             case System_Administrator:
             case User:
+                return "/national/reports_index";
+            case Hospital_Admin:
+            case Hospital_User:
+            case Nurse:
+                return "/hospital/reports_index";
+            case Lab_Consultant:
+            case Lab_Mlt:
+            case Lab_Mo:
+            case Lab_User:
+                return "/lab/reports_index";
+            case Lab_National:
+                return "/national/lab_reports_index";
+            case Moh:
+            case Phi:
+            case Phm:
+                return "/moh/reports_index";
+            case Pdhs:
+                return "/provincial/reports_index";
+            default: return "";
         }
-        return "/moh/list_of_tests";
     }
 
     public void toDeleteTestFromLastPcrList() {
@@ -823,8 +867,7 @@ public class MohController implements Serializable {
         System.out.println("tests = " + tests.size());
         return "/moh/list_of_tests";
     }
-    
-    
+
     public String toTestRequestDistrictCounts() {
         Map m = new HashMap();
         String j = "select c "
@@ -847,11 +890,9 @@ public class MohController implements Serializable {
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         return "/moh/list_of_tests";
     }
-    
-    public String toTestListWithoutResults() {
-        System.out.println("toTestList");
-        Map m = new HashMap();
 
+    public String toTestListWithoutResults() {
+        Map m = new HashMap();
         String j = "select c "
                 + " from Encounter c "
                 + " where (c.retired is null or c.retired=:ret) ";
