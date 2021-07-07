@@ -61,8 +61,6 @@ public class DashboardApplicationController {
     NumbersFacade numbersFacade;
 
     @Inject
-    ItemController itemController;
-    @Inject
     ItemApplicationController itemApplicationController;
     @Inject
     InstitutionApplicationController institutionApplicationController;
@@ -74,6 +72,7 @@ public class DashboardApplicationController {
     Long last24hourPcr;
     Long last24hourRat;
     Long last24hourPositivePcr;
+    Long last24hourPositiveRat;
 
     Item testType;
     Item orderingCat;
@@ -90,24 +89,10 @@ public class DashboardApplicationController {
 
     @PostConstruct
     public void updateDashboard() {
-        List<Institution> mohs;
-        List<Institution> hospitals;
-        List<Institution> labs;
-        List<Area> areas;
-        mohs = institutionApplicationController.findInstitutions(InstitutionType.MOH_Office);
-        labs = institutionApplicationController.findInstitutions(InstitutionType.Lab);
-        hospitals = institutionApplicationController.findInstitutions(institutionApplicationController.getHospitalTypes());
-        areas = areaApplicationController.getAllAreas(areaApplicationController.getCovidMonitoringAreaTypes());
-        testType = itemController.findItemByCode("test_type");
-        orderingCat = itemController.findItemByCode("covid_19_test_ordering_context_category");
-        pcr = itemController.findItemByCode("covid19_pcr_test");
-        rat = itemController.findItemByCode("covid19_rat");
-        covidDataHolder.generateCovidCountsAsync(itemApplicationController., rat, testType, orderingCat, mohs, hospitals, labs, areas);
-
     }
 
     public Long getPositivePcr(Date fd, Date td) {
-        String j = "select count(e) "
+        String j = "select count(e "
                 + " from Encounter e "
                 + " where (e.retired is null or e.retired=false) "
                 + " and e.pcrTestType=:pcr "
