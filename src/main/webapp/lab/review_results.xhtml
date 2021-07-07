@@ -52,6 +52,10 @@
 
                         <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="10,50,96,100,{ShowAll|'All'}"
+
                                      rowStyleClass="#{c.resultPositive?'redRow':''}"
                                      selection="#{clientController.selectedToReview}">
                             <p:column selectionMode="multiple" ></p:column>

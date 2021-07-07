@@ -234,12 +234,14 @@ public class ClientController implements Serializable {
             return;
         }
         for (Encounter e : listedToEnterResults) {
-            e.setPcrResult(itemApplicationController.getPcrNegative());
-            e.setPcrResultStr(preferenceController.getPcrNegativeTerm());
-            e.setResultEntered(true);
-            e.setResultEnteredAt(new Date());
-            e.setResultEnteredBy(webUserController.getLoggedUser());
-            getEncounterFacade().edit(e);
+            if(e.getPcrResult()==null){
+                e.setPcrResult(itemApplicationController.getPcrNegative());
+                e.setPcrResultStr(preferenceController.getPcrNegativeTerm());
+                e.setResultEntered(true);
+                e.setResultEnteredAt(new Date());
+                e.setResultEnteredBy(webUserController.getLoggedUser());
+                getEncounterFacade().edit(e);
+            }
         }
     }
 

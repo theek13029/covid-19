@@ -53,11 +53,17 @@ public class SlNic {
                 return;
             }
             String strYear = nic.substring(0, 2);
-            // // System.out.println("strYear = " + strYear);
-            Integer year = Integer.parseInt(strYear);
-            String strDates = nic.substring(2, 5);
-            // // System.out.println("strDates = " + strDates);
-            Integer dates = Integer.parseInt(strDates);
+            Integer year = 0;
+            Integer dates = 0;
+            try {
+                year = Integer.parseInt(strYear);
+                String strDates = nic.substring(2, 5);
+                dates = Integer.parseInt(strDates);
+            } catch (NumberFormatException e) {
+                System.out.println("e = " + e);
+                return;
+            }
+
             if (dates > 499) {
                 sex = "Female";
                 dates = dates - 500;
@@ -65,32 +71,38 @@ public class SlNic {
                 sex = "Male";
             }
             Calendar c = Calendar.getInstance();
-            year = year+ 1900;
+            year = year + 1900;
             c.set(Calendar.YEAR, year);
             c.set(Calendar.MONTH, 0);
             c.set(Calendar.DATE, 1);
             c.set(Calendar.HOUR_OF_DAY, 1);
-            c.add(Calendar.DATE, dates-2);
+            c.add(Calendar.DATE, dates - 2);
             dateOfBirth = c.getTime();
         } else if (nic.length() == 12) {
             String strYear = nic.substring(0, 4);
-            // // System.out.println("strYear = " + strYear);
-            Integer year = Integer.parseInt(strYear);
-            String strDates = nic.substring(4, 7);
-            // // System.out.println("strDates = " + strDates);
-            Integer dates = Integer.parseInt(strDates);
-            if (dates > 499) {
-                sex = "Male";
-                dates = dates - 500;
-            } else {
-                sex = "Female";
+            Integer year = 0;
+            Integer dates = 0;
+            try {
+                year = Integer.parseInt(strYear);
+
+                String strDates = nic.substring(4, 7);
+                // // System.out.println("strDates = " + strDates);
+                dates = Integer.parseInt(strDates);
+                if (dates > 499) {
+                    sex = "Male";
+                    dates = dates - 500;
+                } else {
+                    sex = "Female";
+                }
+            } catch (Exception e) {
+                return;
             }
             Calendar c = Calendar.getInstance();
             c.set(Calendar.YEAR, year);
             c.set(Calendar.MONTH, 0);
             c.set(Calendar.DATE, 1);
             c.set(Calendar.HOUR_OF_DAY, 1);
-            c.add(Calendar.DATE, dates-2);
+            c.add(Calendar.DATE, dates - 2);
             dateOfBirth = c.getTime();
         }
     }
