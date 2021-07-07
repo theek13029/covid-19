@@ -21,8 +21,6 @@
                         <h:panelGroup id="gpTest" >
                             <div class="card-body #{mohController.rat.pcrResult.name eq 'Positive'?'text-danger':''}">
                                 <div class="form-group row">
-
-
                                     <div class="col-md-3" >
                                         <p:outputLabel for="result" value="Result"></p:outputLabel>
                                         <p:selectOneMenu id="result"
@@ -67,10 +65,6 @@
                                         <p:outputLabel value="Result at"></p:outputLabel>
                                         <p:calendar  style="width: 100%;" inputStyle="width:100%;"  value="#{mohController.rat.resultConfirmedAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
                                     </div>
-
-
-
-
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-6">
@@ -107,9 +101,6 @@
                                         <p:selectBooleanButton tabindex="106" 
                                                                value="#{mohController.rat.symptomatic}"  offLabel="No" onLabel="Yes"></p:selectBooleanButton>
                                     </div>
-
-
-
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-6">
@@ -135,9 +126,6 @@
                                             <f:selectItems value="#{mohController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
                                         </p:selectOneMenu>
                                     </div>
-
-
-
                                     <div class="col-md-3">
                                         <p:outputLabel value="Age: (Years/Months)*" style="width: 100%;"/>
                                         <h:panelGroup>
@@ -156,9 +144,6 @@
                                             </p:inputText>
                                         </h:panelGroup>
                                     </div>
-
-
-
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-6">
@@ -261,8 +246,6 @@
                                                      placeholder="Not Known" >
                                         </p:inputText>
                                     </div>
-
-
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-12">
@@ -271,9 +254,6 @@
                                 </div>
                             </div>
                         </h:panelGroup>
-
-
-
                     </div>
                 </h:form>
             </ui:define>
