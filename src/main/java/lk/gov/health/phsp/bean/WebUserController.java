@@ -713,6 +713,8 @@ public class WebUserController implements Serializable {
             dashboardController.setFromDate(fromDate);
             dashboardController.setToDate(toDate);
             dashboardController.prepareLabDashboard();
+        }else if(loggedUser.isNationalDashboard()){
+            dashboardApplicationController.updateDashboard();
         }
         return "/index";
     }

@@ -65,8 +65,16 @@ public class DashboardApplicationController {
     @Inject
     CovidDataHolder covidDataHolder;
 
+    Long last24hourPcr;
+    Long last24hourRat;
+    Long last24hourPositivePcr;
+
+    Item testType;
+    Item orderingCat;
+    Item pcr;
+    Item rat;
+
     Boolean dashboardPrepared;
-   
 
     /**
      * Creates a new instance of DashboardController
@@ -89,17 +97,22 @@ public class DashboardApplicationController {
         Item pcr = itemController.findItemByCode("covid19_pcr_test");
         Item rat = itemController.findItemByCode("covid19_rat");
         covidDataHolder.generateCovidCountsAsync(pcr, rat, testType, orderingCat, mohs, hospitals, labs, areas);
+
+    }
+
+    public Long getLast24HourPositivePcr() {
+        String j = "select e "
+                + " from Encounter e "
+                + " where (e.retired is null or e.retired=false) "
+                + " and e."
     }
 
     public Boolean getDashboardPrepared() {
-        if(dashboardPrepared==null){
+        if (dashboardPrepared == null) {
             updateDashboard();
             dashboardPrepared = true;
         }
         return dashboardPrepared;
     }
 
-    
-    
-    
 }
