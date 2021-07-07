@@ -264,11 +264,11 @@ public class MohController implements Serializable {
     }
 
     public String toPcrResultView() {
-        if (rat == null) {
+        if (pcr == null) {
             JsfUtil.addErrorMessage("No RAT");
             return "";
         }
-        if (rat.getClient() == null) {
+        if (pcr.getClient() == null) {
             JsfUtil.addErrorMessage("No Client");
             return "";
         }

@@ -118,7 +118,7 @@ public class InstitutionApplicationController {
             }
             for (InstitutionType type : types) {
                 if (i.getInstitutionType().equals(type)) {
-                    canInclude=true;
+                    canInclude = true;
                 }
             }
             if (canInclude) {
@@ -128,7 +128,6 @@ public class InstitutionApplicationController {
         return tins;
     }
 
-    
     public List<Institution> findRegionalInstitutions(List<InstitutionType> types, Area rdhs) {
         List<Institution> cins = getInstitutions();
         List<Institution> tins = new ArrayList<>();
@@ -139,13 +138,15 @@ public class InstitutionApplicationController {
             }
             for (InstitutionType type : types) {
                 if (i.getInstitutionType().equals(type)) {
-                    canInclude=true;
+                    canInclude = true;
                 }
             }
-            if(i.getRdhsArea().equals(rdhs)){
-                canInclude=true;
-            }else{
-                canInclude=false;
+            if (canInclude) {
+                if (i.getRdhsArea() != null && i.getRdhsArea().equals(rdhs)) {
+                    canInclude = true;
+                } else {
+                    canInclude = false;
+                }
             }
             if (canInclude) {
                 tins.add(i);
@@ -154,7 +155,6 @@ public class InstitutionApplicationController {
         return tins;
     }
 
-    
     public String getInstitutionHash() {
         return DigestUtils.md5Hex(getInstitutions().toString()).toUpperCase();
     }
@@ -271,8 +271,6 @@ public class InstitutionApplicationController {
         }
         return hospitalTypes;
     }
-    
-    
 
     public Institution findInstitution(Long insId) {
         Institution ri = null;
@@ -312,7 +310,7 @@ public class InstitutionApplicationController {
     }
 
     public List<InstitutionType> getCovidDataHirachiInstitutions() {
-        if(covidDataHirachiInstitutions==null){
+        if (covidDataHirachiInstitutions == null) {
             covidDataHirachiInstitutions = new ArrayList<>();
             covidDataHirachiInstitutions.add(InstitutionType.Ministry_of_Health);
             covidDataHirachiInstitutions.add(InstitutionType.Provincial_Department_of_Health_Services);

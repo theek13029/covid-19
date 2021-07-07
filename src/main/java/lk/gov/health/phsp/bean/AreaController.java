@@ -1803,7 +1803,7 @@ public class AreaController implements Serializable {
                 case Province:
                     return areaApplicationController.completeProvinces(qry);
                 case RdhsAra:
-                    return areaApplicationController.completeDistricts(qry);
+                    return areaApplicationController.completeRdhsAreas(qry);
             }
         }
         String j;
