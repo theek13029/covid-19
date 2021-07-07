@@ -9,7 +9,70 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <h:form>
-        
+            <div class="form-group row">
+                <div class="col-md-3" >
+                    <div class="card">
+                        <div class="card-header">
+                            PCR Requests
+                            <sub>Last 24H</sub>
+                        </div>
+                        <div class="card-body">
+                            <h:outputLabel value="#{dashboardApplicationController.last24hourPcr}" ></h:outputLabel>
+                        </div>
+                        <div class="card-footer">
+                            More ..
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" >
+                    <div class="card">
+                        <div class="card-header">
+                            RATs
+                            <sub>Last 24H</sub>
+                        </div>
+                        <div class="card-body text-center">
+                            <h5>
+                                <h:outputLabel value="#{dashboardApplicationController.last24hourRat}" ></h:outputLabel>
+                            </h5>
+                            
+                        </div>
+                        <div class="card-footer">
+                            More ..
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" >
+                    <div class="card">
+                        <div class="card-header">
+                            PCR Positives
+                            <sub>Last 24H</sub>
+                        </div>
+                        <div class="card-body">
+                            <h:outputLabel value="#{dashboardApplicationController.last24hourPositivePcr}" ></h:outputLabel>
+                        </div>
+                        <div class="card-footer">
+                            More ..
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" >
+                    <div class="card text-white bg-danger">
+                        <div class="card-header text-center">
+                            RAT Positives
+                            <sub>Last 24H</sub>
+                        </div>
+                        <div class="card-body">
+                            <h2>
+                                <h:outputLabel value="#{dashboardApplicationController.last24hourPositiveRat}" ></h:outputLabel>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <h:commandButton value="Refresh" action="${dashboardApplicationController.updateDashboard()}" >
+            </h:commandButton>
 
         </h:form>
     </cc:implementation>
