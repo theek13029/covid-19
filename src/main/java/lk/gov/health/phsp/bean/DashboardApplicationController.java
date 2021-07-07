@@ -23,12 +23,16 @@
  */
 package lk.gov.health.phsp.bean;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.TemporalType;
 import lk.gov.health.phsp.ejb.CovidDataHolder;
 import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.Institution;
@@ -58,6 +62,8 @@ public class DashboardApplicationController {
 
     @Inject
     ItemController itemController;
+    @Inject
+    ItemApplicationController itemApplicationController;
     @Inject
     InstitutionApplicationController institutionApplicationController;
     @Inject
@@ -92,19 +98,28 @@ public class DashboardApplicationController {
         labs = institutionApplicationController.findInstitutions(InstitutionType.Lab);
         hospitals = institutionApplicationController.findInstitutions(institutionApplicationController.getHospitalTypes());
         areas = areaApplicationController.getAllAreas(areaApplicationController.getCovidMonitoringAreaTypes());
-        Item testType = itemController.findItemByCode("test_type");
-        Item orderingCat = itemController.findItemByCode("covid_19_test_ordering_context_category");
-        Item pcr = itemController.findItemByCode("covid19_pcr_test");
-        Item rat = itemController.findItemByCode("covid19_rat");
-        covidDataHolder.generateCovidCountsAsync(pcr, rat, testType, orderingCat, mohs, hospitals, labs, areas);
+        testType = itemController.findItemByCode("test_type");
+        orderingCat = itemController.findItemByCode("covid_19_test_ordering_context_category");
+        pcr = itemController.findItemByCode("covid19_pcr_test");
+        rat = itemController.findItemByCode("covid19_rat");
+        covidDataHolder.generateCovidCountsAsync(itemApplicationController., rat, testType, orderingCat, mohs, hospitals, labs, areas);
 
     }
 
-    public Long getLast24HourPositivePcr() {
-        String j = "select e "
+    public Long getPositivePcr(Date fd, Date td) {
+        String j = "select count(e) "
                 + " from Encounter e "
                 + " where (e.retired is null or e.retired=false) "
-                + " and e."
+                + " and e.pcrTestType=:pcr "
+                + " and e.resultConfirmedAt between :fd and :td "
+                + " and e.pcrResult=:pos ";
+        Map m;
+        m = new HashMap();
+        m.put("fd", fd);
+        m.put("td", td);
+        m.put("pos", itemApplicationController.getPcrPositive());
+        m.put("pcr", itemApplicationController.getPcr());
+        return encounterFacade.countByJpql(j, m, TemporalType.TIMESTAMP);
     }
 
     public Boolean getDashboardPrepared() {
