@@ -824,6 +824,30 @@ public class MohController implements Serializable {
         return "/moh/list_of_tests";
     }
     
+    
+    public String toTestRequestDistrictCounts() {
+        Map m = new HashMap();
+        String j = "select c "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        return "/moh/list_of_tests";
+    }
+    
     public String toTestListWithoutResults() {
         System.out.println("toTestList");
         Map m = new HashMap();
