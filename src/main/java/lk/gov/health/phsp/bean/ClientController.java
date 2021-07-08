@@ -1701,6 +1701,103 @@ public class ClientController implements Serializable {
         return html;
     }
 
+    
+    
+    public String generateLabReportBulk(List<Encounter> es) {
+        if (es == null || es.isEmpty()) {
+            return "No Encounters";
+        }
+        String html = getPreferenceController().findPreferanceValue("labReportBulkHtml", webUserController.getLoggedUser().getInstitution());
+        if (html == null || html.trim().equals("")) {
+            return "No Report Format";
+        }
+        
+        String tblHtml= "<table id=\"tbl\" >";
+        tblHtml += "<tr>";
+        tblHtml += "<th rowspan=\"2\">Lab No</th>";
+        tblHtml += "<th rowspan=\"2\">Test No</th>";
+        tblHtml += "<th rowspan=\"2\">Name</th>";
+        tblHtml += "<th rowspan=\"2\">Age</th>";
+        tblHtml += "<th rowspan=\"2\">Gender</th>";
+        tblHtml += "<th rowspan=\"2\">Unit</th>";
+        tblHtml += "<th rowspan=\"2\">Test Result<br/>SARS-CoV-2</th>";
+        tblHtml += "<th >CT Values</th>";
+        tblHtml += "</tr>";
+        tblHtml += "<tr>";
+        tblHtml += "<th>Target 1</th>";
+        tblHtml += "<th>Target 2</th>";
+        tblHtml += "</tr>";
+        for(Encounter e:es){
+        //Patient Properties
+        html = html.replace("{name}", e.getClient().getPerson().getName());
+        e.getClient().getPerson().calAgeFromDob();
+        html = html.replace("{age}", e.getClient().getPerson().getAge());
+        html = html.replace("{sex}", e.getClient().getPerson().getSex().getName());
+        html = html.replace("{address}", e.getClient().getPerson().getAddress());
+        html = html.replace("{phone1}", e.getClient().getPerson().getAddress());
+        html = html.replace("{phone2}", e.getClient().getPerson().getAddress());
+        if (e.getLabNumber() != null) {
+            html = html.replace("{lab_no}", e.getLabNumber());
+        }
+        if (e.getEncounterNumber() != null) {
+            html = html.replace("{ref_no}", e.getEncounterNumber());
+        }
+        if (e.getClient().getPerson().getGnArea() != null) {
+            html = html.replace("{gn}", e.getClient().getPerson().getGnArea().getName());
+        }
+        if (e.getClient().getPerson().getPhiArea() != null) {
+            html = html.replace("{phi}", e.getClient().getPerson().getPhiArea().getName());
+        }
+
+        //Institute Properties
+        html = html.replace("{institute}", e.getInstitution().getName());
+
+        html = html.replace("{ref_institute_name}", e.getInstitution().getName());
+        html = html.replace("{ref_institute_address}", e.getInstitution().getAddress());
+        html = html.replace("{ref_institute_phone}", e.getInstitution().getPhone());
+        html = html.replace("{ref_institute_fax}", e.getInstitution().getFax());
+        html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
+
+        html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
+
+        if (e.getReceivedAtLabAt() != null) {
+            html = html.replace("{received_date}", CommonController.dateTimeToString(e.getReceivedAtLabAt()));
+        }
+
+        if (e.getResultEnteredAt() != null) {
+            html = html.replace("{entered_date}", CommonController.dateTimeToString(e.getResultEnteredAt()));
+        }
+
+        if (e.getResultConfirmedAt() != null) {
+            html = html.replace("{confirmed_date}", CommonController.dateTimeToString(e.getResultConfirmedAt()));
+        }
+
+        if (e.getResultEnteredBy() != null) {
+            html = html.replace("{entered_by}", e.getResultEnteredBy().getPerson().getName());
+        }
+
+        if (e.getResultConfirmedBy() != null) {
+            html = html.replace("{approved_by}", e.getResultConfirmedBy().getPerson().getName());
+        }
+
+        if (e.getPcrResult() != null) {
+            html = html.replace("{pcr_result}", e.getPcrResult().getName());
+        }
+        if (e.getPcrResultStr() != null) {
+            html = html.replace("{pcr_result}", e.getPcrResultStr());
+        }
+        if (e.getCtValue() != null) {
+            html = html.replace("{pcr_ct}", e.getCtValue().toString());
+        }
+        if (e.getResultComments() != null) {
+            html = html.replace("{pcr_comments}", e.getResultComments());
+        }
+        }
+        tblHtml += "</table>";
+        return html;
+    }
+
+    
     public void reviewOkForSelectedResults() {
         for (Encounter e : selectedToReview) {
             e.setResultReviewed(true);
