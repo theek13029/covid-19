@@ -78,6 +78,13 @@ public class InstitutionCount {
         this.count = count;
     }
 
+    public InstitutionCount(Area area, Long count) {
+        this.area = area;
+        this.count = count;
+    }
+    
+    
+
     public InstitutionCount() {
     }
 
