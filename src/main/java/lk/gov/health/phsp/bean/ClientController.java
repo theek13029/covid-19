@@ -52,6 +52,7 @@ import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.SmsFacade;
 import lk.gov.health.phsp.pojcs.ClientBasicData;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
+import lk.gov.health.phsp.pojcs.ReportHolder;
 import lk.gov.health.phsp.pojcs.SlNic;
 import lk.gov.health.phsp.pojcs.YearMonthDay;
 import org.primefaces.component.tabview.TabView;
@@ -234,7 +235,7 @@ public class ClientController implements Serializable {
             return;
         }
         for (Encounter e : listedToEnterResults) {
-            if(e.getPcrResult()==null){
+            if (e.getPcrResult() == null) {
                 e.setPcrResult(itemApplicationController.getPcrNegative());
                 e.setPcrResultStr(preferenceController.getPcrNegativeTerm());
                 e.setResultEntered(true);
@@ -1099,17 +1100,16 @@ public class ClientController implements Serializable {
         m.put("td", toDate);
         m.put("ins", institution);
 
-        if(referingInstitution!=null){
-            j+= " and c.referalInstitution=:ri ";
+        if (referingInstitution != null) {
+            j += " and c.referalInstitution=:ri ";
             m.put("ri", referingInstitution);
         }
-        
-        if(selectedTest!=null){
-            
+
+        if (selectedTest != null) {
+
         }
-        
-        
-        j+= " order by c.id";
+
+        j += " order by c.id";
         listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
 
         return "/moh/enter_results";
@@ -1197,7 +1197,7 @@ public class ClientController implements Serializable {
         listedToDispatch = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/regional/dispatch_samples";
     }
-    
+
     public String toDispatchSamplesByMohOrHospital() {
         String j = "select c "
                 + " from Encounter c "
@@ -1444,7 +1444,7 @@ public class ClientController implements Serializable {
         selectedToDispatch = null;
         return toDispatchSamples();
     }
-    
+
     public String dispatchSelectedSamplesAtMohOrHospital() {
         if (dispatchingLab == null) {
             JsfUtil.addErrorMessage("Please select a lab to send samples");
@@ -1701,8 +1701,65 @@ public class ClientController implements Serializable {
         return html;
     }
 
-    
-    
+    public String generateLabReportsBulk(List<Encounter> es) {
+        Map<String, ReportHolder> rhs = new HashMap<>();
+        List<ReportHolder> orhs = new ArrayList<>();
+        for (Encounter e : es) {
+            ReportHolder temRh = new ReportHolder();
+            temRh.setIns(e.getInstitution());
+            temRh.setDateOfCollection(e.getSampledAt());
+            temRh.setDateOfReceipt(e.getSampleRejectedAtLabAt());
+            temRh.setDateOfReport(e.getResultConfirmedAt());
+            String tmpId = temRh.getId();
+            ReportHolder savedRh = rhs.get(tmpId);
+            if (savedRh == null) {
+                savedRh = temRh;
+            }
+            savedRh.getEncounters().add(e);
+        }
+        Integer rowsPerPage;
+        try {
+            rowsPerPage = Integer.parseInt(preferenceController.getNumberOfRowsPerPage());
+        } catch (Exception e) {
+            rowsPerPage = 20;
+        }
+        for (ReportHolder r : rhs.values()) {
+            if (r.getEncounters().size() > rowsPerPage) {
+                int totalPages = (r.getEncounters().size() / rowsPerPage)+1;
+                ReportHolder nr=null;
+                int counter = 1;
+                int remaing = r.getEncounters().size();
+                int pageNo=0;
+                for (Encounter e : r.getEncounters()) {
+                    if (counter == 1) {
+                        pageNo++;
+                        nr = new ReportHolder();
+                        nr.setDateOfCollection(e.getSampledAt());
+                        nr.setDateOfReceipt(e.getReceivedAtLabAt());
+                        nr.setDateOfReport(e.getResultConfirmedAt());
+                        nr.setIns(e.getInstitution());
+                        nr.setPageNo(pageNo);
+                        nr.setTotalPages(totalPages);
+                        nr.getEncounters().add(e);
+                        remaing--;
+                        counter++;
+                    } else if (counter == rowsPerPage) {
+                        nr.setDateOfCollection(fromDate);
+                        orhs.add(nr);
+                        counter = 1;
+                    } else {
+
+                        counter++;
+                    }
+                }
+            } else if (!r.getEncounters().isEmpty()) {
+                orhs.add(r);
+            }
+        }
+        //TODO
+        return "";
+    }
+
     public String generateLabReportBulk(List<Encounter> es) {
         if (es == null || es.isEmpty()) {
             return "No Encounters";
@@ -1711,8 +1768,8 @@ public class ClientController implements Serializable {
         if (html == null || html.trim().equals("")) {
             return "No Report Format";
         }
-        
-        String tblHtml= "<table id=\"tbl\" >";
+
+        String tblHtml = "<table id=\"tbl\" >";
         tblHtml += "<tr>";
         tblHtml += "<th rowspan=\"2\">Lab No</th>";
         tblHtml += "<th rowspan=\"2\">Test No</th>";
@@ -1727,77 +1784,107 @@ public class ClientController implements Serializable {
         tblHtml += "<th>Target 1</th>";
         tblHtml += "<th>Target 2</th>";
         tblHtml += "</tr>";
-        for(Encounter e:es){
-        //Patient Properties
-        html = html.replace("{name}", e.getClient().getPerson().getName());
-        e.getClient().getPerson().calAgeFromDob();
-        html = html.replace("{age}", e.getClient().getPerson().getAge());
-        html = html.replace("{sex}", e.getClient().getPerson().getSex().getName());
-        html = html.replace("{address}", e.getClient().getPerson().getAddress());
-        html = html.replace("{phone1}", e.getClient().getPerson().getAddress());
-        html = html.replace("{phone2}", e.getClient().getPerson().getAddress());
-        if (e.getLabNumber() != null) {
-            html = html.replace("{lab_no}", e.getLabNumber());
-        }
-        if (e.getEncounterNumber() != null) {
-            html = html.replace("{ref_no}", e.getEncounterNumber());
-        }
-        if (e.getClient().getPerson().getGnArea() != null) {
-            html = html.replace("{gn}", e.getClient().getPerson().getGnArea().getName());
-        }
-        if (e.getClient().getPerson().getPhiArea() != null) {
-            html = html.replace("{phi}", e.getClient().getPerson().getPhiArea().getName());
-        }
+        String instituteName;
+        String dateOfReport;
+        String dateOfCollection;
+        String plateId;
 
-        //Institute Properties
-        html = html.replace("{institute}", e.getInstitution().getName());
+        for (Encounter e : es) {
+            e.getClient().getPerson().calAgeFromDob();
+            String result;
+            String ct1 = "";
+            String ct2 = "";
+            if (e.getCtValue() != null) {
+                ct1 = e.getCtValue() + "";
+            }
+            if (e.getCtValue2() != null) {
+                ct2 = e.getCtValue2() + "";
+            }
+            if (e.getPcrResultStr() != null && !e.getPcrResultStr().trim().equals("")) {
+                result = e.getPcrResultStr();
+            } else if (e.getPcrResult() != null) {
+                result = e.getPcrResult().getName();
+            } else {
+                result = "";
+            }
 
-        html = html.replace("{ref_institute_name}", e.getInstitution().getName());
-        html = html.replace("{ref_institute_address}", e.getInstitution().getAddress());
-        html = html.replace("{ref_institute_phone}", e.getInstitution().getPhone());
-        html = html.replace("{ref_institute_fax}", e.getInstitution().getFax());
-        html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
+            if (e.getLabNumber() == null) {
+                e.setLabNumber("");
+            }
+            if (e.getUnitWard() == null) {
+                e.setUnitWard("");
+            }
+            if (e.getEncounterNumber() == null) {
+                e.setEncounterNumber("");
+            }
+            tblHtml += "<tr>";
+            tblHtml += "<td>" + e.getLabNumber() + "</td>";
+            tblHtml += "<td>" + e.getEncounterNumber() + "</td>";
+            tblHtml += "<td>" + e.getClient().getPerson().getName() + "</td>";
+            tblHtml += "<td>" + e.getClient().getPerson().getAge() + "</td>";
+            tblHtml += "<td>" + e.getClient().getPerson().getSex().getName() + "</td>";
+            tblHtml += "<td>" + e.getUnitWard() + "</td>";
+            tblHtml += "<td>" + result + "</td>";
+            tblHtml += "<td>" + ct1 + "</td>";
+            tblHtml += "<td>" + ct2 + "</td>";
+            tblHtml += "</tr>";
 
-        html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
+            if (e.getLabNumber() != null) {
+                html = html.replace("{lab_no}", e.getLabNumber());
+            }
+            if (e.getEncounterNumber() != null) {
+                html = html.replace("{ref_no}", e.getEncounterNumber());
+            }
+            if (e.getClient().getPerson().getGnArea() != null) {
+                html = html.replace("{gn}", e.getClient().getPerson().getGnArea().getName());
+            }
+            if (e.getClient().getPerson().getPhiArea() != null) {
+                html = html.replace("{phi}", e.getClient().getPerson().getPhiArea().getName());
+            }
 
-        if (e.getReceivedAtLabAt() != null) {
-            html = html.replace("{received_date}", CommonController.dateTimeToString(e.getReceivedAtLabAt()));
-        }
+            //Institute Properties
+            html = html.replace("{institute}", e.getInstitution().getName());
 
-        if (e.getResultEnteredAt() != null) {
-            html = html.replace("{entered_date}", CommonController.dateTimeToString(e.getResultEnteredAt()));
-        }
+            html = html.replace("{ref_institute_name}", e.getInstitution().getName());
+            html = html.replace("{ref_institute_address}", e.getInstitution().getAddress());
+            html = html.replace("{ref_institute_phone}", e.getInstitution().getPhone());
+            html = html.replace("{ref_institute_fax}", e.getInstitution().getFax());
+            html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
 
-        if (e.getResultConfirmedAt() != null) {
-            html = html.replace("{confirmed_date}", CommonController.dateTimeToString(e.getResultConfirmedAt()));
-        }
+            html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
 
-        if (e.getResultEnteredBy() != null) {
-            html = html.replace("{entered_by}", e.getResultEnteredBy().getPerson().getName());
-        }
+            if (e.getReceivedAtLabAt() != null) {
+                html = html.replace("{received_date}", CommonController.dateTimeToString(e.getReceivedAtLabAt()));
+            }
 
-        if (e.getResultConfirmedBy() != null) {
-            html = html.replace("{approved_by}", e.getResultConfirmedBy().getPerson().getName());
-        }
+            if (e.getResultEnteredAt() != null) {
+                html = html.replace("{entered_date}", CommonController.dateTimeToString(e.getResultEnteredAt()));
+            }
 
-        if (e.getPcrResult() != null) {
-            html = html.replace("{pcr_result}", e.getPcrResult().getName());
-        }
-        if (e.getPcrResultStr() != null) {
-            html = html.replace("{pcr_result}", e.getPcrResultStr());
-        }
-        if (e.getCtValue() != null) {
-            html = html.replace("{pcr_ct}", e.getCtValue().toString());
-        }
-        if (e.getResultComments() != null) {
-            html = html.replace("{pcr_comments}", e.getResultComments());
-        }
+            if (e.getResultConfirmedAt() != null) {
+                html = html.replace("{confirmed_date}", CommonController.dateTimeToString(e.getResultConfirmedAt()));
+            }
+
+            if (e.getResultEnteredBy() != null) {
+                html = html.replace("{entered_by}", e.getResultEnteredBy().getPerson().getName());
+            }
+
+            if (e.getResultConfirmedBy() != null) {
+                html = html.replace("{approved_by}", e.getResultConfirmedBy().getPerson().getName());
+            }
+
+            if (e.getCtValue() != null) {
+                html = html.replace("{pcr_ct}", e.getCtValue().toString());
+            }
+            if (e.getResultComments() != null) {
+                html = html.replace("{pcr_comments}", e.getResultComments());
+            }
         }
         tblHtml += "</table>";
+        html = html.replace("{result_table}", tblHtml);
         return html;
     }
 
-    
     public void reviewOkForSelectedResults() {
         for (Encounter e : selectedToReview) {
             e.setResultReviewed(true);
@@ -1891,7 +1978,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No encounter");
             return "";
         }
-        Encounter testEncounter=selectedEncounter;
+        Encounter testEncounter = selectedEncounter;
         if (selectedEncounter.getClient() == null) {
             JsfUtil.addErrorMessage("No Client");
             return "";
@@ -1915,10 +2002,10 @@ public class ClientController implements Serializable {
             return "";
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
-        if(cefs.getEncounter()!=null){
+        if (cefs.getEncounter() != null) {
             testEncounter.setReferenceCase(cefs.getEncounter());
             encounterFacade.edit(testEncounter);
-            
+
             cefs.getEncounter().setReferenceTest(testEncounter);
         }
         updateYearDateMonth();

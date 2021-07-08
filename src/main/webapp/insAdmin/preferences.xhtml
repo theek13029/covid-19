@@ -121,6 +121,9 @@
 
                             <p:tab title="Bulk Print Report Format" >
                                 <p:panelGrid columns="2" style="width: 100%;">
+                                    <p:outputLabel value="Number of rows per page" ></p:outputLabel>
+                                    <p:inputText value="#{preferenceController.numberOfRowsPerPage}" ></p:inputText>
+                                    
                                     <h:panelGroup >
                                         <p:outputLabel value="Lab Report HTML" ></p:outputLabel>
                                         {name}
