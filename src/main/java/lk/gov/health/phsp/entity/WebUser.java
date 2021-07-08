@@ -464,6 +464,7 @@ public class WebUser implements Serializable {
             case Super_User:
             case System_Administrator:
             case User:
+            case Lab_National:
                 return true;
         }
         System.err.println("Missing Privileges");
