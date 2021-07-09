@@ -30,6 +30,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 import javax.persistence.TemporalType;
+import jdk.internal.net.http.common.Utils;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -1743,12 +1744,21 @@ public class ClientController implements Serializable {
                         nr.getEncounters().add(e);
                         remaing--;
                         counter++;
+                        orhs.add(r);
                     } else if (counter == rowsPerPage) {
-                        nr.setDateOfCollection(fromDate);
-                        orhs.add(nr);
+                        pageNo++;
+                        nr = new ReportHolder();
+                        nr.setDateOfCollection(e.getSampledAt());
+                        nr.setDateOfReceipt(e.getReceivedAtLabAt());
+                        nr.setDateOfReport(e.getResultConfirmedAt());
+                        nr.setIns(e.getInstitution());
+                        nr.setPageNo(pageNo);
+                        nr.setTotalPages(totalPages);
+                        nr.getEncounters().add(e);
                         counter = 1;
                     } else {
-
+                        nr.getEncounters().add(e);
+                        remaing--;
                         counter++;
                     }
                 }
@@ -1756,12 +1766,19 @@ public class ClientController implements Serializable {
                 orhs.add(r);
             }
         }
-        //TODO
-        return "";
+        String allReportHolders = "";
+        for(ReportHolder rh:orhs){
+            allReportHolders+=" <div class=\"main-page\">";
+            allReportHolders+= " <div class=\"sub-page\">";
+            allReportHolders+=generateLabReportBulk(rh);
+            allReportHolders+=" </div>  ";
+             allReportHolders+=" </div>  ";
+        }
+        return allReportHolders;
     }
 
-    public String generateLabReportBulk(List<Encounter> es) {
-        if (es == null || es.isEmpty()) {
+    public String generateLabReportBulk(ReportHolder rh) {
+        if (rh == null || rh.getEncounters().isEmpty()) {
             return "No Encounters";
         }
         String html = getPreferenceController().findPreferanceValue("labReportBulkHtml", webUserController.getLoggedUser().getInstitution());
@@ -1784,12 +1801,9 @@ public class ClientController implements Serializable {
         tblHtml += "<th>Target 1</th>";
         tblHtml += "<th>Target 2</th>";
         tblHtml += "</tr>";
-        String instituteName;
-        String dateOfReport;
-        String dateOfCollection;
-        String plateId;
 
-        for (Encounter e : es) {
+
+        for (Encounter e : rh.getEncounters()) {
             e.getClient().getPerson().calAgeFromDob();
             String result;
             String ct1 = "";
@@ -1842,42 +1856,20 @@ public class ClientController implements Serializable {
                 html = html.replace("{phi}", e.getClient().getPerson().getPhiArea().getName());
             }
 
-            //Institute Properties
-            html = html.replace("{institute}", e.getInstitution().getName());
+           
+            html = html.replace("{institute}", rh.getIns().getName());
 
-            html = html.replace("{ref_institute_name}", e.getInstitution().getName());
-            html = html.replace("{ref_institute_address}", e.getInstitution().getAddress());
-            html = html.replace("{ref_institute_phone}", e.getInstitution().getPhone());
-            html = html.replace("{ref_institute_fax}", e.getInstitution().getFax());
-            html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
 
-            html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
-
-            if (e.getReceivedAtLabAt() != null) {
-                html = html.replace("{received_date}", CommonController.dateTimeToString(e.getReceivedAtLabAt()));
+            if (rh.getDateOfReceipt() != null) {
+                html = html.replace("{received_date}", CommonController.dateTimeToString(rh.getDateOfReceipt(),"dd MMMM yyyy"));
             }
 
-            if (e.getResultEnteredAt() != null) {
-                html = html.replace("{entered_date}", CommonController.dateTimeToString(e.getResultEnteredAt()));
+            if (rh.getDateOfCollection() != null) {
+                html = html.replace("{sampelled_date}", CommonController.dateTimeToString(rh.getDateOfCollection(),"dd MMMM yyyy"));
             }
 
-            if (e.getResultConfirmedAt() != null) {
-                html = html.replace("{confirmed_date}", CommonController.dateTimeToString(e.getResultConfirmedAt()));
-            }
-
-            if (e.getResultEnteredBy() != null) {
-                html = html.replace("{entered_by}", e.getResultEnteredBy().getPerson().getName());
-            }
-
-            if (e.getResultConfirmedBy() != null) {
-                html = html.replace("{approved_by}", e.getResultConfirmedBy().getPerson().getName());
-            }
-
-            if (e.getCtValue() != null) {
-                html = html.replace("{pcr_ct}", e.getCtValue().toString());
-            }
-            if (e.getResultComments() != null) {
-                html = html.replace("{pcr_comments}", e.getResultComments());
+            if (rh.getDateOfReport() != null) {
+                html = html.replace("{confirmed_date}", CommonController.dateTimeToString(rh.getDateOfReport(),"dd MMMM yyyy"));
             }
         }
         tblHtml += "</table>";
