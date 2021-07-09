@@ -43,7 +43,11 @@
 
                         </p:panelGrid>
 
-                        <p:commandButton value="PRINT SELECTED" ajax="false" 
+                        <p:commandButton value="PRINT SELECTED AS INDIVIDUAL" ajax="false" 
+                                         action="#{clientController.toLabPrintSelected()}" 
+                                         onclick="form.target = '_blank'"></p:commandButton>
+
+                        <p:commandButton value="PRINT SELECTED AS INDIVIDUAL" ajax="false" 
                                          action="#{clientController.toLabPrintSelected()}" 
                                          onclick="form.target = '_blank'"></p:commandButton>
 
