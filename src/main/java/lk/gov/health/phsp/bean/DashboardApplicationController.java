@@ -71,10 +71,16 @@ public class DashboardApplicationController {
     @Inject
     CovidDataHolder covidDataHolder;
 
-    private Long last24hourPcr;
-    private Long last24hourRat;
-    private Long last24hourPositivePcr;
-    private Long last24hourPositiveRat;
+    private Long todayPcr;
+    private Long todayRat;
+    private Long todayPositivePcr;
+    private Long todayPositiveRat;
+    private Long yesterdayPcr;
+    private Long yesterdayRat;
+    private Long yesterdayPositivePcr;
+    private Long yesterdayPositiveRat;
+    private Long yesterdayTests;
+    private Long todaysTests;
 
     Item testType;
     Item orderingCat;
@@ -93,25 +99,49 @@ public class DashboardApplicationController {
     public void updateDashboard() {
         Calendar c = Calendar.getInstance();
         Date now = c.getTime();
-        c.add(Calendar.DATE, -1);
-        Date last24hours = c.getTime();
+        Date todayStart = CommonController.startOfTheDate();
 
-        last24hourPcr = getOrderCount(null, last24hours, now,
+        c.add(Calendar.DATE, -1);
+
+        Date yesterdayStart = CommonController.startOfTheDate(c.getTime());
+        Date yesterdayEnd = CommonController.endOfTheDate(c.getTime());
+
+        todayPcr = getOrderCount(null, todayStart, now,
                 itemApplicationController.getPcr(), null, null, null);
-        last24hourRat = getOrderCount(null, last24hours, now,
+        todayRat = getOrderCount(null, todayStart, now,
                 itemApplicationController.getRat(), null, null, null);
-        last24hourPositivePcr=getConfirmedCount(null, 
-                last24hours, 
-                now, 
-                itemApplicationController.getPcr(), 
-                null, 
+        yesterdayPcr = getOrderCount(null, yesterdayStart, yesterdayEnd,
+                itemApplicationController.getPcr(), null, null, null);
+        yesterdayRat = getOrderCount(null, yesterdayStart, yesterdayEnd,
+                itemApplicationController.getRat(), null, null, null);
+
+        todayPositivePcr = getConfirmedCount(null,
+                todayStart,
+                now,
+                itemApplicationController.getPcr(),
+                null,
                 itemApplicationController.getPcrPositive(),
                 null);
-        last24hourPositiveRat=getConfirmedCount(null, 
-                last24hours, 
-                now, 
-                itemApplicationController.getRat(), 
-                null, 
+        todayPositiveRat = getConfirmedCount(null,
+                todayStart,
+                now,
+                itemApplicationController.getRat(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+
+        yesterdayPositivePcr = getConfirmedCount(null,
+                yesterdayStart,
+                yesterdayEnd,
+                itemApplicationController.getPcr(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+        yesterdayPositiveRat = getConfirmedCount(null,
+                yesterdayStart,
+                yesterdayEnd,
+                itemApplicationController.getRat(),
+                null,
                 itemApplicationController.getPcrPositive(),
                 null);
 
@@ -229,32 +259,107 @@ public class DashboardApplicationController {
         return dashboardPrepared;
     }
 
-    public Long getLast24hourPcr() {
-        if (last24hourPcr == null) {
+    public Long getTodayPcr() {
+        if (todayPcr == null) {
             updateDashboard();
         }
-        return last24hourPcr;
+        return todayPcr;
     }
 
-    public Long getLast24hourRat() {
-        if (last24hourRat == null) {
+    public Long getTodayRat() {
+        if (todayRat == null) {
             updateDashboard();
         }
-        return last24hourRat;
+        return todayRat;
     }
 
-    public Long getLast24hourPositivePcr() {
-        if (last24hourPositivePcr == null) {
+    public Long getTodayPositivePcr() {
+        if (todayPositivePcr == null) {
             updateDashboard();
         }
-        return last24hourPositivePcr;
+        return todayPositivePcr;
     }
 
-    public Long getLast24hourPositiveRat() {
-        if (last24hourPositiveRat == null) {
+    public Long getTodayPositiveRat() {
+        if (todayPositiveRat == null) {
             updateDashboard();
         }
-        return last24hourPositiveRat;
+        return todayPositiveRat;
+    }
+
+    public Long getYesterdayPcr() {
+        if (yesterdayPcr == null) {
+            updateDashboard();
+        }
+        return yesterdayPcr;
+    }
+
+    public void setYesterdayPcr(Long yesterdayPcr) {
+        this.yesterdayPcr = yesterdayPcr;
+    }
+
+    public Long getYesterdayRat() {
+        if (yesterdayRat == null) {
+            updateDashboard();
+        }
+        return yesterdayRat;
+    }
+
+    public void setYesterdayRat(Long yesterdayRat) {
+        this.yesterdayRat = yesterdayRat;
+    }
+
+    public Long getYesterdayPositivePcr() {
+        if (yesterdayPositivePcr == null) {
+            updateDashboard();
+        }
+        return yesterdayPositivePcr;
+    }
+
+    public void setYesterdayPositivePcr(Long yesterdayPositivePcr) {
+        this.yesterdayPositivePcr = yesterdayPositivePcr;
+    }
+
+    public Long getYesterdayPositiveRat() {
+        if (yesterdayPositiveRat == null) {
+            updateDashboard();
+        }
+        return yesterdayPositiveRat;
+    }
+
+    public void setYesterdayPositiveRat(Long yesterdayPositiveRat) {
+        this.yesterdayPositiveRat = yesterdayPositiveRat;
+    }
+
+    public Long getYesterdayTests() {
+        if (getYesterdayPcr() != null && getYesterdayRat()!=null) {
+            yesterdayTests = getYesterdayPcr() + getYesterdayRat();
+        }else if (getYesterdayPcr() != null) {
+            yesterdayTests = getYesterdayPcr();
+        }else if (getYesterdayRat()!=null) {
+            yesterdayTests =getYesterdayRat();
+        }else{
+            yesterdayTests = 0l;
+        }
+        return yesterdayTests;
+    }
+
+
+    public Long getTodaysTests() {
+        if (getTodayPcr() != null && getTodayRat()!=null) {
+            todaysTests = getTodayPcr() + getTodayRat();
+        }else if (getTodayPcr() != null) {
+            todaysTests = getTodayPcr();
+        }else if (getTodayRat()!=null) {
+            todaysTests =getTodayRat();
+        }else{
+            todaysTests = 0l;
+        }
+        return todaysTests;
+    }
+
+    public void setTodaysTests(Long todaysTests) {
+        this.todaysTests = todaysTests;
     }
 
 }

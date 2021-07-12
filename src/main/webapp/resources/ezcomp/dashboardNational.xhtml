@@ -13,16 +13,36 @@
                 <div class="col-md-3" >
                     <div class="card">
                         <div class="card-header bg-gradient-blue">
-                            PCR Requests
-                            <sub>Last 24H</sub>
+                            PCRs
                         </div>
                         <div class="card-body text-center">
-                            <h5>
-                                <h:outputLabel value="#{dashboardApplicationController.last24hourPcr}" ></h:outputLabel>
-                            </h5>
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Today" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardApplicationController.todayPcr}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Yesterday" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardApplicationController.yesterdayPcr}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-footer text-right ">
-                             <h:commandLink value="Find more details .." class="text-blue"></h:commandLink>
+                            <h:commandLink value="Find more details .." class="text-blue"></h:commandLink>
                         </div>
                     </div>
                 </div>
@@ -30,16 +50,36 @@
                     <div class="card">
                         <div class="card-header bg-cyan text-white">
                             RATs
-                            <sub>Last 24H</sub>
                         </div>
                         <div class="card-body text-center">
-                            <h5>
-                                <h:outputLabel value="#{dashboardApplicationController.last24hourRat}" ></h:outputLabel>
-                            </h5>
-                            
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Today" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardApplicationController.todayRat}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Yesterday" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardApplicationController.yesterdayRat}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="card-footer text-right ">
-                             <h:commandLink value="Find more details .." class="text-cyan"></h:commandLink>
+                            <h:commandLink value="Find more details .." class="text-cyan"></h:commandLink>
                         </div>
                     </div>
                 </div>
@@ -47,12 +87,33 @@
                     <div class="card">
                         <div class="card-header text-white bg-danger">
                             PCR Positives
-                            <sub>Last 24H</sub>
                         </div>
                         <div class="card-body text-center">
-                            <h5>
-                                <h:outputLabel value="#{dashboardApplicationController.last24hourPositivePcr}" ></h:outputLabel>
-                            </h5>
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Today" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardApplicationController.todayPositivePcr}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Yesterday" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardApplicationController.yesterdayPositivePcr}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="card-footer text-right ">
                             <h:commandLink value="Find more details .." action="#{mohController.toPcrPositiveReportsIndexNational()}" class="text-danger"></h:commandLink>
@@ -66,9 +127,31 @@
                             <sub>Last 24H</sub>
                         </div>
                         <div class="card-body text-center">
-                            <h5>
-                                <h:outputLabel value="#{dashboardApplicationController.last24hourPositiveRat}" ></h:outputLabel>
-                            </h5>
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Today" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardApplicationController.todayPositiveRat}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Yesterday" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardApplicationController.yesterdayPositiveRat}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="card-footer text-right">
                             <h:commandLink value="Find more details .." class="text-warning"></h:commandLink>
@@ -77,7 +160,6 @@
                 </div>
 
             </div>
-            
         </h:form>
     </cc:implementation>
 
