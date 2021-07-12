@@ -1687,7 +1687,9 @@ public class ClientController implements Serializable {
         if (e.getResultConfirmedAt() != null) {
             html = html.replace("{confirmed_date}", CommonController.dateTimeToString(e.getResultConfirmedAt()));
         }
-
+        if(e.getSampledAt()!=null){
+            html = html.replace("{sampled_date}",  CommonController.dateTimeToString(e.getResultConfirmedAt()));
+        }
         if (e.getResultEnteredBy() != null) {
             html = html.replace("{entered_by}", e.getResultEnteredBy().getPerson().getName());
         }
@@ -1874,18 +1876,7 @@ public class ClientController implements Serializable {
             tblHtml += "<td>" + ct2 + "</td>";
             tblHtml += "</tr>";
 
-            if (e.getLabNumber() != null) {
-                html = html.replace("{lab_no}", e.getLabNumber());
-            }
-            if (e.getEncounterNumber() != null) {
-                html = html.replace("{ref_no}", e.getEncounterNumber());
-            }
-            if (e.getClient().getPerson().getGnArea() != null) {
-                html = html.replace("{gn}", e.getClient().getPerson().getGnArea().getName());
-            }
-            if (e.getClient().getPerson().getPhiArea() != null) {
-                html = html.replace("{phi}", e.getClient().getPerson().getPhiArea().getName());
-            }
+            
 
             html = html.replace("{institute}", rh.getIns().getName());
 
@@ -1894,7 +1885,7 @@ public class ClientController implements Serializable {
             }
 
             if (rh.getDateOfCollection() != null) {
-                html = html.replace("{sampelled_date}", CommonController.dateTimeToString(rh.getDateOfCollection(), "dd MMMM yyyy"));
+                html = html.replace("{sampled_date}", CommonController.dateTimeToString(rh.getDateOfCollection(), "dd MMMM yyyy"));
             }
 
             if (rh.getDateOfReport() != null) {
