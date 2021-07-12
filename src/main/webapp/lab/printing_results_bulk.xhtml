@@ -11,16 +11,6 @@
         <h:form>
             <p:commandButton value="Print" class="no-print" onclick="window.print();return false;" ajax="false" ></p:commandButton>
         </h:form>
-        
-        
-        <ui:repeat value="#{clientController.selectedToPrint}" var="p" >
-            
-            <div class="main-page">
-                <div class="sub-page">
-                    <h:outputText value="#{clientController.generateLabReport(p)}" escape="false" ></h:outputText>
-                </div>    
-            </div>        
-        </ui:repeat>
-
+        <h:outputText value="#{clientController.bulkPrintReport}" escape="false" ></h:outputText>
     </h:body>
 </html>

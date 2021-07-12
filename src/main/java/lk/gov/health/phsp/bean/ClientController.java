@@ -209,6 +209,8 @@ public class ClientController implements Serializable {
     private List<String> reservePhnList;
     private int intNo;
 
+    private String bulkPrintReport;
+
     private List<InstitutionCount> labSummariesToReceive;
     private List<InstitutionCount> labSummariesReceived;
     private List<InstitutionCount> labSummariesEntered;
@@ -1605,7 +1607,20 @@ public class ClientController implements Serializable {
             e.setResultPrintedBy(webUserController.getLoggedUser());
             encounterFacade.edit(e);
         }
+        selectedToPrint = null;
         return "/lab/printing_results";
+    }
+
+    public String toLabPrintSelectedBulk() {
+        for (Encounter e : selectedToPrint) {
+            e.setResultPrinted(true);
+            e.setResultPrintedAt(new Date());
+            e.setResultPrintedBy(webUserController.getLoggedUser());
+            encounterFacade.edit(e);
+        }
+        bulkPrintReport = generateLabReportsBulk(selectedToPrint);
+        selectedToPrint = null;
+        return "/lab/printing_results_bulk";
     }
 
     public String toMohPrintSelected() {
@@ -1703,9 +1718,11 @@ public class ClientController implements Serializable {
     }
 
     public String generateLabReportsBulk(List<Encounter> es) {
+        System.out.println("generateLabReportsBulk");
         Map<String, ReportHolder> rhs = new HashMap<>();
         List<ReportHolder> orhs = new ArrayList<>();
         for (Encounter e : es) {
+            System.out.println("e = " + e);
             ReportHolder temRh = new ReportHolder();
             temRh.setIns(e.getInstitution());
             temRh.setDateOfCollection(e.getSampledAt());
@@ -1716,23 +1733,26 @@ public class ClientController implements Serializable {
             if (savedRh == null) {
                 savedRh = temRh;
             }
+            rhs.put(savedRh.getId(), savedRh);
             savedRh.getEncounters().add(e);
         }
         Integer rowsPerPage;
         try {
             rowsPerPage = Integer.parseInt(preferenceController.getNumberOfRowsPerPage());
         } catch (Exception e) {
-            rowsPerPage = 20;
+            rowsPerPage = 10;
         }
         for (ReportHolder r : rhs.values()) {
             if (r.getEncounters().size() > rowsPerPage) {
-                int totalPages = (r.getEncounters().size() / rowsPerPage)+1;
-                ReportHolder nr=null;
-                int counter = 1;
+                int totalPages = (r.getEncounters().size() / rowsPerPage) + 1;
+                ReportHolder nr = null;
+                int counter = 0;
                 int remaing = r.getEncounters().size();
-                int pageNo=0;
+                int pageNo = 0;
                 for (Encounter e : r.getEncounters()) {
-                    if (counter == 1) {
+                    if (counter == 0) {
+                        System.out.println("Count is 0.");
+                        counter=1;
                         pageNo++;
                         nr = new ReportHolder();
                         nr.setDateOfCollection(e.getSampledAt());
@@ -1742,10 +1762,12 @@ public class ClientController implements Serializable {
                         nr.setPageNo(pageNo);
                         nr.setTotalPages(totalPages);
                         nr.getEncounters().add(e);
+                        System.out.println("nr size = " + nr.getEncounters().size());
                         remaing--;
                         counter++;
                         orhs.add(r);
                     } else if (counter == rowsPerPage) {
+                        System.out.println("counter is rowsperpage");
                         pageNo++;
                         nr = new ReportHolder();
                         nr.setDateOfCollection(e.getSampledAt());
@@ -1755,24 +1777,30 @@ public class ClientController implements Serializable {
                         nr.setPageNo(pageNo);
                         nr.setTotalPages(totalPages);
                         nr.getEncounters().add(e);
+                        System.out.println("nr size = " + nr.getEncounters().size());
                         counter = 1;
                     } else {
+                        System.out.println("counter is middle");
                         nr.getEncounters().add(e);
                         remaing--;
                         counter++;
+                        System.out.println("nr size = " + nr.getEncounters().size());
                     }
+                    System.out.println("remaing = " + remaing);
+                    System.out.println("counter = " + counter);
                 }
             } else if (!r.getEncounters().isEmpty()) {
                 orhs.add(r);
             }
         }
         String allReportHolders = "";
-        for(ReportHolder rh:orhs){
-            allReportHolders+=" <div class=\"main-page\">";
-            allReportHolders+= " <div class=\"sub-page\">";
-            allReportHolders+=generateLabReportBulk(rh);
-            allReportHolders+=" </div>  ";
-             allReportHolders+=" </div>  ";
+        for (ReportHolder rh : orhs) {
+            System.out.println("rh = " + rh.getEncounters().size());
+            allReportHolders += " <div class=\"main-page\">";
+            allReportHolders += " <div class=\"sub-page\">";
+            allReportHolders += generateLabReportBulk(rh);
+            allReportHolders += " </div>  ";
+            allReportHolders += " </div>  ";
         }
         return allReportHolders;
     }
@@ -1801,7 +1829,6 @@ public class ClientController implements Serializable {
         tblHtml += "<th>Target 1</th>";
         tblHtml += "<th>Target 2</th>";
         tblHtml += "</tr>";
-
 
         for (Encounter e : rh.getEncounters()) {
             e.getClient().getPerson().calAgeFromDob();
@@ -1856,20 +1883,18 @@ public class ClientController implements Serializable {
                 html = html.replace("{phi}", e.getClient().getPerson().getPhiArea().getName());
             }
 
-           
             html = html.replace("{institute}", rh.getIns().getName());
 
-
             if (rh.getDateOfReceipt() != null) {
-                html = html.replace("{received_date}", CommonController.dateTimeToString(rh.getDateOfReceipt(),"dd MMMM yyyy"));
+                html = html.replace("{received_date}", CommonController.dateTimeToString(rh.getDateOfReceipt(), "dd MMMM yyyy"));
             }
 
             if (rh.getDateOfCollection() != null) {
-                html = html.replace("{sampelled_date}", CommonController.dateTimeToString(rh.getDateOfCollection(),"dd MMMM yyyy"));
+                html = html.replace("{sampelled_date}", CommonController.dateTimeToString(rh.getDateOfCollection(), "dd MMMM yyyy"));
             }
 
             if (rh.getDateOfReport() != null) {
-                html = html.replace("{confirmed_date}", CommonController.dateTimeToString(rh.getDateOfReport(),"dd MMMM yyyy"));
+                html = html.replace("{confirmed_date}", CommonController.dateTimeToString(rh.getDateOfReport(), "dd MMMM yyyy"));
             }
         }
         tblHtml += "</table>";
@@ -5601,6 +5626,14 @@ public class ClientController implements Serializable {
 
     public void setSerialStart(Long serialStart) {
         this.serialStart = serialStart;
+    }
+
+    public String getBulkPrintReport() {
+        return bulkPrintReport;
+    }
+
+    public void setBulkPrintReport(String bulkPrintReport) {
+        this.bulkPrintReport = bulkPrintReport;
     }
 
     // </editor-fold>
