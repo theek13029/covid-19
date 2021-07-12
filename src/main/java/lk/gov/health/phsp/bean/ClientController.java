@@ -1607,7 +1607,7 @@ public class ClientController implements Serializable {
             e.setResultPrintedBy(webUserController.getLoggedUser());
             encounterFacade.edit(e);
         }
-        selectedToPrint = null;
+//        selectedToPrint = null;
         return "/lab/printing_results";
     }
 
@@ -1634,11 +1634,13 @@ public class ClientController implements Serializable {
     }
 
     public String generateLabReport(Encounter e) {
-        // // System.out.println("generateLabReport");
+        System.out.println("generateLabReport");
+        System.out.println("e = " + e);
         if (e == null) {
             return "No Encounter";
         }
         String html = getPreferenceController().findPreferanceValue("labReportHeader", webUserController.getLoggedUser().getInstitution());
+        System.out.println("html = " + html);
         if (html == null || html.trim().equals("")) {
             return "No Report Format";
         }
@@ -1754,7 +1756,7 @@ public class ClientController implements Serializable {
                 for (Encounter e : r.getEncounters()) {
                     if (counter == 0) {
                         System.out.println("Count is 0.");
-                        counter=1;
+                        counter = 1;
                         pageNo++;
                         nr = new ReportHolder();
                         nr.setDateOfCollection(e.getSampledAt());
