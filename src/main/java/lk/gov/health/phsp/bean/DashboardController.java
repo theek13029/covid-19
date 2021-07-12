@@ -27,6 +27,7 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +78,17 @@ public class DashboardController implements Serializable {
     private Date toDate;
     private List<InstitutionCount> ics;
 
+    private Long todayPcr;
+    private Long todayRat;
+    private Long todayPositivePcr;
+    private Long todayPositiveRat;
+    private Long yesterdayPcr;
+    private Long yesterdayRat;
+    private Long yesterdayPositivePcr;
+    private Long yesterdayPositiveRat;
+    private Long yesterdayTests;
+    private Long todaysTests;
+
     private List<CovidData> covidDatasForMohs;
     private List<CovidData> covidDatasForAreas;
     private List<CovidData> covidDatasForLabs;
@@ -93,6 +105,57 @@ public class DashboardController implements Serializable {
     private Long samplesResultsConfirmed;
     private Long samplesPositive;
 
+    public void prepareMohDashboard() {
+        Calendar c = Calendar.getInstance();
+        Date now = c.getTime();
+        Date todayStart = CommonController.startOfTheDate();
+
+        c.add(Calendar.DATE, -1);
+
+        Date yesterdayStart = CommonController.startOfTheDate(c.getTime());
+        Date yesterdayEnd = CommonController.endOfTheDate(c.getTime());
+
+        todayPcr = dashboardApplicationController.getOrderCount(webUserController.getLoggedUser().getInstitution(), todayStart, now,
+                itemApplicationController.getPcr(), null, null, null);
+        todayRat = dashboardApplicationController.getOrderCount(webUserController.getLoggedUser().getInstitution(), todayStart, now,
+                itemApplicationController.getRat(), null, null, null);
+        yesterdayPcr = dashboardApplicationController.getOrderCount(webUserController.getLoggedUser().getInstitution(), yesterdayStart, yesterdayEnd,
+                itemApplicationController.getPcr(), null, null, null);
+        yesterdayRat = dashboardApplicationController.getOrderCount(webUserController.getLoggedUser().getInstitution(), yesterdayStart, yesterdayEnd,
+                itemApplicationController.getRat(), null, null, null);
+
+        todayPositivePcr = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+                todayStart,
+                now,
+                itemApplicationController.getPcr(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+        todayPositiveRat = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+                todayStart,
+                now,
+                itemApplicationController.getRat(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+
+        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+                yesterdayStart,
+                yesterdayEnd,
+                itemApplicationController.getPcr(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+                yesterdayStart,
+                yesterdayEnd,
+                itemApplicationController.getRat(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+
+    }
+
     public void prepareLabDashboard() {
         String j;
         Map m;
@@ -108,7 +171,7 @@ public class DashboardController implements Serializable {
         m.put("td", CommonController.endOfTheDate(toDate));
         m.put("lab", webUserController.getLoggedUser().getInstitution());
         samplesToReceive = encounterFacade.countByJpql(j, m, TemporalType.TIMESTAMP);
-        
+
         j = "select count(e) "
                 + " from Encounter e "
                 + " where e.retired=false "
@@ -183,36 +246,36 @@ public class DashboardController implements Serializable {
         return "/systemAdmin/calculate_numbers";
     }
 
-    public String toReceiveLabSamples(){
+    public String toReceiveLabSamples() {
         clientController.setFromDate(fromDate);
         clientController.setToDate(toDate);
         return clientController.toLabReceiveAll();
     }
-    
-    public String toLabSummarySamplesReceived(){
+
+    public String toLabSummarySamplesReceived() {
         clientController.setFromDate(fromDate);
         clientController.setToDate(toDate);
         return clientController.toLabSummarySamplesReceived();
     }
-    
-    public String toLabSummaryResultsEntered(){
+
+    public String toLabSummaryResultsEntered() {
         clientController.setFromDate(fromDate);
         clientController.setToDate(toDate);
         return clientController.toLabSummaryResultsEntered();
     }
-    
-    public String toLabSummarySamplesReviewed(){
+
+    public String toLabSummarySamplesReviewed() {
         clientController.setFromDate(fromDate);
         clientController.setToDate(toDate);
         return clientController.toLabSummarySamplesReviewed();
     }
-    
-    public String toLabSummarySamplesConfirmed(){
+
+    public String toLabSummarySamplesConfirmed() {
         clientController.setFromDate(fromDate);
         clientController.setToDate(toDate);
         return clientController.toLabSummarySamplesConfirmed();
     }
-    
+
     /**
      * Creates a new instance of DashboardController
      */
@@ -221,10 +284,6 @@ public class DashboardController implements Serializable {
 
     public void calculateNumbers() {
         covidDataHolder.calculateNumbers(fromDate, toDate);
-    }
-
-    public void updateDashboard() {
-        dashboardApplicationController.updateDashboard();
     }
 
     public NumbersFacade getNumbersFacade() {
@@ -367,8 +426,6 @@ public class DashboardController implements Serializable {
     public void setSamplesResultsConfirmed(Long samplesResultsConfirmed) {
         this.samplesResultsConfirmed = samplesResultsConfirmed;
     }
-    
-    
 
     public Long getSamplesPositive() {
         return samplesPositive;
@@ -400,6 +457,108 @@ public class DashboardController implements Serializable {
 
     public void setSamplesToReceive(Long samplesToReceive) {
         this.samplesToReceive = samplesToReceive;
+    }
+
+    public Long getTodayPcr() {
+        if (todayPcr == null) {
+            prepareMohDashboard();
+        }
+        return todayPcr;
+    }
+
+    public Long getTodayRat() {
+        if (todayRat == null) {
+            prepareMohDashboard();
+        }
+        return todayRat;
+    }
+
+    public Long getTodayPositivePcr() {
+        if (todayPositivePcr == null) {
+            prepareMohDashboard();
+        }
+        return todayPositivePcr;
+    }
+
+    public Long getTodayPositiveRat() {
+        if (todayPositiveRat == null) {
+            prepareMohDashboard();
+        }
+        return todayPositiveRat;
+    }
+
+    public Long getYesterdayPcr() {
+        if (yesterdayPcr == null) {
+            prepareMohDashboard();
+        }
+        return yesterdayPcr;
+    }
+
+    public void setYesterdayPcr(Long yesterdayPcr) {
+        this.yesterdayPcr = yesterdayPcr;
+    }
+
+    public Long getYesterdayRat() {
+        if (yesterdayRat == null) {
+            prepareMohDashboard();
+        }
+        return yesterdayRat;
+    }
+
+    public void setYesterdayRat(Long yesterdayRat) {
+        this.yesterdayRat = yesterdayRat;
+    }
+
+    public Long getYesterdayPositivePcr() {
+        if (yesterdayPositivePcr == null) {
+            prepareMohDashboard();
+        }
+        return yesterdayPositivePcr;
+    }
+
+    public void setYesterdayPositivePcr(Long yesterdayPositivePcr) {
+        this.yesterdayPositivePcr = yesterdayPositivePcr;
+    }
+
+    public Long getYesterdayPositiveRat() {
+        if (yesterdayPositiveRat == null) {
+            prepareMohDashboard();
+        }
+        return yesterdayPositiveRat;
+    }
+
+    public void setYesterdayPositiveRat(Long yesterdayPositiveRat) {
+        this.yesterdayPositiveRat = yesterdayPositiveRat;
+    }
+
+    public Long getYesterdayTests() {
+        if (getYesterdayPcr() != null && getYesterdayRat() != null) {
+            yesterdayTests = getYesterdayPcr() + getYesterdayRat();
+        } else if (getYesterdayPcr() != null) {
+            yesterdayTests = getYesterdayPcr();
+        } else if (getYesterdayRat() != null) {
+            yesterdayTests = getYesterdayRat();
+        } else {
+            yesterdayTests = 0l;
+        }
+        return yesterdayTests;
+    }
+
+    public Long getTodaysTests() {
+        if (getTodayPcr() != null && getTodayRat() != null) {
+            todaysTests = getTodayPcr() + getTodayRat();
+        } else if (getTodayPcr() != null) {
+            todaysTests = getTodayPcr();
+        } else if (getTodayRat() != null) {
+            todaysTests = getTodayRat();
+        } else {
+            todaysTests = 0l;
+        }
+        return todaysTests;
+    }
+
+    public void setTodaysTests(Long todaysTests) {
+        this.todaysTests = todaysTests;
     }
 
 }

@@ -737,6 +737,8 @@ public class WebUserController implements Serializable {
             dashboardController.prepareLabDashboard();
         }else if(loggedUser.isNationalDashboard()){
             dashboardApplicationController.updateDashboard();
+        }else if(loggedUser.isMohDashboard()){
+            dashboardController.prepareMohDashboard();
         }
         return "/index";
     }
