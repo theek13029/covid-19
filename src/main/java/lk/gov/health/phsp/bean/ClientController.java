@@ -1740,8 +1740,10 @@ public class ClientController implements Serializable {
         try {
             rowsPerPage = Integer.parseInt(preferenceController.getNumberOfRowsPerPage());
         } catch (Exception e) {
+            System.out.println("e = " + e.getMessage());
             rowsPerPage = 10;
         }
+        System.out.println("rowsPerPage = " + rowsPerPage);
         for (ReportHolder r : rhs.values()) {
             if (r.getEncounters().size() > rowsPerPage) {
                 int totalPages = (r.getEncounters().size() / rowsPerPage) + 1;
@@ -1764,8 +1766,7 @@ public class ClientController implements Serializable {
                         nr.getEncounters().add(e);
                         System.out.println("nr size = " + nr.getEncounters().size());
                         remaing--;
-                        counter++;
-                        orhs.add(r);
+                        orhs.add(nr);
                     } else if (counter == rowsPerPage) {
                         System.out.println("counter is rowsperpage");
                         pageNo++;
@@ -1778,6 +1779,7 @@ public class ClientController implements Serializable {
                         nr.setTotalPages(totalPages);
                         nr.getEncounters().add(e);
                         System.out.println("nr size = " + nr.getEncounters().size());
+                        orhs.add(nr);
                         counter = 1;
                     } else {
                         System.out.println("counter is middle");
