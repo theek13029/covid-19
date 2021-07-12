@@ -105,6 +105,10 @@
                                       filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Ordering Category"  sortBy="#{c.pcrOrderingCategory.name}"
+                                      filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.pcrOrderingCategory.name}" ></p:outputLabel>
+                            </p:column>
 
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
 

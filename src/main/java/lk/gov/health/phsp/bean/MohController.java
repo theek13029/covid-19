@@ -46,6 +46,7 @@ import javax.inject.Named;
 import javax.persistence.TemporalType;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.enums.InstitutionType;
+import lk.gov.health.phsp.pojcs.InstitutionCount;
 // </editor-fold>
 
 /**
@@ -116,6 +117,7 @@ public class MohController implements Serializable {
     private Institution mohOrHospital;
 
     private List<Institution> regionalMohsAndHospitals;
+    private List<InstitutionCount> institutionCounts;
 
 // </editor-fold>    
 // <editor-fold defaultstate="collapsed" desc="Constructors">
@@ -152,7 +154,140 @@ public class MohController implements Serializable {
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         return "/national/result_list_pcr_positive";
     }
+    
+    public String toPcrPositiveByDistrict() {
+        result = itemApplicationController.getPcrPositive();
+        testType = itemApplicationController.getPcr();
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.district, count(c))  "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        j += " and c.pcrTestType=:tt ";
+        m.put("tt", testType);
+        j += " and c.pcrResult=:result ";
+        m.put("result", result);
+        j += " group by c.client.person.district";
+        List<Object> objs=new ArrayList<>();
+        try{
+        objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);}catch(Exception e){
+            
+        }
+        institutionCounts = new ArrayList<>();
+        for(Object o:objs){
+            if(o instanceof InstitutionCount){
+                InstitutionCount ic = (InstitutionCount) o;
+                institutionCounts.add(ic);
+            }
+        }
+        return "/national/pcr_positive_counts_by_district";
+    }
+    
+     public String toPcrPositiveByInstitutionDistrict() {
+        result = itemApplicationController.getPcrPositive();
+        testType = itemApplicationController.getPcr();
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution.district, count(c))  "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        j += " and c.pcrTestType=:tt ";
+        m.put("tt", testType);
+        j += " and c.pcrResult=:result ";
+        m.put("result", result);
+        j += " group by c.institution.district";
+        List<Object> objs=new ArrayList<>();
+        try{
+        objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);}catch(Exception e){
+            
+        }
+        institutionCounts = new ArrayList<>();
+        for(Object o:objs){
+            if(o instanceof InstitutionCount){
+                InstitutionCount ic = (InstitutionCount) o;
+                institutionCounts.add(ic);
+            }
+        }
+        return "/national/pcr_positive_counts_by_institution_district";
+    }
+     
+     public String toPcrPositiveByOrderedInstitute() {
+        result = itemApplicationController.getPcrPositive();
+        testType = itemApplicationController.getPcr();
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c))  "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        j += " and c.pcrTestType=:tt ";
+        m.put("tt", testType);
+        j += " and c.pcrResult=:result ";
+        m.put("result", result);
+        j += " group by c.institution";
+        List<Object> objs=new ArrayList<>();
+        try{
+        objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);}catch(Exception e){
+            
+        }
+        institutionCounts = new ArrayList<>();
+        for(Object o:objs){
+            if(o instanceof InstitutionCount){
+                InstitutionCount ic = (InstitutionCount) o;
+                institutionCounts.add(ic);
+            }
+        }
+        return "/national/pcr_positive_counts_by_ordered_institution";
+    }
 
+      public String toPcrPositiveByLab() {
+        result = itemApplicationController.getPcrPositive();
+        testType = itemApplicationController.getPcr();
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.referalInstitution, count(c))  "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        j += " and c.pcrTestType=:tt ";
+        m.put("tt", testType);
+        j += " and c.pcrResult=:result ";
+        m.put("result", result);
+        j += " group by c.referalInstitution";
+        List<Object> objs=new ArrayList<>();
+        try{
+        objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);}catch(Exception e){
+            
+        }
+        institutionCounts = new ArrayList<>();
+        for(Object o:objs){
+            if(o instanceof InstitutionCount){
+                InstitutionCount ic = (InstitutionCount) o;
+                institutionCounts.add(ic);
+            }
+        }
+        return "/national/pcr_positive_counts_by_lab";
+    }
+
+     
     public void deleteTest() {
         if (deleting == null) {
             JsfUtil.addErrorMessage("Nothing to delete");
@@ -1097,6 +1232,8 @@ public class MohController implements Serializable {
     public void setToDate(Date toDate) {
         this.toDate = toDate;
     }
+    
+    
 
     public Encounter getTest() {
         return test;
@@ -1163,6 +1300,10 @@ public class MohController implements Serializable {
 
     public void setMohOrHospital(Institution mohOrHospital) {
         this.mohOrHospital = mohOrHospital;
+    }
+
+    public List<InstitutionCount> getInstitutionCounts() {
+        return institutionCounts;
     }
 
 }

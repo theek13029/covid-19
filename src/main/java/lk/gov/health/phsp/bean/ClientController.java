@@ -30,6 +30,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 import javax.persistence.TemporalType;
+import jdk.internal.net.http.common.Utils;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -52,6 +53,7 @@ import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.SmsFacade;
 import lk.gov.health.phsp.pojcs.ClientBasicData;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
+import lk.gov.health.phsp.pojcs.ReportHolder;
 import lk.gov.health.phsp.pojcs.SlNic;
 import lk.gov.health.phsp.pojcs.YearMonthDay;
 import org.primefaces.component.tabview.TabView;
@@ -207,6 +209,8 @@ public class ClientController implements Serializable {
     private List<String> reservePhnList;
     private int intNo;
 
+    private String bulkPrintReport;
+
     private List<InstitutionCount> labSummariesToReceive;
     private List<InstitutionCount> labSummariesReceived;
     private List<InstitutionCount> labSummariesEntered;
@@ -234,7 +238,7 @@ public class ClientController implements Serializable {
             return;
         }
         for (Encounter e : listedToEnterResults) {
-            if(e.getPcrResult()==null){
+            if (e.getPcrResult() == null) {
                 e.setPcrResult(itemApplicationController.getPcrNegative());
                 e.setPcrResultStr(preferenceController.getPcrNegativeTerm());
                 e.setResultEntered(true);
@@ -1099,17 +1103,16 @@ public class ClientController implements Serializable {
         m.put("td", toDate);
         m.put("ins", institution);
 
-        if(referingInstitution!=null){
-            j+= " and c.referalInstitution=:ri ";
+        if (referingInstitution != null) {
+            j += " and c.referalInstitution=:ri ";
             m.put("ri", referingInstitution);
         }
-        
-        if(selectedTest!=null){
-            
+
+        if (selectedTest != null) {
+
         }
-        
-        
-        j+= " order by c.id";
+
+        j += " order by c.id";
         listedToEnterResults = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
 
         return "/moh/enter_results";
@@ -1197,7 +1200,7 @@ public class ClientController implements Serializable {
         listedToDispatch = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/regional/dispatch_samples";
     }
-    
+
     public String toDispatchSamplesByMohOrHospital() {
         String j = "select c "
                 + " from Encounter c "
@@ -1444,7 +1447,7 @@ public class ClientController implements Serializable {
         selectedToDispatch = null;
         return toDispatchSamples();
     }
-    
+
     public String dispatchSelectedSamplesAtMohOrHospital() {
         if (dispatchingLab == null) {
             JsfUtil.addErrorMessage("Please select a lab to send samples");
@@ -1604,7 +1607,20 @@ public class ClientController implements Serializable {
             e.setResultPrintedBy(webUserController.getLoggedUser());
             encounterFacade.edit(e);
         }
+//        selectedToPrint = null;
         return "/lab/printing_results";
+    }
+
+    public String toLabPrintSelectedBulk() {
+        for (Encounter e : selectedToPrint) {
+            e.setResultPrinted(true);
+            e.setResultPrintedAt(new Date());
+            e.setResultPrintedBy(webUserController.getLoggedUser());
+            encounterFacade.edit(e);
+        }
+        bulkPrintReport = generateLabReportsBulk(selectedToPrint);
+        selectedToPrint = null;
+        return "/lab/printing_results_bulk";
     }
 
     public String toMohPrintSelected() {
@@ -1618,11 +1634,13 @@ public class ClientController implements Serializable {
     }
 
     public String generateLabReport(Encounter e) {
-        // // System.out.println("generateLabReport");
+        System.out.println("generateLabReport");
+        System.out.println("e = " + e);
         if (e == null) {
             return "No Encounter";
         }
         String html = getPreferenceController().findPreferanceValue("labReportHeader", webUserController.getLoggedUser().getInstitution());
+        System.out.println("html = " + html);
         if (html == null || html.trim().equals("")) {
             return "No Report Format";
         }
@@ -1669,7 +1687,9 @@ public class ClientController implements Serializable {
         if (e.getResultConfirmedAt() != null) {
             html = html.replace("{confirmed_date}", CommonController.dateTimeToString(e.getResultConfirmedAt()));
         }
-
+        if(e.getSampledAt()!=null){
+            html = html.replace("{sampled_date}",  CommonController.dateTimeToString(e.getResultConfirmedAt()));
+        }
         if (e.getResultEnteredBy() != null) {
             html = html.replace("{entered_by}", e.getResultEnteredBy().getPerson().getName());
         }
@@ -1698,6 +1718,182 @@ public class ClientController implements Serializable {
         if (e.getResultComments() != null) {
             html = html.replace("{pcr_comments}", e.getResultComments());
         }
+        return html;
+    }
+
+    public String generateLabReportsBulk(List<Encounter> es) {
+        System.out.println("generateLabReportsBulk");
+        Map<String, ReportHolder> rhs = new HashMap<>();
+        List<ReportHolder> orhs = new ArrayList<>();
+        for (Encounter e : es) {
+            System.out.println("e = " + e);
+            ReportHolder temRh = new ReportHolder();
+            temRh.setIns(e.getInstitution());
+            temRh.setDateOfCollection(e.getSampledAt());
+            temRh.setDateOfReceipt(e.getSampleRejectedAtLabAt());
+            temRh.setDateOfReport(e.getResultConfirmedAt());
+            String tmpId = temRh.getId();
+            ReportHolder savedRh = rhs.get(tmpId);
+            if (savedRh == null) {
+                savedRh = temRh;
+            }
+            rhs.put(savedRh.getId(), savedRh);
+            savedRh.getEncounters().add(e);
+        }
+        Integer rowsPerPage;
+        try {
+            rowsPerPage = Integer.parseInt(preferenceController.getNumberOfRowsPerPage());
+        } catch (Exception e) {
+            System.out.println("e = " + e.getMessage());
+            rowsPerPage = 10;
+        }
+        System.out.println("rowsPerPage = " + rowsPerPage);
+        for (ReportHolder r : rhs.values()) {
+            if (r.getEncounters().size() > rowsPerPage) {
+                int totalPages = (r.getEncounters().size() / rowsPerPage) + 1;
+                ReportHolder nr = null;
+                int counter = 0;
+                int remaing = r.getEncounters().size();
+                int pageNo = 0;
+                for (Encounter e : r.getEncounters()) {
+                    if (counter == 0) {
+                        System.out.println("Count is 0.");
+                        counter = 1;
+                        pageNo++;
+                        nr = new ReportHolder();
+                        nr.setDateOfCollection(e.getSampledAt());
+                        nr.setDateOfReceipt(e.getReceivedAtLabAt());
+                        nr.setDateOfReport(e.getResultConfirmedAt());
+                        nr.setIns(e.getInstitution());
+                        nr.setPageNo(pageNo);
+                        nr.setTotalPages(totalPages);
+                        nr.getEncounters().add(e);
+                        System.out.println("nr size = " + nr.getEncounters().size());
+                        remaing--;
+                        orhs.add(nr);
+                    } else if (counter == rowsPerPage) {
+                        System.out.println("counter is rowsperpage");
+                        pageNo++;
+                        nr = new ReportHolder();
+                        nr.setDateOfCollection(e.getSampledAt());
+                        nr.setDateOfReceipt(e.getReceivedAtLabAt());
+                        nr.setDateOfReport(e.getResultConfirmedAt());
+                        nr.setIns(e.getInstitution());
+                        nr.setPageNo(pageNo);
+                        nr.setTotalPages(totalPages);
+                        nr.getEncounters().add(e);
+                        System.out.println("nr size = " + nr.getEncounters().size());
+                        orhs.add(nr);
+                        counter = 1;
+                    } else {
+                        System.out.println("counter is middle");
+                        nr.getEncounters().add(e);
+                        remaing--;
+                        counter++;
+                        System.out.println("nr size = " + nr.getEncounters().size());
+                    }
+                    System.out.println("remaing = " + remaing);
+                    System.out.println("counter = " + counter);
+                }
+            } else if (!r.getEncounters().isEmpty()) {
+                orhs.add(r);
+            }
+        }
+        String allReportHolders = "";
+        for (ReportHolder rh : orhs) {
+            System.out.println("rh = " + rh.getEncounters().size());
+            allReportHolders += " <div class=\"main-page\">";
+            allReportHolders += " <div class=\"sub-page\">";
+            allReportHolders += generateLabReportBulk(rh);
+            allReportHolders += " </div>  ";
+            allReportHolders += " </div>  ";
+        }
+        return allReportHolders;
+    }
+
+    public String generateLabReportBulk(ReportHolder rh) {
+        if (rh == null || rh.getEncounters().isEmpty()) {
+            return "No Encounters";
+        }
+        String html = getPreferenceController().findPreferanceValue("labReportBulkHtml", webUserController.getLoggedUser().getInstitution());
+        if (html == null || html.trim().equals("")) {
+            return "No Report Format";
+        }
+
+        String tblHtml = "<table id=\"tbl\" >";
+        tblHtml += "<tr>";
+        tblHtml += "<th rowspan=\"2\">Lab No</th>";
+        tblHtml += "<th rowspan=\"2\">Test No</th>";
+        tblHtml += "<th rowspan=\"2\">Name</th>";
+        tblHtml += "<th rowspan=\"2\">Age</th>";
+        tblHtml += "<th rowspan=\"2\">Gender</th>";
+        tblHtml += "<th rowspan=\"2\">Unit</th>";
+        tblHtml += "<th rowspan=\"2\">Test Result<br/>SARS-CoV-2</th>";
+        tblHtml += "<th >CT Values</th>";
+        tblHtml += "</tr>";
+        tblHtml += "<tr>";
+        tblHtml += "<th>Target 1</th>";
+        tblHtml += "<th>Target 2</th>";
+        tblHtml += "</tr>";
+
+        for (Encounter e : rh.getEncounters()) {
+            e.getClient().getPerson().calAgeFromDob();
+            String result;
+            String ct1 = "";
+            String ct2 = "";
+            if (e.getCtValue() != null) {
+                ct1 = e.getCtValue() + "";
+            }
+            if (e.getCtValue2() != null) {
+                ct2 = e.getCtValue2() + "";
+            }
+            if (e.getPcrResultStr() != null && !e.getPcrResultStr().trim().equals("")) {
+                result = e.getPcrResultStr();
+            } else if (e.getPcrResult() != null) {
+                result = e.getPcrResult().getName();
+            } else {
+                result = "";
+            }
+
+            if (e.getLabNumber() == null) {
+                e.setLabNumber("");
+            }
+            if (e.getUnitWard() == null) {
+                e.setUnitWard("");
+            }
+            if (e.getEncounterNumber() == null) {
+                e.setEncounterNumber("");
+            }
+            tblHtml += "<tr>";
+            tblHtml += "<td>" + e.getLabNumber() + "</td>";
+            tblHtml += "<td>" + e.getEncounterNumber() + "</td>";
+            tblHtml += "<td>" + e.getClient().getPerson().getName() + "</td>";
+            tblHtml += "<td>" + e.getClient().getPerson().getAge() + "</td>";
+            tblHtml += "<td>" + e.getClient().getPerson().getSex().getName() + "</td>";
+            tblHtml += "<td>" + e.getUnitWard() + "</td>";
+            tblHtml += "<td>" + result + "</td>";
+            tblHtml += "<td>" + ct1 + "</td>";
+            tblHtml += "<td>" + ct2 + "</td>";
+            tblHtml += "</tr>";
+
+            
+
+            html = html.replace("{institute}", rh.getIns().getName());
+
+            if (rh.getDateOfReceipt() != null) {
+                html = html.replace("{received_date}", CommonController.dateTimeToString(rh.getDateOfReceipt(), "dd MMMM yyyy"));
+            }
+
+            if (rh.getDateOfCollection() != null) {
+                html = html.replace("{sampled_date}", CommonController.dateTimeToString(rh.getDateOfCollection(), "dd MMMM yyyy"));
+            }
+
+            if (rh.getDateOfReport() != null) {
+                html = html.replace("{confirmed_date}", CommonController.dateTimeToString(rh.getDateOfReport(), "dd MMMM yyyy"));
+            }
+        }
+        tblHtml += "</table>";
+        html = html.replace("{result_table}", tblHtml);
         return html;
     }
 
@@ -1794,7 +1990,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No encounter");
             return "";
         }
-        Encounter testEncounter=selectedEncounter;
+        Encounter testEncounter = selectedEncounter;
         if (selectedEncounter.getClient() == null) {
             JsfUtil.addErrorMessage("No Client");
             return "";
@@ -1818,10 +2014,10 @@ public class ClientController implements Serializable {
             return "";
         }
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
-        if(cefs.getEncounter()!=null){
+        if (cefs.getEncounter() != null) {
             testEncounter.setReferenceCase(cefs.getEncounter());
             encounterFacade.edit(testEncounter);
-            
+
             cefs.getEncounter().setReferenceTest(testEncounter);
         }
         updateYearDateMonth();
@@ -5425,6 +5621,14 @@ public class ClientController implements Serializable {
 
     public void setSerialStart(Long serialStart) {
         this.serialStart = serialStart;
+    }
+
+    public String getBulkPrintReport() {
+        return bulkPrintReport;
+    }
+
+    public void setBulkPrintReport(String bulkPrintReport) {
+        this.bulkPrintReport = bulkPrintReport;
     }
 
     // </editor-fold>

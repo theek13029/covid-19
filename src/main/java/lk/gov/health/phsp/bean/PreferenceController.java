@@ -49,6 +49,7 @@ public class PreferenceController implements Serializable {
     Institution Preferences
      */
     private String labReportHtml;
+    private String numberOfRowsPerPage;
     private String labReportBulkHtml;
     private String labApprovalSteps;
     private String pcrPositiveTerm;
@@ -128,6 +129,7 @@ public class PreferenceController implements Serializable {
     public void loadPreferencesInstitution() {
         labApprovalSteps = findPreferanceValue("labApprovalSteps", webUserController.getLoggedUser().getInstitution());
         labReportHtml = findPreferanceValue("labReportHeader", webUserController.getLoggedUser().getInstitution());
+        numberOfRowsPerPage = findPreferanceValue("numberOfRowsPerPage", webUserController.getLoggedUser().getInstitution());
         pcrPositiveTerm = findPreferanceValue("pcrPositiveTerm", webUserController.getLoggedUser().getInstitution());
         pcrNegativeTerm = findPreferanceValue("pcrNegativeTerm", webUserController.getLoggedUser().getInstitution());
         pcrInconclusiveTerm = findPreferanceValue("pcrInconclusiveTerm", webUserController.getLoggedUser().getInstitution());
@@ -155,6 +157,9 @@ public class PreferenceController implements Serializable {
         }
         if (labReportHtml == null) {
             labReportHtml = "";
+        }
+        if (numberOfRowsPerPage == null) {
+            numberOfRowsPerPage = "20";
         }
         if (pcrPositiveTerm == null) {
             pcrPositiveTerm = "Positive";
@@ -189,6 +194,7 @@ public class PreferenceController implements Serializable {
     public void savePreferencesInstitution() {
         savePreference("labApprovalSteps", webUserController.getLoggedUser().getInstitution(), labApprovalSteps);
         savePreference("labReportHeader", webUserController.getLoggedUser().getInstitution(), labReportHtml);
+        savePreference("numberOfRowsPerPage", webUserController.getLoggedUser().getInstitution(), numberOfRowsPerPage);
         savePreference("pcrPositiveTerm", webUserController.getLoggedUser().getInstitution(), pcrPositiveTerm);
         savePreference("pcrNegativeTerm", webUserController.getLoggedUser().getInstitution(), pcrNegativeTerm);
         savePreference("pcrInvalidTerm", webUserController.getLoggedUser().getInstitution(), pcrInvalidTerm);
@@ -423,6 +429,8 @@ public class PreferenceController implements Serializable {
         this.userTransactionController = userTransactionController;
     }
 
+    
+    
     public String getLabReportHtml() {
         if (labReportHtml == null) {
             loadPreferencesInstitution();
@@ -630,6 +638,17 @@ public class PreferenceController implements Serializable {
 
     public void setCt1Term(String ct1Term) {
         this.ct1Term = ct1Term;
+    }
+
+    public String getNumberOfRowsPerPage() {
+        if(numberOfRowsPerPage==null){
+            loadPreferencesInstitution();
+        }
+        return numberOfRowsPerPage;
+    }
+
+    public void setNumberOfRowsPerPage(String numberOfRowsPerPage) {
+        this.numberOfRowsPerPage = numberOfRowsPerPage;
     }
 
     // </editor-fold>

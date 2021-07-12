@@ -97,9 +97,9 @@
                             <p:column headerText="Sex"  sortBy="#{c.client.person.sex.name}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-                             <p:column headerText="Category"  sortBy="#{c.pcrOrderingCategory.name}" 
-                                       filterBy="#{pcrOrderingCategory.name}" filterMatchMode="contains" >
-                                 <p:outputLabel value="#{c.pcrOrderingCategory.name}" ></p:outputLabel>
+                            <p:column headerText="Ordering Category"  sortBy="#{c.pcrOrderingCategory.name}"
+                                      filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.pcrOrderingCategory.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Test"  sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
