@@ -156,6 +156,120 @@ public class DashboardController implements Serializable {
 
     }
 
+    
+    public void prepareRegionalDashboard() {
+        Calendar c = Calendar.getInstance();
+        Date now = c.getTime();
+        Date todayStart = CommonController.startOfTheDate();
+
+        c.add(Calendar.DATE, -1);
+
+        Date yesterdayStart = CommonController.startOfTheDate(c.getTime());
+        Date yesterdayEnd = CommonController.endOfTheDate(c.getTime());
+
+        todayPcr = dashboardApplicationController.getOrderCountArea(webUserController.getLoggedUser().getInstitution().getRdhsArea(), todayStart, now,
+                itemApplicationController.getPcr(), null, null, null);
+        todayRat = dashboardApplicationController.getOrderCountArea(webUserController.getLoggedUser().getInstitution().getRdhsArea(), todayStart, now,
+                itemApplicationController.getRat(), null, null, null);
+        yesterdayPcr = dashboardApplicationController.getOrderCountArea(webUserController.getLoggedUser().getInstitution().getRdhsArea(), yesterdayStart, yesterdayEnd,
+                itemApplicationController.getPcr(), null, null, null);
+        yesterdayRat = dashboardApplicationController.getOrderCountArea(webUserController.getLoggedUser().getInstitution().getRdhsArea(), yesterdayStart, yesterdayEnd,
+                itemApplicationController.getRat(), null, null, null);
+
+        todayPositivePcr = dashboardApplicationController.getConfirmedCountArea(
+                webUserController.getLoggedUser().getInstitution().getRdhsArea(),
+                todayStart,
+                now,
+                itemApplicationController.getPcr(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+        todayPositiveRat = dashboardApplicationController.getConfirmedCountArea(
+                webUserController.getLoggedUser().getInstitution().getRdhsArea(),
+                todayStart,
+                now,
+                itemApplicationController.getRat(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+
+        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCountArea(
+                webUserController.getLoggedUser().getInstitution().getRdhsArea(),
+                yesterdayStart,
+                yesterdayEnd,
+                itemApplicationController.getPcr(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCountArea(
+                webUserController.getLoggedUser().getInstitution().getRdhsArea(),
+                yesterdayStart,
+                yesterdayEnd,
+                itemApplicationController.getRat(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+
+    }
+
+    
+    public void prepareProvincialDashboard() {
+         Calendar c = Calendar.getInstance();
+        Date now = c.getTime();
+        Date todayStart = CommonController.startOfTheDate();
+
+        c.add(Calendar.DATE, -1);
+
+        Date yesterdayStart = CommonController.startOfTheDate(c.getTime());
+        Date yesterdayEnd = CommonController.endOfTheDate(c.getTime());
+
+        todayPcr = dashboardApplicationController.getOrderCountArea(webUserController.getLoggedUser().getInstitution().getPdhsArea(), todayStart, now,
+                itemApplicationController.getPcr(), null, null, null);
+        todayRat = dashboardApplicationController.getOrderCountArea(webUserController.getLoggedUser().getInstitution().getPdhsArea(), todayStart, now,
+                itemApplicationController.getRat(), null, null, null);
+        yesterdayPcr = dashboardApplicationController.getOrderCountArea(webUserController.getLoggedUser().getInstitution().getPdhsArea(), yesterdayStart, yesterdayEnd,
+                itemApplicationController.getPcr(), null, null, null);
+        yesterdayRat = dashboardApplicationController.getOrderCountArea(webUserController.getLoggedUser().getInstitution().getPdhsArea(), yesterdayStart, yesterdayEnd,
+                itemApplicationController.getRat(), null, null, null);
+
+        todayPositivePcr = dashboardApplicationController.getConfirmedCountArea(
+                webUserController.getLoggedUser().getInstitution().getPdhsArea(),
+                todayStart,
+                now,
+                itemApplicationController.getPcr(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+        todayPositiveRat = dashboardApplicationController.getConfirmedCountArea(
+                webUserController.getLoggedUser().getInstitution().getPdhsArea(),
+                todayStart,
+                now,
+                itemApplicationController.getRat(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+
+        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCountArea(
+                webUserController.getLoggedUser().getInstitution().getPdhsArea(),
+                yesterdayStart,
+                yesterdayEnd,
+                itemApplicationController.getPcr(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCountArea(
+                webUserController.getLoggedUser().getInstitution().getPdhsArea(),
+                yesterdayStart,
+                yesterdayEnd,
+                itemApplicationController.getRat(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+
+
+    }
+
+    
     public void prepareLabDashboard() {
         String j;
         Map m;
