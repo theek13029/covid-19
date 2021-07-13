@@ -4,24 +4,167 @@
       xmlns:cc="http://xmlns.jcp.org/jsf/composite"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 
-    <!-- INTERFACE -->
+   <!-- INTERFACE -->
     <cc:interface>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <h:outputStylesheet library="css" name="all.min.css"></h:outputStylesheet>
-        <h:outputStylesheet library="css" name="OverlayScrollbars.min.css"></h:outputStylesheet> 
-        <h:outputStylesheet library="css" name="adminlte.min.css"></h:outputStylesheet>
-        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"></link>
+         <h:form>
+            <div class="row p-4">
+                <div class="col-md-3" >
+                    <div class="card">
+                        <div class="card-header bg-gradient-blue">
+                            PCRs
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Today" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardController.todayPcr}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Yesterday" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardController.yesterdayPcr}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-right ">
+                            <h:commandLink value="Find more details .." class="text-blue"></h:commandLink>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" >
+                    <div class="card">
+                        <div class="card-header bg-cyan text-white">
+                            RATs
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Today" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardController.todayRat}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Yesterday" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardController.yesterdayRat}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
 
-        <h:outputScript library="js" name="jquery.min.js"></h:outputScript>
-        <h:outputScript library="js" name="bootstrap.bundle.min.js"></h:outputScript>
-        <h:outputScript library="js" name="adminlte.min.js"></h:outputScript>
-        <h:outputScript library="js" name="demo.js"></h:outputScript>
-        <h:outputScript library="js" name="chart.js"></h:outputScript>
+                        </div>
+                        <div class="card-footer text-right ">
+                            <h:commandLink value="Find more details .." class="text-cyan"></h:commandLink>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" >
+                    <div class="card">
+                        <div class="card-header text-white bg-danger">
+                            PCR Positives
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Today" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardController.todayPositivePcr}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Yesterday" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardController.yesterdayPositivePcr}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-footer text-right ">
+                            <h:commandLink value="Find more details .." action="#{mohController.toPcrPositiveReportsIndexNational()}" class="text-danger"></h:commandLink>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" >
+                    <div class="card ">
+                        <div class="card-header text-white bg-warning">
+                            RAT Positives
+                            <sub>Last 24H</sub>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Today" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardController.todayPositiveRat}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="Yesterday" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6" >
+                                    <h5>
+                                        <h:outputLabel value="#{dashboardController.yesterdayPositiveRat}" ></h:outputLabel>
+                                    </h5>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-footer text-right">
+                            <h:commandLink value="Find more details .." class="text-warning"></h:commandLink>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </h:form>
 
 
-     
+
     </cc:implementation>
 </html>
