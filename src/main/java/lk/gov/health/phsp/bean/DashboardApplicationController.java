@@ -23,6 +23,7 @@
  */
 package lk.gov.health.phsp.bean;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,6 +46,7 @@ import lk.gov.health.phsp.facade.ClientEncounterComponentItemFacade;
 import lk.gov.health.phsp.facade.ClientFacade;
 import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.NumbersFacade;
+import lk.gov.health.phsp.pojcs.InstitutionCount;
 
 /**
  *
@@ -82,6 +84,8 @@ public class DashboardApplicationController {
     private Long yesterdayPositiveRat;
     private Long yesterdayTests;
     private Long todaysTests;
+
+    private List<InstitutionCount> orderingCounts;
 
     Item testType;
     Item orderingCat;
@@ -145,7 +149,59 @@ public class DashboardApplicationController {
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
+        orderingCounts = listOrderingCategoryCounts(null, now, yesterdayStart, null, null, null, null);
+    }
 
+    public List<InstitutionCount> listOrderingCategoryCounts(
+            Institution ins,
+            Date fromDate,
+            Date toDate,
+            Item testType,
+            Item orderingCategory,
+            Item result,
+            Institution lab) {
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.pcrOrderingCategory, count(c))  "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        if (ins != null) {
+            j += " and c.institution=:ins ";
+            m.put("ins", ins);
+        }
+
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
+        List<InstitutionCount> tics = new ArrayList<>();
+        for (Object o : objs) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                tics.add(ic);
+            }
+        }
+        return tics;
     }
 
     public Long getOrderCount(Institution ins,
@@ -458,6 +514,17 @@ public class DashboardApplicationController {
 
     public void setTodaysTests(Long todaysTests) {
         this.todaysTests = todaysTests;
+    }
+
+    public List<InstitutionCount> getOrderingCounts() {
+        if (orderingCounts == null) {
+            updateDashboard();
+        }
+        return orderingCounts;
+    }
+
+    public void setOrderingCounts(List<InstitutionCount> orderingCounts) {
+        this.orderingCounts = orderingCounts;
     }
 
 }

@@ -13,7 +13,7 @@
                 <div class="col-md-3" >
                     <div class="card">
                         <div class="card-header bg-gradient-blue">
-                            PCRs
+                            PCR Samples
                         </div>
                         <div class="card-body text-center">
                             <div class="row">
@@ -158,6 +158,31 @@
                     </div>
                 </div>
 
+            </div>
+            
+            
+            <div class="row p-4">
+                <div class="col-md-3" >
+                    <div class="card">
+                        <div class="card-header bg-gradient-blue">
+                            Tests By Category
+                        </div>
+                        <div class="card-body text-center">
+                            <p:dataTable value="#{dashboardApplicationController.orderingCounts}" var="oc" >
+                                <p:column headerText="Category" >
+                                    <p:outputLabel value="#{oc.item.name}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Count" >
+                                    <p:outputLabel value="#{oc.count}" ></p:outputLabel>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                        <div class="card-footer text-right ">
+                            <h:commandLink value="Find more details .." class="text-blue"></h:commandLink>
+                        </div>
+                    </div>
+                </div>
+              
             </div>
         </h:form>
     </cc:implementation>
