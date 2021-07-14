@@ -58,9 +58,14 @@
                             <p:column headerText="Tube No" width="140" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Lab No" width="200"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
-                                <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
+                            <p:column  headerText="Lab No" width="200"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
+                                <p:inputText value="#{c.labNumber}" id="txtLabNo" style="width: 98%;" >
+                                    <p:ajax event="blur" process="txtLabNo" 
+                                            listener="#{clientController.saveLabNo(c)}" >
+                                    </p:ajax>
+                                </p:inputText>
                             </p:column>
+                            
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" 
                                       filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>

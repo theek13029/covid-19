@@ -79,9 +79,17 @@
                                       filterBy="#{c.client.person.district.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.district.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Result"  sortBy="#{c.pcrResultStr}"
-                                      filterBy="#{c.pcrResultStr}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrResultStr}" rendered="#{c.resultConfirmed}"></p:outputLabel>
+                             <p:column headerText="Confirmed at"  sortBy="#{c.resultConfirmedAt}"
+                                       filterBy="#{c.resultConfirmedAt}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.resultConfirmedAt}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Confirmed By"  sortBy="#{c.resultConfirmedBy.name}"
+                                      filterBy="#{c.resultConfirmedBy.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.resultConfirmedBy.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
+                                      filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}"></p:outputLabel>
                                 <p:outputLabel value="Not Available" rendered="#{not c.resultConfirmed}"></p:outputLabel>
                             </p:column>
                         </p:dataTable>
