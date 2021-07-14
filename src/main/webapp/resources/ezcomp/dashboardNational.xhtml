@@ -162,7 +162,7 @@
             
             
             <div class="row p-4">
-                <div class="col-md-3" >
+                <div class="col-md-6" >
                     <div class="card">
                         <div class="card-header bg-gradient-blue">
                             Tests By Category
@@ -170,7 +170,7 @@
                         <div class="card-body text-center">
                             <p:dataTable value="#{dashboardApplicationController.orderingCounts}" var="oc" >
                                 <p:column headerText="Category" >
-                                    <p:outputLabel value="#{oc.item.name}" ></p:outputLabel>
+                                    <p:outputLabel value="#{oc.itemValue.name}" ></p:outputLabel>
                                 </p:column>
                                 <p:column headerText="Count" >
                                     <p:outputLabel value="#{oc.count}" ></p:outputLabel>

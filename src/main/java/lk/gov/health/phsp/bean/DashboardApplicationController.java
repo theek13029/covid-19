@@ -149,8 +149,12 @@ public class DashboardApplicationController {
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
-        orderingCounts = listOrderingCategoryCounts(null, now, yesterdayStart, null, null, null, null);
+        orderingCounts = listOrderingCategoryCounts(null,  yesterdayStart,now, null, null, null, null);
     }
+    
+    
+   
+
 
     public List<InstitutionCount> listOrderingCategoryCounts(
             Institution ins,
@@ -194,7 +198,10 @@ public class DashboardApplicationController {
             m.put("ri", lab);
         }
         j+=" group by c.pcrOrderingCategory";
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
         List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("objs = " + objs.size());
         List<InstitutionCount> tics = new ArrayList<>();
         for (Object o : objs) {
             if (o instanceof InstitutionCount) {
