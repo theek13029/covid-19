@@ -51,6 +51,11 @@ public class InstitutionCount {
         this.encounerType = encounerType;
     }
 
+    public InstitutionCount(Item itemValue, Long count) {
+        this.itemValue = itemValue;
+        this.count = count;
+    }
+
     public InstitutionCount(Long count, Institution institution, Date date, EncounterType encounerType, Item item, Item itemValue) {
         this.institution = institution;
         this.count = count;
@@ -71,7 +76,7 @@ public class InstitutionCount {
         this.institution = institution;
         this.count = count;
     }
-    
+
     public InstitutionCount(Institution institution, Institution referralInstitution, Long count) {
         this.institution = institution;
         this.referralInstitution = referralInstitution;
@@ -82,8 +87,6 @@ public class InstitutionCount {
         this.area = area;
         this.count = count;
     }
-    
-    
 
     public InstitutionCount() {
     }
@@ -151,7 +154,5 @@ public class InstitutionCount {
     public void setReferralInstitution(Institution referralInstitution) {
         this.referralInstitution = referralInstitution;
     }
-    
-    
 
 }
