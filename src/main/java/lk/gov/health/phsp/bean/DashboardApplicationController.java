@@ -193,6 +193,7 @@ public class DashboardApplicationController {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
+        j+=" group by c.pcrOrderingCategory";
         List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
         List<InstitutionCount> tics = new ArrayList<>();
         for (Object o : objs) {
