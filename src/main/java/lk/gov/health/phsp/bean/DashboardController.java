@@ -107,11 +107,6 @@ public class DashboardController implements Serializable {
 
     private List<InstitutionCount> orderingCategories;
 
-    public String toOrderingCategoryDistrict() {
-
-        return "/national/ordering_category_district";
-    }
-
     public String toContactNational() {
         orderingCategories = new ArrayList<>();
         for (InstitutionCount oc : dashboardApplicationController.getOrderingCounts()) {

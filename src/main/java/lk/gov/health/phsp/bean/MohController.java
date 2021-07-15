@@ -1242,8 +1242,8 @@ public class MohController implements Serializable {
         m.put("etype", EncounterType.Test_Enrollment);
         
         j += " and c.createdAt between :fd and :td ";
-        m.put("fd", fromDate);
-        m.put("td", toDate);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
 
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
@@ -1274,7 +1274,7 @@ public class MohController implements Serializable {
             }
         }
         institutionCounts = tics;
-        return "/moh/ordering_category_district";
+        return "/national/ordering_category_district";
     }
 
     

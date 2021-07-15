@@ -76,10 +76,10 @@
                                      var="c" 
                                      >
                             <p:column headerText="District" sortBy="#{c.area.name}" filterBy="#{c.area.name}" filterMatchMode="contains">
-                                <p:commandButton ajax="false" action="#{mohController.toMohViceTestListForOrderingCategories()}"
+                                <p:commandLink ajax="false" action="#{mohController.toMohViceTestListForOrderingCategories()}"
                                                  value="#{c.area.name}" >
                                     <f:setPropertyActionListener value="#{c.area}" target="#{mohController.district}" ></f:setPropertyActionListener>
-                                </p:commandButton>
+                                </p:commandLink>
                             </p:column>
                             <p:column headerText="Category" rendered="#{mohController.orderingCategory eq null}"
                                       sortBy="#{c.itemValue.name}" filterBy="#{c.itemValue.name}" filterMatchMode="contains">
