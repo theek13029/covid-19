@@ -4,7 +4,7 @@
     <h:body>
         <ui:composition template="/template1.xhtml">
             <ui:define name="title" >
-               NCHIS - PCR Order
+                NCHIS - PCR Order
             </ui:define>
             <ui:define name="content">
                 <h:form class="form" >
@@ -29,6 +29,7 @@
                                         <p:inputText id="txtTestNo" class="form-control " 
                                                      value="#{mohController.pcr.encounterNumber}"
                                                      tabindex="1" >
+                                            <p:ajax process="txtTestNo" event="blur" ></p:ajax>
                                         </p:inputText>
                                     </div>
 
@@ -45,17 +46,19 @@
                                             <f:selectItem itemLabel="Select" ></f:selectItem>
                                             <f:selectItems value="#{mohController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
                                                            itemValue="#{tt}" ></f:selectItems>
+                                            <p:ajax process="orderingCat" event="blur" ></p:ajax>
                                         </p:selectOneMenu>
                                     </div>
 
                                     <div class="col-md-3">
                                         <p:outputLabel  value="Lab"></p:outputLabel>
-                                        <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
+                                        <p:autoComplete id="acLab" style="margin: 0px; padding: 0px; width: 100%;"
                                                         inputStyleClass="autocomplete"
                                                         value="#{mohController.pcr.referalInstitution}"
                                                         forceSelection="true" tabindex="100" 
                                                         completeMethod="#{mohController.completeLab}" 
                                                         var="l" itemLabel="#{l.name}" itemValue="#{l}">
+                                            <p:ajax process="acLab" event="blur" ></p:ajax>
                                         </p:autoComplete>
                                     </div>
 
@@ -114,10 +117,17 @@
                                                      value="#{mohController.pcr.client.person.nic}"
                                                      title="Nic" 
                                                      validatorMessage="Please check the number">
-                                            <f:ajax event="blur" 
-                                                    render="year month sex" 
-                                                    execute="@this"/>
+
+                                            <f:ajax event="blur" execute="@this" render="nicExists year month sex" 
+                                                    listener="#{mohController.checkNicExistsForPcr()}" ></f:ajax>
                                         </p:inputText>
+                                        <h:panelGroup id="nicExists" >
+                                            <p:commandLink rendered="#{mohController.nicExistsForPcr}"  ajax="false"
+                                                           immediate="true"
+                                                           action="#{mohController.toAddNewPcrWithExistingNic()}"
+                                                           value="NIC Exists. Click here to Load Patient" >
+                                            </p:commandLink>
+                                        </h:panelGroup>
                                     </div>
                                     <div class="col-md-3">
                                         <p:outputLabel value="Gender:"  for="sex" />

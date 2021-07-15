@@ -100,6 +100,8 @@ public class MohController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Variables">  
+    private Boolean nicExistsForPcr;
+    private Boolean nicExistsForRat;
     private Encounter rat;
     private Encounter pcr;
     private Encounter covidCase;
@@ -126,6 +128,86 @@ public class MohController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
+    public Boolean checkNicExists(String nic, Client c) {
+        String jpql = "select count(c) from Client c "
+                + " where c.retired=:ret "
+                + " and c.reservedClient<>:res "
+                + " and c.person.nic=:nic ";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("res", true);
+        m.put("nic", nic);
+        if (c != null && c.getPerson() != null && c.getPerson().getId() != null) {
+            jpql += " and c.person <> :person";
+            m.put("person", c.getPerson());
+        }
+        Long count = clientFacade.countByJpql(jpql, m);
+        if (count == null || count == 0l) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void checkNicExistsForRat() {
+        nicExistsForRat = null;
+        if (rat == null) {
+            return;
+        }
+        if (rat.getClient() == null) {
+            return;
+        }
+        if (rat.getClient().getPerson() == null) {
+            return;
+        }
+        if (rat.getClient().getPerson().getNic() == null) {
+            return;
+        }
+        if (rat.getClient().getPerson().getNic().trim().equals("")) {
+            return;
+        }
+        nicExistsForRat = checkNicExists(rat.getClient().getPerson().getNic(), rat.getClient());
+    }
+
+    public void checkNicExistsForPcr() {
+        nicExistsForPcr = null;
+        if (pcr == null) {
+            return;
+        }
+        if (pcr.getClient() == null) {
+            return;
+        }
+        if (pcr.getClient().getPerson() == null) {
+            return;
+        }
+        if (pcr.getClient().getPerson().getNic() == null) {
+            return;
+        }
+        if (pcr.getClient().getPerson().getNic().trim().equals("")) {
+            return;
+        }
+        nicExistsForPcr = checkNicExists(pcr.getClient().getPerson().getNic(), pcr.getClient());
+    }
+
+    public Client lastClientWithNic(String nic, Client c) {
+        if (nic == null || nic.trim().equals("")) {
+            return null;
+        }
+        String jpql = "select c "
+                + " from Client c "
+                + " where c.retired=:ret "
+                + " and c.person.nic=:nic ";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("nic", nic);
+        if (c != null && c.getPerson() != null && c.getPerson().getId() != null) {
+            jpql += " and c.person <> :person";
+            m.put("person", c.getPerson());
+        }
+        jpql += " order by c.id desc";
+        return clientFacade.findFirstByJpql(jpql, m);
+    }
+
     public String toPcrPositiveReportsIndexNational() {
         fromDate = CommonController.startOfTheDate();
         toDate = CommonController.endOfTheDate();
@@ -154,7 +236,7 @@ public class MohController implements Serializable {
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         return "/national/result_list_pcr_positive";
     }
-    
+
     public String toPcrPositiveByDistrict() {
         result = itemApplicationController.getPcrPositive();
         testType = itemApplicationController.getPcr();
@@ -173,22 +255,23 @@ public class MohController implements Serializable {
         j += " and c.pcrResult=:result ";
         m.put("result", result);
         j += " group by c.client.person.district";
-        List<Object> objs=new ArrayList<>();
-        try{
-        objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);}catch(Exception e){
-            
+        List<Object> objs = new ArrayList<>();
+        try {
+            objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
+        } catch (Exception e) {
+
         }
         institutionCounts = new ArrayList<>();
-        for(Object o:objs){
-            if(o instanceof InstitutionCount){
+        for (Object o : objs) {
+            if (o instanceof InstitutionCount) {
                 InstitutionCount ic = (InstitutionCount) o;
                 institutionCounts.add(ic);
             }
         }
         return "/national/pcr_positive_counts_by_district";
     }
-    
-     public String toPcrPositiveByInstitutionDistrict() {
+
+    public String toPcrPositiveByInstitutionDistrict() {
         result = itemApplicationController.getPcrPositive();
         testType = itemApplicationController.getPcr();
         Map m = new HashMap();
@@ -206,22 +289,23 @@ public class MohController implements Serializable {
         j += " and c.pcrResult=:result ";
         m.put("result", result);
         j += " group by c.institution.district";
-        List<Object> objs=new ArrayList<>();
-        try{
-        objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);}catch(Exception e){
-            
+        List<Object> objs = new ArrayList<>();
+        try {
+            objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
+        } catch (Exception e) {
+
         }
         institutionCounts = new ArrayList<>();
-        for(Object o:objs){
-            if(o instanceof InstitutionCount){
+        for (Object o : objs) {
+            if (o instanceof InstitutionCount) {
                 InstitutionCount ic = (InstitutionCount) o;
                 institutionCounts.add(ic);
             }
         }
         return "/national/pcr_positive_counts_by_institution_district";
     }
-     
-     public String toPcrPositiveByOrderedInstitute() {
+
+    public String toPcrPositiveByOrderedInstitute() {
         result = itemApplicationController.getPcrPositive();
         testType = itemApplicationController.getPcr();
         Map m = new HashMap();
@@ -239,14 +323,15 @@ public class MohController implements Serializable {
         j += " and c.pcrResult=:result ";
         m.put("result", result);
         j += " group by c.institution";
-        List<Object> objs=new ArrayList<>();
-        try{
-        objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);}catch(Exception e){
-            
+        List<Object> objs = new ArrayList<>();
+        try {
+            objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
+        } catch (Exception e) {
+
         }
         institutionCounts = new ArrayList<>();
-        for(Object o:objs){
-            if(o instanceof InstitutionCount){
+        for (Object o : objs) {
+            if (o instanceof InstitutionCount) {
                 InstitutionCount ic = (InstitutionCount) o;
                 institutionCounts.add(ic);
             }
@@ -254,7 +339,7 @@ public class MohController implements Serializable {
         return "/national/pcr_positive_counts_by_ordered_institution";
     }
 
-      public String toPcrPositiveByLab() {
+    public String toPcrPositiveByLab() {
         result = itemApplicationController.getPcrPositive();
         testType = itemApplicationController.getPcr();
         Map m = new HashMap();
@@ -272,14 +357,15 @@ public class MohController implements Serializable {
         j += " and c.pcrResult=:result ";
         m.put("result", result);
         j += " group by c.referalInstitution";
-        List<Object> objs=new ArrayList<>();
-        try{
-        objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);}catch(Exception e){
-            
+        List<Object> objs = new ArrayList<>();
+        try {
+            objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
+        } catch (Exception e) {
+
         }
         institutionCounts = new ArrayList<>();
-        for(Object o:objs){
-            if(o instanceof InstitutionCount){
+        for (Object o : objs) {
+            if (o instanceof InstitutionCount) {
                 InstitutionCount ic = (InstitutionCount) o;
                 institutionCounts.add(ic);
             }
@@ -287,7 +373,6 @@ public class MohController implements Serializable {
         return "/national/pcr_positive_counts_by_lab";
     }
 
-     
     public void deleteTest() {
         if (deleting == null) {
             JsfUtil.addErrorMessage("Nothing to delete");
@@ -387,7 +472,8 @@ public class MohController implements Serializable {
                 return "/moh/reports_index";
             case Pdhs:
                 return "/provincial/reports_index";
-            default: return "";
+            default:
+                return "";
         }
     }
 
@@ -574,6 +660,7 @@ public class MohController implements Serializable {
 
     public String toAddNewRatWithNewClient() {
         rat = new Encounter();
+        nicExistsForRat = null;
         Date d = new Date();
         Client c = new Client();
         c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
@@ -605,6 +692,7 @@ public class MohController implements Serializable {
 
     public String toAddNewRatOrderWithNewClient() {
         rat = new Encounter();
+        nicExistsForRat = null;
         Date d = new Date();
         Client c = new Client();
         c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
@@ -629,6 +717,7 @@ public class MohController implements Serializable {
 
     public String toAddNewPcrWithNewClient() {
         pcr = new Encounter();
+        nicExistsForPcr = null;
         Date d = new Date();
         Client c = new Client();
         c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
@@ -649,6 +738,143 @@ public class MohController implements Serializable {
         pcr.setSampledBy(webUserController.getLoggedUser());
         pcr.setCreatedAt(new Date());
         return "/moh/pcr";
+    }
+
+    public String toAddNewPcrWithExistingNic() {
+        if (pcr == null) {
+            return "";
+        }
+        if (pcr.getClient() == null) {
+            return "";
+        }
+        if (pcr.getClient().getPerson() == null) {
+            return "";
+        }
+        if (pcr.getClient().getPerson().getNic() == null || pcr.getClient().getPerson().getNic().trim().equals("")) {
+            return "";
+        }
+        Client nicClient = lastClientWithNic(pcr.getClient().getPerson().getNic(), pcr.getClient());
+        if (nicClient == null) {
+            return "";
+        }
+        nicExistsForPcr=null;
+        Encounter tmpEnc = pcr;
+        pcr = new Encounter();
+        pcr.setEncounterNumber(tmpEnc.getEncounterNumber());
+        Date d = new Date();
+        Client c = nicClient;
+        c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
+        c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        pcr.setPcrTestType(itemApplicationController.getPcr());
+        pcr.setPcrOrderingCategory(sessionController.getLastPcrOrdringCategory());
+        pcr.setClient(c);
+        pcr.setInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setReferalInstitution(lab);
+        pcr.setEncounterType(EncounterType.Test_Enrollment);
+        pcr.setEncounterDate(d);
+        pcr.setEncounterFrom(d);
+        pcr.setEncounterMonth(CommonController.getMonth(d));
+        pcr.setEncounterQuarter(CommonController.getQuarter(d));
+        pcr.setEncounterYear(CommonController.getYear(d));
+        pcr.setSampled(true);
+        pcr.setSampledAt(new Date());
+        pcr.setSampledBy(webUserController.getLoggedUser());
+        pcr.setCreatedAt(new Date());
+        return "/moh/pcr";
+    }
+
+    public String toAddNewRatOrderWithExistingNic() {
+        if (rat == null) {
+            return "";
+        }
+        if (rat.getClient() == null) {
+            return "";
+        }
+        if (rat.getClient().getPerson() == null) {
+            return "";
+        }
+        if (rat.getClient().getPerson().getNic() == null || rat.getClient().getPerson().getNic().trim().equals("")) {
+            return "";
+        }
+        Client nicClient = lastClientWithNic(rat.getClient().getPerson().getNic(), rat.getClient());
+        if (nicClient == null) {
+            return "";
+        }
+        nicExistsForRat=null;
+        Encounter tmpEnc = rat;
+        rat = new Encounter();
+        rat.setEncounterNumber(tmpEnc.getEncounterNumber());
+        Date d = new Date();
+    
+        Client c = nicClient;
+        c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
+        c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        rat.setPcrTestType(itemApplicationController.getRat());
+        rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
+        rat.setClient(c);
+        rat.setInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setReferalInstitution(lab);
+        rat.setEncounterType(EncounterType.Test_Enrollment);
+        rat.setEncounterDate(d);
+        rat.setEncounterFrom(d);
+        rat.setEncounterMonth(CommonController.getMonth(d));
+        rat.setEncounterQuarter(CommonController.getQuarter(d));
+        rat.setEncounterYear(CommonController.getYear(d));
+        rat.setSampled(true);
+        rat.setSampledAt(new Date());
+        rat.setSampledBy(webUserController.getLoggedUser());
+        rat.setCreatedAt(new Date());
+        return "/moh/rat_order";
+    }
+
+    public String toAddNewRatWithExistingNic() {
+        if (rat == null) {
+            return "";
+        }
+        if (rat.getClient() == null) {
+            return "";
+        }
+        if (rat.getClient().getPerson() == null) {
+            return "";
+        }
+        if (rat.getClient().getPerson().getNic() == null || rat.getClient().getPerson().getNic().trim().equals("")) {
+            return "";
+        }
+        Client nicClient = lastClientWithNic(rat.getClient().getPerson().getNic(), rat.getClient());
+        if (nicClient == null) {
+            return "";
+        }
+        nicExistsForRat=null;
+        Encounter tmpEnc = rat;
+        rat = new Encounter();
+        rat.setEncounterNumber(tmpEnc.getEncounterNumber());
+        Date d = new Date();
+        Client c = nicClient;
+        c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
+        c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        rat.setPcrTestType(itemApplicationController.getRat());
+        rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
+        rat.setClient(c);
+        rat.setInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setEncounterType(EncounterType.Test_Enrollment);
+        rat.setEncounterDate(d);
+        rat.setEncounterFrom(d);
+        rat.setEncounterMonth(CommonController.getMonth(d));
+        rat.setEncounterQuarter(CommonController.getQuarter(d));
+        rat.setEncounterYear(CommonController.getYear(d));
+
+        rat.setSampled(true);
+        rat.setSampledAt(new Date());
+        rat.setSampledBy(webUserController.getLoggedUser());
+
+        rat.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+
+        rat.setResultConfirmed(Boolean.TRUE);
+        rat.setResultConfirmedAt(d);
+        rat.setResultConfirmedBy(webUserController.getLoggedUser());
+
+        rat.setCreatedAt(new Date());
+        return "/moh/rat";
     }
 
     public String saveRatAndToNewRat() {
@@ -1232,8 +1458,6 @@ public class MohController implements Serializable {
     public void setToDate(Date toDate) {
         this.toDate = toDate;
     }
-    
-    
 
     public Encounter getTest() {
         return test;
@@ -1304,6 +1528,22 @@ public class MohController implements Serializable {
 
     public List<InstitutionCount> getInstitutionCounts() {
         return institutionCounts;
+    }
+
+    public Boolean getNicExistsForPcr() {
+        return nicExistsForPcr;
+    }
+
+    public void setNicExistsForPcr(Boolean nicExistsForPcr) {
+        this.nicExistsForPcr = nicExistsForPcr;
+    }
+
+    public Boolean getNicExistsForRat() {
+        return nicExistsForRat;
+    }
+
+    public void setNicExistsForRat(Boolean nicExistsForRat) {
+        this.nicExistsForRat = nicExistsForRat;
     }
 
 }
