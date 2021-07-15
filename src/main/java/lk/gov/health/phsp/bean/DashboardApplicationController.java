@@ -169,24 +169,27 @@ public class DashboardApplicationController {
             if (oc.getItemValue() != null && oc.getItemValue().getCode() != null) {
                 code = oc.getItemValue().getCode();
             }
+            if (oc.getCount() == null) {
+                continue;
+            }
             switch (code) {
                 case "exit_for_first_contacts":
                 case "first_contact_non_exit":
-                    firstContactCount++;
+                    firstContactCount += oc.getCount();
                     break;
                 case "community_screening_random":
                 case "workplace_random":
-                    communityRandomCount++;
+                    communityRandomCount += oc.getCount();
                     break;
                 case "overseas_returnees_and_foreign_travelers_initial_or_arrival":
                 case "overseas_returnees_and_foreign_travelers_exit":
-                    foreignCount++;
+                    foreignCount += oc.getCount();
                     break;
 
                 case "routine_for_procedures":
                 case "opd_symptomatic":
                 case "opd_inward_symptomatic":
-                    hospitalCount++;
+                    hospitalCount += oc.getCount();
                     break;
 
                 case "postmortem_screening":
@@ -194,7 +197,7 @@ public class DashboardApplicationController {
                 case "workplace_routine":
                 case "covid_19_test_ordering_category_other":
                 case "":
-                    otherCount++;
+                    otherCount += oc.getCount();
                     break;
             }
         }
