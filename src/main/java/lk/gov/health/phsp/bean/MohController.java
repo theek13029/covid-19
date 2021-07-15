@@ -120,6 +120,8 @@ public class MohController implements Serializable {
 
     private List<Institution> regionalMohsAndHospitals;
     private List<InstitutionCount> institutionCounts;
+    
+    private Area district;
 
 // </editor-fold>    
 // <editor-fold defaultstate="collapsed" desc="Constructors">
@@ -1275,6 +1277,58 @@ public class MohController implements Serializable {
         return "/moh/ordering_category_district";
     }
 
+    
+    public String toMohViceTestListForOrderingCategories() {
+        Map m = new HashMap();
+
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.mohArea, c.pcrOrderingCategory, count(c))  "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        if(district!=null){
+            j += " and c.client.person.district=:dis ";
+            m.put("dis", district);
+        }
+        j += " group by c.pcrOrderingCategory, c.client.person.mohArea";
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("objs = " + objs.size());
+        List<InstitutionCount> tics = new ArrayList<>();
+        for (Object o : objs) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                tics.add(ic);
+            }
+        }
+        institutionCounts = tics;
+        return "/moh/ordering_category_moh";
+    }
+
+    
     public String toTestRequestDistrictCounts() {
         Map m = new HashMap();
         String j = "select c "
@@ -1591,5 +1645,15 @@ public class MohController implements Serializable {
     public void setNicExistsForRat(Boolean nicExistsForRat) {
         this.nicExistsForRat = nicExistsForRat;
     }
+
+    public Area getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(Area district) {
+        this.district = district;
+    }
+    
+    
 
 }
