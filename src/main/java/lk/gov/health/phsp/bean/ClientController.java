@@ -1395,6 +1395,40 @@ public class ClientController implements Serializable {
         encounterFacade.edit(se);
     }
 
+    public void saveEncounterResultsAtMohForConfirmedDate(Encounter se) {
+        if (se == null) {
+            return;
+        }
+        if (se.getResultConfirmedAt() != null) {
+            se.setResultConfirmed(true);
+            se.setResultConfirmedBy(webUserController.getLoggedUser());
+            se.setResultReviewed(true);
+            se.setResultReviewedAt(se.getResultConfirmedAt());
+            se.setResultReviewedBy(webUserController.getLoggedUser());
+            se.setResultEntered(true);
+            se.setResultEnteredAt(se.getResultConfirmedAt());
+            se.setResultEnteredBy(webUserController.getLoggedUser());
+            se.setResultNoted(true);
+            se.setResultNotedAt(se.getResultConfirmedAt());
+            se.setResultNotedBy(webUserController.getLoggedUser());
+        } else {
+            se.setResultConfirmed(true);
+            se.setResultConfirmedAt(new Date());
+            se.setResultConfirmedBy(webUserController.getLoggedUser());
+            se.setResultReviewed(true);
+            se.setResultReviewedAt(new Date());
+            se.setResultReviewedBy(webUserController.getLoggedUser());
+            se.setResultEntered(true);
+            se.setResultEnteredAt(new Date());
+            se.setResultEnteredBy(webUserController.getLoggedUser());
+            se.setResultNoted(true);
+            se.setResultNotedAt(new Date());
+            se.setResultNotedBy(webUserController.getLoggedUser());
+
+        }
+        encounterFacade.edit(se);
+    }
+
     public void saveEncounterResultsAtMoh(Encounter se) {
         if (se == null) {
             return;
@@ -1715,7 +1749,7 @@ public class ClientController implements Serializable {
         if (e.getCtValue() != null) {
             html = html.replace("{pcr_ct1}", e.getCtValue().toString());
         }
-        if (e.getCtValue2()!= null) {
+        if (e.getCtValue2() != null) {
             html = html.replace("{pcr_ct2}", e.getCtValue2().toString());
         }
         if (e.getResultComments() != null) {
