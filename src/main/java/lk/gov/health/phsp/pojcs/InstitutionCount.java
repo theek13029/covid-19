@@ -55,6 +55,12 @@ public class InstitutionCount {
         this.itemValue = itemValue;
         this.count = count;
     }
+    
+     public InstitutionCount(Area area, Item itemValue, Long count) {
+        this.itemValue = itemValue;
+        this.count = count;
+        this.area = area;
+    }
 
     public InstitutionCount(Long count, Institution institution, Date date, EncounterType encounerType, Item item, Item itemValue) {
         this.institution = institution;

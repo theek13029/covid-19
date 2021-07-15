@@ -84,6 +84,11 @@ public class DashboardApplicationController {
     private Long yesterdayPositiveRat;
     private Long yesterdayTests;
     private Long todaysTests;
+    private Long firstContactCount;
+    private Long communityRandomCount;
+    private Long foreignCount;
+    private Long hospitalCount;
+    private Long otherCount;
 
     private List<InstitutionCount> orderingCounts;
 
@@ -149,12 +154,51 @@ public class DashboardApplicationController {
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
-        orderingCounts = listOrderingCategoryCounts(null,  yesterdayStart,now, null, null, null, null);
+        orderingCounts = listOrderingCategoryCounts(null, yesterdayStart, now, null, null, null, null);
+        categorizeOrderingCounts(orderingCounts);
     }
-    
-    
-   
 
+    private void categorizeOrderingCounts(List<InstitutionCount> ocs) {
+        firstContactCount = 0l;
+        communityRandomCount = 0l;
+        foreignCount = 0l;
+        hospitalCount = 0l;
+        otherCount = 0l;
+        for (InstitutionCount oc : ocs) {
+            String code = "";
+            if (oc.getItemValue() != null && oc.getItemValue().getCode() != null) {
+                code = oc.getItemValue().getCode();
+            }
+            switch (code) {
+                case "exit_for_first_contacts":
+                case "first_contact_non_exit":
+                    firstContactCount++;
+                    break;
+                case "community_screening_random":
+                case "workplace_random":
+                    communityRandomCount++;
+                    break;
+                case "overseas_returnees_and_foreign_travelers_initial_or_arrival":
+                case "overseas_returnees_and_foreign_travelers_exit":
+                    foreignCount++;
+                    break;
+
+                case "routine_for_procedures":
+                case "opd_symptomatic":
+                case "opd_inward_symptomatic":
+                    hospitalCount++;
+                    break;
+
+                case "postmortem_screening":
+
+                case "workplace_routine":
+                case "covid_19_test_ordering_category_other":
+                case "":
+                    otherCount++;
+                    break;
+            }
+        }
+    }
 
     public List<InstitutionCount> listOrderingCategoryCounts(
             Institution ins,
@@ -197,7 +241,7 @@ public class DashboardApplicationController {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        j+=" group by c.pcrOrderingCategory";
+        j += " group by c.pcrOrderingCategory";
         System.out.println("j = " + j);
         System.out.println("m = " + m);
         List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
@@ -533,6 +577,26 @@ public class DashboardApplicationController {
 
     public void setOrderingCounts(List<InstitutionCount> orderingCounts) {
         this.orderingCounts = orderingCounts;
+    }
+
+    public Long getFirstContactCount() {
+        return firstContactCount;
+    }
+
+    public Long getCommunityRandomCount() {
+        return communityRandomCount;
+    }
+
+    public Long getForeignCount() {
+        return foreignCount;
+    }
+
+    public Long getHospitalCount() {
+        return hospitalCount;
+    }
+
+    public Long getOtherCount() {
+        return otherCount;
     }
 
 }

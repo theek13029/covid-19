@@ -159,8 +159,8 @@
                 </div>
 
             </div>
-            
-            
+
+
             <div class="row p-4">
                 <div class="col-md-6" >
                     <div class="card">
@@ -168,21 +168,60 @@
                             Tests By Category
                         </div>
                         <div class="card-body text-center">
-                            <p:dataTable value="#{dashboardApplicationController.orderingCounts}" var="oc" >
-                                <p:column headerText="Category" >
-                                    <p:outputLabel value="#{oc.itemValue.name}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Count" >
-                                    <p:outputLabel value="#{oc.count}" ></p:outputLabel>
-                                </p:column>
-                            </p:dataTable>
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:commandLink ajax="false" value="First Contacts" action="#{dashboardController.toContactNational()}"></p:commandLink>
+                                    </td>
+                                    <td>
+                                        <p:commandLink ajax="false" value="#{dashboardApplicationController.firstContactCount}" 
+                                                       action="#{dashboardController.toOrderingCategoryDistrict()}"></p:commandLink>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p:commandLink ajax="false" value="Community Random" action="#{dashboardController.toCommunityRandomNational()}"></p:commandLink>
+                                    </td>
+                                    <td>
+                                        <p:commandLink ajax="false" value="#{dashboardApplicationController.communityRandomCount}" 
+                                                       action="#{dashboardController.toOrderingCategoryDistrict()}"></p:commandLink>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p:commandLink ajax="false" value="Foreign returnees &amp; Tourists " action="#{dashboardController.toForeign()}"></p:commandLink>
+                                    </td>
+                                    <td>
+                                        <p:commandLink ajax="false" value="#{dashboardApplicationController.foreignCount}" 
+                                                       action="#{dashboardController.toOrderingCategoryDistrict()}"></p:commandLink>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p:commandLink ajax="false" value="Hospitals" action="#{dashboardController.toHospital()}"></p:commandLink>
+                                    </td>
+                                    <td>
+                                        <p:commandLink ajax="false" value="#{dashboardApplicationController.hospitalCount}" 
+                                                       action="#{dashboardController.toOrderingCategoryDistrict()}"></p:commandLink>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p:commandLink ajax="false" value="Other" action="#{dashboardController.toOtherOrderingCategory()}"></p:commandLink>
+                                    </td>
+                                    <td>
+                                        <p:commandLink ajax="false" value="#{dashboardApplicationController.otherCount}" 
+                                                       action="#{dashboardController.toOrderingCategoryDistrict()}"></p:commandLink>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="card-footer text-right ">
                             <h:commandLink value="Find more details .." class="text-blue"></h:commandLink>
                         </div>
                     </div>
                 </div>
-              
+
             </div>
         </h:form>
     </cc:implementation>

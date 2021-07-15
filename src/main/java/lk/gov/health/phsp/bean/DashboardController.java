@@ -105,6 +105,174 @@ public class DashboardController implements Serializable {
     private Long samplesResultsConfirmed;
     private Long samplesPositive;
 
+    private List<InstitutionCount> orderingCategories;
+
+    public String toOrderingCategoryDistrict() {
+
+        return "/national/ordering_category_district";
+    }
+
+    public String toContactNational() {
+        orderingCategories = new ArrayList<>();
+        for (InstitutionCount oc : dashboardApplicationController.getOrderingCounts()) {
+            String code = "";
+            if (oc.getItemValue() != null && oc.getItemValue().getCode() != null) {
+                code = oc.getItemValue().getCode();
+            }
+            switch (code) {
+                case "exit_for_first_contacts":
+                case "first_contact_non_exit":
+                    orderingCategories.add(oc);
+                    break;
+                case "community_screening_random":
+                    break;
+                case "overseas_returnees_and_foreign_travelers_initial_or_arrival":
+                case "overseas_returnees_and_foreign_travelers_exit":
+                    break;
+                case "routine_for_procedures":
+                case "opd_symptomatic":
+                case "opd_inward_symptomatic":
+                    break;
+                case "postmortem_screening":
+                case "workplace_random":
+                case "workplace_routine":
+                case "covid_19_test_ordering_category_other":
+                case "":
+                    break;
+            }
+        }
+        return "/national/ordering_categories";
+    }
+
+    public String toCommunityRandomNational() {
+        orderingCategories = new ArrayList<>();
+        for (InstitutionCount oc : dashboardApplicationController.getOrderingCounts()) {
+            String code = "";
+            if (oc.getItemValue() != null && oc.getItemValue().getCode() != null) {
+                code = oc.getItemValue().getCode();
+            }
+            switch (code) {
+                case "exit_for_first_contacts":
+                case "first_contact_non_exit":
+                    break;
+                case "community_screening_random":
+                case "workplace_random":
+                    orderingCategories.add(oc);
+                    break;
+                case "overseas_returnees_and_foreign_travelers_initial_or_arrival":
+                case "overseas_returnees_and_foreign_travelers_exit":
+                    break;
+                case "routine_for_procedures":
+                case "opd_symptomatic":
+                case "opd_inward_symptomatic":
+                    break;
+                case "postmortem_screening":
+                case "workplace_routine":
+                case "covid_19_test_ordering_category_other":
+                case "":
+                    break;
+            }
+        }
+        return "/national/ordering_categories";
+    }
+
+    public String toForeign() {
+        orderingCategories = new ArrayList<>();
+        for (InstitutionCount oc : dashboardApplicationController.getOrderingCounts()) {
+            String code = "";
+            if (oc.getItemValue() != null && oc.getItemValue().getCode() != null) {
+                code = oc.getItemValue().getCode();
+            }
+            switch (code) {
+                case "exit_for_first_contacts":
+                case "first_contact_non_exit":
+                    break;
+                case "community_screening_random":
+                case "workplace_random":
+                    break;
+                case "overseas_returnees_and_foreign_travelers_initial_or_arrival":
+                case "overseas_returnees_and_foreign_travelers_exit":
+                    orderingCategories.add(oc);
+                    break;
+                case "routine_for_procedures":
+                case "opd_symptomatic":
+                case "opd_inward_symptomatic":
+                    break;
+                case "postmortem_screening":
+                case "workplace_routine":
+                case "covid_19_test_ordering_category_other":
+                case "":
+                    break;
+            }
+        }
+        return "/national/ordering_categories";
+    }
+
+    public String toHospital() {
+        orderingCategories = new ArrayList<>();
+        for (InstitutionCount oc : dashboardApplicationController.getOrderingCounts()) {
+            String code = "";
+            if (oc.getItemValue() != null && oc.getItemValue().getCode() != null) {
+                code = oc.getItemValue().getCode();
+            }
+            switch (code) {
+                case "exit_for_first_contacts":
+                case "first_contact_non_exit":
+                    break;
+                case "community_screening_random":
+                case "workplace_random":
+                    break;
+                case "overseas_returnees_and_foreign_travelers_initial_or_arrival":
+                case "overseas_returnees_and_foreign_travelers_exit":
+
+                    break;
+                case "routine_for_procedures":
+                case "opd_symptomatic":
+                case "opd_inward_symptomatic":
+                    orderingCategories.add(oc);
+                    break;
+                case "postmortem_screening":
+                case "workplace_routine":
+                case "covid_19_test_ordering_category_other":
+                case "":
+                    break;
+            }
+        }
+        return "/national/ordering_categories";
+    }
+
+    public String toOtherOrderingCategory() {
+        orderingCategories = new ArrayList<>();
+        for (InstitutionCount oc : dashboardApplicationController.getOrderingCounts()) {
+            String code = "";
+            if (oc.getItemValue() != null && oc.getItemValue().getCode() != null) {
+                code = oc.getItemValue().getCode();
+            }
+            switch (code) {
+                case "exit_for_first_contacts":
+                case "first_contact_non_exit":
+                    break;
+                case "community_screening_random":
+                case "workplace_random":
+                    break;
+                case "overseas_returnees_and_foreign_travelers_initial_or_arrival":
+                case "overseas_returnees_and_foreign_travelers_exit":
+                    break;
+                case "routine_for_procedures":
+                case "opd_symptomatic":
+                case "opd_inward_symptomatic":
+                    break;
+                case "postmortem_screening":
+                case "workplace_routine":
+                case "covid_19_test_ordering_category_other":
+                case "":
+                    orderingCategories.add(oc);
+                    break;
+            }
+        }
+        return "/national/ordering_categories";
+    }
+
     public void prepareMohDashboard() {
         Calendar c = Calendar.getInstance();
         Date now = c.getTime();
@@ -156,7 +324,6 @@ public class DashboardController implements Serializable {
 
     }
 
-    
     public void prepareRegionalDashboard() {
         Calendar c = Calendar.getInstance();
         Date now = c.getTime();
@@ -212,9 +379,8 @@ public class DashboardController implements Serializable {
 
     }
 
-    
     public void prepareProvincialDashboard() {
-         Calendar c = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
         Date now = c.getTime();
         Date todayStart = CommonController.startOfTheDate();
 
@@ -266,10 +432,8 @@ public class DashboardController implements Serializable {
                 itemApplicationController.getPcrPositive(),
                 null);
 
-
     }
 
-    
     public void prepareLabDashboard() {
         String j;
         Map m;
@@ -675,4 +839,14 @@ public class DashboardController implements Serializable {
         this.todaysTests = todaysTests;
     }
 
+    public List<InstitutionCount> getOrderingCategories() {
+        return orderingCategories;
+    }
+
+    public void setOrderingCategories(List<InstitutionCount> orderingCategories) {
+        this.orderingCategories = orderingCategories;
+    }
+
+    
+    
 }

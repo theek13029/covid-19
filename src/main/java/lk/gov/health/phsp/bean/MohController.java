@@ -757,7 +757,7 @@ public class MohController implements Serializable {
         if (nicClient == null) {
             return "";
         }
-        nicExistsForPcr=null;
+        nicExistsForPcr = null;
         Encounter tmpEnc = pcr;
         pcr = new Encounter();
         pcr.setEncounterNumber(tmpEnc.getEncounterNumber());
@@ -800,12 +800,12 @@ public class MohController implements Serializable {
         if (nicClient == null) {
             return "";
         }
-        nicExistsForRat=null;
+        nicExistsForRat = null;
         Encounter tmpEnc = rat;
         rat = new Encounter();
         rat.setEncounterNumber(tmpEnc.getEncounterNumber());
         Date d = new Date();
-    
+
         Client c = nicClient;
         c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
         c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
@@ -844,7 +844,7 @@ public class MohController implements Serializable {
         if (nicClient == null) {
             return "";
         }
-        nicExistsForRat=null;
+        nicExistsForRat = null;
         Encounter tmpEnc = rat;
         rat = new Encounter();
         rat.setEncounterNumber(tmpEnc.getEncounterNumber());
@@ -1227,6 +1227,52 @@ public class MohController implements Serializable {
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
         return "/moh/list_of_tests";
+    }
+
+    public String toDistrictViceTestListForOrderingCategories() {
+        Map m = new HashMap();
+
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.district, c.pcrOrderingCategory, count(c))  "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        j += " group by c.pcrOrderingCategory, c.client.person.district";
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("objs = " + objs.size());
+        List<InstitutionCount> tics = new ArrayList<>();
+        for (Object o : objs) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                tics.add(ic);
+            }
+        }
+        institutionCounts = tics;
+        return "/moh/ordering_category_district";
     }
 
     public String toTestRequestDistrictCounts() {
