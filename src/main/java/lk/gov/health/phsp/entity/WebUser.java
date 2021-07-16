@@ -370,7 +370,7 @@ public class WebUser implements Serializable {
                 return false;
             case Phi:
             case Phm:
-            case Moh:
+            case Moh:case Amoh:
                 return true;
         }
         System.err.println("Missing Privileges");
@@ -398,7 +398,7 @@ public class WebUser implements Serializable {
             case User:
             case Phi:
             case Phm:
-            case Moh:
+            case Moh:case Amoh:
                 return false;
             case Rdhs:
             case Re:
@@ -428,7 +428,7 @@ public class WebUser implements Serializable {
             case User:
             case Phi:
             case Phm:
-            case Moh:
+            case Moh:case Amoh:
             case Rdhs:
             case Re:
                 return false;
@@ -454,7 +454,7 @@ public class WebUser implements Serializable {
             case Nurse:
             case Phi:
             case Phm:
-            case Moh:
+            case Moh:case Amoh:
             case Rdhs:
             case Re:
             case Pdhs:
@@ -483,7 +483,7 @@ public class WebUser implements Serializable {
             case Lab_User:
             case Phi:
             case Phm:
-            case Moh:
+            case Moh:case Amoh:
             case Rdhs:
             case Re:
             case Pdhs:
@@ -510,7 +510,7 @@ public class WebUser implements Serializable {
             case Client:
             case Phi:
             case Phm:
-            case Moh:
+            case Moh:case Amoh:
             case Rdhs:
             case Re:
             case Pdhs:

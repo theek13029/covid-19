@@ -35,6 +35,7 @@ public enum WebUserRole {
     Rdhs("RDHS"),
     Re("Regional Epidemiologist"),
     Moh("MOH"),
+    Amoh("AMOH"),
     Phi("PHI"),
     Phm("PHM"),
     Epidemiologist("Epidemiologist"),

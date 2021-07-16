@@ -46,6 +46,13 @@
                                              forceSelection="true" maxResults="15" minQueryLength="3">
                             </p:autoComplete >
 
+                            <p:outputLabel value="Area" for="area" />
+                            <p:autoComplete  id="area" value="#{webUserController.selected.area}" 
+                                             completeMethod="#{webUserController.m}"
+                                             var="i" itemLabel="#{i.name}" itemValue="#{i}"
+                                             forceSelection="true" maxResults="15" minQueryLength="3">
+                            </p:autoComplete >
+
                             <p:outputLabel value="Email" for="email" />
                             <p:inputText id="email" value="#{webUserController.selected.email}" title="#{bundleClinical.EditWebUserTitle_email}" />
 

@@ -784,7 +784,7 @@ public class ReportRequestController implements Serializable {
             case Phi:
                 action = forMe;
                 break;
-            case Moh:
+            case Moh:case Amoh:
             case User:
                 action = noAction;
                 break;
@@ -820,7 +820,7 @@ public class ReportRequestController implements Serializable {
             case Phi:
                 action = forMe;
                 break;
-            case Moh:
+            case Moh:case Amoh:
             case User:
                 action = noAction;
                 break;

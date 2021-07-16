@@ -227,6 +227,9 @@ public class ClientController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Navigation">
+    
+   
+    
     public String toSearchClientById() {
         userTransactionController.recordTransaction("To Search Client By Id");
         return "/client/search_by_id";
@@ -5093,6 +5096,7 @@ public class ClientController implements Serializable {
     private void prepareSelectionPrivileges() {
         switch (webUserController.getLoggedUser().getWebUserRole()) {
             case Moh:
+            case Amoh:
             case Nurse:
             case Phi:
             case Phm:

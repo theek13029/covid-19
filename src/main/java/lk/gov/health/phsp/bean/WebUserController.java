@@ -106,11 +106,17 @@ public class WebUserController implements Serializable {
     DashboardApplicationController dashboardApplicationController;
     @Inject
     DashboardController dashboardController;
+    @Inject
+    AreaApplicationController areaApplicationController;
     /*
     Variables
      */
     private List<WebUser> items = null;
     private List<WebUser> selectedUsers;
+
+    private List<WebUser> usersForMyInstitute;
+    private List<Area> areasForMe;
+
     private List<Upload> companyUploads;
 
     private List<Institution> loggableInstitutions;
@@ -479,7 +485,7 @@ public class WebUserController implements Serializable {
         }
         selectedNodes = temSelected.toArray(new TreeNode[temSelected.size()]);
         userTransactionController.recordTransaction("Manage Privileges in user list By InsAdmin");
-        return "/insUser/user_privileges";
+        return "/insAdmin/user_privileges";
     }
 
     public String toOpdModule() {
@@ -735,16 +741,68 @@ public class WebUserController implements Serializable {
             dashboardController.setFromDate(fromDate);
             dashboardController.setToDate(toDate);
             dashboardController.prepareLabDashboard();
-        }else if(loggedUser.isNationalDashboard()){
+        } else if (loggedUser.isNationalDashboard()) {
             dashboardApplicationController.updateDashboard();
-        }else if(loggedUser.isMohDashboard()){
+        } else if (loggedUser.isMohDashboard()) {
             dashboardController.prepareMohDashboard();
-        }else if(loggedUser.isRegionalDashboard()){
+        } else if (loggedUser.isRegionalDashboard()) {
             dashboardController.prepareRegionalDashboard();
-        }else if(loggedUser.isProvincialDashboard()){
+        } else if (loggedUser.isProvincialDashboard()) {
             dashboardController.prepareProvincialDashboard();
         }
+        fillUsersForMyInstitute();
+        fillAreasForMe();
         return "/index";
+    }
+
+    private void fillAreasForMe() {
+        if (loggedUser == null) {
+            return;
+        }
+        if (loggedUser.getInstitution() == null) {
+            System.err.println("No Institute for the user : " + loggedUser.getName());
+            return;
+        }
+        if (loggedUser.getWebUserRole() == null) {
+            System.err.println("No Role for the user : " + loggedUser.getName());
+            return;
+        }
+        if (loggedUser.getArea() == null) {
+            switch (loggedUser.getWebUserRole()) {
+                case ChiefEpidemiologist:
+                case Epidemiologist:
+                case Super_User:
+                case System_Administrator:
+                case User:
+                case Lab_National:
+                    loggedUser.setArea(areaController.getNationalArea());
+                    break;
+                case Moh:
+                    case Amoh:
+                default:
+            }
+
+        }
+        switch (loggedUser.getWebUserRole()) {
+            case ChiefEpidemiologist:
+            case Epidemiologist:
+            case Super_User:
+            case System_Administrator:
+            case User:
+            case Lab_National:
+                areasForMe = areaApplicationController.getAllAreas();
+                break;
+            default:
+        }
+    }
+
+    private void fillUsersForMyInstitute() {
+        String j = "select u from WebUser u "
+                + " where u.retired=false "
+                + " and u.institution = :ins ";
+        Map m = new HashMap();
+        m.put("ins", getLoggedUser().getInstitution());
+        usersForMyInstitute = getFacade().findByJpql(j, m);
     }
 
     private boolean checkLoginNew() {
@@ -966,7 +1024,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.View_individual_data);
                 wups.add(Privilege.View_aggragate_date);
                 break;
-            case Moh:
+            case Moh:case Amoh:
                 wups.add(Privilege.Client_Management);
                 wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Add_Tests);
@@ -1578,8 +1636,9 @@ public class WebUserController implements Serializable {
             case Hospital_User:
                 urs.add(WebUserRole.Hospital_User);
                 break;
-            case Moh:
+            case Moh:case Amoh:
                 urs.add(WebUserRole.Moh);
+                urs.add(WebUserRole.Amoh);
                 urs.add(WebUserRole.Phi);
                 urs.add(WebUserRole.Phm);
                 break;
@@ -1588,6 +1647,7 @@ public class WebUserController implements Serializable {
                 urs.add(WebUserRole.Re);
                 urs.add(WebUserRole.Rdhs);
                 urs.add(WebUserRole.Moh);
+                urs.add(WebUserRole.Amoh);
                 urs.add(WebUserRole.Phi);
                 urs.add(WebUserRole.Phm);
                 break;
@@ -1596,12 +1656,14 @@ public class WebUserController implements Serializable {
                 urs.add(WebUserRole.Rdhs);
                 urs.add(WebUserRole.Re);
                 urs.add(WebUserRole.Moh);
+                urs.add(WebUserRole.Amoh);
                 urs.add(WebUserRole.Phi);
                 urs.add(WebUserRole.Phm);
                 break;
             case Re:
                 urs.add(WebUserRole.Re);
                 urs.add(WebUserRole.Moh);
+                urs.add(WebUserRole.Amoh);
                 urs.add(WebUserRole.Phi);
                 urs.add(WebUserRole.Phm);
                 break;
@@ -2163,6 +2225,22 @@ public class WebUserController implements Serializable {
 
     public void setSelectedNodeSet(TreeNode[] selectedNodeSet) {
         this.selectedNodeSet = selectedNodeSet;
+    }
+
+    public List<WebUser> getUsersForMyInstitute() {
+        return usersForMyInstitute;
+    }
+
+    public void setUsersForMyInstitute(List<WebUser> usersForMyInstitute) {
+        this.usersForMyInstitute = usersForMyInstitute;
+    }
+
+    public List<Area> getAreasForMe() {
+        return areasForMe;
+    }
+
+    public void setAreasForMe(List<Area> areasForMe) {
+        this.areasForMe = areasForMe;
     }
 
     @FacesConverter(forClass = WebUser.class)

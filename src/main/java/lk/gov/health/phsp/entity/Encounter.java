@@ -26,7 +26,6 @@ package lk.gov.health.phsp.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.enterprise.context.Dependent;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

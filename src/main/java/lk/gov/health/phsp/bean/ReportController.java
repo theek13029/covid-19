@@ -829,6 +829,7 @@ public class ReportController implements Serializable {
                 action = forMeu;
                 break;
             case Moh:
+            case Amoh:
             case User:
                 action = noAction;
                 break;
@@ -868,6 +869,7 @@ public class ReportController implements Serializable {
                 action = forMeu;
                 break;
             case Moh:
+                case Amoh:
             case User:
                 action = noAction;
                 break;
@@ -906,7 +908,7 @@ public class ReportController implements Serializable {
             case Phi:
                 action = forMeu;
                 break;
-            case Moh:
+            case Moh:case Amoh:
             case User:
                 action = noAction;
                 break;
@@ -1510,7 +1512,7 @@ public class ReportController implements Serializable {
             case Phi:
                 action = forMe;
                 break;
-            case Moh:
+            case Moh:case Amoh:
             case User:
                 action = noAction;
                 break;
@@ -1547,7 +1549,7 @@ public class ReportController implements Serializable {
             case Phi:
                 action = forMe;
                 break;
-            case Moh:
+            case Moh:case Amoh:
             case User:
                 action = noAction;
                 break;
@@ -1584,7 +1586,7 @@ public class ReportController implements Serializable {
             case Phi:
                 action = forMe;
                 break;
-            case Moh:
+            case Moh:case Amoh:
             case User:
                 action = noAction;
                 break;
@@ -1621,7 +1623,7 @@ public class ReportController implements Serializable {
             case Phi:
                 action = forMe;
                 break;
-            case Moh:
+            case Moh:case Amoh:
             case User:
                 action = noAction;
                 break;
@@ -1670,7 +1672,7 @@ public class ReportController implements Serializable {
             case Phi:
                 action = forMe;
                 break;
-            case Moh:
+            case Moh:case Amoh:
             case User:
                 action = noAction;
                 break;
@@ -1707,7 +1709,7 @@ public class ReportController implements Serializable {
             case Phi:
                 action = forMe;
                 break;
-            case Moh:
+            case Moh:case Amoh:
             case User:
                 action = noAction;
                 break;
@@ -1744,7 +1746,7 @@ public class ReportController implements Serializable {
             case Phi:
                 action = forMe;
                 break;
-            case Moh:
+            case Moh:case Amoh:
             case User:
                 action = noAction;
                 break;
@@ -1780,7 +1782,7 @@ public class ReportController implements Serializable {
             case Phi:
                 action = forMe;
                 break;
-            case Moh:
+            case Moh:case Amoh:
             case User:
                 action = noAction;
                 break;

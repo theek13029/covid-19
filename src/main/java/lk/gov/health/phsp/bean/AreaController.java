@@ -183,6 +183,29 @@ public class AreaController implements Serializable {
         return toListAreasForSysAdmin();
     }
 
+    public String saveOrUpdatePhiAreaForIndAdmin() {
+        if (selected == null) {
+            JsfUtil.addErrorMessage("Please select an Area");
+            return "";
+        }
+        if (selected.getId() == null) {
+            selected.setCreatedAt(new Date());
+            selected.setCreatedBy(webUserController.getLoggedUser());
+            getFacade().create(selected);
+            JsfUtil.addSuccessMessage("Saved");
+        } else {
+            selected.setLastEditBy(webUserController.getLoggedUser());
+            selected.setLastEditeAt(new Date());
+            getFacade().edit(selected);
+            JsfUtil.addSuccessMessage("Updated");
+        }
+        items = null;
+        selected = null;
+        areaApplicationController.invalidateItems();
+        return toListPhiAreasForInsAdmin();
+    }
+
+    
     public String toListAreasForSysAdmin() {
         String j = "select a from Area a where a.retired=:ret order by a.name";
         Map m = new HashMap();
@@ -190,6 +213,11 @@ public class AreaController implements Serializable {
         items = getFacade().findByJpql(j, m);
         userTransactionController.recordTransaction("List Areas By SysAdmin");
         return "/area/list";
+    }
+    
+    public String toListPhiAreasForInsAdmin() {
+        items = areaApplicationController.listPhiAreasOfMoh(webUserController.getLoggedUser().getInstitution().getMohArea());
+        return "/area/list_phi";
     }
 
     public String toBrowseAreasForSysAdmin() {
@@ -1615,6 +1643,18 @@ public class AreaController implements Serializable {
         selected = new Area();
         selected.setType(AreaType.PHI);
         return "/area/add_phi";
+    }
+    
+    public String toAddPhiAreaForInsAdmin() {
+        selected = new Area();
+        selected.setType(AreaType.PHI);
+        selected.setParentArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        selected.setMoh(webUserController.getLoggedUser().getInstitution().getMohArea());
+        selected.setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
+        selected.setRdhsArea(webUserController.getLoggedUser().getInstitution().getRdhsArea());
+        selected.setProvince(webUserController.getLoggedUser().getInstitution().getProvince());
+        selected.setPdhsArea(webUserController.getLoggedUser().getInstitution().getProvince());
+        return "/area/area_phi_ins";
     }
 
     public String toAddGnArea() {

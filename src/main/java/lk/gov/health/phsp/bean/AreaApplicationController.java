@@ -54,8 +54,8 @@ public class AreaApplicationController {
     private List<Area> phiAreas;
     private List<Area> allAreas;
 
-    
     private List<AreaType> covidMonitoringAreaTypes;
+
     /**
      * Creates a new instance of AreaApplicationController
      */
@@ -73,8 +73,6 @@ public class AreaApplicationController {
         allAreas = null;
     }
 
-    
-    
     public List<Area> getGnAreas() {
         if (gnAreas == null) {
             gnAreas = getAllGnAreas();
@@ -348,8 +346,8 @@ public class AreaApplicationController {
                     tas.add(a);
                     continue;
                 }
-                if (a.getParentArea() != null 
-                        && a.getParentArea().getParentArea() != null 
+                if (a.getParentArea() != null
+                        && a.getParentArea().getParentArea() != null
                         && a.getParentArea().getParentArea().equals(moh)) {
                     tas.add(a);
                     continue;
@@ -357,6 +355,26 @@ public class AreaApplicationController {
                 if (a.getMoh().equals(moh)) {
                     tas.add(a);
                 }
+            }
+        }
+        return tas;
+    }
+
+    public List<Area> listPhiAreasOfMoh(Area moh) {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getPhiAreas()) {
+            if (a.getParentArea() != null && a.getParentArea().equals(moh)) {
+                tas.add(a);
+                continue;
+            }
+            if (a.getParentArea() != null
+                    && a.getParentArea().getParentArea() != null
+                    && a.getParentArea().getParentArea().equals(moh)) {
+                tas.add(a);
+                continue;
+            }
+            if (a.getMoh().equals(moh)) {
+                tas.add(a);
             }
         }
         return tas;
@@ -376,8 +394,8 @@ public class AreaApplicationController {
     }
 
     public List<AreaType> getCovidMonitoringAreaTypes() {
-        if(covidMonitoringAreaTypes==null){
-            covidMonitoringAreaTypes=new ArrayList<>();
+        if (covidMonitoringAreaTypes == null) {
+            covidMonitoringAreaTypes = new ArrayList<>();
             covidMonitoringAreaTypes.add(AreaType.MOH);
             covidMonitoringAreaTypes.add(AreaType.District);
             covidMonitoringAreaTypes.add(AreaType.Province);

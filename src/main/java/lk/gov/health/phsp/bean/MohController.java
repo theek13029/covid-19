@@ -45,6 +45,7 @@ import lk.gov.health.phsp.facade.SmsFacade;
 import javax.inject.Named;
 import javax.persistence.TemporalType;
 import lk.gov.health.phsp.entity.Item;
+import lk.gov.health.phsp.entity.WebUser;
 import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
 // </editor-fold>
@@ -108,6 +109,8 @@ public class MohController implements Serializable {
     private Encounter test;
     private Encounter deleting;
 
+    private WebUser assignee;
+
     private List<Encounter> tests;
     private Date fromDate;
     private Date toDate;
@@ -120,7 +123,7 @@ public class MohController implements Serializable {
 
     private List<Institution> regionalMohsAndHospitals;
     private List<InstitutionCount> institutionCounts;
-    
+
     private Area district;
 
 // </editor-fold>    
@@ -130,6 +133,10 @@ public class MohController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
+    public String toAssignInvestigation() {
+        return "/moh/assign_investigation";
+    }
+
     public Boolean checkNicExists(String nic, Client c) {
         String jpql = "select count(c) from Client c "
                 + " where c.retired=:ret "
@@ -432,6 +439,7 @@ public class MohController implements Serializable {
             case Lab_National:
             case Lab_User:
             case Moh:
+            case Amoh:
             case Nurse:
             case Pdhs:
             case Phi:
@@ -469,6 +477,7 @@ public class MohController implements Serializable {
             case Lab_National:
                 return "/national/lab_reports_index";
             case Moh:
+            case Amoh:
             case Phi:
             case Phm:
                 return "/moh/reports_index";
@@ -1240,7 +1249,7 @@ public class MohController implements Serializable {
         m.put("ret", false);
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
-        
+
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
         m.put("td", getToDate());
@@ -1277,7 +1286,6 @@ public class MohController implements Serializable {
         return "/national/ordering_category_district";
     }
 
-    
     public String toMohViceTestListForOrderingCategories() {
         Map m = new HashMap();
 
@@ -1287,7 +1295,7 @@ public class MohController implements Serializable {
         m.put("ret", false);
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
-        
+
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", fromDate);
         m.put("td", toDate);
@@ -1308,7 +1316,7 @@ public class MohController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        if(district!=null){
+        if (district != null) {
             j += " and c.client.person.district=:dis ";
             m.put("dis", district);
         }
@@ -1328,7 +1336,6 @@ public class MohController implements Serializable {
         return "/moh/ordering_category_moh";
     }
 
-    
     public String toTestRequestDistrictCounts() {
         Map m = new HashMap();
         String j = "select c "
@@ -1653,7 +1660,13 @@ public class MohController implements Serializable {
     public void setDistrict(Area district) {
         this.district = district;
     }
-    
-    
+
+    public WebUser getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(WebUser assignee) {
+        this.assignee = assignee;
+    }
 
 }
