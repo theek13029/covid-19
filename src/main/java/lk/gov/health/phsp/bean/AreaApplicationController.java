@@ -219,6 +219,18 @@ public class AreaApplicationController {
         return tas;
     }
 
+    public List<Area> getAllChildren(Area parentArea) {
+        List<Area> tas = new ArrayList<>();
+        tas.add(parentArea);
+        for (Area a : getAllAreas()) {
+            if (a.getParentArea() != null && a.getParentArea().equals(parentArea)) {
+                tas.addAll(getAllChildren(a));
+            }
+        }
+        return tas;
+    }
+
+    
     public List<Area> getAllAreas(List<AreaType> ats) {
         List<Area> tas = new ArrayList<>();
         for (Area a : getAllAreas()) {

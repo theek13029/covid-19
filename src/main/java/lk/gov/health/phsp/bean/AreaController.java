@@ -1718,6 +1718,10 @@ public class AreaController implements Serializable {
         return "/area/index";
     }
 
+    public List<Area> getAreas(Area superArea) {
+        return getAreas(null,superArea, null);
+    }
+    
     public List<Area> getAreas(AreaType areaType, Area superArea) {
         return getAreas(areaType, superArea, null);
     }

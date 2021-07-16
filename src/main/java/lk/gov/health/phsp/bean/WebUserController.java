@@ -41,6 +41,7 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import lk.gov.health.phsp.entity.Relationship;
 import lk.gov.health.phsp.entity.UserPrivilege;
+import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.enums.Privilege;
 import lk.gov.health.phsp.enums.PrivilegeTreeNode;
@@ -778,10 +779,29 @@ public class WebUserController implements Serializable {
                     loggedUser.setArea(areaController.getNationalArea());
                     break;
                 case Moh:
-                    case Amoh:
+                case Amoh:
+                case Phi:
+                case Phm:
+                    loggedUser.setArea(loggedUser.getInstitution().getMohArea());
+                    break;
+                case Rdhs:
+                case Re:
+                    loggedUser.setArea(loggedUser.getInstitution().getRdhsArea());
+                    break;
+                case Pdhs:
+                    loggedUser.setArea(loggedUser.getInstitution().getPdhsArea());
+                    break;
+                case Client:
+                case Hospital_Admin:
+                case Hospital_User:
+                case Lab_Consultant:
+                case Lab_Mlt:
+                case Lab_Mo:
+                case Lab_User:
+                case Nurse:
                 default:
             }
-
+            getFacade().edit(loggedUser);
         }
         switch (loggedUser.getWebUserRole()) {
             case ChiefEpidemiologist:
@@ -792,6 +812,27 @@ public class WebUserController implements Serializable {
             case Lab_National:
                 areasForMe = areaApplicationController.getAllAreas();
                 break;
+            case Moh:
+            case Amoh:
+            case Phi:
+            case Phm:
+                areasForMe = areaApplicationController.getAllChildren(loggedUser.getInstitution().getMohArea());
+                break;
+            case Rdhs:
+            case Re:
+                areasForMe = areaApplicationController.getAllChildren(loggedUser.getInstitution().getRdhsArea());
+                break;
+            case Pdhs:
+                areasForMe = areaApplicationController.getAllChildren(loggedUser.getInstitution().getPdhsArea());
+                break;
+            case Client:
+            case Hospital_Admin:
+            case Hospital_User:
+            case Lab_Consultant:
+            case Lab_Mlt:
+            case Lab_Mo:
+            case Lab_User:
+            case Nurse:
             default:
         }
     }
@@ -1024,7 +1065,8 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.View_individual_data);
                 wups.add(Privilege.View_aggragate_date);
                 break;
-            case Moh:case Amoh:
+            case Moh:
+            case Amoh:
                 wups.add(Privilege.Client_Management);
                 wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Add_Tests);
@@ -1636,7 +1678,8 @@ public class WebUserController implements Serializable {
             case Hospital_User:
                 urs.add(WebUserRole.Hospital_User);
                 break;
-            case Moh:case Amoh:
+            case Moh:
+            case Amoh:
                 urs.add(WebUserRole.Moh);
                 urs.add(WebUserRole.Amoh);
                 urs.add(WebUserRole.Phi);

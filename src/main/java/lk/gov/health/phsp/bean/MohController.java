@@ -112,6 +112,7 @@ public class MohController implements Serializable {
     private WebUser assignee;
 
     private List<Encounter> tests;
+    private List<Encounter> selectedToAssign;
     private Date fromDate;
     private Date toDate;
 
@@ -134,17 +135,79 @@ public class MohController implements Serializable {
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
     public String toAssignInvestigation() {
+        testType = itemApplicationController.getPcr();
+        result = itemApplicationController.getPcrPositive();
+
+        System.out.println("toTestList");
+        Map m = new HashMap();
+
+        String j = "select c "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) "
+                + " and (c.completed is null or c.completed=:com) ";
+        m.put("ret", false);
+        m.put("com", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and c.client.person.mohArea=:moh ";
+        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
+
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        System.out.println("getFromDate() = " + getFromDate());
+        m.put("td", getToDate());
+        System.out.println(" getToDate() = " + getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+
+        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("tests = " + tests.size());
+
         return "/moh/assign_investigation";
     }
 
     public String toStartInvestigation() {
         return "/moh/start_investigation";
     }
-    
+
     public String toViewInvestigatedCases() {
         return "/moh/view_investigated_cases";
     }
-    
+
+    public void assignToInvestigate() {
+        if (assignee == null) {
+            JsfUtil.addErrorMessage("Please select someone to assign the investigation");
+            return;
+        }
+        if (selectedToAssign == null || selectedToAssign.isEmpty()) {
+            JsfUtil.addErrorMessage("Please select cases to assign the investigation");
+            return;
+        }
+        for (Encounter e : selectedToAssign) {
+            e.setCompletedBy(assignee);
+            encounterFacade.edit(e);
+        }
+        selectedToAssign = null;
+    }
+
     public Boolean checkNicExists(String nic, Client c) {
         String jpql = "select count(c) from Client c "
                 + " where c.retired=:ret "
@@ -1675,6 +1738,14 @@ public class MohController implements Serializable {
 
     public void setAssignee(WebUser assignee) {
         this.assignee = assignee;
+    }
+
+    public List<Encounter> getSelectedToAssign() {
+        return selectedToAssign;
+    }
+
+    public void setSelectedToAssign(List<Encounter> selectedToAssign) {
+        this.selectedToAssign = selectedToAssign;
     }
 
 }
