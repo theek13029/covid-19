@@ -137,6 +137,14 @@ public class MohController implements Serializable {
         return "/moh/assign_investigation";
     }
 
+    public String toStartInvestigation() {
+        return "/moh/start_investigation";
+    }
+    
+    public String toViewInvestigatedCases() {
+        return "/moh/view_investigated_cases";
+    }
+    
     public Boolean checkNicExists(String nic, Client c) {
         String jpql = "select count(c) from Client c "
                 + " where c.retired=:ret "

@@ -29,8 +29,8 @@
                     </p:submenu>
                     <p:submenu label="Investigate" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
                         <p:menuitem ajax="false" value="Assign Cases to Investigate" action="#{mohController.toAssignInvestigation()}" />
-                        <p:menuitem ajax="false" value="Cases Awaiting Investigation" action="#{mohController.toAddNewRatWithNewClient()}" />
-                        <p:menuitem ajax="false" value="View COVID-19 Cases" action="#{mohController.toListOfTests()}" />
+                        <p:menuitem ajax="false" value="Cases Awaiting Investigation" action="#{mohController.toStartInvestigation()}" />
+                        <p:menuitem ajax="false" value="View Investigated Cases" action="#{mohController.toListOfTests()}" />
                     </p:submenu>
                     <p:submenu label="Samples" rendered="#{webUserController.hasPrivilege('Sample_Management')}" >
                         <p:menuitem ajax="false" value="Dispatch Samples"
