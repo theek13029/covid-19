@@ -492,6 +492,10 @@ public class MohController implements Serializable {
     public String toListOfTests() {
         return "/moh/list_of_tests";
     }
+    
+    public String toListOfInvestigatedCasesForMoh() {
+        return "/moh/investigated_list";
+    }
 
     public String toListOfTestsRegional() {
         return "/regional/list_of_tests";

@@ -112,31 +112,19 @@
                                 <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
-
-                                <p:panelGrid columns="1" >
-                                    <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}" value="Convert to a case" action="#{clientController.toNewCaseEnrollmentFromEncounter()}" style="width: 100%;" >
+                                    <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}" 
+                                                     value="Start Investigating" 
+                                                     action="#{clientController.toNewCaseEnrollmentFromEncounter()}" style="width: 100%;" >
                                         <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
-                                    <p:commandButton rendered="#{c.referenceCase ne null}" ajax="false" value="View case" action="#{clientController.toNewCaseEnrollmentFromEncounter()}" style="width: 100%;" >
+                                    <p:commandButton rendered="#{c.referenceCase ne null}" 
+                                                     ajax="false" value="View case" 
+                                                     action="#{clientController.toNewCaseEnrollmentFromEncounter()}"
+                                                     style="width: 100%;" >
                                         <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
-                                    <p:commandButton value="Edit Order" action="#{mohController.toEditTest()}" ajax="false"  style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
-                                    <p:commandButton value="View Results" action="#{mohController.toViewResult()}" ajax="false"  style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
-                                    <p:commandButton ajax="false" value="Delete"  action="#{mohController.deleteTest()}"  style="width: 100%;" 
-                                                     onclick="if (!confirm('Are you sure you want to delete?'))
-                                                                 return false" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.deleting}" >
-                                        </f:setPropertyActionListener>
-                                    </p:commandButton>
-                                </p:panelGrid>
-
-
                             </p:column>
                         </p:dataTable>
                     </h:form>

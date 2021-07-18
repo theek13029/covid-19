@@ -18,7 +18,6 @@
                         <p:menuitem ajax="false" value="New PCR" action="#{mohController.toAddNewPcrWithNewClient()}" />
                         <p:menuitem rendered="true" ajax="false" value="New RAT Result" action="#{mohController.toAddNewRatWithNewClient()}" />
                         <p:menuitem ajax="false" value="New RAT" action="#{mohController.toAddNewRatOrderWithNewClient()}"  />
-                        <p:menuitem ajax="false" value="Register COVID-19 Patient" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
                         <p:menuitem ajax="false" rendered="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
                         <p:menuitem ajax="false" value="Test Lists" action="#{mohController.toTestListWithoutResults()}" />
                         <p:menuitem ajax="false" value="Dispatch Samples"
@@ -30,7 +29,8 @@
                     <p:submenu label="Investigate" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
                         <p:menuitem ajax="false" value="Assign Cases to Investigate" action="#{mohController.toAssignInvestigation()}" />
                         <p:menuitem ajax="false" value="Cases Awaiting Investigation" action="#{mohController.toStartInvestigation()}" />
-                        <p:menuitem ajax="false" value="View Investigated Cases" action="#{mohController.toListOfTests()}" />
+                        <p:menuitem ajax="false" value="New Patient &amp; Investigate" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
+                        <p:menuitem ajax="false" value="View Investigated Cases" action="#{mohController.toListOfInvestigatedCasesForMoh()}" />
                     </p:submenu>
                     <p:submenu label="Samples" rendered="#{webUserController.hasPrivilege('Sample_Management')}" >
                         <p:menuitem ajax="false" value="Dispatch Samples"
