@@ -17,18 +17,18 @@
             <ui:define name="content">
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Assign Cases to Investigate" ></p:outputLabel>
+                        <p:outputLabel value="Start to Investigate" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
                         <p:panelGrid columns="2" >
                             <p:panelGrid columns="2" >
-                                <p:outputLabel value="Ordered From" ></p:outputLabel>
+                                <p:outputLabel value="Assigned From" ></p:outputLabel>
                                 <p:calendar value="#{mohController.fromDate}" 
                                             pattern="dd MMMM yyyy hh:mm a">
                                 </p:calendar>
 
-                                <p:outputLabel value="Ordered To" ></p:outputLabel>
+                                <p:outputLabel value="Assigned To" ></p:outputLabel>
                                 <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
                                 <p:outputLabel value="Ordering Category" ></p:outputLabel>
@@ -39,48 +39,12 @@
                                                    itemValue="#{c}" ></f:selectItems>
                                 </p:selectOneMenu>
 
-                                <p:outputLabel value="Test" ></p:outputLabel>
-                                <p:selectOneMenu value="#{mohController.testType}" >
-                                    <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
-                                                   itemValue="#{c}" ></f:selectItems>
-                                </p:selectOneMenu>
-
-                                <p:outputLabel value="Result" ></p:outputLabel>
-                                <p:selectOneMenu value="#{mohController.result}" >
-                                    <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{mohController.resultTypes}" var="c" itemLabel="#{c.name}"
-                                                   itemValue="#{c}" ></f:selectItems>
-                                </p:selectOneMenu>
 
                                 <p:commandButton ajax="false" value="Generate Excel">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                                 </p:commandButton>
                                 <p:commandButton ajax="false" value="Process" 
-                                                 action="#{mohController.toAssignInvestigation()}" ></p:commandButton>
-
-
-                            </p:panelGrid>
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="Assign to" ></p:outputLabel>
-                                <p:selectOneMenu value="#{mohController.assignee}" var="wu" >
-                                    <f:selectItems value="#{webUserController.usersForMyInstitute}" var="w" 
-                                                   itemLabel="#{w.area.name}" itemValue="#{w}" >
-                                    </f:selectItems>
-                                    <p:column headerText="Name" >
-                                        <p:outputLabel value="#{wu.person.name}" ></p:outputLabel>
-                                    </p:column>
-                                    <p:column headerText="Role" >
-                                        <p:outputLabel value="#{wu.webUserRole.label}" ></p:outputLabel>
-                                    </p:column>
-                                     <p:column headerText="Area" >
-                                        <p:outputLabel value="#{wu.area.name}" ></p:outputLabel>
-                                    </p:column>
-                                </p:selectOneMenu>
-                                
-                                <p:commandButton ajax="false" value="Assign" 
-                                                 action="#{mohController.assignToInvestigate()}"></p:commandButton>
-                                
+                                                 action="#{mohController.toStartInvestigation()}" ></p:commandButton>
                             </p:panelGrid>
                         </p:panelGrid>
 
