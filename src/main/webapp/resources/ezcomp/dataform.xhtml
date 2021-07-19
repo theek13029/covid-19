@@ -18,751 +18,554 @@
     <cc:implementation>
 
 
-        <h:panelGroup id="gpFormItems" rendered="#{cc.attrs.form.df.itemArrangementStrategy eq 'Label_Value_Unit_Sets'}" >
 
-            <table style="#{cc.attrs.form.df.css}" class="alignTop w3-table w3-bordered w3-border">
-                <ui:repeat id="rptItems" value="#{cc.attrs.form.items}" 
-                           var="ii" >
 
-                    <h:panelGroup id="gpDataAndButtonsMultiple" rendered="#{ii.multipleEntries}" >
+        <ui:repeat id="rptItems" value="#{cc.attrs.form.items}" var="ii" >
+            <h:panelGroup id="gpDataAndButtonsMultiple" rendered="#{ii.multipleEntries}" >
+                <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'Drop_Down_Menu'}" >
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <p:outputLabel for="domIcM" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                        </div>
+                        <div class="col-md-4">
+                            <p:selectOneMenu id="domIcM" value="#{ii.addingItem.ci.itemValue}" >
+                                <f:selectItem itemLabel="Please select" ></f:selectItem>
+                                <f:selectItems value="#{ii.availableItemsForSelection}" var="li"
+                                               itemLabel="#{li.displayName}" itemValue="#{li}" ></f:selectItems>
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="col-md-4">
+                            <p:commandButton id="btnAddM1"  value="Add" process="domIcM btnAddM1" update="@form :#{p:component('formset')}"
+                                             action="#{clientEncounterComponentItemController.addAnotherDataItem(ii)}"></p:commandButton>
 
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                                <p:column >
+                                    <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'Autocomplete'}" >
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <p:outputLabel for="acItemcompleteAvailableItemsForSelectionM" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                        </div>
+                        <div class="col-md-4">
+                            <p:autoComplete id="acItemM" value="#{ii.addingItem.ci.itemValue}"
+                                            completeMethod="#{ii.completeAvailableItemsForSelection}"
+                                            var="ai" itemLabel="#{ai.name}" itemValue="#{ai}"
+                                            maxResults="15" forceSelection="true" 
+                                            minQueryLength="3"
+                                            required="#{ii.required}" 
+                                            requiredMessage="#{ii.requiredErrorMessage}">
+                            </p:autoComplete>
+                        </div>
+                        <div>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+
+                        </div>
+                    </div>
+
+                    <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                        <p:column >
+                            <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
+                        </p:column>
+                    </p:dataTable>
+
+
+
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{ii.di.renderType eq 'Autocomplete' and ii.di.item.dataType eq 'Area_Reference'}" >
+                    <table>
                         <tr>
                             <td>
-                                <h:panelGroup id="gpRx" rendered="#{ii.di.renderType eq 'Prescreption'}" >
-                                    <table >
-                                        <tr>
-                                            <td colspan="7">
-                                                <p:outputLabel value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <p:autoComplete id="acRx" value="#{ii.addingItem.ci.prescriptionValue.medicine}" 
-                                                                completeMethod="#{itemApplicationController.completePharmaceuticalItem}"
-                                                                var="p"
-                                                                itemLabel="#{p.name}"
-                                                                itemValue="#{p}"
-                                                                placeholder="Select Medicine"
-                                                                >
-                                                </p:autoComplete>
-                                            </td>
-                                            <td>
-                                                <p:inputText id="txtRxDose" value="#{ii.addingItem.ci.prescriptionValue.dose}" ></p:inputText>
-                                                <p:selectOneMenu id="cmbRxDoseUnit" value="#{ii.addingItem.ci.prescriptionValue.doseUnit}" >
-                                                    <f:selectItem itemLabel="Please select dose unit" ></f:selectItem>
-                                                    <f:selectItems value="#{itemApplicationController.issueUnits}"
-                                                                   var="iu"
-                                                                   itemLabel="#{iu.name}"
-                                                                   itemValue="#{iu}">
-                                                    </f:selectItems>
-                                                    <f:selectItems value="#{itemApplicationController.strengthUnits}"
-                                                                   var="su"
-                                                                   itemLabel="#{su.name}"
-                                                                   itemValue="#{su}">
-                                                    </f:selectItems>
-                                                    <f:ajax event="change" execute="@this" render="" ></f:ajax>
-                                                </p:selectOneMenu>
-                                            </td>
-                                            <td>
-                                                <p:selectOneMenu id="cmbRxFrequency" value="#{ii.addingItem.ci.prescriptionValue.frequency}" >
-                                                    <f:selectItem itemLabel="Please select frequency" ></f:selectItem>
-                                                    <f:selectItems value="#{itemApplicationController.frequencyUnits}"
-                                                                   var="fu"
-                                                                   itemLabel="#{fu.name}"
-                                                                   itemValue="#{fu}">
-                                                    </f:selectItems>
-                                                    <f:ajax event="change" execute="@this" render="" ></f:ajax>
-                                                </p:selectOneMenu>
-                                            </td>
-                                            <td>
-                                                <p:inputText id="txtRxDuration" value="#{ii.addingItem.ci.prescriptionValue.duration}" ></p:inputText>
-                                                <p:selectOneMenu id="cmbRxDurationUnit" value="#{ii.addingItem.ci.prescriptionValue.durationUnit}" >
-                                                    <f:selectItem itemLabel="Please select duration unit" ></f:selectItem>
-                                                    <f:selectItems value="#{itemApplicationController.durationUnits}" 
-                                                                   var="du"
-                                                                   itemLabel="#{du.displayName}" 
-                                                                   itemValue="#{li}">
-                                                    </f:selectItems>
-                                                    <f:selectItems value="#{itemApplicationController.issueUnits}" 
-                                                                   var="iu"
-                                                                   itemLabel="#{iu.displayName}" 
-                                                                   itemValue="#{iu}">
-                                                    </f:selectItems>
-                                                    <f:selectItems value="#{itemApplicationController.packUnits}" 
-                                                                   var="pu"
-                                                                   itemLabel="#{pu.displayName}" 
-                                                                   itemValue="#{pu}">
-                                                    </f:selectItems>
-                                                </p:selectOneMenu>
-                                            </td>
-                                            <td>
-                                                <p:inputTextarea id="txtRxDes" 
-                                                                 value="#{ii.addingItem.ci.prescriptionValue.description}" placeholder="Enter Comments" >
-                                                </p:inputTextarea>
-                                            </td>
-                                            <td>
-                                                <p:commandButton id="btnAddRx"  value="Add" 
-                                                                 process="btnAddRx acRx txtRxDose cmbRxDoseUnit cmbRxFrequency txtRxDuration cmbRxDurationUnit txtRxDes" 
-                                                                 update="gpRx"
-                                                                 action="#{clientEncounterComponentItemController.addAnotherDataItem(ii)}"></p:commandButton>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                        <tr >
-                                            <td colspan="7">
-                                                <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
-                                                    <p:column headerText="Prescribed">
-                                                        <p:outputLabel value="#{ai.ci.prescriptionValue.medicine.name}" ></p:outputLabel>
-                                                        <p:outputLabel value=" " ></p:outputLabel>
-                                                        <p:outputLabel value="#{ai.ci.prescriptionValue.dose}" ></p:outputLabel>
-                                                        <p:outputLabel value="#{ai.ci.prescriptionValue.doseUnit.name}" ></p:outputLabel>
-                                                        <p:outputLabel value=" " ></p:outputLabel>
-                                                        <p:outputLabel value="#{ai.ci.prescriptionValue.frequency.name}" ></p:outputLabel>
-                                                        <p:outputLabel value=" " ></p:outputLabel>
-                                                        <p:outputLabel value="#{ai.ci.prescriptionValue.duration}" ></p:outputLabel>
-                                                        <p:outputLabel value="#{ai.ci.prescriptionValue.durationUnit.name}" ></p:outputLabel>
-                                                        <p:outputLabel value=" " ></p:outputLabel>
-                                                    </p:column>
-                                                </p:dataTable>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-
-                                <h:panelGroup id="gpPrs" rendered="#{ii.di.item.dataType eq 'Procedure_Request'}" >
-                                    <table >
-                                        <tr>
-                                            <td colspan="4">
-                                                <p:outputLabel for="prM" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                                <p:outputLabel for="prM" value="#{ii.di.descreption}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <p:selectOneMenu value="#{ii.addingItem.ci.institutionValue}" >
-                                                    <f:selectItem itemLabel="Please select room" ></f:selectItem>
-                                                    <f:selectItems value="#{webUserController.loggableProcedureRooms}"
-                                                                   var="ipr"
-                                                                   itemLabel="#{ipr.name}"
-                                                                   itemValue="#{ipr}">
-                                                    </f:selectItems>
-                                                    <f:ajax event="change" execute="@this" render="prM lblPrM" ></f:ajax>
-                                                </p:selectOneMenu>
-                                            </td>
-                                            <td>
-                                                <p:selectOneMenu id="prM" value="#{ii.addingItem.ci.itemValue}" >
-                                                    <f:selectItem itemLabel="Please select procedure" ></f:selectItem>
-                                                    <f:selectItems value="#{ii.addingItem.availableProcedures}" 
-                                                                   var="li"
-                                                                   itemLabel="#{li.displayName}" 
-                                                                   itemValue="#{li}">
-                                                    </f:selectItems>
-                                                </p:selectOneMenu>
-                                            </td>
-                                            <td>
-                                                <p:inputTextarea id="prComments" value="#{ii.addingItem.ci.longTextValue}" placeholder="Enter Comments" >
-                                                </p:inputTextarea>
-                                            </td>
-                                            <td>
-                                                <p:commandButton id="btnAddPrM"  value="Add" 
-                                                                 process="prM btnAddPrM prComments" 
-                                                                 update="gpPrs"
-                                                                 action="#{clientEncounterComponentItemController.addAnotherDataItem(ii)}"></p:commandButton>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                        <tr >
-                                            <td colspan="6">
-                                                <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
-                                                    <p:column headerText="Procedure Room">
-                                                        <p:outputLabel value="#{ai.ci.institutionValue.name}" ></p:outputLabel>
-                                                    </p:column>
-                                                    <p:column  headerText="Procedure">
-                                                        <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
-                                                    </p:column>
-                                                    <p:column  headerText="Comments">
-                                                        <p:outputLabel value="#{ai.ci.longTextValue}" ></p:outputLabel>
-                                                    </p:column>
-                                                </p:dataTable>
-                                            </td>
-
-
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-
-                                <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'Drop_Down_Menu'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="domIcM" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:selectOneMenu id="domIcM" value="#{ii.addingItem.ci.itemValue}" >
-                                                    <f:selectItem itemLabel="Please select" ></f:selectItem>
-                                                    <f:selectItems value="#{ii.availableItemsForSelection}" var="li"
-                                                                   itemLabel="#{li.displayName}" itemValue="#{li}" ></f:selectItems>
-                                                </p:selectOneMenu>
-                                            </td>
-                                            <td>
-                                                <p:commandButton id="btnAddM1"  value="Add" process="domIcM btnAddM1" update="@form :#{p:component('formset')}"
-                                                                 action="#{clientEncounterComponentItemController.addAnotherDataItem(ii)}"></p:commandButton>
-                                            </td>
-                                            <td>
-                                                <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
-                                                    <p:column >
-                                                        <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
-                                                    </p:column>
-                                                </p:dataTable>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-
-                                <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'Autocomplete'}" >
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="acItemcompleteAvailableItemsForSelectionM" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:autoComplete id="acItemM" value="#{ii.addingItem.ci.itemValue}"
-                                                                completeMethod="#{ii.completeAvailableItemsForSelection}"
-                                                                var="ai" itemLabel="#{ai.name}" itemValue="#{ai}"
-                                                                maxResults="15" forceSelection="true" 
-                                                                minQueryLength="3"
-                                                                required="#{ii.required}" 
-                                                                requiredMessage="#{ii.requiredErrorMessage}">
-                                                </p:autoComplete>
-                                            </td>
-                                            <td>
-                                                <p:commandButton id="btnAddM2"  value="Add" process="acItemM btnAddM2" update="@form :#{p:component('formset')}"
-                                                                 action="#{clientEncounterComponentItemController.addAnotherDataItem(ii)}"></p:commandButton>
-                                            </td>
-                                            <td>
-                                                <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
-                                                    <p:column >
-                                                        <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
-                                                    </p:column>
-                                                </p:dataTable>
-                                            </td>
-
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-
-                                <h:panelGroup rendered="#{ii.di.renderType eq 'Autocomplete' and ii.di.item.dataType eq 'Area_Reference'}" >
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="acAM" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:autoComplete id="acAM" value="#{ii.addingItem.ci.areaValue}"
-                                                                completeMethod="#{areaController.completeAreas}"
-                                                                var="a" itemLabel="#{a.name}" itemValue="#{a}"
-                                                                maxResults="15" forceSelection="true" 
-                                                                minQueryLength="3"
-                                                                required="#{ii.di.required}" 
-                                                                requiredMessage="#{ii.di.requiredErrorMessage}">
-                                                </p:autoComplete>
-                                            </td>
-                                            <td>
-                                                <p:commandButton id="btnAddM3"  value="Add" process="acAM btnAddM3" update="@form :#{p:component('formset')}"
-                                                                 action="#{clientEncounterComponentItemController.addAnotherDataItem(ii.addingItem)}"></p:commandButton>
-                                            </td>
-                                            <td>
-                                                <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
-                                                    <p:column >
-                                                        <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
-                                                    </p:column>
-                                                </p:dataTable>
-                                            </td>
-                                        </tr>
-                                        <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                            <td>
-                                                <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                            </td>
-                                        </h:panelGroup>
-                                        <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                            <td>
-                                                <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                            </td>
-                                        </h:panelGroup>
-                                    </table>
-                                </h:panelGroup>
-
-
-
-
+                                <p:outputLabel for="acAM" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                             </td>
-                        </tr>
-                    </h:panelGroup>
-
-                    <h:panelGroup id="gpDataAndButtonsSingle" rendered="#{!ii.multipleEntries}" >
-                        <tr>
                             <td>
-
-                                <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text' and ii.di.item.dataType eq'Short_Text'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="itStC" value="#{ii.di.name}" style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:inputText id="itStC" value="#{ii.ci.shortTextValue}" 
-                                                             required="#{ii.di.required}" 
-                                                             requiredMessage="#{ii.di.requiredErrorMessage}" >
-                                                    <p:ajax  event="blur" process="@this"  
-                                                             listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-                                                </p:inputText>
-                                            </td>
-                                            <td>
-                                                <h:panelGroup rendered="#{ii.di.calculateButton}" >
-                                                    <p:commandButton id="btnCalculateitStC"  value="Calculate" process="@this" update="itStC"
-                                                                     action="#{clientEncounterComponentItemController.calculate(ii)}"></p:commandButton>
-                                                </h:panelGroup>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-                                <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text' and ii.di.item.dataType eq 'Integer_Number'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="itIntC" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:inputText id="itIntC" value="#{ii.ci.integerNumberValue}" 
-                                                             required="#{ii.di.required}" 
-                                                             requiredMessage="#{ii.di.requiredErrorMessage}" >
-                                                    <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-
-                                                </p:inputText>
-                                            </td>
-                                            <td>
-                                                <h:panelGroup rendered="#{ii.di.calculateButton}" >
-                                                    <p:commandButton id="btnCalculateitIntC"  value="Calculate" process="@this" update="itIntC"
-                                                                     action="#{clientEncounterComponentItemController.calculate(ii)}"></p:commandButton>
-                                                </h:panelGroup>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-                                <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text' and ii.di.item.dataType eq 'Real_Number'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="itRnC" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:inputText id="itRnC" value="#{ii.ci.realNumberValue}" 
-                                                             required="#{ii.di.required}" validatorMessage="#{ii.di.regexValidationFailedMessage}"
-                                                             requiredMessage="#{ii.di.requiredErrorMessage}" >
-                                                    <p:ajax  event="blur" process="@this"  listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-                                                </p:inputText>
-                                            </td>
-                                            <td>
-                                                <h:panelGroup rendered="#{ii.di.calculateButton}" >
-                                                    <p:commandButton id="btnCalculate_it_RnC"  value="Calculate" process="@this" update="itRnC"
-                                                                     action="#{clientEncounterComponentItemController.calculate(ii)}"></p:commandButton>
-                                                </h:panelGroup>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-                                <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text' and ii.di.item.dataType eq 'Long_Number'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="itLongC" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:inputText id="itLongC" value="#{ii.ci.longNumberValue}" 
-                                                             required="#{ii.di.required}" 
-                                                             requiredMessage="#{ii.di.requiredErrorMessage}" >
-                                                    <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-                                                </p:inputText>
-                                            </td>
-                                            <td>
-                                                <h:panelGroup rendered="#{ii.di.calculateButton}" >
-                                                    <p:commandButton id="btnCalculate_itLongC"  value="Calculate" process="@this"
-                                                                     update="itLongC"
-                                                                     action="#{clientEncounterComponentItemController.calculate(ii)}"></p:commandButton>
-                                                </h:panelGroup>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-                                <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text_Area'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="txtItaL" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:inputTextarea id="txtItaL" value="#{ii.ci.longTextValue}" 
-                                                                 required="#{ii.di.required}" 
-                                                                 requiredMessage="#{ii.di.requiredErrorMessage}" >
-                                                    <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-                                                </p:inputTextarea>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-
-                                <h:panelGroup rendered="#{ii.di.renderType eq 'Date_Picker' and ii.di.item.dataType eq 'DateTime'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="calDp" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:calendar id="calDp" value="#{ii.ci.dateValue}" 
-                                                            required="#{ii.di.required}" navigator="true"
-                                                            requiredMessage="#{ii.di.requiredErrorMessage}" 
-                                                            pattern="dd MMMM yyyy">
-                                                    <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-                                                    <p:ajax  event="dateSelect" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-                                                    <p:ajax  event="change" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-
-                                                </p:calendar>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-                                <h:panelGroup rendered="#{ii.di.renderType eq 'Calendar' and ii.di.item.dataType eq 'DateTime'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="calCS" value="#{ii.di.name}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:calendar id="calCS" value="#{ii.ci.dateValue}" 
-                                                            required="#{ii.di.required}" 
-                                                            requiredMessage="#{ii.di.requiredErrorMessage}" pattern="dd MMMM yyyy">
-                                                    <p:ajax  event="blur" process="calCS"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-                                                    <p:ajax  event="blur" process="calCS"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-                                                    <p:ajax  event="dateSelect" process="calCS"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-                                                    <p:ajax  event="change" process="calCS"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-
-                                                </p:calendar>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-
-
-                                <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'Drop_Down_Menu'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="domIc" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:selectOneMenu id="domIc" value="#{ii.ci.itemValue}" >
-                                                    <f:selectItem itemLabel="Please select" ></f:selectItem>
-                                                    <f:selectItems value="#{ii.availableItemsForSelection}" var="li"
-                                                                   itemLabel="#{li.displayName}" itemValue="#{li}" ></f:selectItems>
-                                                    <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-                                                </p:selectOneMenu>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-                                <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'Autocomplete'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="acItem" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:autoComplete id="acItem" value="#{ii.ci.itemValue}"
-                                                                completeMethod="#{ii.completeItemsofParentWithFIlter}"
-                                                                var="ai" itemLabel="#{ai.name}" itemValue="#{ai}"
-                                                                maxResults="15" forceSelection="true" 
-                                                                minQueryLength="3"
-                                                                required="#{ii.required}" 
-                                                                requiredMessage="#{ii.requiredErrorMessage}">
-                                                    <p:ajax  event="blur" process="@this"   
-                                                             listener="#{clientEncounterComponentItemController.save(ii.ci)}" >
-                                                    </p:ajax>
-                                                </p:autoComplete>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-
-                                <h:panelGroup rendered="#{ii.di.renderType eq 'Boolean_Checkbox'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="bcNc" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:selectBooleanCheckbox id="bcNc" value="#{ii.ci.booleanValue}" 
-                                                                         required="#{ii.di.required}" 
-                                                                         requiredMessage="#{ii.di.requiredErrorMessage}" >
-                                                    <p:ajax  process="@this"   
-                                                             listener="#{clientEncounterComponentItemController.save(ii.ci)}" >
-                                                    </p:ajax>
-                                                    <p:ajax  process="@this"  event="blur" 
-                                                             listener="#{clientEncounterComponentItemController.save(ii.ci)}" >
-                                                    </p:ajax>
-                                                </p:selectBooleanCheckbox>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-
-                                <h:panelGroup rendered="#{ii.di.renderType eq 'Boolean_Button'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="bbNc" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:selectBooleanButton id="bbNc" value="#{ii.ci.booleanValue}" offLabel="No" onLabel="Yes"
-                                                                       required="#{ii.di.required}" 
-                                                                       requiredMessage="#{ii.di.requiredErrorMessage}" >
-                                                    <p:ajax  process="@this"   
-                                                             listener="#{clientEncounterComponentItemController.save(ii.ci)}" >
-                                                    </p:ajax>
-                                                    <p:ajax  process="@this"  event="blur" 
-                                                             listener="#{clientEncounterComponentItemController.save(ii.ci)}" >
-                                                    </p:ajax>
-                                                </p:selectBooleanButton>
-                                            </td>
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-
-                                <h:panelGroup rendered="#{ii.di.renderType eq 'Autocomplete' and ii.di.item.dataType eq 'Area_Reference'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel for="acA" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <p:autoComplete id="acA" value="#{ii.ci.areaValue}"
-                                                                completeMethod="#{areaController.completeAreas}"
-                                                                var="a" itemLabel="#{a.name}" itemValue="#{a}"
-                                                                maxResults="15" forceSelection="true" 
-                                                                minQueryLength="3"
-                                                                required="#{ii.di.required}" 
-                                                                requiredMessage="#{ii.di.requiredErrorMessage}">
-                                                    <p:ajax  event="blur" process="@this"   
-                                                             listener="#{clientEncounterComponentItemController.save(ii.ci)}" >
-                                                    </p:ajax>
-                                                </p:autoComplete>
-                                            </td>
-
-                                            <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                                                <td>
-                                                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                                                </td>
-                                            </h:panelGroup>
-                                            <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                                                <td>
-                                                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                                                </td>
-                                            </h:panelGroup>
-
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-                                <h:panelGroup rendered="#{ii.di.renderType eq 'Prescreption'}" >
-                                    <table >
-                                        <tr>
-                                            <td>
-                                                <p:outputLabel value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                                            </td>
-                                            <td>
-                                                <ez:prescription/>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </h:panelGroup>
-
-
-
+                                <p:autoComplete id="acAM" value="#{ii.addingItem.ci.areaValue}"
+                                                completeMethod="#{areaController.completeAreas}"
+                                                var="a" itemLabel="#{a.name}" itemValue="#{a}"
+                                                maxResults="15" forceSelection="true" 
+                                                minQueryLength="3"
+                                                required="#{ii.di.required}" 
+                                                requiredMessage="#{ii.di.requiredErrorMessage}">
+                                </p:autoComplete>
+                            </td>
+                            <td>
+                                <p:commandButton id="btnAddM3"  value="Add" process="acAM btnAddM3" update="@form :#{p:component('formset')}"
+                                                 action="#{clientEncounterComponentItemController.addAnotherDataItem(ii.addingItem)}"></p:commandButton>
+                            </td>
+                            <td>
+                                <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                                    <p:column >
+                                        <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
+                                    </p:column>
+                                </p:dataTable>
                             </td>
                         </tr>
-                    </h:panelGroup>
-
-                    <h:panelGroup rendered="false" >
                         <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                            <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                            <td>
+                                <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                            </td>
                         </h:panelGroup>
                         <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                            <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                            <td>
+                                <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                            </td>
                         </h:panelGroup>
-                        <h:panelGroup rendered="true">
-                            <p:panelGrid columns="2" rendered="false" >
-                                <p:outputLabel value="Name" ></p:outputLabel>
-                                <p:outputLabel value="#{ii.di.name}" ></p:outputLabel>
-                                <p:outputLabel value="renderType" ></p:outputLabel>
-                                <p:outputLabel value="#{ii.di.renderType.label}" ></p:outputLabel>
-                                <p:outputLabel value="selectionDataType" ></p:outputLabel>
-                                <p:outputLabel value="#{ii.di.item.dataType.label}" ></p:outputLabel>
-                            </p:panelGrid>
+                    </table>
+                </h:panelGroup>
+
+
+
+
+            </h:panelGroup>
+
+            <h:panelGroup id="gpDataAndButtonsSingle" rendered="#{!ii.multipleEntries}" >
+                <tr>
+                    <td>
+
+                        <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text' and ii.di.item.dataType eq'Short_Text'}" >
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:outputLabel for="itStC" value="#{ii.di.name}" style="#{ii.di.css}" ></p:outputLabel>
+                                    </td>
+                                    <td>
+                                        <p:inputText id="itStC" value="#{ii.ci.shortTextValue}" 
+                                                     required="#{ii.di.required}" 
+                                                     requiredMessage="#{ii.di.requiredErrorMessage}" >
+                                            <p:ajax  event="blur" process="@this"  
+                                                     listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                        </p:inputText>
+                                    </td>
+                                    <td>
+                                        <h:panelGroup rendered="#{ii.di.calculateButton}" >
+                                            <p:commandButton id="btnCalculateitStC"  value="Calculate" process="@this" update="itStC"
+                                                             action="#{clientEncounterComponentItemController.calculate(ii)}"></p:commandButton>
+                                        </h:panelGroup>
+                                    </td>
+                                    <h:panelGroup rendered="#{ii.di.displayLastResult}" >
+                                        <td>
+                                            <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                                        </td>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
+                                        <td>
+                                            <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                                        </td>
+                                    </h:panelGroup>
+                                </tr>
+                            </table>
                         </h:panelGroup>
-                    </h:panelGroup>
+                        <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text' and ii.di.item.dataType eq 'Integer_Number'}" >
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:outputLabel for="itIntC" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                                    </td>
+                                    <td>
+                                        <p:inputText id="itIntC" value="#{ii.ci.integerNumberValue}" 
+                                                     required="#{ii.di.required}" 
+                                                     requiredMessage="#{ii.di.requiredErrorMessage}" >
+                                            <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
 
-                </ui:repeat>
-            </table>                
-        </h:panelGroup>
+                                        </p:inputText>
+                                    </td>
+                                    <td>
+                                        <h:panelGroup rendered="#{ii.di.calculateButton}" >
+                                            <p:commandButton id="btnCalculateitIntC"  value="Calculate" process="@this" update="itIntC"
+                                                             action="#{clientEncounterComponentItemController.calculate(ii)}"></p:commandButton>
+                                        </h:panelGroup>
+                                    </td>
+                                    <h:panelGroup rendered="#{ii.di.displayLastResult}" >
+                                        <td>
+                                            <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                                        </td>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
+                                        <td>
+                                            <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                                        </td>
+                                    </h:panelGroup>
+                                </tr>
+                            </table>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text' and ii.di.item.dataType eq 'Real_Number'}" >
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:outputLabel for="itRnC" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                                    </td>
+                                    <td>
+                                        <p:inputText id="itRnC" value="#{ii.ci.realNumberValue}" 
+                                                     required="#{ii.di.required}" validatorMessage="#{ii.di.regexValidationFailedMessage}"
+                                                     requiredMessage="#{ii.di.requiredErrorMessage}" >
+                                            <p:ajax  event="blur" process="@this"  listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                        </p:inputText>
+                                    </td>
+                                    <td>
+                                        <h:panelGroup rendered="#{ii.di.calculateButton}" >
+                                            <p:commandButton id="btnCalculate_it_RnC"  value="Calculate" process="@this" update="itRnC"
+                                                             action="#{clientEncounterComponentItemController.calculate(ii)}"></p:commandButton>
+                                        </h:panelGroup>
+                                    </td>
+                                    <h:panelGroup rendered="#{ii.di.displayLastResult}" >
+                                        <td>
+                                            <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                                        </td>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
+                                        <td>
+                                            <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                                        </td>
+                                    </h:panelGroup>
+                                </tr>
+                            </table>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text' and ii.di.item.dataType eq 'Long_Number'}" >
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:outputLabel for="itLongC" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                                    </td>
+                                    <td>
+                                        <p:inputText id="itLongC" value="#{ii.ci.longNumberValue}" 
+                                                     required="#{ii.di.required}" 
+                                                     requiredMessage="#{ii.di.requiredErrorMessage}" >
+                                            <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                        </p:inputText>
+                                    </td>
+                                    <td>
+                                        <h:panelGroup rendered="#{ii.di.calculateButton}" >
+                                            <p:commandButton id="btnCalculate_itLongC"  value="Calculate" process="@this"
+                                                             update="itLongC"
+                                                             action="#{clientEncounterComponentItemController.calculate(ii)}"></p:commandButton>
+                                        </h:panelGroup>
+                                    </td>
+                                    <h:panelGroup rendered="#{ii.di.displayLastResult}" >
+                                        <td>
+                                            <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                                        </td>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
+                                        <td>
+                                            <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                                        </td>
+                                    </h:panelGroup>
+                                </tr>
+                            </table>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text_Area'}" >
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:outputLabel for="txtItaL" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                                    </td>
+                                    <td>
+                                        <p:inputTextarea id="txtItaL" value="#{ii.ci.longTextValue}" 
+                                                         required="#{ii.di.required}" 
+                                                         requiredMessage="#{ii.di.requiredErrorMessage}" >
+                                            <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                        </p:inputTextarea>
+                                    </td>
+                                    <h:panelGroup rendered="#{ii.di.displayLastResult}" >
+                                        <td>
+                                            <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                                        </td>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
+                                        <td>
+                                            <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                                        </td>
+                                    </h:panelGroup>
+                                </tr>
+                            </table>
+                        </h:panelGroup>
 
-        <h:panelGroup rendered="#{cc.attrs.form.df.itemArrangementStrategy eq 'Absolute_Positioning'}" >
-            <p:outputLabel value="Still Under Construction. Please contact Development Team" ></p:outputLabel>
-        </h:panelGroup>
+                        <h:panelGroup rendered="#{ii.di.renderType eq 'Date_Picker' and ii.di.item.dataType eq 'DateTime'}" >
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:outputLabel for="calDp" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                                    </td>
+                                    <td>
+                                        <p:calendar id="calDp" value="#{ii.ci.dateValue}" 
+                                                    required="#{ii.di.required}" navigator="true"
+                                                    requiredMessage="#{ii.di.requiredErrorMessage}" 
+                                                    pattern="dd MMMM yyyy">
+                                            <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                            <p:ajax  event="dateSelect" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                            <p:ajax  event="change" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
 
-        <h:panelGroup rendered="#{cc.attrs.form.df.itemArrangementStrategy eq 'Relative_Positioning'}" >
-            <p:outputLabel value="Still Under Construction. Please contact Development Team" ></p:outputLabel>
-        </h:panelGroup>
+                                        </p:calendar>
+                                    </td>
+                                    <h:panelGroup rendered="#{ii.di.displayLastResult}" >
+                                        <td>
+                                            <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                                        </td>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
+                                        <td>
+                                            <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                                        </td>
+                                    </h:panelGroup>
+                                </tr>
+                            </table>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{ii.di.renderType eq 'Calendar' and ii.di.item.dataType eq 'DateTime'}" >
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:outputLabel for="calCS" value="#{ii.di.name}" ></p:outputLabel>
+                                    </td>
+                                    <td>
+                                        <p:calendar id="calCS" value="#{ii.ci.dateValue}" 
+                                                    required="#{ii.di.required}" 
+                                                    requiredMessage="#{ii.di.requiredErrorMessage}" pattern="dd MMMM yyyy">
+                                            <p:ajax  event="blur" process="calCS"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                            <p:ajax  event="blur" process="calCS"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                            <p:ajax  event="dateSelect" process="calCS"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                            <p:ajax  event="change" process="calCS"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+
+                                        </p:calendar>
+                                    </td>
+                                    <h:panelGroup rendered="#{ii.di.displayLastResult}" >
+                                        <td>
+                                            <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                                        </td>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
+                                        <td>
+                                            <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                                        </td>
+                                    </h:panelGroup>
+                                </tr>
+                            </table>
+                        </h:panelGroup>
+
+
+                        <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'Drop_Down_Menu'}" >
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:outputLabel for="domIc" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                                    </td>
+                                    <td>
+                                        <p:selectOneMenu id="domIc" value="#{ii.ci.itemValue}" >
+                                            <f:selectItem itemLabel="Please select" ></f:selectItem>
+                                            <f:selectItems value="#{ii.availableItemsForSelection}" var="li"
+                                                           itemLabel="#{li.displayName}" itemValue="#{li}" ></f:selectItems>
+                                            <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                                        </p:selectOneMenu>
+                                    </td>
+                                    <h:panelGroup rendered="#{ii.di.displayLastResult}" >
+                                        <td>
+                                            <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                                        </td>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
+                                        <td>
+                                            <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                                        </td>
+                                    </h:panelGroup>
+                                </tr>
+                            </table>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'Autocomplete'}" >
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:outputLabel for="acItem" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                                    </td>
+                                    <td>
+                                        <p:autoComplete id="acItem" value="#{ii.ci.itemValue}"
+                                                        completeMethod="#{ii.completeItemsofParentWithFIlter}"
+                                                        var="ai" itemLabel="#{ai.name}" itemValue="#{ai}"
+                                                        maxResults="15" forceSelection="true" 
+                                                        minQueryLength="3"
+                                                        required="#{ii.required}" 
+                                                        requiredMessage="#{ii.requiredErrorMessage}">
+                                            <p:ajax  event="blur" process="@this"   
+                                                     listener="#{clientEncounterComponentItemController.save(ii.ci)}" >
+                                            </p:ajax>
+                                        </p:autoComplete>
+                                    </td>
+                                    <h:panelGroup rendered="#{ii.di.displayLastResult}" >
+                                        <td>
+                                            <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                                        </td>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
+                                        <td>
+                                            <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                                        </td>
+                                    </h:panelGroup>
+                                </tr>
+                            </table>
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="#{ii.di.renderType eq 'Boolean_Checkbox'}" >
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:outputLabel for="bcNc" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                                    </td>
+                                    <td>
+                                        <p:selectBooleanCheckbox id="bcNc" value="#{ii.ci.booleanValue}" 
+                                                                 required="#{ii.di.required}" 
+                                                                 requiredMessage="#{ii.di.requiredErrorMessage}" >
+                                            <p:ajax  process="@this"   
+                                                     listener="#{clientEncounterComponentItemController.save(ii.ci)}" >
+                                            </p:ajax>
+                                            <p:ajax  process="@this"  event="blur" 
+                                                     listener="#{clientEncounterComponentItemController.save(ii.ci)}" >
+                                            </p:ajax>
+                                        </p:selectBooleanCheckbox>
+                                    </td>
+                                    <h:panelGroup rendered="#{ii.di.displayLastResult}" >
+                                        <td>
+                                            <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                                        </td>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
+                                        <td>
+                                            <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                                        </td>
+                                    </h:panelGroup>
+                                </tr>
+                            </table>
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="#{ii.di.renderType eq 'Boolean_Button'}" >
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:outputLabel for="bbNc" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                                    </td>
+                                    <td>
+                                        <p:selectBooleanButton id="bbNc" value="#{ii.ci.booleanValue}" offLabel="No" onLabel="Yes"
+                                                               required="#{ii.di.required}" 
+                                                               requiredMessage="#{ii.di.requiredErrorMessage}" >
+                                            <p:ajax  process="@this"   
+                                                     listener="#{clientEncounterComponentItemController.save(ii.ci)}" >
+                                            </p:ajax>
+                                            <p:ajax  process="@this"  event="blur" 
+                                                     listener="#{clientEncounterComponentItemController.save(ii.ci)}" >
+                                            </p:ajax>
+                                        </p:selectBooleanButton>
+                                    </td>
+                                    <h:panelGroup rendered="#{ii.di.displayLastResult}" >
+                                        <td>
+                                            <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                                        </td>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
+                                        <td>
+                                            <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                                        </td>
+                                    </h:panelGroup>
+                                </tr>
+                            </table>
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="#{ii.di.renderType eq 'Autocomplete' and ii.di.item.dataType eq 'Area_Reference'}" >
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:outputLabel for="acA" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                                    </td>
+                                    <td>
+                                        <p:autoComplete id="acA" value="#{ii.ci.areaValue}"
+                                                        completeMethod="#{areaController.completeAreas}"
+                                                        var="a" itemLabel="#{a.name}" itemValue="#{a}"
+                                                        maxResults="15" forceSelection="true" 
+                                                        minQueryLength="3"
+                                                        required="#{ii.di.required}" 
+                                                        requiredMessage="#{ii.di.requiredErrorMessage}">
+                                            <p:ajax  event="blur" process="@this"   
+                                                     listener="#{clientEncounterComponentItemController.save(ii.ci)}" >
+                                            </p:ajax>
+                                        </p:autoComplete>
+                                    </td>
+
+                                    <h:panelGroup rendered="#{ii.di.displayLastResult}" >
+                                        <td>
+                                            <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                                        </td>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
+                                        <td>
+                                            <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                                        </td>
+                                    </h:panelGroup>
+
+                                </tr>
+                            </table>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{ii.di.renderType eq 'Prescreption'}" >
+                            <table >
+                                <tr>
+                                    <td>
+                                        <p:outputLabel value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                                    </td>
+                                    <td>
+                                        <ez:prescription/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </h:panelGroup>
+
+
+
+                    </td>
+                </tr>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="false" >
+                <h:panelGroup rendered="#{ii.di.displayLastResult}" >
+                    <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
+                </h:panelGroup>
+                <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
+                    <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
+                </h:panelGroup>
+                <h:panelGroup rendered="true">
+                    <p:panelGrid columns="2" rendered="false" >
+                        <p:outputLabel value="Name" ></p:outputLabel>
+                        <p:outputLabel value="#{ii.di.name}" ></p:outputLabel>
+                        <p:outputLabel value="renderType" ></p:outputLabel>
+                        <p:outputLabel value="#{ii.di.renderType.label}" ></p:outputLabel>
+                        <p:outputLabel value="selectionDataType" ></p:outputLabel>
+                        <p:outputLabel value="#{ii.di.item.dataType.label}" ></p:outputLabel>
+                    </p:panelGrid>
+                </h:panelGroup>
+            </h:panelGroup>
+
+        </ui:repeat>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     </cc:implementation>
 </html>
