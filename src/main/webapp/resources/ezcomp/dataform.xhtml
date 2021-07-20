@@ -20,7 +20,7 @@
 
 
 
-        <ui:repeat id="rptItems" value="#{cc.attrs.form.items}" var="ii" >
+        <ui:repeat id="formset" value="#{cc.attrs.form.items}" var="ii" >
             <h:panelGroup id="gpDataAndButtonsMultiple" rendered="#{ii.multipleEntries}" >
                 <h:panelGroup rendered="#{ii.di.item.dataType eq 'Client_Basic_Details'}">
                     <div class="form-group row">
@@ -45,7 +45,7 @@
                                             completeMethod="#{areaController.completeMoh}"
                                             var="moh" itemLabel="#{moh.name}" itemValue="#{moh}"
                                             maxResults="15" forceSelection="true"
-                                            minQueryLength="3">
+                                            minQueryLength="2">
                             </p:autoComplete>
                         </div>
                         <div class="col-md-2">
@@ -54,12 +54,12 @@
                                             completeMethod="#{areaController.completeDistricts}"
                                             var="district" itemLabel="#{district.name}" itemValue="#{district}"
                                             maxResults="15" forceSelection="true"
-                                            minQueryLength="3">
+                                            minQueryLength="2">
                             </p:autoComplete>
                         </div>
-                        <div class="col-md-4">
-                            <p:commandButton id="btnAddCb1"  value="Add" process="cbDis cbMoh cbContact cbName cbAddress btnAddCb1" update="@form :#{p:component('formset')}"
-                                             action="#{clientEncounterComponentItemController.addAnotherDataItem(ii)}"></p:commandButton>
+                        <div class="col-md-2">
+                            <p:commandButton id="btnAddCb1"  value="Add" process="cbDis cbMoh cbContact cbName cbAddress btnAddCb1" update="@form "
+                                             action="#{clientEncounterComponentItemController.addAnotherClientBasicData(ii)}"></p:commandButton>
 
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                         <div class="col-md-12">
                             <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet"
                                          rowIndexVar="se">
-                                <p:column headerText="No" >
+                                <p:column headerText="No" width="40" >
                                     <p:outputLabel value="#{se+1}" ></p:outputLabel>
                                 </p:column>
                                 <p:column headerText="Name" >
@@ -80,10 +80,10 @@
                                     <p:outputLabel value="#{ai.ci.shortTextValue2}" ></p:outputLabel>
                                 </p:column>
                                 <p:column headerText="MOH" >
-                                    <p:outputLabel value="#{ai.ci.areaValue}" ></p:outputLabel>
+                                    <p:outputLabel value="#{ai.ci.areaValue.name}" ></p:outputLabel>
                                 </p:column>
                                 <p:column headerText="District" >
-                                    <p:outputLabel value="#{ai.ci.areaValue2}" ></p:outputLabel>
+                                    <p:outputLabel value="#{ai.ci.areaValue2.name}" ></p:outputLabel>
                                 </p:column>
                             </p:dataTable>
                         </div>
@@ -104,7 +104,7 @@
                             </p:selectOneMenu>
                         </div>
                         <div class="col-md-4">
-                            <p:commandButton id="btnAddM1"  value="Add" process="domIcM btnAddM1" update="@form :#{p:component('formset')}"
+                            <p:commandButton id="btnAddM1"  value="Add" process="domIcM btnAddM1" update="@form"
                                              action="#{clientEncounterComponentItemController.addAnotherDataItem(ii)}"></p:commandButton>
 
                         </div>
@@ -136,7 +136,7 @@
                             </p:autoComplete>
                         </div>
                         <div class="col-md-4">
-                            <p:commandButton id="btnAddM2"  value="Add" process="acItemM btnAddM2" update="@form :#{p:component('formset')}"
+                            <p:commandButton id="btnAddM2"  value="Add" process="acItemM btnAddM2" update="@form "
                                              action="#{clientEncounterComponentItemController.addAnotherDataItem(ii)}"></p:commandButton>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
                             </p:autoComplete>
                         </div>
                         <div class="col-md-4" >
-                            <p:commandButton id="btnAddM3"  value="Add" process="acAM btnAddM3" update="@form :#{p:component('formset')}"
+                            <p:commandButton id="btnAddM3"  value="Add" process="acAM btnAddM3" update="@form "
                                              action="#{clientEncounterComponentItemController.addAnotherDataItem(ii.addingItem)}"></p:commandButton>
                         </div>
                     </div>
@@ -424,19 +424,6 @@
             </h:panelGroup>
 
         </ui:repeat>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     </cc:implementation>
 </html>
