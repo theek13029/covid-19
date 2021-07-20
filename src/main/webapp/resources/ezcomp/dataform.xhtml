@@ -45,7 +45,7 @@
                                             completeMethod="#{areaController.completeMoh}"
                                             var="moh" itemLabel="#{moh.name}" itemValue="#{moh}"
                                             maxResults="15" forceSelection="true"
-                                            minQueryLength="3">
+                                            minQueryLength="2">
                             </p:autoComplete>
                         </div>
                         <div class="col-md-2">
@@ -54,7 +54,7 @@
                                             completeMethod="#{areaController.completeDistricts}"
                                             var="district" itemLabel="#{district.name}" itemValue="#{district}"
                                             maxResults="15" forceSelection="true"
-                                            minQueryLength="3">
+                                            minQueryLength="2">
                             </p:autoComplete>
                         </div>
                         <div class="col-md-2">
@@ -67,7 +67,7 @@
                         <div class="col-md-12">
                             <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet"
                                          rowIndexVar="se">
-                                <p:column headerText="No" >
+                                <p:column headerText="No" width="40" >
                                     <p:outputLabel value="#{se+1}" ></p:outputLabel>
                                 </p:column>
                                 <p:column headerText="Name" >
@@ -80,10 +80,10 @@
                                     <p:outputLabel value="#{ai.ci.shortTextValue2}" ></p:outputLabel>
                                 </p:column>
                                 <p:column headerText="MOH" >
-                                    <p:outputLabel value="#{ai.ci.areaValue}" ></p:outputLabel>
+                                    <p:outputLabel value="#{ai.ci.areaValue.name}" ></p:outputLabel>
                                 </p:column>
                                 <p:column headerText="District" >
-                                    <p:outputLabel value="#{ai.ci.areaValue2}" ></p:outputLabel>
+                                    <p:outputLabel value="#{ai.ci.areaValue2.name}" ></p:outputLabel>
                                 </p:column>
                             </p:dataTable>
                         </div>
