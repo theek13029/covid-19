@@ -46,6 +46,7 @@ import javax.inject.Named;
 import javax.persistence.TemporalType;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.entity.WebUser;
+import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
 // </editor-fold>
@@ -126,6 +127,7 @@ public class MohController implements Serializable {
     private List<InstitutionCount> institutionCounts;
 
     private Area district;
+    private Area moh;
 
 // </editor-fold>    
 // <editor-fold defaultstate="collapsed" desc="Constructors">
@@ -292,6 +294,12 @@ public class MohController implements Serializable {
         fromDate = CommonController.startOfTheDate();
         toDate = CommonController.endOfTheDate();
         return "/national/pcr_positive_links";
+    }
+
+    public String toReportListForRegion() {
+        fromDate = CommonController.startOfTheDate();
+        toDate = CommonController.endOfTheDate();
+        return "/regional/list_of_tests";
     }
 
     public String toPcrPositiveCasesList() {
@@ -492,7 +500,7 @@ public class MohController implements Serializable {
     public String toListOfTests() {
         return "/moh/list_of_tests";
     }
-    
+
     public String toListOfInvestigatedCasesForMoh() {
         return "/moh/investigated_list";
     }
@@ -1487,10 +1495,18 @@ public class MohController implements Serializable {
 
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
-
+        
+        j += " and c.client.person.district=:district ";
+        m.put("district", webUserController.getLoggedUser().getArea());
+        
         if (mohOrHospital != null) {
             j += " and c.institution=:ins ";
             m.put("ins", mohOrHospital);
+        }
+        
+        if(moh != null){
+            j += " and c.client.person.mohArea=:moh ";
+            m.put("moh", moh);
         }
 
         j += " and c.createdAt between :fd and :td ";
@@ -1750,6 +1766,17 @@ public class MohController implements Serializable {
 
     public void setSelectedToAssign(List<Encounter> selectedToAssign) {
         this.selectedToAssign = selectedToAssign;
+    } 
+
+    public List<Area> completeMohsPerDistrict(String qry) {        
+        return areaController.getMohAreasOfADistrict(areaController.getAreaByName(webUserController.getLoggedUser().getArea().toString(),AreaType.District,false,null));
+    } 
+
+    public Area getMoh() {
+        return moh;
     }
 
+    public void setMoh(Area moh) {
+        this.moh = moh;
+    }    
 }
