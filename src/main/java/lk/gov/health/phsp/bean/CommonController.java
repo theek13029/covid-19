@@ -322,7 +322,8 @@ public class CommonController implements Serializable {
             RenderType.Order,
             RenderType.Boolean_Button,
             RenderType.Boolean_Checkbox,
-            RenderType.Drop_Down_Menu};
+            RenderType.Drop_Down_Menu,
+            RenderType.Client_Basic_Details};
         return rts;
     }
 
@@ -361,7 +362,8 @@ public class CommonController implements Serializable {
             SelectionDataType.Client_Reference,
             SelectionDataType.Area_Reference,
             SelectionDataType.Prescreption_Reference,
-            SelectionDataType.Procedure_Request
+            SelectionDataType.Procedure_Request,
+            SelectionDataType.Client_Basic_Details
         };
 
         return sdts;

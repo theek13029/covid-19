@@ -87,7 +87,8 @@ public enum RenderType {
     @Deprecated
     Item_select_and_add_to_List("Item select & add to List"),
     Prescreption("Prescreption"),
-    Procedure_room("Procedure Request");
+    Procedure_room("Procedure Request"),
+    Client_Basic_Details("Client Basic Details");
     
     
     
