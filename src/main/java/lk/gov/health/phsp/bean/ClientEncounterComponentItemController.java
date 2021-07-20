@@ -824,10 +824,6 @@ public class ClientEncounterComponentItemController implements Serializable {
             JsfUtil.addErrorMessage("No Adding Item");
             return;
         }
-        if (i.getAddingItem().getCi().getItemValue() == null) {
-            JsfUtil.addErrorMessage("No Item value for CI");
-            return;
-        }
         save(i.getAddingItem().getCi());
         i.getAddedItems().add(i.getAddingItem());
         ClientEncounterComponentItem nci = new ClientEncounterComponentItem();
