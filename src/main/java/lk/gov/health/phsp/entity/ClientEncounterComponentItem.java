@@ -82,10 +82,13 @@ public class ClientEncounterComponentItem extends ClientEncounterComponent {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Movement movementValue;
 
+    private String shortTextValue2;
     private Integer integerNumberValue2;
     private Long longNumberValue2;
     private Double realNumberValue2;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Area areaValue2;
+    
     public Client getItemClient() {
         return itemClient;
     }
@@ -284,4 +287,21 @@ public class ClientEncounterComponentItem extends ClientEncounterComponent {
         this.realNumberValue2 = realNumberValue2;
     }
 
+    public String getShortTextValue2() {
+        return shortTextValue2;
+    }
+
+    public void setShortTextValue2(String shortTextValue2) {
+        this.shortTextValue2 = shortTextValue2;
+    }
+
+    public Area getAreaValue2() {
+        return areaValue2;
+    }
+
+    public void setAreaValue2(Area areaValue2) {
+        this.areaValue2 = areaValue2;
+    }
+
+    
 }
