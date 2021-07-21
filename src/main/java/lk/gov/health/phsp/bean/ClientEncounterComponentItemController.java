@@ -65,16 +65,13 @@ public class ClientEncounterComponentItemController implements Serializable {
     private ClientEncounterComponentItem selected;
 
     private Long searchId;
-    
-   
+
     public void searchById() {
 
         selected = getFacade().find(searchId);
     }
-    
-  
-    
-    public ClientEncounterComponentItem findFirstCeciForEncounter(Encounter e, Item iem){
+
+    public ClientEncounterComponentItem findFirstCeciForEncounter(Encounter e, Item iem) {
         String jpql = "select i "
                 + " from ClientEncounterComponentItem i "
                 + " where i.parent.parent.encounter=:e "
@@ -676,7 +673,7 @@ public class ClientEncounterComponentItemController implements Serializable {
         // // System.out.println("i.getItemValue() = " + i.getItemValue());
         // // System.out.println("i.getShortTextValue() = " + i.getShortTextValue());
         // // System.out.println("i.getLongTextValue() = " + i.getLongTextValue());
-         // // System.out.println("Bool Value = " + i.getBooleanValue());
+        // // System.out.println("Bool Value = " + i.getBooleanValue());
     }
 
     public void addAnother(ClientEncounterComponentItem i) {
@@ -738,14 +735,12 @@ public class ClientEncounterComponentItemController implements Serializable {
         }
 
         // // System.out.println("i.getAddingItem() = " + i.getAddingItem());
-
         if (i.getAddingItem() == null) {
             JsfUtil.addErrorMessage("No Adding Item");
             return;
         }
 
         // // System.out.println("i.getAddingItem().getCi() = " + i.getAddingItem().getCi());
-
         if (i.getAddingItem().getCi() == null) {
             JsfUtil.addErrorMessage("No CI for Adding Item");
             // // System.out.println("No CI for Adding Item");
@@ -760,14 +755,11 @@ public class ClientEncounterComponentItemController implements Serializable {
         }
 
         // // System.out.println("going to save");
-
         // // System.out.println("i.getAddingItem().getCi().getId() = " + i.getAddingItem().getCi().getId());
-
         save(i.getAddingItem().getCi());
 
         // // System.out.println("saved");
         // // System.out.println("i.getAddingItem().getCi().getId() = " + i.getAddingItem().getCi().getId());
-
         i.getAddedItems().add(i.getAddingItem());
 
         if (i.getAddingItem().getCi().getItemValue() == null) {
@@ -778,7 +770,6 @@ public class ClientEncounterComponentItemController implements Serializable {
         }
 
         // // System.out.println("before new nci");
-
         ClientEncounterComponentItem nci = new ClientEncounterComponentItem();
 
         nci.setEncounter(i.getForm().getFormset().getEfs().getEncounter());
@@ -809,7 +800,58 @@ public class ClientEncounterComponentItemController implements Serializable {
         }
 
         // // System.out.println("before new ni");
+        DataItem ni = new DataItem();
+        ni.setMultipleEntries(true);
+        ni.setCi(nci);
+        ni.di = i.getDi();
+        ni.id = (int) (i.getAddedItems().size() + 1.0);
+        ni.orderNo = i.getAddedItems().size() + 1.0;
+        ni.form = i.getForm();
 
+        i.setAddingItem(ni);
+
+        // // System.out.println("before recording user transaction");
+        userTransactionController.recordTransaction("Add Another - Clinic Forms");
+        // // System.out.println("after saving user transaction");
+    }
+
+    public void addAnotherClientBasicData(DataItem i) {
+        if (i == null) {
+            JsfUtil.addErrorMessage("No Data Item");
+            return;
+        }
+        if (i.getAddingItem() == null) {
+            JsfUtil.addErrorMessage("No Adding Item");
+            return;
+        }
+        save(i.getAddingItem().getCi());
+        i.getAddedItems().add(i.getAddingItem());
+        ClientEncounterComponentItem nci = new ClientEncounterComponentItem();
+        nci.setEncounter(i.getForm().getFormset().getEfs().getEncounter());
+        nci.setInstitution(i.getForm().getFormset().getEfs().getInstitution());
+        nci.setItemFormset(i.getForm().getFormset().getEfs());
+        nci.setItemEncounter(i.getForm().getFormset().getEfs().getEncounter());
+        nci.setItemClient(i.getForm().getFormset().getEfs().getClient());
+        nci.setItem(i.getDi().getItem());
+        nci.setReferenceComponent(i.getDi());
+        nci.setParentComponent(i.getForm().getCf());
+        nci.setName(i.getDi().getName());
+        nci.setCss(i.getDi().getCss());
+        nci.setOrderNo(i.getAddedItems().size() + 1.0);
+        nci.setDataRepresentationType(DataRepresentationType.Encounter);
+
+        nci.setInstitutionValue(i.getAddingItem().getCi().getInstitutionValue());
+
+        if (i.getDi().getRenderType() == RenderType.Prescreption) {
+            Prescription p = new Prescription();
+            p.setClient(i.getForm().getFormset().getEfs().getEncounter().getClient());
+            p.setEncounter(i.getForm().getFormset().getEfs().getEncounter());
+            p.setCreatedAt(new Date());
+            p.setCreatedBy(webUserController.getLoggedUser());
+            nci.setPrescriptionValue(p);
+        }
+
+        // // System.out.println("before new ni");
         DataItem ni = new DataItem();
         ni.setMultipleEntries(true);
         ni.setCi(nci);

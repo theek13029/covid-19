@@ -20,8 +20,77 @@
 
 
 
-        <ui:repeat id="rptItems" value="#{cc.attrs.form.items}" var="ii" >
+        <ui:repeat id="formset" value="#{cc.attrs.form.items}" var="ii" >
             <h:panelGroup id="gpDataAndButtonsMultiple" rendered="#{ii.multipleEntries}" >
+                <h:panelGroup rendered="#{ii.di.item.dataType eq 'Client_Basic_Details'}">
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <p:outputLabel value="Name" ></p:outputLabel>
+                            <p:inputText id="cbName"
+                                         value="#{ii.addingItem.ci.shortTextValue}"  style="width:95%; #{ii.di.css}" ></p:inputText>
+                        </div>
+                        <div class="col-md-2">
+                            <p:outputLabel value="Address" ></p:outputLabel>
+                            <p:inputTextarea id="cbAddress" value="#{ii.addingItem.ci.longTextValue}"  style="width:95%; #{ii.di.css}" >
+                            </p:inputTextarea>
+                        </div>
+                        <div class="col-md-2">
+                            <p:outputLabel value="Contact Number" ></p:outputLabel>
+                            <p:inputText id="cbContact"
+                                         value="#{ii.addingItem.ci.shortTextValue2}"  style="width:95%; #{ii.di.css}" ></p:inputText>
+                        </div>
+                        <div class="col-md-2">
+                            <p:outputLabel value="MOH Area" ></p:outputLabel>
+                            <p:autoComplete id="cbMoh" value="#{ii.addingItem.ci.areaValue}"
+                                            completeMethod="#{areaController.completeMoh}" inputStyle="width:95%;"
+                                            var="moh" itemLabel="#{moh.name}" itemValue="#{moh}"
+                                            maxResults="15" forceSelection="true"
+                                            minQueryLength="2">
+                            </p:autoComplete>
+                        </div>
+                        <div class="col-md-2">
+                            <p:outputLabel value="District" ></p:outputLabel>
+                            <p:autoComplete id="cbDis" value="#{ii.addingItem.ci.areaValue2}"  inputStyle="width:95%;"
+                                            completeMethod="#{areaController.completeDistricts}"
+                                            var="district" itemLabel="#{district.name}" itemValue="#{district}"
+                                            maxResults="15" forceSelection="true"
+                                            minQueryLength="2">
+                            </p:autoComplete>
+                        </div>
+                        <div class="col-md-2">
+                            <p:commandButton id="btnAddCb1"  value="Add" process="cbDis cbMoh cbContact cbName cbAddress btnAddCb1" update="@form "
+                                             action="#{clientEncounterComponentItemController.addAnotherClientBasicData(ii)}"></p:commandButton>
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet"
+                                         rowIndexVar="se">
+                                <p:column headerText="No" width="40" >
+                                    <p:outputLabel value="#{se+1}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Name" >
+                                    <p:outputLabel value="#{ai.ci.shortTextValue}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Address" >
+                                    <p:outputLabel value="#{ai.ci.longTextValue}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Contact" >
+                                    <p:outputLabel value="#{ai.ci.shortTextValue2}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="MOH" >
+                                    <p:outputLabel value="#{ai.ci.areaValue.name}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="District" >
+                                    <p:outputLabel value="#{ai.ci.areaValue2.name}" ></p:outputLabel>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </h:panelGroup>
+
+
                 <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'Drop_Down_Menu'}" >
                     <div class="form-group row">
                         <div class="col-md-4">
@@ -35,13 +104,13 @@
                             </p:selectOneMenu>
                         </div>
                         <div class="col-md-4">
-                            <p:commandButton id="btnAddM1"  value="Add" process="domIcM btnAddM1" update="@form :#{p:component('formset')}"
+                            <p:commandButton id="btnAddM1"  value="Add" process="domIcM btnAddM1" update="@form"
                                              action="#{clientEncounterComponentItemController.addAnotherDataItem(ii)}"></p:commandButton>
 
                         </div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
                                 <p:column >
                                     <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
@@ -66,78 +135,52 @@
                                             requiredMessage="#{ii.requiredErrorMessage}">
                             </p:autoComplete>
                         </div>
-                        <div>
-
+                        <div class="col-md-4">
+                            <p:commandButton id="btnAddM2"  value="Add" process="acItemM btnAddM2" update="@form "
+                                             action="#{clientEncounterComponentItemController.addAnotherDataItem(ii)}"></p:commandButton>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-4">
-
+                            <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                                <p:column >
+                                    <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
+                                </p:column>
+                            </p:dataTable>
                         </div>
                     </div>
-
-                    <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
-                        <p:column >
-                            <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
-                        </p:column>
-                    </p:dataTable>
-
-
-
                 </h:panelGroup>
 
                 <h:panelGroup rendered="#{ii.di.renderType eq 'Autocomplete' and ii.di.item.dataType eq 'Area_Reference'}" >
                     <div class="row p-1" >
-                        <div class="col-md-6" >
-
+                        <div class="col-md-4" >
+                            <p:outputLabel for="acAM" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>
-                        <div class="col-md-6" >
-
+                        <div class="col-md-4" >
+                            <p:autoComplete id="acAM" value="#{ii.addingItem.ci.areaValue}"
+                                            completeMethod="#{areaController.completeAreas}"
+                                            var="a" itemLabel="#{a.name}" itemValue="#{a}"
+                                            maxResults="15" forceSelection="true" 
+                                            minQueryLength="3"
+                                            required="#{ii.di.required}" 
+                                            requiredMessage="#{ii.di.requiredErrorMessage}">
+                            </p:autoComplete>
+                        </div>
+                        <div class="col-md-4" >
+                            <p:commandButton id="btnAddM3"  value="Add" process="acAM btnAddM3" update="@form "
+                                             action="#{clientEncounterComponentItemController.addAnotherDataItem(ii.addingItem)}"></p:commandButton>
                         </div>
                     </div>
-
-                    <table>
-                        <tr>
-                            <td>
-                                <p:outputLabel for="acAM" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
-                            </td>
-                            <td>
-                                <p:autoComplete id="acAM" value="#{ii.addingItem.ci.areaValue}"
-                                                completeMethod="#{areaController.completeAreas}"
-                                                var="a" itemLabel="#{a.name}" itemValue="#{a}"
-                                                maxResults="15" forceSelection="true" 
-                                                minQueryLength="3"
-                                                required="#{ii.di.required}" 
-                                                requiredMessage="#{ii.di.requiredErrorMessage}">
-                                </p:autoComplete>
-                            </td>
-                            <td>
-                                <p:commandButton id="btnAddM3"  value="Add" process="acAM btnAddM3" update="@form :#{p:component('formset')}"
-                                                 action="#{clientEncounterComponentItemController.addAnotherDataItem(ii.addingItem)}"></p:commandButton>
-                            </td>
-                            <td>
-                                <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
-                                    <p:column >
-                                        <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
-                                    </p:column>
-                                </p:dataTable>
-                            </td>
-                        </tr>
-                        <h:panelGroup rendered="#{ii.di.displayLastResult}" >
-                            <td>
-                                <h:outputText value="#{fn:replace(clientEncounterComponentFormSetController.lastData(ii.ci),'\\n','&lt;br/&gt;')}" escape="false" />
-                            </td>
-                        </h:panelGroup>
-                        <h:panelGroup rendered="#{ii.di.discreptionAsASideLabel}" >
-                            <td>
-                                <p:outputLabel value="#{ii.di.descreption}"  ></p:outputLabel>
-                            </td>
-                        </h:panelGroup>
-                    </table>
+                    <div class="row" >
+                        <div class="col-md-12" >
+                            <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                                <p:column >
+                                    <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
                 </h:panelGroup>
-
-
-
 
             </h:panelGroup>
 
@@ -161,6 +204,7 @@
                                          action="#{clientEncounterComponentItemController.calculate(ii)}"></p:commandButton>
                     </h:panelGroup>
                 </h:panelGroup>
+
                 <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text' and ii.di.item.dataType eq 'Integer_Number'}" >
                     <div class="row p-1" >
                         <div class="col-md-6" >
@@ -168,10 +212,10 @@
                         </div>
                         <div class="col-md-6" >
                             <p:inputText id="itIntC" value="#{ii.ci.integerNumberValue}" 
-                                         required="#{ii.di.required}" 
+                                         required="#{ii.di.required}" validatorMessage="#{ii.di.regexValidationFailedMessage}"
                                          requiredMessage="#{ii.di.requiredErrorMessage}" >
                                 <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-
+                                <f:validateRegex pattern="#{ii.di.regexValidationString}" rendered="#{ii.di.regexValidationString ne null or ii.di.regexValidationString ne ''}" ></f:validateRegex>
                             </p:inputText>
                         </div>
                     </div>
@@ -380,19 +424,6 @@
             </h:panelGroup>
 
         </ui:repeat>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     </cc:implementation>
 </html>
