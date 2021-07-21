@@ -88,7 +88,8 @@ public enum RenderType {
     Item_select_and_add_to_List("Item select & add to List"),
     Prescreption("Prescreption"),
     Procedure_room("Procedure Request"),
-    Client_Basic_Details("Client Basic Details");
+    Client_Basic_Details("Client Basic Details"),
+    Integer_with_detail("Integer with detail");
     
     
     
