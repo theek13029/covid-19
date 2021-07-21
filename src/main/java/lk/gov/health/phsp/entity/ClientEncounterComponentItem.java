@@ -88,6 +88,10 @@ public class ClientEncounterComponentItem extends ClientEncounterComponent {
     private Double realNumberValue2;
     @ManyToOne(fetch = FetchType.LAZY)
     private Area areaValue2;
+    private Boolean booleanValue2;
+    
+    
+    
     
     public Client getItemClient() {
         return itemClient;
@@ -301,6 +305,14 @@ public class ClientEncounterComponentItem extends ClientEncounterComponent {
 
     public void setAreaValue2(Area areaValue2) {
         this.areaValue2 = areaValue2;
+    }
+
+    public Boolean getBooleanValue2() {
+        return booleanValue2;
+    }
+
+    public void setBooleanValue2(Boolean booleanValue2) {
+        this.booleanValue2 = booleanValue2;
     }
 
     

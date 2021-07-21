@@ -55,7 +55,7 @@ public class Component implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    String name;
+    private String name;
 
     private String code;
     

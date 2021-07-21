@@ -27,22 +27,22 @@
                         <div class="col-md-2">
                             <p:outputLabel value="Name" ></p:outputLabel>
                             <p:inputText id="cbName"
-                                         value="#{ii.addingItem.ci.shortTextValue}"  style="#{ii.di.css}" ></p:inputText>
+                                         value="#{ii.addingItem.ci.shortTextValue}"  style="width:95%; #{ii.di.css}" ></p:inputText>
                         </div>
                         <div class="col-md-2">
                             <p:outputLabel value="Address" ></p:outputLabel>
-                            <p:inputTextarea id="cbAddress" value="#{ii.addingItem.ci.longTextValue}"  style="#{ii.di.css}" >
+                            <p:inputTextarea id="cbAddress" value="#{ii.addingItem.ci.longTextValue}"  style="width:95%; #{ii.di.css}" >
                             </p:inputTextarea>
                         </div>
                         <div class="col-md-2">
                             <p:outputLabel value="Contact Number" ></p:outputLabel>
                             <p:inputText id="cbContact"
-                                         value="#{ii.addingItem.ci.shortTextValue2}"  style="#{ii.di.css}" ></p:inputText>
+                                         value="#{ii.addingItem.ci.shortTextValue2}"  style="width:95%; #{ii.di.css}" ></p:inputText>
                         </div>
                         <div class="col-md-2">
                             <p:outputLabel value="MOH Area" ></p:outputLabel>
                             <p:autoComplete id="cbMoh" value="#{ii.addingItem.ci.areaValue}"
-                                            completeMethod="#{areaController.completeMoh}"
+                                            completeMethod="#{areaController.completeMoh}" inputStyle="width:95%;"
                                             var="moh" itemLabel="#{moh.name}" itemValue="#{moh}"
                                             maxResults="15" forceSelection="true"
                                             minQueryLength="2">
@@ -50,7 +50,7 @@
                         </div>
                         <div class="col-md-2">
                             <p:outputLabel value="District" ></p:outputLabel>
-                            <p:autoComplete id="cbDis" value="#{ii.addingItem.ci.areaValue2}"
+                            <p:autoComplete id="cbDis" value="#{ii.addingItem.ci.areaValue2}"  inputStyle="width:95%;"
                                             completeMethod="#{areaController.completeDistricts}"
                                             var="district" itemLabel="#{district.name}" itemValue="#{district}"
                                             maxResults="15" forceSelection="true"
