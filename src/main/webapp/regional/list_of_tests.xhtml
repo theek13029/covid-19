@@ -7,38 +7,38 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-
         <ui:composition template="./../template1.xhtml">
+            <ui:define name="title">List of Tests</ui:define>
 
-            <ui:define name="title">
-                List of Tests
-            </ui:define>
-
-            <ui:define name="content">   
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
-                    <f:facet name="header" >
+            <ui:define name="content"> 
+                <h:form class="form">
+                    <div class="card">
+                        <h5 class="card-header">
                             <p:outputLabel value="Test List" ></p:outputLabel>
-                    </f:facet>
+                        </h5>
 
-                    <h:form >
-                        <p:panelGrid columns="2" >
-                                        <p:outputLabel value="Ordered From" ></p:outputLabel>
-                            <p:calendar value="#{mohController.fromDate}" 
-                                        pattern="dd MMMM yyyy hh:mm a">
-                            </p:calendar><!-- comment -->
-
-                                        <p:outputLabel value="Ordered To" ></p:outputLabel>
-                                        <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
-
-                                        <p:outputLabel value="Institution" ></p:outputLabel>
-                                        <p:selectOneMenu value="#{mohController.mohOrHospital}" >
+                        <h:panelGroup id="gpTestList" >
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="Ordered From" />
+                                        <p:calendar value="#{mohController.fromDate}" style="width: 100%;" inputStyle="width:100%;" pattern="dd MMMM yyyy hh:mm a"/>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="Ordered To" />
+                                        <p:calendar value="#{mohController.toDate}" style="width: 100%;" inputStyle="width:100%;" pattern="dd MMMM yyyy hh:mm a"/>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="Institution" />
+                                        <p:selectOneMenu value="#{mohController.mohOrHospital}" style="width: 100%;" >
                                             <f:selectItem itemLabel="All" ></f:selectItem>
                                             <f:selectItems value="#{mohController.regionalMohsAndHospitals}" 
                                                            var="c" itemLabel="#{c.name}"
                                                            itemValue="#{c}" ></f:selectItems>
                                         </p:selectOneMenu>
-                                        
-                                        <p:outputLabel for="moh" value="MOH" ></p:outputLabel>                                        
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p:outputLabel for="moh" value="MOH" />                                       
                                         <p:autoComplete id="moh" 
                                                         tabindex="111" 
                                                         value="#{mohController.moh}" 
@@ -48,38 +48,35 @@
                                             <f:ajax event="itemSelect" execute="moh"></f:ajax>
                                             <f:ajax event="blur" execute="moh"></f:ajax>
                                         </p:autoComplete>
-                                        
-<!--                                        <p:autoComplete required="true" id="district" value="#{clientController.selected.person.district}"
-                                                        completeMethod="#{areaController.completeDistricts}"
-                                                        var="d" itemLabel="#{d.name}" itemValue="#{d}"
-                                                        maxResults="15" forceSelection="true" style="width: 100%;" inputStyle="width:100%;"
-                                                        minQueryLength="3">
-                                            <f:ajax event="itemSelect" execute="district" ></f:ajax>
-                                            <f:ajax event="blur" execute="district" ></f:ajax>
-                                        </p:autoComplete>-->
-
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-3">
                                         <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                                        <p:selectOneMenu value="#{mohController.orderingCategory}" >
+                                        <p:selectOneMenu value="#{mohController.orderingCategory}" style="width: 100%;">
                                             <f:selectItem itemLabel="All" ></f:selectItem>
                                             <f:selectItems value="#{mohController.covidTestOrderingCategories}" 
                                                            var="c" itemLabel="#{c.name}"
                                                            itemValue="#{c}" ></f:selectItems>
                                         </p:selectOneMenu>
-
+                                    </div>
+                                    <div class="col-md-3">
                                         <p:outputLabel value="Test" ></p:outputLabel>
-                                        <p:selectOneMenu value="#{mohController.testType}" >
+                                        <p:selectOneMenu value="#{mohController.testType}" style="width: 100%;" >
                                             <f:selectItem itemLabel="All" ></f:selectItem>
                                             <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                            itemValue="#{c}" ></f:selectItems>
                                         </p:selectOneMenu>
-
+                                    </div>
+                                    <div class="col-md-3">
                                         <p:outputLabel value="Result" ></p:outputLabel>
-                                        <p:selectOneMenu value="#{mohController.result}" >
+                                        <p:selectOneMenu value="#{mohController.result}" style="width: 100%;">
                                             <f:selectItem itemLabel="All" ></f:selectItem>
                                             <f:selectItems value="#{mohController.resultTypes}" var="c" itemLabel="#{c.name}"
                                                            itemValue="#{c}" ></f:selectItems>
                                         </p:selectOneMenu>
-
+                                    </div>
+                                    <div class="col-md-3">
                                         <p:outputLabel  value="Lab"></p:outputLabel>
                                         <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
                                                         inputStyleClass="autocomplete"
@@ -88,93 +85,89 @@
                                                         completeMethod="#{mohController.completeLab}" 
                                                         var="l" itemLabel="#{l.name}" itemValue="#{l}">
                                         </p:autoComplete>
-
-                            <p:commandButton ajax="false" value="Generate Excel">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <p:commandButton ajax="false" value="Generate Excel">
                                             <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                                         </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                                         action="#{mohController.toTestListRegional()}" ></p:commandButton>
-
-
-                        </p:panelGrid>
-
-
-                        <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true"
-                                     rowIndexVar="n"
-                                     var="c" 
-                                     rowKey="#{c.id}" 
-                                     rowStyleClass="#{c.resultCssClass}"
-                                     paginator="true" 
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                     rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
-                                     rows="10"
-                                     >
-                            <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Age"  sortBy="#{c.client.person.age}" width="60"
-                                      filterBy="#{c.client.person.age}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Gender"
-                                      width="80"
-                                      sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Contact Numbers" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Address"  sortBy="#{c.client.person.address}"
-                                      filterBy="#{c.client.person.address}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="PHI"  sortBy="#{c.client.person.phiArea.name}"
-                                      filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.phiArea.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="MOH"  sortBy="#{c.client.person.mohArea.name}"
-                                      filterBy="#{c.client.person.mohArea.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.mohArea.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="GN Area"  sortBy="#{c.client.person.gnArea.name}"
-                                      filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}"
-                                      filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
-                                      filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Actions" exportable="false" >
-                                <p:commandLink value="View Order" action="#{mohController.toViewTest()}" ajax="false" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
-                                </p:commandLink>
-                                <p:commandLink value="View Results" action="#{mohController.toViewResult()}" ajax="false" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
-                                </p:commandLink>
-                            </p:column>
-                        </p:dataTable>
+                                        <p:commandButton ajax="false" value="Process" action="#{mohController.toTestListRegional()}" ></p:commandButton>
+                                    </div>
+                                </div>
+                                <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true"
+                                             rowIndexVar="n"
+                                             var="c" 
+                                             rowKey="#{c.id}" 
+                                             rowStyleClass="#{c.resultCssClass}"
+                                             paginator="true" 
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                             rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
+                                             rows="10"
+                                             >
+                                    <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                                        <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
+                                        <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
+                                        <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Age"  sortBy="#{c.client.person.age}" width="60"
+                                              filterBy="#{c.client.person.age}" filterMatchMode="contains">
+                                        <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Gender"
+                                              width="80"
+                                              sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
+                                        <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
+                                        <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Contact Numbers" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
+                                        <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Address"  sortBy="#{c.client.person.address}"
+                                              filterBy="#{c.client.person.address}" filterMatchMode="contains">
+                                        <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="PHI"  sortBy="#{c.client.person.phiArea.name}"
+                                              filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains">
+                                        <p:outputLabel value="#{c.client.person.phiArea.name}" ></p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="MOH"  sortBy="#{c.client.person.mohArea.name}"
+                                              filterBy="#{c.client.person.mohArea.name}" filterMatchMode="contains">
+                                        <p:outputLabel value="#{c.client.person.mohArea.name}" ></p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="GN Area"  sortBy="#{c.client.person.gnArea.name}"
+                                              filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
+                                        <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}"
+                                              filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
+                                        <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
+                                              filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
+                                        <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Actions" exportable="false" >
+                                        <p:commandLink value="View Order" action="#{mohController.toViewTest()}" ajax="false" >
+                                            <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
+                                        </p:commandLink>
+                                        <p:commandLink value="View Results" action="#{mohController.toViewResult()}" ajax="false" >
+                                            <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
+                                        </p:commandLink>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </h:panelGroup>
+                    </div>
                 </h:form>
-
-
-
-                </p:panelGrid>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>
