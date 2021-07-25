@@ -138,14 +138,14 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             return toEditFormset();
         }
     }
-    
-    public String toViewOrEditInvestigationFromEncounter(Encounter e){
-        if(e==null){
+
+    public String toViewOrEditInvestigationFromEncounter(Encounter e) {
+        if (e == null) {
             JsfUtil.addErrorMessage("No encounter");
             return "";
         }
         selected = findFormsetFromEncounter(e);
-        if(selected==null){
+        if (selected == null) {
             JsfUtil.addErrorMessage("No CECFS for encounter");
             return "";
         }
@@ -189,8 +189,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="User Functions">
 
-    
-    
     public void retireSelectedItems() {
         if (selectedItems == null) {
             return;
@@ -869,7 +867,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         } else {
             e.setEncounterDate(d);
         }
-        e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Test_Enrollment));
+//        e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Test_Enrollment));
 
         e.setEncounterMonth(CommonController.getMonth(d));
         e.setEncounterQuarter(CommonController.getQuarter(d));
@@ -986,7 +984,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             i.id = itemCounter;
                             i.orderNo = itemCounter;
                             i.form = f;
-                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
                             f.getItems().add(i);
                         } else {
                             itemCounter++;
@@ -1018,7 +1016,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             i.id = itemCounter;
                             i.orderNo = itemCounter;
                             i.form = f;
-                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
 
                             f.getItems().add(i);
                         }
@@ -1173,7 +1171,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             i.id = itemCounter;
                             i.orderNo = itemCounter;
                             i.form = f;
-                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
                             f.getItems().add(i);
                         } else {
                             itemCounter++;
@@ -1205,7 +1203,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             i.id = itemCounter;
                             i.orderNo = itemCounter;
                             i.form = f;
-                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
 
                             f.getItems().add(i);
                         }
@@ -1376,7 +1374,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             i.id = itemCounter;
                             i.orderNo = itemCounter;
                             i.form = f;
-                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
                             f.getItems().add(i);
                         } else {
                             itemCounter++;
@@ -1408,7 +1406,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             i.id = itemCounter;
                             i.orderNo = itemCounter;
                             i.form = f;
-                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
 
                             f.getItems().add(i);
                         }
@@ -1457,7 +1455,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             }
 
             // // System.out.println("skipThisForm = " + skipThisForm);
-
             if (!skipThisForm) {
                 formCounter++;
                 String j = "select cf "
@@ -1473,7 +1470,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 ClientEncounterComponentForm cf = clientEncounterComponentFormController.getClientEncounterComponentForm(j, m);
 
                 // // System.out.println("cf = " + cf);
-
                 if (cf == null) {
                     cf = new ClientEncounterComponentForm();
 
@@ -1504,7 +1500,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 for (DesignComponentFormItem dis : diList) {
 
                     // // System.out.println("dis = " + dis.getName());
-
                     boolean disSkipThisItem = false;
                     if (dis.getComponentSex() == ComponentSex.For_Females && clientController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_male")) {
                         disSkipThisItem = true;
@@ -1514,13 +1509,11 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                     }
 
                     // // System.out.println("disSkipThisItem = " + disSkipThisItem);
-
                     if (!disSkipThisItem) {
 
                         if (dis.isMultipleEntiesPerForm()) {
 
                             // // System.out.println("dis.isMultipleEntiesPerForm() = " + dis.isMultipleEntiesPerForm());
-
                             j = "Select ci "
                                     + " from ClientEncounterComponentItem ci "
                                     + " where ci.retired=:ret "
@@ -1562,7 +1555,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             i.id = itemCounter;
                             i.orderNo = itemCounter;
                             i.form = f;
-                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
 
                             if (cis != null && !cis.isEmpty()) {
                                 for (ClientEncounterComponentItem tci : cis) {
@@ -1573,7 +1566,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                                     di.id = itemCounter;
                                     di.orderNo = tci.getOrderNo();
                                     di.form = f;
-                                    di.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                                    di.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
                                     i.getAddedItems().add(di);
                                 }
                             }
@@ -1605,7 +1598,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                                 i.id = itemCounter;
                                 i.orderNo = itemCounter;
                                 i.form = f;
-                                i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                                i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
 
                                 f.getItems().add(i);
                             } else {
@@ -1632,7 +1625,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                                 i.id = itemCounter;
                                 i.orderNo = itemCounter;
                                 i.form = f;
-                                i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                                i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
 
                                 f.getItems().add(i);
                             }
@@ -1682,7 +1675,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             }
 
             // // System.out.println("skipThisForm = " + skipThisForm);
-
             if (!skipThisForm) {
                 formCounter++;
                 String j = "select cf "
@@ -1698,7 +1690,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 ClientEncounterComponentForm cf = clientEncounterComponentFormController.getClientEncounterComponentForm(j, m);
 
                 // // System.out.println("cf = " + cf);
-
                 if (cf == null) {
                     cf = new ClientEncounterComponentForm();
 
@@ -1729,7 +1720,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 for (DesignComponentFormItem dis : diList) {
 
                     // // System.out.println("dis = " + dis.getName());
-
                     boolean disSkipThisItem = false;
                     if (dis.getComponentSex() == ComponentSex.For_Females && clientController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_male")) {
                         disSkipThisItem = true;
@@ -1739,13 +1729,11 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                     }
 
                     // // System.out.println("disSkipThisItem = " + disSkipThisItem);
-
                     if (!disSkipThisItem) {
 
                         if (dis.isMultipleEntiesPerForm()) {
 
                             // // System.out.println("dis.isMultipleEntiesPerForm() = " + dis.isMultipleEntiesPerForm());
-
                             j = "Select ci "
                                     + " from ClientEncounterComponentItem ci "
                                     + " where ci.retired=:ret "
@@ -1787,7 +1775,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             i.id = itemCounter;
                             i.orderNo = itemCounter;
                             i.form = f;
-                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
 
                             if (cis != null && !cis.isEmpty()) {
                                 for (ClientEncounterComponentItem tci : cis) {
@@ -1798,7 +1786,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                                     di.id = itemCounter;
                                     di.orderNo = tci.getOrderNo();
                                     di.form = f;
-                                    di.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                                    di.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
                                     i.getAddedItems().add(di);
                                 }
                             }
@@ -1830,7 +1818,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                                 i.id = itemCounter;
                                 i.orderNo = itemCounter;
                                 i.form = f;
-                                i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                                i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
 
                                 f.getItems().add(i);
                             } else {
@@ -1857,7 +1845,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                                 i.id = itemCounter;
                                 i.orderNo = itemCounter;
                                 i.form = f;
-                                i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                                i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
 
                                 f.getItems().add(i);
                             }
@@ -2064,8 +2052,12 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 ti.setAreaValue(c.getPerson().getGnArea());
                 return;
             case "client_ds_division":
-                ti.setAreaValue(c.getPerson().getGnArea().getDsd());
+                if (c.getPerson().getGnArea() != null) {
+                    ti.setAreaValue(c.getPerson().getGnArea().getDsd());
+                }
                 return;
+            case "client_current_phi_area":
+                ti.setAreaValue(c.getPerson().getPhiArea());
         }
 
         ClientEncounterComponentItem vi;
