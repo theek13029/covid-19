@@ -261,8 +261,8 @@
                                          action="#{clientEncounterComponentItemController.calculate(ii)}"></p:commandButton>
                     </h:panelGroup>
                 </h:panelGroup>
-                
-                
+
+
                 <h:panelGroup rendered="#{ii.di.renderType eq 'Integer_with_detail'}" >
                     <div class="row p-1" >
                         <div class="col-md-6" >
@@ -275,15 +275,17 @@
                                 <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
                             </p:inputText>
                         </div>
+                        <div class="col-md-6" >
+                            <h:inputTextarea value="#{ii.ci.longTextValue}" >
+                                <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                            </h:inputTextarea>
+                        </div>
+
                     </div>
-                    <h:panelGroup rendered="#{ii.di.calculateButton}" >
-                        <p:commandButton id="btnCalculate_itLongC"  value="Calculate" process="@this"
-                                         update="itdLongC"
-                                         action="#{clientEncounterComponentItemController.calculate(ii)}"></p:commandButton>
-                    </h:panelGroup>
+
                 </h:panelGroup>
-                
-                
+
+
                 <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text_Area'}" >
                     <div class="row p-1" >
                         <div class="col-md-6" >
