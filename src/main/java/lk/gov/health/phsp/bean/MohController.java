@@ -1281,6 +1281,8 @@ public class MohController implements Serializable {
 
         j += " and c.institution=:ins ";
         m.put("ins", webUserController.getLoggedUser().getInstitution());
+        
+        //c.client.person.mohArea = :moh
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
