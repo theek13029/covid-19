@@ -566,7 +566,7 @@ public class MohController implements Serializable {
         j += " and ci.item.code=:code ";
         m.put("code", "first_contacts");
 
-        j += " and ci.areaValue1=:district) ";
+        j += " and ci.areaValue1=:district ";
         m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
 
         j += " and c.createdAt between :fd and :td ";
