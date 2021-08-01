@@ -73,7 +73,7 @@
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{mohController.toListOfTestsRegional()}" ></p:commandButton>
+                                             action="#{mohController.toListOfTestsWithoutMohForRegionalLevel()}" ></p:commandButton>
 
 
                         </p:panelGrid>
@@ -118,13 +118,9 @@
                                       filterBy="#{c.client.person.address}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="PHI"  sortBy="#{c.client.person.phiArea.name}"
-                                      filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.phiArea.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="GN Area"  sortBy="#{c.client.person.gnArea.name}"
-                                      filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
+                            <p:column headerText="Added at"  sortBy="#{c.institution.name}"
+                                      filterBy="#{c.institution.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}"
                                       filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
