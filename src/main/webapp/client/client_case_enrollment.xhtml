@@ -8,139 +8,12 @@
                 <h:form class="form">
                     <div class="card">
                         <h5 class="card-header">
-                            <p:outputLabel value="Add Patient Details" rendered="#{clientController.selected.id eq null}"></p:outputLabel>
-                            <p:outputLabel value="Edit Patient Details" rendered="#{clientController.selected.id ne null}"></p:outputLabel>
+                            <p:outputLabel value="Case Investigation"></p:outputLabel>
                             <p:commandButton style="float: left;" ajax="false" action="#{clientController.saveClientAndCaseEnrollment()}" value="Save"></p:commandButton>
                         </h5>
-                        <h:panelGroup id="gpNewCase" >
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <div class="col-md-6">
-                                        <p:outputLabel value="Name:" for="name" />
-                                        <p:inputText autocomplete="off" class="form-control" tabindex="1" id="name" required="true" value="#{clientController.selected.person.name}" title="Name" />
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="PHN No.:" for="phn" />
-                                        <p:inputText id="phn" autocomplete="off" class="form-control" value="#{clientController.selected.phn}" title="Phn" placeholder="New PHN"/>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Citizenship:" for="citizenship" />
-                                        <p:selectOneMenu id="citizenship" value="#{clientController.selected.person.citizenship}" style="width:100%;">
-                                            <f:selectItems value="#{itemController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}" ></f:selectItems>
-                                        </p:selectOneMenu>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-6">
-                                        <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic"/>
-                                        <p:inputText id="nic" tabindex="2"  autocomplete="off" class="form-control" value="#{clientController.selected.person.nic}" title="Nic" validatorMessage="Please check the number">
-                                            <!--<f:validateRegex pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})?$" ></f:validateRegex>-->
-                                            <f:ajax event="blur" listener="#{clientController.ageAndSexFromNic}"
-                                                    render="year month sex" 
-                                                    execute="@this"/>
-                                        </p:inputText>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Gender:" for="sex" />
-                                        <p:selectOneMenu id="sex"  value="#{clientController.selected.person.sex}" required="true" style="width: 100%;">
-                                            <f:selectItems value="#{itemController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
-                                        </p:selectOneMenu>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Age: (Years/Months)*" style="width: 100%;"/>
-                                        <h:panelGroup >
-                                            <p:inputText autocomplete="off"  id="year"  placeholder="Years"
-                                                         value="#{clientController.yearMonthDay.year}" required="true"
-                                                         style="width: 90px; ">
-                                                <f:validateRegex pattern="^((0|1|2|3|4|5|6|7|8|9){1}|(0|1|2|3|4|5|6|7|8|9){2}|(0|1|2|3|4|5|6|7|8|9){3})?$"></f:validateRegex>
-                                                <f:ajax event="keyup" execute="@this month day" render="calDob" 
-                                                        listener="#{clientController.yearMonthDateChanged()}"  />
-                                            </p:inputText>
-                                            <p:inputText autocomplete="off" id="month" placeholder="Months"
-                                                         style="width: 90px; " 
-                                                         value="#{clientController.yearMonthDay.month}">
-                                                <f:ajax event="keyup" execute="@this year day" 
-                                                        render="calDob" 
-                                                        listener="#{clientController.yearMonthDateChanged()}"  />
-                                            </p:inputText>
-                                            <p:inputText autocomplete="off" id="day" 
-                                                         style="width: 90px;" rendered="false"
-                                                         value="#{clientController.yearMonthDay.day}">
-                                                <f:ajax event="keyup" execute="@this year month" render="calDob" 
-                                                        listener="#{clientController.yearMonthDateChanged()}" />
-                                            </p:inputText>
-                                        </h:panelGroup>
-                                    </div>
-                                </div>
+                        
 
-                                <div class="form-group row">
-                                    <div class="col-md-6">
-                                        <p:outputLabel value="Current Residential Address:" for="address" />
-                                        <p:inputText tabindex="3" id="address" required="true" class="form-control" value="#{clientController.selected.person.address}" title="Address" />
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="District:" for="district" />
-                                        <p:autoComplete required="true" id="district" value="#{clientController.selected.person.district}"
-                                                        completeMethod="#{areaController.completeDistricts}"
-                                                        var="d" itemLabel="#{d.name}" itemValue="#{d}"
-                                                        maxResults="15" forceSelection="true" style="width: 100%;" inputStyle="width:100%;"
-                                                        minQueryLength="3">
-                                            <f:ajax event="itemSelect" execute="district" ></f:ajax>
-                                            <f:ajax event="blur" execute="district" ></f:ajax>
-                                        </p:autoComplete>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="MOH Area:" for="moh" />
-                                        <p:autoComplete id="moh" value="#{clientController.selected.person.mohArea}"
-                                                        completeMethod="#{areaController.completeMohAreas}"
-                                                        var="m" itemLabel="#{m.name}" itemValue="#{m}" style="width: 100%;" inputStyle="width:100%;"
-                                                        maxResults="15" forceSelection="true"
-                                                        minQueryLength="3">
-                                            <f:ajax event="itemSelect" execute="moh" ></f:ajax>
-                                            <f:ajax event="blur" execute="moh" ></f:ajax>
-                                        </p:autoComplete>
-                                    </div>                                    
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Primary Contact Number :" for="phone1" />
-                                        <p:inputText tabindex="4" class="form-control" id="phone1" required="true" 
-                                                     autocomplete="off" value="#{clientController.selected.person.phone1}" title="Mobile" 
-                                                     validatorMessage="Please check the number">
-                                        </p:inputText>
-                                    </div>
-
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="GN Area:" for="gn" />
-                                        <p:autoComplete tabindex="5" id="gn" value="#{clientController.selected.person.gnArea}"
-                                                        completeMethod="#{clientController.completeClientsMohArea}"
-                                                        var="gn" itemLabel="#{gn.name}" itemValue="#{gn}" style="width:100%;" inputStyle="width:100%;"
-                                                        maxResults="20" forceSelection="true" placeholder="Not Known"
-                                                        minQueryLength="2">
-                                            <p:column headerText="Name">
-                                                <p:outputLabel value="#{gn.name}"></p:outputLabel>
-                                            </p:column>
-                                            <p:column headerText="DS Division">
-                                                <p:outputLabel value="#{gn.parentArea.name}"></p:outputLabel>
-                                            </p:column>
-                                            <p:column headerText="District">
-                                                <p:outputLabel value="#{gn.parentArea.parentArea.name}"></p:outputLabel>
-                                            </p:column>
-                                        </p:autoComplete>
-                                    </div>
-
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-12">
-                                        <p:messages ></p:messages>
-                                    </div>
-                                </div>  
-                            </div>
-                        </h:panelGroup>
-
-                        <p:panel class="main-panel">
+                        <div class="form-group row">
                             <div class="col-md-12">
                                 <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.forms.size() gt 1}">
                                     <h:panelGroup rendered="#{clientEncounterComponentFormSetController.dataFormset.dfs.panelType  eq 'TabView_Left_Oriented' }">
@@ -205,7 +78,7 @@
                                     </h:panelGroup>
                                 </h:panelGroup>
                             </div>
-                        </p:panel>
+                        </div>
 
                         <div class="form-group row">
                             <div class="col-md-12">
