@@ -553,11 +553,11 @@ public class MohController implements Serializable {
         Map m = new HashMap();
         String j = "select c "
                 + " from ClientEncounterComponentItem ci"
-                + "join ci.encounter c "
+                + " join ci.encounter c "
                 + " where (c.retired is null or c.retired=:ret) ";
         m.put("ret", false);
-        ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
-        ci.getItem().getCode();
+//        ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
+//        ci.getItem().getCode();
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Case_Enrollment);
 
