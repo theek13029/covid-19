@@ -137,13 +137,13 @@
                                 <p:panelGrid columns="1" >
                                     <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}" 
                                                      value="Start Investigating" 
-                                                     action="#{clientController.toNewCaseEnrollmentFromEncounter()}" style="width: 100%;" >
+                                                     action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
                                         <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
                                     <p:commandButton rendered="#{c.referenceCase ne null}" 
                                                      ajax="false" value="View case" 
-                                                     action="#{clientController.toNewCaseEnrollmentFromEncounter()}"
+                                                     action="#{clientController.toNewCaseInvestigationFromTest()}"
                                                      style="width: 100%;" >
                                         <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                         </f:setPropertyActionListener>

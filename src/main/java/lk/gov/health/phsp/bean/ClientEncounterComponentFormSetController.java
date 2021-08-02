@@ -849,6 +849,179 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         m.put("dfs", dfs);
         return getFacade().findFirstByJpql(j, m);
     }
+    
+    
+    
+    public ClientEncounterComponentFormSet createNewCaseInvestigationFromTest(DesignComponentFormSet dfs, Encounter test) {
+        if (clientController.getSelected() == null) {
+            JsfUtil.addErrorMessage("Please select a client");
+            return null;
+        }
+        DataFormset fs = new DataFormset();
+    
+        Date d = new Date();
+        Encounter e = new Encounter();
+        e.setClient(clientController.getSelected());
+        e.setInstitution(webUserController.getLoggedUser().getInstitution());
+        e.setEncounterType(EncounterType.Case_Enrollment);
+
+        if (encounterDate != null) {
+            e.setEncounterDate(encounterDate);
+        } else {
+            e.setEncounterDate(d);
+        }
+        e.setEncounterMonth(CommonController.getMonth(d));
+        e.setEncounterQuarter(CommonController.getQuarter(d));
+        e.setEncounterYear(CommonController.getYear(d));
+        
+        encounterController.save(e);
+
+        ClientEncounterComponentFormSet cfs = new ClientEncounterComponentFormSet();
+        cfs.setCreatedAt(new Date());
+        cfs.setCreatedBy(webUserController.getLoggedUser());
+        cfs.setEncounter(e);
+        cfs.setInstitution(webUserController.getLoggedUser().getInstitution());
+        cfs.setReferenceComponent(dfs);
+        cfs.setName(dfs.getName());
+        cfs.setDescreption(dfs.getDescreption());
+        cfs.setCss(dfs.getCss());
+        getFacade().create(cfs);
+
+        fs.setDfs(dfs);
+        fs.setEfs(cfs);
+
+        List<DesignComponentForm> dfList = designComponentFormController.fillFormsofTheSelectedSet(dfs);
+
+        int formCounter = 0;
+
+        for (DesignComponentForm df : dfList) {
+
+            boolean skipThisForm = false;
+            if (df.getComponentSex() == ComponentSex.For_Females && clientController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_male")) {
+                skipThisForm = true;
+            }
+            if (df.getComponentSex() == ComponentSex.For_Males && clientController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_female")) {
+                skipThisForm = true;
+            }
+
+            if (!skipThisForm) {
+                formCounter++;
+                ClientEncounterComponentForm cf = new ClientEncounterComponentForm();
+
+                cf.setEncounter(e);
+                cf.setInstitution(webUserController.getLoggedUser().getInstitution());
+                cf.setItem(df.getItem());
+
+                cf.setReferenceComponent(df);
+                cf.setName(df.getName());
+                cf.setOrderNo(df.getOrderNo());
+                cf.setParentComponent(cfs);
+                cf.setCss(df.getCss());
+
+                clientEncounterComponentFormController.save(cf);
+
+                DataForm f = new DataForm();
+                f.cf = cf;
+                f.df = df;
+                f.formset = fs;
+                f.id = formCounter;
+                f.orderNo = formCounter;
+
+                List<DesignComponentFormItem> diList = designComponentFormItemController.fillItemsOfTheForm(df);
+
+                int itemCounter = 0;
+
+                for (DesignComponentFormItem dis : diList) {
+
+                    boolean disSkipThisItem = false;
+                    if (dis.getComponentSex() == ComponentSex.For_Females && clientController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_male")) {
+                        disSkipThisItem = true;
+                    }
+                    if (dis.getComponentSex() == ComponentSex.For_Males && clientController.getSelected().getPerson().getSex().getCode().equalsIgnoreCase("sex_female")) {
+                        disSkipThisItem = true;
+                    }
+
+                    if (!disSkipThisItem) {
+
+                        if (dis.isMultipleEntiesPerForm()) {
+                            itemCounter++;
+                            ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
+
+                            ci.setEncounter(e);
+                            ci.setInstitution(webUserController.getLoggedUser().getInstitution());
+
+                            ci.setItemFormset(cfs);
+                            ci.setItemEncounter(e);
+                            ci.setItemClient(e.getClient());
+
+                            ci.setItem(dis.getItem());
+                            ci.setDescreption(dis.getDescreption());
+
+                            ci.setReferenceComponent(dis);
+                            ci.setParentComponent(cf);
+                            ci.setName(dis.getName());
+                            ci.setCss(dis.getCss());
+                            ci.setOrderNo(dis.getOrderNo());
+                            ci.setDataRepresentationType(DataRepresentationType.Encounter);
+                            
+                            updateValuesFromClient(e.getClient(), ci);
+                            updateValuesFromTest(test, ci);
+
+                            DataItem i = new DataItem();
+                            i.setMultipleEntries(true);
+                            i.setCi(ci);
+                            i.di = dis;
+                            i.id = itemCounter;
+                            i.orderNo = itemCounter;
+                            i.form = f;
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                            f.getItems().add(i);
+                        } else {
+                            itemCounter++;
+                            ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
+                            ci.setEncounter(e);
+                            ci.setInstitution(webUserController.getLoggedUser().getInstitution());
+                            ci.setItemFormset(cfs);
+                            ci.setItemEncounter(e);
+                            ci.setItemClient(e.getClient());
+                            ci.setItem(dis.getItem());
+                            ci.setDescreption(dis.getDescreption());
+                            ci.setReferenceComponent(dis);
+                            ci.setParentComponent(cf);
+                            ci.setName(dis.getName());
+                            ci.setCss(dis.getCss());
+                            ci.setOrderNo(dis.getOrderNo());
+                            ci.setDataRepresentationType(DataRepresentationType.Encounter);
+                            
+                            updateValuesFromClient(e.getClient(), ci);
+                            updateValuesFromTest(test, ci);
+
+                            
+                            DataItem i = new DataItem();
+                            i.setMultipleEntries(false);
+                            i.setCi(ci);
+                            i.di = dis;
+                            i.id = itemCounter;
+                            i.orderNo = itemCounter;
+                            i.form = f;
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+
+                            f.getItems().add(i);
+                        }
+
+                    }
+
+                }
+                fs.getForms().add(f);
+            }
+        }
+        dataFormset = fs;
+        selected = cfs;
+        return cfs;
+    }
+
+    
+    
 
     public ClientEncounterComponentFormSet createNewCaseEnrollmentFormsetToDataEntry(DesignComponentFormSet dfs) {
         if (clientController.getSelected() == null) {
@@ -869,7 +1042,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         } else {
             e.setEncounterDate(d);
         }
-        e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Test_Enrollment));
+//        e.setFirstEncounter(isFirstEncounterOfThatType(clientController.getSelected(), dfs.getInstitution(), EncounterType.Test_Enrollment));
 
         e.setEncounterMonth(CommonController.getMonth(d));
         e.setEncounterQuarter(CommonController.getQuarter(d));
@@ -964,6 +1137,8 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             ci.setCss(dis.getCss());
                             ci.setOrderNo(dis.getOrderNo());
                             ci.setDataRepresentationType(DataRepresentationType.Encounter);
+                            
+                            
                             if (ci.getReferanceDesignComponentFormItem().getDataPopulationStrategy() == DataPopulationStrategy.From_Client_Value) {
                                 updateFromClientValueSingle(ci, e.getClient(), mapOfClientValues);
                             } else if (ci.getReferanceDesignComponentFormItem().getDataPopulationStrategy() == DataPopulationStrategy.From_Last_Encounter) {
@@ -1034,6 +1209,10 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         return cfs;
     }
 
+    
+    
+    
+    
     public ClientEncounterComponentFormSet createNewTestEnrollmentFormsetToDataEntry(DesignComponentFormSet dfs) {
         if (clientController.getSelected() == null) {
             JsfUtil.addErrorMessage("Please select a client");
@@ -2006,6 +2185,86 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         return map;
     }
 
+    
+    
+    public void updateValuesFromClient(Client c, ClientEncounterComponentItem ti) {
+        String code = ti.getItem().getCode();
+        switch (code) {
+            case "client_name":
+                ti.setShortTextValue(c.getPerson().getName());
+                return;
+            case "client_phn_number":
+                ti.setShortTextValue(c.getPhn());
+                return;
+            case "client_occupation":
+                ti.setShortTextValue(c.getPerson().getOccupation());
+                return;
+            case "client_sex":
+                ti.setItemValue(c.getPerson().getSex());
+                return;
+            case "client_nic_number":
+                ti.setShortTextValue(c.getPerson().getNic());
+                return;
+            case "client_data_of_birth":
+                ti.setDateValue(c.getPerson().getDateOfBirth());
+                return;
+            case "client_current_age":
+                ti.setShortTextValue(c.getPerson().getAge());
+                return;
+            case "client_age_at_encounter_in_years":
+                ti.setIntegerNumberValue(c.getPerson().getAgeYears());
+                ti.setShortTextValue(c.getPerson().getAgeYears() + "");
+                ti.setRealNumberValue(Double.valueOf(c.getPerson().getAgeYears()));
+                return;
+            case "client_age_at_encounter":
+                ti.setShortTextValue(c.getPerson().getAge());
+                return;
+            case "client_permanent_address":
+                ti.setLongTextValue(c.getPerson().getAddress());
+                return;
+            case "client_current_address":
+                ti.setLongTextValue(c.getPerson().getAddress());
+                return;
+            case "client_mobile_number":
+                ti.setShortTextValue(c.getPerson().getPhone1());
+                return;
+            case "client_home_number":
+                ti.setShortTextValue(c.getPerson().getPhone2());
+                return;
+            case "client_permanent_moh_area":
+                ti.setAreaValue(c.getPerson().getGnArea());
+                return;
+            case "client_permanent_phm_area":
+                ti.setAreaValue(c.getPerson().getGnArea().getPhm());
+                return;
+            case "client_permanent_phi_area":
+                ti.setAreaValue(c.getPerson().getGnArea().getPhi());
+                return;
+            case "client_gn_area":
+                ti.setAreaValue(c.getPerson().getGnArea());
+                return;
+            case "client_ds_division":
+                ti.setAreaValue(c.getPerson().getGnArea().getDsd());
+                return;
+                case "client_district":
+                ti.setAreaValue(c.getPerson().getDistrict());
+                return;
+        }
+
+    }
+
+    
+    public void updateValuesFromTest(Encounter test, ClientEncounterComponentItem ti) {
+        String code = ti.getItem().getCode();
+        switch (code) {
+            case "client_name":
+//                ti.setShortTextValue(c.getPerson().getName());
+                return;
+        }
+
+    }
+
+    
     public void updateFromClientValueSingle(ClientEncounterComponentItem ti, Client c, Map<String, ClientEncounterComponentItem> cvs) {
 
         String code = ti.getItem().getCode();
