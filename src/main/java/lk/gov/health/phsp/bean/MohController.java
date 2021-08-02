@@ -551,7 +551,7 @@ public class MohController implements Serializable {
 
     public String toListOfFirstContactsWithoutMohForRegionalLevel() {
         Map m = new HashMap();
-        String j = "select c "
+        String j = "select ci "
                 + " from ClientEncounterComponentItem ci"
                 + " join ci.encounter c "
                 + " where (c.retired is null or c.retired=:ret) ";
@@ -561,12 +561,12 @@ public class MohController implements Serializable {
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Case_Enrollment);
 
-        j += " and c.areaValue is null ";
+        j += " and ci.areaValue is null ";
 
         j += " and ci.item.code=:code ";
         m.put("code", "first_contacts");
 
-        j += " and ci.areaValue1=:district ";
+        j += " and ci.areaValue2=:district ";
         m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
 
         j += " and c.createdAt between :fd and :td ";
