@@ -138,6 +138,19 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             return toEditFormset();
         }
     }
+    
+    public String toViewOrEditInvestigationFromEncounter(Encounter e){
+        if(e==null){
+            JsfUtil.addErrorMessage("No encounter");
+            return "";
+        }
+        selected = findFormsetFromEncounter(e);
+        if(selected==null){
+            JsfUtil.addErrorMessage("No CECFS for encounter");
+            return "";
+        }
+        return toViewOrEditDataset();
+    }
 
     public String toViewOrEditDataset() {
         if (selected == null) {
@@ -158,7 +171,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             JsfUtil.addErrorMessage("Nothing selected.");
             return "";
         }
-        String navigationLink = "/dataentry/Formset_View";
+        String navigationLink = "/client/client_case_enrollment";
         formEditable = false;
         return navigationLink;
     }
@@ -168,7 +181,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             JsfUtil.addErrorMessage("Nothing selected.");
             return "";
         }
-        String navigationLink = "/dataentry/Formset";
+        String navigationLink = "/client/client_case_enrollment";
 
         formEditable = !selected.isCompleted();
         return navigationLink;
@@ -176,6 +189,8 @@ public class ClientEncounterComponentFormSetController implements Serializable {
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="User Functions">
 
+    
+    
     public void retireSelectedItems() {
         if (selectedItems == null) {
             return;

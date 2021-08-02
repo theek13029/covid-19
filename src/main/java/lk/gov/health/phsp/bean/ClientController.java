@@ -227,9 +227,6 @@ public class ClientController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Navigation">
-    
-   
-    
     public String toSearchClientById() {
         userTransactionController.recordTransaction("To Search Client By Id");
         return "/client/search_by_id";
@@ -2062,6 +2059,46 @@ public class ClientController implements Serializable {
         return "/client/client_case_enrollment";
     }
 
+    public String toViewOrEditCaseEnrollmentFromEncounter() {
+        if (selectedEncounter == null) {
+            JsfUtil.addErrorMessage("No encounter");
+            return "";
+        }
+        Encounter testEncounter = selectedEncounter;
+        if (selectedEncounter.getClient() == null) {
+            JsfUtil.addErrorMessage("No Client");
+            return "";
+        }
+        setSelected(selectedEncounter.getClient());
+        saveClient(selected);
+        clearRegisterNewExistsValues();
+        selectedClientsClinics = null;
+        selectedClientEncounters = null;
+        selectedClinic = null;
+        yearMonthDay = new YearMonthDay();
+        userTransactionController.recordTransaction("to add a new client for case");
+        DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
+        if (dfs == null) {
+            JsfUtil.addErrorMessage("No Default Form Set");
+            return "";
+        }
+        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.findFormsetFromEncounter(selectedEncounter);
+        if (cefs == null) {
+            JsfUtil.addErrorMessage("No Patient Form Set");
+            return "";
+        }
+        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+        if (cefs.getEncounter() != null) {
+            testEncounter.setReferenceCase(cefs.getEncounter());
+            encounterFacade.edit(testEncounter);
+
+            cefs.getEncounter().setReferenceTest(testEncounter);
+        }
+        updateYearDateMonth();
+        return "/client/client_case_enrollment";
+    }
+
+    
     public String toNewTestEnrollmentFromEncounter() {
         if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("No encounter");
@@ -5204,6 +5241,21 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:t "
                 + " order by c.id";
 
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("t", EncounterType.Case_Enrollment);
+        caseList = getEncounterFacade().findByJpql(j, m);
+    }
+
+    public void fillInvestigatedListForMoh() {
+        Map m = new HashMap();
+        String j = "select c from Encounter c "
+                + " where c.retired=false";
+        j += " and c.institution=:ins ";
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        j += " and c.encounterDate between :fd and :td "
+                + " and c.encounterType=:t "
+                + " order by c.id";
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("t", EncounterType.Case_Enrollment);

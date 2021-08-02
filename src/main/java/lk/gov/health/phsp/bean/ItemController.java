@@ -199,6 +199,27 @@ public class ItemController implements Serializable {
 
     // </editor-fold>    
     // <editor-fold defaultstate="collapsed" desc="Functions">
+    public void correctCode() {
+        if (selected == null) {
+            return;
+        }
+        if (selected.getName() == null) {
+            return;
+        }
+        if (selected.getName().trim().equals("")) {
+            return;
+        }
+        if (selected.getCode() == null || selected.getCode().trim().equals("")) {
+            String name = selected.getName().trim();
+            name = name.replace(" ", "_");
+            name = name.toLowerCase();
+            selected.setCode(name);
+        }
+        if (selected.getDisplayName()== null || selected.getDisplayName().trim().equals("")) {
+            selected.setDisplayName(selected.getName().trim());
+        }
+    }
+
     public String importToExcel() {
         String dosageFormName;
         String ampName;
@@ -1127,7 +1148,7 @@ public class ItemController implements Serializable {
             return new ArrayList<>();
         }
         if (insType != null && filterByInsType) {
-            return itemApplicationController.findChildren(parent.getCode(),insType);
+            return itemApplicationController.findChildren(parent.getCode(), insType);
         } else {
             return itemApplicationController.findChildren(parent.getCode());
         }

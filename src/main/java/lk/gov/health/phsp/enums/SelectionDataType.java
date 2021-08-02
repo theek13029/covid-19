@@ -41,6 +41,7 @@ public enum SelectionDataType {
     Area_Reference("Area Reference"),
     Prescreption_Reference("Prescreption"),
     Procedure_Request("Procedure Request"),
+    Client_Basic_Details("Client Basic Data"),
     @Deprecated
     Institution_Reference("Institution Reference"),
     @Deprecated
