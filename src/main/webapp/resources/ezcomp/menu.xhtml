@@ -32,6 +32,10 @@
                         <p:menuitem ajax="false" value="New Patient &amp; Investigate" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
                         <p:menuitem ajax="false" value="View Investigated Cases" action="#{mohController.toListOfInvestigatedCasesForMoh()}" />
                     </p:submenu>
+                    <p:submenu label="Contacts" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
+                        <p:menuitem ajax="false" value="Order PCR for Contacts" action="#{mohController.toAssignInvestigation()}" />
+                        <p:menuitem ajax="false" value="Order RATs for Contacts" action="#{mohController.toStartInvestigation()}" />
+                    </p:submenu>
                     <p:submenu label="Samples" rendered="#{webUserController.hasPrivilege('Sample_Management')}" >
                         <p:menuitem ajax="false" value="Dispatch Samples"
                                     action="#{clientController.toDispatchSamples()}"

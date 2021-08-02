@@ -117,6 +117,7 @@ public class WebUserController implements Serializable {
 
     private List<WebUser> usersForMyInstitute;
     private List<Area> areasForMe;
+    private List<Area> loggableMohAreas;
 
     private List<Upload> companyUploads;
 
@@ -138,7 +139,6 @@ public class WebUserController implements Serializable {
 
     private List<Area> districtsAvailableForSelection;
 
-    private List<Area> selectedDsAreas;
     private List<Area> selectedGnAreas;
     private Area[] selectedProvinces;
 
@@ -824,6 +824,7 @@ public class WebUserController implements Serializable {
             case Rdhs:
             case Re:
                 areasForMe = areaApplicationController.getAllChildren(loggedUser.getInstitution().getRdhsArea());
+                loggableMohAreas = areaApplicationController.getMohAreasOfAnRdhs(loggedUser.getInstitution().getRdhsArea());
                 break;
             case Pdhs:
                 areasForMe = areaApplicationController.getAllChildren(loggedUser.getInstitution().getPdhsArea());
@@ -1878,9 +1879,6 @@ public class WebUserController implements Serializable {
         this.selectedProvinces = selectedProvinces;
     }
 
-    public void setSelectedDsAreas(List<Area> selectedDsAreas) {
-        this.selectedDsAreas = selectedDsAreas;
-    }
 
     public List<Area> getSelectedGnAreas() {
         return selectedGnAreas;
@@ -2079,6 +2077,8 @@ public class WebUserController implements Serializable {
     public void setSelectedNodes(TreeNode[] selectedNodes) {
         this.selectedNodes = selectedNodes;
     }
+    
+    
 
     public TreeNode getMyPrivilegeRoot() {
         return myPrivilegeRoot;
@@ -2288,6 +2288,14 @@ public class WebUserController implements Serializable {
 
     public void setAreasForMe(List<Area> areasForMe) {
         this.areasForMe = areasForMe;
+    }
+
+    public List<Area> getLoggableMohAreas() {
+        return loggableMohAreas;
+    }
+
+    public void setLoggableMohAreas(List<Area> loggableMohAreas) {
+        this.loggableMohAreas = loggableMohAreas;
     }
 
     @FacesConverter(forClass = WebUser.class)

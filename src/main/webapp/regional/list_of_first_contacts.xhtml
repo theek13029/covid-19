@@ -11,7 +11,7 @@
         <ui:composition template="./../template1.xhtml">
 
             <ui:define name="title">
-                List of Tests
+                List of First Contacts
             </ui:define>
 
             <ui:define name="content">
@@ -36,22 +36,8 @@
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{mohController.toListOfFirstContactsWithoutMohForRegionalLevel()}" ></p:commandButton>
+                                             action="#{mohController.toListOfFirstContactsForRegionalLevel()}" ></p:commandButton>
                             </p:panelGrid>
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="Assigning MOH Area" ></p:outputLabel>
-                                <p:selectOneMenu value="#{mohController.mohArea}" >
-                                    <f:selectItem itemLabel="Select" ></f:selectItem>
-                                    <f:selectItems value="#{webUserController.loggableMohAreas}" var="c"
-                                                   itemValue="#{c}"
-                                                   itemLabel="#{c.name}" >
-                                    </f:selectItems>
-                                </p:selectOneMenu>                            
-                            
-                                <p:commandButton ajax="false" action="#{mohController.assignMohAreaToContactScreeningAtRegionalLevel()}"
-                                                 value="Assign MOH Areas to Selected Contacts" ></p:commandButton>
-                            </p:panelGrid>
-
                         </p:panelGrid>
 
 
@@ -70,7 +56,7 @@
                             <p:column headerText="Name"  sortBy="#{c.shortTextValue}" filterBy="#{c.shortTextValue}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.shortTextValue}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Address"  sortBy="#{c.longTextValue}" width="60"
+                            <p:column headerText="Address"  sortBy="#{c.longTextValue}" 
                                       filterBy="#{c.longTextValue}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.longTextValue}" ></p:outputLabel>
                             </p:column>
