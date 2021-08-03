@@ -2020,7 +2020,7 @@ public class ClientController implements Serializable {
         return "/client/client_case_enrollment";
     }
 
-    public String toNewCaseEnrollmentFromEncounter() {
+    public String toNewCaseInvestigationFromTest() {
         if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("No encounter");
             return "";
@@ -2043,7 +2043,9 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No Default Form Set");
             return "";
         }
-        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseEnrollmentFormsetToDataEntry(dfs);
+        
+        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseInvestigationFromTest(dfs,testEncounter);
+        
         if (cefs == null) {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";

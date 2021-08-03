@@ -57,23 +57,22 @@ public class ItemApplicationController {
     private List<Item> issueUnits;
 
     private List<Item> pcrResults;
-    
-     private List<Item> citizenships;
-     
-     private List<Item> sexes;
-    
+
+    private List<Item> managementTypes;
+
+    private List<Item> citizenships;
+
+    private List<Item> sexes;
+
     private List<Item> covidTestOrderingCategories;
-    private List<Item> covidTestTypes
-;    
+    private List<Item> covidTestTypes;
     private Item pcr;
     private Item rat;
-    
+
     private Item pcrPositive;
     private Item pcrNegative;
     private Item pcrInconclusive;
     private Item pcrInvalid;
-    
-    
 
     /**
      * Creates a new instance of ItemApplicationController
@@ -357,10 +356,6 @@ public class ItemApplicationController {
     public Item getFemale() {
         return findItemByCode("sex_female");
     }
-    
-    
-    
-    
 
     public List<Item> getItems() {
         if (items == null) {
@@ -445,6 +440,13 @@ public class ItemApplicationController {
         return pcrResults;
     }
 
+    public List<Item> getManagementTypes() {
+        if (managementTypes == null) {
+            managementTypes = findChildDictionaryItems("categories_for_the_placement_of_diagnosed_patient");
+        }
+        return managementTypes;
+    }
+
     public List<Item> getPackUnits() {
         if (packUnits == null) {
             packUnits = findItems(ItemType.Pack_Unit);
@@ -453,7 +455,7 @@ public class ItemApplicationController {
     }
 
     public Item getPcrPositive() {
-        if(pcrPositive==null){
+        if (pcrPositive == null) {
             pcrPositive = findItemByCode("pcr_positive");
         }
         return pcrPositive;
@@ -464,8 +466,8 @@ public class ItemApplicationController {
     }
 
     public Item getPcrNegative() {
-        if(pcrNegative==null){
-            pcrNegative= findItemByCode("pcr_negative");
+        if (pcrNegative == null) {
+            pcrNegative = findItemByCode("pcr_negative");
         }
         return pcrNegative;
     }
@@ -475,7 +477,7 @@ public class ItemApplicationController {
     }
 
     public Item getPcrInconclusive() {
-        if(pcrInconclusive==null){
+        if (pcrInconclusive == null) {
             pcrInconclusive = findItemByCode("pcr_inconclusive");
         }
         return pcrInconclusive;
@@ -486,7 +488,7 @@ public class ItemApplicationController {
     }
 
     public Item getPcrInvalid() {
-        if(pcrInvalid==null){
+        if (pcrInvalid == null) {
             pcrInvalid = findItemByCode("pcr_invalid");
         }
         return pcrInvalid;
@@ -497,7 +499,7 @@ public class ItemApplicationController {
     }
 
     public Item getPcr() {
-        if(pcr==null){
+        if (pcr == null) {
             pcr = findItemByCode("covid19_pcr_test");
         }
         return pcr;
@@ -508,7 +510,7 @@ public class ItemApplicationController {
     }
 
     public Item getRat() {
-        if(rat==null){
+        if (rat == null) {
             rat = findItemByCode("covid19_rat");
         }
         return rat;
@@ -519,7 +521,7 @@ public class ItemApplicationController {
     }
 
     public List<Item> getCovidTestOrderingCategories() {
-        if(covidTestOrderingCategories==null){
+        if (covidTestOrderingCategories == null) {
             covidTestOrderingCategories = findChildDictionaryItems("patients_covid_19_test_ordering_context_category");
         }
         return covidTestOrderingCategories;
@@ -530,8 +532,8 @@ public class ItemApplicationController {
     }
 
     public List<Item> getCovidTestTypes() {
-        if(covidTestTypes==null){
-            covidTestTypes= findChildDictionaryItems("test_types");
+        if (covidTestTypes == null) {
+            covidTestTypes = findChildDictionaryItems("test_types");
         }
         return covidTestTypes;
     }
@@ -541,21 +543,17 @@ public class ItemApplicationController {
     }
 
     public List<Item> getCitizenships() {
-        if(citizenships==null){
+        if (citizenships == null) {
             citizenships = findChildDictionaryItems("citizenship");
         }
         return citizenships;
     }
 
     public List<Item> getSexes() {
-        if(sexes==null){
+        if (sexes == null) {
             sexes = findChildDictionaryItems("sex");
         }
         return sexes;
     }
-    
-    
-    
-    
 
 }

@@ -25,6 +25,10 @@
                         <h:commandButton value="MOH/Hospital Data" class="list-group-item list-group-item-action"
                                          action="#{mohController.toPcrPositiveReportsIndexNational()}" >
                         </h:commandButton>
+
+                        <p:commandButton ajax="false" value="Cases by Management Plan" 
+                                         action="#{mohController.toListCasesByManagementForNationalLevel()}" >
+                        </p:commandButton>
                     </div>
                 </h:form>
             </ui:define>
