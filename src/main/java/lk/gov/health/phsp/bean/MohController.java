@@ -194,30 +194,6 @@ public class MohController implements Serializable {
     }
 
     public String toStartInvestigation() {
-        Map m = new HashMap();
-        String j = "select c "
-                + " from Encounter c "
-                + " where (c.retired is null or c.retired=:ret) "
-                + " and (c.completed is null or c.completed=:com) "
-                + " and c.completedBy is not null ";
-        m.put("ret", false);
-        m.put("com", false);
-
-        j += " and c.encounterType=:etype ";
-        m.put("etype", EncounterType.Case_Enrollment);
-
-        j += " and c.client.person.mohArea=:moh ";
-        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
-
-        j += " and c.createdAt between :fd and :td ";
-        m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
-        m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
-        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
         return "/moh/start_investigation";
     }
 
