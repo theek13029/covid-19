@@ -2054,8 +2054,8 @@ public class ClientController implements Serializable {
         if (cefs.getEncounter() != null) {
             testEncounter.setReferenceCase(cefs.getEncounter());
             encounterFacade.edit(testEncounter);
-
             cefs.getEncounter().setReferenceTest(testEncounter);
+            encounterFacade.edit(cefs.getEncounter());
         }
         updateYearDateMonth();
         return "/client/client_case_enrollment";

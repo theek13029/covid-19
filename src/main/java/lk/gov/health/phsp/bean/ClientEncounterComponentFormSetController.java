@@ -847,16 +847,14 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         m.put("dfs", dfs);
         return getFacade().findFirstByJpql(j, m);
     }
-    
-    
-    
+
     public ClientEncounterComponentFormSet createNewCaseInvestigationFromTest(DesignComponentFormSet dfs, Encounter test) {
         if (clientController.getSelected() == null) {
             JsfUtil.addErrorMessage("Please select a client");
             return null;
         }
         DataFormset fs = new DataFormset();
-    
+
         Date d = new Date();
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
@@ -871,7 +869,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         e.setEncounterMonth(CommonController.getMonth(d));
         e.setEncounterQuarter(CommonController.getQuarter(d));
         e.setEncounterYear(CommonController.getYear(d));
-        
+
         encounterController.save(e);
 
         ClientEncounterComponentFormSet cfs = new ClientEncounterComponentFormSet();
@@ -961,7 +959,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             ci.setCss(dis.getCss());
                             ci.setOrderNo(dis.getOrderNo());
                             ci.setDataRepresentationType(DataRepresentationType.Encounter);
-                            
+
                             updateValuesFromClient(e.getClient(), ci);
                             updateValuesFromTest(test, ci);
 
@@ -972,7 +970,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             i.id = itemCounter;
                             i.orderNo = itemCounter;
                             i.form = f;
-                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
                             f.getItems().add(i);
                         } else {
                             itemCounter++;
@@ -990,11 +988,10 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             ci.setCss(dis.getCss());
                             ci.setOrderNo(dis.getOrderNo());
                             ci.setDataRepresentationType(DataRepresentationType.Encounter);
-                            
+
                             updateValuesFromClient(e.getClient(), ci);
                             updateValuesFromTest(test, ci);
 
-                            
                             DataItem i = new DataItem();
                             i.setMultipleEntries(false);
                             i.setCi(ci);
@@ -1002,7 +999,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             i.id = itemCounter;
                             i.orderNo = itemCounter;
                             i.form = f;
-                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(),dis.isLimiteToInsType()));
+                            i.setAvailableItemsForSelection(itemController.findItemList(dis.getCategoryOfAvailableItems(), getInsType(), dis.isLimiteToInsType()));
 
                             f.getItems().add(i);
                         }
@@ -1017,9 +1014,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         selected = cfs;
         return cfs;
     }
-
-    
-    
 
     public ClientEncounterComponentFormSet createNewCaseEnrollmentFormsetToDataEntry(DesignComponentFormSet dfs) {
         if (clientController.getSelected() == null) {
@@ -1135,8 +1129,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                             ci.setCss(dis.getCss());
                             ci.setOrderNo(dis.getOrderNo());
                             ci.setDataRepresentationType(DataRepresentationType.Encounter);
-                            
-                            
+
                             if (ci.getReferanceDesignComponentFormItem().getDataPopulationStrategy() == DataPopulationStrategy.From_Client_Value) {
                                 updateFromClientValueSingle(ci, e.getClient(), mapOfClientValues);
                             } else if (ci.getReferanceDesignComponentFormItem().getDataPopulationStrategy() == DataPopulationStrategy.From_Last_Encounter) {
@@ -1207,10 +1200,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         return cfs;
     }
 
-    
-    
-    
-    
     public ClientEncounterComponentFormSet createNewTestEnrollmentFormsetToDataEntry(DesignComponentFormSet dfs) {
         if (clientController.getSelected() == null) {
             JsfUtil.addErrorMessage("Please select a client");
@@ -2173,9 +2162,23 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         return map;
     }
 
-    
-    
     public void updateValuesFromClient(Client c, ClientEncounterComponentItem ti) {
+        if (ti == null) {
+            System.err.println("ti is null");
+            return;
+        }
+        if (ti.getItem() == null) {
+            System.out.println("ti.getItem is null");
+            return;
+        }
+        if (ti.getItem().getCode() == null) {
+            System.out.println("ti.getItem.getCode is null");
+            return;
+        }
+        if (c == null) {
+            System.out.println("c is null");
+            return;
+        }
         String code = ti.getItem().getCode();
         switch (code) {
             case "client_name":
@@ -2234,15 +2237,30 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             case "client_ds_division":
                 ti.setAreaValue(c.getPerson().getGnArea().getDsd());
                 return;
-                case "client_district":
+            case "client_district":
                 ti.setAreaValue(c.getPerson().getDistrict());
                 return;
         }
 
     }
 
-    
     public void updateValuesFromTest(Encounter test, ClientEncounterComponentItem ti) {
+        if (ti == null) {
+            System.err.println("ti is null");
+            return;
+        }
+        if (ti.getItem() == null) {
+            System.out.println("ti.getItem is null");
+            return;
+        }
+        if (ti.getItem().getCode() == null) {
+            System.out.println("ti.getItem.getCode is null");
+            return;
+        }
+        if (test == null) {
+            System.out.println("c is null");
+            return;
+        }
         String code = ti.getItem().getCode();
         switch (code) {
             case "client_name":
@@ -2252,9 +2270,23 @@ public class ClientEncounterComponentFormSetController implements Serializable {
 
     }
 
-    
     public void updateFromClientValueSingle(ClientEncounterComponentItem ti, Client c, Map<String, ClientEncounterComponentItem> cvs) {
-
+        if (ti == null) {
+            System.err.println("ti is null");
+            return;
+        }
+        if (ti.getItem() == null) {
+            System.out.println("ti.getItem is null");
+            return;
+        }
+        if (ti.getItem().getCode() == null) {
+            System.out.println("ti.getItem.getCode is null");
+            return;
+        }
+        if (c == null) {
+            System.out.println("c is null");
+            return;
+        }
         String code = ti.getItem().getCode();
         switch (code) {
             case "client_name":
