@@ -12,7 +12,7 @@
     <cc:implementation>
         <h:form>
             <p:panelMenu>
-                <p:submenu label="Navigator" expanded="true">
+                <p:submenu label="" expanded="true">
                     <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="/index" />
                     <p:submenu label="Tests" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
                         <p:menuitem ajax="false" value="New PCR" action="#{mohController.toAddNewPcrWithNewClient()}" />
@@ -20,8 +20,7 @@
                         <p:menuitem ajax="false" value="New RAT" action="#{mohController.toAddNewRatOrderWithNewClient()}"  />
                         <p:menuitem ajax="false" rendered="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
                         <p:menuitem ajax="false" value="Test Lists" action="#{mohController.toTestListWithoutResults()}" />
-                        <p:menuitem ajax="false" value="Dispatch Samples"
-                                    action="#{clientController.toDispatchSamplesByMohOrHospital()}"/>
+                        <p:menuitem ajax="false" value="Dispatch Samples" action="#{clientController.toDispatchSamplesByMohOrHospital()}"/>
                         <p:menuitem ajax="false" value="Enter Results" action="#{mohController.toEnterResults()}" />
                         <p:menuitem ajax="false" rendered="false" value="Print Results" action="#{clientController.toMohToSelectForPrinting()}" />
                         <p:menuitem ajax="false" value="View Results" action="#{mohController.toListOfTests()}" />
@@ -31,6 +30,10 @@
                         <p:menuitem ajax="false" value="Cases Awaiting Investigation" action="#{mohController.toStartInvestigation()}" />
                         <p:menuitem ajax="false" value="New Patient &amp; Investigate" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
                         <p:menuitem ajax="false" value="View Investigated Cases" action="#{mohController.toListOfInvestigatedCasesForMoh()}" />
+                    </p:submenu>
+                    <p:submenu label="Contacts" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
+                        <p:menuitem ajax="false" value="Order PCR for Contacts" action="#{mohController.toAssignInvestigation()}" />
+                        <p:menuitem ajax="false" value="Order RATs for Contacts" action="#{mohController.toStartInvestigation()}" />
                     </p:submenu>
                     <p:submenu label="Samples" rendered="#{webUserController.hasPrivilege('Sample_Management')}" >
                         <p:menuitem ajax="false" value="Dispatch Samples"
@@ -66,8 +69,7 @@
                                     rendered="#{webUserController.hasPrivilege('Lab_Reports')}"/>
                     </p:submenu>
 
-                    <p:menuitem ajax="false" value="Reports"
-                                action="#{mohController.toReportsIndex()}" />
+                    <p:menuitem ajax="false" value="Reports" action="#{mohController.toReportsIndex()}" />
 
                     <p:submenu label="Institution Administration" rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
                         <p:submenu label="Manage Users" rendered="#{webUserController.hasPrivilege('Institution_Administration')}">

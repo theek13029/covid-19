@@ -323,7 +323,8 @@ public class CommonController implements Serializable {
             RenderType.Boolean_Button,
             RenderType.Boolean_Checkbox,
             RenderType.Drop_Down_Menu,
-            RenderType.Client_Basic_Details};
+            RenderType.Client_Basic_Details,
+            RenderType.Integer_with_detail};
         return rts;
     }
 

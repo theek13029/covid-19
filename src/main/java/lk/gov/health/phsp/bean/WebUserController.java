@@ -117,6 +117,7 @@ public class WebUserController implements Serializable {
 
     private List<WebUser> usersForMyInstitute;
     private List<Area> areasForMe;
+    private List<Area> loggableMohAreas;
 
     private List<Upload> companyUploads;
 
@@ -138,7 +139,6 @@ public class WebUserController implements Serializable {
 
     private List<Area> districtsAvailableForSelection;
 
-    private List<Area> selectedDsAreas;
     private List<Area> selectedGnAreas;
     private Area[] selectedProvinces;
 
@@ -705,11 +705,13 @@ public class WebUserController implements Serializable {
     }
 
     public String loginNew() {
-        // // System.out.println("loginNew");
+          System.out.println("loginNew");
         loggableInstitutions = null;
         loggablePmcis = null;
         loggableGnAreas = null;
         institutionController.setMyClinics(null);
+        System.out.println("userName = " + userName);
+        System.out.println("password = " + password);
         if (userName == null || userName.trim().equals("")) {
             JsfUtil.addErrorMessage("Please enter a Username");
             return "";
@@ -723,10 +725,11 @@ public class WebUserController implements Serializable {
         if (!checkLoginNew()) {
             JsfUtil.addErrorMessage("Username/Password Error. Please retry.");
             userTransactionController.recordTransaction("Failed Login Attempt", userName);
+            System.out.println("No Match");
             return "";
         }
 
-        // // System.out.println("username & password correct");
+          System.out.println("username & password correct");
         loggedUserPrivileges = userPrivilegeList(loggedUser);
 
         JsfUtil.addSuccessMessage("Successfully Logged");
@@ -821,6 +824,7 @@ public class WebUserController implements Serializable {
             case Rdhs:
             case Re:
                 areasForMe = areaApplicationController.getAllChildren(loggedUser.getInstitution().getRdhsArea());
+                loggableMohAreas = areaApplicationController.getMohAreasOfAnRdhs(loggedUser.getInstitution().getRdhsArea());
                 break;
             case Pdhs:
                 areasForMe = areaApplicationController.getAllChildren(loggedUser.getInstitution().getPdhsArea());
@@ -847,7 +851,7 @@ public class WebUserController implements Serializable {
     }
 
     private boolean checkLoginNew() {
-        // // System.out.println("checkLoginNew");
+          System.out.println("checkLoginNew");
         if (getFacade() == null) {
             JsfUtil.addErrorMessage("Server Error");
             return false;
@@ -859,6 +863,7 @@ public class WebUserController implements Serializable {
         m.put("userName", userName.trim().toLowerCase());
         m.put("ret", false);
         loggedUser = getFacade().findFirstByJpql(temSQL, m);
+        System.out.println("loggedUser = " + loggedUser);
         if (loggedUser == null) {
             return false;
         }
@@ -1874,9 +1879,6 @@ public class WebUserController implements Serializable {
         this.selectedProvinces = selectedProvinces;
     }
 
-    public void setSelectedDsAreas(List<Area> selectedDsAreas) {
-        this.selectedDsAreas = selectedDsAreas;
-    }
 
     public List<Area> getSelectedGnAreas() {
         return selectedGnAreas;
@@ -2075,6 +2077,8 @@ public class WebUserController implements Serializable {
     public void setSelectedNodes(TreeNode[] selectedNodes) {
         this.selectedNodes = selectedNodes;
     }
+    
+    
 
     public TreeNode getMyPrivilegeRoot() {
         return myPrivilegeRoot;
@@ -2284,6 +2288,14 @@ public class WebUserController implements Serializable {
 
     public void setAreasForMe(List<Area> areasForMe) {
         this.areasForMe = areasForMe;
+    }
+
+    public List<Area> getLoggableMohAreas() {
+        return loggableMohAreas;
+    }
+
+    public void setLoggableMohAreas(List<Area> loggableMohAreas) {
+        this.loggableMohAreas = loggableMohAreas;
     }
 
     @FacesConverter(forClass = WebUser.class)

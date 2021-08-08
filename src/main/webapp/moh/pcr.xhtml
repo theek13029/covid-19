@@ -12,18 +12,14 @@
                     <div class="card">
                         <h5 class="card-header">
                             <p:outputLabel value="PCR Order" ></p:outputLabel>
-                            <p:commandButton class="btn btn-primary"  ajax="false"
-                                             style="float: left;" tabindex="7"
+                            <p:commandButton class="btn btn-primary"  ajax="false" style="float: left;" tabindex="7"
                                              action="#{mohController.savePcrAndToNewPcr()}" value="Save and NEW PCR"></p:commandButton>
-                            <p:commandButton class="btn btn-secondary"  ajax="false"
-                                             style="float: left;" tabindex="8"
+                            <p:commandButton class="btn btn-secondary"  ajax="false" style="float: left;" tabindex="8"
                                              action="#{mohController.savePcrAndToPcrView()}" value="Save and View PCR"></p:commandButton>
                         </h5>
                         <h:panelGroup id="gpTest" >
                             <div class="card-body">
                                 <div class="form-group row">
-
-
                                     <div class="col-md-3">
                                         <p:outputLabel value="Test Number"></p:outputLabel>
                                         <p:inputText id="txtTestNo" class="form-control " 
@@ -32,8 +28,6 @@
                                             <p:ajax process="txtTestNo" event="blur" ></p:ajax>
                                         </p:inputText>
                                     </div>
-
-
                                     <div class="col-md-3">
                                         <p:outputLabel  value="Ordering Category"
                                                         for="orderingCat"></p:outputLabel>
@@ -103,9 +97,6 @@
                                         <p:selectBooleanButton tabindex="106" 
                                                                value="#{mohController.pcr.symptomatic}"  offLabel="No" onLabel="Yes"></p:selectBooleanButton>
                                     </div>
-
-
-
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-6">
@@ -138,9 +129,6 @@
                                             <f:selectItems value="#{mohController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
                                         </p:selectOneMenu>
                                     </div>
-
-
-
                                     <div class="col-md-3">
                                         <p:outputLabel value="Age: (Years/Months)*" style="width: 100%;"/>
                                         <h:panelGroup>

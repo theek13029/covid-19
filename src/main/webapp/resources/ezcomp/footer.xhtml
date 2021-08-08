@@ -11,18 +11,13 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-
-
         <h:panelGroup rendered="#{webUserController.loggedUser ne null}" >
-            <footer><b>
+            <footer class="d-flex justify-content-center"><b>
                 &copy; Ministry of Health, 
                 <h:outputText value="#{session.lastAccessedTime}">
                     <f:convertDateTime pattern="yyyy" type="date" />
                 </h:outputText>
                 </b></footer>
         </h:panelGroup>
-
-
-
     </cc:implementation>
 </html>
