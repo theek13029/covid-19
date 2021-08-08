@@ -26,9 +26,18 @@ THE SOFTWARE.
     Author     : Dinidu Hewage
 */
 
-.header {
-    padding: 10px;
-} 
+.nchis_head{
+    padding-top: 5px;
+    padding-left: 25px;
+}
+
+.nchis_head h4{
+    padding-top: 25px;
+    padding-left: 50px;
+}
+.search_client, .user-details{
+    padding-top: 25px;
+}
 .ui-column-filter{
     width: 100%;
     box-sizing: border-box;
@@ -137,16 +146,10 @@ body .ui-datatable .ui-datatable-data tr td {
 
 footer{
     background-color: #267ad4;
-    position: relative;
-    left: 0;
-    bottom: 0;
-    width: 100%;
     overflow:hidden;
+    font-size: 18px;
 }
 
-footer b{
-    margin-left: 400px;    
-}
 
 .input-group-prepend {   
     width:80%;
@@ -197,4 +200,8 @@ label{
 
 .form-control .withicon{
     width: 90% !important;
+}
+
+.ui-layout-unit .ui-layout-unit-content{
+    overflow: hidden !important;     
 }
