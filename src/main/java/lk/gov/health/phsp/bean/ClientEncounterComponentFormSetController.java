@@ -2181,6 +2181,16 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         }
         String code = ti.getItem().getCode();
         switch (code) {
+            case "clients_district":
+                if(c.getPerson().getDistrict()!=null){
+                    ti.setAreaValue(c.getPerson().getDistrict());
+                }
+                return;
+            case "client_current_moh_area":
+                if(c.getPerson().getMohArea()!=null){
+                    ti.setAreaValue(c.getPerson().getMohArea());
+                }
+            case ""
             case "client_name":
                 ti.setShortTextValue(c.getPerson().getName());
                 return;
@@ -2202,6 +2212,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             case "client_current_age":
                 ti.setShortTextValue(c.getPerson().getAge());
                 return;
+            case "client_current_age_in_years":
             case "client_age_at_encounter_in_years":
                 ti.setIntegerNumberValue(c.getPerson().getAgeYears());
                 ti.setShortTextValue(c.getPerson().getAgeYears() + "");
@@ -2234,6 +2245,15 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             case "client_gn_area":
                 ti.setAreaValue(c.getPerson().getGnArea());
                 return;
+            case "client_current_phi_area":
+                ti.setAreaValue(c.getPerson().getPhiArea());
+                return;
+            case "client_current_phis_name":
+                ti.setShortTextValue(webUserController.getLoggedUser().getName());
+                return;
+            case "client_current_phis_contact_number":
+                ti.setShortTextValue(webUserController.getLoggedUser().getPerson().getPhone1());
+                return;
             case "client_ds_division":
                 ti.setAreaValue(c.getPerson().getGnArea().getDsd());
                 return;
@@ -2262,11 +2282,17 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             return;
         }
         String code = ti.getItem().getCode();
-        switch (code) {
-            case "client_name":
-//                ti.setShortTextValue(c.getPerson().getName());
-                return;
-        }
+//        switch (code) {
+//            case "client_covid_19_case_detected_from":
+//                ti.setDateValue(test.getResultConfirmedAt());
+//                return;
+//            case "covid_19_date_of_diagnosis":
+//                ti.setDateValue(test.getSampledAt());
+//                return;
+//            case "client_covid_19_case_detected_from":
+//                ti.setItemValue(test.getPcrOrderingCategory());
+//                return;
+//        }
 
     }
 
