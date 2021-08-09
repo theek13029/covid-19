@@ -43,6 +43,10 @@ THE SOFTWARE.
     box-sizing: border-box;
     height: 0.7cm;
 }
+.ui-menubar{
+   background-color: #D2d4d4;
+   padding-left: 20px;
+}
 
 body .ui-panelmenu .ui-panelmenu-header.ui-state-active, body .ui-panelmenu .ui-panelmenu-header{
     font-size: 12px;
