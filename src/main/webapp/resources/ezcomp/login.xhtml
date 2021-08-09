@@ -31,10 +31,10 @@
                                                 <h1 class="h4 text-gray-900 mb-4">Log In</h1>
                                             </div>
                                             <div class="form-group">
-                                                <p:inputText autocomplete="off" value="#{webUserController.userName}" class="form-control"></p:inputText>
+                                                <p:inputText placeholder="Username" required autocomplete="off" value="#{webUserController.userName}" class="form-control"></p:inputText>
                                             </div>
                                             <div class="form-group">
-                                                <p:password autocomplete="off" value="#{webUserController.password}" class="form-control"></p:password>
+                                                <p:password placeholder="Password" required autocomplete="off" value="#{webUserController.password}" class="form-control"></p:password>
                                             </div>
 
                                             <div class="form-group">
@@ -42,11 +42,11 @@
                                                     <label>National COVID-19 Health Information System</label>
                                                 </div>
                                             </div>
-                                            <h:commandButton class="btn btn-block btn-primary" value="Login" 
+                                            <h:commandButton class="btn btn-block btn-primary" value="Login"
                                                              action="#{webUserController.loginNew()}" ></h:commandButton>
 
                                             <div class="text-center">
-                                                &copy; Ministry of Health, 
+                                                &copy; Ministry of Health,
                                                 <h:outputText value="#{session.lastAccessedTime}">
                                                     <f:convertDateTime pattern="yyyy" type="date" />
                                                 </h:outputText>
@@ -54,11 +54,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Display any error message when logging in -->
+                                <div class="row">
+                                    <div class="column">
+                                        <p:messages></p:messages>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div>
         </h:form>
     </cc:implementation>
 </html>
