@@ -862,8 +862,11 @@ public class WebUserController implements Serializable {
         Map m = new HashMap();
         m.put("userName", userName.trim().toLowerCase());
         m.put("ret", false);
+        JsfUtil.addErrorMessage("M=" + m);
+        JsfUtil.addErrorMessage("S=" + temSQL);
         loggedUser = getFacade().findFirstByJpql(temSQL, m);
         System.out.println("loggedUser = " + loggedUser);
+        JsfUtil.addErrorMessage("User = " + loggedUser);
         if (loggedUser == null) {
             return false;
         }
@@ -2077,8 +2080,8 @@ public class WebUserController implements Serializable {
     public void setSelectedNodes(TreeNode[] selectedNodes) {
         this.selectedNodes = selectedNodes;
     }
-    
-    
+
+
 
     public TreeNode getMyPrivilegeRoot() {
         return myPrivilegeRoot;
