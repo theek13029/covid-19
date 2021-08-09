@@ -2190,7 +2190,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 if(c.getPerson().getMohArea()!=null){
                     ti.setAreaValue(c.getPerson().getMohArea());
                 }
-            case ""
             case "client_name":
                 ti.setShortTextValue(c.getPerson().getName());
                 return;
