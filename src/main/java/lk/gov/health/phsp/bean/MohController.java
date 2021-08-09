@@ -144,7 +144,6 @@ public class MohController implements Serializable {
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
     public String toAssignInvestigation() {
-        testType = itemApplicationController.getPcr();
         result = itemApplicationController.getPcrPositive();
 
         System.out.println("toTestList");

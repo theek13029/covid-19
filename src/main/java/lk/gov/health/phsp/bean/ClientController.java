@@ -2043,6 +2043,8 @@ public class ClientController implements Serializable {
         
         ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseInvestigationFromTest(dfs,testEncounter);
         
+        selectedEncounter = cefs.getEncounter();
+        
         if (cefs == null) {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";

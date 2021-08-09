@@ -11,8 +11,8 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <h:form>
-            <p:panelMenu>
-                <p:submenu label="" expanded="true">
+            <p:menubar>
+                <p:submenu >
                     <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="/index" />
                     <p:submenu label="Tests" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
                         <p:menuitem ajax="false" value="New PCR" action="#{mohController.toAddNewPcrWithNewClient()}" />
@@ -164,7 +164,7 @@
                         <p:menuitem value="About" action="/about_us"   ajax="false" />
                     </p:submenu>
                 </p:submenu>
-            </p:panelMenu>
+            </p:menubar>
         </h:form>
     </cc:implementation>
 </html>
