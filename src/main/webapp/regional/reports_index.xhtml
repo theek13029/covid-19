@@ -1,60 +1,53 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui">
 
 
-    <h:body>
+<h:body>
 
-        <ui:composition template="./../template1.xhtml">
+    <ui:composition template="./../template1.xhtml">
 
-            <ui:define name="content">
+        <ui:define name="content">
 
-                <h:form >
-                    <div class="card" >
-                        <div class="card-header" >
-                            Reports
-                        </div>
-                        <div class="card-body" >
-                            <div class="row" >
-                                <div class="col-6" >
-                                    <p:commandButton ajax="false" value="Tests List" 
-                                                     action="#{mohController.toListOfTestsRegional()}" >
-                                    </p:commandButton>
-                                </div>
-                                <div class="col-6" >
-                                    <p:commandButton ajax="false" value="Tests without MOH" 
-                                                     action="#{mohController.toListOfTestsWithoutMohForRegionalLevel()}" >
-                                    </p:commandButton>
-                                </div>
-                                <div class="col-6" >
-                                    <p:commandButton ajax="false" value="First Contacts" 
-                                                     action="#{mohController.toListOfFirstContactsForRegionalLevel()}" >
-                                    </p:commandButton>
-                                </div>
-                                <div class="col-6" >
-                                    <p:commandButton ajax="false" value="First Contacts without MOH" 
-                                                     action="#{mohController.toListOfFirstContactsWithoutMohForRegionalLevel()}" >
-                                    </p:commandButton>
-                                </div>
-                                
-                                <div class="col-6" >
-                                    <p:commandButton ajax="false" value="Cases by Management Plan" 
-                                                     action="#{mohController.toListCasesByManagementForRegionalLevel()}" >
-                                    </p:commandButton>
-                                </div>
-                                
+            <h:form>
+                <div class="card">
+                    <div class="card-header">
+                        Reports
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <p:commandButton ajax="false" value="Tests List" action="#{mohController.toListOfTestsRegional()}">
+                                </p:commandButton>
                             </div>
+                            <div class="col-6">
+                                <p:commandButton ajax="false" value="Tests without MOH" action="#{mohController.toListOfTestsWithoutMohForRegionalLevel()}">
+                                </p:commandButton>
+                            </div>
+                            <div class="col-6">
+                                <p:commandButton ajax="false" value="First Contacts" action="#{mohController.toListOfFirstContactsForRegionalLevel()}">
+                                </p:commandButton>
+                            </div>
+                            <div class="col-6">
+                                <p:commandButton ajax="false" value="First Contacts without MOH" action="#{mohController.toListOfFirstContactsWithoutMohForRegionalLevel()}">
+                                </p:commandButton>
+                            </div>
+
+                            <div class="col-6">
+                                <p:commandButton ajax="false" value="Cases by Management Plan" action="#{mohController.toListCasesByManagementForRegionalLevel()}">
+                                </p:commandButton>
+                            </div>
+
                         </div>
                     </div>
+                </div>
 
-                </h:form>
+            </h:form>
 
-            </ui:define>
+        </ui:define>
 
-        </ui:composition>
+    </ui:composition>
 
-    </h:body>
+</h:body>
+
 </html>

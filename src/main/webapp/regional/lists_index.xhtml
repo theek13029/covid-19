@@ -9,10 +9,7 @@
     <body>
 
         <ui:composition template="./../template1.xhtml">
-
-            <ui:define name="title">
-                Index of Lists
-            </ui:define>
+            <ui:define name="title"> NCHIS - Index of Test</ui:define>
 
             <ui:define name="content">
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
@@ -25,11 +22,7 @@
                             <p:commandButton value="List of Tests" ajax="false"
                                              action="#{mohController.toListOfTestsRegional}"></p:commandButton>
                         </p:panelGrid>
-
                     </h:form>
-
-
-
                 </p:panelGrid>
             </ui:define>
 
