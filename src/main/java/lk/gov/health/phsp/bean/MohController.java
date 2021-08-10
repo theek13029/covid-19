@@ -105,7 +105,7 @@ public class MohController implements Serializable {
     private PreferenceController preferenceController;
 // </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="Variables">  
+// <editor-fold defaultstate="collapsed" desc="Variables">
     private Boolean nicExistsForPcr;
     private Boolean nicExistsForRat;
     private Encounter rat;
@@ -136,9 +136,9 @@ public class MohController implements Serializable {
     private Area district;
     private Area moh;
     private Area mohArea;
-    
 
-// </editor-fold>    
+
+// </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Constructors">
     public MohController() {
     }
@@ -217,7 +217,7 @@ public class MohController implements Serializable {
         }
         selectedToAssign = null;
     }
-    
+
     public String assignMohAreaToContactScreeningAtRegionalLevel(){
         if(selectedCecis==null || selectedCecis.isEmpty()){
             JsfUtil.addErrorMessage("Please select contacts");
@@ -530,8 +530,6 @@ public class MohController implements Serializable {
         return "/moh/list_of_tests";
     }
 
-    public String toListOfInvestigatedCasesForMoh() {
-        return "/moh/investigated_list";
     public String toListOfTestsWithoutMohForRegionalLevel() {
         Map m = new HashMap();
         String j = "select c "
@@ -615,8 +613,8 @@ public class MohController implements Serializable {
         return "/regional/list_of_first_contacts_without_moh";
     }
 
-    
-    
+
+
     public String toOrderTestsForFirstContactsForMoh() {
         Map m = new HashMap();
         String j = "select ci "
@@ -648,7 +646,7 @@ public class MohController implements Serializable {
         return "/moh/order_tests_for_moh";
     }
 
-    
+
     public String toListOfFirstContactsForRegionalLevel() {
         Map m = new HashMap();
         String j = "select ci "
@@ -679,7 +677,7 @@ public class MohController implements Serializable {
         return "/regional/list_of_first_contacts";
     }
 
-    
+
     public String toListOfInvestigatedCasesForMoh() {
         return "/moh/investigated_list";
     }
@@ -1471,7 +1469,7 @@ public class MohController implements Serializable {
 
         j += " and c.institution=:ins ";
         m.put("ins", webUserController.getLoggedUser().getInstitution());
-        
+
         //c.client.person.mohArea = :moh
 
         j += " and c.createdAt between :fd and :td ";
@@ -1675,10 +1673,10 @@ public class MohController implements Serializable {
 
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
-        
+
         j += " and c.client.person.district=:district ";
         m.put("district", webUserController.getLoggedUser().getArea());
-        
+
         if (mohOrHospital != null) {
             j += " and c.institution=:ins ";
             m.put("ins", mohOrHospital);
@@ -1687,7 +1685,7 @@ public class MohController implements Serializable {
             m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
             m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
         }
-        
+
         if(moh != null){
             j += " and c.client.person.mohArea=:moh ";
             m.put("moh", moh);
@@ -1721,7 +1719,7 @@ public class MohController implements Serializable {
         System.out.println("tests = " + tests.size());
         return "/regional/list_of_tests";
     }
-    
+
     public String toListCasesByManagementForRegionalLevel(){
         Map m = new HashMap();
         String j = "select distinct(c) "
@@ -1730,11 +1728,11 @@ public class MohController implements Serializable {
         m.put("ret", false);
 
 //        ClientEncounterComponentItem ci;
-        
+
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Case_Enrollment);
 
-        
+
 
         if (mohOrHospital != null) {
             j += " and c.institution=:ins ";
@@ -1750,8 +1748,8 @@ public class MohController implements Serializable {
         System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
         System.out.println(" getToDate() = " + getToDate());
-        
-        
+
+
         if (managementType != null) {
             j += " and (ci.item.code=:mxplan and ci.itemValue.code=:planType) ";
             m.put("mxplan", "placement_of_diagnosed_patient");
@@ -1760,21 +1758,21 @@ public class MohController implements Serializable {
             j += " and ci.item.code=:mxplan ";
             m.put("mxplan", "placement_of_diagnosed_patient");
         }
-        
+
         j += " group by c";
-        
+
         System.out.println("j = " + j);
         System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
 
-        
-        
+
+
         return "/regional/list_of_cases_by_management_plan";
     }
 
-    
+
     public String toListCasesByManagementForNationalLevel(){
         Map m = new HashMap();
         String j = "select distinct(c) "
@@ -1783,18 +1781,18 @@ public class MohController implements Serializable {
         m.put("ret", false);
 
 //        ClientEncounterComponentItem ci;
-        
+
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Case_Enrollment);
 
-        
+
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
         System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
         System.out.println(" getToDate() = " + getToDate());
-        
-        
+
+
         if (managementType != null) {
             j += " and (ci.item.code=:mxplan and ci.itemValue.code=:planType) ";
             m.put("mxplan", "placement_of_diagnosed_patient");
@@ -1803,22 +1801,22 @@ public class MohController implements Serializable {
             j += " and ci.item.code=:mxplan ";
             m.put("mxplan", "placement_of_diagnosed_patient");
         }
-        
+
         j += " group by c";
-        
+
         System.out.println("j = " + j);
         System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
 
-        
-        
+
+
         return "/national/list_of_cases_by_management_plan";
     }
 
-    
-    
+
+
     public String toEnterResults() {
         System.out.println("toTestList");
         Map m = new HashMap();
@@ -1874,13 +1872,13 @@ public class MohController implements Serializable {
     public List<Item> getResultTypes() {
         return itemApplicationController.getPcrResults();
     }
-    
+
      public List<Item> getManagementTypes() {
         return itemApplicationController.getManagementTypes();
     }
-    
-    
-    
+
+
+
 
     public List<Institution> completeLab(String qry) {
         List<InstitutionType> its = new ArrayList<>();
@@ -1888,9 +1886,9 @@ public class MohController implements Serializable {
         return institutionController.fillInstitutions(its, qry, null);
     }
 
-// </editor-fold>  
-// <editor-fold defaultstate="collapsed" desc="Getters & Setters">  
-// </editor-fold>  
+// </editor-fold>
+// <editor-fold defaultstate="collapsed" desc="Getters & Setters">
+// </editor-fold>
     public Encounter getRat() {
         return rat;
     }
@@ -2054,11 +2052,11 @@ public class MohController implements Serializable {
 
     public void setSelectedToAssign(List<Encounter> selectedToAssign) {
         this.selectedToAssign = selectedToAssign;
-    } 
+    }
 
-    public List<Area> completeMohsPerDistrict(String qry) {        
+    public List<Area> completeMohsPerDistrict(String qry) {
         return areaController.getMohAreasOfADistrict(areaController.getAreaByName(webUserController.getLoggedUser().getArea().toString(),AreaType.District,false,null));
-    } 
+    }
 
     public Area getMoh() {
         return moh;
@@ -2066,7 +2064,7 @@ public class MohController implements Serializable {
 
     public void setMoh(Area moh) {
         this.moh = moh;
-    }    
+    }
     public List<ClientEncounterComponentItem> getCecItems() {
         return cecItems;
     }
@@ -2098,7 +2096,7 @@ public class MohController implements Serializable {
     public void setManagementType(Item managementType) {
         this.managementType = managementType;
     }
-    
-    
+
+
 
 }
