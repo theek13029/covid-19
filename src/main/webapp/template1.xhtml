@@ -26,22 +26,24 @@
         </h:head>        
 
         <h:body>
-            <div class="row ">
-                <div class="col-sm-6 col-lg-6 nchis_head">
-                    <h:graphicImage style="float: left;" library="image" name="sllogo.png"></h:graphicImage> 
-                    <h4>National COVID-19 Health Information System</h4>
-                </div>
-                <h:form class="col-sm-4 col-lg-4">
-                    <div class="form-group row search_client">
-                        <p:inputText class="col-lg-10" autocomplete="off" value="#{clientController.searchingId}" placeholder="Search Here..."/>
-                        <p:commandButton ajax="false" action="#{clientController.searchByAnyIdWithBasicData()}" icon="ui-icon-search" ></p:commandButton> 
+            <h:panelGroup rendered="#{webUserController.loggedUser ne null}">
+                <div class="row ">
+                    <div class="col-sm-6 col-lg-6 nchis_head">
+                        <h:graphicImage style="float: left;" library="image" name="sllogo.png"></h:graphicImage> 
+                        <h4>National COVID-19 Health Information System</h4>
                     </div>
-                </h:form>
-                <h:form class="form col-sm-2 col-lg-2 user-details">
-                    <p:outputLabel class="name-title" value="#{webUserController.loggedUser.person.nameWithTitle}"></p:outputLabel>
-                    <p:commandLink  class="btn btn-primary btn-sm" action="#{webUserController.logOut()}" ajax="false" value="Logout" />  
-                </h:form>
-            </div>
+                    <h:form class="col-sm-4 col-lg-4">
+                        <div class="form-group row search_client">
+                            <p:inputText class="col-lg-10" autocomplete="off" value="#{clientController.searchingId}" placeholder="Search Here..."/>
+                            <p:commandButton ajax="false" action="#{clientController.searchByAnyIdWithBasicData()}" icon="ui-icon-search" ></p:commandButton> 
+                        </div>
+                    </h:form>
+                    <h:form class="form col-sm-2 col-lg-2 user-details">
+                        <p:outputLabel class="name-title" value="#{webUserController.loggedUser.person.nameWithTitle}"></p:outputLabel>
+                        <p:commandLink  class="btn btn-primary btn-sm" action="#{webUserController.logOut()}" ajax="false" value="Logout" />  
+                    </h:form>
+                </div>
+            </h:panelGroup>
 
             <h:panelGroup rendered="#{webUserController.loggedUser ne null}" >
                 <div class="row" >
