@@ -68,7 +68,7 @@ body .ui-panelmenu h3.ui-panelmenu-header.ui-state-active {
 }
 
 body .ui-widget {
-  font-size: 12px !important;
+  font-size: 12px;
 }
 
 .ui-fluid .ui-inputtextarea {
@@ -135,11 +135,6 @@ body .ui-datatable .ui-datatable-data tr td {
   height: 0.75cm;
 }
 
-.ui-menuitem-text {
-  padding-top: -20px;
-  height: 0.5cm;
-}
-
 footer {
   background-color: #267ad4;
   overflow: hidden;
@@ -201,7 +196,6 @@ label {
 .ui-layout-unit .ui-layout-unit-content {
   overflow: hidden !important;
 }
-
 .flex {
   display: flex;
 }
@@ -210,10 +204,18 @@ label {
   align-items: center;
 }
 
-.self-center {
-  align-self: center;
+.text-md {
+  font-size: 1.125rem;
 }
 
-.m-0 {
-  margin: 0;
+.text-lg {
+  font-size: 1.5rem;
+}
+
+.text-xl {
+  font-size: 2rem;
+}
+
+.ui-menu {
+  font-size: 1rem !important;
 }
