@@ -70,6 +70,9 @@
 
                 <p:menuitem ajax="false" value="Reports" action="#{mohController.toReportsIndex()}" />
 
+                <p:menuitem value="Administration" action="#{webUserController.toAddNewUserByInsAdmin()}" rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
+                </p:menuitem>
+                
                 <p:submenu label="Institution Administration" rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
                     <p:submenu label="Manage Users" rendered="#{webUserController.hasPrivilege('Institution_Administration')}">
                         <p:menuitem value="New User" action="#{webUserController.toAddNewUserByInsAdmin()}" ajax="false"

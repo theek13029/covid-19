@@ -57,9 +57,9 @@ import lk.gov.health.phsp.pojcs.InstitutionCount;
  *
  * @author buddhika
  */
-@Named(value = "mohController")
+@Named
 @SessionScoped
-public class MohController implements Serializable {
+public class NationalController implements Serializable {
 // <editor-fold defaultstate="collapsed" desc="EJBs">
 
     @EJB
@@ -139,7 +139,7 @@ public class MohController implements Serializable {
 
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Constructors">
-    public MohController() {
+    public NationalController() {
     }
 // </editor-fold>
 
@@ -331,12 +331,7 @@ public class MohController implements Serializable {
         return "/national/lab_report_links";
     }
     
-    public String toResultList() {
-        fromDate = CommonController.startOfTheDate();
-        toDate = CommonController.endOfTheDate();
-        return "/national/lab_report_links";
-    }
-
+    
     public String toPcrPositiveCasesList() {
         result = itemApplicationController.getPcrPositive();
         testType = itemApplicationController.getPcr();
@@ -765,7 +760,7 @@ public class MohController implements Serializable {
 
     public String toDeleteTestFromTestList() {
         deleteTest();
-        return toTestList();
+        return toListResults();
     }
 
     public String toRatView() {
@@ -1461,28 +1456,22 @@ public class MohController implements Serializable {
         }
     }
 
-    public String toTestList() {
-        System.out.println("toTestList");
+    public String toListResults() {
         Map m = new HashMap();
-
         String j = "select c "
                 + " from Encounter c "
                 + " where (c.retired is null or c.retired=:ret) ";
         m.put("ret", false);
-
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
-
-        j += " and c.institution=:ins ";
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
-
-        //c.client.person.mohArea = :moh
-
-        j += " and c.createdAt between :fd and :td ";
+        boolean tem=false;
+        if(tem){
+            Encounter e = new Encounter();
+            e.getResultConfirmedAt();
+        }
+        j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -1503,8 +1492,7 @@ public class MohController implements Serializable {
         System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
-        return "/moh/list_of_tests";
+        return "/national/result_list";
     }
 
     public String toDistrictViceTestListForOrderingCategories() {

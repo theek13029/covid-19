@@ -354,6 +354,24 @@ public class WebUserController implements Serializable {
         return "/insAdmin/user_new";
     }
 
+    public String toAdministration(){
+        if(loggedUser==null){
+            JsfUtil.addErrorMessage("Not Logged");
+            return "";
+        }
+        if(loggedUser.getWebUserRole()==null){
+            JsfUtil.addErrorMessage("No Role for logged user");
+        }
+        String url = "";
+        switch(loggedUser.getWebUserRole()){
+            case Pdhs:url = "/provincial/administration/index";break;
+            case Rdhs:
+            case Re:url = "/regional/administration/index";break;
+            default:
+        }
+        return url;
+    }
+    
     public void toProcedureRoom() {
         String insList = null;
         String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/redirect";
