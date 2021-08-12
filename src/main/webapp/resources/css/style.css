@@ -103,26 +103,6 @@ body .ui-datatable .ui-datatable-data tr td {
   border-width: 0 0 1px 0;
 }
 
-.navbar-header {
-  width: 100%;
-  padding-bottom: 10px;
-}
-.navbar-header .logo_img {
-  float: left;
-  width: 100%;
-}
-.navbar-header .logo_img h5 {
-  margin-top: 20px;
-}
-
-.name_title {
-  padding: 10px;
-  float: left;
-}
-
-.link_menu {
-  width: 100%;
-}
 .link_menu .mega_menu {
   height: 1cm;
   background-color: #D2d4d4;
@@ -143,10 +123,6 @@ footer {
 
 .input-group-prepend {
   width: 80%;
-}
-
-.crud-action {
-  padding: 5px;
 }
 
 .main-panel {
