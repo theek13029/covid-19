@@ -19,7 +19,7 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Title:" class="col-md-2" for="title" />
                                     <div class="col-md-4">
-                                        <p:selectOneMenu id="title" class="form-control" value="#{webUserController.selected.person.title}"  >
+                                        <p:selectOneMenu id="title" value="#{webUserController.selected.person.title}" style="width: 100%;">
                                             <f:selectItems value="#{itemController.titles}" var="t" itemLabel="#{t.name}"
                                                            itemValue="#{t}" ></f:selectItems>
                                         </p:selectOneMenu>
@@ -53,7 +53,7 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Institution / Unit / Ward :" class="col-md-2" for="institution" />
                                     <div class="col-md-4">
-                                        <p:selectOneMenu id="institution" class="form-control" value="#{webUserController.selected.institution}" required="true">
+                                        <p:selectOneMenu id="institution" style="width: 100%;" value="#{webUserController.selected.institution}" required="true">
                                             <f:selectItem itemLabel="Please Select" ></f:selectItem>
                                             <f:selectItems value="#{webUserController.loggableInstitutions}"
                                                            var="ins" 
@@ -77,8 +77,7 @@
                                 <div class="form-group row">
                                     <p:outputLabel value="Role:" class="col-md-2" for="webUserRole" />
                                     <div class="col-md-4">
-                                        <p:selectOneMenu  id="webUserRole" value="#{webUserController.selected.webUserRole}"
-                                                          required="true">
+                                        <p:selectOneMenu style="width: 100%;" id="webUserRole" value="#{webUserController.selected.webUserRole}" required="true">
                                             <f:selectItem itemLabel="Select" ></f:selectItem>
                                             <f:selectItems value="#{webUserController.webUserRolesForInsAdmin}" 
                                                            var="r" 
