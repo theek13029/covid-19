@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?> 
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -10,38 +10,46 @@
 
         <h:head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1"></meta>            
-            <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"></link>   
+            <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+            <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"></link>
             <link rel="shortcut icon" href="#{resource['image/favicon.ico']}" type="image/x-icon" />
             <h:outputStylesheet library="css" name="bootstrap.min.css"/>
             <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
             <h:outputStylesheet library="css" name="all.min.css"></h:outputStylesheet>
-            <h:outputStylesheet library="css" name="sb-admin-2.min.css"></h:outputStylesheet>
-            <h:outputStylesheet library="css" name="tem1.css"/>
             <title >
                 <ui:insert name="title">
                     National COVID-19 Health Information System
                 </ui:insert>
             </title>
-        </h:head>        
+        </h:head>
 
         <h:body>
             <h:panelGroup rendered="#{webUserController.loggedUser ne null}">
-                <div class="row ">
-                    <div class="col-sm-6 col-lg-6 nchis_head">
-                        <h:graphicImage style="float: left;" library="image" name="sllogo.png"></h:graphicImage> 
-                        <h4>National COVID-19 Health Information System</h4>
-                    </div>
-                    <h:form class="col-sm-4 col-lg-4">
-                        <div class="form-group row search_client">
-                            <p:inputText class="col-lg-10" autocomplete="off" value="#{clientController.searchingId}" placeholder="Search Here..."/>
-                            <p:commandButton ajax="false" action="#{clientController.searchByAnyIdWithBasicData()}" icon="ui-icon-search" ></p:commandButton> 
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+                        <div class="col-sm-5 col-lg-5 nchis_head flex align-center">
+                            <h:graphicImage library="image" name="sllogo.png"></h:graphicImage>
+                            <h4>National COVID-19 Health Information System</h4>
                         </div>
-                    </h:form>
-                    <h:form class="form col-sm-2 col-lg-2 user-details">
-                        <p:outputLabel class="name-title" value="#{webUserController.loggedUser.person.nameWithTitle}"></p:outputLabel>
-                        <p:commandLink  class="btn btn-primary btn-sm" action="#{webUserController.logOut()}" ajax="false" value="Logout" />  
-                    </h:form>
+                        <div class="col-sm-7 col-lg-7">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <h:form>
+                                        <div class="ui-inputgroup input-group-lg m-0">
+                                            <p:inputText class="col-lg-10" autocomplete="off" value="#{clientController.searchingId}" placeholder="Search Here..."/>
+                                            <p:commandButton class="btn btn-primary" ajax="false" action="#{clientController.searchByAnyIdWithBasicData()}" icon="ui-icon-search" value="Search"></p:commandButton>
+                                        </div>
+                                    </h:form>
+                                </div>
+                                <div class="col-md-4 offset-md-1">
+                                    <h:form class="form">
+                                        <p:outputLabel class="name-title" value="#{webUserController.loggedUser.person.nameWithTitle}"></p:outputLabel>
+                                        <p:commandButton styleClass="ui-button-secondary" action="#{webUserController.logOut()}" ajax="false" value="Logout" />
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </h:panelGroup>
 
