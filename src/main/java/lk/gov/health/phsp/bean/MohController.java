@@ -47,7 +47,6 @@ import javax.persistence.TemporalType;
 import lk.gov.health.phsp.entity.ClientEncounterComponentItem;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.entity.WebUser;
-import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.facade.ClientEncounterComponentItemFacade;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
@@ -134,7 +133,6 @@ public class MohController implements Serializable {
     private List<InstitutionCount> institutionCounts;
 
     private Area district;
-    private Area moh;
     private Area mohArea;
     
 
@@ -146,6 +144,7 @@ public class MohController implements Serializable {
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
     public String toAssignInvestigation() {
+        testType = itemApplicationController.getPcr();
         result = itemApplicationController.getPcrPositive();
 
         System.out.println("toTestList");
@@ -323,12 +322,6 @@ public class MohController implements Serializable {
         fromDate = CommonController.startOfTheDate();
         toDate = CommonController.endOfTheDate();
         return "/national/pcr_positive_links";
-    }
-
-    public String toReportListForRegion() {
-        fromDate = CommonController.startOfTheDate();
-        toDate = CommonController.endOfTheDate();
-        return "/regional/list_of_tests";
     }
 
     public String toPcrPositiveCasesList() {
@@ -530,8 +523,6 @@ public class MohController implements Serializable {
         return "/moh/list_of_tests";
     }
 
-    public String toListOfInvestigatedCasesForMoh() {
-        return "/moh/investigated_list";
     public String toListOfTestsWithoutMohForRegionalLevel() {
         Map m = new HashMap();
         String j = "select c "
@@ -1675,10 +1666,7 @@ public class MohController implements Serializable {
 
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
-        
-        j += " and c.client.person.district=:district ";
-        m.put("district", webUserController.getLoggedUser().getArea());
-        
+
         if (mohOrHospital != null) {
             j += " and c.institution=:ins ";
             m.put("ins", mohOrHospital);
@@ -1686,11 +1674,6 @@ public class MohController implements Serializable {
             j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
             m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
             m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
-        }
-        
-        if(moh != null){
-            j += " and c.client.person.mohArea=:moh ";
-            m.put("moh", moh);
         }
 
         j += " and c.createdAt between :fd and :td ";
@@ -2054,19 +2037,8 @@ public class MohController implements Serializable {
 
     public void setSelectedToAssign(List<Encounter> selectedToAssign) {
         this.selectedToAssign = selectedToAssign;
-    } 
-
-    public List<Area> completeMohsPerDistrict(String qry) {        
-        return areaController.getMohAreasOfADistrict(areaController.getAreaByName(webUserController.getLoggedUser().getArea().toString(),AreaType.District,false,null));
-    } 
-
-    public Area getMoh() {
-        return moh;
     }
 
-    public void setMoh(Area moh) {
-        this.moh = moh;
-    }    
     public List<ClientEncounterComponentItem> getCecItems() {
         return cecItems;
     }
