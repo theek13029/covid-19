@@ -733,7 +733,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.receivedAtLab is not null "
-                + " group by c.institution";
+                + " group by c.institution, c.id";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
@@ -756,7 +756,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.resultConfirmed is not null "
-                + " group by c.institution";
+                + " group by c.institution, c.id";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
@@ -2040,11 +2040,11 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No Default Form Set");
             return "";
         }
-        
+
         ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseInvestigationFromTest(dfs,testEncounter);
-        
+
         selectedEncounter = cefs.getEncounter();
-        
+
         if (cefs == null) {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";
@@ -2099,7 +2099,7 @@ public class ClientController implements Serializable {
         return "/client/client_case_enrollment";
     }
 
-    
+
     public String toNewTestEnrollmentFromEncounter() {
         if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("No encounter");
