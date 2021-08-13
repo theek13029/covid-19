@@ -880,11 +880,11 @@ public class WebUserController implements Serializable {
         Map m = new HashMap();
         m.put("userName", userName.trim().toLowerCase());
         m.put("ret", false);
-        JsfUtil.addErrorMessage("M=" + m);
-        JsfUtil.addErrorMessage("S=" + temSQL);
+//        JsfUtil.addErrorMessage("M=" + m);
+//        JsfUtil.addErrorMessage("S=" + temSQL);
         loggedUser = getFacade().findFirstByJpql(temSQL, m);
         System.out.println("loggedUser = " + loggedUser);
-        JsfUtil.addErrorMessage("User = " + loggedUser);
+//        JsfUtil.addErrorMessage("User = " + loggedUser);
         if (loggedUser == null) {
             return false;
         }
