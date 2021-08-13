@@ -11,13 +11,13 @@
         <ui:composition template="./../template1.xhtml">
 
             <ui:define name="title">
-                List of Tests
+                Order Tests for First Contacts
             </ui:define>
 
             <ui:define name="content">
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Test List" ></p:outputLabel>
+                        <p:outputLabel value="First Contacts" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
@@ -31,27 +31,20 @@
 
                             <p:outputLabel value="To" ></p:outputLabel>
                             <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            
+                            <p:outputLabel value="Plan of Management" ></p:outputLabel>
+                            <p:selectOneMenu value="#{mohController.managementType}" >
+                                <f:selectItem itemLabel="Any" ></f:selectItem>
+                                <f:selectItems value="#{mohController.managementTypes}" var="m" itemLabel="#{m.name}"
+                                               itemValue="#{m}" ></f:selectItems>
+                            </p:selectOneMenu>
 
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{mohController.toListOfFirstContactsWithoutMohForRegionalLevel()}" ></p:commandButton>
+                                             action="#{mohController.toListCasesByManagementForRegionalLevel()}" ></p:commandButton>
                             </p:panelGrid>
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="Assigning MOH Area" ></p:outputLabel>
-                                <p:selectOneMenu value="#{mohController.mohArea}" >
-                                    <f:selectItem itemLabel="Select" ></f:selectItem>
-                                    <f:selectItems value="#{webUserController.loggableMohAreas}" var="c"
-                                                   itemValue="#{c}"
-                                                   itemLabel="#{c.name}" >
-                                    </f:selectItems>
-                                </p:selectOneMenu>                            
-                            
-                                <p:commandButton ajax="false" action="#{mohController.assignMohAreaToContactScreeningAtRegionalLevel()}"
-                                                 value="Assign MOH Areas to Selected Contacts" ></p:commandButton>
-                            </p:panelGrid>
-
                         </p:panelGrid>
 
 
@@ -70,7 +63,7 @@
                             <p:column headerText="Name"  sortBy="#{c.shortTextValue}" filterBy="#{c.shortTextValue}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.shortTextValue}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Address"  sortBy="#{c.longTextValue}" width="60"
+                            <p:column headerText="Address"  sortBy="#{c.longTextValue}" 
                                       filterBy="#{c.longTextValue}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.longTextValue}" ></p:outputLabel>
                             </p:column>
@@ -82,15 +75,13 @@
                                       filterBy="#{c.areaValue2.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.areaValue2.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="MOH"  sortBy="#{c.areaValue.name}"
-                                      filterBy="#{c.areaValue.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.areaValue.name}" ></p:outputLabel>
-                            </p:column>
+                           
                             <p:column headerText="Actions" exportable="false" rendered="false" >
-                                <p:commandLink value="View Order" action="#{mohController.toViewTest()}" ajax="false" >
+                                <p:commandLink value="Order PCR" action="#{mohController.toViewTest()}" ajax="false" >
                                     <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
                                 </p:commandLink>
-                                <p:commandLink value="View Results" action="#{mohController.toViewResult()}" ajax="false" >
+                                <p:outputLabel value=" | " ></p:outputLabel>
+                                <p:commandLink value="Order RAT" action="#{mohController.toViewResult()}" ajax="false" >
                                     <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
                                 </p:commandLink>
                             </p:column>

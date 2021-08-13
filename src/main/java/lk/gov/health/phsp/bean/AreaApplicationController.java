@@ -230,7 +230,18 @@ public class AreaApplicationController {
         return tas;
     }
 
-    
+    public List<Area> getMohAreasOfAnRdhs(Area rdhs) {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getAllAreas(AreaType.MOH)) {
+            if (a.getParentArea() != null && a.getParentArea().equals(rdhs)) {
+                tas.add(a);
+            }else if(a.getRdhsArea()!=null && a.getRdhsArea().equals(rdhs)){
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+
     public List<Area> getAllAreas(List<AreaType> ats) {
         List<Area> tas = new ArrayList<>();
         for (Area a : getAllAreas()) {

@@ -6,68 +6,80 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <body>
+    <h:body>
 
-        <ui:composition template="./../template1.xhtml">
+        <ui:composition template="/provincial/reports_index.xhtml">
+            <ui:define name="reports">
 
-            <ui:define name="title">
-                District Counts
-            </ui:define>
-
-            <ui:define name="content">
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Test Request District Counts" ></p:outputLabel>
+                        <p:outputLabel value="Test List" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
                         <p:panelGrid columns="2" >
                             <p:outputLabel value="Ordered From" ></p:outputLabel>
-                            <p:calendar value="#{mohController.fromDate}" 
+                            <p:calendar value="#{provincialController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
                             <p:outputLabel value="Ordered To" ></p:outputLabel>
-                            <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <p:calendar value="#{provincialController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
                             <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                            <p:selectOneMenu value="#{mohController.orderingCategory}" >
+                            <p:selectOneMenu value="#{provincialController.orderingCategory}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{mohController.covidTestOrderingCategories}" 
+                                <f:selectItems value="#{provincialController.covidTestOrderingCategories}" 
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
+                            <p:outputLabel  value="Lab"></p:outputLabel>
+                            <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
+                                            inputStyleClass="autocomplete"
+                                            value="#{provincialController.lab}"
+                                            forceSelection="true" tabindex="100" 
+                                            completeMethod="#{provincialController.completeLab}" 
+                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
+                            </p:autoComplete>
+
                             <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{mohController.testType}" >
+                            <p:selectOneMenu value="#{provincialController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                                <f:selectItems value="#{provincialController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
+
+
 
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{mohController.toTestList()}" ></p:commandButton>
+                                             action="#{provincialController.toListOfTests()}" ></p:commandButton>
 
 
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true"
+                        <p:dataTable id="tbl" value="#{provincialController.tests}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
-                                     rowStyleClass="#{c.resultCssClass}"
                                      paginator="true" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
                                      >
-                            <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                            <p:column headerText="Institution" sortBy="#{c.institution.name}"
+                                      filterBy="#{c.institution.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
+                            </p:column>
+                            
+                             <p:column headerText="Ordering Category"  sortBy="#{c.pcrOrderingCategory.name}"
+                                      filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.pcrOrderingCategory.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
@@ -96,49 +108,6 @@
                                       filterBy="#{c.client.person.address}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="PHI"  sortBy="#{c.client.person.phiArea.name}"
-                                      filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.phiArea.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="GN Area"  sortBy="#{c.client.person.gnArea.name}"
-                                      filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}"
-                                      filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
-                                      filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
-
-                                <p:panelGrid columns="1" >
-                                    <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}" value="Convert to a case" action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
-                                        </f:setPropertyActionListener>
-                                    </p:commandButton>
-                                    <p:commandButton rendered="#{c.referenceCase ne null}" ajax="false" value="View case" action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
-                                        </f:setPropertyActionListener>
-                                    </p:commandButton>
-                                    <p:commandButton value="Edit Order" action="#{mohController.toEditTest()}" ajax="false"  style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
-                                    <p:commandButton value="View Results" action="#{mohController.toViewResult()}" ajax="false"  style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
-                                    <p:commandButton ajax="false" value="Delete"  action="#{mohController.deleteTest()}"  style="width: 100%;" 
-                                                     onclick="if (!confirm('Are you sure you want to delete?'))
-                                                               return false" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.deleting}" >
-                                        </f:setPropertyActionListener>
-                                    </p:commandButton>
-                                </p:panelGrid>
-
-
-                            </p:column>
                         </p:dataTable>
                     </h:form>
 
@@ -149,5 +118,5 @@
 
         </ui:composition>
 
-    </body>
+    </h:body>
 </html>

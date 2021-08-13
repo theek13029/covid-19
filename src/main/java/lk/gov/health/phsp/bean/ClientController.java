@@ -30,7 +30,6 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 import javax.persistence.TemporalType;
-import jdk.internal.net.http.common.Utils;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -43,12 +42,10 @@ import lk.gov.health.phsp.entity.Encounter;
 import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.entity.Person;
-import lk.gov.health.phsp.entity.Relationship;
 import lk.gov.health.phsp.entity.Sms;
 import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.EncounterType;
 import lk.gov.health.phsp.enums.InstitutionType;
-import lk.gov.health.phsp.enums.RelationshipType;
 import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.SmsFacade;
 import lk.gov.health.phsp.pojcs.ClientBasicData;
@@ -2020,7 +2017,7 @@ public class ClientController implements Serializable {
         return "/client/client_case_enrollment";
     }
 
-    public String toNewCaseEnrollmentFromEncounter() {
+    public String toNewCaseInvestigationFromTest() {
         if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("No encounter");
             return "";
@@ -2043,7 +2040,11 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No Default Form Set");
             return "";
         }
-        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseEnrollmentFormsetToDataEntry(dfs);
+        
+        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseInvestigationFromTest(dfs,testEncounter);
+        
+        selectedEncounter = cefs.getEncounter();
+        
         if (cefs == null) {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";
@@ -2052,8 +2053,8 @@ public class ClientController implements Serializable {
         if (cefs.getEncounter() != null) {
             testEncounter.setReferenceCase(cefs.getEncounter());
             encounterFacade.edit(testEncounter);
-
             cefs.getEncounter().setReferenceTest(testEncounter);
+            encounterFacade.edit(cefs.getEncounter());
         }
         updateYearDateMonth();
         return "/client/client_case_enrollment";

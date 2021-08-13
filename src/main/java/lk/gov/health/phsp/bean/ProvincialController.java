@@ -57,9 +57,9 @@ import lk.gov.health.phsp.pojcs.InstitutionCount;
  *
  * @author buddhika
  */
-@Named(value = "mohController")
+@Named
 @SessionScoped
-public class MohController implements Serializable {
+public class ProvincialController implements Serializable {
 // <editor-fold defaultstate="collapsed" desc="EJBs">
 
     @EJB
@@ -139,7 +139,7 @@ public class MohController implements Serializable {
 
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Constructors">
-    public MohController() {
+    public ProvincialController() {
     }
 // </editor-fold>
 
@@ -331,12 +331,7 @@ public class MohController implements Serializable {
         return "/national/lab_report_links";
     }
     
-    public String toResultList() {
-        fromDate = CommonController.startOfTheDate();
-        toDate = CommonController.endOfTheDate();
-        return "/national/lab_report_links";
-    }
-
+    
     public String toPcrPositiveCasesList() {
         result = itemApplicationController.getPcrPositive();
         testType = itemApplicationController.getPcr();
@@ -533,9 +528,149 @@ public class MohController implements Serializable {
     }
 
     public String toListOfTests() {
-        return "/moh/list_of_tests";
+        Map m = new HashMap();
+        String j = "select c "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        j += " and (c.institution.pdhsArea=:pdhs or c.institution.province=:province ) ";
+        m.put("pdhs", webUserController.getLoggedUser().getInstitution().getPdhsArea());
+        m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        System.out.println("getFromDate() = " + getFromDate());
+        m.put("td", getToDate());
+        System.out.println(" getToDate() = " + getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+
+        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("tests = " + tests.size());
+
+        
+        return "/provincial/list_of_tests";
     }
 
+    public String toCountOfTestsByOrderedInstitution() {
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        j += " and (c.institution.pdhsArea=:pdhs or c.institution.province=:province ) ";
+        m.put("pdhs", webUserController.getLoggedUser().getInstitution().getPdhsArea());
+        m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        System.out.println("getFromDate() = " + getFromDate());
+        m.put("td", getToDate());
+        System.out.println(" getToDate() = " + getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+         j += " group by c.institution"
+                 + " order by c.institution.name ";
+        
+        institutionCounts = new ArrayList<>();
+        
+        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        if(objCounts==null||objCounts.isEmpty()){ return  "/provincial/count_of_tests_by_ordered_institution";}
+        for(Object o:objCounts){
+            if(o instanceof InstitutionCount){
+                InstitutionCount ic = (InstitutionCount)o;
+                institutionCounts.add(ic);
+            }
+        }
+        
+        return "/provincial/count_of_tests_by_ordered_institution";
+    }
+
+    public String toCountOfResultsByOrderedInstitution() {
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        j += " and (c.institution.pdhsArea=:pdhs or c.institution.province=:province ) ";
+        m.put("pdhs", webUserController.getLoggedUser().getInstitution().getPdhsArea());
+        m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+         j += " group by c.institution"
+                 + " order by c.institution.name ";
+        
+        institutionCounts = new ArrayList<>();
+        
+        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        if(objCounts==null||objCounts.isEmpty()){ return  "/provincial/count_of_results_by_ordered_institution";}
+        for(Object o:objCounts){
+            if(o instanceof InstitutionCount){
+                InstitutionCount ic = (InstitutionCount)o;
+                institutionCounts.add(ic);
+            }
+        }
+        
+        return "/provincial/count_of_results_by_ordered_institution";
+    }
+
+    
+    
     public String toListOfTestsWithoutMohForRegionalLevel() {
         Map m = new HashMap();
         String j = "select c "
@@ -765,7 +900,7 @@ public class MohController implements Serializable {
 
     public String toDeleteTestFromTestList() {
         deleteTest();
-        return toTestList();
+        return toListResults();
     }
 
     public String toRatView() {
@@ -1461,28 +1596,25 @@ public class MohController implements Serializable {
         }
     }
 
-    public String toTestList() {
-        System.out.println("toTestList");
+    public String toListResults() {
         Map m = new HashMap();
-
         String j = "select c "
                 + " from Encounter c "
                 + " where (c.retired is null or c.retired=:ret) ";
         m.put("ret", false);
-
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
-
-        j += " and c.institution=:ins ";
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
-
-        //c.client.person.mohArea = :moh
-
-        j += " and c.createdAt between :fd and :td ";
+        boolean tem=false;
+        if(tem){
+            Encounter e = new Encounter();
+            e.getResultConfirmedAt();
+        }
+        j += " and (c.institution.pdhsArea=:pdhs or c.institution.province=:province ) ";
+        m.put("pdhs", webUserController.getLoggedUser().getInstitution().getPdhsArea());
+        m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
+        j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -1503,8 +1635,7 @@ public class MohController implements Serializable {
         System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
-        return "/moh/list_of_tests";
+        return "/provincial/list_of_results";
     }
 
     public String toDistrictViceTestListForOrderingCategories() {

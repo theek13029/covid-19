@@ -114,17 +114,20 @@
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
                                     <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}" 
                                                      value="Start Investigating" 
-                                                     action="#{clientController.toNewCaseEnrollmentFromEncounter()}" style="width: 100%;" >
+                                                     action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
                                         <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
-                                    <p:commandButton rendered="#{c.referenceCase ne null}" 
+                                <p:commandButton rendered="#{c.referenceCase ne null}" 
                                                      ajax="false" value="View case" 
-                                                     action="#{clientController.toNewCaseEnrollmentFromEncounter()}"
+                                                     action="#{clientController.toViewOrEditCaseEnrollmentFromEncounter()}"
                                                      style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
+                                        <f:setPropertyActionListener value="#{c.referenceTest}" target="#{clientController.selectedEncounter}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
+                            </p:column>
+                            <p:column>
+                                #{c.referenceCase.id}
                             </p:column>
                         </p:dataTable>
                     </h:form>
