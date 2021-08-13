@@ -106,6 +106,7 @@ public class MohController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Variables">
+    private Institution dispatchingLab;
     private Boolean nicExistsForPcr;
     private Boolean nicExistsForRat;
     private Encounter rat;
@@ -120,6 +121,8 @@ public class MohController implements Serializable {
     private List<ClientEncounterComponentItem> cecItems;
     private List<ClientEncounterComponentItem> selectedCecis;
     private List<Encounter> selectedToAssign;
+    private List<Encounter> listedToDispatch;
+    private List<Encounter> selectedToDispatch;
     private Date fromDate;
     private Date toDate;
 
@@ -144,6 +147,49 @@ public class MohController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
+    
+    public String toDispatchSamplesByMohOrHospital() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret ) "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and (c.sentToLab is null or c.sentToLab=:stl) "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("stl", false);
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        listedToDispatch = encounterFacade.findByJpql(j, m, TemporalType.DATE);
+        return "/moh/dispatch_samples";
+    }
+
+    
+    public String toDispatchSamples() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired=:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.sentToLab is null "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        listedToDispatch = encounterFacade.findByJpql(j, m, TemporalType.DATE);
+        return "/moh/dispatch_samples";
+    }
+
+    
+    
     public String toAssignInvestigation() {
         testType = itemApplicationController.getPcr();
         result = itemApplicationController.getPcrPositive();
@@ -462,6 +508,24 @@ public class MohController implements Serializable {
         return "/national/pcr_positive_counts_by_ordered_institution";
     }
 
+    public String dispatchSelectedSamples() {
+        if (dispatchingLab == null) {
+            JsfUtil.addErrorMessage("Please select a lab to send samples");
+            return "";
+        }
+        for (Encounter e : selectedToDispatch) {
+            e.setSentToLab(true);
+            e.setSentToLabAt(new Date());
+            e.setSentToLabBy(webUserController.getLoggedUser());
+            e.setReferalInstitution(dispatchingLab);
+            encounterFacade.edit(e);
+        }
+        selectedToDispatch = null;
+        return toDispatchSamples();
+    }
+
+    
+    
     public String toPcrPositiveByLab() {
         result = itemApplicationController.getPcrPositive();
         testType = itemApplicationController.getPcr();
@@ -1899,6 +1963,8 @@ public class MohController implements Serializable {
         return rat;
     }
 
+    
+    
     public void setRat(Encounter rat) {
         this.rat = rat;
     }
@@ -1926,6 +1992,9 @@ public class MohController implements Serializable {
     public void setTests(List<Encounter> tests) {
         this.tests = tests;
     }
+    
+    
+    
 
     public Date getFromDate() {
         if (fromDate == null) {
@@ -2096,6 +2165,30 @@ public class MohController implements Serializable {
 
     public void setManagementType(Item managementType) {
         this.managementType = managementType;
+    }
+
+    public List<Encounter> getListedToDispatch() {
+        return listedToDispatch;
+    }
+
+    public void setListedToDispatch(List<Encounter> listedToDispatch) {
+        this.listedToDispatch = listedToDispatch;
+    }
+
+    public Institution getDispatchingLab() {
+        return dispatchingLab;
+    }
+
+    public void setDispatchingLab(Institution dispatchingLab) {
+        this.dispatchingLab = dispatchingLab;
+    }
+
+    public List<Encounter> getSelectedToDispatch() {
+        return selectedToDispatch;
+    }
+
+    public void setSelectedToDispatch(List<Encounter> selectedToDispatch) {
+        this.selectedToDispatch = selectedToDispatch;
     }
 
 
