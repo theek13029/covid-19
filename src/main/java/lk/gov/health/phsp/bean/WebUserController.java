@@ -353,6 +353,10 @@ public class WebUserController implements Serializable {
         userTransactionController.recordTransaction("To Add New User By InsAdmin");
         return "/insAdmin/user_new";
     }
+    
+    public String toInsAdmin() {
+        return "/insAdmin/index";
+    }
 
     public String toAdministration(){
         if(loggedUser==null){

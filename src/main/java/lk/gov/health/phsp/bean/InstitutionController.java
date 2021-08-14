@@ -287,6 +287,39 @@ public class InstitutionController implements Serializable {
         return tins;
     }
 
+    public List<Institution> findChildrenPmcis(Institution ins, String qry) {
+        if(qry==null || qry.trim().equals("")){
+            return null;
+        }
+        qry=qry.toLowerCase();
+        List<Institution> allIns = institutionApplicationController.getInstitutions();
+        List<Institution> cins = new ArrayList<>();
+        for (Institution i : allIns) {
+            if (i.getParent() == null) {
+                continue;
+            }
+            if (i.getParent().equals(ins) && i.isPmci()) {
+                cins.add(i);
+            }
+        }
+        List<Institution> tins = new ArrayList<>();
+        tins.addAll(cins);
+        if (cins.isEmpty()) {
+            return tins;
+        } else {
+            for (Institution i : cins) {
+                tins.addAll(findChildrenPmcis(i));
+            }
+        }
+        List<Institution> ttins = new ArrayList<>();
+        for (Institution i : tins) {
+            if(i.getName().toLowerCase().contains(qry)){
+                ttins.add(i);
+            }
+        }
+        return ttins;
+    }
+
     public List<Institution> findInstitutions(InstitutionType type) {
         return institutionApplicationController.findInstitutions(type);
     }
@@ -344,14 +377,13 @@ public class InstitutionController implements Serializable {
         its.add(InstitutionType.Surgical_Clinic);
         return fillInstitutions(its, qry, null);
     }
-    
+
     public List<Institution> completeLab(String qry) {
         List<InstitutionType> its = new ArrayList<>();
         its.add(InstitutionType.Lab);
         return fillInstitutions(its, qry, null);
     }
-    
-    
+
     public List<Institution> completeMohs(String qry) {
         List<InstitutionType> its = new ArrayList<>();
         its.add(InstitutionType.MOH_Office);
@@ -663,7 +695,7 @@ public class InstitutionController implements Serializable {
             JsfUtil.addSuccessMessage("Updates");
         }
     }
-    
+
     public void save(Institution ins) {
         if (ins == null) {
             return;

@@ -1009,6 +1009,7 @@ public class MohController implements Serializable {
         rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
         rat.setClient(c);
         rat.setInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         rat.setEncounterType(EncounterType.Test_Enrollment);
         rat.setEncounterDate(d);
         rat.setEncounterFrom(d);
@@ -1041,6 +1042,7 @@ public class MohController implements Serializable {
         rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
         rat.setClient(c);
         rat.setInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         rat.setReferalInstitution(lab);
         rat.setEncounterType(EncounterType.Test_Enrollment);
         rat.setEncounterDate(d);
@@ -1066,6 +1068,7 @@ public class MohController implements Serializable {
         pcr.setPcrOrderingCategory(sessionController.getLastPcrOrdringCategory());
         pcr.setClient(c);
         pcr.setInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         pcr.setReferalInstitution(lab);
         pcr.setEncounterType(EncounterType.Test_Enrollment);
         pcr.setEncounterDate(d);
@@ -1109,6 +1112,7 @@ public class MohController implements Serializable {
         pcr.setPcrOrderingCategory(sessionController.getLastPcrOrdringCategory());
         pcr.setClient(c);
         pcr.setInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         pcr.setReferalInstitution(lab);
         pcr.setEncounterType(EncounterType.Test_Enrollment);
         pcr.setEncounterDate(d);
@@ -1153,6 +1157,7 @@ public class MohController implements Serializable {
         rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
         rat.setClient(c);
         rat.setInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         rat.setReferalInstitution(lab);
         rat.setEncounterType(EncounterType.Test_Enrollment);
         rat.setEncounterDate(d);
@@ -1196,6 +1201,7 @@ public class MohController implements Serializable {
         rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
         rat.setClient(c);
         rat.setInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         rat.setEncounterType(EncounterType.Test_Enrollment);
         rat.setEncounterDate(d);
         rat.setEncounterFrom(d);

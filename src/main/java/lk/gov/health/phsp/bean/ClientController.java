@@ -3509,6 +3509,7 @@ public class ClientController implements Serializable {
         encounter.setCreatedAt(new Date());
         encounter.setCreatedBy(webUserController.getLoggedUser());
         encounter.setInstitution(selectedClinic);
+        encounter.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         if (clinicDate != null) {
             encounter.setEncounterDate(clinicDate);
         } else {

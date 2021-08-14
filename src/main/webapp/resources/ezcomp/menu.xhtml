@@ -67,10 +67,18 @@
                     <p:menuitem ajax="false" value="Reports" action="#{clientController.toLabReports()}"
                                 rendered="#{webUserController.hasPrivilege('Lab_Reports')}"/>
                 </p:submenu>
+                <p:submenu label="Order from Lab" rendered="#{webUserController.hasPrivilege('Lab_Management')}">
+                    <p:menuitem ajax="false" value="New PCR" action="#{labController.toAddNewPcrWithNewClient()}" />
+                    <p:menuitem rendered="true" ajax="false" value="New RAT Result" action="#{labController.toAddNewRatWithNewClient()}" />
+                    <p:menuitem ajax="false" value="New RAT" action="#{labController.toAddNewRatOrderWithNewClient()}"  />
+                    <p:menuitem ajax="false" value="Test Lists" action="#{labController.toTestListWithoutResults()}" />
+                    
+                </p:submenu>
 
                 <p:menuitem ajax="false" value="Reports" action="#{mohController.toReportsIndex()}" />
 
-                <p:menuitem value="Administration" action="#{webUserController.toAddNewUserByInsAdmin()}" rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
+                <p:menuitem value="Administration" action="#{webUserController.toInsAdmin()}" 
+                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
                 </p:menuitem>
                 
                 <p:submenu label="Institution Administration" rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
