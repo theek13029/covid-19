@@ -121,15 +121,11 @@
                             </p:column>
                             <p:column id="colResultDate" headerText="Result Date" >
                                 <p:outputLabel id="calRd" value="#{c.resultConfirmedAt}">
-                                    <f:convertDateTime pattern="dd MMM yyyy hh:mm a" ></f:convertDateTime>
+                                    <f:convertDateTime pattern="dd MMM yy" ></f:convertDateTime>
                                 </p:outputLabel>
                             </p:column>
                             <p:column headerText="Result" exportable="false"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
                                 <p:outputLabel id="cmbResult" value="#{c.pcrResult}" style="width: 98%;" >
-                                </p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Comments" >
-                                <p:outputLabel id="txtComments" value="#{c.resultComments}" style="width: 98%;" >
                                 </p:outputLabel>
                             </p:column>
                         </p:dataTable>

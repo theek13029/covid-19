@@ -136,7 +136,6 @@ public class ProvincialController implements Serializable {
     private Area district;
     private Area mohArea;
 
-
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Constructors">
     public ProvincialController() {
@@ -218,22 +217,22 @@ public class ProvincialController implements Serializable {
         selectedToAssign = null;
     }
 
-    public String assignMohAreaToContactScreeningAtRegionalLevel(){
-        if(selectedCecis==null || selectedCecis.isEmpty()){
+    public String assignMohAreaToContactScreeningAtRegionalLevel() {
+        if (selectedCecis == null || selectedCecis.isEmpty()) {
             JsfUtil.addErrorMessage("Please select contacts");
             return "";
         }
-        if(mohArea==null){
+        if (mohArea == null) {
             JsfUtil.addErrorMessage("Please select an MOH Area");
             return "";
         }
-        for(ClientEncounterComponentItem i:  selectedCecis){
+        for (ClientEncounterComponentItem i : selectedCecis) {
             i.setAreaValue(mohArea);
             i.setLastEditBy(webUserController.getLoggedUser());
             i.setLastEditeAt(new Date());
             ceciFacade.edit(i);
         }
-        selectedCecis=null;
+        selectedCecis = null;
         mohArea = null;
         JsfUtil.addSuccessMessage("MOH Areas added");
         return toListOfFirstContactsWithoutMohForRegionalLevel();
@@ -324,14 +323,13 @@ public class ProvincialController implements Serializable {
         toDate = CommonController.endOfTheDate();
         return "/national/pcr_positive_links";
     }
-    
+
     public String toLabReportsIndexNational() {
         fromDate = CommonController.startOfTheDate();
         toDate = CommonController.endOfTheDate();
         return "/national/lab_report_links";
     }
-    
-    
+
     public String toPcrPositiveCasesList() {
         result = itemApplicationController.getPcrPositive();
         testType = itemApplicationController.getPcr();
@@ -566,7 +564,6 @@ public class ProvincialController implements Serializable {
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
 
-        
         return "/provincial/list_of_tests";
     }
 
@@ -605,20 +602,22 @@ public class ProvincialController implements Serializable {
         }
         System.out.println("j = " + j);
         System.out.println("m = " + m);
-         j += " group by c.institution"
-                 + " order by c.institution.name ";
-        
+        j += " group by c.institution"
+                + " order by c.institution.name ";
+
         institutionCounts = new ArrayList<>();
-        
+
         List<Object> objCounts = encounterFacade.findAggregates(j, m);
-        if(objCounts==null||objCounts.isEmpty()){ return  "/provincial/count_of_tests_by_ordered_institution";}
-        for(Object o:objCounts){
-            if(o instanceof InstitutionCount){
-                InstitutionCount ic = (InstitutionCount)o;
+        if (objCounts == null || objCounts.isEmpty()) {
+            return "/provincial/count_of_tests_by_ordered_institution";
+        }
+        for (Object o : objCounts) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
                 institutionCounts.add(ic);
             }
         }
-        
+
         return "/provincial/count_of_tests_by_ordered_institution";
     }
 
@@ -652,25 +651,70 @@ public class ProvincialController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-         j += " group by c.institution"
-                 + " order by c.institution.name ";
-        
+        j += " group by c.institution"
+                + " order by c.institution.name ";
+
         institutionCounts = new ArrayList<>();
-        
+
         List<Object> objCounts = encounterFacade.findAggregates(j, m);
-        if(objCounts==null||objCounts.isEmpty()){ return  "/provincial/count_of_results_by_ordered_institution";}
-        for(Object o:objCounts){
-            if(o instanceof InstitutionCount){
-                InstitutionCount ic = (InstitutionCount)o;
+        if (objCounts == null || objCounts.isEmpty()) {
+            return "/provincial/count_of_results_by_ordered_institution";
+        }
+        for (Object o : objCounts) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
                 institutionCounts.add(ic);
             }
         }
-        
+
         return "/provincial/count_of_results_by_ordered_institution";
     }
 
-    
-    
+    public String toCountOfResultsByLab() {
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.referalInstitution, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        j += " and (c.institution.pdhsArea=:pdhs or c.institution.province=:province ) ";
+        m.put("pdhs", webUserController.getLoggedUser().getInstitution().getPdhsArea());
+        m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        j += " group by c.referalInstitution"
+                + " order by c.referalInstitution.name ";
+
+        institutionCounts = new ArrayList<>();
+
+        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        if (objCounts == null || objCounts.isEmpty()) {
+            return "/provincial/count_of_results_by_lab";
+        }
+        for (Object o : objCounts) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                institutionCounts.add(ic);
+            }
+        }
+
+        return "/provincial/count_of_results_by_lab";
+    }
+
     public String toListOfTestsWithoutMohForRegionalLevel() {
         Map m = new HashMap();
         String j = "select c "
@@ -754,8 +798,6 @@ public class ProvincialController implements Serializable {
         return "/regional/list_of_first_contacts_without_moh";
     }
 
-
-
     public String toOrderTestsForFirstContactsForMoh() {
         Map m = new HashMap();
         String j = "select ci "
@@ -774,7 +816,6 @@ public class ProvincialController implements Serializable {
         j += " and ci.item.code=:code ";
         m.put("code", "first_contacts");
 
-
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
         System.out.println("getFromDate() = " + getFromDate());
@@ -786,7 +827,6 @@ public class ProvincialController implements Serializable {
         System.out.println("cecItems = " + cecItems.size());
         return "/moh/order_tests_for_moh";
     }
-
 
     public String toListOfFirstContactsForRegionalLevel() {
         Map m = new HashMap();
@@ -817,7 +857,6 @@ public class ProvincialController implements Serializable {
         System.out.println("cecItems = " + cecItems.size());
         return "/regional/list_of_first_contacts";
     }
-
 
     public String toListOfInvestigatedCasesForMoh() {
         return "/moh/investigated_list";
@@ -1291,7 +1330,7 @@ public class ProvincialController implements Serializable {
             m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
         }
 
-        if(mohArea != null){
+        if (mohArea != null) {
             j += " and c.client.person.mohArea=:moh ";
             m.put("moh", mohArea);
         }
@@ -1325,7 +1364,7 @@ public class ProvincialController implements Serializable {
         return "/regional/list_of_tests";
     }
 
-    public String toListCasesByManagementForRegionalLevel(){
+    public String toListCasesByManagementForRegionalLevel() {
         Map m = new HashMap();
         String j = "select distinct(c) "
                 + " from ClientEncounterComponentItem ci join ci.encounter c "
@@ -1333,11 +1372,8 @@ public class ProvincialController implements Serializable {
         m.put("ret", false);
 
 //        ClientEncounterComponentItem ci;
-
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Case_Enrollment);
-
-
 
         if (mohOrHospital != null) {
             j += " and c.institution=:ins ";
@@ -1354,12 +1390,11 @@ public class ProvincialController implements Serializable {
         m.put("td", getToDate());
         System.out.println(" getToDate() = " + getToDate());
 
-
         if (managementType != null) {
             j += " and (ci.item.code=:mxplan and ci.itemValue.code=:planType) ";
             m.put("mxplan", "placement_of_diagnosed_patient");
             m.put("planType", managementType.getCode());
-        }else{
+        } else {
             j += " and ci.item.code=:mxplan ";
             m.put("mxplan", "placement_of_diagnosed_patient");
         }
@@ -1372,13 +1407,10 @@ public class ProvincialController implements Serializable {
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
 
-
-
         return "/regional/list_of_cases_by_management_plan";
     }
 
-
-    public String toListCasesByManagementForNationalLevel(){
+    public String toListCasesByManagementForNationalLevel() {
         Map m = new HashMap();
         String j = "select distinct(c) "
                 + " from ClientEncounterComponentItem ci join ci.encounter c "
@@ -1386,10 +1418,8 @@ public class ProvincialController implements Serializable {
         m.put("ret", false);
 
 //        ClientEncounterComponentItem ci;
-
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Case_Enrollment);
-
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
@@ -1397,12 +1427,11 @@ public class ProvincialController implements Serializable {
         m.put("td", getToDate());
         System.out.println(" getToDate() = " + getToDate());
 
-
         if (managementType != null) {
             j += " and (ci.item.code=:mxplan and ci.itemValue.code=:planType) ";
             m.put("mxplan", "placement_of_diagnosed_patient");
             m.put("planType", managementType.getCode());
-        }else{
+        } else {
             j += " and ci.item.code=:mxplan ";
             m.put("mxplan", "placement_of_diagnosed_patient");
         }
@@ -1415,12 +1444,8 @@ public class ProvincialController implements Serializable {
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
 
-
-
         return "/national/list_of_cases_by_management_plan";
     }
-
-
 
     public String toEnterResults() {
         System.out.println("toTestList");
@@ -1478,12 +1503,9 @@ public class ProvincialController implements Serializable {
         return itemApplicationController.getPcrResults();
     }
 
-     public List<Item> getManagementTypes() {
+    public List<Item> getManagementTypes() {
         return itemApplicationController.getManagementTypes();
     }
-
-
-
 
     public List<Institution> completeLab(String qry) {
         List<InstitutionType> its = new ArrayList<>();
@@ -1660,11 +1682,9 @@ public class ProvincialController implements Serializable {
     }
 
     public List<Area> completeMohsPerDistrict(String qry) {
-        return areaController.getMohAreasOfADistrict(areaController.getAreaByName(webUserController.getLoggedUser().getArea().toString(),AreaType.District,false,null));
+        return areaController.getMohAreasOfADistrict(areaController.getAreaByName(webUserController.getLoggedUser().getArea().toString(), AreaType.District, false, null));
     }
 
-    
-    
     public List<ClientEncounterComponentItem> getCecItems() {
         return cecItems;
     }
@@ -1696,7 +1716,5 @@ public class ProvincialController implements Serializable {
     public void setManagementType(Item managementType) {
         this.managementType = managementType;
     }
-
-
 
 }
