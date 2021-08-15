@@ -55,7 +55,8 @@ import lk.gov.health.phsp.pojcs.SlNic;
 import lk.gov.health.phsp.pojcs.YearMonthDay;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
+
 // </editor-fold>
 
 @Named("clientController")
@@ -2425,7 +2426,7 @@ public class ClientController implements Serializable {
 
         try {
             JsfUtil.addSuccessMessage(file.getFileName());
-            in = file.getInputstream();
+            in = file.getInputStream();
             File f;
             f = new File(Calendar.getInstance().getTimeInMillis() + file.getFileName());
             FileOutputStream out = new FileOutputStream(f);
@@ -3152,7 +3153,7 @@ public class ClientController implements Serializable {
             Cell cell;
             InputStream in;
             try {
-                in = file.getInputstream();
+                in = file.getInputStream();
                 File f;
                 f = new File(Calendar.getInstance().getTimeInMillis() + file.getFileName());
                 FileOutputStream out = new FileOutputStream(f);

@@ -27,7 +27,7 @@ import javax.inject.Inject;
 import lk.gov.health.phsp.entity.Component;
 import lk.gov.health.phsp.entity.QueryComponent;
 import org.apache.commons.io.IOUtils;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
 
 @Named
 @SessionScoped
@@ -160,100 +160,7 @@ public class UploadController implements Serializable {
         return items;
     }
 
-    public void uploadFile1() {
 
-        if (file == null) {
-
-            lk.gov.health.phsp.facade.util.JsfUtil.addErrorMessage("Error in Uploading file. No such file");
-            return;
-        }
-
-        if (file.getFileName() == null) {
-
-            lk.gov.health.phsp.facade.util.JsfUtil.addErrorMessage("Error in Uploading file. No such file name.");
-            return;
-        }
-
-        if (selected == null) {
-
-            JsfUtil.addErrorMessage("No file. Error");
-            return;
-        }
-
-        selected.setFileName(file.getFileName());
-        selected.setFileType(file.getContentType());
-
-        InputStream in;
-
-        try {
-            in = getFile().getInputstream();
-            selected.setBaImage(IOUtils.toByteArray(in));
-
-        } catch (IOException e) {
-
-        }
-
-        if (selected.getId() == null) {
-            getFacade().create(selected);
-        } else {
-            getFacade().edit(selected);
-        }
-
-        selected.setFileName(file.getFileName());
-        selected.setFileType(file.getContentType());
-
-        getFacade().edit(selected);
-
-    }
-
-    public String uploadFile() {
-
-        if (file == null) {
-
-            lk.gov.health.phsp.facade.util.JsfUtil.addErrorMessage("Error in Uploading file. No such file");
-            return "";
-        }
-
-        if (file.getFileName() == null) {
-
-            lk.gov.health.phsp.facade.util.JsfUtil.addErrorMessage("Error in Uploading file. No such file name.");
-            return "";
-        }
-
-        if (selected == null) {
-
-            JsfUtil.addErrorMessage("No file. Error");
-            userTransactionController.recordTransaction("Upload File-Query Component");
-            return "/queryComponent/query";
-        }
-
-        selected.setFileName(file.getFileName());
-        selected.setFileType(file.getContentType());
-
-        InputStream in;
-
-        try {
-            in = getFile().getInputstream();
-            selected.setBaImage(IOUtils.toByteArray(in));
-
-        } catch (IOException e) {
-
-        }
-
-        if (selected.getId() == null) {
-            getFacade().create(selected);
-        } else {
-            getFacade().edit(selected);
-        }
-
-        selected.setFileName(file.getFileName());
-        selected.setFileType(file.getContentType());
-
-        getFacade().edit(selected);
-        userTransactionController.recordTransaction("Upload File-Query Component");
-        return "/queryComponent/query";
-
-    }
 
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
