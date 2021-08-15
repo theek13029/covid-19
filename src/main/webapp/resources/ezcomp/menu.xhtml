@@ -31,6 +31,7 @@
                     <p:menuitem ajax="false" value="View Investigated Cases" action="#{mohController.toListOfInvestigatedCasesForMoh()}" />
                 </p:submenu>
                 <p:submenu label="Contacts" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
+                    <p:menuitem ajax="false" value="List of First Contacts" action="#{mohController.toListOfFirstContactsToTest()}" />
                     <p:menuitem ajax="false" value="Order PCR for Contacts" action="#{mohController.toAssignInvestigation()}" />
                     <p:menuitem ajax="false" value="Order RATs for Contacts" action="#{mohController.toStartInvestigation()}" />
                 </p:submenu>

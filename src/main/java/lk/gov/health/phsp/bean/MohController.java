@@ -191,7 +191,7 @@ public class MohController implements Serializable {
     
     
     public String toAssignInvestigation() {
-        testType = itemApplicationController.getPcr();
+//        testType = itemApplicationController.getPcr();
         result = itemApplicationController.getPcrPositive();
 
         System.out.println("toTestList");
@@ -680,10 +680,42 @@ public class MohController implements Serializable {
         System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("cecItems = " + cecItems.size());
-        return "/regional/list_of_first_contacts_without_moh";
+        return "/moh/list_of_first_contacts_to_test";
     }
 
 
+    public String toListOfFirstContactsToTest() {
+        Map m = new HashMap();
+        String j = "select ci "
+                + " from ClientEncounterComponentItem ci"
+                + " join ci.encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+//        ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
+//        ci.getItem().getCode();
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Case_Enrollment);
+
+        j += " and ci.item.code=:code ";
+        m.put("code", "first_contacts");
+
+        j += " and ci.areaValue=:moh ";
+        m.put("moh", webUserController.getLoggedUser().getArea());
+
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        System.out.println("getFromDate() = " + getFromDate());
+        m.put("td", getToDate());
+        System.out.println(" getToDate() = " + getToDate());
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("cecItems = " + cecItems.size());
+        return "/regional/list_of_first_contacts_without_moh";
+    }
+
+    
+    
 
     public String toOrderTestsForFirstContactsForMoh() {
         Map m = new HashMap();

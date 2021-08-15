@@ -2061,12 +2061,15 @@ public class ClientController implements Serializable {
     }
 
     public String toViewOrEditCaseEnrollmentFromEncounter() {
+        System.out.println("toViewOrEditCaseEnrollmentFromEncounter");
         if (selectedEncounter == null) {
+            System.out.println("selected encounter is null");
             JsfUtil.addErrorMessage("No encounter");
             return "";
         }
         Encounter testEncounter = selectedEncounter;
         if (selectedEncounter.getClient() == null) {
+            System.out.println("client is null");
             JsfUtil.addErrorMessage("No Client");
             return "";
         }
@@ -2077,25 +2080,27 @@ public class ClientController implements Serializable {
         selectedClientEncounters = null;
         selectedClinic = null;
         yearMonthDay = new YearMonthDay();
-        userTransactionController.recordTransaction("to add a new client for case");
+        
         DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
         if (dfs == null) {
             JsfUtil.addErrorMessage("No Default Form Set");
             return "";
         }
+        System.out.println("dfs = " + dfs);
         ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.findFormsetFromEncounter(selectedEncounter);
         if (cefs == null) {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";
         }
+        System.out.println("cefs = " + cefs);
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
         if (cefs.getEncounter() != null) {
             testEncounter.setReferenceCase(cefs.getEncounter());
             encounterFacade.edit(testEncounter);
-
             cefs.getEncounter().setReferenceTest(testEncounter);
         }
         updateYearDateMonth();
+        System.out.println("to page : /client/client_case_enrollment");
         return "/client/client_case_enrollment";
     }
 
