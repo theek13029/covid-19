@@ -55,7 +55,8 @@ import lk.gov.health.phsp.pojcs.SlNic;
 import lk.gov.health.phsp.pojcs.YearMonthDay;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
+
 // </editor-fold>
 
 @Named("clientController")
@@ -514,10 +515,7 @@ public class ClientController implements Serializable {
         return "/client/profile";
     }
 
-    public String toReserverPhn() {
-        numberOfPhnToReserve = 0;
-        return "/client/reserve_phn";
-    }
+   
 
     public String toLabReceiveAll() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
@@ -2061,12 +2059,15 @@ public class ClientController implements Serializable {
     }
 
     public String toViewOrEditCaseEnrollmentFromEncounter() {
+        System.out.println("toViewOrEditCaseEnrollmentFromEncounter");
         if (selectedEncounter == null) {
+            System.out.println("selected encounter is null");
             JsfUtil.addErrorMessage("No encounter");
             return "";
         }
         Encounter testEncounter = selectedEncounter;
         if (selectedEncounter.getClient() == null) {
+            System.out.println("client is null");
             JsfUtil.addErrorMessage("No Client");
             return "";
         }
@@ -2077,25 +2078,27 @@ public class ClientController implements Serializable {
         selectedClientEncounters = null;
         selectedClinic = null;
         yearMonthDay = new YearMonthDay();
-        userTransactionController.recordTransaction("to add a new client for case");
+        
         DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
         if (dfs == null) {
             JsfUtil.addErrorMessage("No Default Form Set");
             return "";
         }
+        System.out.println("dfs = " + dfs);
         ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.findFormsetFromEncounter(selectedEncounter);
         if (cefs == null) {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";
         }
+        System.out.println("cefs = " + cefs);
         clientEncounterComponentFormSetController.loadOldFormset(cefs);
         if (cefs.getEncounter() != null) {
             testEncounter.setReferenceCase(cefs.getEncounter());
             encounterFacade.edit(testEncounter);
-
             cefs.getEncounter().setReferenceTest(testEncounter);
         }
         updateYearDateMonth();
+        System.out.println("to page : /client/client_case_enrollment");
         return "/client/client_case_enrollment";
     }
 
@@ -2420,7 +2423,7 @@ public class ClientController implements Serializable {
 
         try {
             JsfUtil.addSuccessMessage(file.getFileName());
-            in = file.getInputstream();
+            in = file.getInputStream();
             File f;
             f = new File(Calendar.getInstance().getTimeInMillis() + file.getFileName());
             FileOutputStream out = new FileOutputStream(f);
@@ -3147,7 +3150,7 @@ public class ClientController implements Serializable {
             Cell cell;
             InputStream in;
             try {
-                in = file.getInputstream();
+                in = file.getInputStream();
                 File f;
                 f = new File(Calendar.getInstance().getTimeInMillis() + file.getFileName());
                 FileOutputStream out = new FileOutputStream(f);
@@ -3509,6 +3512,7 @@ public class ClientController implements Serializable {
         encounter.setCreatedAt(new Date());
         encounter.setCreatedBy(webUserController.getLoggedUser());
         encounter.setInstitution(selectedClinic);
+        encounter.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         if (clinicDate != null) {
             encounter.setEncounterDate(clinicDate);
         } else {

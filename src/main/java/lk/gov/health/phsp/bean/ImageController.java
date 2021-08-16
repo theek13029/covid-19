@@ -5,7 +5,10 @@
  */
 package lk.gov.health.phsp.bean;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -15,6 +18,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
+import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -62,26 +66,7 @@ public class ImageController implements Serializable {
         return clientController;
     }
 
-    public StreamedContent getClientPhoto() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (context.getRenderResponse()) {
-            return new DefaultStreamedContent();
-        } else {
-            if (getClientController().getSelected() == null) {
-                return new DefaultStreamedContent();
-            }
-            ClientEncounterComponentItem dp = clientEncounterComponentFormSetController.fillClientValue(getClientController().getSelected(), "client_default_photo");
-            if (dp == null) {
-                return new DefaultStreamedContent();
-            }
-            byte[] p = dp.getByteArrayValue();
-            if (p == null) {
-                return new DefaultStreamedContent();
-            }
-            return new DefaultStreamedContent(new ByteArrayInputStream(p), dp.getShortTextValue(), dp.getLongTextValue());
-        }
-    }
-
+    
     public void oncapturePatientPhoto(CaptureEvent captureEvent) {
         if (getClientController().getSelected() == null || getClientController().getSelected().getId() == null) {
             JsfUtil.addErrorMessage("Client ?");
