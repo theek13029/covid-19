@@ -46,6 +46,7 @@ import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.enums.Privilege;
 import lk.gov.health.phsp.enums.PrivilegeTreeNode;
 import lk.gov.health.phsp.enums.RelationshipType;
+import lk.gov.health.phsp.enums.WebUserRoleLevel;
 import lk.gov.health.phsp.facade.UserPrivilegeFacade;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -751,17 +752,17 @@ public class WebUserController implements Serializable {
         toDate = c.getTime();
         c.add(Calendar.DAY_OF_MONTH, -7);
         fromDate = c.getTime();
-        if (loggedUser.isLabDashboard()) {
+        if (loggedUser.isLabDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.Lab) {
             dashboardController.setFromDate(fromDate);
             dashboardController.setToDate(toDate);
             dashboardController.prepareLabDashboard();
-        } else if (loggedUser.isNationalDashboard()) {
+        } else if (loggedUser.isNationalDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.National) {
             dashboardApplicationController.updateDashboard();
-        } else if (loggedUser.isMohDashboard()) {
+        } else if (loggedUser.isMohDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.Moh) {
             dashboardController.prepareMohDashboard();
-        } else if (loggedUser.isRegionalDashboard()) {
+        } else if (loggedUser.isRegionalDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.Regional) {
             dashboardController.prepareRegionalDashboard();
-        } else if (loggedUser.isProvincialDashboard()) {
+        } else if (loggedUser.isProvincialDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.Provincial) {
             dashboardController.prepareProvincialDashboard();
         }
         fillUsersForMyInstitute();

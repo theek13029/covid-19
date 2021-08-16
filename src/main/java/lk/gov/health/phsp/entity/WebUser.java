@@ -350,196 +350,75 @@ public class WebUser implements Serializable {
     }
 
     public boolean isMohDashboard() {
-        if (getWebUserRole() == null) {
+        if (getWebUserRoleLevel() == null) {
             return false;
         }
-        switch (getWebUserRole()) {
-            case ChiefEpidemiologist:
-            case Client:
-            case Epidemiologist:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
-            case Nurse:
-            case Pdhs:
-            case Rdhs:
-            case Re:
-            case Super_User:
-            case System_Administrator:
-            case User:
-                return false;
-            case Phi:
-            case Phm:
+        switch (getWebUserRoleLevel()) {
             case Moh:
-            case Amoh:
                 return true;
+            default:
+                return false;
         }
-        System.err.println("Missing Privileges");
-        return false;
     }
 
     public boolean isRegionalDashboard() {
-        if (getWebUserRole() == null) {
+        if (getWebUserRoleLevel() == null) {
             return false;
         }
-        switch (getWebUserRole()) {
-            case ChiefEpidemiologist:
-            case Client:
-            case Epidemiologist:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
-            case Nurse:
-            case Pdhs:
-            case Super_User:
-            case System_Administrator:
-            case User:
-            case Phi:
-            case Phm:
-            case Moh:
-            case Amoh:
-                return false;
-            case Rdhs:
-            case Re:
+        switch (getWebUserRoleLevel()) {
+            case Regional:
                 return true;
+            default:
+                return false;
         }
-        System.err.println("Missing Privileges");
-        return false;
     }
 
     public boolean isProvincialDashboard() {
-        if (getWebUserRole() == null) {
+        if (getWebUserRoleLevel() == null) {
             return false;
         }
-        switch (getWebUserRole()) {
-            case ChiefEpidemiologist:
-            case Client:
-            case Epidemiologist:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
-            case Nurse:
-            case Super_User:
-            case System_Administrator:
-            case User:
-            case Phi:
-            case Phm:
-            case Moh:
-            case Amoh:
-            case Rdhs:
-            case Re:
-                return false;
-            case Pdhs:
+        switch (getWebUserRoleLevel()) {
+            case Provincial:
                 return true;
+            default:
+                return false;
         }
-        System.err.println("Missing Privileges");
-        return false;
     }
 
     public boolean isNationalDashboard() {
-        if (getWebUserRole() == null) {
+        if (getWebUserRoleLevel() == null) {
             return false;
         }
-        switch (getWebUserRole()) {
-            case Client:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
-            case Nurse:
-            case Phi:
-            case Phm:
-            case Moh:
-            case Amoh:
-            case Rdhs:
-            case Re:
-            case Pdhs:
-                return false;
-            case ChiefEpidemiologist:
-            case Epidemiologist:
-            case Super_User:
-            case System_Administrator:
-            case User:
-            case Lab_National:
+        switch (getWebUserRoleLevel()) {
+            case National:
                 return true;
+            default:
+                return false;
         }
-        System.err.println("Missing Privileges");
-        return false;
     }
 
     public boolean isHospitalDashboard() {
-        if (getWebUserRole() == null) {
+        if (getWebUserRoleLevel() == null) {
             return false;
         }
-        switch (getWebUserRole()) {
-            case Client:
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
-            case Phi:
-            case Phm:
-            case Moh:
-            case Amoh:
-            case Rdhs:
-            case Re:
-            case Pdhs:
-            case ChiefEpidemiologist:
-            case Epidemiologist:
-            case Super_User:
-            case System_Administrator:
-            case User:
-                return false;
-            case Hospital_Admin:
-            case Hospital_User:
-            case Nurse:
+        switch (getWebUserRoleLevel()) {
+            case Hospital:
                 return true;
+            default:
+                return false;
         }
-        System.err.println("Missing Privileges");
-        return false;
     }
 
     public boolean isLabDashboard() {
-        if (getWebUserRole() == null) {
+        if (getWebUserRoleLevel() == null) {
             return false;
         }
-        switch (getWebUserRole()) {
-            case Client:
-            case Phi:
-            case Phm:
-            case Moh:
-            case Amoh:
-            case Rdhs:
-            case Re:
-            case Pdhs:
-            case ChiefEpidemiologist:
-            case Epidemiologist:
-            case Super_User:
-            case System_Administrator:
-            case User:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Nurse:
-                return false;
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
+        switch (getWebUserRoleLevel()) {
+            case Lab:
                 return true;
+            default:
+                return false;
         }
-        System.err.println("Missing Privileges");
-        return false;
     }
 
     public boolean isSystemAdministrator() {

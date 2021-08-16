@@ -109,6 +109,10 @@
                             <p:column headerText="Address"  sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Result" exportable="false"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
+                                <p:outputLabel id="cmbResult" value="#{c.pcrResult.name}" style="width: 98%;" >
+                                </p:outputLabel>
+                            </p:column>
                             <p:column id="ct1" headerText="CT 1" >
                                 <p:outputLabel id="txtCt" value="#{c.ctValue}" style="width:99%;"  rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
                                 </p:outputLabel>
@@ -124,10 +128,7 @@
                                     <f:convertDateTime pattern="dd MMM yy" ></f:convertDateTime>
                                 </p:outputLabel>
                             </p:column>
-                            <p:column headerText="Result" exportable="false"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
-                                <p:outputLabel id="cmbResult" value="#{c.pcrResult}" style="width: 98%;" >
-                                </p:outputLabel>
-                            </p:column>
+
                         </p:dataTable>
 
 
