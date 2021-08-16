@@ -515,10 +515,7 @@ public class ClientController implements Serializable {
         return "/client/profile";
     }
 
-    public String toReserverPhn() {
-        numberOfPhnToReserve = 0;
-        return "/client/reserve_phn";
-    }
+   
 
     public String toLabReceiveAll() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
