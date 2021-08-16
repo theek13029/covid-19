@@ -23,45 +23,41 @@
                     <h:form >
                         <p:panelGrid columns="2" >
                             <p:outputLabel value="Ordered From" ></p:outputLabel>
-                            <p:calendar value="#{mohController.fromDate}" 
+                            <p:calendar value="#{labController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
                             <p:outputLabel value="Ordered To" ></p:outputLabel>
-                            <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <p:calendar value="#{labController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
                             <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                            <p:selectOneMenu value="#{mohController.orderingCategory}" >
+                            <p:selectOneMenu value="#{labController.orderingCategory}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{mohController.covidTestOrderingCategories}" 
+                                <f:selectItems value="#{labController.covidTestOrderingCategories}" 
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
                             <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{mohController.testType}" >
+                            <p:selectOneMenu value="#{labController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                                <f:selectItems value="#{labController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
-                            <p:outputLabel value="Lab" ></p:outputLabel>
-                            <p:autoComplete value="#{mohController.lab}"
-                                            completeMethod="#{institutionController.completeLab}"
-                                            var="m" itemLabel="#{m.name}" itemValue="#{m}" >
-                            </p:autoComplete>
+
 
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{mohController.toTestListWithoutResults()}" ></p:commandButton>
+                                             action="#{labController.toTestListWithoutResults()}" ></p:commandButton>
 
 
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true"
+                        <p:dataTable id="tbl" value="#{labController.tests}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
@@ -117,13 +113,13 @@
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
 
                                 <p:panelGrid columns="1" >
-                                    <p:commandButton value="Edit Order" action="#{mohController.toEditTest()}" ajax="false"  style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
+                                    <p:commandButton value="Edit Order" action="#{labController.toEditTest()}" ajax="false"  style="width: 100%;" >
+                                        <f:setPropertyActionListener value="#{c}" target="#{labController.test}" ></f:setPropertyActionListener>
                                     </p:commandButton>
-                                    <p:commandButton ajax="false" value="Delete"  action="#{mohController.deleteTest()}"  style="width: 100%;" 
+                                    <p:commandButton ajax="false" value="Delete"  action="#{labController.deleteTest()}"  style="width: 100%;" 
                                                      onclick="if (!confirm('Are you sure you want to delete?'))
                                                                  return false" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.deleting}" >
+                                        <f:setPropertyActionListener value="#{c}" target="#{labController.deleting}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
                                 </p:panelGrid>

@@ -24,6 +24,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import lk.gov.health.phsp.enums.WebUserRoleLevel;
 
 /**
  *
@@ -72,6 +73,8 @@ public class WebUser implements Serializable {
     String activateComments;
     @Enumerated(EnumType.STRING)
     WebUserRole webUserRole;
+    @Transient
+    private WebUserRoleLevel webUserRoleLevel;
     String primeTheme;
     String defLocale;
     String email;
@@ -347,190 +350,75 @@ public class WebUser implements Serializable {
     }
 
     public boolean isMohDashboard() {
-        if (getWebUserRole() == null) {
+        if (getWebUserRoleLevel() == null) {
             return false;
         }
-        switch (getWebUserRole()) {
-            case ChiefEpidemiologist:
-            case Client:
-            case Epidemiologist:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
-            case Nurse:
-            case Pdhs:
-            case Rdhs:
-            case Re:
-            case Super_User:
-            case System_Administrator:
-            case User:
-                return false;
-            case Phi:
-            case Phm:
-            case Moh:case Amoh:
+        switch (getWebUserRoleLevel()) {
+            case Moh:
                 return true;
+            default:
+                return false;
         }
-        System.err.println("Missing Privileges");
-        return false;
     }
 
     public boolean isRegionalDashboard() {
-        if (getWebUserRole() == null) {
+        if (getWebUserRoleLevel() == null) {
             return false;
         }
-        switch (getWebUserRole()) {
-            case ChiefEpidemiologist:
-            case Client:
-            case Epidemiologist:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
-            case Nurse:
-            case Pdhs:
-            case Super_User:
-            case System_Administrator:
-            case User:
-            case Phi:
-            case Phm:
-            case Moh:case Amoh:
-                return false;
-            case Rdhs:
-            case Re:
+        switch (getWebUserRoleLevel()) {
+            case Regional:
                 return true;
+            default:
+                return false;
         }
-        System.err.println("Missing Privileges");
-        return false;
     }
 
     public boolean isProvincialDashboard() {
-        if (getWebUserRole() == null) {
+        if (getWebUserRoleLevel() == null) {
             return false;
         }
-        switch (getWebUserRole()) {
-            case ChiefEpidemiologist:
-            case Client:
-            case Epidemiologist:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
-            case Nurse:
-            case Super_User:
-            case System_Administrator:
-            case User:
-            case Phi:
-            case Phm:
-            case Moh:case Amoh:
-            case Rdhs:
-            case Re:
-                return false;
-            case Pdhs:
+        switch (getWebUserRoleLevel()) {
+            case Provincial:
                 return true;
+            default:
+                return false;
         }
-        System.err.println("Missing Privileges");
-        return false;
     }
 
     public boolean isNationalDashboard() {
-        if (getWebUserRole() == null) {
+        if (getWebUserRoleLevel() == null) {
             return false;
         }
-        switch (getWebUserRole()) {
-            case Client:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
-            case Nurse:
-            case Phi:
-            case Phm:
-            case Moh:case Amoh:
-            case Rdhs:
-            case Re:
-            case Pdhs:
-                return false;
-            case ChiefEpidemiologist:
-            case Epidemiologist:
-            case Super_User:
-            case System_Administrator:
-            case User:
-            case Lab_National:
+        switch (getWebUserRoleLevel()) {
+            case National:
                 return true;
+            default:
+                return false;
         }
-        System.err.println("Missing Privileges");
-        return false;
     }
 
     public boolean isHospitalDashboard() {
-        if (getWebUserRole() == null) {
+        if (getWebUserRoleLevel() == null) {
             return false;
         }
-        switch (getWebUserRole()) {
-            case Client:
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
-            case Phi:
-            case Phm:
-            case Moh:case Amoh:
-            case Rdhs:
-            case Re:
-            case Pdhs:
-            case ChiefEpidemiologist:
-            case Epidemiologist:
-            case Super_User:
-            case System_Administrator:
-            case User:
-                return false;
-            case Hospital_Admin:
-            case Hospital_User:
-            case Nurse:
+        switch (getWebUserRoleLevel()) {
+            case Hospital:
                 return true;
+            default:
+                return false;
         }
-        System.err.println("Missing Privileges");
-        return false;
     }
 
     public boolean isLabDashboard() {
-        if (getWebUserRole() == null) {
+        if (getWebUserRoleLevel() == null) {
             return false;
         }
-        switch (getWebUserRole()) {
-            case Client:
-            case Phi:
-            case Phm:
-            case Moh:case Amoh:
-            case Rdhs:
-            case Re:
-            case Pdhs:
-            case ChiefEpidemiologist:
-            case Epidemiologist:
-            case Super_User:
-            case System_Administrator:
-            case User:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Nurse:
-                return false;
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
+        switch (getWebUserRoleLevel()) {
+            case Lab:
                 return true;
+            default:
+                return false;
         }
-        System.err.println("Missing Privileges");
-        return false;
     }
 
     public boolean isSystemAdministrator() {
@@ -689,6 +577,54 @@ public class WebUser implements Serializable {
 
     public void setCurrentlyInAssumedState(boolean currentlyInAssumedState) {
         this.currentlyInAssumedState = currentlyInAssumedState;
+    }
+
+    public WebUserRoleLevel getWebUserRoleLevel() {
+        if (webUserRole == null) {
+            return webUserRoleLevel = null;
+        } else {
+            switch (webUserRole) {
+                case Amoh:
+                case Moh:
+                case MohStaff:
+                case Phi:
+                case Phm:
+                    webUserRoleLevel = WebUserRoleLevel.Moh;
+                    break;
+                case ChiefEpidemiologist:
+                case Client:
+                case Epidemiologist:
+                case System_Administrator:
+                case Super_User:
+                case User:
+                    webUserRoleLevel = WebUserRoleLevel.National;
+                    break;
+                case Lab_National:
+                    webUserRoleLevel = WebUserRoleLevel.National_Lab;
+                    break;
+                case Hospital_Admin:
+                case Hospital_User:
+                case Nurse:
+                    webUserRoleLevel = WebUserRoleLevel.Hospital;
+                    break;
+                case Lab_Consultant:
+                case Lab_Mlt:
+                case Lab_Mo:
+                case Lab_User:
+                    webUserRoleLevel = WebUserRoleLevel.Lab;
+                    break;
+                case Pdhs:
+                case Pdhs_Staff:
+                    webUserRoleLevel = WebUserRoleLevel.Provincial;
+                    break;
+                case Rdhs:
+                case Re:
+                case Rdhs_Staff:
+                    webUserRoleLevel = WebUserRoleLevel.Regional;
+                    break;
+            }
+        }
+        return webUserRoleLevel;
     }
 
 }

@@ -46,11 +46,12 @@ import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.enums.Privilege;
 import lk.gov.health.phsp.enums.PrivilegeTreeNode;
 import lk.gov.health.phsp.enums.RelationshipType;
+import lk.gov.health.phsp.enums.WebUserRoleLevel;
 import lk.gov.health.phsp.facade.UserPrivilegeFacade;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.TreeNode;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -353,6 +354,10 @@ public class WebUserController implements Serializable {
         userTransactionController.recordTransaction("To Add New User By InsAdmin");
         return "/insAdmin/user_new";
     }
+    
+    public String toInsAdmin() {
+        return "/insAdmin/index";
+    }
 
     public String toAdministration(){
         if(loggedUser==null){
@@ -642,18 +647,6 @@ public class WebUserController implements Serializable {
         return ins;
     }
 
-    public void downloadCurrentFile() {
-        if (currentUpload == null) {
-            return;
-        }
-        InputStream stream = new ByteArrayInputStream(currentUpload.getBaImage());
-        downloadingFile = new DefaultStreamedContent(stream, currentUpload.getFileType(), currentUpload.getFileName());
-    }
-
-    public StreamedContent getDownloadingFile() {
-        downloadCurrentFile();
-        return downloadingFile;
-    }
 
     public String addMarker() {
         Marker marker = new Marker(new LatLng(current.getInstitution().getCoordinate().getLatitude(), current.getInstitution().getCoordinate().getLongitude()), current.getName());
@@ -759,17 +752,17 @@ public class WebUserController implements Serializable {
         toDate = c.getTime();
         c.add(Calendar.DAY_OF_MONTH, -7);
         fromDate = c.getTime();
-        if (loggedUser.isLabDashboard()) {
+        if (loggedUser.isLabDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.Lab) {
             dashboardController.setFromDate(fromDate);
             dashboardController.setToDate(toDate);
             dashboardController.prepareLabDashboard();
-        } else if (loggedUser.isNationalDashboard()) {
+        } else if (loggedUser.isNationalDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.National) {
             dashboardApplicationController.updateDashboard();
-        } else if (loggedUser.isMohDashboard()) {
+        } else if (loggedUser.isMohDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.Moh) {
             dashboardController.prepareMohDashboard();
-        } else if (loggedUser.isRegionalDashboard()) {
+        } else if (loggedUser.isRegionalDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.Regional) {
             dashboardController.prepareRegionalDashboard();
-        } else if (loggedUser.isProvincialDashboard()) {
+        } else if (loggedUser.isProvincialDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.Provincial) {
             dashboardController.prepareProvincialDashboard();
         }
         fillUsersForMyInstitute();

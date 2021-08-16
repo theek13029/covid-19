@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lk.gov.health.phsp.entity.Encounter;
+import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Item;
 
 /**
@@ -51,6 +52,11 @@ public class SessionController implements Serializable {
     private Encounter lastPcr;
     private Item lastRatOrderingCategory;
     private Item lastPcrOrdringCategory;
+    private Institution lastInstitution;
+    private Institution lastInstitutionUnit;
+    private Institution lastLab;
+    
+    
 
     private Map<Long, Encounter> rats;
     private Map<Long, Encounter> pcrs;
@@ -107,6 +113,30 @@ public class SessionController implements Serializable {
 
     public List<Encounter> getRatList() {
         return new ArrayList<>(getRats().values());
+    }
+
+    public Institution getLastInstitution() {
+        return lastInstitution;
+    }
+
+    public void setLastInstitution(Institution lastInstitution) {
+        this.lastInstitution = lastInstitution;
+    }
+
+    public Institution getLastInstitutionUnit() {
+        return lastInstitutionUnit;
+    }
+
+    public void setLastInstitutionUnit(Institution lastInstitutionUnit) {
+        this.lastInstitutionUnit = lastInstitutionUnit;
+    }
+
+    public Institution getLastLab() {
+        return lastLab;
+    }
+
+    public void setLastLab(Institution lastLab) {
+        this.lastLab = lastLab;
     }
     
 }

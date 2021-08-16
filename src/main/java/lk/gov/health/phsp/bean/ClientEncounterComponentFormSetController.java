@@ -859,6 +859,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
         e.setInstitution(webUserController.getLoggedUser().getInstitution());
+        e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         e.setEncounterType(EncounterType.Case_Enrollment);
 
         if (encounterDate != null) {
@@ -1027,6 +1028,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
         e.setInstitution(webUserController.getLoggedUser().getInstitution());
+        e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         e.setEncounterType(EncounterType.Case_Enrollment);
         e.setRetired(true);
         if (encounterDate != null) {
@@ -1212,6 +1214,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
         e.setInstitution(webUserController.getLoggedUser().getInstitution());
+        e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         e.setEncounterType(EncounterType.Test_Enrollment);
         e.setRetired(true);
         if (encounterDate != null) {
@@ -1415,7 +1418,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
         e.setInstitution(webUserController.getLoggedUser().getInstitution());
-
+e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         if (encounterDate != null) {
             e.setEncounterDate(encounterDate);
         } else {
