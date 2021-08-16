@@ -1338,7 +1338,7 @@ public class RegionalController implements Serializable {
         return "/regional/list_of_tests";
     }
 
-    public String toListCasesByManagementForRegionalLevel() {
+    public String toListCasesByManagement() {
         Map m = new HashMap();
         String j = "select distinct(c) "
                 + " from ClientEncounterComponentItem ci join ci.encounter c "
