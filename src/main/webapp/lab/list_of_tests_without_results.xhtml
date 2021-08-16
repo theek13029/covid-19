@@ -11,56 +11,62 @@
         <ui:composition template="./../template1.xhtml">
 
             <ui:define name="title">
-                Assign Investigation
+                List of Tests
             </ui:define>
 
             <ui:define name="content">
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Start to Investigate" ></p:outputLabel>
+                        <p:outputLabel value="Test List" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
                         <p:panelGrid columns="2" >
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="Assigned From" ></p:outputLabel>
-                                <p:calendar value="#{mohController.fromDate}" 
-                                            pattern="dd MMMM yyyy hh:mm a">
-                                </p:calendar>
+                            <p:outputLabel value="Ordered From" ></p:outputLabel>
+                            <p:calendar value="#{labController.fromDate}" 
+                                        pattern="dd MMMM yyyy hh:mm a">
+                            </p:calendar><!-- comment -->
 
-                                <p:outputLabel value="Assigned To" ></p:outputLabel>
-                                <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <p:outputLabel value="Ordered To" ></p:outputLabel>
+                            <p:calendar value="#{labController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                                <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                                <p:selectOneMenu value="#{mohController.orderingCategory}" >
-                                    <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{mohController.covidTestOrderingCategories}" 
-                                                   var="c" itemLabel="#{c.name}"
-                                                   itemValue="#{c}" ></f:selectItems>
-                                </p:selectOneMenu>
+                            <p:outputLabel value="Ordering Category" ></p:outputLabel>
+                            <p:selectOneMenu value="#{labController.orderingCategory}" >
+                                <f:selectItem itemLabel="All" ></f:selectItem>
+                                <f:selectItems value="#{labController.covidTestOrderingCategories}" 
+                                               var="c" itemLabel="#{c.name}"
+                                               itemValue="#{c}" ></f:selectItems>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Test" ></p:outputLabel>
+                            <p:selectOneMenu value="#{labController.testType}" >
+                                <f:selectItem itemLabel="All" ></f:selectItem>
+                                <f:selectItems value="#{labController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                                               itemValue="#{c}" ></f:selectItems>
+                            </p:selectOneMenu>
 
 
-                                <p:commandButton ajax="false" value="Generate Excel">
-                                    <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="Process" 
-                                                 action="#{mohController.toStartInvestigation()}" ></p:commandButton>
-                            </p:panelGrid>
+
+                            <p:commandButton ajax="false" value="Generate Excel">
+                                <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
+                            </p:commandButton>
+                            <p:commandButton ajax="false" value="Process" 
+                                             action="#{labController.toTestListWithoutResults()}" ></p:commandButton>
+
+
                         </p:panelGrid>
 
-                        <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true"
+
+                        <p:dataTable id="tbl" value="#{labController.tests}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
-                                     rowStyleClass="#{c.resultCssClass}"
                                      paginator="true" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
-                                     selection="#{mohController.selectedToAssign}"
                                      >
-                            <p:column selectionMode="multiple" width="40" ></p:column>
                             <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
@@ -91,10 +97,6 @@
                                       filterBy="#{c.client.person.address}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Ordering Category"  sortBy="#{c.pcrOrderingCategory.name}"
-                                      filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrOrderingCategory.name}" ></p:outputLabel>
-                            </p:column>
                             <p:column headerText="PHI"  sortBy="#{c.client.person.phiArea.name}"
                                       filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.phiArea.name}" ></p:outputLabel>
@@ -103,31 +105,26 @@
                                       filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}"
-                                      filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
+                            <p:column headerText="Ordering Category"  sortBy="#{c.pcrOrderingCategory.name}"
+                                      filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.pcrOrderingCategory.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
-                                      filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></p:outputLabel>
-                            </p:column>
+
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
-                                    <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}" 
-                                                     value="Start Investigating" 
-                                                     action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
+
+                                <p:panelGrid columns="1" >
+                                    <p:commandButton value="Edit Order" action="#{labController.toEditTest()}" ajax="false"  style="width: 100%;" >
+                                        <f:setPropertyActionListener value="#{c}" target="#{labController.test}" ></f:setPropertyActionListener>
+                                    </p:commandButton>
+                                    <p:commandButton ajax="false" value="Delete"  action="#{labController.deleteTest()}"  style="width: 100%;" 
+                                                     onclick="if (!confirm('Are you sure you want to delete?'))
+                                                                 return false" >
+                                        <f:setPropertyActionListener value="#{c}" target="#{labController.deleting}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
-                                <p:commandButton rendered="#{c.referenceCase ne null}" 
-                                                     ajax="false" value="View case" 
-                                                     action="#{clientController.toViewOrEditCaseEnrollmentFromEncounter()}"
-                                                     style="width: 100%;" >
-                                    <f:setPropertyActionListener value="#{c.referenceCase}" target="#{clientController.selectedEncounter}" >
-                                        </f:setPropertyActionListener>
-                                    </p:commandButton>
-                            </p:column>
-                            <p:column>
-                                #{c.referenceCase.id}
+                                </p:panelGrid>
+
+
                             </p:column>
                         </p:dataTable>
                     </h:form>

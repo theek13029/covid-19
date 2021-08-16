@@ -154,6 +154,7 @@ public class EncounterController implements Serializable {
             e.setEncounterDate(d);
             e.setEncounterType(ec);
             e.setInstitution(institution);
+            e.setCreatedInstitution(institution);
             e.setCreatedAt(new Date());
             e.setCreatedBy(webUserController.getLoggedUser());
             getFacade().create(e);

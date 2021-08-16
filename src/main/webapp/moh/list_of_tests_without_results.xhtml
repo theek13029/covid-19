@@ -45,7 +45,11 @@
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
-
+                            <p:outputLabel value="Lab" ></p:outputLabel>
+                            <p:autoComplete value="#{mohController.lab}"
+                                            completeMethod="#{institutionController.completeLab}"
+                                            var="m" itemLabel="#{m.name}" itemValue="#{m}" >
+                            </p:autoComplete>
 
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
