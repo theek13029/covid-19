@@ -3,51 +3,161 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui">
 
 
-<h:body>
+    <h:body>
 
-    <ui:composition template="./../template1.xhtml">
+        <ui:composition template="/template1.xhtml">
 
-        <ui:define name="content">
+            <ui:define name="content">
 
-            <h:form>
-                <div class="card">
-                    <div class="card-header">
-                        Reports
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6">
-                                <p:commandButton ajax="false" value="Tests List" action="#{mohController.toListOfTestsRegional()}">
-                                </p:commandButton>
-                            </div>
-                            <div class="col-6">
-                                <p:commandButton ajax="false" value="Tests without MOH" action="#{mohController.toListOfTestsWithoutMohForRegionalLevel()}">
-                                </p:commandButton>
-                            </div>
-                            <div class="col-6">
-                                <p:commandButton ajax="false" value="First Contacts" action="#{mohController.toListOfFirstContactsForRegionalLevel()}">
-                                </p:commandButton>
-                            </div>
-                            <div class="col-6">
-                                <p:commandButton ajax="false" value="First Contacts without MOH" action="#{mohController.toListOfFirstContactsWithoutMohForRegionalLevel()}">
-                                </p:commandButton>
-                            </div>
+               
 
-                            <div class="col-6">
-                                <p:commandButton ajax="false" value="Cases by Management Plan" action="#{mohController.toListCasesByManagementForRegionalLevel()}">
-                                </p:commandButton>
-                            </div>
 
+                    <div class="container-fluid" >
+                        <div class="row" >
+                            <div class="col-12 p-2"   >
+                                <p:messages ></p:messages>
+                            </div>
+                        </div>
+                        <div class="row" >
+                            <div class="col-3" >
+
+                                <div class="card" >
+                                    <div class="card-header" >
+                                        <h:outputLabel value="Counts" ></h:outputLabel>
+                                    </div>
+                                    <div class="card-body container-fluid">
+                                        <div class="row">
+                                            <div class="col-12 p-2">
+                                                <h:form>
+                                                    <h:commandLink value="PCR/RAT Counts by Ordered Institution" 
+                                                                   action="#{regionalController.toCountOfTestsByOrderedInstitution()}" 
+                                                                   class="btn btn-outline-primary btn-lg btn-block" 
+                                                                   >
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 p-2">
+                                                <h:form>
+                                                    <h:commandLink value="Result Counts by Ordered Institution" 
+                                                                   action="#{regionalController.toCountOfResultsByOrderedInstitution()}" 
+                                                                   class="btn btn-outline-primary btn-lg btn-block"
+                                                                   >
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 p-2">
+                                                <h:form>
+
+                                                    <h:commandLink value="Result Counts by MOH Area" 
+                                                                   action="#{regionalController.toCountOfResultsByOrderedInstitution()}" 
+                                                                   class="btn btn-outline-primary btn-lg btn-block"
+                                                                   >
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 p-2">
+                                                <h:form>
+
+                                                    <h:commandLink value="Result Counts by Lab" 
+                                                                   action="#{regionalController.toCountOfResultsByLab()}" 
+                                                                   class="btn btn-outline-primary btn-lg btn-block"
+                                                                   >
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card" >
+                                    <div class="card-header" >
+                                        <h:outputLabel value="Lists" ></h:outputLabel>
+                                    </div>
+                                    <div class="card-body container-fluid">
+                                        <div class="row">
+                                            <div class="col-12 p-2">
+                                                <h:form>
+                                                    <h:commandLink value="PCR/RAT Orders List" 
+                                                                   action="#{regionalController.toListOfTests()}" 
+                                                                   class="btn btn-outline-primary btn-lg btn-block"
+                                                                   >
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 p-2">
+                                                <h:form>
+                                                    <h:commandLink value="Result List" 
+                                                                   action="#{regionalController.toListResults()}" 
+                                                                   class="btn btn-outline-primary btn-lg btn-block"
+                                                                   >
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="col-9" >
+                                <ui:insert name="reports" >
+                                </ui:insert>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </h:form>
+                    <h:panelGroup rendered="false" >
 
-        </ui:define>
+                        <div class="card">
+                            <div class="card-header">
+                                Reports
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p:commandButton ajax="false" value="Tests List" action="#{mohController.toListOfTestsRegional()}">
+                                        </p:commandButton>
+                                    </div>
+                                    <div class="col-6">
+                                        <p:commandButton ajax="false" value="Tests without MOH" action="#{mohController.toListOfTestsWithoutMohForRegionalLevel()}">
+                                        </p:commandButton>
+                                    </div>
+                                    <div class="col-6">
+                                        <p:commandButton ajax="false" value="First Contacts" action="#{mohController.toListOfFirstContactsForRegionalLevel()}">
+                                        </p:commandButton>
+                                    </div>
+                                    <div class="col-6">
+                                        <p:commandButton ajax="false" value="First Contacts without MOH" action="#{mohController.toListOfFirstContactsWithoutMohForRegionalLevel()}">
+                                        </p:commandButton>
+                                    </div>
 
-    </ui:composition>
+                                    <div class="col-6">
+                                        <p:commandButton ajax="false" value="Cases by Management Plan" action="#{mohController.toListCasesByManagementForRegionalLevel()}">
+                                        </p:commandButton>
+                                    </div>
 
-</h:body>
+                                </div>
+                            </div>
+                        </div>
+
+                    </h:panelGroup>
+
+
+
+               
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
 
 </html>
