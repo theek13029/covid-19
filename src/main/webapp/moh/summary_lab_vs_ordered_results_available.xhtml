@@ -56,24 +56,6 @@
                             <p:column headerText="Number of Orders"  sortBy="#{c.count}" width="70">
                                 <p:outputLabel value="#{c.count}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Actions" exportable="false"  >
-                                <p:commandButton  rendered="#{c.referralInstitution ne null}" ajax="false" value="To Dispatch Samples" action="#{clientController.toDispatchSamplesWithReferringLab()}" >
-                                    <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
-                                    </f:setPropertyActionListener>
-                                    <f:setPropertyActionListener value="#{c.referralInstitution}" target="#{clientController.dispatchingLab}" >
-                                    </f:setPropertyActionListener>
-                                </p:commandButton>
-                                <p:commandButton rendered="#{c.referralInstitution eq null}" ajax="false" value="To Dispatch Samples" action="#{clientController.toDispatchSamples}" >
-                                    <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
-                                    </f:setPropertyActionListener>
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="To Divert" action="#{clientController.toDivertSamples()}" >
-                                    <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
-                                    </f:setPropertyActionListener>
-                                    <f:setPropertyActionListener value="#{c.referralInstitution}" target="#{clientController.referingInstitution}" >
-                                    </f:setPropertyActionListener>
-                                </p:commandButton>
-                            </p:column>
                         </p:dataTable>
                     </h:form>
 
