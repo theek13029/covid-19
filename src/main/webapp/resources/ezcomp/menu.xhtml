@@ -85,15 +85,15 @@
                     <p:menuitem rendered="true" ajax="false" value="New RAT Result" action="#{labController.toAddNewRatWithNewClient()}" />
                     <p:menuitem ajax="false" value="New RAT" action="#{labController.toAddNewRatOrderWithNewClient()}"  />
                     <p:menuitem ajax="false" value="Test Lists" action="#{labController.toTestListWithoutResults()}" />
-                    
+
                 </p:submenu>
 
                 <p:menuitem ajax="false" value="Reports" action="#{mohController.toReportsIndex()}" />
 
-                <p:menuitem value="Administration" action="#{webUserController.toInsAdmin()}" 
+                <p:menuitem value="Administration" action="#{webUserController.toInsAdmin()}"
                             rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
                 </p:menuitem>
-                
+
                 <p:submenu label="Institution Administration" rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
                     <p:submenu label="Manage Users" rendered="#{webUserController.hasPrivilege('Institution_Administration')}">
                         <p:menuitem value="New User" action="#{webUserController.toAddNewUserByInsAdmin()}" ajax="false"
@@ -175,10 +175,6 @@
                         <p:menuitem value="Manage Queries" action="/queryComponent/excel" ajax="false"
                                     rendered="#{webUserController.hasPrivilege('Institution_Administration')}"/>
                     </p:submenu>
-                </p:submenu>
-                <p:submenu label="Settings" >
-                    <p:menuitem value="Change My Password" action="#{webUserController.toChangeMyPassword()}"    ajax="false" />
-                    <p:menuitem value="Change My Details" action="#{webUserController.toChangeMyDetails()}"    ajax="false" />
                 </p:submenu>
                 <p:submenu label="Help" >
                     <p:menuitem value="User Manual" action="/wiki"   ajax="false" />
