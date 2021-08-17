@@ -77,10 +77,6 @@
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                 </p:commandButton>
-                                <p:commandButton ajax="false" value="View all" action="#{clientController.toLabOrderByReferringInstitution()}" >
-                                    <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
-                                    </f:setPropertyActionListener>
-                                </p:commandButton>
                             </p:column>
                         </p:dataTable>
                     </h:form>

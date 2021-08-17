@@ -14,7 +14,7 @@
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Orders To Receive" ></p:outputLabel>
+                        <p:outputLabel value="Orders Summery" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
@@ -26,9 +26,9 @@
                             <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{clientController.toSummaryByOrderedInstitutionVsLabToReceive()}" ></p:commandButton>
+                                             action="#{clientController.toSummaryByOrderedInstitution()}" ></p:commandButton>
                             <p:commandButton ajax="false" value="Generate Excel" >
-                                <p:dataExporter type="xlsx" fileName="Lab Order Summery" target="tbl" ></p:dataExporter>
+                                <p:dataExporter type="xlsx" fileName="Orders Summery" target="tbl" ></p:dataExporter>
                             </p:commandButton>
 
                         </p:panelGrid>
@@ -44,10 +44,6 @@
                                       sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Lab"
-                                      sortBy="#{c.referralInstitution.name}" filterBy="#{c.referralInstitution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.referralInstitution.name}" ></p:outputLabel>
-                            </p:column>
                              <p:column headerText="District"
                                       sortBy="#{c.institution.district.name}" 
                                       filterBy="#{c.institution.district.name}" filterMatchMode="contains">
@@ -57,6 +53,16 @@
                                 <p:outputLabel value="#{c.count}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false"  >
+                                <p:commandButton  rendered="#{c.referralInstitution ne null}" ajax="false" value="To Dispatch Samples" action="#{clientController.toDispatchSamplesWithReferringLab()}" >
+                                    <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
+                                    </f:setPropertyActionListener>
+                                    <f:setPropertyActionListener value="#{c.referralInstitution}" target="#{clientController.dispatchingLab}" >
+                                    </f:setPropertyActionListener>
+                                </p:commandButton>
+                                <p:commandButton rendered="#{c.referralInstitution eq null}" ajax="false" value="To Dispatch Samples" action="#{clientController.toDispatchSamples}" >
+                                    <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
+                                    </f:setPropertyActionListener>
+                                </p:commandButton>
                                 <p:commandButton ajax="false" value="To Divert" action="#{clientController.toDivertSamples()}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
