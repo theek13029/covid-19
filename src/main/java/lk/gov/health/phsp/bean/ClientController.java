@@ -515,7 +515,7 @@ public class ClientController implements Serializable {
         return "/client/profile";
     }
 
-   
+
 
     public String toLabReceiveAll() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
@@ -2038,11 +2038,11 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No Default Form Set");
             return "";
         }
-        
+
         ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseInvestigationFromTest(dfs,testEncounter);
-        
+
         selectedEncounter = cefs.getEncounter();
-        
+
         if (cefs == null) {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";
@@ -2078,7 +2078,7 @@ public class ClientController implements Serializable {
         selectedClientEncounters = null;
         selectedClinic = null;
         yearMonthDay = new YearMonthDay();
-        
+
         DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
         if (dfs == null) {
             JsfUtil.addErrorMessage("No Default Form Set");
@@ -2102,7 +2102,7 @@ public class ClientController implements Serializable {
         return "/client/client_case_enrollment";
     }
 
-    
+
     public String toNewTestEnrollmentFromEncounter() {
         if (selectedEncounter == null) {
             JsfUtil.addErrorMessage("No encounter");

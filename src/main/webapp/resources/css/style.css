@@ -1,8 +1,8 @@
 /*
 The MIT License
 
-Copyright 2021 Dinidu Hewage.
-Copyright 2021 Rukshan Ranatunge <arkruka@gmail.com>
+Copyright 2021 Dinidu Hewage
+Copyright 2021 Rukshan Ranatunge <arkruka@gmail.com>.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,12 @@ THE SOFTWARE.
     Created on : Jun 14, 2021, 11:28:37 PM
     Author     : Dinidu Hewage
 */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css");
+body, * {
+  font-family: "Roboto", sans-serif;
+}
+
 .nchis_head {
   padding-top: 5px;
   padding-left: 25px;
@@ -52,37 +58,27 @@ body .ui-panelmenu .ui-panelmenu-header.ui-state-active {
   font-weight: normal;
   background-color: #2596be;
 }
+body .ui-panelmenu h3.ui-panelmenu-header.ui-state-active {
+  background-color: #D2d4d4;
+}
 body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link body .ui-panelmenu li.ui-menuitem span.ui-menuitem-text {
   font-size: 12px;
   font-weight: normal;
 }
-body .ui-panelmenu h3.ui-panelmenu-header.ui-state-active {
-  background-color: #D2d4d4;
-}
-
-.ui-fluid .ui-inputfield {
-  height: 0.7cm;
-  margin-top: 0.2cm;
-  margin-bottom: 0.2cm;
-  font-size: 12px;
-}
-
 body .ui-widget {
   font-size: 12px;
 }
-
-.ui-fluid .ui-inputtextarea {
-  height: 1cm;
-}
-
 body .ui-datatable thead th {
   height: 0.2cm;
 }
-
-.ui-widget-content .ui-datatable-even {
-  height: 0.5rem;
+body .ui-datatable thead th .ui-sortable-column-icon.ui-icon-carat-2-n-s {
+  font-size: 10px;
 }
-
+body .ui-datatable .ui-datatable-data tr td {
+  padding: 0.25rem 0.25rem !important;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-width: 0 0 1px 0;
+}
 body .ui-button.rounded-button.ui-button-icon-only {
   border-radius: 50%;
   height: 1.5rem !important;
@@ -94,13 +90,19 @@ body .ui-button.ui-button-icon-only .ui-icon {
   margin-left: -0.3rem !important;
   font-size: 10px;
 }
-body .ui-datatable thead th .ui-sortable-column-icon.ui-icon-carat-2-n-s {
-  font-size: 10px;
+
+.ui-fluid .ui-inputfield {
+  height: 0.7cm;
+  margin-top: 0.2cm;
+  margin-bottom: 0.2cm;
+  font-size: 12px;
 }
-body .ui-datatable .ui-datatable-data tr td {
-  padding: 0.25rem 0.25rem !important;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-width: 0 0 1px 0;
+.ui-fluid .ui-inputtextarea {
+  height: 1cm;
+}
+
+.ui-widget-content .ui-datatable-even {
+  height: 0.5rem;
 }
 
 .link_menu .mega_menu {
@@ -116,8 +118,7 @@ body .ui-datatable .ui-datatable-data tr td {
 }
 
 footer {
-  background-color: #267ad4;
-  overflow: hidden;
+  background-color: #f5f5f5;
   font-size: 18px;
 }
 
@@ -152,6 +153,9 @@ footer {
   padding: 0px;
   height: calc(0.75rem + .75rem + 2px);
 }
+.form-control .withicon {
+  width: 90% !important;
+}
 
 label {
   margin-bottom: 0 !important;
@@ -165,13 +169,10 @@ label {
   width: 100%;
 }
 
-.form-control .withicon {
-  width: 90% !important;
-}
-
 .ui-layout-unit .ui-layout-unit-content {
   overflow: hidden !important;
 }
+
 .flex {
   display: flex;
 }
@@ -194,4 +195,77 @@ label {
 
 .ui-menu {
   font-size: 1rem !important;
+}
+
+#search-box .ui-state-focus {
+  box-shadow: none;
+}
+#search-box input {
+  height: auto;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.bg-dark-blue {
+  background-color: #1758bf !important;
+}
+body, html {
+  font-family: "Nunito", sans-serif;
+}
+
+.font-normal {
+  font-size: 1rem;
+}
+
+.font-sm {
+  font-size: 0.5rem;
+}
+
+.font-md {
+  font-size: 0.8rem;
+}
+
+.font-lg {
+  font-size: 1.125rem;
+}
+
+.font-xl {
+  font-size: 1.5rem;
+}
+
+.font-2xl {
+  font-size: 2rem;
+}
+
+.font-200 {
+  font-weight: 200;
+}
+
+.font-400 {
+  font-weight: 400;
+}
+
+.font-700 {
+  font-weight: 700;
+}
+.bg-dark-blue {
+  background-color: #1758bf !important;
+}
+
+.text-white {
+  color: #fff;
+}
+.border-0 {
+  border: 0;
+}
+
+.border-r-0 {
+  border-radius: 0;
+}
+
+.border-1 {
+  border: 1px solid;
+}
+
+.border-white {
+  border-color: #fff;
 }
