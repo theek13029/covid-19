@@ -10,55 +10,22 @@
     </h:head>
     <h:body>
 
-        <table style="width: 100%;padding: 5%;">
-            <tr style="padding: 2%;">
-                <td style="padding: 1%;">
-                    | 
-                </td>
-                <td style="padding: 1%;">
-                    sdf
-                </td>
-                <td style="padding: 1%;"> | </td>
-                <td style="padding: 1%;">sdfsdf</td>
-                <td>|</td>
-            </tr>
-        </table>
-        
-        
-Authorized by :	
-			
-Dr. Ajith Pitawela,
-Consultant  Microbilogist,
-Molecular Diagnostic Laboratory, BIA,
-Katunayake.				
-				
-				
-25/5/2021				
+        <h:commandButton value="PCR Positive Data" class="list-group-item list-group-item-action"
+                         action="#{mohController.toPcrPositiveReportsIndexNational()}" >
+        </h:commandButton>
+        <h:commandButton value="RAT Positive Data" class="list-group-item list-group-item-action"
+                         action="#{mohController.toPcrPositiveReportsIndexNational()}" >
+        </h:commandButton>
+        <h:commandButton value="Lab Data" class="list-group-item list-group-item-action"
+                         action="#{nationalController.toLabReportsIndexNational()}" >
+        </h:commandButton>
+        <h:commandButton value="MOH/Hospital Data" class="list-group-item list-group-item-action"
+                         action="#{mohController.toPcrPositiveReportsIndexNational()}" >
+        </h:commandButton>
 
-
-
-
-        <table>
-            <ui:repeat id="rptItems" 
-                       value="#{clientEncounterComponentItemController.items}" 
-                       var="ii" >
-                <tr>
-                    <td>
-                        <p:outputLabel for="itStC" value="#{ii.name}" ></p:outputLabel>
-                    </td>
-                    <td>
-                        <p:inputText id="itStC" value="#{ii.shortTextValue}" >
-                        </p:inputText>
-                    </td>
-                    <td>
-                        <h:panelGroup rendered="#{ii.displayLastResult}" >
-                            <p:outputLabel value="#{clientEncounterComponentItemController.findFormsetValue(ii)}" ></p:outputLabel>
-                        </h:panelGroup>
-                    </td>
-                </tr>
-            </ui:repeat>
-        </table>
-
+        <p:commandButton ajax="false" value="Cases by Management Plan" class="list-group-item list-group-item-action"
+                         action="#{mohController.toListCasesByManagementForNationalLevel()}" >
+        </p:commandButton>
 
     </h:body>
 </html>
