@@ -515,7 +515,7 @@ public class ClientController implements Serializable {
         return "/client/profile";
     }
 
-   
+
 
     public String toLabReceiveAll() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
@@ -731,7 +731,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.receivedAtLab is not null "
-                + " group by c.institution, c.id";
+                + " group by c.institution, c.referalInstitution";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
@@ -754,7 +754,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and c.resultConfirmed is not null "
-                + " group by c.institution, c.id";
+                + " group by c.institution, c.referalInstitution";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
@@ -2078,7 +2078,7 @@ public class ClientController implements Serializable {
         selectedClientEncounters = null;
         selectedClinic = null;
         yearMonthDay = new YearMonthDay();
-        
+
         DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
         if (dfs == null) {
             JsfUtil.addErrorMessage("No Default Form Set");
