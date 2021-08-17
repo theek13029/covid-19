@@ -28,3 +28,8 @@ src/main/resources/rest/images/primary-roll.gif
 src/main/resources/rest/images/secondary-enabled.gif
 src/main/resources/rest/images/tbsel.png
 src/main/resources/rest/images/tbuns.png
+
+node_modules
+
+# Mac Specific frile
+.DS_Store
