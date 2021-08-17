@@ -87,6 +87,10 @@ public class Person implements Serializable {
     private Item educationStatus;
 
     private String occupation;
+    private String workPlace;
+    private String workplaceContact;
+    
+    
 
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dateOfBirth;
@@ -704,6 +708,22 @@ public class Person implements Serializable {
 
     public void setPhiArea(Area phiArea) {
         this.phiArea = phiArea;
+    }
+
+    public String getWorkPlace() {
+        return workPlace;
+    }
+
+    public void setWorkPlace(String workPlace) {
+        this.workPlace = workPlace;
+    }
+
+    public String getWorkplaceContact() {
+        return workplaceContact;
+    }
+
+    public void setWorkplaceContact(String workplaceContact) {
+        this.workplaceContact = workplaceContact;
     }
 
 }

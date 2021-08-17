@@ -55,6 +55,8 @@ public class SessionController implements Serializable {
     private Institution lastInstitution;
     private Institution lastInstitutionUnit;
     private Institution lastLab;
+    private String lastWorkplace;
+    private String lastContactOfWorkplace;
     
     
 
@@ -81,6 +83,8 @@ public class SessionController implements Serializable {
         return lastRatOrderingCategory;
     }
 
+    
+    
     public void setLastRatOrderingCategory(Item lastRatOrderingCategory) {
         this.lastRatOrderingCategory = lastRatOrderingCategory;
     }
@@ -137,6 +141,22 @@ public class SessionController implements Serializable {
 
     public void setLastLab(Institution lastLab) {
         this.lastLab = lastLab;
+    }
+
+    public String getLastWorkplace() {
+        return lastWorkplace;
+    }
+
+    public void setLastWorkplace(String lastWorkplace) {
+        this.lastWorkplace = lastWorkplace;
+    }
+
+    public String getLastContactOfWorkplace() {
+        return lastContactOfWorkplace;
+    }
+
+    public void setLastContactOfWorkplace(String lastContactOfWorkplace) {
+        this.lastContactOfWorkplace = lastContactOfWorkplace;
     }
     
 }

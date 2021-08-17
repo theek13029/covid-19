@@ -11,32 +11,42 @@
                     <p:focus for="txtTestNo" ></p:focus>
                     <div class="card">
                         <h5 class="card-header">
-                            <p:outputLabel value="PCR Order" ></p:outputLabel>
-                            <p:commandButton class="btn btn-primary"  ajax="false" style="float: left;" tabindex="7"
-                                             action="#{mohController.savePcrAndToNewPcr()}" value="Save and NEW PCR"></p:commandButton>
-                            <p:commandButton class="btn btn-secondary"  ajax="false" style="float: left;" tabindex="8"
-                                             action="#{mohController.savePcrAndToPcrView()}" value="Save and View PCR"></p:commandButton>
+                            <div class="row" >
+                                <div class="col-2" >
+                                    <p:commandButton class="btn btn-primary"  ajax="false" style="float: left;" tabindex="7"
+                                                     action="#{mohController.savePcrAndToNewPcr()}" value="Save and NEW PCR"></p:commandButton>
+                                </div>
+                                <div class="col-2" >
+                                    <p:commandButton class="btn btn-secondary"  ajax="false" style="float: left;" tabindex="8"
+                                                     action="#{mohController.savePcrAndToPcrView()}" value="Save and View PCR"></p:commandButton>
+                                </div>
+                                <div class="col-8" >
+                                    <p:outputLabel value="New PCR Order" ></p:outputLabel>
+                                </div>
+                            </div>
+
+
                         </h5>
                         <h:panelGroup id="gpTest" >
                             <div class="card-body">
-                                <div class="form-group row">
+                                <div class="row">
                                     <div class="col-md-3">
                                         <p:outputLabel value="Test Number"></p:outputLabel>
-                                        <h:inputText id="txtTestNo" class="form-control " 
+                                        <p:inputText id="txtTestNo"  
                                                      value="#{mohController.pcr.encounterNumber}"
-                                                     tabindex="1" >
+                                                     tabindex="1" style="width: 98%;" >
                                             <p:ajax process="txtTestNo" event="blur" ></p:ajax>
-                                        </h:inputText>
+                                        </p:inputText>
                                     </div>
                                     <div class="col-md-3">
                                         <p:outputLabel  value="Ordering Category"
                                                         for="orderingCat"></p:outputLabel>
-                                        <p:selectOneMenu id="orderingCat" class="form-control" 
+                                        <p:selectOneMenu id="orderingCat"  
                                                          required="true" 
                                                          requiredMessage="Please select the category for ordering the test. If you select other, please give that reason under the other area."
                                                          value="#{mohController.pcr.pcrOrderingCategory}" 
                                                          tabindex="102" 
-                                                         style="margin: 0px; padding: 0px; width: 100%;" >
+                                                         style="width: 100%;" >
                                             <f:selectItem itemLabel="Select" ></f:selectItem>
                                             <f:selectItems value="#{mohController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
                                                            itemValue="#{tt}" ></f:selectItems>
@@ -47,7 +57,7 @@
                                     <div class="col-md-3">
                                         <p:outputLabel  value="Lab"></p:outputLabel>
                                         <p:autoComplete id="acLab" style="margin: 0px; padding: 0px; width: 100%;"
-                                                        inputStyleClass="autocomplete"
+                                                        inputStyleClass="autocomplete" inputStyle="width:100%;"
                                                         value="#{mohController.pcr.referalInstitution}"
                                                         forceSelection="true" tabindex="100" 
                                                         completeMethod="#{mohController.completeLab}" 
@@ -66,11 +76,12 @@
                                     <div class="col-md-6">
                                         <p:outputLabel value="Name:" for="name" />
                                         <p:inputText autocomplete="off" 
-                                                     class="form-control" 
+                                                     class="" 
                                                      tabindex="2" 
                                                      id="name" 
                                                      required="true" 
                                                      requiredMessage="Please give a name"
+                                                     style="width: 100%;"
                                                      value="#{mohController.pcr.client.person.name}" title="Name" />
                                     </div>
                                     <div class="col-md-1">
@@ -84,7 +95,7 @@
                                         <p:outputLabel value="PHN No.:" for="phn" />
                                         <p:inputText id="phn" autocomplete="off"
                                                      tabindex="104" 
-                                                     class="form-control" value="#{mohController.pcr.client.phn}" title="Phn" placeholder="New PHN"
+                                                     class="" value="#{mohController.pcr.client.phn}" title="Phn" placeholder="New PHN"
                                                      style="width: 100%;"></p:inputText>
                                     </div>
                                     <div class="col-md-2">
@@ -101,7 +112,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-6">
                                         <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
-                                        <p:inputText id="nic" class="form-control"
+                                        <p:inputText id="nic" class=""
                                                      style="width: 100%;" 
                                                      tabindex="3"  
                                                      autocomplete="off" 
@@ -221,7 +232,7 @@
                                                        action="#{mohController.retrieveLastPhoneForPcr()}" process="lnkLastphone1" update="phone1">
                                             <i class="pi pi-refresh"></i>
                                         </p:commandLink>
-                                        <p:inputText tabindex="5" class="form-control" 
+                                        <p:inputText tabindex="5" class="" style="width: 100%;"
                                                      id="phone1" required="true" 
                                                      requiredMessage="Please select a contact number"
                                                      autocomplete="off" 
@@ -248,11 +259,16 @@
 
 
 
-                                    <div class="col-md-2">
-                                        <p:outputLabel value="Unit/Ward:"  />
-                                        <p:inputText tabindex="114" value="#{mohController.pcr.unitWard}"
-                                                     style="width:100%;"
-                                                     placeholder="Not Known" >
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="Workplace:"  />
+                                        <p:inputText tabindex="114" value="#{mohController.pcr.client.person.workPlace}"
+                                                     style="width:100%;" >
+                                        </p:inputText>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="Workplace Contact:"  />
+                                        <p:inputText tabindex="114" value="#{mohController.pcr.client.person.workplaceContact}"
+                                                     style="width:100%;" >
                                         </p:inputText>
                                     </div>
 

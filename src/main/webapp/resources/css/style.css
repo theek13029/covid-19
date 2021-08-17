@@ -25,7 +25,7 @@ THE SOFTWARE.
 /*
     Created on : Jun 14, 2021, 11:28:37 PM
     Author     : Dinidu Hewage
-*/
+
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css");
 body, * {
@@ -269,3 +269,6 @@ body, html {
 .border-white {
   border-color: #fff;
 }
+
+
+*/
