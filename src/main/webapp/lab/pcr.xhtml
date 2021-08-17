@@ -167,7 +167,7 @@
                                         <p:outputLabel value="Current Residential Address:" for="address" />
                                         <p:commandLink id="lnkLastAddress" style="width: 5%; float: right;"
                                                        action="#{labController.retrieveLastAddressForPcr()}" process="lnkLastAddress" update="address" >
-                                            <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
+                                            <i class="pi pi-refresh"></i>
                                         </p:commandLink>
                                         <p:inputText tabindex="4" 
                                                      id="address" required="true" 
@@ -213,7 +213,7 @@
                                         <p:outputLabel value="Contact Number :" for="phone1" />
                                         <p:commandLink id="lnkLastphone1" style="float: right;" 
                                                        action="#{labController.retrieveLastPhoneForPcr()}" process="lnkLastphone1" update="phone1">
-                                            <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
+                                            <i class="pi pi-refresh"></i>
                                         </p:commandLink>
                                         <p:inputText tabindex="5" class="form-control" 
                                                      id="phone1" required="true" 
@@ -228,7 +228,7 @@
                                         <p:outputLabel value="GN Area:" for="gn" />
                                         <p:commandLink id="lnkLastGn" style="float: right;"  
                                                        action="#{labController.retrieveLastGnPcr()}" process="lnkLastGn" update="gn">
-                                            <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
+                                            <i class="pi pi-refresh"></i>
                                         </p:commandLink>
                                         <p:autoComplete tabindex="6" style="width: 100%;"
                                                         inputStyle="width:100%;"

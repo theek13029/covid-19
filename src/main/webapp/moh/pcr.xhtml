@@ -22,16 +22,16 @@
                                 <div class="form-group row">
                                     <div class="col-md-3">
                                         <p:outputLabel value="Test Number"></p:outputLabel>
-                                        <p:inputText id="txtTestNo" class="form-control " 
+                                        <h:inputText id="txtTestNo" class="form-control " 
                                                      value="#{mohController.pcr.encounterNumber}"
                                                      tabindex="1" >
                                             <p:ajax process="txtTestNo" event="blur" ></p:ajax>
-                                        </p:inputText>
+                                        </h:inputText>
                                     </div>
                                     <div class="col-md-3">
                                         <p:outputLabel  value="Ordering Category"
                                                         for="orderingCat"></p:outputLabel>
-                                        <p:selectOneMenu id="orderingCat"
+                                        <p:selectOneMenu id="orderingCat" class="form-control" 
                                                          required="true" 
                                                          requiredMessage="Please select the category for ordering the test. If you select other, please give that reason under the other area."
                                                          value="#{mohController.pcr.pcrOrderingCategory}" 
@@ -156,7 +156,7 @@
                                         <p:outputLabel value="Current Residential Address:" for="address" />
                                         <p:commandLink id="lnkLastAddress" style="width: 5%; float: right;"
                                                        action="#{mohController.retrieveLastAddressForPcr()}" process="lnkLastAddress" update="address" >
-                                            <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
+                                            <i class="pi pi-refresh"></i>
                                         </p:commandLink>
                                         <p:inputText tabindex="4" 
                                                      id="address" required="true" 
@@ -166,7 +166,7 @@
 
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <p:outputLabel value="District:"  for="district" />
                                         <p:autoComplete required="true" 
                                                         requiredMessage="Please select a district"
@@ -183,7 +183,7 @@
                                     </div>
 
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <p:outputLabel value="MOH Area:" for="moh" />
                                         <p:autoComplete id="moh" 
                                                         tabindex="111" 
@@ -196,40 +196,7 @@
                                         </p:autoComplete>
                                     </div>
 
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Contact Number :" for="phone1" />
-                                        <p:commandLink id="lnkLastphone1" style="float: right;" 
-                                                       action="#{mohController.retrieveLastPhoneForPcr()}" process="lnkLastphone1" update="phone1">
-                                            <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
-                                        </p:commandLink>
-                                        <p:inputText tabindex="5" class="form-control" 
-                                                     id="phone1" required="true" 
-                                                     requiredMessage="Please select a contact number"
-                                                     autocomplete="off" 
-                                                     value="#{mohController.pcr.client.person.phone1}" title="Mobile" 
-                                                     validatorMessage="Please check the number">
-                                        </p:inputText>
-
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="GN Area:" for="gn" />
-                                        <p:commandLink id="lnkLastGn" style="float: right;"  
-                                                       action="#{mohController.retrieveLastGnPcr()}" process="lnkLastGn" update="gn">
-                                            <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
-                                        </p:commandLink>
-                                        <p:autoComplete tabindex="6" style="width: 100%;"
-                                                        inputStyle="width:100%;"
-                                                        id="gn" value="#{mohController.pcr.client.person.gnArea}" 
-                                                        completeMethod="#{mohController.completeGnAreasForPcr}" 
-                                                        var="gn" itemLabel="#{gn.name}" itemValue="#{gn}"
-                                                        maxResults="20" forceSelection="true" placeholder="Not Known"
-                                                        minQueryLength="2">
-                                        </p:autoComplete>
-                                    </div>
-
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <p:outputLabel value="PHI Area:" for="phi" />
                                         <p:autoComplete tabindex="113" 
                                                         id="phi" 
@@ -245,6 +212,41 @@
                                                         placeholder="Not Known" minQueryLength="2">
                                         </p:autoComplete>
                                     </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="Contact Number :" for="phone1" />
+                                        <p:commandLink id="lnkLastphone1" style="float: right;" 
+                                                       action="#{mohController.retrieveLastPhoneForPcr()}" process="lnkLastphone1" update="phone1">
+                                            <i class="pi pi-refresh"></i>
+                                        </p:commandLink>
+                                        <p:inputText tabindex="5" class="form-control" 
+                                                     id="phone1" required="true" 
+                                                     requiredMessage="Please select a contact number"
+                                                     autocomplete="off" 
+                                                     value="#{mohController.pcr.client.person.phone1}" title="Mobile" 
+                                                     validatorMessage="Please check the number">
+                                        </p:inputText>
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="GN Area:" for="gn" />
+                                        <p:commandLink id="lnkLastGn" style="float: right;"  
+                                                       action="#{mohController.retrieveLastGnPcr()}" process="lnkLastGn" update="gn">
+                                            <i class="pi pi-refresh"></i>
+                                        </p:commandLink>
+                                        <p:autoComplete tabindex="6" style="width: 100%;"
+                                                        inputStyle="width:100%;"
+                                                        id="gn" value="#{mohController.pcr.client.person.gnArea}" 
+                                                        completeMethod="#{mohController.completeGnAreasForPcr}" 
+                                                        var="gn" itemLabel="#{gn.name}" itemValue="#{gn}"
+                                                        maxResults="20" forceSelection="true" placeholder="Not Known"
+                                                        minQueryLength="2">
+                                        </p:autoComplete>
+                                    </div>
+
+
 
                                     <div class="col-md-2">
                                         <p:outputLabel value="Unit/Ward:"  />
