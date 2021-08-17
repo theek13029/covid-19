@@ -11,9 +11,8 @@
         <h:head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-            <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"></link>
             <link rel="shortcut icon" href="#{resource['image/favicon.ico']}" type="image/x-icon" />
-            <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+            <h:outputStylesheet library="css" name="adminlte.min.css"></h:outputStylesheet>
             <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
             <h:outputStylesheet library="css" name="all.min.css"></h:outputStylesheet>
             <title >
@@ -25,32 +24,7 @@
 
         <h:body>
             <h:panelGroup rendered="#{webUserController.loggedUser ne null}">
-                <div class="container-fluid">
-                    <div class="row align-items-center">
-                        <div class="col-sm-5 col-lg-5 nchis_head flex align-center">
-                            <h:graphicImage library="image" name="sllogo.png"></h:graphicImage>
-                            <h4>National COVID-19 Health Information System</h4>
-                        </div>
-                        <div class="col-sm-7 col-lg-7">
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <h:form>
-                                        <div class="ui-inputgroup input-group-lg m-0">
-                                            <p:inputText class="col-lg-10" autocomplete="off" value="#{clientController.searchingId}" placeholder="Search Here..."/>
-                                            <p:commandButton class="btn btn-primary" ajax="false" action="#{clientController.searchByAnyIdWithBasicData()}" icon="ui-icon-search" value="Search"></p:commandButton>
-                                        </div>
-                                    </h:form>
-                                </div>
-                                <div class="col-md-4 offset-md-1">
-                                    <h:form class="form">
-                                        <p:outputLabel class="name-title" value="#{webUserController.loggedUser.person.nameWithTitle}"></p:outputLabel>
-                                        <p:commandButton styleClass="ui-button-secondary" action="#{webUserController.logOut()}" ajax="false" value="Logout" />
-                                    </h:form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <ez:header></ez:header>
             </h:panelGroup>
 
             <h:panelGroup rendered="#{webUserController.loggedUser ne null}" >
@@ -86,9 +60,8 @@
             </ui:insert>
 
             <ez:footer/>
-
             <h:outputScript library="js" name="bootstrap.bundle.min.js"></h:outputScript>
-            <h:outputScript library="js" name="sb-admin-2.min.js"></h:outputScript>
+            <h:outputScript library="js" name="adminlte.min.js"></h:outputScript>
             <h:outputScript library="js" name="jquery.easing.min.js"></h:outputScript>
         </h:body>
     </f:view>
