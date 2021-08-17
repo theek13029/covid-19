@@ -23,6 +23,7 @@
  */
 package lk.gov.health.phsp.pojcs;
 
+import java.util.Date;
 import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.Institution;
 
@@ -34,6 +35,8 @@ public class CovidData {
 
     private Institution institution;
     private Area area;
+    private Date from;
+    private Date to;
 
     private Long todaysCases;
     private Long yesterdaysCases;
@@ -67,6 +70,8 @@ public class CovidData {
     private Long lastMonthRats;
     private Long thisYearRats;
 
+    
+    
     public Long getTodaysCases() {
         return todaysCases;
     }
@@ -307,6 +312,22 @@ public class CovidData {
 
     public void setThisYearTests(Long thisYearTests) {
         this.thisYearTests = thisYearTests;
+    }
+
+    public Date getFrom() {
+        return from;
+    }
+
+    public void setFrom(Date from) {
+        this.from = from;
+    }
+
+    public Date getTo() {
+        return to;
+    }
+
+    public void setTo(Date to) {
+        this.to = to;
     }
 
     

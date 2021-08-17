@@ -1347,14 +1347,13 @@ public class ProvincialController implements Serializable {
         return "/regional/list_of_tests";
     }
 
-    public String toListCasesByManagementForRegionalLevel() {
+    public String toListCasesByManagement() {
         Map m = new HashMap();
         String j = "select distinct(c) "
                 + " from ClientEncounterComponentItem ci join ci.encounter c "
                 + " where (c.retired is null or c.retired=:ret) ";
         m.put("ret", false);
 
-//        ClientEncounterComponentItem ci;
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Case_Enrollment);
 
@@ -1369,9 +1368,7 @@ public class ProvincialController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
 
         if (managementType != null) {
             j += " and (ci.item.code=:mxplan and ci.itemValue.code=:planType) ";
@@ -1384,13 +1381,9 @@ public class ProvincialController implements Serializable {
 
         j += " group by c";
 
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
-
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
 
-        return "/regional/list_of_cases_by_management_plan";
+        return "/provincial/list_of_cases_by_management_plan";
     }
 
     public String toListCasesByManagementForNationalLevel() {

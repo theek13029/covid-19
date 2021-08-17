@@ -6,13 +6,13 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <h:body>
+    <body>
 
-       <ui:composition template="/regional/reports_index.xhtml">
+        <ui:composition template="/regional/reports_index.xhtml">
             <ui:define name="reports">
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="First Contacts" ></p:outputLabel>
+                        <p:outputLabel value="First Contacts List" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
@@ -20,30 +20,23 @@
                         <p:panelGrid columns="2" >
                             <p:panelGrid columns="2" >
                             <p:outputLabel value="From" ></p:outputLabel>
-                            <p:calendar value="#{provincialController.fromDate}" 
+                            <p:calendar value="#{nationalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
                             <p:outputLabel value="To" ></p:outputLabel>
-                            <p:calendar value="#{provincialController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
-                            
-                            <p:outputLabel value="Plan of Management" ></p:outputLabel>
-                            <p:selectOneMenu value="#{provincialController.managementType}" >
-                                <f:selectItem itemLabel="Any" ></f:selectItem>
-                                <f:selectItems value="#{provincialController.managementTypes}" var="m" itemLabel="#{m.name}"
-                                               itemValue="#{m}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{provincialController.toListCasesByManagement()}" ></p:commandButton>
+                                             action="#{nationalController.toListOfFirstContacts()}" ></p:commandButton>
                             </p:panelGrid>
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{provincialController.cecItems}" rendered="true"
+                        <p:dataTable id="tbl" value="#{nationalController.cecItems}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
@@ -52,7 +45,7 @@
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
-                                     selection="#{provincialController.selectedCecis}"
+                                     selection="#{nationalController.selectedCecis}"
                                      >
                             <p:column selectionMode="multiple" width="30"></p:column>
                             <p:column headerText="Name"  sortBy="#{c.shortTextValue}" filterBy="#{c.shortTextValue}" filterMatchMode="contains">
@@ -70,14 +63,16 @@
                                       filterBy="#{c.areaValue2.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.areaValue2.name}" ></p:outputLabel>
                             </p:column>
-                           
+                            <p:column headerText="MOH"  sortBy="#{c.areaValue.name}"
+                                      filterBy="#{c.areaValue.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.areaValue.name}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Actions" exportable="false" rendered="false" >
-                                <p:commandLink value="Order PCR" action="#{provincialController.toViewTest()}" ajax="false" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{provincialController.test}" ></f:setPropertyActionListener>
+                                <p:commandLink value="View Order" action="#{nationalController.toViewTest()}" ajax="false" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{nationalController.test}" ></f:setPropertyActionListener>
                                 </p:commandLink>
-                                <p:outputLabel value=" | " ></p:outputLabel>
-                                <p:commandLink value="Order RAT" action="#{provincialController.toViewResult()}" ajax="false" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{provincialController.test}" ></f:setPropertyActionListener>
+                                <p:commandLink value="View Results" action="#{nationalController.toViewResult()}" ajax="false" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{nationalController.test}" ></f:setPropertyActionListener>
                                 </p:commandLink>
                             </p:column>
                         </p:dataTable>
@@ -90,5 +85,5 @@
 
         </ui:composition>
 
-    </h:body>
+    </body>
 </html>
