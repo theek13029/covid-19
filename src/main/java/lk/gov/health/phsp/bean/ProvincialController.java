@@ -715,7 +715,7 @@ public class ProvincialController implements Serializable {
         return "/provincial/count_of_results_by_lab";
     }
 
-    public String toListOfTestsWithoutMohForRegionalLevel() {
+    public String toListOfTestsWithoutMoh() {
         Map m = new HashMap();
         String j = "select c "
                 + " from Encounter c "
@@ -731,9 +731,9 @@ public class ProvincialController implements Serializable {
             j += " and c.institution=:ins ";
             m.put("ins", mohOrHospital);
         } else {
-            j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
-            m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
-            m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
+            j += " and (c.institution.province=:pdhs or c.client.person.province=:province) ";
+            m.put("pdhs", webUserController.getLoggedUser().getInstitution().getPdhsArea());
+            m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
         }
 
         j += " and c.createdAt between :fd and :td ";
@@ -763,7 +763,7 @@ public class ProvincialController implements Serializable {
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
 
-        return "/regional/list_of_tests_without_moh";
+        return "/provincial/list_of_tests_without_moh";
     }
 
     public String toListOfFirstContactsWithoutMohForRegionalLevel() {
@@ -828,7 +828,7 @@ public class ProvincialController implements Serializable {
         return "/moh/order_tests_for_moh";
     }
 
-    public String toListOfFirstContactsForRegionalLevel() {
+    public String toListOfFirstContacts() {
         Map m = new HashMap();
         String j = "select ci "
                 + " from ClientEncounterComponentItem ci"
@@ -843,8 +843,8 @@ public class ProvincialController implements Serializable {
         j += " and ci.item.code=:code ";
         m.put("code", "first_contacts");
 
-        j += " and ci.areaValue2=:district ";
-        m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
+        j += " and ci.areaValue2.province=:province ";
+        m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
@@ -855,7 +855,7 @@ public class ProvincialController implements Serializable {
         System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("cecItems = " + cecItems.size());
-        return "/regional/list_of_first_contacts";
+        return "/provincial/list_of_first_contacts";
     }
 
     public String toListOfInvestigatedCasesForMoh() {

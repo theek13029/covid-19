@@ -57,9 +57,9 @@ import lk.gov.health.phsp.pojcs.InstitutionCount;
  *
  * @author buddhika
  */
-@Named(value = "mohController")
+@Named
 @SessionScoped
-public class MohController implements Serializable {
+public class HospitalController implements Serializable {
 // <editor-fold defaultstate="collapsed" desc="EJBs">
 
     @EJB
@@ -142,7 +142,7 @@ public class MohController implements Serializable {
 
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Constructors">
-    public MohController() {
+    public HospitalController() {
     }
 // </editor-fold>
 
@@ -165,7 +165,7 @@ public class MohController implements Serializable {
         m.put("stl", false);
         m.put("ins", webUserController.getLoggedUser().getInstitution());
         listedToDispatch = encounterFacade.findByJpql(j, m, TemporalType.DATE);
-        return "/moh/dispatch_samples";
+        return "/hospital/dispatch_samples";
     }
 
     
@@ -185,7 +185,7 @@ public class MohController implements Serializable {
         m.put("td", getToDate());
         m.put("ins", webUserController.getLoggedUser().getInstitution());
         listedToDispatch = encounterFacade.findByJpql(j, m, TemporalType.DATE);
-        return "/moh/dispatch_samples";
+        return "/hospital/dispatch_samples";
     }
 
     
@@ -237,15 +237,15 @@ public class MohController implements Serializable {
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
 
-        return "/moh/assign_investigation";
+        return "/hospital/assign_investigation";
     }
 
     public String toStartInvestigation() {
-        return "/moh/start_investigation";
+        return "/hospital/start_investigation";
     }
 
     public String toViewInvestigatedCases() {
-        return "/moh/view_investigated_cases";
+        return "/hospital/view_investigated_cases";
     }
 
     public void assignToInvestigate() {
@@ -597,7 +597,7 @@ public class MohController implements Serializable {
     }
 
     public String toListOfTests() {
-        return "/moh/list_of_tests";
+        return "/hospital/list_of_tests";
     }
 //
 //    public String toListOfTestsWithoutMohForRegionalLevel() {
@@ -680,7 +680,7 @@ public class MohController implements Serializable {
         System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("cecItems = " + cecItems.size());
-        return "/moh/list_of_first_contacts_to_test";
+        return "/hospital/list_of_first_contacts_to_test";
     }
 
 
@@ -745,7 +745,7 @@ public class MohController implements Serializable {
         System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("cecItems = " + cecItems.size());
-        return "/moh/order_tests_for_moh";
+        return "/hospital/order_tests_for_moh";
     }
 
 
@@ -781,7 +781,7 @@ public class MohController implements Serializable {
 
 
     public String toListOfInvestigatedCasesForMoh() {
-        return "/moh/investigated_list";
+        return "/hospital/investigated_list";
     }
 
 //    public String toListOfTestsRegional() {
@@ -811,7 +811,7 @@ public class MohController implements Serializable {
             case System_Administrator:
             case User:
         }
-        return "/moh/list_of_tests";
+        return "/hospital/list_of_tests";
     }
 
     public String toReportsIndex() {
@@ -859,7 +859,7 @@ public class MohController implements Serializable {
             JsfUtil.addErrorMessage("No Client");
             return "";
         }
-        return "/moh/rat_view";
+        return "/hospital/rat_view";
     }
 
     public String toRatOrderView() {
@@ -871,7 +871,7 @@ public class MohController implements Serializable {
             JsfUtil.addErrorMessage("No Client");
             return "";
         }
-        return "/moh/rat_order_view";
+        return "/hospital/rat_order_view";
     }
 
     public String toRatResultView() {
@@ -883,7 +883,7 @@ public class MohController implements Serializable {
             JsfUtil.addErrorMessage("No Client");
             return "";
         }
-        return "/moh/rat_result_view";
+        return "/hospital/rat_result_view";
     }
 
     public String toPcrResultView() {
@@ -895,7 +895,7 @@ public class MohController implements Serializable {
             JsfUtil.addErrorMessage("No Client");
             return "";
         }
-        return "/moh/pcr_result_view";
+        return "/hospital/pcr_result_view";
     }
 
     public String toPcrView() {
@@ -907,7 +907,7 @@ public class MohController implements Serializable {
             JsfUtil.addErrorMessage("No Client");
             return "";
         }
-        return "/moh/pcr_view";
+        return "/hospital/pcr_view";
     }
 
     public String toEditTest() {
@@ -973,7 +973,7 @@ public class MohController implements Serializable {
             JsfUtil.addErrorMessage("Not a RAT");
             return "";
         }
-        return "/moh/rat";
+        return "/hospital/rat";
     }
 
     public String toRatOrderEdit() {
@@ -985,7 +985,7 @@ public class MohController implements Serializable {
             JsfUtil.addErrorMessage("Not a RAT");
             return "";
         }
-        return "/moh/rat_order";
+        return "/hospital/rat_order";
     }
 
     public String toPcrEdit() {
@@ -997,7 +997,7 @@ public class MohController implements Serializable {
             JsfUtil.addErrorMessage("Not a PCR");
             return "";
         }
-        return "/moh/pcr";
+        return "/hospital/pcr";
     }
 
     public List<Area> completeDistricts(String qry) {
@@ -1046,7 +1046,7 @@ public class MohController implements Serializable {
         rat.setResultConfirmedBy(webUserController.getLoggedUser());
 
         rat.setCreatedAt(new Date());
-        return "/moh/rat";
+        return "/hospital/rat";
     }
 
     public String toAddNewRatOrderWithNewClient() {
@@ -1072,7 +1072,7 @@ public class MohController implements Serializable {
         rat.setSampledAt(new Date());
         rat.setSampledBy(webUserController.getLoggedUser());
         rat.setCreatedAt(new Date());
-        return "/moh/rat_order";
+        return "/hospital/rat_order";
     }
 
     public String toAddNewPcrWithNewClient() {
@@ -1098,7 +1098,7 @@ public class MohController implements Serializable {
         pcr.setSampledAt(new Date());
         pcr.setSampledBy(webUserController.getLoggedUser());
         pcr.setCreatedAt(new Date());
-        return "/moh/pcr";
+        return "/hospital/pcr";
     }
 
     public String toAddNewPcrWithExistingNic() {
@@ -1142,7 +1142,7 @@ public class MohController implements Serializable {
         pcr.setSampledAt(new Date());
         pcr.setSampledBy(webUserController.getLoggedUser());
         pcr.setCreatedAt(new Date());
-        return "/moh/pcr";
+        return "/hospital/pcr";
     }
 
     public String toAddNewRatOrderWithExistingNic() {
@@ -1187,7 +1187,7 @@ public class MohController implements Serializable {
         rat.setSampledAt(new Date());
         rat.setSampledBy(webUserController.getLoggedUser());
         rat.setCreatedAt(new Date());
-        return "/moh/rat_order";
+        return "/hospital/rat_order";
     }
 
     public String toAddNewRatWithExistingNic() {
@@ -1238,7 +1238,7 @@ public class MohController implements Serializable {
         rat.setResultConfirmedBy(webUserController.getLoggedUser());
 
         rat.setCreatedAt(new Date());
-        return "/moh/rat";
+        return "/hospital/rat";
     }
 
     public String saveRatAndToNewRat() {
@@ -1363,7 +1363,7 @@ public class MohController implements Serializable {
         sessionController.getRats().put(rat.getId(), rat);
 
         JsfUtil.addSuccessMessage("Saved.");
-        return "/moh/rat_view";
+        return "/hospital/rat_view";
     }
 
     public String savePcr() {
@@ -1443,7 +1443,7 @@ public class MohController implements Serializable {
         sessionController.getPcrs().put(pcr.getId(), pcr);
 
         JsfUtil.addSuccessMessage("PCR Saved.");
-        return "/moh/pcr_view";
+        return "/hospital/pcr_view";
     }
 
     public void retrieveLastAddressForRat() {
@@ -1592,7 +1592,7 @@ public class MohController implements Serializable {
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
-        return "/moh/list_of_tests";
+        return "/hospital/list_of_tests";
     }
 
     public String toDistrictViceTestListForOrderingCategories() {
@@ -1688,7 +1688,7 @@ public class MohController implements Serializable {
             }
         }
         institutionCounts = tics;
-        return "/moh/ordering_category_moh";
+        return "/hospital/ordering_category_moh";
     }
 
     public String toTestRequestDistrictCounts() {
@@ -1711,7 +1711,7 @@ public class MohController implements Serializable {
             m.put("oc", orderingCategory);
         }
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        return "/moh/list_of_tests";
+        return "/hospital/list_of_tests";
     }
 
     public String toTestListWithoutResults() {
@@ -1740,7 +1740,7 @@ public class MohController implements Serializable {
             m.put("ri", lab);
         }
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        return "/moh/list_of_tests_without_results";
+        return "/hospital/list_of_tests_without_results";
     }
 
     public String toListOfTestsRegional() {
@@ -1939,7 +1939,7 @@ public class MohController implements Serializable {
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
-        return "/moh/enter_results";
+        return "/hospital/enter_results";
     }
 
     public List<Item> getCovidTestOrderingCategories() {

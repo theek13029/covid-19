@@ -18,8 +18,11 @@
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
+                        <p:panelGrid columns="3" >
                             <p:panelGrid columns="2" >
+                                <f:facet name="header" >
+                                    <h:outputLabel value="List" ></h:outputLabel>
+                                </f:facet>
                                 <p:outputLabel value="From" ></p:outputLabel>
                                 <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
@@ -32,16 +35,19 @@
                                                 var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                                 </p:autoComplete>
 
-
-                            </p:panelGrid>
-                            <h:panelGrid columns="1" >
                                 <p:commandButton ajax="false" value="Process" 
                                                  action="#{clientController.toLabReceiveSelected()}" ></p:commandButton>
                                 <p:commandButton ajax="false" value="Generate Excel">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="test_to_receive" ></p:dataExporter>
                                 </p:commandButton>
+
+                            </p:panelGrid>
+                            <p:panelGrid columns="1" >
+                                <f:facet name="header" >
+                                    <h:outputLabel value="Receive" ></h:outputLabel>
+                                </f:facet>
                                 <p:panelGrid columns="2" >
-                                    <f:facet name="header" >
+                                    <f:facet name="footer" >
                                         <p:commandButton value="Receive Selected" ajax="false" 
                                                          action="#{clientController.markSelectedAsReceivedResults()}" ></p:commandButton>
                                     </f:facet>
@@ -54,22 +60,36 @@
                                     <p:outputLabel value="Plate No" ></p:outputLabel>
                                     <p:inputText value="#{clientController.plateNo}" ></p:inputText>
                                 </p:panelGrid>
+                            </p:panelGrid>
 
+                            <p:panelGrid columns="1" >
+                                <f:facet name="header" >
+                                    <h:outputLabel value="Other Actions" ></h:outputLabel>
+                                </f:facet>
                                 <p:commandButton value="Reject Selected" ajax="false" 
+                                                 onclick="if (!confirm('Are you sure you want to reject?'))
+                                                             return false"
                                                  action="#{clientController.markSelectedAsRejectAtReceive()}" ></p:commandButton>
                                 <p:commandButton value="Mark not expected at the Lab" ajax="false" 
+                                                 onclick="if (!confirm('Are you sure you want to mark as NOT expected?'))
+                                                             return false"
                                                  action="#{clientController.markUnassigned()}" ></p:commandButton>
-                            </h:panelGrid>
+                            </p:panelGrid>
 
                         </p:panelGrid>
 
 
                         <p:dataTable id="tbl" value="#{clientController.listedToReceive}" 
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10"
+                                     var="c"
                                      selection="#{clientController.selectedToReceive}"
+                                     rowKey="#{c.id}"
+
+                                     rows="10"
+                                     paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                     rowsPerPageTemplate="5,10,25,100,1000"
+                                     rowsPerPageTemplate="10,20,50,{ShowAll|'All'}"
+
                                      >
                             <p:column selectionMode="multiple" width="40" ></p:column>
                             <p:column headerText="Test No" width="90" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
@@ -86,6 +106,13 @@
                             </p:column>
                             <p:column headerText="MOH/Hospital"  sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" >
                                 <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Ward/Unit" sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains" >
+                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
+                                <p:outputLabel value="#{c.institutionUnit.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="BHT" sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains" >
+                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
                     </h:form>
