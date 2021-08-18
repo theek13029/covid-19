@@ -1031,6 +1031,14 @@ public class MohController implements Serializable {
         rat.setResultConfirmedAt(d);
         rat.setResultConfirmedBy(webUserController.getLoggedUser());
 
+        if (sessionController.getLastWorkplace() != null) {
+            rat.getClient().getPerson().setWorkPlace(sessionController.getLastWorkplace());
+        }
+
+        if (sessionController.getLastContactOfWorkplace() != null) {
+            rat.getClient().getPerson().setWorkplaceContact(sessionController.getLastContactOfWorkplace());
+        }
+
         rat.setCreatedAt(new Date());
         return "/moh/rat";
     }
@@ -1058,6 +1066,15 @@ public class MohController implements Serializable {
         rat.setSampledAt(new Date());
         rat.setSampledBy(webUserController.getLoggedUser());
         rat.setCreatedAt(new Date());
+
+        if (sessionController.getLastWorkplace() != null) {
+            rat.getClient().getPerson().setWorkPlace(sessionController.getLastWorkplace());
+        }
+
+        if (sessionController.getLastContactOfWorkplace() != null) {
+            rat.getClient().getPerson().setWorkplaceContact(sessionController.getLastContactOfWorkplace());
+        }
+
         return "/moh/rat_order";
     }
 
@@ -1354,6 +1371,15 @@ public class MohController implements Serializable {
         encounterController.save(rat);
 
         sessionController.setLastRatOrderingCategory(rat.getPcrOrderingCategory());
+
+        if (rat.getClient().getPerson().getWorkPlace() != null) {
+            sessionController.setLastWorkplace(rat.getClient().getPerson().getWorkPlace());
+        }
+
+        if (rat.getClient().getPerson().getWorkplaceContact() != null) {
+            sessionController.setLastContactOfWorkplace(rat.getClient().getPerson().getWorkplaceContact());
+        }
+
         sessionController.setLastRat(rat);
 
         sessionController.getRats().put(rat.getId(), rat);
