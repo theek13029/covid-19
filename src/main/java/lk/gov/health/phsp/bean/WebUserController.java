@@ -354,29 +354,33 @@ public class WebUserController implements Serializable {
         userTransactionController.recordTransaction("To Add New User By InsAdmin");
         return "/insAdmin/user_new";
     }
-    
+
     public String toInsAdmin() {
         return "/insAdmin/index";
     }
 
-    public String toAdministration(){
-        if(loggedUser==null){
+    public String toAdministration() {
+        if (loggedUser == null) {
             JsfUtil.addErrorMessage("Not Logged");
             return "";
         }
-        if(loggedUser.getWebUserRole()==null){
+        if (loggedUser.getWebUserRole() == null) {
             JsfUtil.addErrorMessage("No Role for logged user");
         }
         String url = "";
-        switch(loggedUser.getWebUserRole()){
-            case Pdhs:url = "/provincial/administration/index";break;
+        switch (loggedUser.getWebUserRole()) {
+            case Pdhs:
+                url = "/provincial/administration/index";
+                break;
             case Rdhs:
-            case Re:url = "/regional/administration/index";break;
+            case Re:
+                url = "/regional/administration/index";
+                break;
             default:
         }
         return url;
     }
-    
+
     public void toProcedureRoom() {
         String insList = null;
         String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/redirect";
@@ -647,7 +651,6 @@ public class WebUserController implements Serializable {
         return ins;
     }
 
-
     public String addMarker() {
         Marker marker = new Marker(new LatLng(current.getInstitution().getCoordinate().getLatitude(), current.getInstitution().getCoordinate().getLongitude()), current.getName());
         emptyModel.addOverlay(marker);
@@ -716,13 +719,12 @@ public class WebUserController implements Serializable {
     }
 
     public String loginNew() {
-          System.out.println("loginNew");
+
         loggableInstitutions = null;
         loggablePmcis = null;
         loggableGnAreas = null;
         institutionController.setMyClinics(null);
-        System.out.println("userName = " + userName);
-        System.out.println("password = " + password);
+
         if (userName == null || userName.trim().equals("")) {
             JsfUtil.addErrorMessage("Please enter a Username");
             return "";
@@ -740,7 +742,7 @@ public class WebUserController implements Serializable {
             return "";
         }
 
-          System.out.println("username & password correct");
+        System.out.println("username & password correct");
         loggedUserPrivileges = userPrivilegeList(loggedUser);
 
         JsfUtil.addSuccessMessage("Successfully Logged");
@@ -752,18 +754,34 @@ public class WebUserController implements Serializable {
         toDate = c.getTime();
         c.add(Calendar.DAY_OF_MONTH, -7);
         fromDate = c.getTime();
-        if (loggedUser.isLabDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.Lab) {
-            dashboardController.setFromDate(fromDate);
-            dashboardController.setToDate(toDate);
-            dashboardController.prepareLabDashboard();
-        } else if (loggedUser.isNationalDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.National) {
-            dashboardApplicationController.updateDashboard();
-        } else if (loggedUser.isMohDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.Moh) {
-            dashboardController.prepareMohDashboard();
-        } else if (loggedUser.isRegionalDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.Regional) {
-            dashboardController.prepareRegionalDashboard();
-        } else if (loggedUser.isProvincialDashboard()||loggedUser.getWebUserRoleLevel()==WebUserRoleLevel.Provincial) {
-            dashboardController.prepareProvincialDashboard();
+
+        if (null != loggedUser.getWebUserRoleLevel()) {
+            switch (loggedUser.getWebUserRoleLevel()) {
+                case Lab:
+                    dashboardController.setFromDate(fromDate);
+                    dashboardController.setToDate(toDate);
+                    dashboardController.prepareLabDashboard();
+                    break;
+                case National:
+                case National_Lab:
+                    dashboardApplicationController.updateDashboard();
+                    break;
+                case Moh:
+                    dashboardController.prepareMohDashboard();
+                    break;
+                case Regional:
+                    dashboardController.prepareRegionalDashboard();
+                    break;
+                case Provincial:
+                    dashboardController.prepareProvincialDashboard();
+                    break;
+                case Hospital:
+                    dashboardController.prepareHospitalDashboard();
+                    break;
+
+                default:
+                    break;
+            }
         }
         fillUsersForMyInstitute();
         fillAreasForMe();
@@ -862,7 +880,7 @@ public class WebUserController implements Serializable {
     }
 
     private boolean checkLoginNew() {
-          System.out.println("checkLoginNew");
+        System.out.println("checkLoginNew");
         if (getFacade() == null) {
             JsfUtil.addErrorMessage("Server Error");
             return false;
@@ -1893,7 +1911,6 @@ public class WebUserController implements Serializable {
         this.selectedProvinces = selectedProvinces;
     }
 
-
     public List<Area> getSelectedGnAreas() {
         return selectedGnAreas;
     }
@@ -2091,8 +2108,6 @@ public class WebUserController implements Serializable {
     public void setSelectedNodes(TreeNode[] selectedNodes) {
         this.selectedNodes = selectedNodes;
     }
-
-
 
     public TreeNode getMyPrivilegeRoot() {
         return myPrivilegeRoot;
