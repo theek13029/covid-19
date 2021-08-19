@@ -146,19 +146,16 @@ public class MohController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
-    
-    
-    
     public String toCountOfTestsByGn() {
         Map m = new HashMap();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.gnArea, c.institution, count(c))   "
                 + " from Encounter c "
                 + " where (c.retired is null or c.retired=:ret) ";
         m.put("ret", false);
-        
-        if(false){
+
+        if (false) {
             Encounter c = new Encounter();
-           c.getClient().getPerson().getMohArea();
+            c.getClient().getPerson().getMohArea();
 //           c.client.person.gnArea
         }
 
@@ -207,7 +204,7 @@ public class MohController implements Serializable {
 
         return "/moh/count_of_tests_by_gn";
     }
-    
+
     public String toCountOfResultsByGnArea() {
         Map m = new HashMap();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.gnArea, c.institution, count(c))   "
@@ -216,10 +213,10 @@ public class MohController implements Serializable {
         m.put("ret", false);
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
-        
+
         j += " and (c.client.person.mohArea=:moh) ";
         m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
-        
+
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
         m.put("td", getToDate());
@@ -234,7 +231,7 @@ public class MohController implements Serializable {
         if (result != null) {
             j += " and c.pcrResult=:result ";
             m.put("result", result);
-        }else{
+        } else {
             j += " and c.pcrResult in :results ";
             m.put("results", itemApplicationController.getPcrResults());
         }
@@ -248,12 +245,11 @@ public class MohController implements Serializable {
         institutionCounts = new ArrayList<>();
 
         List<Object> objCounts = encounterFacade.findAggregates(j, m);
-        
+
         System.out.println("j = " + j);
         System.out.println("m = " + m);
         System.out.println("objCounts.size() = " + objCounts.size());
-        
-        
+
         if (objCounts == null || objCounts.isEmpty()) {
             return "/moh/count_of_results_by_gn";
         }
@@ -266,7 +262,7 @@ public class MohController implements Serializable {
 
         return "/moh/count_of_results_by_gn";
     }
-    
+
     public String toCountOfResultsByPhiArea() {
         Map m = new HashMap();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.gnArea, c.institution, count(c))   "
@@ -275,10 +271,10 @@ public class MohController implements Serializable {
         m.put("ret", false);
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
-        
+
         j += " and (c.client.person.mohArea=:moh) ";
         m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
-        
+
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
         m.put("td", getToDate());
@@ -316,17 +312,17 @@ public class MohController implements Serializable {
 
         return "/moh/count_of_results_by_phi";
     }
-    
+
     public String toCountOfTestsByPhi() {
         Map m = new HashMap();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.phiArea, c.institution, count(c))   "
                 + " from Encounter c "
                 + " where (c.retired is null or c.retired=:ret) ";
         m.put("ret", false);
-        
-        if(false){
+
+        if (false) {
             Encounter c = new Encounter();
-           c.getClient().getPerson().getPhiArea();
+            c.getClient().getPerson().getPhiArea();
 //           c.client.person.gnArea
         }
 
@@ -375,8 +371,7 @@ public class MohController implements Serializable {
 
         return "/moh/count_of_tests_by_phi";
     }
-    
-    
+
     public String toDispatchSamplesByMohOrHospital() {
         String j = "select c "
                 + " from Encounter c "
@@ -595,18 +590,6 @@ public class MohController implements Serializable {
         fromDate = CommonController.startOfTheDate();
         toDate = CommonController.endOfTheDate();
         return "/national/pcr_positive_links";
-    }
-
-    public String toLabReportsIndexNational() {
-        fromDate = CommonController.startOfTheDate();
-        toDate = CommonController.endOfTheDate();
-        return "/national/lab_report_links";
-    }
-
-    public String toResultList() {
-        fromDate = CommonController.startOfTheDate();
-        toDate = CommonController.endOfTheDate();
-        return "/national/lab_report_links";
     }
 
     public String toPcrPositiveCasesList() {
@@ -1064,7 +1047,7 @@ public class MohController implements Serializable {
 
     public String toDeleteTestFromTestList() {
         deleteTest();
-        return toTestList();
+        return toListOfResults();
     }
 
     public String toRatView() {
@@ -1811,10 +1794,8 @@ public class MohController implements Serializable {
         }
     }
 
-    public String toTestList() {
-        System.out.println("toTestList");
+    public String toListOfResultsOrderedFromOtherInstitutes() {
         Map m = new HashMap();
-
         String j = "select c "
                 + " from Encounter c "
                 + " where (c.retired is null or c.retired=:ret) ";
@@ -1823,15 +1804,16 @@ public class MohController implements Serializable {
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
 
-        j += " and c.institution=:ins ";
+        j += " and c.client.person.mohArea=:moh ";
+        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
+
+        j += " and c.institution <> :ins ";
         m.put("ins", webUserController.getLoggedUser().getInstitution());
 
-        //c.client.person.mohArea = :moh
-        j += " and c.createdAt between :fd and :td ";
+        j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
+
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -1853,7 +1835,53 @@ public class MohController implements Serializable {
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
-        return "/moh/list_of_tests";
+
+        return "/moh/list_of_results_from_other_institutions";
+    }
+
+    public String toListOfResults() {
+        System.out.println("toTestList");
+        Map m = new HashMap();
+
+        String j = "select c "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and c.institution=:ins ";
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
+
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        System.out.println("getFromDate() = " + getFromDate());
+        m.put("td", getToDate());
+        System.out.println(" getToDate() = " + getToDate());
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+
+        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("tests = " + tests.size());
+        return "/moh/list_of_results";
     }
 
     public String toDistrictViceTestListForOrderingCategories() {

@@ -100,7 +100,7 @@
                                         <div class="col-12 p-2">
                                             <h:form>
                                                 <h:commandLink value="Result List" 
-                                                               action="#{mohController.toListOfTests()}" 
+                                                               action="#{mohController.toListOfResults()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block"
                                                                >
                                                 </h:commandLink>
@@ -112,7 +112,7 @@
                                             <h:form>
                                                 <h:commandLink value="List of Tests without MOH"
                                                                class="btn btn-outline-primary btn-lg btn-block"
-                                                               action="#{provincialController.toListOfTestsWithoutMoh()}">
+                                                               action="#{mohController.toListOfResultsOrderedFromOtherInstitutes()}">
                                                 </h:commandLink>
                                             </h:form>
                                         </div>
