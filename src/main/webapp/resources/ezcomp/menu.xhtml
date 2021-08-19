@@ -22,7 +22,7 @@
                     <p:menuitem ajax="false" value="Dispatch Samples" action="#{mohController.toDispatchSamplesByMohOrHospital()}"/>
                     <p:menuitem ajax="false" value="Enter Results" action="#{mohController.toEnterResults()}" />
                     <p:menuitem ajax="false" rendered="false" value="Print Results" action="#{clientController.toMohToSelectForPrinting()}" />
-                    <p:menuitem ajax="false" value="View Results" action="#{mohController.toListOfTests()}" />
+                    <p:menuitem ajax="false" value="View Results" action="#{mohController.toTestList()}" />
                 </p:submenu>
                 <p:submenu label="Tests" rendered="#{webUserController.hasPrivilege('Client_Management') and webUserController.loggedUser.webUserRoleLevel eq 'Hospital' }" >
                     <p:menuitem ajax="false" value="New PCR" action="#{hospitalController.toAddNewPcrWithNewClient()}" />

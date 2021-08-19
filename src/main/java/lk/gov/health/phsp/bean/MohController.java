@@ -146,6 +146,237 @@ public class MohController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
+    
+    
+    
+    public String toCountOfTestsByGn() {
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.gnArea, c.institution, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        
+        if(false){
+            Encounter c = new Encounter();
+           c.getClient().getPerson().getMohArea();
+//           c.client.person.gnArea
+        }
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and (c.client.person.mohArea=:moh) ";
+        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
+
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        j += " group by c.client.person.gnArea, c.institution"
+                + " order by c.client.person.gnArea.name ";
+
+        institutionCounts = new ArrayList<>();
+
+        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        if (objCounts == null || objCounts.isEmpty()) {
+            return "/moh/count_of_tests_by_gn";
+        }
+        for (Object o : objCounts) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                institutionCounts.add(ic);
+            }
+        }
+
+        return "/moh/count_of_tests_by_gn";
+    }
+    
+    public String toCountOfResultsByGnArea() {
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.gnArea, c.institution, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        
+        j += " and (c.client.person.mohArea=:moh) ";
+        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
+        
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }else{
+            j += " and c.pcrResult in :results ";
+            m.put("results", itemApplicationController.getPcrResults());
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        j += " group by c.client.person.gnArea, c.institution"
+                + " order by c.client.person.gnArea.name ";
+
+        institutionCounts = new ArrayList<>();
+
+        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        System.out.println("objCounts.size() = " + objCounts.size());
+        
+        
+        if (objCounts == null || objCounts.isEmpty()) {
+            return "/moh/count_of_results_by_gn";
+        }
+        for (Object o : objCounts) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                institutionCounts.add(ic);
+            }
+        }
+
+        return "/moh/count_of_results_by_gn";
+    }
+    
+    public String toCountOfResultsByPhiArea() {
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.gnArea, c.institution, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        
+        j += " and (c.client.person.mohArea=:moh) ";
+        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
+        
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        j += " group by c.client.person.gnArea, c.institution"
+                + " order by c.client.person.gnArea.name ";
+
+        institutionCounts = new ArrayList<>();
+
+        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        if (objCounts == null || objCounts.isEmpty()) {
+            return "/moh/count_of_results_by_phi";
+        }
+        for (Object o : objCounts) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                institutionCounts.add(ic);
+            }
+        }
+
+        return "/moh/count_of_results_by_phi";
+    }
+    
+    public String toCountOfTestsByPhi() {
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.phiArea, c.institution, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        
+        if(false){
+            Encounter c = new Encounter();
+           c.getClient().getPerson().getPhiArea();
+//           c.client.person.gnArea
+        }
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and (c.client.person.mohArea=:moh) ";
+        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
+
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        j += " group by c.client.person.phiArea, c.institution"
+                + " order by c.client.person.phiArea.name ";
+
+        institutionCounts = new ArrayList<>();
+
+        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        if (objCounts == null || objCounts.isEmpty()) {
+            return "/moh/count_of_tests_by_phi";
+        }
+        for (Object o : objCounts) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                institutionCounts.add(ic);
+            }
+        }
+
+        return "/moh/count_of_tests_by_phi";
+    }
+    
+    
     public String toDispatchSamplesByMohOrHospital() {
         String j = "select c "
                 + " from Encounter c "
