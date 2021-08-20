@@ -1839,6 +1839,65 @@ public class MohController implements Serializable {
         return "/moh/list_of_results_from_other_institutions";
     }
 
+    public String toListOfFirstContacts() {
+        Map m = new HashMap();
+        String j = "select ci "
+                + " from ClientEncounterComponentItem ci"
+                + " join ci.encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+//        ClientEncounterComponentItem ci = new ClientEncounterComponentItem();
+//        ci.getItem().getCode();
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Case_Enrollment);
+
+        j += " and ci.item.code=:code ";
+        m.put("code", "first_contacts");
+
+        j += " and ci.areaValue=:moh ";
+        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
+
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("cecItems = " + cecItems.size());
+        return "/moh/list_of_first_contacts";
+    }
+
+    public String toListCasesByManagement() {
+        Map m = new HashMap();
+        String j = "select distinct(c) "
+                + " from ClientEncounterComponentItem ci join ci.encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Case_Enrollment);
+
+        j += " and (c.client.person.mohArea=:moh) ";
+        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
+
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+
+        if (managementType != null) {
+            j += " and (ci.item.code=:mxplan and ci.itemValue.code=:planType) ";
+            m.put("mxplan", "placement_of_diagnosed_patient");
+            m.put("planType", managementType.getCode());
+        } else {
+            j += " and ci.item.code=:mxplan ";
+            m.put("mxplan", "placement_of_diagnosed_patient");
+        }
+
+        j += " group by c";
+
+        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+
+        return "/moh/list_of_cases_by_management_plan";
+    }
+
     public String toListOfResults() {
         System.out.println("toTestList");
         Map m = new HashMap();
