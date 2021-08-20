@@ -5,37 +5,23 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
       xmlns:p="http://primefaces.org/ui">
-
     <h:head >
         <ui:define name="title" >
             <title >The Natinal COVID-19 Health Information System</title>
-
         </ui:define>
-
     </h:head>
-
     <h:body>
-
         <ui:composition template="./template1.xhtml">
-
             <ui:define name="content" >
-                <div style="width: 100%;margin:10px;" >
-
-
-
+                <div>
                     <ez:dashboardLab  rendered="#{webUserController.loggedUser.labDashboard}"/>
                     <ez:dashboardNational rendered="#{webUserController.loggedUser.nationalDashboard}"/>
                     <ez:dashboardMoh rendered="#{webUserController.loggedUser.mohDashboard}"/>
                     <ez:dashboardProvincial rendered="#{webUserController.loggedUser.provincialDashboard}"/>
                     <ez:dashboardRegional rendered="#{webUserController.loggedUser.regionalDashboard}"/>
-
-
                     <h:panelGroup rendered="false">
-
                         <ez:dashboardHospital rendered="#{webUserController.loggedUser.hospitalDashboard}"/>
-
                     </h:panelGroup>
-
                 </div>
             </ui:define>
         </ui:composition>
