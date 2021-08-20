@@ -9,17 +9,26 @@
                     <p:focus for="result" ></p:focus>
                     <div class="card">
                         <h5 class="card-header">
-                            <p:outputLabel value="RAT Details" ></p:outputLabel>
-                            <p:commandButton class="btn btn-primary"  ajax="false"
-                                             style="float: left;" tabindex="7"
-                                             action="#{hospitalController.saveRatAndToNewRat()}" value="Save and NEW RAT"></p:commandButton>
-                            <p:commandButton class="btn btn-secondary"  ajax="false"
-                                             style="float: left;" tabindex="8"
-                                             action="#{hospitalController.saveRatAndToRatView()}" value="Save and View RAT"></p:commandButton>
+                            <div class="row" >
+                                <div class="col-2" >
+                                    <p:commandButton class="btn btn-primary"  ajax="false"
+                                                     style="float: left;" tabindex="7"
+                                                     action="#{hospitalController.saveRatAndToNewRat()}" value="Save and NEW RAT"></p:commandButton>
+                                </div>
+                                <div class="col-2" >
+                                    <p:commandButton class="btn btn-secondary"  ajax="false"
+                                                     style="float: left;" tabindex="8"
+                                                     action="#{hospitalController.saveRatAndToRatView()}" value="Save and View RAT"></p:commandButton>
+                                </div>
+                                <div class="col-8" >
+                                    <p:outputLabel value="RAT Details" ></p:outputLabel>
+                                </div>
+                            </div>
+
                         </h5>
 
                         <h:panelGroup id="gpTest" >
-                            <div class="card-body #{hospitalController.rat.pcrResult.name eq 'Positive'?'text-danger':''}">
+                            <div class="card-body #{hospitalController.rat.pcrResult.name eq 'Positive'?'text-warning':''}">
                                 <div class="form-group row">
                                     <div class="col-md-3" >
                                         <p:outputLabel for="result" value="Result"></p:outputLabel>
@@ -42,6 +51,15 @@
                                     </div>
 
                                     <div class="col-md-3">
+                                        <p:outputLabel value="Test Number"></p:outputLabel>
+                                        <p:inputText id="txtTestNo"  
+                                                     value="#{hospitalController.rat.encounterNumber}"
+                                                     tabindex="1" style="width: 98%;" >
+                                            <p:ajax process="txtTestNo" event="blur" ></p:ajax>
+                                        </p:inputText>
+                                    </div>
+
+                                    <div class="col-md-3">
                                         <p:outputLabel  value="Ordering Category"
                                                         for="orderingCat"></p:outputLabel>
                                         <p:selectOneMenu id="orderingCat"
@@ -56,15 +74,19 @@
                                         </p:selectOneMenu>
                                     </div>
 
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Sampled at"></p:outputLabel>
-                                        <p:calendar style="width: 100%;" inputStyle="width:100%;"  value="#{hospitalController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
+                                    <div class="col-md-2">
+                                        <p:outputLabel for="unitward" value="Unit/Ward:"  />
+                                        <p:inputText tabindex="114"
+                                                     id="unitward"
+                                                     value="#{hospitalController.rat.unitWard}"
+                                                     style="width:100%;"
+                                                     required="true"
+                                                     autocomplete="on"
+                                                     requiredMessage="Enter a Unit / Ward / Clinic">
+                                        </p:inputText>
                                     </div>
 
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Result at"></p:outputLabel>
-                                        <p:calendar  style="width: 100%;" inputStyle="width:100%;"  value="#{hospitalController.rat.resultConfirmedAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
-                                    </div>
+
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-6">
@@ -77,20 +99,7 @@
                                                      requiredMessage="Please give a name"
                                                      value="#{hospitalController.rat.client.person.name}" title="Name" />
                                     </div>
-                                    <div class="col-md-1">
-                                        <p:outputLabel value="Citizenship:" for="citizenship" />
-                                        <p:selectOneMenu id="citizenship" value="#{hospitalController.rat.client.person.citizenship}"
-                                                         tabindex="103" >
-                                            <f:selectItems value="#{hospitalController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}"></f:selectItems>
-                                        </p:selectOneMenu>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <p:outputLabel value="PHN No.:" for="phn" />
-                                        <p:inputText id="phn" autocomplete="off"
-                                                     tabindex="104" 
-                                                     class="form-control" value="#{hospitalController.rat.client.phn}" title="Phn" placeholder="New PHN"
-                                                     style="width: 100%;"></p:inputText>
-                                    </div>
+
                                     <div class="col-md-2">
                                         <p:outputLabel value="Other Ordering Category:"  />
                                         <p:inputText value="#{hospitalController.rat.pcrOrderingCategoryOther}" 
@@ -206,45 +215,30 @@
                                         </p:inputText>
 
                                     </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="GN Area:" for="gn" />
-                                        <p:commandLink id="lnkLastGn" style="float: right;"  
-                                                       action="#{hospitalController.retrieveLastGnRat()}" process="lnkLastGn" update="gn">
-                                            <i class="pi pi-refresh"></i>
-                                        </p:commandLink>
-                                        <p:autoComplete tabindex="6" style="width: 100%;"
-                                                        inputStyle="width:100%;"
-                                                        id="gn" value="#{hospitalController.rat.client.person.gnArea}" 
-                                                        completeMethod="#{hospitalController.completeGnAreasForRat}" 
-                                                        var="gn" itemLabel="#{gn.name}" itemValue="#{gn}"
-                                                        maxResults="20" forceSelection="true" placeholder="Not Known"
-                                                        minQueryLength="2">
-                                        </p:autoComplete>
+                                    <div class="col-md-1">
+                                        <p:outputLabel value="Citizenship:" for="citizenship" />
+                                        <p:selectOneMenu id="citizenship" value="#{hospitalController.rat.client.person.citizenship}"
+                                                         tabindex="103" >
+                                            <f:selectItems value="#{hospitalController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}"></f:selectItems>
+                                        </p:selectOneMenu>
                                     </div>
-
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="PHI Area:" for="phi" />
-                                        <p:autoComplete tabindex="113" 
-                                                        id="phi" 
-                                                        value="#{hospitalController.rat.client.person.phiArea}" 
-                                                        completeMethod="#{hospitalController.completePhiAreasForRat}"
-                                                        var="gn" 
-                                                        itemLabel="#{gn.name}" 
-                                                        itemValue="#{gn}" 
-                                                        inputStyle="width:100%;"
-                                                        maxResults="20" 
-                                                        forceSelection="true"
-                                                        style="width:100%;" 
-                                                        placeholder="Not Known" minQueryLength="2">
-                                        </p:autoComplete>
-                                    </div>
-
                                     <div class="col-md-2">
-                                        <p:outputLabel value="Unit/Ward:"  />
-                                        <p:inputText tabindex="114" value="#{hospitalController.rat.unitWard}"
-                                                     style="width:100%;"
-                                                     placeholder="Not Known" >
-                                        </p:inputText>
+                                        <p:outputLabel value="PHN No.:" for="phn" />
+                                        <p:inputText id="phn" autocomplete="off"
+                                                     tabindex="104" 
+                                                     class="form-control" value="#{hospitalController.rat.client.phn}" title="Phn" placeholder="New PHN"
+                                                     style="width: 100%;"></p:inputText>
+                                    </div>
+
+
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="Sampled at"></p:outputLabel>
+                                        <p:calendar style="width: 100%;" inputStyle="width:100%;"  value="#{hospitalController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="Result at"></p:outputLabel>
+                                        <p:calendar  style="width: 100%;" inputStyle="width:100%;"  value="#{hospitalController.rat.resultConfirmedAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
                                     </div>
                                 </div>
                                 <div class="form-group row">

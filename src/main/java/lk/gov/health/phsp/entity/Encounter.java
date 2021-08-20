@@ -67,6 +67,7 @@ public class Encounter implements Serializable {
 
     private String unitWard;
     private String bht;
+    private String comments;
 
     private boolean firstEncounter;
     
@@ -994,6 +995,14 @@ public class Encounter implements Serializable {
 
     public void setBht(String bht) {
         this.bht = bht;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
     
     
