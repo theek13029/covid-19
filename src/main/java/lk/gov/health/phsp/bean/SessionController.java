@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lk.gov.health.phsp.entity.Encounter;
+import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Item;
 
 /**
@@ -51,6 +52,14 @@ public class SessionController implements Serializable {
     private Encounter lastPcr;
     private Item lastRatOrderingCategory;
     private Item lastPcrOrdringCategory;
+    private String lastWardUnit;
+    private Institution lastInstitution;
+    private Institution lastInstitutionUnit;
+    private Institution lastLab;
+    private String lastWorkplace;
+    private String lastContactOfWorkplace;
+    
+    
 
     private Map<Long, Encounter> rats;
     private Map<Long, Encounter> pcrs;
@@ -67,6 +76,8 @@ public class SessionController implements Serializable {
         return lastPcr;
     }
 
+    
+    
     public void setLastPcr(Encounter lastPcr) {
         this.lastPcr = lastPcr;
     }
@@ -75,6 +86,8 @@ public class SessionController implements Serializable {
         return lastRatOrderingCategory;
     }
 
+    
+    
     public void setLastRatOrderingCategory(Item lastRatOrderingCategory) {
         this.lastRatOrderingCategory = lastRatOrderingCategory;
     }
@@ -107,6 +120,54 @@ public class SessionController implements Serializable {
 
     public List<Encounter> getRatList() {
         return new ArrayList<>(getRats().values());
+    }
+
+    public Institution getLastInstitution() {
+        return lastInstitution;
+    }
+
+    public void setLastInstitution(Institution lastInstitution) {
+        this.lastInstitution = lastInstitution;
+    }
+
+    public Institution getLastInstitutionUnit() {
+        return lastInstitutionUnit;
+    }
+
+    public void setLastInstitutionUnit(Institution lastInstitutionUnit) {
+        this.lastInstitutionUnit = lastInstitutionUnit;
+    }
+
+    public Institution getLastLab() {
+        return lastLab;
+    }
+
+    public void setLastLab(Institution lastLab) {
+        this.lastLab = lastLab;
+    }
+
+    public String getLastWorkplace() {
+        return lastWorkplace;
+    }
+
+    public void setLastWorkplace(String lastWorkplace) {
+        this.lastWorkplace = lastWorkplace;
+    }
+
+    public String getLastContactOfWorkplace() {
+        return lastContactOfWorkplace;
+    }
+
+    public void setLastContactOfWorkplace(String lastContactOfWorkplace) {
+        this.lastContactOfWorkplace = lastContactOfWorkplace;
+    }
+
+    public String getLastWardUnit() {
+        return lastWardUnit;
+    }
+
+    public void setLastWardUnit(String lastWardUnit) {
+        this.lastWardUnit = lastWardUnit;
     }
     
 }

@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head >
+        <ui:define name="title">
+            Provincial Reports Index
+        </ui:define>
+    </h:head>
+
+    <h:body>
+
+        <ui:composition template="/template1.xhtml">
+
+
+
+            <ui:define name="content">
+                <div class="container-fluid" >
+                    <div class="row" >
+                        <div class="col-12 p-2"   >
+                            <p:messages ></p:messages>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-3" >
+
+                            <div class="card" >
+                                <div class="card-header" >
+                                    <h:outputLabel value="Counts" ></h:outputLabel>
+                                </div>
+                                <div class="card-body container-fluid">
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink value="PCR/RAT Counts by Ordered Institution" 
+                                                               action="#{provincialController.toCountOfTestsByOrderedInstitution()}" 
+                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               >
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink value="Result Counts by Ordered Institution" 
+                                                               action="#{provincialController.toCountOfResultsByOrderedInstitution()}" 
+                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               >
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+
+                                                <h:commandLink value="Result Counts by MOH Area" 
+                                                               action="#{provincialController.toCountOfResultsByOrderedInstitution()}" 
+                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               >
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+
+                                                <h:commandLink value="Result Counts by Lab" 
+                                                               action="#{provincialController.toCountOfResultsByLab()}" 
+                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               >
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card" >
+                                <div class="card-header" >
+                                    <h:outputLabel value="Lists" ></h:outputLabel>
+                                </div>
+                                <div class="card-body container-fluid">
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink value="PCR/RAT Orders List" 
+                                                               action="#{provincialController.toListOfTests()}" 
+                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               >
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink value="Result List" 
+                                                               action="#{provincialController.toListResults()}" 
+                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               >
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink value="List of Tests without MOH"
+                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               action="#{provincialController.toListOfTestsWithoutMoh()}">
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink class="btn btn-outline-primary btn-lg btn-block"
+                                                               value="List of First Contacts" action="#{provincialController.toListOfFirstContacts()}">
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink 
+                                                    class="btn btn-outline-primary btn-lg btn-block"
+                                                    value="List by Management Plan" action="#{provincialController.toListCasesByManagement()}">
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-9" >
+                            <ui:insert name="reports" >
+                            </ui:insert>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

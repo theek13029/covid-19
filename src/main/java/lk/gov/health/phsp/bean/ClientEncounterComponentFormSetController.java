@@ -859,6 +859,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
         e.setInstitution(webUserController.getLoggedUser().getInstitution());
+        e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         e.setEncounterType(EncounterType.Case_Enrollment);
 
         if (encounterDate != null) {
@@ -1027,6 +1028,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
         e.setInstitution(webUserController.getLoggedUser().getInstitution());
+        e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         e.setEncounterType(EncounterType.Case_Enrollment);
         e.setRetired(true);
         if (encounterDate != null) {
@@ -1212,6 +1214,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
         e.setInstitution(webUserController.getLoggedUser().getInstitution());
+        e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         e.setEncounterType(EncounterType.Test_Enrollment);
         e.setRetired(true);
         if (encounterDate != null) {
@@ -1415,7 +1418,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
         e.setInstitution(webUserController.getLoggedUser().getInstitution());
-
+e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         if (encounterDate != null) {
             e.setEncounterDate(encounterDate);
         } else {
@@ -2163,6 +2166,9 @@ public class ClientEncounterComponentFormSetController implements Serializable {
     }
 
     public void updateValuesFromClient(Client c, ClientEncounterComponentItem ti) {
+        System.out.println("updateValuesFromClient");
+        System.out.println("c = " + c);
+        
         if (ti == null) {
             System.err.println("ti is null");
             return;
@@ -2180,10 +2186,13 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             return;
         }
         String code = ti.getItem().getCode();
+        System.out.println("code = " + code);
         switch (code) {
             case "clients_district":
                 if(c.getPerson().getDistrict()!=null){
+                    System.out.println("c.getPerson().getDistrict() = " + c.getPerson().getDistrict());
                     ti.setAreaValue(c.getPerson().getDistrict());
+                    System.out.println("ti.getAreaValue() = " + ti.getAreaValue());
                 }
                 return;
             case "client_current_moh_area":

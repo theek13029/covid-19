@@ -16,10 +16,7 @@
         <param-value>true</param-value>
     </context-param>
     
-    <context-param>
-        <param-name>primefaces.THEME</param-name>
-        <param-value>omega</param-value>
-    </context-param>     
+    
     
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -50,11 +47,11 @@
         <session-timeout>
             60
         </session-timeout>
-        <cookie-config>
+<!--        <cookie-config>
             <http-only>true</http-only>
             <secure>true</secure>
         </cookie-config>
-        <tracking-mode>COOKIE</tracking-mode>
+        <tracking-mode>COOKIE</tracking-mode>-->
     </session-config>
     <welcome-file-list>
         <welcome-file>app/index.xhtml</welcome-file>

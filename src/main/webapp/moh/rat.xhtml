@@ -9,18 +9,27 @@
                     <p:focus for="result" ></p:focus>
                     <div class="card">
                         <h5 class="card-header">
-                            <p:outputLabel value="RAT Details" ></p:outputLabel>
-                            <p:commandButton class="btn btn-primary"  ajax="false"
-                                             style="float: left;" tabindex="7"
-                                             action="#{mohController.saveRatAndToNewRat()}" value="Save and NEW RAT"></p:commandButton>
-                            <p:commandButton class="btn btn-secondary"  ajax="false"
-                                             style="float: left;" tabindex="8"
-                                             action="#{mohController.saveRatAndToRatView()}" value="Save and View RAT"></p:commandButton>
+                            <div class="row" >
+                                <div class="col-2" >
+                                    <p:commandButton class="btn btn-primary"  ajax="false"
+                                                     style="float: left;" tabindex="7"
+                                                     action="#{mohController.saveRatAndToNewRat()}" value="Save and NEW RAT"></p:commandButton>
+                                </div>
+                                <div class="col-2" >
+                                    <p:commandButton class="btn btn-secondary"  ajax="false"
+                                                     style="float: left;" tabindex="8"
+                                                     action="#{mohController.saveRatAndToRatView()}" value="Save and View RAT"></p:commandButton>
+                                </div>
+                                <div class="col-2" >
+                                    <p:outputLabel value="RAT Details with Result" ></p:outputLabel>
+                                </div>
+                            </div>
+
                         </h5>
 
                         <h:panelGroup id="gpTest" >
                             <div class="card-body #{mohController.rat.pcrResult.name eq 'Positive'?'text-danger':''}">
-                                <div class="form-group row">
+                                <div class="row">
                                     <div class="col-md-3" >
                                         <p:outputLabel for="result" value="Result"></p:outputLabel>
                                         <p:selectOneMenu id="result"
@@ -66,7 +75,7 @@
                                         <p:calendar  style="width: 100%;" inputStyle="width:100%;"  value="#{mohController.rat.resultConfirmedAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class=" row">
                                     <div class="col-md-6">
                                         <p:outputLabel value="Name:" for="name" />
                                         <p:inputText autocomplete="off" 
@@ -102,7 +111,7 @@
                                                                value="#{mohController.rat.symptomatic}"  offLabel="No" onLabel="Yes"></p:selectBooleanButton>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class=" row">
                                     <div class="col-md-6">
                                         <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
                                         <p:inputText id="nic" class="form-control"
@@ -145,12 +154,12 @@
                                         </h:panelGroup>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class=" row">
                                     <div class="col-md-6">
                                         <p:outputLabel value="Current Residential Address:" for="address" />
                                         <p:commandLink id="lnkLastAddress" style="width: 5%; float: right;"
                                                        action="#{mohController.retrieveLastAddressForRat()}" process="lnkLastAddress" update="address" >
-                                            <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
+                                            <i class="pi pi-refresh"></i>
                                         </p:commandLink>
                                         <p:inputText tabindex="4" 
                                                      id="address" required="true" 
@@ -160,7 +169,7 @@
 
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <p:outputLabel value="District:"  for="district" />
                                         <p:autoComplete required="true" 
                                                         requiredMessage="Please select a district"
@@ -177,52 +186,19 @@
                                     </div>
 
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <p:outputLabel value="MOH Area:" for="moh" />
                                         <p:autoComplete id="moh" 
-                                                        tabindex="111" 
+                                                        tabindex="111" style="width:100%;"
                                                         value="#{mohController.rat.client.person.mohArea}" 
                                                         completeMethod="#{mohController.completeMohAreas}"
-                                                        var="m" itemLabel="#{m.name}" itemValue="#{m}" inputStyle="width:20rem;" maxResults="15" forceSelection="true" minQueryLength="3">
+                                                        var="m" itemLabel="#{m.name}" itemValue="#{m}" inputStyle="width:100%;" maxResults="15" forceSelection="true" minQueryLength="3">
                                             <f:ajax event="itemSelect" execute="moh"></f:ajax>
                                             <f:ajax event="blur" execute="moh"></f:ajax>
                                         </p:autoComplete>
                                     </div>
 
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Contact Number :" for="phone1" />
-                                        <p:commandLink id="lnkLastphone1" style="float: right;" 
-                                                       action="#{mohController.retrieveLastPhoneForRat()}" process="lnkLastphone1" update="phone1">
-                                            <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
-                                        </p:commandLink>
-                                        <p:inputText tabindex="5" class="form-control" 
-                                                     id="phone1" required="true" 
-                                                     requiredMessage="Please select a contact number"
-                                                     autocomplete="off" 
-                                                     value="#{mohController.rat.client.person.phone1}" title="Mobile" 
-                                                     validatorMessage="Please check the number">
-                                        </p:inputText>
-
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="GN Area:" for="gn" />
-                                        <p:commandLink id="lnkLastGn" style="float: right;"  
-                                                       action="#{mohController.retrieveLastGnRat()}" process="lnkLastGn" update="gn">
-                                            <i class="ui-icon ui-icon-arrowrefresh-1-w"></i>
-                                        </p:commandLink>
-                                        <p:autoComplete tabindex="6" style="width: 100%;"
-                                                        inputStyle="width:100%;"
-                                                        id="gn" value="#{mohController.rat.client.person.gnArea}" 
-                                                        completeMethod="#{mohController.completeGnAreasForRat}" 
-                                                        var="gn" itemLabel="#{gn.name}" itemValue="#{gn}"
-                                                        maxResults="20" forceSelection="true" placeholder="Not Known"
-                                                        minQueryLength="2">
-                                        </p:autoComplete>
-                                    </div>
-
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <p:outputLabel value="PHI Area:" for="phi" />
                                         <p:autoComplete tabindex="113" 
                                                         id="phi" 
@@ -239,15 +215,53 @@
                                         </p:autoComplete>
                                     </div>
 
-                                    <div class="col-md-2">
-                                        <p:outputLabel value="Unit/Ward:"  />
-                                        <p:inputText tabindex="114" value="#{mohController.rat.unitWard}"
-                                                     style="width:100%;"
-                                                     placeholder="Not Known" >
+                                </div>
+                                <div class=" row">
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="Contact Number :" for="phone1" />
+                                        <p:commandLink id="lnkLastphone1" style="float: right;" 
+                                                       action="#{mohController.retrieveLastPhoneForRat()}" process="lnkLastphone1" update="phone1">
+                                            <i class="pi pi-refresh"></i>
+                                        </p:commandLink>
+                                        <p:inputText tabindex="5" class="form-control" 
+                                                     id="phone1" required="true" 
+                                                     requiredMessage="Please select a contact number"
+                                                     autocomplete="off" 
+                                                     value="#{mohController.rat.client.person.phone1}" title="Mobile" 
+                                                     validatorMessage="Please check the number">
+                                        </p:inputText>
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="GN Area:" for="gn" />
+                                        <p:commandLink id="lnkLastGn" style="float: right;"  
+                                                       action="#{mohController.retrieveLastGnRat()}" process="lnkLastGn" update="gn">
+                                            <i class="pi pi-refresh"></i>
+                                        </p:commandLink>
+                                        <p:autoComplete tabindex="6" style="width: 100%;"
+                                                        inputStyle="width:100%;"
+                                                        id="gn" value="#{mohController.rat.client.person.gnArea}" 
+                                                        completeMethod="#{mohController.completeGnAreasForRat}" 
+                                                        var="gn" itemLabel="#{gn.name}" itemValue="#{gn}"
+                                                        maxResults="20" forceSelection="true" placeholder="Not Known"
+                                                        minQueryLength="2">
+                                        </p:autoComplete>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="Workplace:"  />
+                                        <p:inputText tabindex="114" value="#{mohController.rat.client.person.workPlace}"
+                                                     style="width:100%;" >
                                         </p:inputText>
                                     </div>
+                                    <div class="col-md-3">
+                                        <p:outputLabel value="Workplace Contact:"  />
+                                        <p:inputText tabindex="114" value="#{mohController.rat.client.person.workplaceContact}"
+                                                     style="width:100%;" >
+                                        </p:inputText>
+                                    </div>
+
                                 </div>
-                                <div class="form-group row">
+                                <div class=" row">
                                     <div class="col-md-12">
                                         <p:messages ></p:messages>
                                     </div>

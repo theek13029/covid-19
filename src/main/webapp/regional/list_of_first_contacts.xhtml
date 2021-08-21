@@ -8,13 +8,8 @@
 
     <body>
 
-        <ui:composition template="./../template1.xhtml">
-
-            <ui:define name="title">
-                List of First Contacts
-            </ui:define>
-
-            <ui:define name="content">
+        <ui:composition template="/regional/reports_index.xhtml">
+            <ui:define name="reports">
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
                         <p:outputLabel value="Test List" ></p:outputLabel>
@@ -25,23 +20,23 @@
                         <p:panelGrid columns="2" >
                             <p:panelGrid columns="2" >
                             <p:outputLabel value="From" ></p:outputLabel>
-                            <p:calendar value="#{mohController.fromDate}" 
+                            <p:calendar value="#{regionalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
                             <p:outputLabel value="To" ></p:outputLabel>
-                            <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <p:calendar value="#{regionalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{mohController.toListOfFirstContactsForRegionalLevel()}" ></p:commandButton>
+                                             action="#{regionalController.toListOfFirstContactsForRegionalLevel()}" ></p:commandButton>
                             </p:panelGrid>
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{mohController.cecItems}" rendered="true"
+                        <p:dataTable id="tbl" value="#{regionalController.cecItems}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
@@ -50,7 +45,7 @@
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
-                                     selection="#{mohController.selectedCecis}"
+                                     selection="#{regionalController.selectedCecis}"
                                      >
                             <p:column selectionMode="multiple" width="30"></p:column>
                             <p:column headerText="Name"  sortBy="#{c.shortTextValue}" filterBy="#{c.shortTextValue}" filterMatchMode="contains">
@@ -73,11 +68,11 @@
                                 <p:outputLabel value="#{c.areaValue.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false" rendered="false" >
-                                <p:commandLink value="View Order" action="#{mohController.toViewTest()}" ajax="false" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
+                                <p:commandLink value="View Order" action="#{regionalController.toViewTest()}" ajax="false" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{regionalController.test}" ></f:setPropertyActionListener>
                                 </p:commandLink>
-                                <p:commandLink value="View Results" action="#{mohController.toViewResult()}" ajax="false" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
+                                <p:commandLink value="View Results" action="#{regionalController.toViewResult()}" ajax="false" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{regionalController.test}" ></f:setPropertyActionListener>
                                 </p:commandLink>
                             </p:column>
                         </p:dataTable>

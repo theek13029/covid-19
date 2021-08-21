@@ -50,9 +50,21 @@
 
                         </p:panelGrid>
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}"  rendered="true"
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10" rowIndexVar="n">
-                            <p:column headerText="ID" width="60">
+                        <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}"
+                                     rendered="true"
+                                     var="c" 
+                                     rowKey="#{c.id}" 
+                                     rowIndexVar="n"
+
+                                     rows="10"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="10,20,50,100,{ShowAll|'All'}"
+
+
+                                     >
+                            <p:column headerText="ID" width="60" rendered="false">
                                 <p:outputLabel value="#{c.id}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Tube No" width="140" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
@@ -65,7 +77,7 @@
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            
+
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" 
                                       filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
@@ -77,8 +89,17 @@
                             <p:column headerText="Sex" width="60"  sortBy="#{c.client.person.sex.name}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column id="result" headerText="CT" width="100"  sortBy="#{c.ctValueStr}" filterBy="#{c.ctValueStr}" filterMatchMode="contains" >
-                                <p:inputText id="txtCt" value="#{c.ctValueStr}" style="width: 98px;" >
+                            <p:column id="resultCt" headerText="CT 1" width="100"  sortBy="#{c.ctValue}" 
+                                      filterBy="#{c.ctValue}" filterMatchMode="contains" >
+                                <p:inputText id="txtCt" value="#{c.ctValue}" style="width: 98px;" >
+                                    <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
+                                    </p:ajax>
+                                </p:inputText>
+                            </p:column>
+                            <p:column id="resultCt1" headerText="CT 2" width="100" 
+                                      sortBy="#{c.ctValue2}" 
+                                      filterBy="#{c.ctValue2}" filterMatchMode="contains" >
+                                <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 98px;" >
                                     <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>
@@ -88,7 +109,7 @@
                                     <f:selectItem itemLabel="Select Result"  ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
                                                    var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
-                                    <p:ajax event="change" process="cmbResult" update="txtResultStr" listener="#{clientController.saveEncounterResults(c)}" >
+                                    <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:selectOneMenu>
                             </p:column>
@@ -98,9 +119,6 @@
                                             listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>
-                            </p:column>
-                            <p:column headerText="Result Diaplayed" width="100"  sortBy="#{c.pcrResultStr}" filterBy="#{c.pcrResultStr}" filterMatchMode="contains" >
-                                <p:outputLabel id="txtResultStr" value="#{c.pcrResultStr}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
 

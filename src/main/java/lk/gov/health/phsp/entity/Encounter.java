@@ -66,6 +66,8 @@ public class Encounter implements Serializable {
     private Area area;
 
     private String unitWard;
+    private String bht;
+    private String comments;
 
     private boolean firstEncounter;
     
@@ -184,6 +186,8 @@ public class Encounter implements Serializable {
 
     @ManyToOne
     Institution institution;
+    @ManyToOne
+    private Institution institutionUnit;
 
     @ManyToOne
     Institution referalInstitution;
@@ -192,6 +196,8 @@ public class Encounter implements Serializable {
     private WebUser createdBy;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createdAt;
+    @ManyToOne
+    private Institution createdInstitution;
 
     private boolean retired;
     @ManyToOne
@@ -888,6 +894,8 @@ public class Encounter implements Serializable {
         this.pendingAtLabAt = pendingAtLabAt;
     }
 
+    
+    
     public WebUser getPendingAtLabBy() {
         return pendingAtLabBy;
     }
@@ -960,6 +968,41 @@ public class Encounter implements Serializable {
 
     public void setReferenceCase(Encounter referenceCase) {
         this.referenceCase = referenceCase;
+    }
+
+    public Institution getInstitutionUnit() {
+        return institutionUnit;
+    }
+
+    public void setInstitutionUnit(Institution institutionUnit) {
+        this.institutionUnit = institutionUnit;
+    }
+
+    public Institution getCreatedInstitution() {
+        if(createdInstitution==null){
+            createdInstitution = institution;
+        }
+        return createdInstitution;
+    }
+
+    public void setCreatedInstitution(Institution createdInstitution) {
+        this.createdInstitution = createdInstitution;
+    }
+
+    public String getBht() {
+        return bht;
+    }
+
+    public void setBht(String bht) {
+        this.bht = bht;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
     
     

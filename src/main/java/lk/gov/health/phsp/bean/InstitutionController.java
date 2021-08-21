@@ -38,7 +38,7 @@ import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.facade.AreaFacade;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
 
 @Named
 @SessionScoped
@@ -171,6 +171,8 @@ public class InstitutionController implements Serializable {
     }
 
     public String deleteInstitution() {
+        System.out.println("delete institution");
+        System.out.println("deleting = " + deleting);
         if (deleting == null) {
             JsfUtil.addErrorMessage("Please select");
             return "";
@@ -287,6 +289,39 @@ public class InstitutionController implements Serializable {
         return tins;
     }
 
+    public List<Institution> findChildrenPmcis(Institution ins, String qry) {
+        if(qry==null || qry.trim().equals("")){
+            return null;
+        }
+        qry=qry.toLowerCase();
+        List<Institution> allIns = institutionApplicationController.getInstitutions();
+        List<Institution> cins = new ArrayList<>();
+        for (Institution i : allIns) {
+            if (i.getParent() == null) {
+                continue;
+            }
+            if (i.getParent().equals(ins) && i.isPmci()) {
+                cins.add(i);
+            }
+        }
+        List<Institution> tins = new ArrayList<>();
+        tins.addAll(cins);
+        if (cins.isEmpty()) {
+            return tins;
+        } else {
+            for (Institution i : cins) {
+                tins.addAll(findChildrenPmcis(i));
+            }
+        }
+        List<Institution> ttins = new ArrayList<>();
+        for (Institution i : tins) {
+            if(i.getName().toLowerCase().contains(qry)){
+                ttins.add(i);
+            }
+        }
+        return ttins;
+    }
+
     public List<Institution> findInstitutions(InstitutionType type) {
         return institutionApplicationController.findInstitutions(type);
     }
@@ -344,14 +379,13 @@ public class InstitutionController implements Serializable {
         its.add(InstitutionType.Surgical_Clinic);
         return fillInstitutions(its, qry, null);
     }
-    
+
     public List<Institution> completeLab(String qry) {
         List<InstitutionType> its = new ArrayList<>();
         its.add(InstitutionType.Lab);
         return fillInstitutions(its, qry, null);
     }
-    
-    
+
     public List<Institution> completeMohs(String qry) {
         List<InstitutionType> its = new ArrayList<>();
         its.add(InstitutionType.MOH_Office);
@@ -547,100 +581,7 @@ public class InstitutionController implements Serializable {
         return selected;
     }
 
-    public String importInstitutions() {
-        successMessage = "";
-        failureMessage = "";
-
-        String newLine = "<br/>";
-
-        try {
-
-            File inputWorkbook;
-            Workbook w;
-            Cell cell;
-            InputStream in;
-
-            lk.gov.health.phsp.facade.util.JsfUtil.addSuccessMessage(file.getFileName());
-
-            try {
-                lk.gov.health.phsp.facade.util.JsfUtil.addSuccessMessage(file.getFileName());
-                in = file.getInputstream();
-                File f;
-                f = new File(Calendar.getInstance().getTimeInMillis() + file.getFileName());
-                FileOutputStream out = new FileOutputStream(f);
-                Integer read = 0;
-                byte[] bytes = new byte[1024];
-                while ((read = in.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
-                }
-                in.close();
-                out.flush();
-                out.close();
-
-                inputWorkbook = new File(f.getAbsolutePath());
-
-                successMessage += "File Uploaded Successfully." + newLine;
-
-                w = Workbook.getWorkbook(inputWorkbook);
-                Sheet sheet = w.getSheet(0);
-                int startRow = 1;
-
-                for (Integer i = startRow; i < sheet.getRows(); i++) {
-
-                    Institution newIns = new Institution();
-                    Institution newClinic = new Institution();
-                    String insName;
-                    String poi;
-
-                    cell = sheet.getCell(0, i);
-                    insName = cell.getContents();
-
-                    cell = sheet.getCell(1, i);
-                    poi = cell.getContents();
-
-                    newIns.setPoiNumber(poi);
-                    newIns.setName(institutionType.getLabel() + " " + insName);
-                    newIns.setInstitutionType(institutionType);
-                    newIns.setCreatedAt(new Date());
-                    newIns.setCreater(webUserController.getLoggedUser());
-                    newIns.setDistrict(district);
-                    newIns.setLastHin(0l);
-
-                    newIns.setParent(parent);
-                    newIns.setPdhsArea(pdhsArea);
-                    newIns.setProvince(province);
-                    newIns.setRdhsArea(rdhsArea);
-                    getFacade().create(newIns);
-
-                    newClinic.setName("HLC " + insName);
-                    newClinic.setInstitutionType(InstitutionType.Clinic);
-                    newClinic.setCreatedAt(new Date());
-                    newClinic.setCreater(webUserController.getLoggedUser());
-                    newClinic.setDistrict(district);
-                    newClinic.setLastHin(0l);
-                    newClinic.setPoiInstitution(newIns);
-                    newClinic.setParent(newIns);
-                    newClinic.setPdhsArea(pdhsArea);
-                    newClinic.setProvince(province);
-                    newClinic.setRdhsArea(rdhsArea);
-                    getFacade().create(newClinic);
-
-                    institutionApplicationController.setInstitutions(null);
-
-                }
-                lk.gov.health.phsp.facade.util.JsfUtil.addSuccessMessage("Completed. Please check success and failure messages.");
-                return "";
-            } catch (IOException | BiffException ex) {
-                lk.gov.health.phsp.facade.util.JsfUtil.addErrorMessage(ex.getMessage());
-                failureMessage += "Error. " + ex.getMessage() + ". Aborting the process." + newLine;
-                return "";
-            }
-        } catch (IndexOutOfBoundsException e) {
-            failureMessage += "Error. " + e.getMessage() + ". Aborting the process." + newLine;
-            return "";
-        }
-
-    }
+ 
 
     public void saveOrUpdateInstitution() {
         if (selected == null) {
@@ -663,7 +604,7 @@ public class InstitutionController implements Serializable {
             JsfUtil.addSuccessMessage("Updates");
         }
     }
-    
+
     public void save(Institution ins) {
         if (ins == null) {
             return;

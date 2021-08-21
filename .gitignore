@@ -28,3 +28,10 @@ src/main/resources/rest/images/primary-roll.gif
 src/main/resources/rest/images/secondary-enabled.gif
 src/main/resources/rest/images/tbsel.png
 src/main/resources/rest/images/tbuns.png
+
+# NodeJS files
+node_modules
+package-lock.json
+
+# Mac Specific frile
+.DS_Store

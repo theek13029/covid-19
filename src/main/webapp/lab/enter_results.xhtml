@@ -53,96 +53,12 @@
                                 </p:commandButton>
                             </p:panelGrid>
 
-                            <p:panelGrid columns="2" rendered="true" >
-                                <p:outputLabel value="Serial No Column" ></p:outputLabel>
-                                <p:selectOneMenu value="#{clientController.serialNoColumn}" >
-                                    <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
-                                    <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
-                                    <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
-                                    <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
-                                    <f:selectItem itemLabel="E" itemValue="E"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="F" itemValue="F"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
-                                    <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
-                                    <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
-                                    <f:selectItem itemLabel="J" itemValue="J"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="K" itemValue="K"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                                </p:selectOneMenu>
-
-                                <p:outputLabel value="CT Value Column" ></p:outputLabel>
-                                <p:selectOneMenu value="#{clientController.ctValueColumn}" >
-                                    <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
-                                    <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
-                                    <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
-                                    <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
-                                    <f:selectItem itemLabel="E" itemValue="E"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="F" itemValue="F"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
-                                    <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
-                                    <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
-                                    <f:selectItem itemLabel="J" itemValue="J"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="K" itemValue="K"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                                </p:selectOneMenu>
-
-                                <p:outputLabel value="Result Column" ></p:outputLabel>
-                                <p:selectOneMenu value="#{clientController.resultColumn}" >
-                                    <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
-                                    <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
-                                    <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
-                                    <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
-                                    <f:selectItem itemLabel="E" itemValue="E"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="F" itemValue="F"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
-                                    <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
-                                    <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
-                                    <f:selectItem itemLabel="J" itemValue="J"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="K" itemValue="K"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                                </p:selectOneMenu>
-
-                                <p:outputLabel value="Commnent Column" ></p:outputLabel>
-                                <p:selectOneMenu value="#{clientController.commentColumn}" >
-                                    <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
-                                    <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
-                                    <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
-                                    <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
-                                    <f:selectItem itemLabel="E" itemValue="E"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="F" itemValue="F"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
-                                    <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
-                                    <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
-                                    <f:selectItem itemLabel="J" itemValue="J"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="K" itemValue="K"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
-                                    <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                                </p:selectOneMenu>
-
-                                <h:panelGroup >
-                                    <p:fileUpload value="#{clientController.file}" mode="simple"/>
-                                    <p:commandButton ajax="false" value="Upload Results from Excel" 
-                                                     action="#{clientController.importResultsFromExcel()}"  ></p:commandButton>
-                                </h:panelGroup>
-
-                            </p:panelGrid>
-
-
-
-
-                        </p:panelGrid>
+                            
 
                         <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}"  rendered="true"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" rowIndexVar="n"
                                      rowStyleClass="#{c.resultPositive?'redRow':''}">
-                            <p:column headerText="ID" width="60">
+                            <p:column headerText="ID" width="60" rendered="false">
                                 <p:outputLabel value="#{c.id}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Tube No" width="100" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
@@ -166,14 +82,14 @@
                             <p:column headerText="Sex" width="60"  sortBy="#{c.client.person.sex.name}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
+                            <p:column  headerText="CT 1" width="60"  sortBy="#{c.ctValue}"
                                        filterBy="#{c.ctValue}" filterMatchMode="contains" >
                                 <p:inputText id="txtCt1" value="#{c.ctValue}" style="width: 98%;" >
                                     <p:ajax event="keyup" process="txtCt1" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="CT 2" width="100"  sortBy="#{c.ctValue2}"
+                            <p:column headerText="CT 2" width="60"  sortBy="#{c.ctValue2}"
                                       filterBy="#{c.ctValue2}" filterMatchMode="contains" >
                                 <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 98%;" >
                                     <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResults(c)}" >
@@ -185,26 +101,19 @@
                                     <f:selectItem itemLabel="Select Result"  ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
                                                    var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
-                                    <p:ajax event="change" process="cmbResult" update="txtResultStr" listener="#{clientController.saveEncounterResults(c)}" >
+                                    <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:selectOneMenu>
                             </p:column>
-                            <p:column headerText="Comments" width="150"  sortBy="#{c.resultComments}" filterBy="#{c.resultComments}" filterMatchMode="contains" >
+                            <p:column headerText="Comments" width="100"  sortBy="#{c.resultComments}" filterBy="#{c.resultComments}" filterMatchMode="contains" >
                                 <p:inputText id="txtComments" value="#{c.resultComments}"  style="width: 98%;">
                                     <p:ajax event="blur" process="txtComments" 
                                             listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="Result Diaplayed" 
-                                      width="100"  
-                                      sortBy="#{c.pcrResultStr}" 
-                                      filterBy="#{c.pcrResultStr}" 
-                                      filterMatchMode="contains" >
-                                <p:outputLabel id="txtResultStr" value="#{c.pcrResultStr}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Actions" >
-                                <p:commandButton value="Reject" ajax="false" action="#{clientController.markSelectedAsRejectedAtDataEntry(c)}" >
+                            <p:column headerText="Actions" width="60">
+                                <p:commandButton value="Reject" style="width: 90%;" ajax="false" action="#{clientController.markSelectedAsRejectedAtDataEntry(c)}" >
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>

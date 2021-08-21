@@ -46,11 +46,12 @@ import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.enums.Privilege;
 import lk.gov.health.phsp.enums.PrivilegeTreeNode;
 import lk.gov.health.phsp.enums.RelationshipType;
+import lk.gov.health.phsp.enums.WebUserRoleLevel;
 import lk.gov.health.phsp.facade.UserPrivilegeFacade;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.TreeNode;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -354,6 +355,32 @@ public class WebUserController implements Serializable {
         return "/insAdmin/user_new";
     }
 
+    public String toInsAdmin() {
+        return "/insAdmin/index";
+    }
+
+    public String toAdministration() {
+        if (loggedUser == null) {
+            JsfUtil.addErrorMessage("Not Logged");
+            return "";
+        }
+        if (loggedUser.getWebUserRole() == null) {
+            JsfUtil.addErrorMessage("No Role for logged user");
+        }
+        String url = "";
+        switch (loggedUser.getWebUserRole()) {
+            case Pdhs:
+                url = "/provincial/administration/index";
+                break;
+            case Rdhs:
+            case Re:
+                url = "/regional/administration/index";
+                break;
+            default:
+        }
+        return url;
+    }
+
     public void toProcedureRoom() {
         String insList = null;
         String baseUrl = "http://localhost:8080/ProcedureRoomService/resources/redirect";
@@ -624,19 +651,6 @@ public class WebUserController implements Serializable {
         return ins;
     }
 
-    public void downloadCurrentFile() {
-        if (currentUpload == null) {
-            return;
-        }
-        InputStream stream = new ByteArrayInputStream(currentUpload.getBaImage());
-        downloadingFile = new DefaultStreamedContent(stream, currentUpload.getFileType(), currentUpload.getFileName());
-    }
-
-    public StreamedContent getDownloadingFile() {
-        downloadCurrentFile();
-        return downloadingFile;
-    }
-
     public String addMarker() {
         Marker marker = new Marker(new LatLng(current.getInstitution().getCoordinate().getLatitude(), current.getInstitution().getCoordinate().getLongitude()), current.getName());
         emptyModel.addOverlay(marker);
@@ -705,13 +719,12 @@ public class WebUserController implements Serializable {
     }
 
     public String loginNew() {
-          System.out.println("loginNew");
+
         loggableInstitutions = null;
         loggablePmcis = null;
         loggableGnAreas = null;
         institutionController.setMyClinics(null);
-        System.out.println("userName = " + userName);
-        System.out.println("password = " + password);
+
         if (userName == null || userName.trim().equals("")) {
             JsfUtil.addErrorMessage("Please enter a Username");
             return "";
@@ -729,7 +742,7 @@ public class WebUserController implements Serializable {
             return "";
         }
 
-          System.out.println("username & password correct");
+        System.out.println("username & password correct");
         loggedUserPrivileges = userPrivilegeList(loggedUser);
 
         JsfUtil.addSuccessMessage("Successfully Logged");
@@ -741,18 +754,34 @@ public class WebUserController implements Serializable {
         toDate = c.getTime();
         c.add(Calendar.DAY_OF_MONTH, -7);
         fromDate = c.getTime();
-        if (loggedUser.isLabDashboard()) {
-            dashboardController.setFromDate(fromDate);
-            dashboardController.setToDate(toDate);
-            dashboardController.prepareLabDashboard();
-        } else if (loggedUser.isNationalDashboard()) {
-            dashboardApplicationController.updateDashboard();
-        } else if (loggedUser.isMohDashboard()) {
-            dashboardController.prepareMohDashboard();
-        } else if (loggedUser.isRegionalDashboard()) {
-            dashboardController.prepareRegionalDashboard();
-        } else if (loggedUser.isProvincialDashboard()) {
-            dashboardController.prepareProvincialDashboard();
+
+        if (null != loggedUser.getWebUserRoleLevel()) {
+            switch (loggedUser.getWebUserRoleLevel()) {
+                case Lab:
+                    dashboardController.setFromDate(fromDate);
+                    dashboardController.setToDate(toDate);
+                    dashboardController.prepareLabDashboard();
+                    break;
+                case National:
+                case National_Lab:
+                    dashboardApplicationController.updateDashboard();
+                    break;
+                case Moh:
+                    dashboardController.prepareMohDashboard();
+                    break;
+                case Regional:
+                    dashboardController.prepareRegionalDashboard();
+                    break;
+                case Provincial:
+                    dashboardController.prepareProvincialDashboard();
+                    break;
+                case Hospital:
+                    dashboardController.prepareHospitalDashboard();
+                    break;
+
+                default:
+                    break;
+            }
         }
         fillUsersForMyInstitute();
         fillAreasForMe();
@@ -851,7 +880,7 @@ public class WebUserController implements Serializable {
     }
 
     private boolean checkLoginNew() {
-          System.out.println("checkLoginNew");
+        System.out.println("checkLoginNew");
         if (getFacade() == null) {
             JsfUtil.addErrorMessage("Server Error");
             return false;
@@ -862,8 +891,11 @@ public class WebUserController implements Serializable {
         Map m = new HashMap();
         m.put("userName", userName.trim().toLowerCase());
         m.put("ret", false);
+//        JsfUtil.addErrorMessage("M=" + m);
+//        JsfUtil.addErrorMessage("S=" + temSQL);
         loggedUser = getFacade().findFirstByJpql(temSQL, m);
         System.out.println("loggedUser = " + loggedUser);
+//        JsfUtil.addErrorMessage("User = " + loggedUser);
         if (loggedUser == null) {
             return false;
         }
@@ -1879,7 +1911,6 @@ public class WebUserController implements Serializable {
         this.selectedProvinces = selectedProvinces;
     }
 
-
     public List<Area> getSelectedGnAreas() {
         return selectedGnAreas;
     }
@@ -2077,8 +2108,6 @@ public class WebUserController implements Serializable {
     public void setSelectedNodes(TreeNode[] selectedNodes) {
         this.selectedNodes = selectedNodes;
     }
-    
-    
 
     public TreeNode getMyPrivilegeRoot() {
         return myPrivilegeRoot;

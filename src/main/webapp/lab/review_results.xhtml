@@ -74,9 +74,6 @@
                             <p:column headerText="Sex" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Address" >
-                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
-                            </p:column>
                             <p:column headerText="Phone" >
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
@@ -103,9 +100,6 @@
                                     <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:selectOneMenu>
-                            </p:column>
-                            <p:column sortBy="#{c.pcrResultStr}" filterBy="#{c.pcrResultStr}" filterMatchMode="contains" headerText="Result Display" >
-                                <p:outputLabel value="#{c.pcrResultStr}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
                     </h:form>
