@@ -1,6 +1,9 @@
 # Bootstrap 5 branch
 
-This is the Bootstrap 5 branch which is underdevelopment.
+<img src="https://www.webknowledgefree.com/wp-content/uploads/2019/10/bootstrap-5-releases-with-major-changes.jpg" />
+
+
+This is the Bootstrap 5 branch which is under development.
 
 **Not to be merged with the master branch**
 
