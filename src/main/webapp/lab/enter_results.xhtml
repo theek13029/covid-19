@@ -52,7 +52,8 @@
                                 <p:commandButton  style="width: 98%;" action="#{clientController.toLabEditResults()}" ajax="false" value="Edit Entered Results" >
                                 </p:commandButton>
                             </p:panelGrid>
-                        </p:panelGrid>
+
+                            
 
                         <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}"  rendered="true"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" rowIndexVar="n"

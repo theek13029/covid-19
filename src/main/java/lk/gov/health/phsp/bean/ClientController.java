@@ -58,7 +58,6 @@ import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.file.UploadedFile;
 
 // </editor-fold>
-
 @Named("clientController")
 @SessionScoped
 public class ClientController implements Serializable {
@@ -118,10 +117,14 @@ public class ClientController implements Serializable {
 
     private Encounter lastTest;
 
-    private String serialNoColumn = "A";
-    private String resultColumn = "H";
-    private String ctValueColumn = "G";
-    private String commentColumn = "I";
+
+    Area district;
+    private String testNoCol = "A";
+    private String nameCol = "B";
+    private String ageColumn = "C";
+    private String sexCol = "D";
+    private String phoneCol = "E";
+    private String addressCol = "F";
 
     private Integer startRow = 1;
 
@@ -514,8 +517,6 @@ public class ClientController implements Serializable {
         userTransactionController.recordTransaction("To Client Profile");
         return "/client/profile";
     }
-
-
 
     public String toLabReceiveAll() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
@@ -2039,7 +2040,7 @@ public class ClientController implements Serializable {
             return "";
         }
 
-        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseInvestigationFromTest(dfs,testEncounter);
+        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseInvestigationFromTest(dfs, testEncounter);
 
         selectedEncounter = cefs.getEncounter();
 
@@ -2101,7 +2102,6 @@ public class ClientController implements Serializable {
         System.out.println("to page : /client/client_case_enrollment");
         return "/client/client_case_enrollment";
     }
-
 
     public String toNewTestEnrollmentFromEncounter() {
         if (selectedEncounter == null) {
@@ -2394,25 +2394,40 @@ public class ClientController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Functions">
-    public String importResultsFromExcel() {
-        // System.out.println("importResultsFromExcel = ");
+    public String importOrdersFromExcel() {
+        // System.out.println("importOrdersFromExcel = ");
 
         // System.out.println("try 1");
+        
+        if(institution==null){
+            JsfUtil.addErrorMessage("Institution ?");
+            return "";
+        }
+        
+        if(district==null){
+            JsfUtil.addErrorMessage("District ?");
+            return "";
+        }
+        
         String strId;
         String strResult;
         String strCtValue;
         String strComment;
         Long id;
 
-        int serialNoColInt;
-        int ctValueColInt;
-        int resultColInt;
-        int commentColInt;
+        int testNoColInt;
+        int ageColInt;
+        int nameColInt;
+        int sexColInt;
+        int phoneColInt;
+        int addressColInt;
 
-        serialNoColInt = CommonController.excelColFromHeader(serialNoColumn);
-        ctValueColInt = CommonController.excelColFromHeader(ctValueColumn);
-        resultColInt = CommonController.excelColFromHeader(resultColumn);
-        commentColInt = CommonController.excelColFromHeader(commentColumn);
+        nameColInt = CommonController.excelColFromHeader(nameCol);
+        ageColInt = CommonController.excelColFromHeader(ageColumn);
+        testNoColInt = CommonController.excelColFromHeader(testNoCol);
+        sexColInt = CommonController.excelColFromHeader(sexCol);
+        phoneColInt = CommonController.excelColFromHeader(phoneCol);
+        addressColInt = CommonController.excelColFromHeader(addressCol);
 
         File inputWorkbook;
         Workbook w;
@@ -2446,7 +2461,7 @@ public class ClientController implements Serializable {
 
             for (int i = startRow; i < sheet.getRows(); i++) {
 
-                cell = sheet.getCell(serialNoColInt, i);
+                cell = sheet.getCell(nameColInt, i);
                 strId = cell.getContents();
 
                 id = CommonController.getLongValue(strId);
@@ -2464,17 +2479,17 @@ public class ClientController implements Serializable {
                     continue;
                 }
 
-                cell = sheet.getCell(resultColInt, i);
+                cell = sheet.getCell(testNoColInt, i);
                 strResult = cell.getContents();
                 strResult = strResult.trim().toLowerCase();
 
                 resultEntering.setPcrResultStr(strResult);
 
-                cell = sheet.getCell(ctValueColInt, i);
+                cell = sheet.getCell(ageColInt, i);
                 strCtValue = cell.getContents();
                 resultEntering.setCtValueStr(strCtValue);
 
-                cell = sheet.getCell(commentColInt, i);
+                cell = sheet.getCell(sexColInt, i);
                 strComment = cell.getContents();
                 resultEntering.setResultComments(strComment);
                 String localPositive = preferenceController.getPcrPositiveTerm().trim().toLowerCase();
@@ -5567,36 +5582,36 @@ public class ClientController implements Serializable {
         this.dispatchingLab = dispatchingLab;
     }
 
-    public String getSerialNoColumn() {
-        return serialNoColumn;
+    public String getNameCol() {
+        return nameCol;
     }
 
-    public void setSerialNoColumn(String serialNoColumn) {
-        this.serialNoColumn = serialNoColumn;
+    public void setNameCol(String nameCol) {
+        this.nameCol = nameCol;
     }
 
-    public String getResultColumn() {
-        return resultColumn;
+    public String getTestNoCol() {
+        return testNoCol;
     }
 
-    public void setResultColumn(String resultColumn) {
-        this.resultColumn = resultColumn;
+    public void setTestNoCol(String testNoCol) {
+        this.testNoCol = testNoCol;
     }
 
-    public String getCtValueColumn() {
-        return ctValueColumn;
+    public String getAgeColumn() {
+        return ageColumn;
     }
 
-    public void setCtValueColumn(String ctValueColumn) {
-        this.ctValueColumn = ctValueColumn;
+    public void setAgeColumn(String ageColumn) {
+        this.ageColumn = ageColumn;
     }
 
-    public String getCommentColumn() {
-        return commentColumn;
+    public String getSexCol() {
+        return sexCol;
     }
 
-    public void setCommentColumn(String commentColumn) {
-        this.commentColumn = commentColumn;
+    public void setSexCol(String sexCol) {
+        this.sexCol = sexCol;
     }
 
     public Integer getStartRow() {
@@ -5726,6 +5741,24 @@ public class ClientController implements Serializable {
     public void setBulkPrintReport(String bulkPrintReport) {
         this.bulkPrintReport = bulkPrintReport;
     }
+
+    public String getPhoneCol() {
+        return phoneCol;
+    }
+
+    public void setPhoneCol(String phoneCol) {
+        this.phoneCol = phoneCol;
+    }
+
+    public String getAddressCol() {
+        return addressCol;
+    }
+
+    public void setAddressCol(String addressCol) {
+        this.addressCol = addressCol;
+    }
+    
+    
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Inner Classes">

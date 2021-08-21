@@ -154,10 +154,15 @@ public class NationalController implements Serializable {
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
 
-        j += " and c.createdAt between :fd and :td ";
+        j += " and (c.createdAt > :fd and c.createdAt < :td) ";
         m.put("fd", getFromDate());
-
+        
+        System.out.println("getFromDate() = " + getFromDate());
+        
+        System.out.println("getToDate() = " + getToDate());
+        
         m.put("td", getToDate());
+        
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -178,6 +183,10 @@ public class NationalController implements Serializable {
         j += " group by c.institution"
                 + " order by count(c) desc ";
 
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        
+        
         institutionCounts = new ArrayList<>();
 
         List<Object> objCounts = encounterFacade.findAggregates(j, m);
