@@ -5,6 +5,17 @@
   padding: 0.375rem 0.75rem !important;
 }
 
+.submenu a:nth-child(1) {
+  color: #fff;
+}
+.submenu ul {
+  background-color: #4895ef;
+}
+
+.ui-shadow {
+  box-shadow: none !important;
+}
+
 html, body, * {
   font-family: "Noto Sans JP", sans-serif !important;
 }

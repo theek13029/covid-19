@@ -4,3 +4,16 @@
 .ui-inputfield {
   padding: .375rem .75rem !important;
 }
+
+.submenu {
+  a:nth-child(1) {
+    color: #fff;
+  }
+  ul {
+    background-color: #4895ef;
+  }
+}
+
+.ui-shadow {
+  box-shadow: none !important;
+}
