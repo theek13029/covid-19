@@ -88,9 +88,7 @@
 
                 <p:menuitem ajax="false" value="Reports" action="#{mohController.toReportsIndex()}" />
 
-                <p:menuitem value="Administration" action="#{webUserController.toInsAdmin()}"
-                            rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
-                </p:menuitem>
+               
 
                 <p:submenu label="Institution Administration" rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
                     <p:submenu label="Manage Users" rendered="#{webUserController.hasPrivilege('Institution_Administration')}">
