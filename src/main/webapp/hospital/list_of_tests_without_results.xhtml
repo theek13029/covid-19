@@ -92,6 +92,15 @@
                             <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="BHT"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Contact Numbers" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                                 <p:outputLabel rendered="#{c.client.person.phone2 ne null}" value=", " ></p:outputLabel>
@@ -101,13 +110,9 @@
                                       filterBy="#{c.client.person.address}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="PHI"  sortBy="#{c.client.person.phiArea.name}"
-                                      filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.phiArea.name}" ></p:outputLabel>
+                            <p:column headerText="Result"  style="display: none;"  >
                             </p:column>
-                            <p:column headerText="GN Area"  sortBy="#{c.client.person.gnArea.name}"
-                                      filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
+                            <p:column style="display: none;" headerText="Viral Load"  >
                             </p:column>
                             <p:column headerText="Ordering Category"  sortBy="#{c.pcrOrderingCategory.name}"
                                       filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
@@ -115,7 +120,6 @@
                             </p:column>
 
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
-
                                 <p:panelGrid columns="1" >
                                     <p:commandButton value="Edit Order" action="#{hospitalController.toEditTest()}" ajax="false"  style="width: 100%;" >
                                         <f:setPropertyActionListener value="#{c}" target="#{hospitalController.test}" ></f:setPropertyActionListener>
@@ -127,8 +131,6 @@
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
                                 </p:panelGrid>
-
-
                             </p:column>
                         </p:dataTable>
                     </h:form>

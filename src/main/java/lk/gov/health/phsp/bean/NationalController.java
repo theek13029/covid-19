@@ -189,7 +189,7 @@ public class NationalController implements Serializable {
         
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/national/count_of_tests_by_ordered_institution";
         }
@@ -238,7 +238,7 @@ public class NationalController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/national/count_of_results_by_ordered_institution";
         }
@@ -283,7 +283,7 @@ public class NationalController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/national/count_of_results_by_lab";
         }
