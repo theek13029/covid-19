@@ -598,7 +598,7 @@ public class RegionalController implements Serializable {
         j += " group by c.institution"
                 + " order by c.institution.name ";
         institutionCounts = new ArrayList<>();
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/regional/count_of_tests_by_ordered_institution";
         }
@@ -647,7 +647,7 @@ public class RegionalController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/regional/count_of_results_by_ordered_institution";
         }
@@ -692,7 +692,7 @@ public class RegionalController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/regional/count_of_results_by_lab";
         }
