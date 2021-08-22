@@ -16,7 +16,10 @@
         <param-value>true</param-value>
     </context-param>
     
-    
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>none</param-value>
+    </context-param>
     
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -47,7 +50,7 @@
         <session-timeout>
             60
         </session-timeout>
-<!--        <cookie-config>
+        <!--        <cookie-config>
             <http-only>true</http-only>
             <secure>true</secure>
         </cookie-config>
