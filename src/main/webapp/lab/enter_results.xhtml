@@ -60,12 +60,7 @@
                             <p:column headerText="ID" width="60" rendered="false">
                                 <p:outputLabel value="#{c.id}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
-                            </p:column>
+                           
                             <p:column headerText="Tube No" width="100" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
@@ -117,7 +112,13 @@
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="Actions" width="60">
+                             <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Actions" width="60" exportable="false">
                                 <p:commandButton value="Reject" style="width: 90%;" ajax="false" action="#{clientController.markSelectedAsRejectedAtDataEntry(c)}" >
                                 </p:commandButton>
                             </p:column>
