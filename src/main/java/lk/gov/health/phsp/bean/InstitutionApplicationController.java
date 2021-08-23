@@ -299,6 +299,17 @@ public class InstitutionApplicationController {
         }
         return tins;
     }
+    
+    public Institution findMinistryOfHealth(){
+        Institution moh=null;
+        for(Institution i: getInstitutions()){
+            if(i.getInstitutionType()==InstitutionType.Ministry_of_Health){
+                moh =i;
+                return moh;
+            }
+        }
+        return moh;
+    }
 
     public List<Institution> findChildrenInstitutions(Institution ins, InstitutionType type) {
         List<Institution> cins = findChildrenInstitutions(ins);

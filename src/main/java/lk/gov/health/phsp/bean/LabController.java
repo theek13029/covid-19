@@ -114,6 +114,7 @@ public class LabController implements Serializable {
     private Encounter covidCase;
     private Encounter test;
     private Encounter deleting;
+    private Institution institution;
 
     private WebUser assignee;
 
@@ -1097,6 +1098,9 @@ public class LabController implements Serializable {
         pcr.setSampled(true);
         pcr.setSampledAt(new Date());
         pcr.setSampledBy(webUserController.getLoggedUser());
+        pcr.setSentToLab(true);
+        pcr.setSentToLabAt(new Date());
+        pcr.setSentToLabBy(webUserController.getLoggedUser());
         pcr.setCreatedAt(new Date());
         return "/lab/pcr";
     }
@@ -1401,6 +1405,11 @@ public class LabController implements Serializable {
             return "";
         }
         Institution createdIns = null;
+        pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+        
+        Institution moh = institutionApplicationController.findMinistryOfHealth();
+        
         if (pcr.getClient().getCreateInstitution() == null) {
             if (webUserController.getLoggedUser().getInstitution().getPoiInstitution() != null) {
                 createdIns = webUserController.getLoggedUser().getInstitution().getPoiInstitution();
@@ -2033,6 +2042,8 @@ public class LabController implements Serializable {
     public Encounter getCovidCase() {
         return covidCase;
     }
+    
+    
 
     public void setCovidCase(Encounter covidCase) {
         this.covidCase = covidCase;
@@ -2237,6 +2248,14 @@ public class LabController implements Serializable {
 
     public void setSelectedToDispatch(List<Encounter> selectedToDispatch) {
         this.selectedToDispatch = selectedToDispatch;
+    }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
     }
 
 }
