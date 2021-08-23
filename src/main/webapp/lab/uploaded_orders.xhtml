@@ -16,7 +16,7 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:form >
-                    <p:panelGrid columns="2" rendered="false" >
+                    <p:panelGrid columns="2"  >
                         <h:outputLabel value="Institution" ></h:outputLabel>
                         <h:outputLabel value="#{clientController.institution.name}" ></h:outputLabel>
                         <h:outputLabel value="District" ></h:outputLabel>
@@ -37,55 +37,56 @@
                     </p:panelGrid>
 
                     <p:dataTable value="#{clientController.clientImports}" var="c" 
-                                 rowIndexVar="#{c.id}"
+                                 rowIndexVar="n"
                                  selection="#{clientController.clientImportsSelected}" 
+                                 rowKey="#{c.id}"
                                  
                                  >
                         <p:column selectionMode="multiple" width="20" ></p:column>
                         <p:column headerText="Test No" >
-                            <p:inputText id="testNo" value="#{c.testNo}" >
+                            <p:inputText id="testNo" value="#{c.testNo}" style="width: 95%;" >
                                 <p:ajax event="keyup" process="@this" ></p:ajax>
                             </p:inputText>
                         </p:column>
                         <p:column headerText="Name" >
-                            <p:inputText id="name" value="#{c.name}" disabled="#{c.client ne null}" >
+                            <p:inputText id="name" value="#{c.name}" disabled="#{c.client ne null}"  style="width: 95%;" >
                                 <p:ajax event="keyup" process="@this" ></p:ajax>
                             </p:inputText>
                         </p:column>
                          <p:column headerText="Age in Years" >
-                             <p:inputText id="agey" value="#{c.ageInYears}"  disabled="#{c.client ne null}" >
+                             <p:inputText id="agey" value="#{c.ageInYears}"  disabled="#{c.client ne null}"  style="width: 95%;" >
                                 <p:ajax event="keyup" process="@this" ></p:ajax>
                             </p:inputText>
                         </p:column>
                         <p:column headerText="Age in Months" >
-                            <p:inputText id="agem" value="#{c.ageInMonths}"  disabled="#{c.client ne null}" >
+                            <p:inputText id="agem" value="#{c.ageInMonths}"  disabled="#{c.client ne null}"  style="width: 95%;" >
                                 <p:ajax event="keyup" process="@this" ></p:ajax>
                             </p:inputText>
                         </p:column>
                         <p:column headerText="Age in Days" >
-                            <p:inputText id="aged" value="#{c.ageInDays}"  disabled="#{c.client ne null}" >
+                            <p:inputText id="aged" value="#{c.ageInDays}"  disabled="#{c.client ne null}"  style="width: 95%;" >
                                 <p:ajax event="keyup" process="@this" ></p:ajax>
                             </p:inputText>
                         </p:column>
                         <p:column headerText="Sex" >
-                            <p:selectOneMenu id="sex" value="#{c.sex}"  disabled="#{c.client ne null}" >
+                            <p:selectOneMenu id="sex" value="#{c.sex}"  disabled="#{c.client ne null}"  style="width: 95%;" >
                                 <f:selectItem itemLabel="Select" ></f:selectItem>
                                 <f:selectItems value="#{itemApplicationController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}" ></f:selectItems>
                                  <p:ajax event="blur" process="@this" ></p:ajax>
                             </p:selectOneMenu>
                         </p:column>
                          <p:column headerText="NIC" >
-                             <p:inputText id="nic" value="#{c.nic}"  disabled="#{c.client ne null}"  >
+                             <p:inputText id="nic" value="#{c.nic}"  disabled="#{c.client ne null}"   style="width: 95%;" >
                                 <p:ajax event="keyup" process="@this" ></p:ajax>
                             </p:inputText>
                         </p:column>
                          <p:column headerText="Phone" >
-                             <p:inputText id="phone" value="#{c.phone}"  disabled="#{c.client ne null}"  >
+                             <p:inputText id="phone" value="#{c.phone}"  disabled="#{c.client ne null}"   style="width: 95%;" >
                                 <p:ajax event="keyup" process="@this" ></p:ajax>
                             </p:inputText>
                         </p:column>
                          <p:column headerText="Address" >
-                             <p:inputText id="address" value="#{c.address}"  disabled="#{c.client ne null}"  >
+                             <p:inputText id="address" value="#{c.address}"  disabled="#{c.client ne null}"   style="width: 95%;" >
                                 <p:ajax event="keyup" process="@this" ></p:ajax>
                             </p:inputText>
                         </p:column>

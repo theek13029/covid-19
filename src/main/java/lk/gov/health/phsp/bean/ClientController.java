@@ -2457,7 +2457,7 @@ public class ClientController implements Serializable {
                 }
                 strTestNo = cellValue(row.getCell(testNoColInt));
                 strNic = cellValue(row.getCell(nicColInt));
-                Client c=null;
+                Client c = null;
                 if (strNic != null && !strNic.trim().equals("")) {
                     c = getClientByNic(strNic);
                 }
@@ -2480,13 +2480,13 @@ public class ClientController implements Serializable {
                     } else {
                         sex = itemApplicationController.getMale();
                     }
-                }else{
+                } else {
                     strName = c.getPerson().getName();
                     strPhone = c.getPerson().getPhone1();
                     strAddress = c.getPerson().getAddress();
                     sex = c.getPerson().getSex();
-                    ageInYears = c.getPerson().getAgeYears() ;
-                    
+                    ageInYears = c.getPerson().getAgeYears();
+
                 }
                 ClientImport ci = new ClientImport();
                 ci.setClient(c);
@@ -2528,19 +2528,25 @@ public class ClientController implements Serializable {
 
     private void toAddNewPcrWithNewClient(ClientImport ci) {
         Encounter pcr = new Encounter();
-        Client c = new Client();
-        c.getPerson().setDistrict(district);
-        c.getPerson().setName(ci.getName());
-        c.getPerson().setAddress(ci.getAddress());
-        c.getPerson().setPhone1(ci.getPhone());
-        c.getPerson().setSex(ci.getSex());
-        c.getPerson().setNic(ci.getNic());
-        Calendar calDob = Calendar.getInstance();
-        calDob.add(Calendar.YEAR, (0 - ci.getAgeInYears()));
-        calDob.add(Calendar.MONTH, (0 - ci.getAgeInMonths()));
-        calDob.add(Calendar.DAY_OF_YEAR, (0 - ci.getAgeInDays()));
-        c.getPerson().setDateOfBirth(toDate);
-
+        Client c;
+        if (ci.getClient() == null) {
+            c = new Client();
+            c.getPerson().setDistrict(district);
+            c.getPerson().setName(ci.getName());
+            c.getPerson().setAddress(ci.getAddress());
+            c.getPerson().setPhone1(ci.getPhone());
+            c.getPerson().setSex(ci.getSex());
+            c.getPerson().setNic(ci.getNic());
+            Calendar calDob = Calendar.getInstance();
+            calDob.add(Calendar.YEAR, (0 - ci.getAgeInYears()));
+            calDob.add(Calendar.MONTH, (0 - ci.getAgeInMonths()));
+            calDob.add(Calendar.DAY_OF_YEAR, (0 - ci.getAgeInDays()));
+            c.getPerson().setDateOfBirth(toDate);
+        } else {
+            c = ci.getClient();
+        }
+        
+        
         pcr.setPcrTestType(lastTestPcrOrRat);
         pcr.setClient(c);
 
