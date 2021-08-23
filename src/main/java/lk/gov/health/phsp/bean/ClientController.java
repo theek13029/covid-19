@@ -2409,6 +2409,10 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Institution ?");
             return "";
         }
+        if (file == null) {
+            JsfUtil.addErrorMessage("File ?");
+            return "";
+        }
         if (district == null) {
             district = institution.getDistrict();
         }
@@ -2450,6 +2454,7 @@ public class ClientController implements Serializable {
             XSSFSheet mySheet = myWorkBook.getSheetAt(0);
             Iterator<Row> rowIterator = mySheet.iterator();
             Long count = 0l;
+            startRow++;
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 if (row.getRowNum() < startRow) {
@@ -2464,17 +2469,12 @@ public class ClientController implements Serializable {
 
                 if (c == null) {
                     strName = cellValue(row.getCell(nameColInt));
-                    strAge = cellValue(row.getCell(ageColInt));
                     strSex = cellValue(row.getCell(sexColInt));
                     strPhone = cellValue(row.getCell(phoneColInt));
                     strAddress = cellValue(row.getCell(addressColInt));
                     strNic = cellValue(row.getCell(nicColInt));
-                    Integer aiy = CommonController.getIntegerValue(strAge);
-                    if (aiy != null) {
-                        ageInYears = aiy;
-                    } else {
-                        ageInYears = 0;
-                    }
+                    ageInYears = cellValueInt(row.getCell(ageColInt));
+                    System.out.println("ageInYears = " + ageInYears);
                     if (strSex.toLowerCase().contains("f")) {
                         sex = itemApplicationController.getFemale();
                     } else {
@@ -2486,7 +2486,6 @@ public class ClientController implements Serializable {
                     strAddress = c.getPerson().getAddress();
                     sex = c.getPerson().getSex();
                     ageInYears = c.getPerson().getAgeYears();
-
                 }
                 ClientImport ci = new ClientImport();
                 ci.setClient(c);
@@ -2545,8 +2544,7 @@ public class ClientController implements Serializable {
         } else {
             c = ci.getClient();
         }
-        
-        
+
         pcr.setPcrTestType(lastTestPcrOrRat);
         pcr.setClient(c);
 
@@ -2600,6 +2598,22 @@ public class ClientController implements Serializable {
                 case _NONE:
                     break;
                 default:
+                    break;
+            }
+        }
+        return str;
+    }
+
+    private int cellValueInt(Cell cell) {
+        int str=0;
+        if (null != cell.getCellType()) {
+            switch (cell.getCellType()) {
+                case NUMERIC:
+                    Double d = cell.getNumericCellValue();
+                    str = d.intValue();
+                    break;
+                default:
+                    str = 0;
                     break;
             }
         }
