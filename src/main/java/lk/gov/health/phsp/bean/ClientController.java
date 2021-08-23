@@ -2568,7 +2568,11 @@ public class ClientController implements Serializable {
         pcr.setSentToLabAt(toDate);
         pcr.setSentToLabBy(webUserController.getLoggedUser());
 
-        getFacade().create(c);
+        if (c.getId() == null) {
+            getFacade().create(c);
+        }else{
+            getFacade().edit(c);
+        }
         encounterFacade.create(pcr);
     }
 
@@ -2605,7 +2609,7 @@ public class ClientController implements Serializable {
     }
 
     private int cellValueInt(Cell cell) {
-        int str=0;
+        int str = 0;
         if (null != cell.getCellType()) {
             switch (cell.getCellType()) {
                 case NUMERIC:
