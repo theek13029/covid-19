@@ -53,6 +53,12 @@
                             <p:column headerText="No"  sortBy="#{c.encounterNumber}" width="40">
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Tube No." 
                                       sortBy="#{c.encounterNumber}" 
                                       filterBy="#{c.encounterNumber}" 
