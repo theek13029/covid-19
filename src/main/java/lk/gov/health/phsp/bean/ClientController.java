@@ -2540,7 +2540,7 @@ public class ClientController implements Serializable {
             calDob.add(Calendar.YEAR, (0 - ci.getAgeInYears()));
             calDob.add(Calendar.MONTH, (0 - ci.getAgeInMonths()));
             calDob.add(Calendar.DAY_OF_YEAR, (0 - ci.getAgeInDays()));
-            c.getPerson().setDateOfBirth(toDate);
+            c.getPerson().setDateOfBirth(calDob.getTime());
         } else {
             c = ci.getClient();
         }
