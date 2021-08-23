@@ -191,7 +191,7 @@ public class MohController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/moh/count_of_tests_by_gn";
         }
@@ -244,7 +244,7 @@ public class MohController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
 
         System.out.println("j = " + j);
         System.out.println("m = " + m);
@@ -299,7 +299,7 @@ public class MohController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/moh/count_of_results_by_phi";
         }
@@ -358,7 +358,7 @@ public class MohController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/moh/count_of_tests_by_phi";
         }

@@ -30,7 +30,7 @@
                         <h:panelGroup id="gpTest" >
                             <div class="card-body #{hospitalController.rat.pcrResult.name eq 'Positive'?'text-warning':''}">
                                 <div class="form-group row">
-                                    <div class="col-md-3" >
+                                    <div class="col-md-2" >
                                         <p:outputLabel for="result" value="Result"></p:outputLabel>
                                         <p:selectOneMenu id="result"
                                                          required="true"
@@ -50,12 +50,34 @@
                                         </p:selectOneMenu>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <p:outputLabel value="Test Number"></p:outputLabel>
                                         <p:inputText id="txtTestNo"  
                                                      value="#{hospitalController.rat.encounterNumber}"
                                                      tabindex="1" style="width: 98%;" >
                                             <p:ajax process="txtTestNo" event="blur" ></p:ajax>
+                                        </p:inputText>
+                                    </div>
+                                    
+                                     <div class="col-md-2">
+                                        <p:outputLabel value="BHT / OPD No/ Clinic No:" for="bhtNo"  />
+                                        <p:inputText id="bhtNo"  value="#{hospitalController.rat.bht}"
+                                                     style="width:100%;"
+                                                     required="false"
+                                                     tabindex="2" 
+                                                     requiredMessage="Need a Number">
+                                        </p:inputText>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <p:outputLabel for="unitward" value="Unit/Ward:"  />
+                                        <p:inputText tabindex="114"
+                                                     id="unitward"
+                                                     value="#{hospitalController.rat.unitWard}"
+                                                     style="width:100%;"
+                                                     required="false"
+                                                     autocomplete="on"
+                                                     requiredMessage="Enter a Unit / Ward / Clinic">
                                         </p:inputText>
                                     </div>
 
@@ -74,17 +96,7 @@
                                         </p:selectOneMenu>
                                     </div>
 
-                                    <div class="col-md-2">
-                                        <p:outputLabel for="unitward" value="Unit/Ward:"  />
-                                        <p:inputText tabindex="114"
-                                                     id="unitward"
-                                                     value="#{hospitalController.rat.unitWard}"
-                                                     style="width:100%;"
-                                                     required="true"
-                                                     autocomplete="on"
-                                                     requiredMessage="Enter a Unit / Ward / Clinic">
-                                        </p:inputText>
-                                    </div>
+
 
 
                                 </div>
@@ -99,7 +111,24 @@
                                                      requiredMessage="Please give a name"
                                                      value="#{hospitalController.rat.client.person.name}" title="Name" />
                                     </div>
-
+                                    <div class="col-md-2">
+                                        <p:outputLabel value="Age: (Years/Months)*" style="width: 100%;"/>
+                                        <h:panelGroup>
+                                            <p:inputText autocomplete="off" id="year" 
+                                                         tabindex="108" 
+                                                         requiredMessage="Please enter the age"
+                                                         placeholder="Years"
+                                                         value="#{hospitalController.rat.client.person.ageYears}"
+                                                         required="true" style="width: 90px;">
+                                                <f:ajax event="keyup" execute="@this month day" render="calDob" />
+                                            </p:inputText>
+                                            <p:spacer height="1" width="20" ></p:spacer>
+                                            <p:inputText tabindex="108"  autocomplete="off" id="month" placeholder="Months" style="width: 90px; " 
+                                                         value="#{hospitalController.rat.client.person.ageMonths}">
+                                                <f:ajax event="keyup" execute="@this year day" render="calDob" />
+                                            </p:inputText>
+                                        </h:panelGroup>
+                                    </div>
                                     <div class="col-md-2">
                                         <p:outputLabel value="Other Ordering Category:"  />
                                         <p:inputText value="#{hospitalController.rat.pcrOrderingCategoryOther}" 
@@ -135,24 +164,7 @@
                                             <f:selectItems value="#{hospitalController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
                                         </p:selectOneMenu>
                                     </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Age: (Years/Months)*" style="width: 100%;"/>
-                                        <h:panelGroup>
-                                            <p:inputText autocomplete="off" id="year" 
-                                                         tabindex="108" 
-                                                         requiredMessage="Please enter the age"
-                                                         placeholder="Years"
-                                                         value="#{hospitalController.rat.client.person.ageYears}"
-                                                         required="true" style="width: 90px;">
-                                                <f:ajax event="keyup" execute="@this month day" render="calDob" />
-                                            </p:inputText>
-                                            <p:spacer height="1" width="20" ></p:spacer>
-                                            <p:inputText tabindex="108"  autocomplete="off" id="month" placeholder="Months" style="width: 90px; " 
-                                                         value="#{hospitalController.rat.client.person.ageMonths}">
-                                                <f:ajax event="keyup" execute="@this year day" render="calDob" />
-                                            </p:inputText>
-                                        </h:panelGroup>
-                                    </div>
+
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-6">
@@ -162,10 +174,10 @@
                                             <i class="pi pi-refresh"></i>
                                         </p:commandLink>
                                         <p:inputText tabindex="4" 
-                                                     id="address" required="true" 
+                                                     id="address" required="false" 
                                                      requiredMessage="Please enter the address"
                                                      value="#{hospitalController.rat.client.person.address}"
-                                                     title="Address ****" style="width:100%;"/>
+                                                     title="Address" style="width:100%;"/>
 
                                     </div>
 
@@ -189,7 +201,7 @@
                                     <div class="col-md-3">
                                         <p:outputLabel value="MOH Area:" for="moh" />
                                         <p:autoComplete id="moh" 
-                                                        tabindex="111" 
+                                                        tabindex="111" style="width:100%;"
                                                         value="#{hospitalController.rat.client.person.mohArea}" 
                                                         completeMethod="#{hospitalController.completeMohAreas}"
                                                         var="m" itemLabel="#{m.name}" itemValue="#{m}" inputStyle="width:20rem;" maxResults="15" forceSelection="true" minQueryLength="3">
@@ -207,7 +219,7 @@
                                             <i class="pi pi-refresh"></i>
                                         </p:commandLink>
                                         <p:inputText tabindex="5" class="form-control" 
-                                                     id="phone1" required="true" 
+                                                     id="phone1" required="false" 
                                                      requiredMessage="Please select a contact number"
                                                      autocomplete="off" 
                                                      value="#{hospitalController.rat.client.person.phone1}" title="Mobile" 
