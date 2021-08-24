@@ -86,9 +86,9 @@
                     <p:menuitem ajax="false" value="Upload Orders" action="#{clientController.toUploadOrders()}" />
                 </p:submenu>
 
-                <p:menuitem ajax="false" value="Reports" action="#{mohController.toReportsIndex()}" />
+                <p:menuitem ajax="false" value="Reports" action="#{menuController.toReportsIndex()}" />
+                <p:menuitem ajax="false" value="Administration" action="#{menuController.toReportsIndex()}" />
 
-               
 
                 <p:submenu label="Institution Administration" rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
                     <p:submenu label="Manage Users" rendered="#{webUserController.hasPrivilege('Institution_Administration')}">

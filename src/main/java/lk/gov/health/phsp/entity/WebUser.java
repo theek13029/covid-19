@@ -607,21 +607,25 @@ public class WebUser implements Serializable {
                 case Nurse:
                     webUserRoleLevel = WebUserRoleLevel.Hospital;
                     break;
+                case Lab_Admin:
                 case Lab_Consultant:
                 case Lab_Mlt:
                 case Lab_Mo:
                 case Lab_User:
                     webUserRoleLevel = WebUserRoleLevel.Lab;
                     break;
+                case Provincial_Admin:
                 case Pdhs:
                 case Pdhs_Staff:
                     webUserRoleLevel = WebUserRoleLevel.Provincial;
                     break;
+                case Regional_Admin:
                 case Rdhs:
                 case Re:
                 case Rdhs_Staff:
                     webUserRoleLevel = WebUserRoleLevel.Regional;
                     break;
+
             }
         }
         return webUserRoleLevel;

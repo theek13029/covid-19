@@ -8,7 +8,7 @@
 
     <body>
 
-        <ui:composition template="./../template1.xhtml">
+        <ui:composition template="/template1.xhtml">
 
             <ui:define name="title">
                 List of Tests
@@ -70,6 +70,8 @@
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
+                                     reflow="true"
+                                     resizeMode="expand"
                                      >
                             <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>

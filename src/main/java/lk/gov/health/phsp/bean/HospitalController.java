@@ -770,56 +770,6 @@ public class HospitalController implements Serializable {
         return "/hospital/investigated_list";
     }
 
-//    public String toListOfTestsRegional() {
-//        return "/regional/list_of_tests";
-//    }
-    public String toCaseReports() {
-        switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case ChiefEpidemiologist:
-            case Client:
-            case Epidemiologist:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mlt:
-            case Lab_Mo:
-            case Lab_National:
-            case Lab_User:
-            case Moh:
-            case Amoh:
-            case Nurse:
-            case Pdhs:
-            case Phi:
-            case Phm:
-            case Rdhs:
-            case Re:
-            case Super_User:
-            case System_Administrator:
-            case User:
-        }
-        return "/hospital/list_of_tests";
-    }
-
-    public String toReportsIndex() {
-        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
-            case Regional:
-                return "/regional/reports_index";
-            case National:
-                return "/national/reports_index";
-            case Hospital:
-                return "/hospital/reports_index";
-            case Lab:
-                return "/lab/reports_index";
-            case National_Lab:
-                return "/national/lab_reports_index";
-            case Moh:
-                return "/moh/reports_index";
-            case Provincial:
-                return "/provincial/reports_index";
-            default:
-                return "";
-        }
-    }
 
     public void toDeleteTestFromLastPcrList() {
         deleteTest();

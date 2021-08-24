@@ -1691,6 +1691,31 @@ public class WebUserController implements Serializable {
         return rs;
     }
 
+    public WebUserRole[] getWebUserRolesForHospitalAdmin() {
+        List<WebUserRole> urs = new ArrayList<>();
+        urs.add(WebUserRole.Hospital_Admin);
+        urs.add(WebUserRole.Hospital_User);
+        urs.add(WebUserRole.Lab_Consultant);
+        urs.add(WebUserRole.Lab_Mlt);
+        urs.add(WebUserRole.Lab_Mo);
+        urs.add(WebUserRole.Nurse);
+        WebUserRole[] rs = urs.toArray(new WebUserRole[0]);
+        return rs;
+    }
+
+    public WebUserRole[] getWebUserRolesForLabAdmin() {
+        List<WebUserRole> urs = new ArrayList<>();
+        urs.add(WebUserRole.Hospital_Admin);
+        urs.add(WebUserRole.Hospital_Admin);
+        urs.add(WebUserRole.Hospital_User);
+        urs.add(WebUserRole.Lab_Consultant);
+        urs.add(WebUserRole.Lab_Mlt);
+        urs.add(WebUserRole.Lab_Mo);
+        urs.add(WebUserRole.Nurse);
+        WebUserRole[] rs = urs.toArray(new WebUserRole[0]);
+        return rs;
+    }
+
     private List<WebUserRole> findManagableRoles(WebUserRole ur) {
         List<WebUserRole> urs = new ArrayList<>();
         switch (ur) {
