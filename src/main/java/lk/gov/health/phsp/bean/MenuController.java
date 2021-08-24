@@ -41,13 +41,15 @@ public class MenuController implements Serializable {
 
     @Inject
     private WebUserController webUserController;
-    
+    @Inject
+    WebUserApplicationController webUserApplicationController;
+
     /**
      * Creates a new instance of MenuController
      */
     public MenuController() {
     }
-    
+
     public String toReportsIndex() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
@@ -68,18 +70,18 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
-    
+
     public String toAdministrationIndex() {
         boolean privileged = false;
-        for(UserPrivilege up:webUserController.loggedUserPrivileges){
-            if(up.getPrivilege()==Privilege.Institution_Administration){
-                privileged=true;
+        for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
+            if (up.getPrivilege() == Privilege.Institution_Administration) {
+                privileged = true;
             }
-            if(up.getPrivilege()==Privilege.System_Administration){
-                privileged=true;
+            if (up.getPrivilege() == Privilege.System_Administration) {
+                privileged = true;
             }
         }
-        if(!privileged){
+        if (!privileged) {
             JsfUtil.addErrorMessage("You are NOT autherized");
             return "";
         }
@@ -102,5 +104,185 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
+
+    public String toAddNewUser() {
+        boolean privileged = false;
+        for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
+            if (up.getPrivilege() == Privilege.Institution_Administration) {
+                privileged = true;
+            }
+            if (up.getPrivilege() == Privilege.System_Administration) {
+                privileged = true;
+            }
+        }
+        if (!privileged) {
+            JsfUtil.addErrorMessage("You are NOT autherized");
+            return "";
+        }
+        webUserController.prepareToAddNewUser();
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/admin/user_new";
+            case National:
+                return "/national/admin/user_new";
+            case Hospital:
+                return "/hospital/admin/user_new";
+            case Lab:
+                return "/lab/admin/user_new";
+            case National_Lab:
+                return "/national/admin/user_new";
+            case Moh:
+                return "/moh/admin/user_new";
+            case Provincial:
+                return "/provincial/admin/user_new";
+            default:
+                return "";
+        }
+    }
+
+    public String toListUser() {
+        boolean privileged = false;
+        for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
+            if (up.getPrivilege() == Privilege.Institution_Administration) {
+                privileged = true;
+            }
+            if (up.getPrivilege() == Privilege.System_Administration) {
+                privileged = true;
+            }
+        }
+        if (!privileged) {
+            JsfUtil.addErrorMessage("You are NOT autherized");
+            return "";
+        }
+        webUserController.prepareListingUsers();
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/admin/user_list";
+            case National:
+                return "/national/admin/user_list";
+            case Hospital:
+                return "/hospital/admin/user_list";
+            case Lab:
+                return "/lab/admin/user_list";
+            case National_Lab:
+                return "/national/admin/user_list";
+            case Moh:
+                return "/moh/admin/user_list";
+            case Provincial:
+                return "/provincial/admin/user_list";
+            default:
+                return "";
+        }
+    }
+
+    public String toEditUser() {
+        boolean privileged = false;
+        for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
+            if (up.getPrivilege() == Privilege.Institution_Administration) {
+                privileged = true;
+            }
+            if (up.getPrivilege() == Privilege.System_Administration) {
+                privileged = true;
+            }
+        }
+        if (!privileged) {
+            JsfUtil.addErrorMessage("You are NOT autherized");
+            return "";
+        }
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/admin/user_edit";
+            case National:
+                return "/national/admin/user_edit";
+            case Hospital:
+                return "/hospital/admin/user_edit";
+            case Lab:
+                return "/lab/admin/user_edit";
+            case National_Lab:
+                return "/national/admin/user_edit";
+            case Moh:
+                return "/moh/admin/user_edit";
+            case Provincial:
+                return "/provincial/admin/user_edit";
+            default:
+                return "";
+        }
+    }
     
+     public String toEditPassword() {
+        boolean privileged = false;
+        for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
+            if (up.getPrivilege() == Privilege.Institution_Administration) {
+                privileged = true;
+            }
+            if (up.getPrivilege() == Privilege.System_Administration) {
+                privileged = true;
+            }
+        }
+        if (!privileged) {
+            JsfUtil.addErrorMessage("You are NOT autherized");
+            return "";
+        }
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/admin/user_password";
+            case National:
+                return "/national/admin/user_password";
+            case Hospital:
+                return "/hospital/admin/user_password";
+            case Lab:
+                return "/lab/admin/user_password";
+            case National_Lab:
+                return "/national/admin/user_password";
+            case Moh:
+                return "/moh/admin/user_password";
+            case Provincial:
+                return "/provincial/admin/user_password";
+            default:
+                return "";
+        }
+    }
+
+    public String toUserPrivileges() {
+        boolean privileged = false;
+        for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
+            if (up.getPrivilege() == Privilege.Institution_Administration) {
+                privileged = true;
+            }
+            if (up.getPrivilege() == Privilege.System_Administration) {
+                privileged = true;
+            }
+        }
+        if (!privileged) {
+            JsfUtil.addErrorMessage("You are NOT autherized");
+            return "";
+        }
+
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                webUserController.prepareManagePrivileges(webUserApplicationController.getRegionalPrivilegeRoot());
+                return "/regional/admin/user_privileges";
+            case National:
+                webUserController.prepareManagePrivileges(webUserApplicationController.getAllPrivilegeRoot());
+                return "/national/admin/user_privileges";
+            case Hospital:
+                webUserController.prepareManagePrivileges(webUserApplicationController.getHospitalPrivilegeRoot());
+                return "/hospital/admin/user_privileges";
+            case Lab:
+                webUserController.prepareManagePrivileges(webUserApplicationController.getLabPrivilegeRoot());
+                return "/lab/admin/user_privileges";
+            case National_Lab:
+                webUserController.prepareManagePrivileges(webUserApplicationController.getAllPrivilegeRoot());
+                return "/national/admin/user_privileges";
+            case Moh:
+                webUserController.prepareManagePrivileges(webUserApplicationController.getMohPrivilegeRoot());
+                return "/moh/admin/user_privileges";
+            case Provincial:
+                webUserController.prepareManagePrivileges(webUserApplicationController.getProvincialPrivilegeRoot());
+                return "/provincial/admin/user_privileges";
+            default:
+                return "";
+        }
+    }
+
 }
