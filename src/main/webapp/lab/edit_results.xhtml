@@ -67,6 +67,12 @@
                             <p:column headerText="ID" width="60" rendered="false">
                                 <p:outputLabel value="#{c.id}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
+                            </p:column>
+                              <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Tube No" width="140" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
