@@ -20,7 +20,7 @@
 
                             <div class="card" >
                                 <div class="card-header" >
-                                    <h:outputLabel value="Administration" ></h:outputLabel>
+                                    <h:outputLabel value="System Administration" ></h:outputLabel>
                                 </div>
                                 <div class="card-body container-fluid">
                                     <div class="row">
@@ -49,7 +49,7 @@
                                         <div class="col-12 p-2">
                                             <h:form>
 
-                                                <h:commandLink value="View Institutions" 
+                                                <h:commandLink disabled="true" value="View Institutions" 
                                                                action="#{regionalController.toCountOfResultsByOrderedInstitution()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block"
                                                                >
@@ -61,7 +61,7 @@
                                         <div class="col-12 p-2">
                                             <h:form>
 
-                                                <h:commandLink value="Add Institution" 
+                                                <h:commandLink disabled="true" value="Add Institution" 
                                                                action="#{regionalController.toCountOfResultsByLab()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block"
                                                                >
@@ -78,34 +78,7 @@
                         </div>
                     </div>
                 </div>
-
-                <h:panelGroup rendered="false" >
-
-                    <div class="card">
-                        <div class="card-header">
-                            Reports
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-6">
-                                    <p:commandButton ajax="false" value="Cases by Management Plan" action="#{mohController.toListCasesByManagementForRegionalLevel()}">
-                                    </p:commandButton>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                </h:panelGroup>
-
-
-
-
-
             </ui:define>
-
         </ui:composition>
-
     </h:body>
-
 </html>
