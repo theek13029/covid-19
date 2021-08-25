@@ -8,110 +8,114 @@
 
     <ui:composition template="./../template1.xhtml">
         <ui:define name="content">
-            <div class="container">
-                <div class="col-md-8">
-                    <h:form>
-                        <div class="row mb-3">
-                            <label for="searchByPhn" class="col-sm-3 col-form-label">PHN Number</label>
-                            <div class="col-sm-9">
-                                <div class="input-group">
-                                    <p:inputText name="searchByPhn" class="form-control" placeholder="Personal Health Number"
-                                        value="#{clientController.searchingPhn}" autocomplete="off"></p:inputText>
-                                    <p:commandButton class="btn btn-secondary fw-bold" ajax="false" value="Search"
-                                        action="#{clientController.searchByPhn()}">
-                                    </p:commandButton>
+            <div class="row bg-white">
+                <div class="container my-4">
+                    <div class="d-flex justify-content-center">
+                        <div class="col-md-6 px-4 py-3">
+                            <h:form>
+                                <div class="row mb-3">
+                                    <label for="searchByPhn" class="col-sm-3 col-form-label">PHN Number</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <p:inputText name="searchByPhn" class="form-control" placeholder="Personal Health Number"
+                                                value="#{clientController.searchingPhn}" autocomplete="off"></p:inputText>
+                                            <p:commandButton class="btn btn-success fw-bold" ajax="false" value="Search"
+                                                action="#{clientController.searchByPhn()}">
+                                            </p:commandButton>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="searchByNic" class="col-sm-3 col-form-label">NIC Number</label>
-                            <div class="col-sm-9">
-                                <div class="input-group">
-                                    <p:inputText name="searchByNic" class="form-control" placeholder="National Identification Number"
-                                        value="#{clientController.searchingNicNo}" autocomplete="off"></p:inputText>
-                                    <p:commandButton class="btn btn-secondary fw-bold" ajax="false" value="Search"
-                                        action="#{clientController.searchByNic()}">
-                                    </p:commandButton>
+                                <div class="row mb-3">
+                                    <label for="searchByNic" class="col-sm-3 col-form-label">NIC Number</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <p:inputText name="searchByNic" class="form-control" placeholder="National Identification Number"
+                                                value="#{clientController.searchingNicNo}" autocomplete="off"></p:inputText>
+                                            <p:commandButton class="btn btn-success fw-bold" ajax="false" value="Search"
+                                                action="#{clientController.searchByNic()}">
+                                            </p:commandButton>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="searchByPhoneNumber" class="col-sm-3 col-form-label">Telephone
-                                Number</label>
-                            <div class="col-9">
-                                <div class="input-group">
-                                    <p:inputText name="searchByPhoneNumber" class="form-control" placeholder="Telephone Number"
-                                        value="#{clientController.searchingPhoneNumber}" autocomplete="off">
-                                    </p:inputText>
-                                    <p:commandButton class="btn btn-secondary fw-bold" ajax="false" value="Search"
-                                        action="#{clientController.searchByPhoneNumber()}"></p:commandButton>
+                                <div class="row mb-3">
+                                    <label for="searchByPhoneNumber" class="col-sm-3 col-form-label">Telephone
+                                        Number</label>
+                                    <div class="col-9">
+                                        <div class="input-group">
+                                            <p:inputText name="searchByPhoneNumber" class="form-control" placeholder="Telephone Number"
+                                                value="#{clientController.searchingPhoneNumber}" autocomplete="off">
+                                            </p:inputText>
+                                            <p:commandButton class="btn btn-success fw-bold" ajax="false" value="Search"
+                                                action="#{clientController.searchByPhoneNumber()}"></p:commandButton>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="searchByDrivingLicenseNo" class="col-sm-3 col-form-label">Driving
-                                License</label>
-                            <div class="col-sm-9">
-                                <div class="input-group">
-                                    <p:inputText name="searchByDrivingLicenseNo" class="form-control" placeholder="Driving License Number"
-                                        value="#{clientController.searchingDrivingLicenceNo}" autocomplete="off">
-                                    </p:inputText>
-                                    <p:commandButton class="btn btn-secondary fw-bold" ajax="false" value="Search"
-                                        action="#{clientController.searchByDrivingLicenseNo()}"></p:commandButton>
+                                <div class="row mb-3">
+                                    <label for="searchByDrivingLicenseNo" class="col-sm-3 col-form-label">Driving
+                                        License</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <p:inputText name="searchByDrivingLicenseNo" class="form-control" placeholder="Driving License Number"
+                                                value="#{clientController.searchingDrivingLicenceNo}" autocomplete="off">
+                                            </p:inputText>
+                                            <p:commandButton class="btn btn-success fw-bold" ajax="false" value="Search"
+                                                action="#{clientController.searchByDrivingLicenseNo()}"></p:commandButton>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="searchByPassportNo" class="col-sm-3 col-form-label">Passport
-                                Number</label>
+                                <div class="row mb-3">
+                                    <label for="searchByPassportNo" class="col-sm-3 col-form-label">Passport
+                                        Number</label>
 
-                            <div class="col-sm-9">
-                                <div class="input-group">
-                                    <p:inputText name="searchByPassportNo" class="form-control" placeholder="Passport Number"
-                                        value="#{clientController.searchingPassportNo}" autocomplete="off">
-                                    </p:inputText>
-                                    <p:commandButton class="btn btn-secondary fw-bold" ajax="false" value="Search"
-                                        action="#{clientController.searchByPassportNo()}">
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <p:inputText name="searchByPassportNo" class="form-control" placeholder="Passport Number"
+                                                value="#{clientController.searchingPassportNo}" autocomplete="off">
+                                            </p:inputText>
+                                            <p:commandButton class="btn btn-success fw-bold" ajax="false" value="Search"
+                                                action="#{clientController.searchByPassportNo()}">
+                                            </p:commandButton>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="searchByLocalReferanceNo" class="col-sm-3 col-form-label">Local Reference
+                                        No</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <p:inputText name="searchByLocalReferanceNo" class="form-control" placeholder="Local Reference Number"
+                                                value="#{clientController.searchingLocalReferanceNo}" autocomplete="off">
+                                            </p:inputText>
+                                            <p:commandButton class="btn btn-success fw-bold" ajax="false" value="Search"
+                                                action="#{clientController.searchByLocalReferanceNo()}"></p:commandButton>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="searchBySsNo" class="col-sm-3 col-form-label">Senior Citizen
+                                        Number</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <p:inputText name="searchBySsNo" class="form-control" placeholder="Senior Citizen Number"
+                                                value="#{clientController.searchingSsNumber}" autocomplete="off"></p:inputText>
+                                            <p:commandButton class="btn btn-success fw-bold" ajax="false" value="Search"
+                                                action="#{clientController.searchBySsNo()}">
+                                            </p:commandButton>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="div buttons">
+                                    <p:commandButton class="btn btn-success fw-bold" ajax="false" value="Search By ID - Priority"
+                                        action="#{clientController.searchById()}"></p:commandButton>
+                                    <p:commandButton class="btn btn-success fw-bold" ajax="false" value="Search By Any ID"
+                                        action="#{clientController.searchByAllId()}"></p:commandButton>
+                                    <p:commandButton class="btn btn-success fw-bold" ajax="false" value="Clear"
+                                        action="#{clientController.clearSearchById()}">
                                     </p:commandButton>
                                 </div>
-                            </div>
+                            </h:form>
                         </div>
-                        <div class="row mb-3">
-                            <label for="searchByLocalReferanceNo" class="col-sm-3 col-form-label">Local Reference
-                                No</label>
-                            <div class="col-sm-9">
-                                <div class="input-group">
-                                    <p:inputText name="searchByLocalReferanceNo" class="form-control" placeholder="Local Reference Number"
-                                        value="#{clientController.searchingLocalReferanceNo}" autocomplete="off">
-                                    </p:inputText>
-                                    <p:commandButton class="btn btn-secondary fw-bold" ajax="false" value="Search"
-                                        action="#{clientController.searchByLocalReferanceNo()}"></p:commandButton>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="searchBySsNo" class="col-sm-3 col-form-label">Senior Citizen
-                                Number</label>
-                            <div class="col-sm-9">
-                                <div class="input-group">
-                                    <p:inputText name="searchBySsNo" class="form-control" placeholder="Senior Citizen Number"
-                                        value="#{clientController.searchingSsNumber}" autocomplete="off"></p:inputText>
-                                    <p:commandButton class="btn btn-secondary fw-bold" ajax="false" value="Search"
-                                        action="#{clientController.searchBySsNo()}">
-                                    </p:commandButton>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="div buttons">
-                            <p:commandButton class="btn btn-secondary fw-bold" ajax="false" value="Search By ID - Priority"
-                                action="#{clientController.searchById()}"></p:commandButton>
-                            <p:commandButton class="btn btn-secondary fw-bold" ajax="false" value="Search By Any ID"
-                                action="#{clientController.searchByAllId()}"></p:commandButton>
-                            <p:commandButton class="btn btn-secondary fw-bold" ajax="false" value="Clear"
-                                action="#{clientController.clearSearchById()}">
-                            </p:commandButton>
-                        </div>
-                    </h:form>
+                    </div>
                 </div>
             </div>
         </ui:define>
