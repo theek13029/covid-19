@@ -2,7 +2,7 @@
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-    xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui">
+    xmlns:h="http://xmlns.jcp.org/jsf/html">
 
 <!-- INTERFACE -->
 <cc:interface>
@@ -11,194 +11,204 @@
 <!-- IMPLEMENTATION -->
 <cc:implementation>
     <h:form>
-        <div class="row p-4">
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-header bg-primary text-white fw-bold">
-                        PCR Samples
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4 class="fw-bold">Today</h4>
-                                <h5 class="text-muted">
-                                    <h:outputLabel value="#{dashboardApplicationController.todayPcr}"></h:outputLabel>
-                                </h5>
+        <div class="container">
+            <div class="row gx-4 my-2">
+                <div class="col">
+                    <div class="d-flex bg-success px-3 py-2 align-items-center">
+                        <div class="flex-grow-1 text-white">
+                            <h4 class="fw-bold">
+                                <i class="bi mx-2 bi-info-circle-fill"></i>
+                                PCRs
+                            </h4>
+                            <div class="d-flex">
+                                <div class="p-2 w-100">
+                                    <h5 class="fw-bold">Today</h5></div>
+                                <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                    <h5><h:outputLabel value="#{dashboardApplicationController.todayPcr}"></h:outputLabel></h5>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <h4 class="fw-bold">Yesterday</h4>
-                                <h5 class="text-muted">
-                                    <h:outputLabel value="#{dashboardApplicationController.yesterdayPcr}">
+                            <div class="d-flex">
+                                <div class="p-2 w-100">
+                                    <h5 class="fw-bold">Yesterday</h5></div>
+                                <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                    <h5><h:outputLabel value="#{dashboardApplicationController.yesterdayPcr}">
                                     </h:outputLabel>
-                                </h5>
+                                    </h5>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <h:commandLink class="text-decoration-none" value="More"></h:commandLink>
+                    <div class="d-grid gap-2">
+                        <h:commandButton value="More Information" class="btn text-white btn-small btn-dark-success border-none" type="button">
+                        </h:commandButton>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-header bg-teal text-white fw-bold">
-                        RATs
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4 class="fw-bold">Today</h4>
-                                <h5 class="text-muted">
-                                    <h:outputLabel value="#{dashboardApplicationController.todayRat}"></h:outputLabel>
-                                </h5>
+                <div class="col">
+                    <div class="d-flex bg-success px-3 py-2 align-items-center">
+                        <div class="flex-grow-1 text-white">
+                            <h4 class="fw-bold">
+                                <i class="bi mx-2 bi-info-circle-fill"></i>
+                                RATS
+                            </h4>
+                            <div class="d-flex">
+                                <div class="p-2 w-100">
+                                    <h5 class="fw-bold">Today</h5></div>
+                                <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                    <h5><h:outputLabel value="#{dashboardApplicationController.todayRat}"></h:outputLabel></h5>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <h4 class="fw-bold">Yesterday</h4>
-                                <h5>
+                            <div class="d-flex">
+                                <div class="p-2 w-100">
+                                    <h5 class="fw-bold">Yesterday</h5></div>
+                                <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                    <h5>
                                     <h:outputLabel value="#{dashboardApplicationController.yesterdayRat}">
                                     </h:outputLabel>
-                                </h5>
+                                    </h5>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <h:commandLink value="More" class="text-decoration-none"></h:commandLink>
+                    <div class="d-grid gap-2">
+                        <h:commandButton value="More Information" class="btn text-white btn-small btn-dark-success border-none"></h:commandButton>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-header text-white bg-red fw-bold">
-                        PCR Positives
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4 class="fw-bold">Today</h4>
-                                <h5 class="text-muted">
-                                    <h:outputLabel value="#{dashboardApplicationController.todayPositivePcr}">
-                                    </h:outputLabel>
-                                </h5>
+                <div class="col">
+                    <div class="d-flex bg-danger px-3 py-2 align-items-center">
+                        <div class="flex-grow-1 text-white">
+                            <h4 class="fw-bold">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                PCR POSITIVES
+                            </h4>
+                            <div class="d-flex">
+                                <div class="p-2 w-100">
+                                    <h5 class="fw-bold">Today</h5></div>
+                                <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                    <h5><h:outputLabel value="#{dashboardApplicationController.todayPositivePcr}"></h:outputLabel></h5>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <h4 class="fw-bold">Yesterday</h4>
-                                <h5>
-                                    <h:outputLabel value="#{dashboardApplicationController.yesterdayPositivePcr}">
-                                    </h:outputLabel>
-                                </h5>
+                            <div class="d-flex">
+                                <div class="p-2 w-100">
+                                    <h5 class="fw-bold">Yesterday</h5></div>
+                                <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                    <h5><h:outputLabel value="#{dashboardApplicationController.yesterdayPositivePcr}">
+                                    </h:outputLabel></h5>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <h:commandLink value="More" action="#{mohController.toPcrPositiveReportsIndexNational()}"
-                            class="text-decoration-none"></h:commandLink>
+                    <div class="d-grid gap-2">
+                        <h:commandButton value="More Information" class="btn text-white btn-small btn-dark-danger border-none" type="button">
+                        </h:commandButton>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-header text-white bg-red fw-bold">
-                        RAT Positives
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4 class="fw-bold">Today</h4>
-                                <h5 class="text-muted">
+                <div class="col">
+                    <div class="d-flex bg-danger px-3 py-2 align-items-center">
+                        <div class="flex-grow-1 text-white">
+                            <h4 class="fw-bold">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                RAT POSITIVES
+                            </h4>
+                            <div class="d-flex">
+                                <div class="p-2 w-100">
+                                    <h5 class="fw-bold">Today</h5></div>
+                                <div class="p-2 flex-shrink-1 fw-semi-bold">
                                     <h:outputLabel value="#{dashboardApplicationController.todayPositiveRat}">
                                     </h:outputLabel>
-                                </h5>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <h4 class="fw-bold">Yesterday</h4>
-                                <h5 class="text-muted">
-                                    <h:outputLabel value="#{dashboardApplicationController.yesterdayPositiveRat}">
-                                    </h:outputLabel>
-                                </h5>
+                            <div class="d-flex">
+                                <div class="p-2 w-100">
+                                    <h5 class="fw-bold">Yesterday</h5></div>
+                                <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                    <h5><h:outputLabel value="#{dashboardApplicationController.yesterdayPositiveRat}">
+                                    </h:outputLabel></h5>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <h:commandLink value="More" class="text-decoration-none"></h:commandLink>
+                    <div class="d-grid gap-2">
+                        <h:commandButton value="More Information" class="btn btn-small text-white btn-dark-danger border-none" type="button">
+                        </h:commandButton>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row p-4">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header bg-purple text-white fw-bold">
-                        Tests By Category
-                    </div>
-                    <div class="card-body">
-                        <table class="w-100">
-                            <tr>
-                                <td>
-                                    <p:commandLink class="text-decoration-none" ajax="false" value="First Contacts"
-                                        action="#{dashboardController.toContactNational()}"></p:commandLink>
-                                </td>
-                                <td>
-                                    <p:commandLink class="text-decoration-none" ajax="false"
-                                        value="#{dashboardApplicationController.firstContactCount}"
-                                        action="#{dashboardController.toOrderingCategoryDistrict()}"></p:commandLink>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p:commandLink class="text-decoration-none" ajax="false" value="Community Random"
-                                        action="#{dashboardController.toCommunityRandomNational()}"></p:commandLink>
-                                </td>
-                                <td>
-                                    <p:commandLink class="text-decoration-none" ajax="false"
-                                        value="#{dashboardApplicationController.communityRandomCount}"
-                                        action="#{dashboardController.toOrderingCategoryDistrict()}"></p:commandLink>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p:commandLink class="text-decoration-none" ajax="false"
-                                        value="Foreign returnees &amp; Tourists "
-                                        action="#{dashboardController.toForeign()}"></p:commandLink>
-                                </td>
-                                <td>
-                                    <p:commandLink class="text-decoration-none" ajax="false"
-                                        value="#{dashboardApplicationController.foreignCount}"
-                                        action="#{dashboardController.toOrderingCategoryDistrict()}"></p:commandLink>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p:commandLink class="text-decoration-none" ajax="false" value="Hospitals"
-                                        action="#{dashboardController.toHospital()}"></p:commandLink>
-                                </td>
-                                <td>
-                                    <p:commandLink class="text-decoration-none" ajax="false"
-                                        value="#{dashboardApplicationController.hospitalCount}"
-                                        action="#{dashboardController.toOrderingCategoryDistrict()}"></p:commandLink>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p:commandLink class="text-decoration-none" ajax="false" value="Other"
-                                        action="#{dashboardController.toOtherOrderingCategory()}"></p:commandLink>
-                                </td>
-                                <td>
-                                    <p:commandLink class="text-decoration-none" ajax="false"
-                                        value="#{dashboardApplicationController.otherCount}"
-                                        action="#{dashboardController.toOrderingCategoryDistrict()}"></p:commandLink>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="card-footer text-right">
-                        <h:commandLink class="text-decoration-none" value="Find more details .."
-                            action="#{mohController.toDistrictViceTestListForOrderingCategories()}"></h:commandLink>
+            <div class="row my-2 gx-4">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-header bg-purple text-white fw-bold">
+                            Tests By Category
+                        </div>
+                        <div class="card-body">
+                            <table class="w-100">
+                                <tr>
+                                    <td>
+                                        <h:commandLink class="text-decoration-none" ajax="false" value="First Contacts"
+                                            action="#{dashboardController.toContactNational()}"></h:commandLink>
+                                    </td>
+                                    <td>
+                                        <h:commandLink class="text-decoration-none" ajax="false"
+                                            value="#{dashboardApplicationController.firstContactCount}"
+                                            action="#{dashboardController.toOrderingCategoryDistrict()}"></h:commandLink>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h:commandLink class="text-decoration-none" ajax="false" value="Community Random"
+                                            action="#{dashboardController.toCommunityRandomNational()}"></h:commandLink>
+                                    </td>
+                                    <td>
+                                        <h:commandLink class="text-decoration-none" ajax="false"
+                                            value="#{dashboardApplicationController.communityRandomCount}"
+                                            action="#{dashboardController.toOrderingCategoryDistrict()}"></h:commandLink>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h:commandLink class="text-decoration-none" ajax="false"
+                                            value="Foreign returnees &amp; Tourists "
+                                            action="#{dashboardController.toForeign()}"></h:commandLink>
+                                    </td>
+                                    <td>
+                                        <h:commandLink class="text-decoration-none" ajax="false"
+                                            value="#{dashboardApplicationController.foreignCount}"
+                                            action="#{dashboardController.toOrderingCategoryDistrict()}"></h:commandLink>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h:commandLink class="text-decoration-none" ajax="false" value="Hospitals"
+                                            action="#{dashboardController.toHospital()}"></h:commandLink>
+                                    </td>
+                                    <td>
+                                        <h:commandLink class="text-decoration-none" ajax="false"
+                                            value="#{dashboardApplicationController.hospitalCount}"
+                                            action="#{dashboardController.toOrderingCategoryDistrict()}"></h:commandLink>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h:commandLink class="text-decoration-none" ajax="false" value="Other"
+                                            action="#{dashboardController.toOtherOrderingCategory()}"></h:commandLink>
+                                    </td>
+                                    <td>
+                                        <h:commandLink class="text-decoration-none" ajax="false"
+                                            value="#{dashboardApplicationController.otherCount}"
+                                            action="#{dashboardController.toOrderingCategoryDistrict()}"></h:commandLink>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="card-footer text-right">
+                            <h:commandLink class="text-decoration-none" value="Find more details .."
+                                action="#{mohController.toDistrictViceTestListForOrderingCategories()}"></h:commandLink>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
+
     </h:form>
 </cc:implementation>
 
