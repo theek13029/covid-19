@@ -319,10 +319,15 @@ public class DashboardApplicationController {
 
         if (area != null) {
             if (area.getType() == AreaType.RdhsAra) {
-                j += " and c.institution.rdhsArea=:area ";
+                j += " and (c.institution.rdhsArea=:area or c.institution.district=:dis) ";
                 m.put("area", area);
+                m.put("dis", area.getDistrict());
             } else if (area.getType() == AreaType.Province) {
-                j += " and c.institution.pdhsArea=:area ";
+                j += " and (c.institution.pdhsArea=:area or c.institution.province=:pro) ";
+                m.put("area", area);
+                m.put("pro", area.getProvince());
+            }else if (area.getType() == AreaType.MOH) {
+                j += " and (c.institution.mohArea=:area) ";
                 m.put("area", area);
             }
         }
