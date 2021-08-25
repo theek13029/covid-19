@@ -88,8 +88,8 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-                                                <h:commandLink value="PCR/RAT Orders List" 
-                                                               action="#{mohController.toTestListWithoutResults()}" 
+                                                <h:commandLink value="PCR/RAT Orders from My MOH" 
+                                                               action="#{mohController.toListOfOrderesByMyMoh}" 
                                                                class="btn btn-outline-primary btn-lg btn-block"
                                                                >
                                                 </h:commandLink>
@@ -99,8 +99,19 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-                                                <h:commandLink value="Result List" 
-                                                               action="#{mohController.toListOfResults()}" 
+                                                <h:commandLink value="Result List for Orders from my MOH" 
+                                                               action="#{mohController.toListOfResultsForOrdersFromMyMoh()}" 
+                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               >
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink value="Result List for Orders from other Institutes" 
+                                                               action="#{mohController.toListOfResultsForOrdersFromOtherInstitutes()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block"
                                                                >
                                                 </h:commandLink>
