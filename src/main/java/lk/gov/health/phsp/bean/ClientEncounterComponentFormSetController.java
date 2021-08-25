@@ -1418,7 +1418,7 @@ public class ClientEncounterComponentFormSetController implements Serializable {
         Encounter e = new Encounter();
         e.setClient(clientController.getSelected());
         e.setInstitution(webUserController.getLoggedUser().getInstitution());
-e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
+        e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         if (encounterDate != null) {
             e.setEncounterDate(encounterDate);
         } else {
@@ -2168,7 +2168,7 @@ e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
     public void updateValuesFromClient(Client c, ClientEncounterComponentItem ti) {
         System.out.println("updateValuesFromClient");
         System.out.println("c = " + c);
-        
+
         if (ti == null) {
             System.err.println("ti is null");
             return;
@@ -2189,19 +2189,22 @@ e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         System.out.println("code = " + code);
         switch (code) {
             case "clients_district":
-                if(c.getPerson().getDistrict()!=null){
+                if (c.getPerson().getDistrict() != null) {
                     System.out.println("c.getPerson().getDistrict() = " + c.getPerson().getDistrict());
                     ti.setAreaValue(c.getPerson().getDistrict());
                     System.out.println("ti.getAreaValue() = " + ti.getAreaValue());
                 }
                 return;
             case "client_current_moh_area":
-                if(c.getPerson().getMohArea()!=null){
+                if (c.getPerson().getMohArea() != null) {
                     ti.setAreaValue(c.getPerson().getMohArea());
+                } else {
+                    ti.setAreaValue(webUserController.getLoggedUser().getInstitution().getMohArea());
                 }
             case "client_name":
                 ti.setShortTextValue(c.getPerson().getName());
                 return;
+
             case "client_phn_number":
                 ti.setShortTextValue(c.getPhn());
                 return;
@@ -2222,6 +2225,7 @@ e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
                 return;
             case "client_current_age_in_years":
             case "client_age_at_encounter_in_years":
+                c.getPerson().calAgeFromDob();
                 ti.setIntegerNumberValue(c.getPerson().getAgeYears());
                 ti.setShortTextValue(c.getPerson().getAgeYears() + "");
                 ti.setRealNumberValue(Double.valueOf(c.getPerson().getAgeYears()));
@@ -2242,13 +2246,16 @@ e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
                 ti.setShortTextValue(c.getPerson().getPhone2());
                 return;
             case "client_permanent_moh_area":
-                ti.setAreaValue(c.getPerson().getGnArea());
-                return;
-            case "client_permanent_phm_area":
-                ti.setAreaValue(c.getPerson().getGnArea().getPhm());
+                if (c.getPerson().getMohArea() != null) {
+                    ti.setAreaValue(c.getPerson().getMohArea());
+                } else {
+                    ti.setAreaValue(webUserController.getLoggedUser().getInstitution().getMohArea());
+                }
                 return;
             case "client_permanent_phi_area":
-                ti.setAreaValue(c.getPerson().getGnArea().getPhi());
+                if (webUserController.getLoggedUser().getArea() != null) {
+                    ti.setAreaValue(webUserController.getLoggedUser().getArea());
+                }
                 return;
             case "client_gn_area":
                 ti.setAreaValue(c.getPerson().getGnArea());
@@ -2290,17 +2297,20 @@ e.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
             return;
         }
         String code = ti.getItem().getCode();
-//        switch (code) {
-//            case "client_covid_19_case_detected_from":
-//                ti.setDateValue(test.getResultConfirmedAt());
-//                return;
-//            case "covid_19_date_of_diagnosis":
-//                ti.setDateValue(test.getSampledAt());
-//                return;
-//            case "client_covid_19_case_detected_from":
-//                ti.setItemValue(test.getPcrOrderingCategory());
-//                return;
-//        }
+        switch (code) {
+            case "client_covid_19_case_detected_from":
+                ti.setItemValue(test.getPcrTestType());
+                return ;
+            case "covid_19_date_of_diagnosis":
+                ti.setDateValue(test.getResultConfirmedAt());
+                return;
+            case "covid_19_date_of_diagnosis_":
+                ti.setDateValue(test.getSampledAt());
+                return;
+            case "client_covid_19_case_detected":
+                ti.setItemValue(test.getPcrOrderingCategory());
+                return;
+        }
 
     }
 
