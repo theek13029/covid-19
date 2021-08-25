@@ -34,8 +34,8 @@
                             </p:selectOneMenu>
 
                             <p:outputLabel  value="Lab"></p:outputLabel>
-                            <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
-                                            inputStyleClass="autocomplete"
+                            <p:autoComplete style="width: 100%;"
+                                            inputStyle="width: 100%;"
                                             value="#{mohController.lab}"
                                             forceSelection="true" tabindex="100" 
                                             completeMethod="#{mohController.completeLab}" 
@@ -57,14 +57,6 @@
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
-                            <p:outputLabel  value="Lab"></p:outputLabel>
-                            <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
-                                            inputStyleClass="autocomplete"
-                                            value="#{mohController.lab}"
-                                            forceSelection="true" tabindex="100" 
-                                            completeMethod="#{mohController.completeLab}" 
-                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
-                            </p:autoComplete>
 
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
@@ -91,7 +83,7 @@
                                 <p:outputLabel value="#{c.area.name}" ></p:outputLabel>
                             </p:column>
 
-                            <p:column headerText="Institution" sortBy="#{c.institution.name}"
+                            <p:column headerText="Ordered Institution" sortBy="#{c.institution.name}"
                                       filterBy="#{c.institution.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>

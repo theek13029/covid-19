@@ -18,17 +18,17 @@
                     <h:form >
                         <p:panelGrid columns="2" >
                             <p:outputLabel value="Ordered From" ></p:outputLabel>
-                            <p:calendar value="#{provincialController.fromDate}" 
+                            <p:calendar value="#{regionalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
                             <p:outputLabel value="Ordered To" ></p:outputLabel>
-                            <p:calendar value="#{provincialController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <p:calendar value="#{regionalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
                             <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                            <p:selectOneMenu value="#{provincialController.orderingCategory}" >
+                            <p:selectOneMenu value="#{regionalController.orderingCategory}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{provincialController.covidTestOrderingCategories}" 
+                                <f:selectItems value="#{regionalController.covidTestOrderingCategories}" 
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
@@ -36,33 +36,33 @@
                             <p:outputLabel  value="Lab"></p:outputLabel>
                             <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
                                             inputStyleClass="autocomplete"
-                                            value="#{provincialController.lab}"
+                                            value="#{regionalController.lab}"
                                             forceSelection="true" tabindex="100" 
-                                            completeMethod="#{provincialController.completeLab}" 
+                                            completeMethod="#{regionalController.completeLab}" 
                                             var="l" itemLabel="#{l.name}" itemValue="#{l}">
                             </p:autoComplete>
 
                             <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{provincialController.testType}" >
+                            <p:selectOneMenu value="#{regionalController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{provincialController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                                <f:selectItems value="#{regionalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
 
                             <p:outputLabel value="Result" ></p:outputLabel>
-                            <p:selectOneMenu value="#{provincialController.result}" >
+                            <p:selectOneMenu value="#{regionalController.result}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{provincialController.resultTypes}" var="c" itemLabel="#{c.name}"
+                                <f:selectItems value="#{regionalController.resultTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
                             <p:outputLabel  value="Lab"></p:outputLabel>
                             <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
                                             inputStyleClass="autocomplete"
-                                            value="#{provincialController.lab}"
+                                            value="#{regionalController.lab}"
                                             forceSelection="true" tabindex="100" 
-                                            completeMethod="#{provincialController.completeLab}" 
+                                            completeMethod="#{regionalController.completeLab}" 
                                             var="l" itemLabel="#{l.name}" itemValue="#{l}">
                             </p:autoComplete>
 
@@ -70,13 +70,13 @@
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{provincialController.toCountOfResultsByOrderedInstitution()}" ></p:commandButton>
+                                             action="#{regionalController.toCountOfResultsByOrderedInstitution()}" ></p:commandButton>
 
 
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{provincialController.institutionCounts}" rendered="true"
+                        <p:dataTable id="tbl" value="#{regionalController.institutionCounts}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      paginator="true" 

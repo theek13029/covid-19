@@ -25,16 +25,14 @@
                             <p:outputLabel value="To" ></p:outputLabel>
                             <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                            <p:outputLabel value="MOH" rendered="#{clientController.institutionSelectable}" ></p:outputLabel>
-                            <p:selectOneMenu value="#{clientController.institution}"  
-                                             rendered="#{clientController.institutionSelectable and not clientController.nationalLevel}" >
+                            <p:outputLabel value="MOH" ></p:outputLabel>
+                            <p:selectOneMenu value="#{clientController.institution}"  >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{webUserController.loggableInstitutions}" var="ins"
                                                itemLabel="#{ins.name}"
                                                itemValue="#{ins}"></f:selectItems>
                             </p:selectOneMenu>
                             <p:autoComplete value="#{clientController.institution}"
-                                            rendered="#{clientController.institutionSelectable and clientController.nationalLevel}" 
                                             completeMethod="#{institutionController.completeMohs}"
                                             var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                             </p:autoComplete>

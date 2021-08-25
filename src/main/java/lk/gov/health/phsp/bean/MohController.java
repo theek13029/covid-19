@@ -240,7 +240,7 @@ public class MohController implements Serializable {
             m.put("ri", lab);
         }
         j += " group by c.client.person.gnArea, c.institution"
-                + " order by c.client.person.gnArea.name ";
+                + " order by count(c) desc ";
 
         institutionCounts = new ArrayList<>();
 
@@ -265,7 +265,7 @@ public class MohController implements Serializable {
 
     public String toCountOfResultsByPhiArea() {
         Map m = new HashMap();
-        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.gnArea, c.institution, count(c))   "
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.phiArea, c.institution, count(c))   "
                 + " from Encounter c "
                 + " where (c.retired is null or c.retired=:ret) ";
         m.put("ret", false);
@@ -295,7 +295,7 @@ public class MohController implements Serializable {
             m.put("ri", lab);
         }
         j += " group by c.client.person.gnArea, c.institution"
-                + " order by c.client.person.gnArea.name ";
+                + " order by count(c) desc ";
 
         institutionCounts = new ArrayList<>();
 
@@ -984,57 +984,6 @@ public class MohController implements Serializable {
         return "/moh/investigated_list";
     }
 
-//    public String toListOfTestsRegional() {
-//        return "/regional/list_of_tests";
-//    }
-    public String toCaseReports() {
-        switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case ChiefEpidemiologist:
-            case Client:
-            case Epidemiologist:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mlt:
-            case Lab_Mo:
-            case Lab_National:
-            case Lab_User:
-            case Moh:
-            case Amoh:
-            case Nurse:
-            case Pdhs:
-            case Phi:
-            case Phm:
-            case Rdhs:
-            case Re:
-            case Super_User:
-            case System_Administrator:
-            case User:
-        }
-        return "/moh/list_of_tests";
-    }
-
-    public String toReportsIndex() {
-        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
-            case Regional:
-                return "/regional/reports_index";
-            case National:
-                return "/national/reports_index";
-            case Hospital:
-                return "/hospital/reports_index";
-            case Lab:
-                return "/lab/reports_index";
-            case National_Lab:
-                return "/national/lab_reports_index";
-            case Moh:
-                return "/moh/reports_index";
-            case Provincial:
-                return "/provincial/reports_index";
-            default:
-                return "";
-        }
-    }
-
     public void toDeleteTestFromLastPcrList() {
         deleteTest();
         sessionController.getPcrs().remove(deleting.getId());
@@ -1047,7 +996,7 @@ public class MohController implements Serializable {
 
     public String toDeleteTestFromTestList() {
         deleteTest();
-        return toListOfResults();
+        return toListOfResultsForOrdersFromMyMoh();
     }
 
     public String toRatView() {
@@ -1898,7 +1847,7 @@ public class MohController implements Serializable {
         return "/moh/list_of_cases_by_management_plan";
     }
 
-    public String toListOfResults() {
+    public String toListOfResultsForOrdersFromMyMoh() {
         System.out.println("toTestList");
         Map m = new HashMap();
 
@@ -1940,7 +1889,98 @@ public class MohController implements Serializable {
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
-        return "/moh/list_of_results";
+        return "/moh/list_of_results_for_orders_from_my_moh";
+    }
+
+    public String toListOfResultsForPersonsInMyArea(){
+                Map m = new HashMap();
+
+        String j = "select c "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and (c.client.person.mohArea=:moh) ";
+        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
+
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        System.out.println("getFromDate() = " + getFromDate());
+        m.put("td", getToDate());
+        System.out.println(" getToDate() = " + getToDate());
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+
+        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("tests = " + tests.size());
+        return "/moh/list_of_results_for_persons_in_my_area";
+    }
+    
+    public String toListOfResultsForOrdersFromOtherInstitutes() {
+        Map m = new HashMap();
+
+        String j = "select c "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and c.institution<>:ins ";
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
+
+        j += " and (c.client.person.mohArea=:moh) ";
+        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
+
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        System.out.println("getFromDate() = " + getFromDate());
+        m.put("td", getToDate());
+        System.out.println(" getToDate() = " + getToDate());
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+
+        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("tests = " + tests.size());
+        return "/moh/list_of_results_for_orders_from_other_moh";
     }
 
     public String toDistrictViceTestListForOrderingCategories() {
@@ -2089,6 +2129,35 @@ public class MohController implements Serializable {
         }
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         return "/moh/list_of_tests_without_results";
+    }
+
+    public String toListOfOrderesByMyMoh() {
+        Map m = new HashMap();
+        String j = "select c "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        j += " and c.institution=:ins ";
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        return "/moh/list_of_orderes_by_my_moh";
     }
 
     public String toListOfTestsRegional() {

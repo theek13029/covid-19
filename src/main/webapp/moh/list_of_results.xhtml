@@ -8,7 +8,7 @@
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <h:body>
-        <ui:composition template="/provincial/reports_index.xhtml">
+        <ui:composition template="/moh/reports_index.xhtml">
             <ui:define name="reports">
                 <h:outputStylesheet library="css" name="tem1.css"/>
 
@@ -64,7 +64,7 @@
                                     <p:dataExporter target="tbl" type="xlsx" fileName="results" ></p:dataExporter>
                                 </p:commandButton>
                                 <p:commandButton ajax="false" value="Process" 
-                                                 action="#{mohController.toListOfResults()}" ></p:commandButton>
+                                                 action="#{mohController.toListOfResultsForOrdersFromMyMoh()}" ></p:commandButton>
 
 
                             </p:panelGrid>

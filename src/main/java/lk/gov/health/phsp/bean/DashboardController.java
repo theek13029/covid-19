@@ -288,14 +288,14 @@ public class DashboardController implements Serializable {
         yesterdayRat = dashboardApplicationController.getOrderCount(webUserController.getLoggedUser().getInstitution(), yesterdayStart, yesterdayEnd,
                 itemApplicationController.getRat(), null, null, null);
 
-        todayPositivePcr = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+        todayPositivePcr = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution().getMohArea(),
                 todayStart,
                 now,
                 itemApplicationController.getPcr(),
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
-        todayPositiveRat = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+        todayPositiveRat = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution().getMohArea(),
                 todayStart,
                 now,
                 itemApplicationController.getRat(),
@@ -303,14 +303,14 @@ public class DashboardController implements Serializable {
                 itemApplicationController.getPcrPositive(),
                 null);
 
-        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution().getMohArea(),
                 yesterdayStart,
                 yesterdayEnd,
                 itemApplicationController.getPcr(),
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
-        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution().getMohArea(),
                 yesterdayStart,
                 yesterdayEnd,
                 itemApplicationController.getRat(),
@@ -339,14 +339,14 @@ public class DashboardController implements Serializable {
         yesterdayRat = dashboardApplicationController.getOrderCount(webUserController.getLoggedUser().getInstitution(), yesterdayStart, yesterdayEnd,
                 itemApplicationController.getRat(), null, null, null);
 
-        todayPositivePcr = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+        todayPositivePcr = dashboardApplicationController.getConfirmedCountByInstitution(webUserController.getLoggedUser().getInstitution(),
                 todayStart,
                 now,
                 itemApplicationController.getPcr(),
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
-        todayPositiveRat = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+        todayPositiveRat = dashboardApplicationController.getConfirmedCountByInstitution(webUserController.getLoggedUser().getInstitution(),
                 todayStart,
                 now,
                 itemApplicationController.getRat(),
@@ -354,14 +354,14 @@ public class DashboardController implements Serializable {
                 itemApplicationController.getPcrPositive(),
                 null);
 
-        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCountByInstitution(webUserController.getLoggedUser().getInstitution(),
                 yesterdayStart,
                 yesterdayEnd,
                 itemApplicationController.getPcr(),
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
-        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCountByInstitution(webUserController.getLoggedUser().getInstitution(),
                 yesterdayStart,
                 yesterdayEnd,
                 itemApplicationController.getRat(),
@@ -395,7 +395,7 @@ public class DashboardController implements Serializable {
         yesterdayRat = dashboardApplicationController.getOrderCountArea(webUserController.getLoggedUser().getInstitution().getRdhsArea(), yesterdayStart, yesterdayEnd,
                 itemApplicationController.getRat(), null, null, null);
 
-        todayPositivePcr = dashboardApplicationController.getConfirmedCountArea(
+        todayPositivePcr = dashboardApplicationController.getConfirmedCount(
                 webUserController.getLoggedUser().getInstitution().getRdhsArea(),
                 todayStart,
                 now,
@@ -403,7 +403,7 @@ public class DashboardController implements Serializable {
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
-        todayPositiveRat = dashboardApplicationController.getConfirmedCountArea(
+        todayPositiveRat = dashboardApplicationController.getConfirmedCount(
                 webUserController.getLoggedUser().getInstitution().getRdhsArea(),
                 todayStart,
                 now,
@@ -412,7 +412,7 @@ public class DashboardController implements Serializable {
                 itemApplicationController.getPcrPositive(),
                 null);
 
-        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCountArea(
+        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCount(
                 webUserController.getLoggedUser().getInstitution().getRdhsArea(),
                 yesterdayStart,
                 yesterdayEnd,
@@ -420,7 +420,7 @@ public class DashboardController implements Serializable {
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
-        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCountArea(
+        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCount(
                 webUserController.getLoggedUser().getInstitution().getRdhsArea(),
                 yesterdayStart,
                 yesterdayEnd,
