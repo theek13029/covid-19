@@ -1044,8 +1044,8 @@ public class RegionalController implements Serializable {
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
         j += " and (c.institution.rdhsArea=:rdhs or c.institution.district=:district) ";
-        m.put("pdhs", webUserController.getLoggedUser().getInstitution().getPdhsArea());
-        m.put("district", webUserController.getLoggedUser().getInstitution().getProvince());
+        m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
+        m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
         m.put("td", getToDate());
