@@ -30,30 +30,30 @@
 										</div>
 										<div class="mb-3">
 											<p:inputText placeholder="Username" required="true" autocomplete="off"
-												value="#{webUserController.userName}" class="form-control">
-											</p:inputText>
-										</div>
-										<div class="mb-3">
-											<p:password placeholder="Password" required="true" autocomplete="off"
-												value="#{webUserController.password}" class="form-control"></p:password>
-										</div>
-										<div class="d-grid">
-											<h:commandButton class="btn fw-bold btn-primary" value="Login"
-												action="#{webUserController.loginNew()}"></h:commandButton>
-										</div>
+											value="#{webUserController.userName}" class="form-control">
+										</p:inputText>
+									</div>
+									<div class="mb-3">
+										<p:password placeholder="Password" required="true" autocomplete="off"
+										value="#{webUserController.password}" class="form-control"></p:password>
+									</div>
+									<div class="d-grid">
+										<h:commandButton class="btn fw-bold btn-primary" value="Login"
+										action="#{webUserController.loginNew()}"></h:commandButton>
+									</div>
 
-										<div class="text-muted">
-											&copy; Ministry of Health,
-											<h:outputText value="#{session.lastAccessedTime}">
-												<f:convertDateTime pattern="yyyy" type="date" />
-											</h:outputText>
-										</div>
+									<div class="text-muted">
+										&copy; Ministry of Health,
+										<h:outputText value="#{session.lastAccessedTime}">
+											<f:convertDateTime pattern="yyyy" type="date" />
+										</h:outputText>
 									</div>
 								</div>
 							</div>
-							<!-- Display any error message when logging in -->
-							<div class="row">
-								<div class="column">
+						</div>
+						<!-- Display any error message when logging in -->
+						<div class="row">
+							<div class="column">
 									<p:messages></p:messages>
 								</div>
 							</div>
