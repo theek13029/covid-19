@@ -238,6 +238,28 @@ public class RegionalController implements Serializable {
         return toListOfFirstContactsWithoutMohForRegionalLevel();
     }
 
+    public String assignMohAreaToSelectedEncounters() {
+        if (selectedToAssign == null || selectedToAssign.isEmpty()) {
+            JsfUtil.addErrorMessage("Please select persons");
+            return "";
+        }
+        if (mohArea == null) {
+            JsfUtil.addErrorMessage("Please select an MOH Area");
+            return "";
+        }
+        for (Encounter i : selectedToAssign) {
+            if(i.getClient()==null||i.getClient().getPerson()==null){
+                i.getClient().getPerson().setMohArea(mohArea);
+                encounterFacade.edit(i);
+            }
+        }
+        selectedToAssign = null;
+        mohArea = null;
+        JsfUtil.addSuccessMessage("MOH Areas added");
+        return toListOfTestsWithoutMoh();
+    }
+
+    
     public Boolean checkNicExists(String nic, Client c) {
         String jpql = "select count(c) from Client c "
                 + " where c.retired=:ret "
@@ -706,7 +728,7 @@ public class RegionalController implements Serializable {
         return "/regional/count_of_results_by_lab";
     }
 
-    public String toListOfTestsWithoutMohForRegionalLevel() {
+    public String toListOfTestsWithoutMoh() {
         Map m = new HashMap();
         String j = "select c "
                 + " from Encounter c "
