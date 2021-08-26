@@ -18,53 +18,53 @@
                 <h:form >
 
                     <div class="row" >
-                        <div class="col-12" >
-                            <p:outputLabel value="Assign Cases to Investigate" ></p:outputLabel>
+                        <div class="col-12 text-center mt-4 mb-2" >
+                            <h1 class="font-weight-bold"><h:outputLabel  value="Assign Cases to Investigate" ></h:outputLabel></h1>
                         </div>
                     </div>
-
+                    
                     <div class="row" >
-                        <div class="col-6" >
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="Ordered From" ></p:outputLabel>
-                                <p:calendar value="#{mohController.fromDate}" 
+                        <div class="col-6 d-flex justify-content-center" >
+                            <h:panelGrid columns="2" class="shadow bg-white rounded w-100" >
+                                <h:outputLabel value="Ordered From" ></h:outputLabel>
+                                <p:calendar  value="#{mohController.fromDate}" 
                                             pattern="dd MMMM yyyy hh:mm a">
                                 </p:calendar>
 
-                                <p:outputLabel value="Ordered To" ></p:outputLabel>
+                                <h:outputLabel value="Ordered To" ></h:outputLabel>
                                 <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                                <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                                <p:selectOneMenu value="#{mohController.orderingCategory}" >
+                                <h:outputLabel value="Ordering Category" ></h:outputLabel>
+                                <h:selectOneMenu value="#{mohController.orderingCategory}" class="form-select" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
                                     <f:selectItems value="#{mohController.covidTestOrderingCategories}" 
                                                    var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
-                                </p:selectOneMenu>
+                                </h:selectOneMenu>
 
-                                <p:outputLabel value="Test" ></p:outputLabel>
-                                <p:selectOneMenu value="#{mohController.testType}" >
+                                <h:outputLabel value="Test" ></h:outputLabel>
+                                <h:selectOneMenu value="#{mohController.testType}" class="form-select" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
                                     <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
-                                </p:selectOneMenu>
-
-                                <p:commandButton ajax="false" value="Generate Excel">
+                                </h:selectOneMenu>
+                                
+                                <h:commandButton  value="Generate Excel" class="btn btn-success m-2 ">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="Process" 
-                                                 action="#{mohController.toAssignInvestigation()}" ></p:commandButton>
+                                </h:commandButton>
+                                <h:commandButton value="Process" class="btn btn-warning w-100" 
+                                                 action="#{mohController.toAssignInvestigation()}" ></h:commandButton>
 
-
-                            </p:panelGrid>
+                                
+                            </h:panelGrid>
                         </div>
-                        <div class="col-6" >
+                        <div class="col-6 d-flex justify-content-center" >
 
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="Assign to" ></p:outputLabel>
-                                <p:selectOneMenu value="#{mohController.assignee}" var="wu" >
+                            <h:panelGrid columns="3" class="shadow bg-white rounded ">
+                                <h:outputLabel value="Assign to" ></h:outputLabel>
+                                <p:selectOneMenu value="#{mohController.assignee}" var="wu" class="form-select" >
                                     <f:selectItems value="#{webUserController.usersForMyInstitute}" var="w" 
-                                                   itemLabel="#{w.area.name}" itemValue="#{w}" >
+                                                   itemLabel="#{w.area.name}" itemValue="#{w}" class="bg-dark" >
                                     </f:selectItems>
                                     <p:column headerText="Name" >
                                         <p:outputLabel value="#{wu.person.name}" ></p:outputLabel>
@@ -77,15 +77,16 @@
                                     </p:column>
                                 </p:selectOneMenu>
 
-                                <p:commandButton ajax="false" value="Assign" 
-                                                 action="#{mohController.assignToInvestigate()}"></p:commandButton>
+                                <h:commandButton value="Assign" class="btn btn-success "
+                                                 action="#{mohController.assignToInvestigate()}"></h:commandButton>
 
-                            </p:panelGrid>
+                            </h:panelGrid>
                         </div>
                     </div>
-                    <div class="row" >
-                        <div class="col-12" >
-                            <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                      
+                    <div class="row " >
+                        <div class="col-12 d-flex justify-content-center" >
+                            <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                                 <f:facet name="header" >
 
                                 </f:facet>
@@ -95,7 +96,7 @@
 
                                 </p:panelGrid>
 
-                                <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true"
+                                <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true" class="table"
                                              rowIndexVar="n"
                                              var="c" 
                                              rowKey="#{c.id}" 
@@ -107,7 +108,7 @@
                                              rows="10"
                                              selection="#{mohController.selectedToAssign}"
                                              >
-                                    <p:column selectionMode="multiple" width="40" ></p:column>
+                                    <p:column selectionMode="multiple" ></p:column>
                                     <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                         <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                                     </p:column>
@@ -163,7 +164,7 @@
 
 
 
-                            </p:panelGrid>
+                            </h:panelGrid>
                         </div>
                     </div>
 
