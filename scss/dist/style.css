@@ -22,7 +22,8 @@
 .ui-datepicker-calendar tbody tr td {
   font-weight: 700;
 }
-.ui-datepicker-calendar .ui-datepicker-header {
+
+.ui-datepicker-header {
   background-color: #15a589;
   color: #fff;
   font-weight: 700;
