@@ -26,14 +26,6 @@
                                 <p:outputLabel value="Ordered To" ></p:outputLabel>
                                 <p:calendar value="#{regionalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                                <p:outputLabel value="Institution" ></p:outputLabel>
-                                <p:selectOneMenu value="#{regionalController.mohOrHospital}" >
-                                    <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{regionalController.regionalMohsAndHospitals}" 
-                                                   var="c" itemLabel="#{c.name}"
-                                                   itemValue="#{c}" ></f:selectItems>
-                                </p:selectOneMenu>
-
                                 <p:outputLabel value="Ordering Category" ></p:outputLabel>
                                 <p:selectOneMenu value="#{regionalController.orderingCategory}" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
@@ -106,26 +98,11 @@
                                      rows="10"
                                      >
                             <p:column width="20" selectionMode="multiple" ></p:column>
-                            <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
-                            </p:column>
                             <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Age"  sortBy="#{c.client.person.age}" width="60"
-                                      filterBy="#{c.client.person.age}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Gender"
-                                      width="80"
-                                      sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Contact Numbers" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>

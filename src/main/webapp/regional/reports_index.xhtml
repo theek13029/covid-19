@@ -20,6 +20,43 @@
                     </div>
                     <div class="row" >
                         <div class="col-3" >
+                            
+                            <div class="card" >
+                                <div class="card-header" >
+                                    <h:outputLabel value="Actions" ></h:outputLabel>
+                                </div>
+                                <div class="card-body container-fluid">
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink value="List of Tests without MOH"
+                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               action="#{regionalController.toListOfTestsWithoutMoh()}">
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink class="btn btn-outline-primary btn-lg btn-block"
+                                                               value="List of First Contacts without MOH" action="#{regionalController.toListOfFirstContactsForRegionalLevel()}">
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink 
+                                                    class="btn btn-outline-primary btn-lg btn-block"
+                                                    value="List by Management Plan" action="#{mohController.toListCasesByManagementForRegionalLevel()}">
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="card" >
                                 <div class="card-header" >

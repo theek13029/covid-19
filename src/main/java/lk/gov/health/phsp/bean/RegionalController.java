@@ -251,7 +251,7 @@ public class RegionalController implements Serializable {
             return "";
         }
         for (Encounter i : selectedToAssign) {
-            if (i.getClient() == null || i.getClient().getPerson() == null) {
+            if (i.getClient() != null || i.getClient().getPerson() != null) {
                 i.getClient().getPerson().setMohArea(mohArea);
                 personFacade.edit(i.getClient().getPerson());
                 clientFacade.edit(i.getClient());
@@ -744,14 +744,14 @@ public class RegionalController implements Serializable {
 
         j += " and c.client.person.mohArea is null ";
 
-        if (mohOrHospital != null) {
-            j += " and c.institution=:ins ";
-            m.put("ins", mohOrHospital);
-        } else {
-            j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
-            m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
-            m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
-        }
+//        if (mohOrHospital != null) {
+//            j += " and c.institution=:ins ";
+//            m.put("ins", mohOrHospital);
+//        } else {
+//            j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
+//            m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
+//            m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
+//        }
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
