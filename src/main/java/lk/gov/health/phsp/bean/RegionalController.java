@@ -591,7 +591,6 @@ public class RegionalController implements Serializable {
     }
 
     public String toCountOfTestsByOrderedInstitution() {
-        System.out.println("toCountOfTestsByOrderedInstitution");
         Map m = new HashMap();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c))   "
                 + " from Encounter c "
@@ -622,7 +621,7 @@ public class RegionalController implements Serializable {
             m.put("ri", lab);
         }
         j += " group by c.institution"
-                + " order by c.institution.name ";
+                + " order by count(c) desc ";
         institutionCounts = new ArrayList<>();
         List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
@@ -669,7 +668,7 @@ public class RegionalController implements Serializable {
             m.put("ri", lab);
         }
         j += " group by c.institution"
-                + " order by c.institution.name ";
+                + " order by count(c) desc ";
 
         institutionCounts = new ArrayList<>();
 

@@ -33,15 +33,6 @@
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
-                            <p:outputLabel  value="Lab"></p:outputLabel>
-                            <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
-                                            inputStyleClass="autocomplete"
-                                            value="#{regionalController.lab}"
-                                            forceSelection="true" tabindex="100" 
-                                            completeMethod="#{regionalController.completeLab}" 
-                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
-                            </p:autoComplete>
-
                             <p:outputLabel value="Test" ></p:outputLabel>
                             <p:selectOneMenu value="#{regionalController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
@@ -58,7 +49,7 @@
                             </p:selectOneMenu>
 
                             <p:outputLabel  value="Lab"></p:outputLabel>
-                            <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
+                            <p:autoComplete style="width: 100%;"
                                             inputStyleClass="autocomplete"
                                             value="#{regionalController.lab}"
                                             forceSelection="true" tabindex="100" 
