@@ -25,13 +25,13 @@
                                     <p:outputLabel value="Listing" ></p:outputLabel>
                                 </f:facet>
                                 <p:outputLabel value="From" ></p:outputLabel>
-                                <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+                                <p:calendar value="#{regionalController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
                                 <p:outputLabel value="To" ></p:outputLabel>
-                                <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                                <p:calendar value="#{regionalController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
                                 <p:outputLabel value="Ordered Institution" ></p:outputLabel>
-                                <p:autoComplete value="#{clientController.institution}"
+                                <p:autoComplete value="#{regionalController.institution}"
                                                 completeMethod="#{institutionController.completeInstitutions}"
                                                 var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                                 </p:autoComplete>
@@ -40,7 +40,7 @@
                                     <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                                 </p:commandButton>
                                 <p:commandButton ajax="false" value="Process" 
-                                                 action="#{clientController.toDispatchSamples()}" ></p:commandButton>
+                                                 action="#{regionalController.toDispatchSamples()}" ></p:commandButton>
 
 
                             </p:panelGrid>
@@ -50,7 +50,7 @@
                                 </f:facet>
 
                                 <p:outputLabel value="Lab to Dispatch" ></p:outputLabel>
-                                <p:autoComplete value="#{clientController.dispatchingLab}"
+                                <p:autoComplete value="#{regionalController.dispatchingLab}"
                                                 completeMethod="#{institutionController.completeLab}"
                                                 var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                                 </p:autoComplete>
@@ -59,18 +59,24 @@
                                     <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                                 </p:commandButton>
                                 <p:commandButton ajax="false" value="Dispatch" 
-                                                 action="#{clientController.dispatchSelectedSamples()}" ></p:commandButton>
+                                                 action="#{regionalController.dispatchSelectedSamples()}" ></p:commandButton>
 
 
                             </p:panelGrid>
 
                         </p:panelGrid>
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToDispatch}" 
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10"
-                                     selection="#{clientController.selectedToDispatch}"
+                        <p:dataTable id="tbl" value="#{regionalController.listedToDispatch}" 
+                                     var="c" rowKey="#{c.id}" 
+
+                                     selection="#{regionalController.selectedToDispatch}"
+
+                                     paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="5,10,25,100,1000"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+
+
                                      >
                             <p:column selectionMode="multiple" width="30"></p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
