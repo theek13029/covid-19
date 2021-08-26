@@ -76,6 +76,8 @@ public class ApplicationController {
 // </editor-fold>    
     @Inject
     private UserTransactionController userTransactionController;
+    @Inject
+    InstitutionApplicationController institutionApplicationController;
 
 // <editor-fold defaultstate="collapsed" desc="Class Variables">
     private boolean demoSetup = false;
@@ -147,10 +149,14 @@ public class ApplicationController {
     public String createNewPersonalHealthNumberformat(Institution pins) {
         if (pins == null) {
             return null;
+        }else{
+            pins = institutionApplicationController.findMinistryOfHealth();
         }
         Institution ins = getInstitutionFacade().find(pins.getId());
         if (ins == null) {
             return null;
+        }else{
+            ins = institutionApplicationController.findMinistryOfHealth();
         }
         String alpha = "BCDFGHJKMPQRTVWXY";
         String numeric = "23456789";
