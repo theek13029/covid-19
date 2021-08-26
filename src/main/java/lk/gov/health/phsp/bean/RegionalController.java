@@ -50,6 +50,7 @@ import lk.gov.health.phsp.entity.WebUser;
 import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.facade.ClientEncounterComponentItemFacade;
+import lk.gov.health.phsp.facade.PersonFacade;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
 // </editor-fold>
 
@@ -66,6 +67,8 @@ public class RegionalController implements Serializable {
     private ClientFacade clientFacade;
     @EJB
     private EncounterFacade encounterFacade;
+    @EJB
+    private PersonFacade personFacade;
     @EJB
     ClientEncounterComponentItemFacade ceciFacade;
     @EJB
@@ -248,8 +251,10 @@ public class RegionalController implements Serializable {
             return "";
         }
         for (Encounter i : selectedToAssign) {
-            if(i.getClient()==null||i.getClient().getPerson()==null){
+            if (i.getClient() == null || i.getClient().getPerson() == null) {
                 i.getClient().getPerson().setMohArea(mohArea);
+                personFacade.edit(i.getClient().getPerson());
+                clientFacade.edit(i.getClient());
                 encounterFacade.edit(i);
             }
         }
@@ -259,7 +264,6 @@ public class RegionalController implements Serializable {
         return toListOfTestsWithoutMoh();
     }
 
-    
     public Boolean checkNicExists(String nic, Client c) {
         String jpql = "select count(c) from Client c "
                 + " where c.retired=:ret "
@@ -875,7 +879,6 @@ public class RegionalController implements Serializable {
         return "/moh/investigated_list";
     }
 
-   
     public void toDeleteTestFromLastPcrList() {
         deleteTest();
         sessionController.getPcrs().remove(deleting.getId());
