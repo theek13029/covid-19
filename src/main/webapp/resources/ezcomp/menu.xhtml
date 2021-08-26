@@ -49,7 +49,7 @@
                     <p:menuitem ajax="false" value="Dispatch Samples"
                                 action="#{clientController.toDispatchSamples()}"
                                 rendered="#{webUserController.hasPrivilege('Dispatch_Samples')}" />
-                    <p:menuitem ajax="false" value="Divert Samples" action="#{clientController.toDivertSamples()}"
+                    <p:menuitem ajax="false" value="Divert Samples" action="#{menuController.toDivertSamples()}"
                                 rendered="#{webUserController.hasPrivilege('Divert_Samples')}" />
                     <p:menuitem ajax="false" value="Order Summary"
                                 action="#{clientController.toSummaryByOrderedInstitution}" />

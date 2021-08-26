@@ -50,6 +50,28 @@ public class MenuController implements Serializable {
     public MenuController() {
     }
 
+    
+    public String toDivertSamples() {
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/divert_samples";
+            case National:
+                return "/national/divert_samples";
+            case Hospital:
+                return "/hospital/divert_samples";
+            case Lab:
+                return "/lab/divert_samples";
+            case National_Lab:
+                return "/national/divert_samples";
+            case Moh:
+                return "/moh/divert_samples";
+            case Provincial:
+                return "/provincial/divert_samples";
+            default:
+                return "";
+        }
+    }
+    
     public String toReportsIndex() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:

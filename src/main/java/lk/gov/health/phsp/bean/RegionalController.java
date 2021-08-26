@@ -106,6 +106,8 @@ public class RegionalController implements Serializable {
     private UserTransactionController userTransactionController;
     @Inject
     private PreferenceController preferenceController;
+    @Inject
+    MenuController menuController;
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Variables">
@@ -136,6 +138,15 @@ public class RegionalController implements Serializable {
     private List<Institution> regionalMohsAndHospitals;
     private List<InstitutionCount> institutionCounts;
 
+    private Institution institution;
+    private Institution referingInstitution;
+    private Institution dispatchingLab;
+    private Institution divertingLab;
+
+    private List<Encounter> listedToDispatch;
+    private List<Encounter> listedToDivert;
+    private List<Encounter> selectedToDivert;
+
     private Area district;
     private Area mohArea;
 
@@ -146,6 +157,43 @@ public class RegionalController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
+    public String divertSelectedSamples() {
+        if (divertingLab == null) {
+            JsfUtil.addErrorMessage("Please select a lab to divert samples");
+            return "";
+        }
+        for (Encounter e : selectedToDivert) {
+            e.setSentToLab(true);
+            e.setSentToLabAt(new Date());
+            e.setSentToLabBy(webUserController.getLoggedUser());
+            e.setReferalInstitution(divertingLab);
+            encounterFacade.edit(e);
+        }
+        selectedToDivert = null;
+        return menuController.toDivertSamples();
+    }
+
+    public String listToSelectDivertingSamples() {
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired=:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins "
+                + " and c.referalInstitution=:rins "
+                + " and c.resultEntered is null "
+                + " order by c.id";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("ins", institution);
+        m.put("rins", referingInstitution);
+        listedToDivert = encounterFacade.findByJpql(j, m, TemporalType.DATE);
+        return menuController.toDivertSamples();
+    }
+
     public String toAssignInvestigation() {
         testType = itemApplicationController.getPcr();
         result = itemApplicationController.getPcrPositive();
@@ -751,7 +799,6 @@ public class RegionalController implements Serializable {
 //            m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
 //            m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
 //        }
-
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
         System.out.println("getFromDate() = " + getFromDate());
@@ -1666,6 +1713,62 @@ public class RegionalController implements Serializable {
 
     public void setManagementType(Item managementType) {
         this.managementType = managementType;
+    }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
+
+    public Institution getReferingInstitution() {
+        return referingInstitution;
+    }
+
+    public void setReferingInstitution(Institution referingInstitution) {
+        this.referingInstitution = referingInstitution;
+    }
+
+    public Institution getDispatchingLab() {
+        return dispatchingLab;
+    }
+
+    public void setDispatchingLab(Institution dispatchingLab) {
+        this.dispatchingLab = dispatchingLab;
+    }
+
+    public Institution getDivertingLab() {
+        return divertingLab;
+    }
+
+    public void setDivertingLab(Institution divertingLab) {
+        this.divertingLab = divertingLab;
+    }
+
+    public List<Encounter> getListedToDispatch() {
+        return listedToDispatch;
+    }
+
+    public void setListedToDispatch(List<Encounter> listedToDispatch) {
+        this.listedToDispatch = listedToDispatch;
+    }
+
+    public List<Encounter> getListedToDivert() {
+        return listedToDivert;
+    }
+
+    public void setListedToDivert(List<Encounter> listedToDivert) {
+        this.listedToDivert = listedToDivert;
+    }
+
+    public List<Encounter> getSelectedToDivert() {
+        return selectedToDivert;
+    }
+
+    public void setSelectedToDivert(List<Encounter> selectedToDivert) {
+        this.selectedToDivert = selectedToDivert;
     }
 
 }
