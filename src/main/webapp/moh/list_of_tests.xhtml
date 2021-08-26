@@ -53,7 +53,7 @@
                             </p:selectOneMenu>
 
                             <p:outputLabel  value="Lab"></p:outputLabel>
-                            <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
+                            <p:autoComplete style="width: 100%;"
                                             inputStyleClass="autocomplete"
                                             value="#{mohController.lab}"
                                             forceSelection="true" tabindex="100" 
@@ -65,7 +65,7 @@
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{mohController.toTestList()}" ></p:commandButton>
+                                             action="#{mohController.toListOfResults()}" ></p:commandButton>
 
 
                         </p:panelGrid>
@@ -88,8 +88,15 @@
                             <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Ward" sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="BHT/OPD/Clinic No."  sortBy="#{c.bht}" 
+                                      filterBy="#{c.bht}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Age"  sortBy="#{c.client.person.age}" width="60"
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains">
@@ -116,31 +123,11 @@
                                       filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrOrderingCategory.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="PHI"  sortBy="#{c.client.person.phiArea.name}"
-                                      filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.phiArea.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="GN Area"  sortBy="#{c.client.person.gnArea.name}"
-                                      filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}"
-                                      filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
-                            </p:column>
                             <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
                                       filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
-
-                                <p:panelGrid columns="1" >
-                                    <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}" 
-                                                     value="Start Investigating" 
-                                                     action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
-                                        </f:setPropertyActionListener>
-                                    </p:commandButton>
                                     <p:commandButton rendered="#{c.referenceCase ne null}" 
                                                      ajax="false" value="View case" 
                                                      action="#{clientController.toNewCaseInvestigationFromTest()}"
@@ -156,7 +143,7 @@
                                     </p:commandButton>
                                     <p:commandButton ajax="false" value="Delete"  action="#{mohController.deleteTest()}"  style="width: 100%;" 
                                                      onclick="if (!confirm('Are you sure you want to delete?'))
-                                                               return false" >
+                                                                 return false" >
                                         <f:setPropertyActionListener value="#{c}" target="#{mohController.deleting}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>

@@ -52,6 +52,7 @@ public class SessionController implements Serializable {
     private Encounter lastPcr;
     private Item lastRatOrderingCategory;
     private Item lastPcrOrdringCategory;
+    private String lastWardUnit;
     private Institution lastInstitution;
     private Institution lastInstitutionUnit;
     private Institution lastLab;
@@ -75,6 +76,8 @@ public class SessionController implements Serializable {
         return lastPcr;
     }
 
+    
+    
     public void setLastPcr(Encounter lastPcr) {
         this.lastPcr = lastPcr;
     }
@@ -157,6 +160,14 @@ public class SessionController implements Serializable {
 
     public void setLastContactOfWorkplace(String lastContactOfWorkplace) {
         this.lastContactOfWorkplace = lastContactOfWorkplace;
+    }
+
+    public String getLastWardUnit() {
+        return lastWardUnit;
+    }
+
+    public void setLastWardUnit(String lastWardUnit) {
+        this.lastWardUnit = lastWardUnit;
     }
     
 }

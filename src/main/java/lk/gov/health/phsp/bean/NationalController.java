@@ -154,10 +154,15 @@ public class NationalController implements Serializable {
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
 
-        j += " and c.createdAt between :fd and :td ";
+        j += " and (c.createdAt > :fd and c.createdAt < :td) ";
         m.put("fd", getFromDate());
-
+        
+        System.out.println("getFromDate() = " + getFromDate());
+        
+        System.out.println("getToDate() = " + getToDate());
+        
         m.put("td", getToDate());
+        
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -178,9 +183,13 @@ public class NationalController implements Serializable {
         j += " group by c.institution"
                 + " order by count(c) desc ";
 
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        
+        
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/national/count_of_tests_by_ordered_institution";
         }
@@ -229,7 +238,7 @@ public class NationalController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/national/count_of_results_by_ordered_institution";
         }
@@ -274,7 +283,7 @@ public class NationalController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/national/count_of_results_by_lab";
         }
@@ -848,71 +857,6 @@ public class NationalController implements Serializable {
 
     public String toListOfInvestigatedCasesForMoh() {
         return "/moh/investigated_list";
-    }
-
-//    public String toListOfTestsRegional() {
-//        return "/regional/list_of_tests";
-//    }
-    public String toCaseReports() {
-        switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case ChiefEpidemiologist:
-            case Client:
-            case Epidemiologist:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mlt:
-            case Lab_Mo:
-            case Lab_National:
-            case Lab_User:
-            case Moh:
-            case Amoh:
-            case Nurse:
-            case Pdhs:
-            case Phi:
-            case Phm:
-            case Rdhs:
-            case Re:
-            case Super_User:
-            case System_Administrator:
-            case User:
-        }
-        return "/moh/list_of_tests";
-    }
-
-    public String toReportsIndex() {
-        switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case Rdhs:
-            case Re:
-                return "/regional/reports_index";
-            case ChiefEpidemiologist:
-            case Client:
-            case Epidemiologist:
-            case Super_User:
-            case System_Administrator:
-            case User:
-                return "/national/reports_index";
-            case Hospital_Admin:
-            case Hospital_User:
-            case Nurse:
-                return "/hospital/reports_index";
-            case Lab_Consultant:
-            case Lab_Mlt:
-            case Lab_Mo:
-            case Lab_User:
-                return "/lab/reports_index";
-            case Lab_National:
-                return "/national/lab_reports_index";
-            case Moh:
-            case Amoh:
-            case Phi:
-            case Phm:
-                return "/moh/reports_index";
-            case Pdhs:
-                return "/provincial/reports_index";
-            default:
-                return "";
-        }
     }
 
     public void toDeleteTestFromLastPcrList() {

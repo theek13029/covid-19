@@ -35,6 +35,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.persistence.TemporalType;
+import lk.gov.health.phsp.bean.util.JsfUtil;
 import lk.gov.health.phsp.ejb.CovidDataHolder;
 import lk.gov.health.phsp.entity.ClientEncounterComponentItem;
 import lk.gov.health.phsp.entity.Encounter;
@@ -287,14 +288,14 @@ public class DashboardController implements Serializable {
         yesterdayRat = dashboardApplicationController.getOrderCount(webUserController.getLoggedUser().getInstitution(), yesterdayStart, yesterdayEnd,
                 itemApplicationController.getRat(), null, null, null);
 
-        todayPositivePcr = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+        todayPositivePcr = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution().getMohArea(),
                 todayStart,
                 now,
                 itemApplicationController.getPcr(),
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
-        todayPositiveRat = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+        todayPositiveRat = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution().getMohArea(),
                 todayStart,
                 now,
                 itemApplicationController.getRat(),
@@ -302,14 +303,65 @@ public class DashboardController implements Serializable {
                 itemApplicationController.getPcrPositive(),
                 null);
 
-        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution().getMohArea(),
                 yesterdayStart,
                 yesterdayEnd,
                 itemApplicationController.getPcr(),
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
-        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution(),
+        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCount(webUserController.getLoggedUser().getInstitution().getMohArea(),
+                yesterdayStart,
+                yesterdayEnd,
+                itemApplicationController.getRat(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+
+    }
+
+    public void prepareHospitalDashboard() {
+        Calendar c = Calendar.getInstance();
+        Date now = c.getTime();
+        Date todayStart = CommonController.startOfTheDate();
+
+        c.add(Calendar.DATE, -1);
+
+        Date yesterdayStart = CommonController.startOfTheDate(c.getTime());
+        Date yesterdayEnd = CommonController.endOfTheDate(c.getTime());
+
+        todayPcr = dashboardApplicationController.getOrderCount(webUserController.getLoggedUser().getInstitution(), todayStart, now,
+                itemApplicationController.getPcr(), null, null, null);
+        todayRat = dashboardApplicationController.getOrderCount(webUserController.getLoggedUser().getInstitution(), todayStart, now,
+                itemApplicationController.getRat(), null, null, null);
+        yesterdayPcr = dashboardApplicationController.getOrderCount(webUserController.getLoggedUser().getInstitution(), yesterdayStart, yesterdayEnd,
+                itemApplicationController.getPcr(), null, null, null);
+        yesterdayRat = dashboardApplicationController.getOrderCount(webUserController.getLoggedUser().getInstitution(), yesterdayStart, yesterdayEnd,
+                itemApplicationController.getRat(), null, null, null);
+
+        todayPositivePcr = dashboardApplicationController.getConfirmedCountByInstitution(webUserController.getLoggedUser().getInstitution(),
+                todayStart,
+                now,
+                itemApplicationController.getPcr(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+        todayPositiveRat = dashboardApplicationController.getConfirmedCountByInstitution(webUserController.getLoggedUser().getInstitution(),
+                todayStart,
+                now,
+                itemApplicationController.getRat(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+
+        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCountByInstitution(webUserController.getLoggedUser().getInstitution(),
+                yesterdayStart,
+                yesterdayEnd,
+                itemApplicationController.getPcr(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCountByInstitution(webUserController.getLoggedUser().getInstitution(),
                 yesterdayStart,
                 yesterdayEnd,
                 itemApplicationController.getRat(),
@@ -329,6 +381,11 @@ public class DashboardController implements Serializable {
         Date yesterdayStart = CommonController.startOfTheDate(c.getTime());
         Date yesterdayEnd = CommonController.endOfTheDate(c.getTime());
 
+        if (webUserController.getLoggedUser().getInstitution().getRdhsArea() == null) {
+            JsfUtil.addErrorMessage("RDHS is not properly set. Please inform the support team. Dashboard will not be prepared.");
+            return;
+        }
+
         todayPcr = dashboardApplicationController.getOrderCountArea(webUserController.getLoggedUser().getInstitution().getRdhsArea(), todayStart, now,
                 itemApplicationController.getPcr(), null, null, null);
         todayRat = dashboardApplicationController.getOrderCountArea(webUserController.getLoggedUser().getInstitution().getRdhsArea(), todayStart, now,
@@ -338,7 +395,7 @@ public class DashboardController implements Serializable {
         yesterdayRat = dashboardApplicationController.getOrderCountArea(webUserController.getLoggedUser().getInstitution().getRdhsArea(), yesterdayStart, yesterdayEnd,
                 itemApplicationController.getRat(), null, null, null);
 
-        todayPositivePcr = dashboardApplicationController.getConfirmedCountArea(
+        todayPositivePcr = dashboardApplicationController.getConfirmedCount(
                 webUserController.getLoggedUser().getInstitution().getRdhsArea(),
                 todayStart,
                 now,
@@ -346,7 +403,7 @@ public class DashboardController implements Serializable {
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
-        todayPositiveRat = dashboardApplicationController.getConfirmedCountArea(
+        todayPositiveRat = dashboardApplicationController.getConfirmedCount(
                 webUserController.getLoggedUser().getInstitution().getRdhsArea(),
                 todayStart,
                 now,
@@ -355,7 +412,7 @@ public class DashboardController implements Serializable {
                 itemApplicationController.getPcrPositive(),
                 null);
 
-        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCountArea(
+        yesterdayPositivePcr = dashboardApplicationController.getConfirmedCount(
                 webUserController.getLoggedUser().getInstitution().getRdhsArea(),
                 yesterdayStart,
                 yesterdayEnd,
@@ -363,7 +420,7 @@ public class DashboardController implements Serializable {
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
-        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCountArea(
+        yesterdayPositiveRat = dashboardApplicationController.getConfirmedCount(
                 webUserController.getLoggedUser().getInstitution().getRdhsArea(),
                 yesterdayStart,
                 yesterdayEnd,
@@ -383,6 +440,11 @@ public class DashboardController implements Serializable {
 
         Date yesterdayStart = CommonController.startOfTheDate(c.getTime());
         Date yesterdayEnd = CommonController.endOfTheDate(c.getTime());
+
+        if (webUserController.getLoggedUser().getInstitution().getPdhsArea() == null) {
+            JsfUtil.addErrorMessage("Province is not set. Please inform the support team. Dashboard will not be prepared.");
+            return;
+        }
 
         todayPcr = dashboardApplicationController.getOrderCountArea(webUserController.getLoggedUser().getInstitution().getPdhsArea(), todayStart, now,
                 itemApplicationController.getPcr(), null, null, null);
@@ -842,6 +904,4 @@ public class DashboardController implements Serializable {
         this.orderingCategories = orderingCategories;
     }
 
-    
-    
 }

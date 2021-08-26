@@ -115,7 +115,8 @@
                                         {pcr_ct2}
                                         {pcr_comments}
                                     </h:panelGroup>
-                                    <p:editor height="400" width="600" value="#{preferenceController.labReportHtml}" ></p:editor>
+                                    <p:textEditor height="400"
+                                                  secure="false" value="#{preferenceController.labReportHtml}" ></p:textEditor>
 
                                 </p:panelGrid>
                             </p:tab>
@@ -134,7 +135,9 @@
                                         {received_date}
                                         {confirmed_date}
                                     </h:panelGroup>
-                                    <p:editor height="400" width="600" value="#{preferenceController.labReportBulkHtml}" ></p:editor>
+                                    <p:textEditor height="400" secure="false"
+                                                  value="#{preferenceController.labReportBulkHtml}" >
+                                    </p:textEditor>
 
                                     
                                 </p:panelGrid>

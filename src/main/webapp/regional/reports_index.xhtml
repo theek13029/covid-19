@@ -20,6 +20,34 @@
                     </div>
                     <div class="row" >
                         <div class="col-3" >
+                            
+                            <div class="card" >
+                                <div class="card-header" >
+                                    <h:outputLabel value="Actions" ></h:outputLabel>
+                                </div>
+                                <div class="card-body container-fluid">
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink value="List of Tests without MOH"
+                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               action="#{regionalController.toListOfTestsWithoutMoh()}">
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink class="btn btn-outline-primary btn-lg btn-block"
+                                                               value="List of First Contacts without MOH" 
+                                                               action="#{regionalController.toListOfFirstContactsWithoutMohForRegionalLevel()}">
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="card" >
                                 <div class="card-header" >
@@ -29,7 +57,7 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-                                                <h:commandLink value="PCR/RAT Counts by Ordered Institution" 
+                                                <h:commandLink value="Request Counts by Ordered Institution" 
                                                                action="#{regionalController.toCountOfTestsByOrderedInstitution()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block" 
                                                                >
@@ -83,7 +111,7 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-                                                <h:commandLink value="PCR/RAT Orders List" 
+                                                <h:commandLink value="Requests List" 
                                                                action="#{regionalController.toListOfTests()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block"
                                                                >
@@ -98,16 +126,6 @@
                                                                action="#{regionalController.toListResults()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block"
                                                                >
-                                                </h:commandLink>
-                                            </h:form>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandLink value="List of Tests without MOH"
-                                                               class="btn btn-outline-primary btn-lg btn-block"
-                                                               action="#{regionalController.toListOfTestsWithoutMohForRegionalLevel()}">
                                                 </h:commandLink>
                                             </h:form>
                                         </div>

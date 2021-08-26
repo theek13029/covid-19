@@ -10,68 +10,79 @@
 
         <ui:composition template="/regional/reports_index.xhtml">
             <ui:define name="reports">
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
-                    <f:facet name="header" >
-                        <p:outputLabel value="Test List" ></p:outputLabel>
-                    </f:facet>
+                <h:form >
+                    <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                        <f:facet name="header" >
+                            <p:outputLabel value="List of Tests without MOH Area" ></p:outputLabel>
+                        </f:facet>
 
-                    <h:form >
                         <p:panelGrid columns="2" >
-                            <p:outputLabel value="Ordered From" ></p:outputLabel>
-                            <p:calendar value="#{regionalController.fromDate}" 
-                                        pattern="dd MMMM yyyy hh:mm a">
-                            </p:calendar><!-- comment -->
+                            <p:panelGrid columns="2" >
+                                <p:outputLabel value="Ordered From" ></p:outputLabel>
+                                <p:calendar value="#{regionalController.fromDate}" 
+                                            pattern="dd MMMM yyyy hh:mm a">
+                                </p:calendar><!-- comment -->
 
-                            <p:outputLabel value="Ordered To" ></p:outputLabel>
-                            <p:calendar value="#{regionalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                                <p:outputLabel value="Ordered To" ></p:outputLabel>
+                                <p:calendar value="#{regionalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                            <p:outputLabel value="Institution" ></p:outputLabel>
-                            <p:selectOneMenu value="#{regionalController.mohOrHospital}" >
-                                <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{regionalController.regionalMohsAndHospitals}" 
-                                               var="c" itemLabel="#{c.name}"
-                                               itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                                <p:outputLabel value="Ordering Category" ></p:outputLabel>
+                                <p:selectOneMenu value="#{regionalController.orderingCategory}" >
+                                    <f:selectItem itemLabel="All" ></f:selectItem>
+                                    <f:selectItems value="#{regionalController.covidTestOrderingCategories}" 
+                                                   var="c" itemLabel="#{c.name}"
+                                                   itemValue="#{c}" ></f:selectItems>
+                                </p:selectOneMenu>
 
-                            <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                            <p:selectOneMenu value="#{regionalController.orderingCategory}" >
-                                <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{regionalController.covidTestOrderingCategories}" 
-                                               var="c" itemLabel="#{c.name}"
-                                               itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                                <p:outputLabel value="Test" ></p:outputLabel>
+                                <p:selectOneMenu value="#{regionalController.testType}" >
+                                    <f:selectItem itemLabel="All" ></f:selectItem>
+                                    <f:selectItems value="#{regionalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                                                   itemValue="#{c}" ></f:selectItems>
+                                </p:selectOneMenu>
 
-                            <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{regionalController.testType}" >
-                                <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{regionalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
-                                               itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                                <p:outputLabel value="Result" ></p:outputLabel>
+                                <p:selectOneMenu value="#{regionalController.result}" >
+                                    <f:selectItem itemLabel="All" ></f:selectItem>
+                                    <f:selectItems value="#{regionalController.resultTypes}" var="c" itemLabel="#{c.name}"
+                                                   itemValue="#{c}" ></f:selectItems>
+                                </p:selectOneMenu>
 
-                            <p:outputLabel value="Result" ></p:outputLabel>
-                            <p:selectOneMenu value="#{regionalController.result}" >
-                                <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{regionalController.resultTypes}" var="c" itemLabel="#{c.name}"
-                                               itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                                <p:outputLabel  value="Lab"></p:outputLabel>
+                                <p:autoComplete style="width: 100%;"
+                                                inputStyleClass="autocomplete"
+                                                value="#{regionalController.lab}"
+                                                forceSelection="true" tabindex="100" 
+                                                completeMethod="#{regionalController.completeLab}" 
+                                                var="l" itemLabel="#{l.name}" itemValue="#{l}">
+                                </p:autoComplete>
 
-                            <p:outputLabel  value="Lab"></p:outputLabel>
-                            <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
-                                            inputStyleClass="autocomplete"
-                                            value="#{regionalController.lab}"
-                                            forceSelection="true" tabindex="100" 
-                                            completeMethod="#{regionalController.completeLab}" 
-                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
-                            </p:autoComplete>
+                                <p:commandButton ajax="false" value="Generate Excel">
+                                    <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
+                                </p:commandButton>
+                                <p:commandButton ajax="false" value="Process" 
+                                                 action="#{regionalController.toListOfTestsWithoutMoh()}" ></p:commandButton>
 
-                            <p:commandButton ajax="false" value="Generate Excel">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{regionalController.toListOfTestsWithoutMohForRegionalLevel()}" ></p:commandButton>
 
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="2" >
+                                <p:outputLabel value="Assigning MOH Area" ></p:outputLabel>
+                                <p:selectOneMenu value="#{regionalController.mohArea}" dynamic="true" filter="true" filterMatchMode="contains" >
+                                    <f:selectItem itemLabel="Select" ></f:selectItem>
+                                    <f:selectItems value="#{webUserController.loggableMohAreas}" var="c"
+                                                   itemValue="#{c}"
+                                                   itemLabel="#{c.name}" >
+                                    </f:selectItems>
+                                </p:selectOneMenu>                            
+
+                                <p:commandButton ajax="false" action="#{regionalController.assignMohAreaToSelectedEncounters()}"
+                                                 value="Assign MOH Areas to Selected Contacts" ></p:commandButton>
+                            </p:panelGrid>
 
                         </p:panelGrid>
+
+
 
 
                         <p:dataTable id="tbl" value="#{regionalController.tests}" rendered="true"
@@ -79,32 +90,19 @@
                                      var="c" 
                                      rowKey="#{c.id}" 
                                      rowStyleClass="#{c.resultCssClass}"
+                                     selection="#{regionalController.selectedToAssign}"
                                      paginator="true" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
                                      >
-                            <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
-                            </p:column>
+                            <p:column width="20" selectionMode="multiple" ></p:column>
                             <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Age"  sortBy="#{c.client.person.age}" width="60"
-                                      filterBy="#{c.client.person.age}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Gender"
-                                      width="80"
-                                      sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Contact Numbers" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
@@ -126,11 +124,12 @@
                                 <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
-                    </h:form>
 
 
 
-                </p:panelGrid>
+
+                    </p:panelGrid>
+                </h:form>
             </ui:define>
 
         </ui:composition>

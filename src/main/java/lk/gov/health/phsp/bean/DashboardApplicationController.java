@@ -319,10 +319,15 @@ public class DashboardApplicationController {
 
         if (area != null) {
             if (area.getType() == AreaType.RdhsAra) {
-                j += " and c.institution.rdhsArea=:area ";
+                j += " and (c.institution.rdhsArea=:area or c.institution.district=:dis) ";
                 m.put("area", area);
+                m.put("dis", area.getDistrict());
             } else if (area.getType() == AreaType.Province) {
-                j += " and c.institution.pdhsArea=:area ";
+                j += " and (c.institution.pdhsArea=:area or c.institution.province=:pro) ";
+                m.put("area", area);
+                m.put("pro", area.getProvince());
+            }else if (area.getType() == AreaType.MOH) {
+                j += " and (c.institution.mohArea=:area) ";
                 m.put("area", area);
             }
         }
@@ -349,8 +354,61 @@ public class DashboardApplicationController {
         }
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
+    
+    
+    
+    
+    public Long getProvincialOrderCountArea(Area pdArea,
+            
+            Date fromDate,
+            Date toDate,
+            Item testType,
+            Item orderingCategory,
+            Item result,
+            Institution lab) {
+        Map m = new HashMap();
+        String j = "select count(c) "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
 
-    public Long getConfirmedCount(Institution ins,
+        if (pdArea != null) {
+            if (pdArea.getType() == AreaType.RdhsAra) {
+                j += " and c.institution.rdhsArea=:area ";
+                m.put("area", pdArea);
+            } else if (pdArea.getType() == AreaType.Province) {
+                j += " and c.institution.pdhsArea=:area ";
+                m.put("area", pdArea);
+            }
+        }
+
+        j += " and c.createdAt between :fd and :td ";
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
+    }
+    
+
+    public Long getConfirmedCountByInstitution(Institution ins,
             Date fromDate,
             Date toDate,
             Item testType,
@@ -368,6 +426,65 @@ public class DashboardApplicationController {
         if (ins != null) {
             j += " and c.institution=:ins ";
             m.put("ins", ins);
+        }
+
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
+    }
+
+    public Long getConfirmedCount(Area area,
+            Date fromDate,
+            Date toDate,
+            Item testType,
+            Item orderingCategory,
+            Item result,
+            Institution lab) {
+        Map m = new HashMap();
+        String j = "select count(c) "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        if (area != null && area.getType() != null) {
+            if (null != area.getType()) switch (area.getType()) {
+                case District:
+                    j += " and c.client.person.district=:dis ";
+                    m.put("dis", area);
+                    break;
+                case Province:
+                    j += " and c.client.person.district.province=:pro ";
+                    m.put("pro", area);
+                    break;
+                case MOH:
+                    j += " and c.client.person.mohArea=:moh ";
+                    m.put("moh", area);
+                    break;
+                default:
+                    break;
+            }
         }
 
         j += " and c.resultConfirmedAt between :fd and :td ";

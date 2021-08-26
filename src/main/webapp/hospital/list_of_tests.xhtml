@@ -53,7 +53,7 @@
                             </p:selectOneMenu>
 
                             <p:outputLabel  value="Lab"></p:outputLabel>
-                            <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
+                            <p:autoComplete style="width: 100%;"
                                             inputStyleClass="autocomplete"
                                             value="#{hospitalController.lab}"
                                             forceSelection="true" tabindex="100" 
@@ -135,12 +135,6 @@
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
 
                                 <p:panelGrid columns="1" >
-                                    <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}" 
-                                                     value="Start Investigating" 
-                                                     action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
-                                        </f:setPropertyActionListener>
-                                    </p:commandButton>
                                     <p:commandButton rendered="#{c.referenceCase ne null}" 
                                                      ajax="false" value="View case" 
                                                      action="#{clientController.toNewCaseInvestigationFromTest()}"
@@ -148,15 +142,12 @@
                                         <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
-                                    <p:commandButton value="Edit Order" action="#{hospitalController.toEditTest()}" ajax="false"  style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{hospitalController.test}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
                                     <p:commandButton value="View Results" action="#{hospitalController.toViewResult()}" ajax="false"  style="width: 100%;" >
                                         <f:setPropertyActionListener value="#{c}" target="#{hospitalController.test}" ></f:setPropertyActionListener>
                                     </p:commandButton>
                                     <p:commandButton ajax="false" value="Delete"  action="#{hospitalController.deleteTest()}"  style="width: 100%;" 
                                                      onclick="if (!confirm('Are you sure you want to delete?'))
-                                                               return false" >
+                                                                 return false" >
                                         <f:setPropertyActionListener value="#{c}" target="#{hospitalController.deleting}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>

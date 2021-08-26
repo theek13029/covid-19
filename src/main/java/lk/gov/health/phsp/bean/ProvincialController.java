@@ -607,7 +607,7 @@ public class ProvincialController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/provincial/count_of_tests_by_ordered_institution";
         }
@@ -656,7 +656,7 @@ public class ProvincialController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/provincial/count_of_results_by_ordered_institution";
         }
@@ -701,7 +701,7 @@ public class ProvincialController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        List<Object> objCounts = encounterFacade.findAggregates(j, m);
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
         if (objCounts == null || objCounts.isEmpty()) {
             return "/provincial/count_of_results_by_lab";
         }
@@ -860,54 +860,6 @@ public class ProvincialController implements Serializable {
 
     public String toListOfInvestigatedCasesForMoh() {
         return "/moh/investigated_list";
-    }
-
-    public String toCaseReports() {
-        switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case ChiefEpidemiologist:
-            case Client:
-            case Epidemiologist:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mlt:
-            case Lab_Mo:
-            case Lab_National:
-            case Lab_User:
-            case Moh:
-            case Amoh:
-            case Nurse:
-            case Pdhs:
-            case Phi:
-            case Phm:
-            case Rdhs:
-            case Re:
-            case Super_User:
-            case System_Administrator:
-            case User:
-        }
-        return "/moh/list_of_tests";
-    }
-
-    public String toReportsIndex() {
-        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
-            case Regional:
-                return "/regional/reports_index";
-            case National:
-                return "/national/reports_index";
-            case Hospital:
-                return "/hospital/reports_index";
-            case Lab:
-                return "/lab/reports_index";
-            case National_Lab:
-                return "/national/lab_reports_index";
-            case Moh:
-                return "/moh/reports_index";
-            case Provincial:
-                return "/provincial/reports_index";
-            default:
-                return "";
-        }
     }
 
     public void toDeleteTestFromLastPcrList() {

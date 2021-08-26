@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -30,10 +31,6 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 import javax.persistence.TemporalType;
-import jxl.Cell;
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.read.biff.BiffException;
 import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.ClientEncounterComponentFormSet;
 import lk.gov.health.phsp.entity.ClientEncounterComponentItem;
@@ -49,16 +46,22 @@ import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.SmsFacade;
 import lk.gov.health.phsp.pojcs.ClientBasicData;
+import lk.gov.health.phsp.pojcs.ClientImport;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
 import lk.gov.health.phsp.pojcs.ReportHolder;
 import lk.gov.health.phsp.pojcs.SlNic;
 import lk.gov.health.phsp.pojcs.YearMonthDay;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.file.UploadedFile;
 
 // </editor-fold>
-
 @Named("clientController")
 @SessionScoped
 public class ClientController implements Serializable {
@@ -105,6 +108,8 @@ public class ClientController implements Serializable {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Variables">
     private List<Client> items = null;
+    private List<ClientImport> clientImports;
+    private List<ClientImport> clientImportsSelected;
     private List<ClientBasicData> clients = null;
     private List<Client> selectedClients = null;
     private List<ClientBasicData> selectedClientsWithBasicData = null;
@@ -118,15 +123,18 @@ public class ClientController implements Serializable {
 
     private Encounter lastTest;
 
-    private String serialNoColumn = "A";
-    private String resultColumn = "H";
-    private String ctValueColumn = "G";
-    private String commentColumn = "I";
+    private Area district;
+    private String testNoCol = "A";
+    private String nameCol = "B";
+    private String ageColumn = "C";
+    private String sexCol = "D";
+    private String nicCol = "F";
+    private String phoneCol = "E";
+    private String addressCol = "F";
 
     private Integer startRow = 1;
 
-    Boolean institutionSelectable;
-    Boolean nationalLevel;
+    
 
     private Item selectedTest;
 
@@ -514,8 +522,6 @@ public class ClientController implements Serializable {
         userTransactionController.recordTransaction("To Client Profile");
         return "/client/profile";
     }
-
-
 
     public String toLabReceiveAll() {
         referingInstitution = webUserController.getLoggedUser().getInstitution();
@@ -2032,14 +2038,13 @@ public class ClientController implements Serializable {
         selectedClientEncounters = null;
         selectedClinic = null;
         yearMonthDay = new YearMonthDay();
-        userTransactionController.recordTransaction("to add a new client for case");
         DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
         if (dfs == null) {
             JsfUtil.addErrorMessage("No Default Form Set");
             return "";
         }
 
-        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseInvestigationFromTest(dfs,testEncounter);
+        ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.createNewCaseInvestigationFromTest(dfs, testEncounter);
 
         selectedEncounter = cefs.getEncounter();
 
@@ -2047,7 +2052,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";
         }
-        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+//        clientEncounterComponentFormSetController.loadOldFormset(cefs);
         if (cefs.getEncounter() != null) {
             testEncounter.setReferenceCase(cefs.getEncounter());
             encounterFacade.edit(testEncounter);
@@ -2101,7 +2106,6 @@ public class ClientController implements Serializable {
         System.out.println("to page : /client/client_case_enrollment");
         return "/client/client_case_enrollment";
     }
-
 
     public String toNewTestEnrollmentFromEncounter() {
         if (selectedEncounter == null) {
@@ -2394,131 +2398,228 @@ public class ClientController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Functions">
-    public String importResultsFromExcel() {
-        // System.out.println("importResultsFromExcel = ");
+    public String toUploadOrders() {
+        return "/lab/upload_orders";
+    }
 
-        // System.out.println("try 1");
-        String strId;
-        String strResult;
-        String strCtValue;
-        String strComment;
+    public String importOrdersFromExcel() {
+        if (institution == null) {
+            JsfUtil.addErrorMessage("Institution ?");
+            return "";
+        }
+        if (file == null) {
+            JsfUtil.addErrorMessage("File ?");
+            return "";
+        }
+        if (district == null) {
+            district = institution.getDistrict();
+        }
+        if (district == null) {
+            JsfUtil.addErrorMessage("District ?");
+            return "";
+        }
+        String strTestNo;
+        String strName;
+        String strAge;
+        String strSex;
+        String strPhone;
+        String strAddress;
+        String strNic;
         Long id;
+        int testNoColInt;
+        int ageColInt;
+        int nameColInt;
+        int sexColInt;
+        int nicColInt;
+        int phoneColInt;
+        int addressColInt;
+        Item sex;
+        int ageInYears;
 
-        int serialNoColInt;
-        int ctValueColInt;
-        int resultColInt;
-        int commentColInt;
-
-        serialNoColInt = CommonController.excelColFromHeader(serialNoColumn);
-        ctValueColInt = CommonController.excelColFromHeader(ctValueColumn);
-        resultColInt = CommonController.excelColFromHeader(resultColumn);
-        commentColInt = CommonController.excelColFromHeader(commentColumn);
-
-        File inputWorkbook;
-        Workbook w;
-        Cell cell;
-        InputStream in;
+        nameColInt = CommonController.excelColFromHeader(nameCol);
+        ageColInt = CommonController.excelColFromHeader(ageColumn);
+        testNoColInt = CommonController.excelColFromHeader(testNoCol);
+        sexColInt = CommonController.excelColFromHeader(sexCol);
+        phoneColInt = CommonController.excelColFromHeader(phoneCol);
+        addressColInt = CommonController.excelColFromHeader(addressCol);
+        nicColInt = CommonController.excelColFromHeader(nicCol);
 
         JsfUtil.addSuccessMessage(file.getFileName());
-
+        XSSFWorkbook myWorkBook;
         try {
             JsfUtil.addSuccessMessage(file.getFileName());
-            in = file.getInputStream();
-            File f;
-            f = new File(Calendar.getInstance().getTimeInMillis() + file.getFileName());
-            FileOutputStream out = new FileOutputStream(f);
-            int read = 0;
-            byte[] bytes = new byte[1024];
-            while ((read = in.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-            in.close();
-            out.flush();
-            out.close();
+            myWorkBook = new XSSFWorkbook(file.getInputStream());
+            XSSFSheet mySheet = myWorkBook.getSheetAt(0);
+            Iterator<Row> rowIterator = mySheet.iterator();
+            Long count = 0l;
+            startRow++;
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                if (row.getRowNum() < startRow) {
+                    continue;
+                }
+                strTestNo = cellValue(row.getCell(testNoColInt));
+                strNic = cellValue(row.getCell(nicColInt));
+                Client c = null;
+                if (strNic != null && !strNic.trim().equals("")) {
+                    c = getClientByNic(strNic);
+                }
 
-            inputWorkbook = new File(f.getAbsolutePath());
-
-            JsfUtil.addSuccessMessage("Excel File Opened");
-            w = Workbook.getWorkbook(inputWorkbook);
-            Sheet sheet = w.getSheet(0);
-
-            errorCode = "";
-
-            for (int i = startRow; i < sheet.getRows(); i++) {
-
-                cell = sheet.getCell(serialNoColInt, i);
-                strId = cell.getContents();
-
-                id = CommonController.getLongValue(strId);
-
-                Encounter resultEntering = null;
-
-                for (Encounter te : listedToEnterResults) {
-                    if (te.getId().equals(id)) {
-                        resultEntering = te;
+                if (c == null) {
+                    strName = cellValue(row.getCell(nameColInt));
+                    strSex = cellValue(row.getCell(sexColInt));
+                    strPhone = cellValue(row.getCell(phoneColInt));
+                    strAddress = cellValue(row.getCell(addressColInt));
+                    strNic = cellValue(row.getCell(nicColInt));
+                    ageInYears = cellValueInt(row.getCell(ageColInt));
+                    System.out.println("ageInYears = " + ageInYears);
+                    if (strSex.toLowerCase().contains("f")) {
+                        sex = itemApplicationController.getFemale();
+                    } else {
+                        sex = itemApplicationController.getMale();
                     }
-                }
-
-                if (resultEntering == null) {
-                    JsfUtil.addErrorMessage("Could NOT find serial. Please check column numbers");
-                    continue;
-                }
-
-                cell = sheet.getCell(resultColInt, i);
-                strResult = cell.getContents();
-                strResult = strResult.trim().toLowerCase();
-
-                resultEntering.setPcrResultStr(strResult);
-
-                cell = sheet.getCell(ctValueColInt, i);
-                strCtValue = cell.getContents();
-                resultEntering.setCtValueStr(strCtValue);
-
-                cell = sheet.getCell(commentColInt, i);
-                strComment = cell.getContents();
-                resultEntering.setResultComments(strComment);
-                String localPositive = preferenceController.getPcrPositiveTerm().trim().toLowerCase();
-                String localNegative = preferenceController.getPcrNegativeTerm().trim().toLowerCase();
-                String localInvalid = preferenceController.getPcrInvalidTerm().trim().toLowerCase();
-                String localInconclusive = preferenceController.getPcrInconclusiveTerm().trim().toLowerCase();
-
-                Item pcrPositive = itemApplicationController.getPcrPositive();
-                Item pcrNegative = itemApplicationController.getPcrNegative();
-                Item pcrInconclusive = itemApplicationController.getPcrInconclusive();
-                Item pcrInvalid = itemApplicationController.getPcrInvalid();
-
-                if (strResult.contains(localNegative)) {
-                    resultEntering.setPcrResult(pcrNegative);
-                } else if (strResult.contains(localInvalid)) {
-                    resultEntering.setPcrResult(pcrInvalid);
-                } else if (strResult.contains(localInconclusive)) {
-                    resultEntering.setPcrResult(pcrInconclusive);
-                } else if (strResult.contains(localPositive)) {
-                    resultEntering.setPcrResult(pcrPositive);
                 } else {
-                    continue;
+                    strName = c.getPerson().getName();
+                    strPhone = c.getPerson().getPhone1();
+                    strAddress = c.getPerson().getAddress();
+                    sex = c.getPerson().getSex();
+                    ageInYears = c.getPerson().getAgeYears();
                 }
-
-                resultEntering.setResultEntered(true);
-                resultEntering.setResultEnteredAt(new Date());
-                resultEntering.setResultEnteredBy(webUserController.getLoggedUser());
-
-                getEncounterFacade().edit(resultEntering);
+                ClientImport ci = new ClientImport();
+                ci.setClient(c);
+                ci.setName(strName);
+                ci.setTestNo(strTestNo);
+                ci.setAddress(strAddress);
+                ci.setAgeInYears(ageInYears);
+                ci.setSex(sex);
+                ci.setNic(strNic);
+                ci.setPhone(strPhone);
+                ci.setId(count);
+                count++;
+                getClientImports().add(ci);
 
             }
-
-            JsfUtil.addSuccessMessage("Succesful. All the data in Excel File Impoted to the database");
-            return "";
-        } catch (IOException ex) {
-            JsfUtil.addErrorMessage(ex.getMessage());
-            System.err.println("e = " + ex.getMessage());
-            return "";
-        } catch (BiffException e) {
+            return "/lab/uploaded_orders";
+        } catch (IOException e) {
             JsfUtil.addErrorMessage(e.getMessage());
             System.err.println("e = " + e.getMessage());
             return "";
         }
 
+    }
+
+    public String saveUploadedOrders() {
+        if (getClientImportsSelected().isEmpty()) {
+            JsfUtil.addErrorMessage("Nothing Selected");
+            return "";
+        }
+        int count = 0;
+        for (ClientImport ci : getClientImportsSelected()) {
+            toAddNewPcrWithNewClient(ci);
+            count++;
+        }
+        String msg = "" + count + " Orders Imported.";
+        JsfUtil.addSuccessMessage(msg);
+        return toUploadOrders();
+    }
+
+    private void toAddNewPcrWithNewClient(ClientImport ci) {
+        Encounter pcr = new Encounter();
+        Client c;
+        if (ci.getClient() == null) {
+            c = new Client();
+            c.getPerson().setDistrict(district);
+            c.getPerson().setName(ci.getName());
+            c.getPerson().setAddress(ci.getAddress());
+            c.getPerson().setPhone1(ci.getPhone());
+            c.getPerson().setSex(ci.getSex());
+            c.getPerson().setNic(ci.getNic());
+            Calendar calDob = Calendar.getInstance();
+            calDob.add(Calendar.YEAR, (0 - ci.getAgeInYears()));
+            calDob.add(Calendar.MONTH, (0 - ci.getAgeInMonths()));
+            calDob.add(Calendar.DAY_OF_YEAR, (0 - ci.getAgeInDays()));
+            c.getPerson().setDateOfBirth(calDob.getTime());
+        } else {
+            c = ci.getClient();
+        }
+
+        pcr.setPcrTestType(lastTestPcrOrRat);
+        pcr.setClient(c);
+
+        pcr.setInstitution(institution);
+        pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+
+        pcr.setEncounterType(EncounterType.Test_Enrollment);
+        pcr.setEncounterDate(fromDate);
+        pcr.setEncounterFrom(new Date());
+        pcr.setEncounterMonth(CommonController.getMonth(fromDate));
+        pcr.setEncounterQuarter(CommonController.getQuarter(fromDate));
+        pcr.setEncounterYear(CommonController.getYear(fromDate));
+
+        pcr.setSampled(true);
+        pcr.setSampledAt(fromDate);
+        pcr.setSampledBy(webUserController.getLoggedUser());
+        pcr.setCreatedAt(new Date());
+
+        pcr.setSentToLab(true);
+        pcr.setSentToLabAt(toDate);
+        pcr.setSentToLabBy(webUserController.getLoggedUser());
+
+        if (c.getId() == null) {
+            getFacade().create(c);
+        } else {
+            getFacade().edit(c);
+        }
+        encounterFacade.create(pcr);
+    }
+
+    private String cellValue(Cell cell) {
+        String str = "";
+        if (null != cell.getCellType()) {
+            switch (cell.getCellType()) {
+                case STRING:
+                    str = cell.getStringCellValue();
+                    break;
+                case BLANK:
+                    break;
+                case BOOLEAN:
+                    boolean b = cell.getBooleanCellValue();
+                    if (b) {
+                        str = "true";
+                    } else {
+                        str = "false";
+                    }
+                    break;
+                case FORMULA:
+                    str = cell.getCellFormula();
+                    break;
+                case NUMERIC:
+                    str = cell.getNumericCellValue() + "";
+                    break;
+                case _NONE:
+                    break;
+                default:
+                    break;
+            }
+        }
+        return str;
+    }
+
+    private int cellValueInt(Cell cell) {
+        int str = 0;
+        if (null != cell.getCellType()) {
+            switch (cell.getCellType()) {
+                case NUMERIC:
+                    Double d = cell.getNumericCellValue();
+                    str = d.intValue();
+                    break;
+                default:
+                    str = 0;
+                    break;
+            }
+        }
+        return str;
     }
 
     public List<Area> completeClientsGnArea(String qry) {
@@ -3124,301 +3225,6 @@ public class ClientController implements Serializable {
 //        }
 //        return true;
 //    }
-    public String importClientsFromExcel() {
-
-        importedClients = new ArrayList<>();
-
-        if (institution == null) {
-            JsfUtil.addErrorMessage("Add Institution");
-            return "";
-        }
-
-        if (uploadDetails == null || uploadDetails.trim().equals("")) {
-            JsfUtil.addErrorMessage("Add Column Names");
-            return "";
-        }
-
-        String[] cols = uploadDetails.split("\\r?\\n");
-        if (cols == null || cols.length < 5) {
-            JsfUtil.addErrorMessage("No SUfficient Columns");
-            return "";
-        }
-
-        try {
-            File inputWorkbook;
-            Workbook w;
-            Cell cell;
-            InputStream in;
-            try {
-                in = file.getInputStream();
-                File f;
-                f = new File(Calendar.getInstance().getTimeInMillis() + file.getFileName());
-                FileOutputStream out = new FileOutputStream(f);
-                int read = 0;
-                byte[] bytes = new byte[1024];
-                while ((read = in.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
-                }
-                in.close();
-                out.flush();
-                out.close();
-
-                inputWorkbook = new File(f.getAbsolutePath());
-
-                JsfUtil.addSuccessMessage("Excel File Opened");
-                w = Workbook.getWorkbook(inputWorkbook);
-                Sheet sheet = w.getSheet(0);
-
-                errorCode = "";
-
-                int startRow = 1;
-
-                Long temId = 0L;
-
-                for (int i = startRow; i < sheet.getRows(); i++) {
-
-                    Map m = new HashMap();
-
-                    Client c = new Client();
-                    Person p = new Person();
-                    c.setPerson(p);
-
-                    int colNo = 0;
-
-                    String gnAreaName = null;
-                    String gnAreaCode = null;
-                    for (String colName : cols) {
-                        cell = sheet.getCell(colNo, i);
-                        String cellString = cell.getContents();
-                        switch (colName) {
-                            case "client_gn_area_name":
-                                gnAreaName = cellString;
-                                break;
-                            case "client_gn_area_code":
-                                gnAreaCode = cellString;
-                                break;
-                        }
-                        colNo++;
-                    }
-                    Area gnArea = null;
-//                    //// // System.out.println("gnAreaName = " + gnAreaName);
-//                    //// // System.out.println("gnAreaCode = " + gnAreaCode);
-                    if (gnAreaName != null && gnAreaCode != null) {
-                        gnArea = areaController.getGnAreaByNameAndCode(gnAreaName, gnAreaCode);
-                    } else if (gnAreaName != null) {
-                        gnArea = areaController.getGnAreaByName(gnAreaName);
-                    } else if (gnAreaCode != null) {
-                        gnArea = areaController.getGnAreaByCode(gnAreaCode);
-                    }
-                    if (gnArea != null) {
-//                        //// // System.out.println("gnArea = " + gnArea.getName());
-                    }
-
-                    colNo = 0;
-
-                    for (String colName : cols) {
-                        cell = sheet.getCell(colNo, i);
-                        String cellString = cell.getContents();
-                        switch (colName) {
-                            case "client_name":
-                                c.getPerson().setName(cellString);
-                                break;
-                            case "client_phn_number":
-                                c.setPhn(cellString);
-                                break;
-                            case "client_sex":
-                                Item sex;
-                                if (cellString.toLowerCase().contains("f")) {
-                                    sex = itemController.findItemByCode("sex_female");
-                                } else {
-                                    sex = itemController.findItemByCode("sex_male");
-                                }
-                                c.getPerson().setSex(sex);
-                                break;
-                            case "client_citizenship":
-                                Item cs;
-                                if (cellString == null) {
-                                    cs = null;
-                                } else if (cellString.toLowerCase().contains("sri")) {
-                                    cs = itemController.findItemByCode("citizenship_local");
-                                } else {
-                                    cs = itemController.findItemByCode("citizenship_foreign");
-                                }
-                                c.getPerson().setCitizenship(cs);
-                                break;
-
-                            case "client_ethnic_group":
-                                Item eg = null;
-                                if (cellString == null || cellString.trim().equals("")) {
-                                    eg = null;
-                                } else if (cellString.equalsIgnoreCase("Sinhala")) {
-                                    eg = itemController.findItemByCode("sinhalese");
-                                } else if (cellString.equalsIgnoreCase("moors")) {
-                                    eg = itemController.findItemByCode("citizenship_local");
-                                } else if (cellString.equalsIgnoreCase("SriLankanTamil")) {
-                                    eg = itemController.findItemByCode("tamil");
-                                } else {
-                                    eg = itemController.findItemByCode("ethnic_group_other");;
-                                }
-                                c.getPerson().setEthinicGroup(eg);
-                                break;
-                            case "client_religion":
-                                Item re = null;
-                                if (cellString == null || cellString.trim().equals("")) {
-                                    re = null;
-                                } else if (cellString.equalsIgnoreCase("Buddhist")) {
-                                    re = itemController.findItemByCode("buddhist");
-                                } else if (cellString.equalsIgnoreCase("Christian")) {
-                                    re = itemController.findItemByCode("christian");
-                                } else if (cellString.equalsIgnoreCase("Hindu")) {
-                                    re = itemController.findItemByCode("hindu");
-                                } else {
-                                    re = itemController.findItemByCode("religion_other");;
-                                }
-                                c.getPerson().setReligion(re);
-                                break;
-                            case "client_marital_status":
-                                Item ms = null;
-                                if (cellString == null || cellString.trim().equals("")) {
-                                    ms = null;
-                                } else if (cellString.equalsIgnoreCase("Married")) {
-                                    ms = itemController.findItemByCode("married");
-                                } else if (cellString.equalsIgnoreCase("Separated")) {
-                                    ms = itemController.findItemByCode("seperated");
-                                } else if (cellString.equalsIgnoreCase("Single")) {
-                                    ms = itemController.findItemByCode("unmarried");
-                                } else {
-                                    ms = itemController.findItemByCode("marital_status_other");;
-                                }
-                                c.getPerson().setMariatalStatus(ms);
-                                break;
-                            case "client_title":
-                                Item title = null;
-                                String ts = cellString;
-                                switch (ts) {
-                                    case "Baby":
-                                        title = itemController.findItemByCode("baby");
-                                        break;
-                                    case "Babyof":
-                                        title = itemController.findItemByCode("baby_of");
-                                        break;
-                                    case "Mr":
-                                        title = itemController.findItemByCode("mr");
-                                        break;
-                                    case "Mrs":
-                                        title = itemController.findItemByCode("mrs");
-                                        break;
-                                    case "Ms":
-                                        title = itemController.findItemByCode("ms");
-                                        break;
-                                    case "Prof":
-                                        title = itemController.findItemByCode("prof");
-                                        break;
-                                    case "Rev":
-                                    case "Thero":
-                                        title = itemController.findItemByCode("rev");
-                                        break;
-                                }
-                                c.getPerson().setTitle(title);
-                                break;
-                            case "client_nic_number":
-                                c.getPerson().setNic(cellString);
-                                break;
-                            case "client_data_of_birth":
-                                Date tdob = null;
-                                Date today = new Date();
-                                int ageInYears = 0;
-                                int birthYear;
-                                int thisYear;
-
-                                try {
-                                    tdob = commonController.dateFromString(cellString, dateFormat);
-                                    Calendar bc = Calendar.getInstance();
-                                    bc.setTime(tdob);
-                                    birthYear = bc.get(Calendar.YEAR);
-                                    Calendar tc = Calendar.getInstance();
-                                    thisYear = tc.get(Calendar.YEAR);
-                                    ageInYears = thisYear - birthYear;
-//                                    //// // System.out.println("ageInYears = " + ageInYears);
-                                } catch (Exception e) {
-//                                    //// // System.out.println("e = " + e);
-                                }
-                                if (ageInYears < 0) {
-                                    tdob = today;
-                                } else if (ageInYears > 200) {
-                                    tdob = today;
-                                }
-
-                                c.getPerson().setDateOfBirth(tdob);
-                                break;
-                            case "client_permanent_address":
-                                c.getPerson().setAddress(cellString);
-                                break;
-                            case "client_current_address":
-                                c.getPerson().setAddress(cellString);
-                                break;
-                            case "client_mobile_number":
-                                c.getPerson().setPhone1(cellString);
-                                break;
-                            case "client_home_number":
-                                c.getPerson().setPhone2(cellString);
-                                break;
-                            case "client_registered_at":
-                                Date reg = commonController.dateFromString(cellString, dateTimeFormat);
-                                c.getPerson().setCreatedAt(reg);
-                                c.setCreatedAt(reg);
-                                break;
-                            case "client_gn_area":
-                                //// // System.out.println("GN");
-                                //// // System.out.println("cellString = " + cellString);
-
-                                Area tgn;
-                                if (gnArea == null) {
-                                    gnArea = areaController.getAreaByCodeIfNotName(cellString, AreaType.GN);
-                                }
-
-                                break;
-                        }
-
-                        colNo++;
-                    }
-
-                    //// // System.out.println("tgn = " + gnArea);
-                    if (gnArea != null) {
-                        c.getPerson().setGnArea(gnArea);
-                        c.getPerson().setDsArea(gnArea.getDsd());
-                        c.getPerson().setMohArea(gnArea.getMoh());
-                        c.getPerson().setPhmArea(gnArea.getPhm());
-                        c.getPerson().setDistrict(gnArea.getDistrict());
-                        c.getPerson().setProvince(gnArea.getProvince());
-                    }
-                    c.setCreateInstitution(institution);
-
-                    c.setId(temId);
-                    temId++;
-
-                    importedClients.add(c);
-
-                }
-
-                lk.gov.health.phsp.facade.util.JsfUtil.addSuccessMessage("Succesful. All the data in Excel File Impoted to the database");
-                errorCode = "";
-                return "save_imported_clients";
-            } catch (IOException ex) {
-                errorCode = ex.getMessage();
-                lk.gov.health.phsp.facade.util.JsfUtil.addErrorMessage(ex.getMessage());
-                return "";
-            } catch (BiffException ex) {
-                lk.gov.health.phsp.facade.util.JsfUtil.addErrorMessage(ex.getMessage());
-                errorCode = ex.getMessage();
-                return "";
-            }
-        } catch (IndexOutOfBoundsException e) {
-            errorCode = e.getMessage();
-            return "";
-        }
-    }
-
     public void prepareToCapturePhotoWithWebCam() {
         goingToCaptureWebCamPhoto = true;
     }
@@ -4686,6 +4492,16 @@ public class ClientController implements Serializable {
         return getFacade().find(id);
     }
 
+    public Client getClientByNic(String nic) {
+        String jpql = "select c from Client c "
+                + " where c.retired=:ret "
+                + " and c.person.nic=:nic ";
+        Map m = new HashMap();
+        m.put("ret", false);
+        m.put("nic", nic);
+        return getFacade().findFirstByJpql(jpql, m);
+    }
+
     public List<Client> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }
@@ -5135,47 +4951,6 @@ public class ClientController implements Serializable {
         return tm;
     }
 
-    private void prepareSelectionPrivileges() {
-        switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case Moh:
-            case Amoh:
-            case Nurse:
-            case Phi:
-            case Phm:
-            case Client:
-            case Hospital_Admin:
-            case Hospital_User:
-                institution = webUserController.getLoggedUser().getInstitution();
-                institutionSelectable = false;
-                nationalLevel = false;
-                break;
-            case ChiefEpidemiologist:
-            case Epidemiologist:
-            case Super_User:
-            case System_Administrator:
-            case User:
-                institution = null;
-                institutionSelectable = true;
-                nationalLevel = true;
-                break;
-            case Pdhs:
-            case Rdhs:
-            case Re:
-                institution = null;
-                institutionSelectable = true;
-                nationalLevel = false;
-                break;
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
-                institution = null;
-                institutionSelectable = true;
-                nationalLevel = true;
-                break;
-
-        }
-    }
 
     public String toListCases() {
         return "/client/case_list";
@@ -5220,27 +4995,9 @@ public class ClientController implements Serializable {
         Map m = new HashMap();
         String j = "select c from Encounter c "
                 + " where c.retired=false";
-        if (getInstitutionSelectable()) {
 
-            if (getNationalLevel()) {
-                if (getInstitution() == null) {
-                } else {
-                    j += " and c.institution = :ins ";
-                    m.put("ins", getInstitution());
-                }
-            } else {
-                if (getInstitution() == null) {
-                    j += " and c.institution in :inss ";
-                    m.put("inss", webUserController.getLoggableInstitutions());
-                } else {
-                    j += " and c.institution = :ins ";
-                    m.put("ins", getInstitution());
-                }
-            }
-        } else {
-            j += " and c.institution=:ins ";
-            m.put("ins", webUserController.getLoggedUser().getInstitution());
-        }
+        j += " and c.institution=:ins ";
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
 
         j += " and c.encounterDate between :fd and :td "
                 + " and c.encounterType=:t "
@@ -5303,28 +5060,6 @@ public class ClientController implements Serializable {
 
     public void setListedToReceive(List<Encounter> listedToReceive) {
         this.listedToReceive = listedToReceive;
-    }
-
-    public Boolean getInstitutionSelectable() {
-        if (institutionSelectable == null) {
-            prepareSelectionPrivileges();
-        }
-        return institutionSelectable;
-    }
-
-    public void setInstitutionSelectable(Boolean institutionSelectable) {
-        this.institutionSelectable = institutionSelectable;
-    }
-
-    public Boolean getNationalLevel() {
-        if (nationalLevel == null) {
-            prepareSelectionPrivileges();
-        }
-        return nationalLevel;
-    }
-
-    public void setNationalLevel(Boolean nationalLevel) {
-        this.nationalLevel = nationalLevel;
     }
 
     public List<Encounter> getTestList() {
@@ -5567,36 +5302,36 @@ public class ClientController implements Serializable {
         this.dispatchingLab = dispatchingLab;
     }
 
-    public String getSerialNoColumn() {
-        return serialNoColumn;
+    public String getNameCol() {
+        return nameCol;
     }
 
-    public void setSerialNoColumn(String serialNoColumn) {
-        this.serialNoColumn = serialNoColumn;
+    public void setNameCol(String nameCol) {
+        this.nameCol = nameCol;
     }
 
-    public String getResultColumn() {
-        return resultColumn;
+    public String getTestNoCol() {
+        return testNoCol;
     }
 
-    public void setResultColumn(String resultColumn) {
-        this.resultColumn = resultColumn;
+    public void setTestNoCol(String testNoCol) {
+        this.testNoCol = testNoCol;
     }
 
-    public String getCtValueColumn() {
-        return ctValueColumn;
+    public String getAgeColumn() {
+        return ageColumn;
     }
 
-    public void setCtValueColumn(String ctValueColumn) {
-        this.ctValueColumn = ctValueColumn;
+    public void setAgeColumn(String ageColumn) {
+        this.ageColumn = ageColumn;
     }
 
-    public String getCommentColumn() {
-        return commentColumn;
+    public String getSexCol() {
+        return sexCol;
     }
 
-    public void setCommentColumn(String commentColumn) {
-        this.commentColumn = commentColumn;
+    public void setSexCol(String sexCol) {
+        this.sexCol = sexCol;
     }
 
     public Integer getStartRow() {
@@ -5725,6 +5460,60 @@ public class ClientController implements Serializable {
 
     public void setBulkPrintReport(String bulkPrintReport) {
         this.bulkPrintReport = bulkPrintReport;
+    }
+
+    public String getPhoneCol() {
+        return phoneCol;
+    }
+
+    public void setPhoneCol(String phoneCol) {
+        this.phoneCol = phoneCol;
+    }
+
+    public String getAddressCol() {
+        return addressCol;
+    }
+
+    public void setAddressCol(String addressCol) {
+        this.addressCol = addressCol;
+    }
+
+    public List<ClientImport> getClientImports() {
+        if (clientImports == null) {
+            clientImports = new ArrayList<>();
+        }
+        return clientImports;
+    }
+
+    public void setClientImports(List<ClientImport> clientImports) {
+        this.clientImports = clientImports;
+    }
+
+    public Area getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(Area district) {
+        this.district = district;
+    }
+
+    public List<ClientImport> getClientImportsSelected() {
+        if (clientImportsSelected == null) {
+            clientImportsSelected = new ArrayList<>();
+        }
+        return clientImportsSelected;
+    }
+
+    public void setClientImportsSelected(List<ClientImport> clientImportsSelected) {
+        this.clientImportsSelected = clientImportsSelected;
+    }
+
+    public String getNicCol() {
+        return nicCol;
+    }
+
+    public void setNicCol(String nicCol) {
+        this.nicCol = nicCol;
     }
 
     // </editor-fold>
