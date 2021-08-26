@@ -911,14 +911,19 @@ public class WebUserController implements Serializable {
             case Amoh:
             case Phi:
             case Phm:
+            case MohStaff:
                 areasForMe = areaApplicationController.getAllChildren(loggedUser.getInstitution().getMohArea());
                 break;
             case Rdhs:
             case Re:
+            case Rdhs_Staff:
+            case Regional_Admin:
                 areasForMe = areaApplicationController.getAllChildren(loggedUser.getInstitution().getRdhsArea());
                 loggableMohAreas = areaApplicationController.getMohAreasOfAnRdhs(loggedUser.getInstitution().getRdhsArea());
                 break;
             case Pdhs:
+            case Provincial_Admin:
+            case Pdhs_Staff:
                 areasForMe = areaApplicationController.getAllChildren(loggedUser.getInstitution().getPdhsArea());
                 break;
             case Client:
@@ -929,6 +934,8 @@ public class WebUserController implements Serializable {
             case Lab_Mo:
             case Lab_User:
             case Nurse:
+            case Lab_Admin:
+
             default:
         }
     }

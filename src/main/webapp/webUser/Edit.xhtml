@@ -8,7 +8,7 @@
 
     <body>
 
- <ui:composition template="/webUser/index.xhtml">
+        <ui:composition template="/webUser/index.xhtml">
 
             <ui:define name="webUserContents">
                 <p:panel id="WebUserEditDlg" header="Edit User Detais" style="text-align: center; height: 100%;">
@@ -42,9 +42,27 @@
                             <p:outputLabel value="Institution" for="institution" />
                             <p:autoComplete  id="institution" value="#{webUserController.selected.institution}" 
                                              completeMethod="#{institutionController.completeInstitutions}"
-                                     var="i" itemLabel="#{i.name}" itemValue="#{i}"
-                                     forceSelection="true" maxResults="15" minQueryLength="3">
+                                             var="i" itemLabel="#{i.name}" itemValue="#{i}"
+                                             forceSelection="true" maxResults="15" minQueryLength="3">
                             </p:autoComplete >
+
+                            <p:outputLabel value="Area" for="area" class="col-md-2" />
+                            <p:autoComplete  id="area" value="#{webUserController.selected.area}" 
+                                             completeMethod="#{areaController.completeAreas}"
+                                             var="i" itemLabel="#{i.name}" itemValue="#{i}" 
+                                             minQueryLength="4" maxResults="30"
+                                             forceSelection="true" required="true">
+                                <p:column headerText="Name">
+                                    <p:outputLabel value="#{i.name}"></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Parent">
+                                    <p:outputLabel value="#{i.parentArea.name}"></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Type">
+                                    <p:outputLabel value="#{i.type}"></p:outputLabel>
+                                </p:column>
+                            </p:autoComplete >
+
 
                             <p:outputLabel value="Email" for="email" />
                             <p:inputText id="email" value="#{webUserController.selected.email}" title="#{bundleClinical.EditWebUserTitle_email}" />
@@ -55,11 +73,11 @@
 
                             <p:outputLabel value="Role" for="webUserRole" />
                             <p:selectOneMenu  id="webUserRole" value="#{webUserController.selected.webUserRole}"  >
-                        <f:selectItems value="#{applicationController.webUserRoles}" 
-                                       var="webUserRoles" 
-                                       itemLabel="#{webUserRoles.label}" 
-                                       itemValue="#{webUserRoles}">
-                        </f:selectItems>
+                                <f:selectItems value="#{applicationController.webUserRoles}" 
+                                               var="webUserRoles" 
+                                               itemLabel="#{webUserRoles.label}" 
+                                               itemValue="#{webUserRoles}">
+                                </f:selectItems>
                             </p:selectOneMenu>
 
                         </p:panelGrid>
