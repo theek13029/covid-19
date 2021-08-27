@@ -26,10 +26,17 @@ package lk.gov.health.phsp.bean;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
+import javax.persistence.TemporalType;
 import lk.gov.health.phsp.bean.util.JsfUtil;
 import lk.gov.health.phsp.entity.UserPrivilege;
+import lk.gov.health.phsp.enums.EncounterType;
 import lk.gov.health.phsp.enums.Privilege;
+import lk.gov.health.phsp.pojcs.InstitutionCount;
 
 /**
  *
@@ -43,6 +50,8 @@ public class MenuController implements Serializable {
     private WebUserController webUserController;
     @Inject
     WebUserApplicationController webUserApplicationController;
+    @Inject
+    RegionalController regionalController;
 
     /**
      * Creates a new instance of MenuController
@@ -50,6 +59,29 @@ public class MenuController implements Serializable {
     public MenuController() {
     }
 
+    
+    public String toSummaryByOrderedInstitution() {
+         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                regionalController.prepareSummaryByOrderedInstitution();
+                return "/regional/summary_lab_ordered";
+            case National:
+                return "/national/summary_lab_ordered";
+            case Hospital:
+                return "/hospital/summary_lab_ordered";
+            case Lab:
+                return "/lab/summary_lab_ordered";
+            case National_Lab:
+                return "/national/summary_lab_ordered";
+            case Moh:
+                return "/moh/summary_lab_ordered";
+            case Provincial:
+                return "/provincial/summary_lab_ordered";
+            default:
+                return "";
+        }
+    }
+    
     
     public String toDivertSamples() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
