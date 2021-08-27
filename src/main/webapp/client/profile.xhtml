@@ -15,10 +15,15 @@
                     <div class="card">
                         <h5 class="card-header">
                             <p:outputLabel value="Patient Data" ></p:outputLabel>
-                            <p:commandButton value="To Edit Details" action="/client/client" style="float: right;"/>
-                            <p:commandButton value="Add New RAT Result" action="#{mohController.toAddNewRatWithNewClient()}" style="float: right;"/>
-                            <p:commandButton value="Add New RAT" action="#{mohController.toAddNewRatOrderWithExistingClient()}" style="float: right;"/>
-                            <p:commandButton value="Add New PCR" action="#{mohController.toAddNewPcrWithExistingClient()}" style="float: right;"/>
+                            <p:spacer height="1" width="10" ></p:spacer>
+                            <p:commandButton ajax="false" value="To Edit Details" action="/client/client" style="float: right;"/>
+                            <p:spacer height="1" width="10" ></p:spacer>
+                            <p:commandButton ajax="false"  value="Add New PCR" action="#{mohController.toAddNewPcrWithExistingClient()}" />
+                            <p:spacer height="1" width="10" ></p:spacer>
+                            <p:commandButton ajax="false"  value="Add New RAT Result" action="#{mohController.toAddNewRatWithExistingClient()}" />
+                            <p:spacer height="1" width="10" ></p:spacer>
+                            <p:commandButton ajax="false"  value="Add New RAT" action="#{mohController.toAddNewRatOrderWithExistingClient()}" />
+                            
                         </h5>
                         <div class="card-body">
                             <div class="form-group row">
@@ -110,6 +115,9 @@
                             <p:column headerText="Institution" >
                                 <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>
+                             <p:column headerText="Result" >
+                                 <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Actions" >
                                 <p:commandButton value="View Order" ajax="false" action="#{mohController.toViewTest()}" rendered="#{c.encounterType eq 'Test_Enrollment'}" >
                                     <f:setPropertyActionListener value="#{c}" 
@@ -124,11 +132,6 @@
                                 
                             </p:column>
                         </p:dataTable>
-
-                        <p:commandButton value="Fill New Case Data" action="#{clientController.toSelectedForCaseEnrollment()}">
-                        </p:commandButton>
-                        <p:commandButton value="Fill New PCR/RAT Test" action="#{clientController.toSelectedForNewTestEnrollment()}">
-                        </p:commandButton>
                     </p:panelGrid>
                 </h:form>
 
