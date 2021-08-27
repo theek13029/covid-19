@@ -10,30 +10,30 @@
        <ui:composition template="/national/reports_index.xhtml">
             <ui:define name="reports">
 
-                <p:panelGrid columns="1" styleClass="alignTop w-100" >
+                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <h:outputLabel value="Test Counts by Ordered Institution" ></h:outputLabel>
+                        <p:outputLabel value="Test Counts by Ordered Institution" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
                         <p:panelGrid columns="2" >
-                            <h:outputLabel value="Ordered From" ></h:outputLabel>
+                            <p:outputLabel value="Ordered From" ></p:outputLabel>
                             <p:calendar value="#{nationalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
-                            <h:outputLabel value="Ordered To" ></h:outputLabel>
+                            <p:outputLabel value="Ordered To" ></p:outputLabel>
                             <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                            <h:outputLabel value="Ordering Category" ></h:outputLabel>
-                            <h:selectOneMenu value="#{nationalController.orderingCategory}" >
+                            <p:outputLabel value="Ordering Category" ></p:outputLabel>
+                            <p:selectOneMenu value="#{nationalController.orderingCategory}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{nationalController.covidTestOrderingCategories}" 
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </h:selectOneMenu>
+                            </p:selectOneMenu>
 
-                            <h:outputLabel  value="Lab"></h:outputLabel>
+                            <p:outputLabel  value="Lab"></p:outputLabel>
                             <p:autoComplete style="width: 100%;"
                                             inputStyleClass="autocomplete"
                                             value="#{nationalController.lab}"
@@ -42,20 +42,20 @@
                                             var="l" itemLabel="#{l.name}" itemValue="#{l}">
                             </p:autoComplete>
 
-                            <h:outputLabel value="Test" ></h:outputLabel>
-                            <h:selectOneMenu value="#{nationalController.testType}" >
+                            <p:outputLabel value="Test" ></p:outputLabel>
+                            <p:selectOneMenu value="#{nationalController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{nationalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </h:selectOneMenu>
+                            </p:selectOneMenu>
 
 
 
-                            <h:commandButton value="Generate Excel">
+                            <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                            </h:commandButton>
-                            <h:commandButton  value="Process" 
-                                             action="#{nationalController.toCountOfTestsByOrderedInstitution()}" ></h:commandButton>
+                            </p:commandButton>
+                            <p:commandButton ajax="false" value="Process" 
+                                             action="#{nationalController.toCountOfTestsByOrderedInstitution()}" ></p:commandButton>
 
 
                         </p:panelGrid>
@@ -72,15 +72,15 @@
                                      >
                             <p:column headerText="Institution" sortBy="#{c.institution.name}"
                                       filterBy="#{c.institution.name}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.institution.name}" ></h:outputLabel>
+                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="RDHS" sortBy="#{c.institution.rdhsArea.name}"
                                       filterBy="#{c.institution.rdhsArea.name}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.institution.rdhsArea.name}" ></h:outputLabel>
+                                <p:outputLabel value="#{c.institution.rdhsArea.name}" ></p:outputLabel>
                             </p:column>
                             
                             <p:column headerText="Count"  sortBy="#{c.count}">
-                                <h:outputLabel value="#{c.count}" ></h:outputLabel>
+                                <p:outputLabel value="#{c.count}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
                     </h:form>
