@@ -25,16 +25,16 @@
 
                     <div class="row" >
                         <div class="col-6 d-flex justify-content-center" >
-                            <h:panelGrid columns="2" class="shadow bg-white rounded w-100" >
-                                <h:outputLabel value="Ordered From" ></h:outputLabel>
+                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded w-100" >
+                                <h:outputLabel class="h6 fw-bold" value="Ordered From" ></h:outputLabel>
                                 <p:calendar styleClass="w-100" value="#{mohController.fromDate}"
                                             pattern="dd MMMM yyyy hh:mm a">
                                 </p:calendar>
 
-                                <h:outputLabel value="Ordered To" ></h:outputLabel>
+                                <h:outputLabel class="h6 fw-bold" value="Ordered To" ></h:outputLabel>
                                 <p:calendar styleClass="w-100" value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                                <h:outputLabel value="Ordering Category" ></h:outputLabel>
+                                <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
                                 <h:selectOneMenu value="#{mohController.orderingCategory}" class="form-select" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
                                     <f:selectItems value="#{mohController.covidTestOrderingCategories}"
@@ -42,7 +42,7 @@
                                                    itemValue="#{c}" ></f:selectItems>
                                 </h:selectOneMenu>
 
-                                <h:outputLabel value="Test" ></h:outputLabel>
+                                <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
                                 <h:selectOneMenu value="#{mohController.testType}" class="form-select" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
                                     <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
@@ -60,7 +60,7 @@
                         </div>
                         <div class="col-6 d-flex flex-column" >
                             <h:panelGrid columns="3" class="shadow bg-white rounded ">
-                                <h:outputLabel value="Assign to" ></h:outputLabel>
+                                <h:outputLabel class="h6 fw-bold" value="Assign to" ></h:outputLabel>
                                 <p:selectOneMenu value="#{mohController.assignee}" var="wu" class="form-select" >
                                     <f:selectItems value="#{webUserController.usersForMyInstitute}" var="w"
                                                    itemLabel="#{w.area.name}" itemValue="#{w}" class="bg-dark" >
