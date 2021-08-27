@@ -85,7 +85,7 @@ THE SOFTWARE.
                         <div class="card col-md-4">
                             <div class="card-header">
                                 <p:outputLabel value="Privilages" ></p:outputLabel>
-                                <p:commandButton style="float: left;" ajax="false" action="#{webUserController.updatePrivilagesPerUsers()}" value="#{bundleClinical.Save}"/>
+                                <p:commandButton style="float: right; background-color: #15a589; color: #f3f3f3" ajax="false" action="#{webUserController.updatePrivilagesPerUsers()}" value="#{bundleClinical.Save}"/>
                             </div>
                             <div class="card-body">
                                  <p:tree id="tree" value="#{webUserController.allPrivilegeRoot}" var="node" selectionMode="checkbox" selection="#{webUserController.selectedNodeSet}">  
