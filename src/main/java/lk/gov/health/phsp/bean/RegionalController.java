@@ -921,14 +921,10 @@ public class RegionalController implements Serializable {
 
         j += " and c.client.person.mohArea is null ";
 
-//        if (mohOrHospital != null) {
-//            j += " and c.institution=:ins ";
-//            m.put("ins", mohOrHospital);
-//        } else {
-//            j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
-//            m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
-//            m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
-//        }
+        j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
+        m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
+        m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
+
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
         System.out.println("getFromDate() = " + getFromDate());

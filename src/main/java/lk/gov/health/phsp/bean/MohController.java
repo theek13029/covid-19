@@ -1321,6 +1321,46 @@ public class MohController implements Serializable {
         return "/moh/pcr";
     }
 
+    
+    public String toAddNewPcrWithExistingClient() {
+        if (clientController.getSelected() == null) {
+            JsfUtil.addErrorMessage("No Client");
+            return "";
+        }
+        
+        Client nicClient = clientController.getSelected();
+        if (nicClient == null) {
+            return "";
+        }
+        nicExistsForPcr = null;
+        Encounter tmpEnc = pcr;
+        pcr = new Encounter();
+        pcr.setEncounterNumber(tmpEnc.getEncounterNumber());
+        Date d = new Date();
+        Client c = nicClient;
+        c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
+        c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        pcr.setPcrTestType(itemApplicationController.getPcr());
+        pcr.setPcrOrderingCategory(sessionController.getLastPcrOrdringCategory());
+        pcr.setClient(c);
+        pcr.setInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setReferalInstitution(lab);
+        pcr.setEncounterType(EncounterType.Test_Enrollment);
+        pcr.setEncounterDate(d);
+        pcr.setEncounterFrom(d);
+        pcr.setEncounterMonth(CommonController.getMonth(d));
+        pcr.setEncounterQuarter(CommonController.getQuarter(d));
+        pcr.setEncounterYear(CommonController.getYear(d));
+        pcr.setSampled(true);
+        pcr.setSampledAt(new Date());
+        pcr.setSampledBy(webUserController.getLoggedUser());
+        pcr.setCreatedAt(new Date());
+        return "/moh/pcr";
+    }
+
+    
+    
     public String toAddNewRatOrderWithExistingNic() {
         if (rat == null) {
             return "";
@@ -1366,6 +1406,45 @@ public class MohController implements Serializable {
         return "/moh/rat_order";
     }
 
+    public String toAddNewRatOrderWithExistingClient() {
+        if (clientController.getSelected() == null) {
+            JsfUtil.addErrorMessage("No Client");
+            return "";
+        }
+        Client nicClient = clientController.getSelected();
+        if (nicClient == null) {
+            return "";
+        }
+        nicExistsForRat = null;
+        Encounter tmpEnc = rat;
+        rat = new Encounter();
+        rat.setEncounterNumber(tmpEnc.getEncounterNumber());
+        Date d = new Date();
+
+        Client c = nicClient;
+        c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
+        c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        rat.setPcrTestType(itemApplicationController.getRat());
+        rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
+        rat.setClient(c);
+        rat.setInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setReferalInstitution(lab);
+        rat.setEncounterType(EncounterType.Test_Enrollment);
+        rat.setEncounterDate(d);
+        rat.setEncounterFrom(d);
+        rat.setEncounterMonth(CommonController.getMonth(d));
+        rat.setEncounterQuarter(CommonController.getQuarter(d));
+        rat.setEncounterYear(CommonController.getYear(d));
+        rat.setSampled(true);
+        rat.setSampledAt(new Date());
+        rat.setSampledBy(webUserController.getLoggedUser());
+        rat.setCreatedAt(new Date());
+        return "/moh/rat_order";
+    }
+
+    
+    
     public String toAddNewRatWithExistingNic() {
         if (rat == null) {
             return "";
@@ -1416,6 +1495,50 @@ public class MohController implements Serializable {
         rat.setCreatedAt(new Date());
         return "/moh/rat";
     }
+    
+    public String toAddNewRatWithExistingClient() {
+        if (clientController.getSelected() == null) {
+            JsfUtil.addErrorMessage("No Client");
+            return "";
+        }
+        Client exClient = clientController.getSelected();
+        if (exClient == null) {
+            return "";
+        }
+        nicExistsForRat = null;
+        Encounter tmpEnc = rat;
+        rat = new Encounter();
+        rat.setEncounterNumber(tmpEnc.getEncounterNumber());
+        Date d = new Date();
+        Client c = exClient;
+        c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
+        c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        rat.setPcrTestType(itemApplicationController.getRat());
+        rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
+        rat.setClient(c);
+        rat.setInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setEncounterType(EncounterType.Test_Enrollment);
+        rat.setEncounterDate(d);
+        rat.setEncounterFrom(d);
+        rat.setEncounterMonth(CommonController.getMonth(d));
+        rat.setEncounterQuarter(CommonController.getQuarter(d));
+        rat.setEncounterYear(CommonController.getYear(d));
+
+        rat.setSampled(true);
+        rat.setSampledAt(new Date());
+        rat.setSampledBy(webUserController.getLoggedUser());
+
+        rat.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+
+        rat.setResultConfirmed(Boolean.TRUE);
+        rat.setResultConfirmedAt(d);
+        rat.setResultConfirmedBy(webUserController.getLoggedUser());
+
+        rat.setCreatedAt(new Date());
+        return "/moh/rat";
+    }
+    
 
     public String saveRatAndToNewRat() {
         if (saveRat() == null) {

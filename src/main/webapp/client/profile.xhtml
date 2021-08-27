@@ -16,8 +16,9 @@
                         <h5 class="card-header">
                             <p:outputLabel value="Patient Data" ></p:outputLabel>
                             <p:commandButton value="To Edit Details" action="/client/client" style="float: right;"/>
-                            <p:commandButton value="Add New Case" action="#{clientController.toAddNewClientForCaseEnrollment()}" style="float: right;"/>
-                            <p:commandButton value="Add New PCR/RAT Test" action="#{clientController.toAddNewClientForTestEnrollment()}" style="float: right;"/>
+                            <p:commandButton value="Add New RAT Result" action="#{mohController.toAddNewRatWithNewClient()}" style="float: right;"/>
+                            <p:commandButton value="Add New RAT" action="#{mohController.toAddNewRatOrderWithExistingClient()}" style="float: right;"/>
+                            <p:commandButton value="Add New PCR" action="#{mohController.toAddNewPcrWithExistingClient()}" style="float: right;"/>
                         </h5>
                         <div class="card-body">
                             <div class="form-group row">
