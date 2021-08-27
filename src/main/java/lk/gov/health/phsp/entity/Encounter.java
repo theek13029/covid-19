@@ -175,6 +175,8 @@ public class Encounter implements Serializable {
     private Item pcrTestType;
     @ManyToOne
     private Item pcrOrderingCategory;
+    @ManyToOne
+    private Item vaccinationStatus;
     private String pcrOrderingCategoryOther;
     private Boolean symptomatic;
 
@@ -1003,6 +1005,14 @@ public class Encounter implements Serializable {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public Item getVaccinationStatus() {
+        return vaccinationStatus;
+    }
+
+    public void setVaccinationStatus(Item vaccinationStatus) {
+        this.vaccinationStatus = vaccinationStatus;
     }
     
     
