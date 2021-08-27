@@ -16,7 +16,7 @@
                 <h:form class="form">
                     <p:panel class="main-panel" >
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header bg-success text-white">
                                 <h:outputLabel class="fs-5 my-2 fw-bold" value="New User Detais" ></h:outputLabel>                                
                             </div>
                             <div class="card-body">
@@ -64,9 +64,9 @@
                                         <div class="form-group row  mb-4">
                                             <h:outputLabel value="#{bundleClinical.EditWebUserLabel_institution}" for="institution" class="col-md-4" />
                                             <div class="col-md-8">
-                                                <p:autoComplete id="institution" value="#{webUserController.selected.institution}" 
+                                                <p:autoComplete styleClass="border w-100" id="institution" value="#{webUserController.selected.institution}" 
                                                                 completeMethod="#{institutionController.completeInstitutions}"
-                                                                var="i" itemLabel="#{i.name}" itemValue="#{i}" styleClass="border w-100"
+                                                                var="i" itemLabel="#{i.name}" itemValue="#{i}" style="border : 1px #ddd solid;"
                                                                 forceSelection="true" required="true" requiredMessage="The Institution field is required." minQueryLength="3" maxResults="30">
                                                 </p:autoComplete >
                                             </div>
@@ -128,7 +128,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer">
+                            <div class="card-footer bg-white">
                                 <h:commandButton class="btn btn-success px-5 my-3" action="#{webUserController.saveNewWebUserBySysAdmin()}" value="#{bundleClinical.Save}"/>
                             </div>
                         </div>
