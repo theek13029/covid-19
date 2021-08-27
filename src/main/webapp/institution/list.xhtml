@@ -63,15 +63,29 @@
                             </f:facet>
                             <h:outputText value="#{item.rdhsArea.name}"/>
                         </p:column>
-                        
+                        <p:column  >
+                            <f:facet name="header">
+                                <h:outputText value="POI"/>
+                            </f:facet>
+                            <h:outputText value="Own POI : "/>
+                            <h:outputText value="#{item.poiNumber}"/>
+                            <br/><!-- comment -->
+                            <h:outputText value="Another POI Institution : "/>
+                            <h:outputText value="#{item.poiInstitution.name}"/>
+                            <h:outputText value=" ("/>
+                            <h:outputText value="#{item.poiInstitution.poiNumber}"/>
+                            <h:outputText value=" )"/>
+                        </p:column>
+
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleClinical.Create}" actionListener="#{institutionController.prepareCreate}" update=":InstitutionCreateForm" oncomplete="PF('InstitutionCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleClinical.View}" update=":InstitutionViewForm" oncomplete="PF('InstitutionViewDialog').show()" disabled="#{empty institutionController.selected}"/>
                             <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleClinical.Edit}" update=":InstitutionEditForm" oncomplete="PF('InstitutionEditDialog').show()" disabled="#{empty institutionController.selected}"/>
                             <p:commandButton id="deleteButton" 
-                                             onclick="if (! confirm('Are you sure you want to delete?')) return false"
+                                             onclick="if (!confirm('Are you sure you want to delete?'))
+                                                         return false"
                                              icon="ui-icon-trash"  value="#{bundleClinical.Delete}" action="#{institutionController.deleteInstitution()}" ajax="false" disabled="#{empty institutionController.selected}"
-                                             
+
                                              >
                                 <f:setPropertyActionListener value="#{institutionController.selected}" target="#{institutionController.deleting}" ></f:setPropertyActionListener>
                             </p:commandButton>
