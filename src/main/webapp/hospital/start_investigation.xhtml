@@ -24,12 +24,12 @@
                         <p:panelGrid class="bg-white border-0 border border-success" columns="2" >
                             <p:panelGrid class="border border-light" columns="2" >
                                 <h:outputLabel class="fs-6 fw-bold" value="Assigned From" ></h:outputLabel>
-                                <p:calendar value="#{hospitalController.fromDate}" 
+                                <p:calendar class="fs-6" value="#{hospitalController.fromDate}" 
                                             pattern="dd MMMM yyyy hh:mm a">
                                 </p:calendar>
 
                                 <h:outputLabel class="fs-6 fw-bold" value="Assigned To" ></h:outputLabel>
-                                <p:calendar value="#{hospitalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                                <p:calendar class="fs-6"  value="#{hospitalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
                                 <h:outputLabel class="fs-6 fw-bold" value="Ordering Category" ></h:outputLabel>
                                 <h:selectOneMenu class="form-select" value="#{hospitalController.orderingCategory}" >
@@ -40,10 +40,10 @@
                                 </h:selectOneMenu>
 
 
-                                <p:commandButton class="btn btn-success" value="Generate Excel">
+                                <p:commandButton class="btn btn-success my-2" value="Generate Excel">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                                 </p:commandButton>
-                                <p:commandButton class="btn btn-warning w-100" value="Process" 
+                                <p:commandButton class="btn btn-warning w-100 my-2" value="Process" 
                                                  action="#{hospitalController.toStartInvestigation()}" ></p:commandButton>
                             </p:panelGrid>
                         </p:panelGrid>
