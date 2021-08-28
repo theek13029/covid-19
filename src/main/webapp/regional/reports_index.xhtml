@@ -1,17 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui">
-
-
     <h:body>
-
         <ui:composition template="/template1.xhtml">
-
             <ui:define name="content">
-
-
-
-
                 <div class="container-fluid" >
                     <div class="row" >
                         <div class="col-12 p-2"   >
@@ -20,7 +12,6 @@
                     </div>
                     <div class="row" >
                         <div class="col-3" >
-                            
                             <div class="card" >
                                 <div class="card-header" >
                                     <h:outputLabel value="Actions" ></h:outputLabel>
@@ -79,9 +70,8 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-
                                                 <h:commandLink value="Result Counts by MOH Area" 
-                                                               action="#{regionalController.toCountOfResultsByOrderedInstitution()}" 
+                                                               action="#{regionalController.toCountOfResultsByMoh()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block"
                                                                >
                                                 </h:commandLink>
@@ -91,7 +81,6 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-
                                                 <h:commandLink value="Result Counts by Lab" 
                                                                action="#{regionalController.toCountOfResultsByLab()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block"
