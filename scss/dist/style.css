@@ -16,6 +16,33 @@
   box-shadow: none !important;
 }
 
+.ui-datepicker-calendar {
+  background-color: #fff;
+}
+.ui-datepicker-calendar tbody tr td {
+  font-weight: 700;
+}
+
+.ui-datepicker-header {
+  background-color: #15a589;
+  color: #fff;
+  font-weight: 700;
+}
+
+.ui-timepicker-div {
+  background-color: #fff;
+  padding: 8px 4px 8px 4px;
+  border: 1px solid #2c3d4f;
+}
+.ui-timepicker-div .ui_tpicker_time_input {
+  border-radius: 0.375rem;
+  padding: 2px 4px 2px 4px;
+  border: 1px solid #cecece;
+}
+.ui-timepicker-div .ui_tpicker_time_input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(44, 62, 80, 0.25);
+}
+
 .border-none {
   border-radius: 0;
 }
@@ -34,10 +61,10 @@ table thead tr {
   text-align: left;
 }
 table th {
-  padding: 12px 15px;
+  padding: 12px 15px !important;
 }
 table td {
-  padding: 12px 15px;
+  padding: 12px 15px !important;
 }
 table tbody tr {
   border-bottom: 1px solid #dddddd;

@@ -18,6 +18,34 @@
   box-shadow: none !important;
 }
 
-.ui-datepicker-calender{
+.ui-datepicker-calendar {
   background-color: #fff;
+  tbody {
+    tr {
+      td {
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+.ui-datepicker-header {
+  background-color: $dark-green;
+  color: #fff;
+  font-weight: 700;
+}
+
+.ui-timepicker-div {
+  background-color: #fff;
+  padding: 8px 4px 8px 4px;
+  border: 1px solid #2c3d4f;
+
+  .ui_tpicker_time_input {
+    border-radius: 0.375rem;
+    padding: 2px 4px 2px 4px;
+    border: 1px solid #cecece;
+    &:focus {
+      box-shadow: 0 0 0 0.25rem rgb(44 62 80 / 25%);
+    }
+  }
 }
