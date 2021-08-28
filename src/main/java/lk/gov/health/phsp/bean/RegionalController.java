@@ -948,7 +948,7 @@ public class RegionalController implements Serializable {
             }
         }
 
-        return "/regional/count_of_results_by_lab";
+        return "/regional/count_of_results_by_moh";
     }
 
     
