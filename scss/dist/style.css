@@ -43,6 +43,43 @@
   box-shadow: 0 0 0 0.25rem rgba(44, 62, 80, 0.25);
 }
 
+.ui-autocomplete-panel {
+  position: absolute;
+  overflow: auto;
+  background: var(--bs-blue);
+  color: #fff;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.ui-autocomplete {
+  display: block !important;
+}
+.ui-autocomplete .ui-autocomplete-input {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem !important;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.ui-autocomplete .ui-autocomplete-input:focus {
+  color: var(--bs-blue);
+  background-color: #fff;
+  border-color: #969fa8;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(44, 62, 80, 0.25);
+}
+
 .border-none {
   border-radius: 0;
 }
