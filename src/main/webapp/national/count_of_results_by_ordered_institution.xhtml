@@ -89,6 +89,10 @@
                                       filterBy="#{c.institution.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>
+                             <p:column headerText="PDHS" sortBy="#{c.institution.pdhsArea.name}"
+                                      filterBy="#{c.institution.pdhsArea.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.institution.pdhsArea.name}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="RDHS" sortBy="#{c.institution.rdhsArea.name}"
                                       filterBy="#{c.institution.rdhsArea.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.institution.rdhsArea.name}" ></p:outputLabel>

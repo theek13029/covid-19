@@ -909,22 +909,62 @@ public class RegionalController implements Serializable {
         return "/regional/count_of_results_by_lab";
     }
 
+    public String toCountOfResultsByMoh() {
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.mohArea, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        j += " and (c.client.person.district=:district) ";
+        m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        j += " group by c.client.person.mohArea "
+                + " order by count(c) desc";
+        institutionCounts = new ArrayList<>();
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
+        if (objCounts == null || objCounts.isEmpty()) {
+            return "/regional/count_of_results_by_moh";
+        }
+        for (Object o : objCounts) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                institutionCounts.add(ic);
+            }
+        }
+
+        return "/regional/count_of_results_by_moh";
+    }
+
+    
+    
     public String toListOfTestsWithoutMoh() {
         Map m = new HashMap();
         String j = "select c "
                 + " from Encounter c "
                 + " where (c.retired is null or c.retired=:ret) ";
         m.put("ret", false);
-
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
-
         j += " and c.client.person.mohArea is null ";
-
         j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
         m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
         m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
-
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
         System.out.println("getFromDate() = " + getFromDate());
@@ -948,10 +988,8 @@ public class RegionalController implements Serializable {
         }
         System.out.println("j = " + j);
         System.out.println("m = " + m);
-
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
-
         return "/regional/list_of_tests_without_moh";
     }
 
