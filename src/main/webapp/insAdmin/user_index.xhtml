@@ -13,20 +13,20 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
 
-                <p:panelGrid columns="2" style="width: 100%;" columnClasses="width20percent width80percent" styleClass="alignTop" >
+                <p:panelGrid columns="2" columnClasses="width20percent width80percent" styleClass="alignTop w-100 border border-light" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Manage Users" ></p:outputLabel>
+                        <h:outputLabel class="fs-5 fw-bold my-2" value="Manage Users" ></h:outputLabel>
                     </f:facet>
                     <h:form >
-                        <p:panelGrid columns="1"  style="width: 100%;" >
-                            <p:commandButton   style="width: 98%;margin: auto;" 
+                        <p:panelGrid columns="1" class="border border-light w-100">
+                            <h:commandButton  class="w-100 btn btn-success my-3"
                                 value="Add New User" 
                                 action="#{webUserController.toAddNewUserByInsAdmin()}">
-                            </p:commandButton>
-                            <p:commandButton   style="width: 98%;margin: auto;" 
+                            </h:commandButton>
+                            <h:commandButton class="w-100 btn btn-success my-3"
                                 value="View Users"  
                                 action="#{webUserController.toManageInstitutionUsers}">
-                            </p:commandButton>
+                            </h:commandButton>
                         </p:panelGrid>
                     </h:form>
                     <h:panelGroup >
