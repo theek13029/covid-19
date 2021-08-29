@@ -10,15 +10,15 @@
     <body>
 
         <ui:composition template="/template1.xhtml">
-            <ui:define name="content">
+            <ui:define name="content" class="bg-white">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                <p:panelGrid columns="1" styleClass="alignTop w-100 border border-light" >
+                <p:panelGrid columns="1" styleClass="alignTop w-100 border border-light bg-white" >
                     <f:facet name="header" >
                         <h:outputLabel class="fs-5 fw-bold my-2" value="Orders To Receive" ></h:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" class="border border-light">
+                        <p:panelGrid columns="2" class="border border-light bg-white">
                             <h:outputLabel class="fs-6 fw-bold" value="From" ></h:outputLabel>
                             <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
