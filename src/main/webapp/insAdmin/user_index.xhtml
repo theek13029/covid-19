@@ -11,14 +11,14 @@
 
     <h:body>
         <ui:composition template="/template1.xhtml">
-            <ui:define name="content">
+            <ui:define name="content" class="bg-white">
 
-                <p:panelGrid columns="2" columnClasses="width20percent width80percent" styleClass="alignTop w-100 border border-light" >
+                <p:panelGrid columns="2" columnClasses="width20percent width80percent" styleClass="bg-white alignTop w-100 border border-light" >
                     <f:facet name="header" >
                         <h:outputLabel class="fs-5 fw-bold my-2" value="Manage Users" ></h:outputLabel>
                     </f:facet>
                     <h:form >
-                        <p:panelGrid columns="1" class="border border-light w-100">
+                        <p:panelGrid columns="1" class="border border-light w-100 bg-white">
                             <h:commandButton  class="w-100 btn btn-success my-3"
                                 value="Add New User" 
                                 action="#{webUserController.toAddNewUserByInsAdmin()}">
