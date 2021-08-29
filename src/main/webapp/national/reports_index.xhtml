@@ -32,7 +32,7 @@
                                             <h:form>
                                                 <h:commandLink value="Requests by PDHS" 
                                                                action="#{nationalController.toCountOfTestsByPdhs()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               class="btn btn-outline-primary btn-lg w-100 btn-block" 
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -43,7 +43,7 @@
                                             <h:form>
                                                 <h:commandLink value="Requests by RDHS" 
                                                                action="#{nationalController.toCountOfTestsByRdhsWithoutSpecifyingPdhs()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               class="btn btn-outline-primary btn-lg w-100 btn-block" 
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -54,7 +54,7 @@
                                             <h:form>
                                                 <h:commandLink value="Requests by Institution Type" 
                                                                action="#{nationalController.toCountOfTestsByInstitutionType()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               class="btn btn-outline-primary btn-lg w-100 btn-block" 
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -65,7 +65,7 @@
                                             <h:form>
                                                 <h:commandLink value="Requests by MOH / Hospital" 
                                                                action="#{nationalController.toCountOfTestsByOrderedInstitution()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               class="btn btn-outline-primary btn-lg w-100 btn-block" 
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -76,7 +76,7 @@
                                             <h:form>
                                                 <h:commandLink value="Results by MOH / Hospital" 
                                                                action="#{nationalController.toCountOfResultsByOrderedInstitution()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg w-100 btn-block"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -88,7 +88,7 @@
 
                                                 <h:commandLink value="Result by MOH Area" 
                                                                action="#{nationalController.toCountOfResultsByMohArea()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg w-100 btn-block"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -100,7 +100,7 @@
 
                                                 <h:commandLink value="Result Counts by Lab" 
                                                                action="#{nationalController.toCountOfResultsByLab()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg w-100 btn-block"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -119,7 +119,7 @@
                                             <h:form>
                                                 <h:commandLink value="PCR/RAT Orders List" 
                                                                action="#{nationalController.toListOfTests()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg w-100 btn-block"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -130,7 +130,7 @@
                                             <h:form>
                                                 <h:commandLink value="Result List" 
                                                                action="#{nationalController.toListResults()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg w-100 btn-block"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -142,7 +142,7 @@
                                         <div class="col-12 p-2">
                                             <h:form>
                                                 <h:commandLink 
-                                                    class="btn btn-outline-primary btn-lg btn-block"
+                                                    class="btn btn-outline-primary btn-lg w-100 btn-block"
                                                     value="List by Management Plan" action="#{nationalController.toListCasesByManagement()}">
                                                 </h:commandLink>
                                             </h:form>
@@ -161,7 +161,7 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-                                                <h:commandButton value="PCR Positive Data" class="list-group-item list-group-item-action"
+                                                <h:commandButton value="PCR Positive Data" class="list-group-item list-group-item-action list-group-item-danger text-center"
                                                                  action="#{mohController.toPcrPositiveReportsIndexNational()}" >
                                                 </h:commandButton>
                                             </h:form>
@@ -170,7 +170,7 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-                                                <h:commandButton value="RAT Positive Data" class="list-group-item list-group-item-action"
+                                                <h:commandButton value="RAT Positive Data" class="list-group-item list-group-item-action list-group-item-danger text-center"
                                                                  action="#{mohController.toPcrPositiveReportsIndexNational()}" >
                                                 </h:commandButton>
                                             </h:form>
@@ -181,7 +181,7 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-                                                <h:commandButton value="Lab Data" class="list-group-item list-group-item-action"
+                                                <h:commandButton value="Lab Data" class="list-group-item list-group-item-action list-group-item-success text-center"
                                                                  action="#{nationalController.toLabReportsIndexNational()}" >
                                                 </h:commandButton>
                                             </h:form>
@@ -191,7 +191,7 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-                                                <h:commandButton value="MOH/Hospital Data" class="list-group-item list-group-item-action"
+                                                <h:commandButton value="MOH/Hospital Data" class="list-group-item list-group-item-action list-group-item-success text-center"
                                                                  action="#{mohController.toPcrPositiveReportsIndexNational()}" >
                                                 </h:commandButton>
                                             </h:form>
@@ -201,9 +201,9 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-                                                <p:commandButton ajax="false" value="Cases by Management Plan" class="list-group-item list-group-item-action"
+                                                <h:commandButton value="Cases by Management Plan" class="list-group-item list-group-item-action list-group-item-warning text-center"
                                                                  action="#{mohController.toListCasesByManagementForNationalLevel()}" >
-                                                </p:commandButton>
+                                                </h:commandButton>
                                             </h:form>
                                         </div>
                                     </div>
