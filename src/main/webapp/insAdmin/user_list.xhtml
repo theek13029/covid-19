@@ -11,11 +11,11 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:form >
-                    <p:panelGrid style="height: 100%;text-align: center;" columns="2">
+                    <p:panelGrid styleClass="border border-light" columns="2">
                         <f:facet name="header" >
-                            <p:outputLabel value="User List" ></p:outputLabel>
+                            <p:outputLabel class="fs-5 fw-bold my-2" value="User List" ></p:outputLabel>
                         </f:facet>
-                        <p:dataTable value="#{webUserController.items}" var="item"  
+                        <p:dataTable class="my-4" value="#{webUserController.items}" var="item"  
                                      rowKey="#{item.id}" 
                                      selection="#{webUserController.current}" 
                                      rows="10"
@@ -26,16 +26,16 @@
 
                             <p:column sortBy="#{item.person.name}" filterBy="#{item.person.name}" filterMatchMode="contains">
                                 <f:facet name="header">
-                                    <h:outputText value="Name"/>
+                                    <h:outputText class="fs-6" value="Name"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.name}"/>
                             </p:column>
 
                             <p:column sortBy="#{item.name}" filterBy="#{item.name}" filterMatchMode="contains">
                                 <f:facet name="header">
-                                    <h:outputText value="Username"/>
+                                    <h:outputText class="fs-6" value="Username"/>
                                 </f:facet>
-                                <h:outputText value="#{item.name}"/>
+                                <h:outputText class="fs-6" value="#{item.name}"/>
                             </p:column>
 
 
@@ -43,45 +43,45 @@
                                 <f:facet name="header">
                                     <h:outputText value="Institution"/>
                                 </f:facet>
-                                <h:outputText value="#{item.institution.name}"/>
+                                <h:outputText class="fs-6" value="#{item.institution.name}"/>
                             </p:column>
                             <p:column sortBy="#{item.email}" filterBy="#{item.email}" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Email"/>
                                 </f:facet>
-                                <h:outputText value="#{item.email}"/>
+                                <h:outputText class="fs-6" value="#{item.email}"/>
                             </p:column>
                             <p:column sortBy="#{item.telNo}" filterBy="#{item.telNo}" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Phone"/>
                                 </f:facet>
-                                <h:outputText value="#{item.telNo}"/>
+                                <h:outputText class="fs-6" value="#{item.telNo}"/>
                             </p:column>
 
                             <p:column sortBy="#{item.webUserRole.label}" filterBy="#{item.webUserRole.label}" filterMatchMode="contains">
                                 <f:facet name="header">
-                                    <h:outputText value="Role"/>
+                                    <h:outputText class="fs-6" value="Role"/>
                                 </f:facet>
-                                <h:outputText value="#{item.webUserRole.label}"/>
+                                <h:outputText class="fs-6" value="#{item.webUserRole.label}"/>
                             </p:column>
 
                             <p:column >
                                 <f:facet name="header">
-                                    <h:outputText value="Actions"/>
+                                    <h:outputText class="fs-6" value="Actions"/>
                                 </f:facet>
-                                <p:commandLink  value="Edit" ajax="false"
+                                <p:commandLink class="btn btn-success w-100 " value="Edit" ajax="false"
                                                 action="#{webUserController.prepareEditIns()}" >
                                     <f:setPropertyActionListener value="#{item}" target="#{webUserController.current}" ></f:setPropertyActionListener>
                                 </p:commandLink>
                                 <p:spacer height="1" width="10" ></p:spacer>
-                                <p:commandLink  value="Privileges" ajax="false"
+                                <p:commandLink class="btn btn-warning w-100" value="Privileges" ajax="false"
                                                 action="#{webUserController.toManagePrivilegesIns()}" >
                                     <f:setPropertyActionListener value="#{item}" 
                                                                  target="#{webUserController.current}" >
                                     </f:setPropertyActionListener>
                                 </p:commandLink>
                                 <p:spacer height="1" width="10" ></p:spacer>
-                                <p:commandLink  value="Password" ajax="false"
+                                <p:commandLink class="btn btn-warning w-100" value="Password" ajax="false"
                                                 action="#{webUserController.prepareEditPasswordIns()}" >
                                     <f:setPropertyActionListener value="#{item}" target="#{webUserController.current}" ></f:setPropertyActionListener>
                                 </p:commandLink>
