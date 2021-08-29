@@ -8,16 +8,16 @@
 
     <h:body>
         <ui:composition template="/regional/reports_index.xhtml">
-            <ui:define name="reports">
-                <p:panelGrid columns="1" styleClass="alignTop border border-light w-100" >
+            <ui:define name="reports" class="bg-white">
+                <p:panelGrid columns="1" styleClass="alignTop border border-light w-100 bg-white" >
                     <f:facet name="header" >
                         <h:outputLabel class="fs-5 fw-bold my-2" value="List of first contacts wihout MOH" ></h:outputLabel>
                     </f:facet>
 
                     <h:form >
                         
-                        <p:panelGrid columns="2" class="border border-light">
-                            <p:panelGrid columns="2" class="border border-light">
+                        <p:panelGrid columns="2" class="border border-light bg-white">
+                            <p:panelGrid columns="2" class="border border-light bg-white">
                             <h:outputLabel class="fs-6 fw-bold" value="From" ></h:outputLabel>
                             <p:calendar class="fs-6" value="#{regionalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
@@ -26,13 +26,13 @@
                             <h:outputLabel class="fs-6 fw-bold" value="To" ></h:outputLabel>
                             <p:calendar class="fs-6" value="#{regionalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                            <h:commandButton class="btn btn-success -100" value="Generate Excel">
+                            <h:commandButton class="btn btn-success w-100" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                             </h:commandButton>
                             <h:commandButton class="btn btn-warning w-100" value="Process" 
                                              action="#{regionalController.toListOfFirstContactsWithoutMohForRegionalLevel()}" ></h:commandButton>
                             </p:panelGrid>
-                            <p:panelGrid columns="2" class="border border-light">
+                            <p:panelGrid columns="2" class="border border-light bg-white">
                                 <h:outputLabel class="fs-6 fw-bold" value="Assigning MOH Area" ></h:outputLabel>
                                 <h:selectOneMenu class="form-select" value="#{regionalController.mohArea}" >
                                     <f:selectItem itemLabel="Select" ></f:selectItem>
