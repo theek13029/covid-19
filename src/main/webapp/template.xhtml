@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?> 
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -10,22 +10,6 @@
     <h:head id="headt">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-        <style>
-            html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-        </style>
-
-
-        <link href="https://fonts.googleapis.com/css?family=Poppins;display=swap" rel="stylesheet"></link>
-
-        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' 
-              integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' 
-              crossorigin='anonymous'></link>
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
         <script async="true" src="https://www.googletagmanager.com/gtag/js?id=G-VFXVJY37FG"></script>
         <script>
@@ -46,35 +30,16 @@
             <title>COVID-19 Information System</title>
         </ui:insert>
 
-        <h:outputStylesheet library="css" name="tem1.css"/>
-
-
-
-
     </h:head>
 
     <h:body class="w3-light-grey">
-        <style>
-            html,body { height: 100%; margin: 0px; padding: 0px; }
-            .ui-widget {
-                font-family: 'Poppins',Arial,sans-serif;
-                font-size: 1.0em;
-            }
-            .ui-widget input,
-            .ui-widget select,
-            .ui-widget textarea,
-            .ui-widget button {
-                font-family: 'Poppins',Arial,sans-serif;
-            }
-
-        </style>
-        <f:view  >
-            <div class="w3-row w3-blue w3-large w3-padding w3-center" style="z-index:4">
+        <f:view locale="#{webUserController.locale}" >
+            <div class="w3-row w3-blue w3-large w3-padding w3-center">
                 National COVID-19 Information System
             </div>
 
             <p:growl   ></p:growl>
-            
+
             <h:panelGroup rendered="#{webUserController.loggedUser ne null}">
                 <div class="w3-row" >
                     <ez:menu/>
@@ -82,12 +47,12 @@
             </h:panelGroup>
 
             <h:panelGroup rendered="#{webUserController.loggedUser eq null}">
-                <div class="w3-row" style="text-align: center;" >
+                <div class="w3-row">
                     <!--<p:graphicImage library="image" name="hmis_logo.png" style="width: 25%;" ></p:graphicImage>-->
                 </div>
             </h:panelGroup>
 
-            <div class="w3-row w3-theme-l5" style="height: 100%; width: 100%; padding: 0px;margin: 0px;" >
+            <div class="w3-row w3-theme-l5">
                 <h:panelGroup rendered="#{webUserController.loggedUser ne null}">
                     <ui:insert name="content">
                         Contents
@@ -95,7 +60,7 @@
                 </h:panelGroup>
                 <h:panelGroup rendered="#{webUserController.loggedUser eq null}">
                     <ez:login/>
-                    <div style="width: 50%; margin: auto;">
+                    <div>
                         <ez:demo_login/>
                     </div>
                     <ui:insert name="timeout">

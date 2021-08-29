@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
@@ -39,7 +39,7 @@
         </dependency>
 
 
-        
+
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
@@ -57,7 +57,7 @@
             <artifactId>javax.el</artifactId>
             <version>3.0.0</version>
         </dependency>
-       
+
         <!--        <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa</artifactId>
@@ -139,13 +139,13 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <dependency>
-            <groupId>org.primefaces</groupId>  
-            <artifactId>primefaces</artifactId>  
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
             <version>10.0.0</version>
             <type>jar</type>
-        </dependency>  
+        </dependency>
         <dependency>
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt</artifactId>
@@ -161,7 +161,7 @@
             <artifactId>jxl</artifactId>
             <version>2.6.12</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
@@ -178,18 +178,18 @@
             <artifactId>poi-excelant</artifactId>
             <version>4.1.0</version>
         </dependency>
-       
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.9</version>
         </dependency>
 
-        <dependency> 
-            <groupId>commons-lang</groupId> 
-            <artifactId>commons-lang</artifactId> 
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
             <version>2.6</version>
-        </dependency> 
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
         <dependency>
@@ -208,7 +208,7 @@
             <artifactId>commons-logging</artifactId>
             <version>1.2</version>
         </dependency>
-          
+
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
@@ -267,7 +267,7 @@
             <artifactId>barcode4j-light</artifactId>
             <version>2.0</version>
         </dependency>
-        
+
         <!-- https://mvnrepository.com/artifact/org.eclipse.persistence/eclipselink -->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
@@ -278,13 +278,13 @@
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
             <version>1.19.2</version>
-        </dependency>  
+        </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
-        </dependency> 
-        
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/javax.xml.ws/jaxws-api -->
         <dependency>
             <groupId>javax.xml.ws</groupId>
@@ -292,7 +292,7 @@
             <version>2.2.6</version>
         </dependency>
 
-                                         
+
     </dependencies>
 
     <build>

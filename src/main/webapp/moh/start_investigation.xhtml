@@ -15,40 +15,40 @@
             </ui:define>
 
             <ui:define name="content">
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <h:panelGrid columns="1" styleClass="alignTop">
                     <f:facet name="header" >
-                        <p:outputLabel value="Start to Investigate" ></p:outputLabel>
+                        <h:outputLabel value="Start to Investigate" ></h:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="Assigned From" ></p:outputLabel>
+                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded" >
+                                <h:outputLabel class="h6 fw-bold" value="Assigned From" ></h:outputLabel>
                                 <p:calendar value="#{mohController.fromDate}" 
                                             pattern="dd MMMM yyyy hh:mm a">
                                 </p:calendar>
 
-                                <p:outputLabel value="Assigned To" ></p:outputLabel>
+                                <h:outputLabel class="h6 fw-bold" value="Assigned To" ></h:outputLabel>
                                 <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                                <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                                <p:selectOneMenu value="#{mohController.orderingCategory}" >
+                                <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
+                                <h:selectOneMenu value="#{mohController.orderingCategory}" class="form-select" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
                                     <f:selectItems value="#{mohController.covidTestOrderingCategories}" 
                                                    var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
-                                </p:selectOneMenu>
+                                </h:selectOneMenu>
 
 
-                                <p:commandButton ajax="false" value="Generate Excel">
+                                <h:commandButton value="Generate Excel" class="btn btn-success text-white">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="Process" 
-                                                 action="#{mohController.toStartInvestigation()}" ></p:commandButton>
-                            </p:panelGrid>
-                        </p:panelGrid>
-
-                        <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true"
+                                </h:commandButton>
+                                <h:commandButton value="Process" class="btn btn-warning text-white w-100"
+                                                 action="#{mohController.toStartInvestigation()}" ></h:commandButton>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
+                        <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true" class="table"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
@@ -127,11 +127,12 @@
                                     </p:commandButton>
                             </p:column>
                         </p:dataTable>
+                        </h:panelGrid>
                     </h:form>
 
 
 
-                </p:panelGrid>
+                </h:panelGrid>
             </ui:define>
 
         </ui:composition>

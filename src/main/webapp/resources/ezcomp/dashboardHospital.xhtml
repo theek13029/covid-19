@@ -118,15 +118,17 @@
                             </div>
 
                         </div>
-                        <div class="card-footer text-right ">
-                            <h:commandLink value="Find more details .." action="#{mohController.toPcrPositiveReportsIndexNational()}" class="text-danger"></h:commandLink>
+                        <div class="col-md-6" >
+                            <h5>
+                                <h:outputLabel value="#{dashboardController.todayPositiveRat}" ></h:outputLabel>
+                            </h5>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-3" >
-                    <div class="card ">
-                        <div class="card-header text-white bg-warning">
-                            <h2>RAT Positives</h2>
+                    <div class="row">
+                        <div class="col-md-6" >
+                            <h5>
+                                <h:outputLabel value="Yesterday" ></h:outputLabel>
+                            </h5>
                         </div>
                         <div class="card-body text-center">
                             <div class="row">
@@ -163,8 +165,5 @@
 
             </div>
         </h:form>
-
-
-
     </cc:implementation>
 </html>

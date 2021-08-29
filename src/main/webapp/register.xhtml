@@ -19,8 +19,8 @@
             <ui:define name="content">
 
 
-                <table class="w3-centered" style=" margin: auto;" >
-                    <tr style="height: 50px;">
+                <table class="w3-centered">
+                    <tr>
                         <td colspan="2" >
                             <h3>REGISTER AS A CLIENT</h3>
                         </td>
@@ -28,16 +28,16 @@
                     <tr>
                         <td  colspan="2" valign="top"  >
                             <h:form>
-                                <p:panelGrid class="w3-table w3-border" columns="2" columnClasses="alignLeft alignLeft" style="margin: auto;">
+                                <p:panelGrid class="w3-table w3-border" columns="2" columnClasses="alignLeft alignLeft">
 
                                     <f:facet class="redTable" name="header" >
                                         Enter Your Details
                                     </f:facet>
 
                                     <h:outputLabel value="Your Name" for="webUserPerson" />
-                                    <h:inputText id="webUserPerson" 
-                                                 value="#{webUserController.current.webUserPerson.name}" 
-                                                 title="#{bundle.EditWebUserTitle_webUserPerson}" 
+                                    <h:inputText id="webUserPerson"
+                                                 value="#{webUserController.current.webUserPerson.name}"
+                                                 title="#{bundle.EditWebUserTitle_webUserPerson}"
                                                  required="true"
                                                  requiredMessage="Please enter your name">
                                     </h:inputText>
@@ -52,15 +52,15 @@
                                                     ></p:autoComplete>
 
                                     <h:outputLabel value="Enter a Username" for="name" />
-                                    <h:inputText id="name" value="#{webUserController.current.name}" 
-                                                 title="#{bundle.EditWebUserTitle_name}" 
-                                                 required="true" 
+                                    <h:inputText id="name" value="#{webUserController.current.name}"
+                                                 title="#{bundle.EditWebUserTitle_name}"
+                                                 required="true"
                                                  requiredMessage="#{bundle.EditWebUserRequiredMessage_name}"/>
 
 
 
                                     <h:outputLabel value="Password" for="pwd" />
-                                    <h:inputSecret id="pwd" value="#{webUserController.current.webUserPassword}" 
+                                    <h:inputSecret id="pwd" value="#{webUserController.current.webUserPassword}"
                                                    required="true"
                                                    requiredMessage="Please enter a password"></h:inputSecret>
 
@@ -82,8 +82,8 @@
 
 
                                     <p:spacer></p:spacer>
-                                    <p:commandButton class="w3-button w3-block w3-teal" ajax="false" 
-                                                     action="#{webUserController.registerUser()}" 
+                                    <p:commandButton class="w3-button w3-block w3-teal" ajax="false"
+                                                     action="#{webUserController.registerUser()}"
                                                      value="Next" ></p:commandButton>
 
                                 </p:panelGrid>
