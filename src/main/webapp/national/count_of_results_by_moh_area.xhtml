@@ -10,58 +10,59 @@
         <ui:composition template="/national/reports_index.xhtml">
             <ui:define name="reports">
 
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <h:panelGrid columns="1" styleClass="alignTop" >
                     <f:facet name="header" >
                         <p:outputLabel value="Result Counts by MOH Area" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:outputLabel value="Ordered From" ></p:outputLabel>
+                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded" >
+                            <h:outputLabel class="h6 fw-bold" value="Ordered From" ></h:outputLabel>
                             <p:calendar value="#{nationalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm">
                             </p:calendar><!-- comment -->
 
-                            <p:outputLabel value="Ordered To" ></p:outputLabel>
+                            <h:outputLabel class="h6 fw-bold" value="Ordered To" ></h:outputLabel>
                             <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy hh:mm"></p:calendar>
 
-                            <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                            <p:selectOneMenu value="#{nationalController.orderingCategory}" >
+                            <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
+                            <h:selectOneMenu class="form-select" value="#{nationalController.orderingCategory}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{nationalController.covidTestOrderingCategories}" 
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
                             
 
-                            <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{nationalController.testType}" >
+                            <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
+                            <h:selectOneMenu class="form-select" value="#{nationalController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{nationalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
 
-                            <p:outputLabel value="Result" ></p:outputLabel>
-                            <p:selectOneMenu value="#{nationalController.result}" >
+                            <h:outputLabel class="h6 fw-bold" value="Result" ></h:outputLabel>
+                            <h:selectOneMenu class="form-select" value="#{nationalController.result}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{nationalController.resultTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
                            
 
-                            <p:commandButton ajax="false" value="Generate Excel">
+                            <h:commandButton value="Generate Excel" class="btn btn-success w-100">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="count of results by moh area" ></p:dataExporter>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{nationalController.toCountOfResultsByMohArea()}" ></p:commandButton>
+                            </h:commandButton>
+                            <h:commandButton value="Process" class="btn btn-warning w-100"
+                                             action="#{nationalController.toCountOfResultsByMohArea()}" ></h:commandButton>
 
 
-                        </p:panelGrid>
-
-
+                        </h:panelGrid>
+                        </div>
+                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{nationalController.institutionCounts}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
@@ -73,17 +74,18 @@
                                      >
                             <p:column headerText="MOH" sortBy="#{c.area.name}"
                                       filterBy="#{c.area.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.area.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.area.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Count"  sortBy="#{c.count}">
-                                <p:outputLabel value="#{c.count}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.count}" ></h:outputLabel>
                             </p:column>
                         </p:dataTable>
+                        </h:panelGrid>
                     </h:form>
 
 
 
-                </p:panelGrid>
+                </h:panelGrid>
             </ui:define>
 
         </ui:composition>

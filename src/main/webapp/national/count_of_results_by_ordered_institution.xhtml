@@ -10,30 +10,31 @@
         <ui:composition template="/national/reports_index.xhtml">
             <ui:define name="reports">
 
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <h:panelGrid columns="1" styleClass="alignTop" >
                     <f:facet name="header" >
                         <p:outputLabel value="Result Counts by Ordered Institution" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:outputLabel value="Ordered From" ></p:outputLabel>
+                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded" >
+                            <h:outputLabel class="h6 fw-bold" value="Ordered From" ></h:outputLabel>
                             <p:calendar value="#{nationalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
-                            <p:outputLabel value="Ordered To" ></p:outputLabel>
+                            <h:outputLabel class="h6 fw-bold" value="Ordered To" ></h:outputLabel>
                             <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                            <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                            <p:selectOneMenu value="#{nationalController.orderingCategory}" >
+                            <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
+                            <h:selectOneMenu value="#{nationalController.orderingCategory}" class="form-select" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{nationalController.covidTestOrderingCategories}" 
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
-                            <p:outputLabel  value="Lab"></p:outputLabel>
+                            <h:outputLabel class="h6 fw-bold" value="Lab"></h:outputLabel>
                             <p:autoComplete style="width: 100%;"
                                             inputStyleClass="autocomplete"
                                             value="#{nationalController.lab}"
@@ -42,22 +43,22 @@
                                             var="l" itemLabel="#{l.name}" itemValue="#{l}">
                             </p:autoComplete>
 
-                            <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{nationalController.testType}" >
+                            <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
+                            <h:selectOneMenu value="#{nationalController.testType}" class="form-select">
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{nationalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
 
-                            <p:outputLabel value="Result" ></p:outputLabel>
-                            <p:selectOneMenu value="#{nationalController.result}" >
+                            <h:outputLabel class="h6 fw-bold" value="Result" ></h:outputLabel>
+                            <h:selectOneMenu value="#{nationalController.result}" class="form-select">
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{nationalController.resultTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
-                            <p:outputLabel  value="Lab"></p:outputLabel>
+                            <h:outputLabel class="h6 fw-bold" value="Lab"></h:outputLabel>
                             <p:autoComplete style="width: 100%;"
                                             inputStyleClass="autocomplete"
                                             value="#{nationalController.lab}"
@@ -66,16 +67,16 @@
                                             var="l" itemLabel="#{l.name}" itemValue="#{l}">
                             </p:autoComplete>
 
-                            <p:commandButton ajax="false" value="Generate Excel">
+                            <h:commandButton class="btn btn-success w-100" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{nationalController.toCountOfResultsByOrderedInstitution()}" ></p:commandButton>
+                            </h:commandButton>
+                            <h:commandButton class="btn btn-warning w-100" value="Process" 
+                                             action="#{nationalController.toCountOfResultsByOrderedInstitution()}" ></h:commandButton>
 
 
-                        </p:panelGrid>
-
-
+                        </h:panelGrid>
+                        </div>
+                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{nationalController.institutionCounts}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
@@ -88,38 +89,39 @@
 
                             <p:column headerText="Province" sortBy="#{c.institution.province.name}"
                                       filterBy="#{c.institution.province.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.institution.province.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.institution.province.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="PDHS" sortBy="#{c.institution.pdhsArea.name}"
                                       filterBy="#{c.institution.pdhsArea.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.institution.pdhsArea.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.institution.pdhsArea.name}" ></h:outputLabel>
                             </p:column>
 
                             <p:column headerText="RDHS" sortBy="#{c.institution.rdhsArea.name}"
                                       filterBy="#{c.institution.rdhsArea.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.institution.rdhsArea.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.institution.rdhsArea.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="District" sortBy="#{c.institution.district.name}"
                                       filterBy="#{c.institution.district.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.institution.district.name}"></p:outputLabel>
+                                <h:outputLabel value="#{c.institution.district.name}"></h:outputLabel>
                             </p:column>
                             <p:column headerText="Institution" sortBy="#{c.institution.name}"
                                       filterBy="#{c.institution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.institution.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Institution Type" sortBy="#{c.institution.institutionType.label}"
                                       filterBy="#{c.institution.institutionType.label}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.institution.institutionType.label}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.institution.institutionType.label}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Count"  sortBy="#{c.count}">
-                                <p:outputLabel value="#{c.count}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.count}" ></h:outputLabel>
                             </p:column>
                         </p:dataTable>
+                        </h:panelGrid>
                     </h:form>
 
 
 
-                </p:panelGrid>
+                </h:panelGrid>
             </ui:define>
 
         </ui:composition>
