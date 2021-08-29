@@ -158,6 +158,40 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
+    
+    public String toPreferences() {
+        boolean privileged = false;
+        for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
+            if (up.getPrivilege() == Privilege.Institution_Administration) {
+                privileged = true;
+            }
+            if (up.getPrivilege() == Privilege.System_Administration) {
+                privileged = true;
+            }
+        }
+        if (!privileged) {
+            JsfUtil.addErrorMessage("You are NOT autherized");
+            return "";
+        }
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/admin/preferences";
+            case National:
+                return "/national/admin/preferences";
+            case Hospital:
+                return "/hospital/admin/preferences";
+            case Lab:
+                return "/lab/admin/preferences";
+            case National_Lab:
+                return "/national/admin/preferences";
+            case Moh:
+                return "/moh/admin/preferences";
+            case Provincial:
+                return "/provincial/admin/preferences";
+            default:
+                return "";
+        }
+    }
 
     public String toAddNewUser() {
         boolean privileged = false;

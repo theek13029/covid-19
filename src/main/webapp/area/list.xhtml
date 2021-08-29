@@ -12,11 +12,22 @@
             <ui:define name="content">
 
                 <h:form id="AreaListForm">
-
-                    <p:commandButton ajax="false" value="Download" >
-                        <p:dataExporter target="datalist" type="xls" fileName="areas" ></p:dataExporter>
-                    </p:commandButton>
                     
+                        <div class="row my-4">
+                            <div class="col-md-4"></div>
+                            
+                            <div class="col-md-4">
+                            
+                           <h3 class="text-center">List of Areas</h3>
+                         </div>   
+                            <div class="col-md-4 d-flex justify-content-end">
+                            
+                           <h:commandButton class="btn btn-success py-2 px-3" value="Download" >
+                           <p:dataExporter target="datalist" type="xls" fileName="areas" ></p:dataExporter>
+                           </h:commandButton>
+                         </div>  
+                        </div>
+                  
                     <p:dataTable id="datalist" value="#{areaController.items}" 
                                  var="item" 
                                  rowKey="#{item.id}"
@@ -60,16 +71,16 @@
                             </f:facet>
                             <h:outputText value="#{item.district.name}"/>
                         </p:column>
-                        <p:column headerText="Actions" exportable="false" >
-                            <p:commandButton ajax="false" value="Edit" action="#{areaController.toEditAreaForSysAdmin()}" >
+                        <p:column headerText="Actions" exportable="false">
+                            <h:commandButton class="btn btn-warning btn-sm m-2" value="Edit" action="#{areaController.toEditAreaForSysAdmin()}" >
                                 <f:setPropertyActionListener value="#{item}" target="#{areaController.selected}" ></f:setPropertyActionListener>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Delete" action="#{areaController.deleteAreaForSysAdmin()}"
+                            </h:commandButton>
+                            <h:commandButton class="btn btn-danger btn-sm" value="Delete" action="#{areaController.deleteAreaForSysAdmin()}"
                                              onclick="if (! confirm('Are you sure you want to delete?')) return false">
                                 <f:setPropertyActionListener 
                                     value="#{item}" 
                                     target="#{areaController.deleting}" ></f:setPropertyActionListener>
-                            </p:commandButton>
+                            </h:commandButton>
                         </p:column>
                         
                     </p:dataTable>

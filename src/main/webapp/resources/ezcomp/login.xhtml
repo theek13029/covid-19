@@ -29,12 +29,12 @@
 											<h4 class="subtitle text-muted">Log In</h4>
 										</div>
 										<div class="mb-3">
-											<p:inputText placeholder="Username" required="true" autocomplete="off"
+											<p:inputText placeholder="Username" required="true" requiredMessage="Username is required." autocomplete="off"
 											value="#{webUserController.userName}" class="form-control">
 										</p:inputText>
 									</div>
 									<div class="mb-3">
-										<p:password placeholder="Password" required="true" autocomplete="off"
+										<p:password placeholder="Password" required="true" requiredMessage="Password is required." autocomplete="off"
 										value="#{webUserController.password}" class="form-control"></p:password>
 									</div>
 									<div class="d-grid">
@@ -53,7 +53,7 @@
 						</div>
 						<!-- Display any error message when logging in -->
 						<div class="row">
-							<div class="column">
+							<div class="column ">
 									<p:messages></p:messages>
 								</div>
 							</div>
