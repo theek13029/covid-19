@@ -1,287 +1,244 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
-    <h:body>
-        <ui:composition template="/template1.xhtml">
-            <ui:define name="title" >
-                NCHIS - PCR Order
-            </ui:define>
-            <ui:define name="content">
-                <h:form class="form" >
-                    <p:focus for="txtTestNo" ></p:focus>
-                    <div class="card">
-                        <h5 class="card-header">
-                            <div class="row" >
-                                <div class="col-2" >
-                                    <p:commandButton class="btn btn-primary"  ajax="false" style="float: left;" tabindex="7"
-                                                     action="#{labController.savePcrAndToNewPcr()}" value="Save and NEW PCR"></p:commandButton>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+<h:body>
+    <ui:composition template="/template1.xhtml">
+        <ui:define name="title">
+            NCHIS - PCR Order
+        </ui:define>
+        <ui:define name="content">
+            <h:form class="form">
+                <p:focus for="txtTestNo"></p:focus>
+                <div class="row bg-white pt-4 pb-2">
+                    <h4 class="text-center fw-bold">NEW PCR Order</h4>
+                    <h:panelGroup id="gpTest">
+                        <div class="my-2">
+                            <div class="my-4 row">
+                                <div class="col-md-3">
+                                    <h:outputLabel class="form-label" value="Test Number"></h:outputLabel>
+                                    <h:inputText id="txtTestNo" class="form-control" value="#{labController.pcr.encounterNumber}"
+                                        tabindex="1">
+                                        <p:ajax process="txtTestNo" event="blur"></p:ajax>
+                                    </h:inputText>
                                 </div>
-                                <div class="col-2" >
-                                    <p:commandButton class="btn btn-secondary"  ajax="false" style="float: left;" tabindex="8"
-                                                     action="#{labController.savePcrAndToPcrView()}" value="Save and View PCR"></p:commandButton>
+                                <div class="col-md-3">
+                                    <h:outputLabel class="form-label" value="Ordering Category" for="orderingCat"></h:outputLabel>
+                                    <h:selectOneMenu id="orderingCat" required="true" class="form-select"
+                                        requiredMessage="Please select the category for ordering the test. If you select other, please give that reason under the other area."
+                                        value="#{labController.pcr.pcrOrderingCategory}" tabindex="102">
+                                        <f:selectItem itemLabel="Select"></f:selectItem>
+                                        <f:selectItems value="#{labController.covidTestOrderingCategories}" var="tt"
+                                            itemLabel="#{tt.name}" itemValue="#{tt}"></f:selectItems>
+                                        <p:ajax process="orderingCat" event="blur"></p:ajax>
+                                    </h:selectOneMenu>
                                 </div>
-                                <div class="col-8" >
-                                    <p:outputLabel value="New PCR Order" ></p:outputLabel>
+                                <div class="col-md-3">
+                                    <h:outputLabel class="form-label" value="Institution"></h:outputLabel>
+                                    <p:autoComplete id="acIns"
+                                        value="#{labController.pcr.institution}" forceSelection="true" tabindex="100"
+                                        completeMethod="#{institutionController.completeInstitutions}" var="l"
+                                        itemLabel="#{l.name}" itemValue="#{l}">
+                                        <p:ajax process="acIns" event="blur"></p:ajax>
+                                    </p:autoComplete>
+                                </div>
+                                <div class="col-md-3">
+                                    <h:outputLabel class="form-label" value="Unit"></h:outputLabel>
+                                    <h:inputText class="form-control" id="acUnit" value="#{labController.pcr.unitWard}">
+                                        <p:ajax process="acUnit" event="blur"></p:ajax>
+                                    </h:inputText>
                                 </div>
                             </div>
-                        </h5>
-                        <h:panelGroup id="gpTest" >
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Test Number"></p:outputLabel>
-                                        <p:inputText id="txtTestNo" class="" style="width: 100%;"
-                                                     value="#{labController.pcr.encounterNumber}"
-                                                     tabindex="1" >
-                                            <p:ajax process="txtTestNo" event="blur" ></p:ajax>
-                                        </p:inputText>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel  value="Ordering Category"
-                                                        for="orderingCat"></p:outputLabel>
-                                        <p:selectOneMenu id="orderingCat"
-                                                         required="true" 
-                                                         requiredMessage="Please select the category for ordering the test. If you select other, please give that reason under the other area."
-                                                         value="#{labController.pcr.pcrOrderingCategory}" 
-                                                         tabindex="102" 
-                                                         style="margin: 0px; padding: 0px; width: 100%;" >
-                                            <f:selectItem itemLabel="Select" ></f:selectItem>
-                                            <f:selectItems value="#{labController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
-                                                           itemValue="#{tt}" ></f:selectItems>
-                                            <p:ajax process="orderingCat" event="blur" ></p:ajax>
-                                        </p:selectOneMenu>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <p:outputLabel  value="Institution"></p:outputLabel>
-                                        <p:autoComplete id="acIns" style="margin: 0px; padding: 0px; width: 100%;"
-                                                        value="#{labController.pcr.institution}"
-                                                        forceSelection="true" tabindex="100" inputStyle="width:100%;"
-                                                        completeMethod="#{institutionController.completeInstitutions}" 
-                                                        var="l" itemLabel="#{l.name}" itemValue="#{l}">
-                                            <p:ajax process="acIns" event="blur" ></p:ajax>
-                                        </p:autoComplete>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <p:outputLabel  value="Unit"></p:outputLabel>
-                                        <p:inputText id="acUnit" style="width: 100%;"
-                                                     value="#{labController.pcr.unitWard}" >
-                                            <p:ajax process="acUnit" event="blur" ></p:ajax>
-                                        </p:inputText>
-                                    </div>
-
+                            <div class="my-4 row">
+                                <div class="col-md-4">
+                                    <h:outputLabel class="form-label" value="Name" for="name" />
+                                    <h:inputText autocomplete="off" class="form-control" tabindex="2" id="name"
+                                        required="true" requiredMessage="Please give a name"
+                                        value="#{labController.pcr.client.person.name}" title="Name" />
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-md-6">
-                                        <p:outputLabel value="Name:" for="name" />
-                                        <p:inputText autocomplete="off" 
-                                                     class="" 
-                                                     tabindex="2" 
-                                                     id="name" style="width: 100%;"
-                                                     required="true" 
-                                                     requiredMessage="Please give a name"
-                                                     value="#{labController.pcr.client.person.name}" title="Name" />
-                                    </div>
-                                    <div class="col-md-2">
-                                        <p:outputLabel value="BHT/OPD/Clinic No:" for="bht" />
-                                        <p:inputText autocomplete="off" 
-                                                     class="" 
-                                                     tabindex="2" 
-                                                     id="bht" 
-                                                     style="width: 100%;"
-                                                     required="false" 
-                                                     value="#{labController.pcr.bht}" title="BHT" />
-                                    </div>
-                                    <div class="col-md-1">
-                                        <p:outputLabel value="Citizenship:" for="citizenship" />
-                                        <p:selectOneMenu id="citizenship" value="#{labController.pcr.client.person.citizenship}"
-                                                         tabindex="103" >
-                                            <f:selectItems value="#{labController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}"></f:selectItems>
-                                        </p:selectOneMenu>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <p:outputLabel value="PHN No.:" for="phn" />
-                                        <p:inputText id="phn" autocomplete="off"
-                                                     tabindex="104" 
-                                                     class="" value="#{labController.pcr.client.phn}" title="Phn" placeholder="New PHN"
-                                                     style="width: 100%;"></p:inputText>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <p:outputLabel value="Other Ordering Category:"  />
-                                        <p:inputText value="#{labController.pcr.pcrOrderingCategoryOther}" 
-                                                     style="width: 100%;"
-                                                     tabindex="105" ></p:inputText>
-                                    </div>
+                                <div class="col-md-2">
+                                    <h:outputLabel class="form-label" value="BHT/OPD/Clinic No:" for="bht" />
+                                    <h:inputText autocomplete="off" class="form-control" tabindex="2" id="bht"
+                                        required="false" value="#{labController.pcr.bht}" title="BHT" />
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-md-6">
-                                        <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
-                                        <p:inputText id="nic" class=""
-                                                     style="width: 100%;" 
-                                                     tabindex="3"  
-                                                     autocomplete="off" 
-                                                     value="#{labController.pcr.client.person.nic}"
-                                                     title="Nic" 
-                                                     validatorMessage="Please check the number">
+                                <div class="col-md-3">
+                                    <p:outputLabel class="form-label" value="Citizenship" for="citizenship" />
+                                    <h:selectOneMenu id="citizenship" class="form-select"
+                                        value="#{labController.pcr.client.person.citizenship}" tabindex="103">
+                                        <f:selectItems value="#{labController.citizenships}" var="c"
+                                            itemLabel="#{c.name}" itemValue="#{c}"></f:selectItems>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-md-3">
+                                    <h:outputLabel class="form-label" value="PHN #" for="phn"></h:outputLabel>
+                                    <h:inputText id="phn" autocomplete="off" tabindex="104" class="form-control"
+                                        value="#{labController.pcr.client.phn}" title="Phn" placeholder="New PHN"
+                                    ></h:inputText>
+                                </div>
+                            </div>
+                            <div class="my-4 row">
+                                <div class="col-md-4">
+                                    <h:outputLabel class="form-label" value="NIC/NIC of the guardian/Passport No. :" for="nic" />
+                                    <h:inputText id="nic" class="form-control" tabindex="3" autocomplete="off"
+                                        value="#{labController.pcr.client.person.nic}" title="Nic"
+                                        validatorMessage="Please check the number">
 
-                                            <f:ajax event="blur" execute="@this" render="nicExists year month sex" 
-                                                    listener="#{labController.checkNicExistsForPcr()}" ></f:ajax>
-                                        </p:inputText>
-                                        <h:panelGroup id="nicExists" >
-                                            <p:commandLink rendered="#{labController.nicExistsForPcr}"  ajax="false"
-                                                           immediate="true"
-                                                           action="#{labController.toAddNewPcrWithExistingNic()}"
-                                                           value="NIC Exists. Click here to Load Patient" >
-                                            </p:commandLink>
-                                        </h:panelGroup>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Gender:"  for="sex" />
-                                        <p:selectOneMenu
-                                            id="sex" value="#{labController.pcr.client.person.sex}" required="true"
-                                            tabindex="107" requiredMessage="Please select Gender"
-                                            style="width: 100%;">
-                                            <f:selectItems value="#{labController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
-                                        </p:selectOneMenu>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Age: (Years/Months)*" style="width: 100%;"/>
-                                        <h:panelGroup>
-                                            <p:inputText autocomplete="off" id="year" 
-                                                         tabindex="108" 
-                                                         requiredMessage="Please enter the age"
-                                                         placeholder="Years"
-                                                         value="#{labController.pcr.client.person.ageYears}"
-                                                         required="true" style="width: 90px;">
+                                        <f:ajax event="blur" execute="@this" render="nicExists year month sex"
+                                            listener="#{labController.checkNicExistsForPcr()}"></f:ajax>
+                                    </h:inputText>
+                                    <h:panelGroup id="nicExists">
+                                        <h:commandLink class="btn btn-sm" rendered="#{labController.nicExistsForPcr}" ajax="false"
+                                            immediate="true" action="#{labController.toAddNewPcrWithExistingNic()}"
+                                            value="NIC Exists. Click here to Load Patient">
+                                        </h:commandLink>
+                                    </h:panelGroup>
+                                </div>
+                                <div class="col-md-2">
+                                    <h:outputLabel class="form-label" value="Gender" for="sex" />
+                                    <h:selectOneMenu class="form-select" id="sex"
+                                        value="#{labController.pcr.client.person.sex}" required="true" tabindex="107"
+                                        requiredMessage="Please select Gender">
+                                        <f:selectItems value="#{labController.sexes}" var="s" itemLabel="#{s.name}"
+                                            itemValue="#{s}"></f:selectItems>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col-md-3">
+                                    <h:outputLabel class="form-label" value="Age (Years/Months)*"></h:outputLabel>
+                                    <div class="d-inline-flex">
+                                        <div class="mr-2">
+                                            <h:inputText autocomplete="off" id="year" tabindex="108"
+                                                requiredMessage="Please enter the age" placeholder="Years"
+                                                value="#{labController.pcr.client.person.ageYears}" required="true"
+                                                class="form-control">
                                                 <f:ajax event="keyup" execute="@this month day" render="calDob" />
-                                            </p:inputText>
-                                            <p:spacer height="1" width="20" ></p:spacer>
-                                            <p:inputText tabindex="108"  autocomplete="off" id="month" placeholder="Months" style="width: 90px; " 
-                                                         value="#{labController.pcr.client.person.ageMonths}">
+                                            </h:inputText>
+                                        </div>
+                                        <div class="ml-2">
+                                            <h:inputText tabindex="108" autocomplete="off" id="month" placeholder="Months"
+                                                value="#{labController.pcr.client.person.ageMonths}"
+                                                class="form-control">
                                                 <f:ajax event="keyup" execute="@this year day" render="calDob" />
-                                            </p:inputText>
-                                        </h:panelGroup>
+                                            </h:inputText>
+                                        </div>
                                     </div>
-
-
-
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-md-6">
-                                        <p:outputLabel value="Current Residential Address:" for="address" />
-                                        <p:commandLink id="lnkLastAddress" style="width: 5%; float: right;"
-                                                       action="#{labController.retrieveLastAddressForPcr()}" process="lnkLastAddress" update="address" >
-                                            <i class="pi pi-refresh"></i>
-                                        </p:commandLink>
-                                        <p:inputText tabindex="4" 
-                                                     id="address" required="true" 
-                                                     requiredMessage="Please enter the address"
-                                                     value="#{labController.pcr.client.person.address}"
-                                                     title="Address ****" style="width:100%;"/>
-
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="District:"  for="district" />
-                                        <p:autoComplete required="true" 
-                                                        requiredMessage="Please select a district"
-                                                        tabindex="110" 
-                                                        style="width: 100%;" inputStyle="width:100%;"
-                                                        id="district"
-                                                        value="#{labController.pcr.client.person.district}" 
-                                                        completeMethod="#{labController.completeDistricts}" 
-                                                        var="d" itemLabel="#{d.name}" 
-                                                        itemValue="#{d}" maxResults="15" forceSelection="true" minQueryLength="3">
-                                            <f:ajax event="itemSelect" execute="district"></f:ajax>
-                                            <f:ajax event="blur" execute="district"></f:ajax>
-                                        </p:autoComplete>
-                                    </div>
-
-
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="MOH Area:" for="moh" />
-                                        <p:autoComplete id="moh" 
-                                                        tabindex="111" 
-                                                        value="#{labController.pcr.client.person.mohArea}" 
-                                                        completeMethod="#{labController.completeMohAreas}"
-                                                        style="width: 100%;" inputStyle="width:100%;"
-                                                        var="m" itemLabel="#{m.name}" itemValue="#{m}" maxResults="15" forceSelection="true" minQueryLength="3">
-                                            <f:ajax event="itemSelect" execute="moh"></f:ajax>
-                                            <f:ajax event="blur" execute="moh"></f:ajax>
-                                        </p:autoComplete>
-                                    </div>
-
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="Contact Number :" for="phone1" />
-                                        <p:commandLink id="lnkLastphone1" style="float: right;" 
-                                                       action="#{labController.retrieveLastPhoneForPcr()}" process="lnkLastphone1" update="phone1">
-                                            <i class="pi pi-refresh"></i>
-                                        </p:commandLink>
-                                        <p:inputText tabindex="5" class="" 
-                                                     id="phone1" required="true" 
-                                                     requiredMessage="Please select a contact number"
-                                                     autocomplete="off"  style="width: 100%;"
-                                                     value="#{labController.pcr.client.person.phone1}" title="Mobile" 
-                                                     validatorMessage="Please check the number">
-                                        </p:inputText>
-
-                                    </div>
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="GN Area:" for="gn" />
-                                        <p:commandLink id="lnkLastGn" style="float: right;"  
-                                                       action="#{labController.retrieveLastGnPcr()}" process="lnkLastGn" update="gn">
-                                            <i class="pi pi-refresh"></i>
-                                        </p:commandLink>
-                                        <p:autoComplete tabindex="6" style="width: 100%;"
-                                                        inputStyle="width:100%;"
-                                                        id="gn" value="#{labController.pcr.client.person.gnArea}" 
-                                                        completeMethod="#{labController.completeGnAreasForPcr}" 
-                                                        var="gn" itemLabel="#{gn.name}" itemValue="#{gn}"
-                                                        maxResults="20" forceSelection="true" placeholder="Not Known"
-                                                        minQueryLength="2">
-                                        </p:autoComplete>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <p:outputLabel value="PHI Area:" for="phi" />
-                                        <p:autoComplete tabindex="113" 
-                                                        id="phi" 
-                                                        value="#{labController.pcr.client.person.phiArea}" 
-                                                        completeMethod="#{labController.completePhiAreasForPcr}"
-                                                        var="gn" 
-                                                        itemLabel="#{gn.name}" 
-                                                        itemValue="#{gn}" 
-                                                        inputStyle="width:100%;"
-                                                        maxResults="20" 
-                                                        forceSelection="true"
-                                                        style="width:100%;" 
-                                                        placeholder="Not Known" minQueryLength="2">
-                                        </p:autoComplete>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <p:outputLabel value="Unit/Ward:"  />
-                                        <p:inputText tabindex="114" value="#{labController.pcr.unitWard}"
-                                                     style="width:100%;"
-                                                     placeholder="Not Known" >
-                                        </p:inputText>
-                                    </div>
-
-
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-12">
-                                        <p:messages ></p:messages>
-                                    </div>
+                                <div class="col-md-3">
+                                    <h:outputLabel class="form-label" value="Other Ordering Category:">
+                                    </h:outputLabel>
+                                    <h:inputText value="#{labController.pcr.pcrOrderingCategoryOther}" tabindex="105" class="form-control">
+                                    </h:inputText>
                                 </div>
                             </div>
-                        </h:panelGroup>
-                    </div>
-                </h:form>
-            </ui:define>
-        </ui:composition>
-    </h:body>
+                            <div class="my-4 row">
+                                <div class="col-md-6">
+                                    <h:outputLabel class="form-label" value="Current Residential Address:" for="address" />
+                                    <h:commandLink class="btn btn-sm mx-2" id="lnkLastAddress"
+                                        action="#{labController.retrieveLastAddressForPcr()}" process="lnkLastAddress"
+                                        update="address">
+                                        <i class="bi bi-arrow-clockwise"></i>
+                                    </h:commandLink>
+                                    <h:inputText tabindex="4" id="address" required="true"
+                                        requiredMessage="Please enter the address"
+                                        value="#{labController.pcr.client.person.address}" placeholder="Address"
+                                        title="Address ****" class="form-control">
+                                    </h:inputText>
+                                </div>
+                                <div class="col-md-3">
+                                    <h:outputLabel class="form-label" value="District" for="district"></h:outputLabel>
+                                    <p:autoComplete required="true" requiredMessage="Please select a district"
+                                        tabindex="110" id="district" value="#{labController.pcr.client.person.district}"
+                                        completeMethod="#{labController.completeDistricts}" var="d"
+                                        itemLabel="#{d.name}" itemValue="#{d}" maxResults="15" forceSelection="true"
+                                        minQueryLength="3">
+                                        <f:ajax event="itemSelect" execute="district"></f:ajax>
+                                        <f:ajax event="blur" execute="district"></f:ajax>
+                                    </p:autoComplete>
+                                </div>
+                                <div class="col-md-3">
+                                    <h:outputLabel class="form-label" value="MOH Area" for="moh" />
+                                    <p:autoComplete id="moh" tabindex="111"
+                                        value="#{labController.pcr.client.person.mohArea}"
+                                        completeMethod="#{labController.completeMohAreas}"
+                                        itemLabel="#{m.name}" itemValue="#{m}"
+                                        maxResults="15" forceSelection="true" minQueryLength="3">
+                                        <f:ajax event="itemSelect" execute="moh"></f:ajax>
+                                        <f:ajax event="blur" execute="moh"></f:ajax>
+                                    </p:autoComplete>
+                                </div>
+
+                            </div>
+                            <div class="my-4 row">
+                                <div class="col-md-3">
+                                    <h:outputLabel class="form-label" value="Contact Number" for="phone1" />
+                                    <h:commandLink class="btn btn-sm mx-2" id="lnkLastphone1"
+                                        action="#{labController.retrieveLastPhoneForPcr()}" process="lnkLastphone1"
+                                        update="phone1">
+                                        <i class="bi bi-arrow-clockwise"></i>
+                                    </h:commandLink>
+                                    <h:inputText tabindex="5" id="phone1" required="true"
+                                        requiredMessage="Please select a contact number" autocomplete="off"
+                                        value="#{labController.pcr.client.person.phone1}" title="Mobile"
+                                        validatorMessage="Please check the number" class="form-control">
+                                    </h:inputText>
+
+                                </div>
+                                <div class="col-md-3">
+                                    <h:outputLabel class="form-label" value="GN Area" for="gn" />
+                                    <h:commandLink class="btn btn-sm mx-2" id="lnkLastGn"
+                                        action="#{labController.retrieveLastGnPcr()}" process="lnkLastGn" update="gn">
+                                        <i class="bi bi-arrow-clockwise"></i>
+                                    </h:commandLink>
+                                    <p:autoComplete tabindex="6" id="gn"
+                                        value="#{labController.pcr.client.person.gnArea}"
+                                        completeMethod="#{labController.completeGnAreasForPcr}" var="gn"
+                                        itemLabel="#{gn.name}" itemValue="#{gn}" maxResults="20" forceSelection="true"
+                                        placeholder="Not Known" minQueryLength="2">
+                                    </p:autoComplete>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <h:outputLabel class="form-label" value="PHI Area" for="phi" />
+                                    <p:autoComplete tabindex="113" id="phi"
+                                        value="#{labController.pcr.client.person.phiArea}"
+                                        completeMethod="#{labController.completePhiAreasForPcr}" var="gn"
+                                        itemLabel="#{gn.name}" itemValue="#{gn}" maxResults="20"
+                                        forceSelection="true" placeholder="Not Known" minQueryLength="2">
+                                    </p:autoComplete>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <h:outputLabel class="form-label" value="Unit/Ward" />
+                                    <h:inputText tabindex="114" value="#{labController.pcr.unitWard}"
+                                        title="Not Known" class="form-control">
+                                    </h:inputText>
+                                </div>
+                            </div>
+                            <div class="my-4 row">
+                                <div class="col-md-12">
+                                    <p:messages></p:messages>
+                                </div>
+                            </div>
+                            <div class="my-2">
+                                <h:commandButton class="btn btn-success fw-bold mx-2" ajax="false" tabindex="7"
+                                    action="#{labController.savePcrAndToNewPcr()}" value="Save and NEW PCR">
+                                </h:commandButton>
+                                <h:commandButton class="btn btn-success fw-bold mx-2" ajax="false"
+                                        tabindex="8" action="#{labController.savePcrAndToPcrView()}"
+                                        value="Save and View PCR">
+                                </h:commandButton>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+
 </html>
