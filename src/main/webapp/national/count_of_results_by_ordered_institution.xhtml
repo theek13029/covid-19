@@ -19,7 +19,7 @@
                         <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
                         <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded" >
                             <h:outputLabel class="h6 fw-bold" value="Ordered From" ></h:outputLabel>
-                            <p:calendar value="#{nationalController.fromDate}" 
+                            <p:calendar value="#{nationalController.fromDate}"
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
@@ -29,7 +29,7 @@
                             <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
                             <h:selectOneMenu value="#{nationalController.orderingCategory}" class="form-select" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{nationalController.covidTestOrderingCategories}" 
+                                <f:selectItems value="#{nationalController.covidTestOrderingCategories}"
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
@@ -38,8 +38,8 @@
                             <p:autoComplete style="width: 100%;"
                                             inputStyleClass="autocomplete"
                                             value="#{nationalController.lab}"
-                                            forceSelection="true" tabindex="100" 
-                                            completeMethod="#{nationalController.completeLab}" 
+                                            forceSelection="true" tabindex="100"
+                                            completeMethod="#{nationalController.completeLab}"
                                             var="l" itemLabel="#{l.name}" itemValue="#{l}">
                             </p:autoComplete>
 
@@ -62,15 +62,15 @@
                             <p:autoComplete style="width: 100%;"
                                             inputStyleClass="autocomplete"
                                             value="#{nationalController.lab}"
-                                            forceSelection="true" tabindex="100" 
-                                            completeMethod="#{nationalController.completeLab}" 
+                                            forceSelection="true" tabindex="100"
+                                            completeMethod="#{nationalController.completeLab}"
                                             var="l" itemLabel="#{l.name}" itemValue="#{l}">
                             </p:autoComplete>
 
                             <h:commandButton class="btn btn-success w-100" value="Generate Excel">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
+                                <p:dataExporter target="tbl" type="xlsx" fileName="test_results_by_institution" ></p:dataExporter>
                             </h:commandButton>
-                            <h:commandButton class="btn btn-warning w-100" value="Process" 
+                            <h:commandButton class="btn btn-warning w-100" value="Process"
                                              action="#{nationalController.toCountOfResultsByOrderedInstitution()}" ></h:commandButton>
 
 
@@ -79,8 +79,8 @@
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{nationalController.institutionCounts}" rendered="true"
                                      rowIndexVar="n"
-                                     var="c" 
-                                     paginator="true" 
+                                     var="c"
+                                     paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
