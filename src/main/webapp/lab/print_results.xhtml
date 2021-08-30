@@ -12,100 +12,100 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <p:panelGrid columns="1" styleClass="alignTop w-100 bg-white border border-light">
                     <f:facet name="header" >
-                        <p:outputLabel value="Test Order List" ></p:outputLabel>
+                        <h:outputLabel class="fs-5 fw-bold" value="Test Order List" ></h:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:outputLabel value="From" ></p:outputLabel>
-                            <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+                        <p:panelGrid columns="2" styleClass="bg-white border border-light">
+                            <h:outputLabel class="fs-6 fw-bold" value="From" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <p:outputLabel value="To" ></p:outputLabel>
-                            <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                            <h:outputLabel class="fs-6 fw-bold" value="To" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                            <p:outputLabel value="Ordered Institution" ></p:outputLabel>
+                            <h:outputLabel class="fs-6 fw-bold" value="Ordered Institution" ></h:outputLabel>
                             <p:autoComplete value="#{clientController.institution}"
                                             completeMethod="#{institutionController.completeInstitutions}"
                                             var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                             </p:autoComplete>
 
-                            <p:outputLabel value="Plate No." ></p:outputLabel>
-                            <p:inputText value="#{clientController.plateNo}" ></p:inputText>
+                            <h:outputLabel class="fs-6 fw-bold" value="Plate No." ></h:outputLabel>
+                            <h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText>
 
-                            <p:commandButton ajax="false" value="Generate Excel">
+                            <h:commandButton class="btn btn-success w-100 my-2" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="test_enrollments" ></p:dataExporter>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{clientController.toLabToSelectForPrinting()}" ></p:commandButton>
+                            </h:commandButton>
+                            <h:commandButton class="btn btn-warning w-100" value="Process" 
+                                             action="#{clientController.toLabToSelectForPrinting()}" ></h:commandButton>
 
 
                         </p:panelGrid>
 
-                        <p:commandButton value="PRINT SELECTED AS INDIVIDUAL REPORTS" ajax="false" 
+                        <h:commandButton class="btn btn-success me-3 mt-3 w-25" value="PRINT SELECTED AS INDIVIDUAL REPORTS" 
                                          action="#{clientController.toLabPrintSelected()}" 
-                                         onclick="form.target = '_blank'"></p:commandButton>
+                                         onclick="form.target = '_blank'"></h:commandButton>
 
-                        <p:commandButton value="PRINT SELECTED AS SINGLE REPORT" ajax="false" 
+                        <h:commandButton class="btn btn-success mt-3 w-25" value="PRINT SELECTED AS SINGLE REPORT" 
                                          action="#{clientController.toLabPrintSelectedBulk()}" 
-                                         onclick="form.target = '_blank'"></p:commandButton>
+                                         onclick="form.target = '_blank'"></h:commandButton>
 
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToPrint}" 
+                        <p:dataTable styleClass="mt-3" id="tbl" value="#{clientController.listedToPrint}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      selection="#{clientController.selectedToPrint}">
                             <p:column selectionMode="multiple" width="30" >
                             </p:column>
                             <p:column width="50" >
-                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
+                                <h:outputLabel value="#{n+1}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="ID"  sortBy="#{c.id}">
-                                <p:outputLabel value="#{c.id}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.id}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.unitWard}" ></h:outputLabel>
                             </p:column>
                               <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.bht}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.encounterNumber}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Lab No" sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.labNumber}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.nic}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Gender"  sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.sex.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Age"  sortBy="#{c.client.person.age}"
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.age}" ></h:outputLabel>
                             </p:column>
                             <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
                                        filterBy="#{c.ctValue}" filterMatchMode="contains" >
-                                <p:inputText id="txtCt1" value="#{c.ctValue}" style="width: 98px;" >
+                                <h:inputText id="txtCt1" value="#{c.ctValue}" style="width: 98px;" >
                                     <p:ajax event="keyup" process="txtCt1" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
-                                </p:inputText>
+                                </h:inputText>
                             </p:column>
                             <p:column headerText="CT 2" width="100"  sortBy="#{c.ctValue2}"
                                       filterBy="#{c.ctValue2}" filterMatchMode="contains" >
-                                <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 98px;" >
+                                <h:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 98px;" >
                                     <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
-                                </p:inputText>
+                                </h:inputText>
                             </p:column>
                             <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
                                       filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.pcrResult.name}" ></h:outputLabel>
                             </p:column>
                         </p:dataTable>
                     </h:form>

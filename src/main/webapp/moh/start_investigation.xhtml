@@ -15,12 +15,17 @@
             </ui:define>
 
             <ui:define name="content">
-                <h:panelGrid columns="1" styleClass="alignTop">
-                    <f:facet name="header" >
+                <!--<h:panelGrid columns="1" styleClass="alignTop">-->
+                    <!--<f:facet name="header" >
                         <h:outputLabel value="Start to Investigate" ></h:outputLabel>
-                    </f:facet>
+                    </f:facet>-->
 
                     <h:form >
+                        <div class="row" >
+                            <div class="col-12 text-center mt-4 mb-2" >
+                                <h4 class="fw-bold"><h:outputLabel  value="Start to Investigate" ></h:outputLabel></h4>
+                            </div>
+                        </div>
                         <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
                             <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded" >
                                 <h:outputLabel class="h6 fw-bold" value="Assigned From" ></h:outputLabel>
@@ -132,7 +137,7 @@
 
 
 
-                </h:panelGrid>
+                <!--</h:panelGrid>-->
             </ui:define>
 
         </ui:composition>

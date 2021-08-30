@@ -10,26 +10,26 @@
     <body>
 
         <ui:composition template="/template1.xhtml">
-            <ui:define name="content">
+            <ui:define name="content" class="bg-white">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <p:panelGrid columns="1" styleClass="alignTop w-100 border border-light bg-white" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Orders To Receive" ></p:outputLabel>
+                        <h:outputLabel class="fs-5 fw-bold my-2" value="Orders To Receive" ></h:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:outputLabel value="From" ></p:outputLabel>
-                            <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+                        <p:panelGrid columns="2" class="border border-light bg-white">
+                            <h:outputLabel class="fs-6 fw-bold" value="From" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <p:outputLabel value="To" ></p:outputLabel>
-                            <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                            <h:outputLabel class="fs-6 fw-bold" value="To" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{clientController.toSummaryByOrderedInstitutionVsLabToReceive()}" ></p:commandButton>
-                            <p:commandButton ajax="false" value="Generate Excel" >
+                            <h:commandButton class="btn btn-warning w-100 my-2" value="Process" 
+                                             action="#{clientController.toSummaryByOrderedInstitutionVsLabToReceive()}" ></h:commandButton>
+                            <h:commandButton class="btn btn-success w-100 my-2" value="Generate Excel" >
                                 <p:dataExporter type="xlsx" fileName="Lab Order Summery" target="tbl" ></p:dataExporter>
-                            </p:commandButton>
+                            </h:commandButton>
 
                         </p:panelGrid>
 
@@ -38,28 +38,26 @@
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
                             <p:column headerText="No" width="50" >
-                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
+                                <h:outputLabel class="fs-6" value="#{n+1}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Ordering Institute"
                                       sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
+                                <h:outputLabel class="fs-6" value="#{c.institution.name}" ></h:outputLabel>
                             </p:column>
                              <p:column headerText="District"
                                       sortBy="#{c.institution.district.name}" 
                                       filterBy="#{c.institution.district.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.institution.district.name}" ></p:outputLabel>
+                                <h:outputLabel class="fs-6" value="#{c.institution.district.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Lab"
                                       sortBy="#{c.referralInstitution.name}" filterBy="#{c.referralInstitution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.referralInstitution.name}" ></p:outputLabel>
+                                <h:outputLabel class="fs-6" value="#{c.referralInstitution.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Number of Orders"  sortBy="#{c.count}" width="70">
-                                <p:outputLabel value="#{c.count}" ></p:outputLabel>
+                                <h:outputLabel class="fs-6" value="#{c.count}" ></h:outputLabel>
                             </p:column>
                         </p:dataTable>
                     </h:form>
-
-
 
                 </p:panelGrid>
             </ui:define>
