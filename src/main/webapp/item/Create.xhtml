@@ -8,7 +8,7 @@
 
     <ui:composition>
 
-        <p:dialog id="ItemCreateDlg" widgetVar="ItemCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleClinical.CreateItemTitle}">
+        <p:dialog  widgetVar="ItemCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleClinical.CreateItemTitle}">
             <h:form id="ItemCreateForm">
                 <h:panelGroup id="display">
 
@@ -65,7 +65,7 @@
                                 <p:selectOneMenu id="selectionDataType" required="true"
                                                  value="#{itemController.selected.dataType}" title="SelectionDataType" >
                                     <f:selectItems value="#{commonController.selectionDataTypes}" ></f:selectItems>
-                                    <f:ajax event="change" execute="@this" render=":#{p:resolveFirstComponentWithId('tabValidation', 'ItemCreateDlg').clientId}" ></f:ajax>
+                                    <f:ajax event="change" execute="@this" render="@all" ></f:ajax>
                                 </p:selectOneMenu>
 
 
