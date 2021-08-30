@@ -39,14 +39,18 @@ import lk.gov.health.phsp.ejb.CovidDataHolder;
 import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Item;
+import lk.gov.health.phsp.entity.WebUser;
 import lk.gov.health.phsp.enums.AreaType;
+import lk.gov.health.phsp.enums.WebUserRoleLevel;
 import lk.gov.health.phsp.enums.EncounterType;
 import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.facade.ClientEncounterComponentItemFacade;
 import lk.gov.health.phsp.facade.ClientFacade;
 import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.NumbersFacade;
+import lk.gov.health.phsp.pojcs.CovidData;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
+import org.joda.time.DateTimeComparator;
 
 /**
  *
@@ -91,6 +95,7 @@ public class DashboardApplicationController {
     private Long otherCount;
 
     private List<InstitutionCount> orderingCounts;
+    List<CovidData> covidDatas;
 
     Item testType;
     Item orderingCat;
@@ -326,7 +331,7 @@ public class DashboardApplicationController {
                 j += " and (c.institution.pdhsArea=:area or c.institution.province=:pro) ";
                 m.put("area", area);
                 m.put("pro", area.getProvince());
-            }else if (area.getType() == AreaType.MOH) {
+            } else if (area.getType() == AreaType.MOH) {
                 j += " and (c.institution.mohArea=:area) ";
                 m.put("area", area);
             }
@@ -354,12 +359,8 @@ public class DashboardApplicationController {
         }
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
-    
-    
-    
-    
+
     public Long getProvincialOrderCountArea(Area pdArea,
-            
             Date fromDate,
             Date toDate,
             Item testType,
@@ -406,7 +407,6 @@ public class DashboardApplicationController {
         }
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
-    
 
     public Long getConfirmedCountByInstitution(Institution ins,
             Date fromDate,
@@ -469,21 +469,23 @@ public class DashboardApplicationController {
         m.put("etype", EncounterType.Test_Enrollment);
 
         if (area != null && area.getType() != null) {
-            if (null != area.getType()) switch (area.getType()) {
-                case District:
-                    j += " and c.client.person.district=:dis ";
-                    m.put("dis", area);
-                    break;
-                case Province:
-                    j += " and c.client.person.district.province=:pro ";
-                    m.put("pro", area);
-                    break;
-                case MOH:
-                    j += " and c.client.person.mohArea=:moh ";
-                    m.put("moh", area);
-                    break;
-                default:
-                    break;
+            if (null != area.getType()) {
+                switch (area.getType()) {
+                    case District:
+                        j += " and c.client.person.district=:dis ";
+                        m.put("dis", area);
+                        break;
+                    case Province:
+                        j += " and c.client.person.district.province=:pro ";
+                        m.put("pro", area);
+                        break;
+                    case MOH:
+                        j += " and c.client.person.mohArea=:moh ";
+                        m.put("moh", area);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -717,6 +719,127 @@ public class DashboardApplicationController {
 
     public Long getOtherCount() {
         return otherCount;
+    }
+
+    CovidData findMyCovidData(WebUser user) {
+        CovidData mcd = null;
+        if (user == null) {
+            return mcd;
+        }
+        if (user.getWebUserRoleLevel() == null) {
+            return mcd;
+        }
+        Date dbDate = CommonController.getYesterday();
+        for (CovidData cd : getCovidDatas()) {
+            int dateCorrect = DateTimeComparator.getDateOnlyInstance().compare(dbDate, cd.getDate());
+            if (dateCorrect == 0) {
+                switch (user.getWebUserRoleLevel()) {
+                    case Hospital:
+                        if (cd.getType() == WebUserRoleLevel.Hospital) {
+                            if (cd.getInstitution().equals(user.getInstitution())) {
+                                mcd = cd;
+                            }
+                        }
+                        break;
+                    case Lab:
+                        if (cd.getType() == WebUserRoleLevel.Lab) {
+                            if (cd.getInstitution().equals(user.getInstitution())) {
+                                mcd = cd;
+                            }
+                        }
+                        break;
+                    case Moh:
+                        if (cd.getType() == WebUserRoleLevel.Moh) {
+                            if (cd.getArea().equals(user.getInstitution().getMohArea())) {
+                                mcd = cd;
+                            }
+                        }
+                        break;
+                    case National:
+                        if (cd.getType() == WebUserRoleLevel.National) {
+                            mcd = cd;
+                        }
+                        break;
+                    case National_Lab:
+                        if (cd.getType() == WebUserRoleLevel.National_Lab) {
+                            mcd = cd;
+                        }
+                        break;
+                    case Provincial:
+                        if (cd.getType() == WebUserRoleLevel.Provincial) {
+                            if (cd.getArea().equals(user.getInstitution().getPdhsArea())) {
+                                mcd = cd;
+                            }
+                        }
+                        break;
+                    case Regional:
+                        if (cd.getType() == WebUserRoleLevel.Regional) {
+                            if (cd.getArea().equals(user.getInstitution().getRdhsArea())) {
+                                mcd = cd;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+        if (mcd == null) {
+            mcd = generateCovidData(dbDate, user);
+            getCovidDatas().add(mcd);
+        }
+        return mcd;
+    }
+
+    public CovidData generateCovidData(Date date, WebUser wu) {
+        CovidData cd = null;
+        WebUserRoleLevel rl = wu.getWebUserRoleLevel();
+        switch (rl) {
+            case Hospital:
+
+            case Lab:
+
+            case Moh:
+                cd = generateMohCovidData(wu.getInstitution().getMohArea(), date);
+                break;
+            case National:
+
+            case National_Lab:
+
+            case Provincial:
+
+            case Regional:
+        }
+        if (cd == null) {
+            cd = new CovidData();
+        }
+        return cd;
+    }
+
+    public CovidData generateMohCovidData(Area a, Date date) {
+        CovidData cd = new CovidData();
+        cd.setDate(date);
+        cd.setArea(a);
+        cd.setType(WebUserRoleLevel.Moh);
+        cd.setFrom(CommonController.startOfTheDate(date));
+        cd.setTo(CommonController.endOfTheDate(date));
+        cd.setDailyPositives(getConfirmedCount(a,
+                cd.getFrom(),
+                cd.getTo(),
+                null,
+                null,
+                itemApplicationController.getPcrPositive(),
+                null));
+        return cd;
+    }
+
+    public List<CovidData> getCovidDatas() {
+        if(covidDatas==null){
+            covidDatas = new ArrayList<>();
+        }
+        return covidDatas;
+    }
+
+    public void setCovidDatas(List<CovidData> covidDatas) {
+        this.covidDatas = covidDatas;
     }
 
 }

@@ -670,6 +670,17 @@ public class CommonController implements Serializable {
     public static Date endOfYear() {
         return endOfYear(new Date());
     }
+    
+    public static Date getYesterday() {
+        return getYesterday(new Date());
+    }
+    
+    public static Date getYesterday(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DATE, -1);
+        return c.getTime();
+    }
 
     public static Date endOfYear(Date date) {
         Calendar c = Calendar.getInstance();

@@ -23,9 +23,17 @@
  */
 package lk.gov.health.phsp.pojcs;
 
+import be.ceau.chart.BarChart;
+import be.ceau.chart.color.Color;
+import be.ceau.chart.data.BarData;
+import be.ceau.chart.dataset.BarDataset;
+import be.ceau.chart.options.BarOptions;
 import java.util.Date;
+import javax.json.Json;
 import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.Institution;
+import lk.gov.health.phsp.enums.WebUserRoleLevel;
+
 
 /**
  *
@@ -33,213 +41,28 @@ import lk.gov.health.phsp.entity.Institution;
  */
 public class CovidData {
 
+    private WebUserRoleLevel type;
+    
     private Institution institution;
     private Area area;
+
+    private Date date;
+    private String reportingTimePeriod;
+    private String positivesBySubArea;
+
     private Date from;
     private Date to;
-
-    private Long todaysCases;
-    private Long yesterdaysCases;
-    private Long lastSevenDaysCases;
-    private Long lastFourteenToSevenDaysCases;
-    private Long thisMonthCases;
-    private Long lastMonthCases;
-    private Long thisYearCases;
-    
-     private Long todaysTests;
-    private Long yesterdaysTests;
-    private Long lastSevenDaysTests;
-    private Long lastFourteenToSevenDaysTests;
-    private Long thisMonthTests;
-    private Long lastMonthTests;
-    private Long thisYearTests;
-
-    private Long todaysPcrs;
-    private Long yesterdaysPcrs;
-    private Long lastSevenDaysPcrs;
-    private Long lastFourteenToSevenDaysPcrs;
-    private Long thisMonthPcrs;
-    private Long lastMonthPcrs;
-    private Long thisYearPcrs;
-
-    private Long todaysRats;
-    private Long yesterdaysRats;
-    private Long lastSevenDaysRats;
-    private Long lastFourteenToSevenDaysRats;
-    private Long thisMonthRats;
-    private Long lastMonthRats;
-    private Long thisYearRats;
-
     
     
-    public Long getTodaysCases() {
-        return todaysCases;
-    }
-
-    public void setTodaysCases(Long todaysCases) {
-        this.todaysCases = todaysCases;
-    }
-
-    public Long getYesterdaysCases() {
-        return yesterdaysCases;
-    }
-
-    public void setYesterdaysCases(Long yesterdaysCases) {
-        this.yesterdaysCases = yesterdaysCases;
-    }
-
-    public Long getLastSevenDaysCases() {
-        return lastSevenDaysCases;
-    }
-
-    public void setLastSevenDaysCases(Long lastSevenDaysCases) {
-        this.lastSevenDaysCases = lastSevenDaysCases;
-    }
-
-    public Long getLastFourteenToSevenDaysCases() {
-        return lastFourteenToSevenDaysCases;
-    }
-
+    private Long dailyPositives;
     
-    
-    public void setLastFourteenToSevenDaysCases(Long lastFourteenToSevenDaysCases) {
-        this.lastFourteenToSevenDaysCases = lastFourteenToSevenDaysCases;
+
+    public Long getDailyPositives() {
+        return dailyPositives;
     }
 
-    public Long getThisMonthCases() {
-        return thisMonthCases;
-    }
-
-    public void setThisMonthCases(Long thisMonthCases) {
-        this.thisMonthCases = thisMonthCases;
-    }
-
-    public Long getLastMonthCases() {
-        return lastMonthCases;
-    }
-
-    public void setLastMonthCases(Long lastMonthCases) {
-        this.lastMonthCases = lastMonthCases;
-    }
-
-    public Long getThisYearCases() {
-        return thisYearCases;
-    }
-
-    public void setThisYearCases(Long thisYearCases) {
-        this.thisYearCases = thisYearCases;
-    }
-
-    public Long getTodaysPcrs() {
-        return todaysPcrs;
-    }
-
-    public void setTodaysPcrs(Long todaysPcrs) {
-        this.todaysPcrs = todaysPcrs;
-    }
-
-    public Long getYesterdaysPcrs() {
-        return yesterdaysPcrs;
-    }
-
-    public void setYesterdaysPcrs(Long yesterdaysPcrs) {
-        this.yesterdaysPcrs = yesterdaysPcrs;
-    }
-
-    public Long getLastSevenDaysPcrs() {
-        return lastSevenDaysPcrs;
-    }
-
-    public void setLastSevenDaysPcrs(Long lastSevenDaysPcrs) {
-        this.lastSevenDaysPcrs = lastSevenDaysPcrs;
-    }
-
-    public Long getLastFourteenToSevenDaysPcrs() {
-        return lastFourteenToSevenDaysPcrs;
-    }
-
-    public void setLastFourteenToSevenDaysPcrs(Long lastFourteenToSevenDaysPcrs) {
-        this.lastFourteenToSevenDaysPcrs = lastFourteenToSevenDaysPcrs;
-    }
-
-    public Long getThisMonthPcrs() {
-        return thisMonthPcrs;
-    }
-
-    public void setThisMonthPcrs(Long thisMonthPcrs) {
-        this.thisMonthPcrs = thisMonthPcrs;
-    }
-
-    public Long getLastMonthPcrs() {
-        return lastMonthPcrs;
-    }
-
-    public void setLastMonthPcrs(Long lastMonthPcrs) {
-        this.lastMonthPcrs = lastMonthPcrs;
-    }
-
-    public Long getThisYearPcrs() {
-        return thisYearPcrs;
-    }
-
-    public void setThisYearPcrs(Long thisYearPcrs) {
-        this.thisYearPcrs = thisYearPcrs;
-    }
-
-    public Long getTodaysRats() {
-        return todaysRats;
-    }
-
-    public void setTodaysRats(Long todaysRats) {
-        this.todaysRats = todaysRats;
-    }
-
-    public Long getYesterdaysRats() {
-        return yesterdaysRats;
-    }
-
-    public void setYesterdaysRats(Long yesterdaysRats) {
-        this.yesterdaysRats = yesterdaysRats;
-    }
-
-    public Long getLastSevenDaysRats() {
-        return lastSevenDaysRats;
-    }
-
-    public void setLastSevenDaysRats(Long lastSevenDaysRats) {
-        this.lastSevenDaysRats = lastSevenDaysRats;
-    }
-
-    public Long getLastFourteenToSevenDaysRats() {
-        return lastFourteenToSevenDaysRats;
-    }
-
-    public void setLastFourteenToSevenDaysRats(Long lastFourteenToSevenDaysRats) {
-        this.lastFourteenToSevenDaysRats = lastFourteenToSevenDaysRats;
-    }
-
-    public Long getThisMonthRats() {
-        return thisMonthRats;
-    }
-
-    public void setThisMonthRats(Long thisMonthRats) {
-        this.thisMonthRats = thisMonthRats;
-    }
-
-    public Long getLastMonthRats() {
-        return lastMonthRats;
-    }
-
-    public void setLastMonthRats(Long lastMonthRats) {
-        this.lastMonthRats = lastMonthRats;
-    }
-
-    public Long getThisYearRats() {
-        return thisYearRats;
-    }
-
-    public void setThisYearRats(Long thisYearRats) {
-        this.thisYearRats = thisYearRats;
+    public void setDailyPositives(Long dailyPositives) {
+        this.dailyPositives = dailyPositives;
     }
 
     public Institution getInstitution() {
@@ -258,62 +81,6 @@ public class CovidData {
         this.area = area;
     }
 
-    public Long getTodaysTests() {
-        return todaysTests;
-    }
-
-    public void setTodaysTests(Long todaysTests) {
-        this.todaysTests = todaysTests;
-    }
-
-    public Long getYesterdaysTests() {
-        return yesterdaysTests;
-    }
-
-    public void setYesterdaysTests(Long yesterdaysTests) {
-        this.yesterdaysTests = yesterdaysTests;
-    }
-
-    public Long getLastSevenDaysTests() {
-        return lastSevenDaysTests;
-    }
-
-    public void setLastSevenDaysTests(Long lastSevenDaysTests) {
-        this.lastSevenDaysTests = lastSevenDaysTests;
-    }
-
-    public Long getLastFourteenToSevenDaysTests() {
-        return lastFourteenToSevenDaysTests;
-    }
-
-    public void setLastFourteenToSevenDaysTests(Long lastFourteenToSevenDaysTests) {
-        this.lastFourteenToSevenDaysTests = lastFourteenToSevenDaysTests;
-    }
-
-    public Long getThisMonthTests() {
-        return thisMonthTests;
-    }
-
-    public void setThisMonthTests(Long thisMonthTests) {
-        this.thisMonthTests = thisMonthTests;
-    }
-
-    public Long getLastMonthTests() {
-        return lastMonthTests;
-    }
-
-    public void setLastMonthTests(Long lastMonthTests) {
-        this.lastMonthTests = lastMonthTests;
-    }
-
-    public Long getThisYearTests() {
-        return thisYearTests;
-    }
-
-    public void setThisYearTests(Long thisYearTests) {
-        this.thisYearTests = thisYearTests;
-    }
-
     public Date getFrom() {
         return from;
     }
@@ -330,6 +97,48 @@ public class CovidData {
         this.to = to;
     }
 
-    
-    
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getReportingTimePeriod() {
+        return reportingTimePeriod;
+    }
+
+    public void setReportingTimePeriod(String reportingTimePeriod) {
+        this.reportingTimePeriod = reportingTimePeriod;
+    }
+
+    public String getPositivesBySubArea() {
+        BarOptions options = new BarOptions();
+        options.setResponsive(true);
+        BarDataset dataset = new BarDataset()
+                .setLabel("sample chart")
+                .setData(65, 59, 80, 81, 56, 55, 40)
+                .addBackgroundColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE, Color.GRAY, Color.BLACK)
+                .setBorderWidth(2);
+        BarData data = new BarData()
+                .addLabels("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+                .addDataset(dataset);
+        BarChart barChart= new BarChart(data);
+//        barChart.setHorizontal();
+//        barChart.setOptions(options);
+        positivesBySubArea =barChart.toJson();
+        return positivesBySubArea;
+    }
+
+    public WebUserRoleLevel getType() {
+        return type;
+    }
+
+    public void setType(WebUserRoleLevel type) {
+        this.type = type;
+    }
+
+   
+
 }

@@ -11,7 +11,10 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-         <h:form>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <h:form>
             <div class="row p-4">
                 <div class="col-md-3" >
                     <div class="card">
@@ -162,7 +165,109 @@
                 </div>
 
             </div>
+
+
+            <div class="row" >
+                <div class="col" >
+                    <div class="card bg-info" >
+                        <div class="card-header" >
+                            <h:outputLabel class="h4" value="Reporting Time Period : " ></h:outputLabel>
+                        </div>
+                        <div class="card-body" >
+
+                            <div class="row" >
+                                <div class="col" >
+                                    <h:outputLabel class="h5" value="#{dashboardController.myCovidData.date}" >
+                                        <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>
+                                    </h:outputLabel>
+                                    <h:outputLabel class="h6"   value="From : " ></h:outputLabel>
+                                    <h:outputLabel class="h6"   value="#{dashboardController.myCovidData.from}" >
+                                        <f:convertDateTime pattern="hh:mm" ></f:convertDateTime>
+                                    </h:outputLabel>
+                                    <h:outputLabel class="h6"   value=" To : " ></h:outputLabel>
+                                    <h:outputLabel class="h6"   value="#{dashboardController.myCovidData.to}" >
+                                        <f:convertDateTime pattern="hh:mm" ></f:convertDateTime>
+                                    </h:outputLabel>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col" >
+                            <div class="card bg-info" >
+                                <div class="card-header" >
+                                    <h:outputLabel class=""   value="Reporting Time Period : " ></h:outputLabel>
+                                </div>
+                                <div class="card-body" >
+                                    <h:outputLabel class=""   value="From : " ></h:outputLabel>
+                                    <h:outputLabel class=""   value="#{dashboardController.myCovidData.from}" >
+                                        <f:convertDateTime pattern="hh:mm" ></f:convertDateTime>
+                                    </h:outputLabel>
+                                    <h:outputLabel class=""   value=" To : " ></h:outputLabel>
+                                    <h:outputLabel class=""   value="#{dashboardController.myCovidData.to}" >
+                                        <f:convertDateTime pattern="hh:mm" ></f:convertDateTime>
+                                    </h:outputLabel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" >
+                    <div class="row" >
+                        <div class="col" >
+                            <h:outputLabel class=""   value="Daily Positives" ></h:outputLabel>
+                            <h:outputLabel class=""   value=" - #{dashboardController.myCovidData.dailyPositives}" ></h:outputLabel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" >
+                <div class="col" >
+                    <div class="row" >
+                        <div class="col" >
+                            <div class="card" >
+                                <div class="card-header" >
+                                    <h:outputLabel class=""   value="Positives by GN" ></h:outputLabel>
+                                </div>
+                                <div class="card-body" >
+                                    <canvas id="myChart" style="width: 98%;height: 20rem;" ></canvas>
+                                    <script>
+                                        var ctx = document.getElementById('myChart').getContext('2d');
+                                        var myChart = new Chart(ctx,#{dashboardController.myCovidData.positivesBySubArea});
+                                    </script>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col" >
+                            <div class="card" >
+                                <div class="card-header" >
+                                    <h:outputLabel class=""   value="Reporting Time Period : " ></h:outputLabel>
+                                </div>
+                                <div class="card-body" >
+                                    <h:outputLabel class=""   value="#{dashboardController.myCovidData.date}" ></h:outputLabel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" >
+                    <div class="row" >
+                        <div class="col" >
+                            <h:outputLabel class=""   value="Daily Positives" ></h:outputLabel>
+                            <h:outputLabel class=""   value="#{dashboardController.myCovidData.date}" ></h:outputLabel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </h:form>
+
 
 
 
