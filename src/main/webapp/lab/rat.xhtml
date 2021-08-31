@@ -11,7 +11,7 @@
             <h:form class="form">
                 <p:focus for="result"></p:focus>
                 <div class="row bg-white pt-4 pb-2">
-                    <h4 class="text-center fw-bold">RAT Details</h2>
+                    <h4 class="text-center fw-bold">RAT Details</h4>
                         <h5 class="card-header">
                             <h:outputlabel class="form-label" value="RAT Details"></h:outputlabel class="form-label">
                             <p:commandButton class="btn btn-primary" ajax="false" style="float: left;" tabindex="7"
@@ -49,7 +49,7 @@
                                         </h:outputLabel>
                                         <h:selectOneMenu id="orderingCat" required="true" class="form-select"
                                             requiredMessage="Please select the category for ordering the test. If you select other, please give that reason under the other area."
-                                            value="#{mohController.rat.pcrOrderingCategory}" tabindex="102">
+                                            value="#{labController.rat.pcrOrderingCategory}" tabindex="102">
                                             <f:selectItem itemLabel="Select"></f:selectItem>
                                             <f:selectItems value="#{mohController.covidTestOrderingCategories}" var="tt"
                                                 itemLabel="#{tt.name}" itemValue="#{tt}"></f:selectItems>
