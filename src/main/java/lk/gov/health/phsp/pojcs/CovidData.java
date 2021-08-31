@@ -60,7 +60,7 @@ public class CovidData {
     private Long pcrPositives;
     
     private List<OrderingCategoryResults> orderingCategoryResults;
-    
+    private List<InstitutionCount> subAreaCounts;
 
     public Long getDailyPositives() {
         return dailyPositives;
@@ -166,6 +166,14 @@ public class CovidData {
 
     public void setOrderingCategoryResults(List<OrderingCategoryResults> orderingCategoryResults) {
         this.orderingCategoryResults = orderingCategoryResults;
+    }
+
+    public List<InstitutionCount> getSubAreaCounts() {
+        return subAreaCounts;
+    }
+
+    public void setSubAreaCounts(List<InstitutionCount> subAreaCounts) {
+        this.subAreaCounts = subAreaCounts;
     }
 
    

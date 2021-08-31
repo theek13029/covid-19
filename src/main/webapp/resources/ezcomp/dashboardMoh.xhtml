@@ -189,77 +189,124 @@
                 <div class="card-body" >
                     <div class="row" >
                         <div class="col-6" >
-                            <canvas id="hbChartSubArea" style="width: 300px!important; height: 400px!important;" ></canvas>
-                            <script>
-                                var ctx = document.getElementById('hbChartSubArea').getContext('2d');
-                                var hbChartSubArea = new Chart(ctx,#{dashboardController.myCovidData.positivesBySubArea});
-                            </script>
-                        </div>
-                        <div class="col-6" >
                             <div class="card" >
                                 <div class="card-header bg-danger" >
                                     <h:outputLabel class="h1"   value="Positives" ></h:outputLabel>
                                 </div>
-                                <div class="card-body bg-danger" >
-                                    <h:outputLabel class="h1"   value="Total - #{dashboardController.myCovidData.dailyPositives}" ></h:outputLabel>
-                                    <h:outputLabel class="h1"   value="PCR - #{dashboardController.myCovidData.dailyPositives}" ></h:outputLabel>
-                                    <h:outputLabel class="h1"   value="RAT - #{dashboardController.myCovidData.dailyPositives}" ></h:outputLabel>
+                                <div class="card-body" >
+                                    <h:panelGroup rendered="#{dashboardController.myCovidData.dailyPositives lt 1}" >
+                                        No Data
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{dashboardController.myCovidData.dailyPositives gt 0}" >
+                                        <table class="table bg-danger">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="h2">Total</td>
+                                                    <td class="h2">#{dashboardController.myCovidData.dailyPositives}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>PCR</td>
+                                                    <td>#{dashboardController.myCovidData.pcrPositives}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RAT</td>
+                                                    <td>#{dashboardController.myCovidData.ratPositives}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </h:panelGroup>
+
                                 </div>
                             </div>
                             <div class="card" >
-                                <div class="card-header bg-danger" >
+                                <div class="card-header bg-info" >
                                     <h:outputLabel class="h1"   value="Ordering Categories" ></h:outputLabel>
                                 </div>
-                                <div class="card-body bg-danger" >
+                                <div class="card-body" >
 
-                                    <table >
-                                        <tr>
-                                            <th>
-                                                <h:outputLabel value="Category" ></h:outputLabel>
-                                            </th>
-                                            <th>
-                                                <h:outputLabel value="No. performed" ></h:outputLabel>
-                                            </th>
-                                            <th>
-                                                <h:outputLabel value="Positive Count" ></h:outputLabel>
-                                            </th>
-                                            <th>
-                                                <h:outputLabel value="Positivity Rate" ></h:outputLabel>
-                                            </th>
-                                        </tr>
-                                        <ui:repeat value="#{dashboardController.myCovidData.orderingCategoryResults}" var="r">
+                                    <table class="table">
+                                        <thead>
                                             <tr>
-                                                <th>
-                                                    <h:outputLabel value="#{r.orderingCategory.name}" ></h:outputLabel>
-                                                </th>
-                                                <th>
-                                                    <h:outputLabel value="#{r.ordered}" ></h:outputLabel>
-                                                </th>
-                                                <th>
-                                                    <h:outputLabel value="#{r.positives}" ></h:outputLabel>
-                                                </th>
-                                                <th>
-                                                    <h:outputLabel value="#{r.positivityRate}" ></h:outputLabel>
-                                                </th>
+                                                <th scope="col">Category</th>
+                                                <th scope="col">Performed</th>
+                                                <th scope="col">Positives</th>
+                                                <th scope="col">Positivity Rate</th>
                                             </tr>
-                                        </ui:repeat>
-
+                                        </thead>
+                                        <tbody>
+                                            <ui:repeat value="#{dashboardController.myCovidData.orderingCategoryResults}" var="r">
+                                                <tr>
+                                                    <th>
+                                                        <h:outputLabel  class="text-blue"  value="#{r.orderingCategory.name}" ></h:outputLabel>
+                                                    </th>
+                                                    <th>
+                                                        <h:outputLabel class="text-blue" value="#{r.ordered}" ></h:outputLabel>
+                                                    </th>
+                                                    <th>
+                                                        <h:outputLabel class="text-danger" value="#{r.positives}" ></h:outputLabel>
+                                                    </th>
+                                                    <th>
+                                                        <h:outputLabel class="text-warning" value="#{r.positivityRate}" >
+                                                            <f:convertNumber pattern="#0.00" ></f:convertNumber>
+                                                        </h:outputLabel>
+                                                    </th>
+                                                </tr>
+                                            </ui:repeat>
+                                        </tbody>
                                     </table>
-
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="col-6" >
+                            <div class="card" >
+                                <div class="card-header bg-info" >
+                                    <h:outputLabel class="h2"   value="GN Areas with Most Positives" ></h:outputLabel>
+                                </div>
+                                <div class="card-body" >
 
+                                    <h:panelGroup rendered="#{empty dashboardController.myCovidData.subAreaCounts}" >
+                                        <h:outputLabel value="No Date by GN area." ></h:outputLabel>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{not empty dashboardController.myCovidData.subAreaCounts}" >
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">GN Area</th>
+                                                    <th scope="col">Positives</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <ui:repeat value="#{dashboardController.myCovidData.subAreaCounts}" var="r">
+                                                    <tr>
+                                                        <th>
+                                                            <h:outputLabel value="#{r.area.name}" ></h:outputLabel>
+                                                        </th>
+                                                        <th>
+                                                            <h:outputLabel value="#{r.count}" ></h:outputLabel>
+                                                        </th>
+                                                    </tr>
+                                                </ui:repeat>
+                                            </tbody>
+                                        </table>
+                                    </h:panelGroup>
+
+                                </div>
+                            </div>
+
+                            <h:panelGroup rendered="false" >
+                                <canvas id="hbChartSubArea" style="width: 300px!important; height: 400px!important;" ></canvas>
+                                <script>
+                                    var ctx = document.getElementById('hbChartSubArea').getContext('2d');
+                                    var hbChartSubArea = new Chart(ctx,#{dashboardController.myCovidData.positivesBySubArea});
+                                </script>
+                            </h:panelGroup>
+
+                        </div>
+
+                    </div>
                 </div>
             </div>
-
-
-
         </h:form>
-
-
-
-
     </cc:implementation>
 </html>

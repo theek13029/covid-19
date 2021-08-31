@@ -804,7 +804,9 @@ public class DashboardApplicationController {
             case National:
 
             case National_Lab:
-
+                cd = generateNationalCovidData(date);
+                
+                
             case Provincial:
 
             case Regional:
@@ -858,14 +860,67 @@ public class DashboardApplicationController {
                     itemApplicationController.getPcrPositive(),
                     null));
             if (r.getOrdered() != null && r.getPositives() != null && r.getOrdered() > 0) {
-                r.setPositivityRate((double)r.getOrdered() / r.getPositives());
+                r.setPositivityRate((double)r.getPositives()/r.getOrdered());
                 ocrs.add(r);
             }
         }
         cd.setOrderingCategoryResults(ocrs);
+        cd.setSubAreaCounts(countOfResultsByGnArea(a, cd.getFrom(), cd.getTo(), null, null, 5));
         return cd;
     }
 
+    public CovidData generateNationalCovidData(Date date) {
+        CovidData cd = new CovidData();
+        cd.setDate(date);
+        cd.setType(WebUserRoleLevel.National);
+        cd.setFrom(CommonController.startOfTheDate(date));
+        cd.setTo(CommonController.endOfTheDate(date));
+        cd.setRatPositives(getConfirmedCount(null,
+                cd.getFrom(),
+                cd.getTo(),
+                itemApplicationController.getRat(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null));
+        cd.setPcrPositives(getConfirmedCount(null,
+                cd.getFrom(),
+                cd.getTo(),
+                itemApplicationController.getPcr(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null));
+        cd.setDailyPositives(cd.getPcrPositives() + cd.getRatPositives());
+        List<OrderingCategoryResults> ocrs = new ArrayList<>();
+        for (Item oc : itemApplicationController.getCovidTestOrderingCategories()) {
+            OrderingCategoryResults r = new OrderingCategoryResults();
+            r.setOrderingCategory(oc);
+            r.setOrdered(getConfirmedCount(
+                    null,
+                    cd.getFrom(),
+                    cd.getTo(),
+                    null,
+                    oc,
+                    null,
+                    null));
+            r.setPositives(getConfirmedCount(
+                    null,
+                    cd.getFrom(),
+                    cd.getTo(),
+                    null,
+                    oc,
+                    itemApplicationController.getPcrPositive(),
+                    null));
+            if (r.getOrdered() != null && r.getPositives() != null && r.getOrdered() > 0) {
+                r.setPositivityRate((double)r.getPositives()/r.getOrdered());
+                ocrs.add(r);
+            }
+        }
+        cd.setOrderingCategoryResults(ocrs);
+        cd.setSubAreaCounts(countOfResultsByProvince(cd.getFrom(), cd.getTo(), null, null, 5));
+        return cd;
+    }
+
+    
     public List<CovidData> getCovidDatas() {
         if (covidDatas == null) {
             covidDatas = new ArrayList<>();
@@ -877,4 +932,117 @@ public class DashboardApplicationController {
         this.covidDatas = covidDatas;
     }
 
+    
+    public List<InstitutionCount> countOfResultsByGnArea(Area moh, 
+            Date from, 
+            Date to,
+            Item orderingCategory,
+            Item result,
+            Integer numberOfResults
+            ) {
+        List<InstitutionCount> ics ;
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.gnArea, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and (c.client.person.mohArea=:moh) ";
+        m.put("moh",moh);
+
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", from);
+        m.put("td", to);
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        j += " group by c.client.person.gnArea"
+                + " order by count(c) desc ";
+
+        ics = new ArrayList<>();
+
+        List<Object> objCounts;
+        if(numberOfResults!=null){
+            objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP,numberOfResults);
+        }else{
+            objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
+        }
+
+        if (objCounts == null || objCounts.isEmpty()) {
+            return ics;
+        }
+        for (Object o : objCounts) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                ics.add(ic);
+            }
+        }
+        return ics;
+    }
+    
+    public List<InstitutionCount> countOfResultsByProvince( 
+            Date from, 
+            Date to,
+            Item orderingCategory,
+            Item result,
+            Integer numberOfResults
+            ) {
+        List<InstitutionCount> ics ;
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.district.province, c.institution, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+        j += " and c.resultConfirmedAt between :fd and :td ";
+        m.put("fd", from);
+        m.put("td", to);
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        } 
+        j += " group by c.client.person.district.province "
+                + " order by count(c) desc ";
+
+        ics = new ArrayList<>();
+
+        List<Object> objCounts;
+        if(numberOfResults!=null){
+            objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP,numberOfResults);
+        }else{
+            objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
+        }
+
+        if (objCounts == null || objCounts.isEmpty()) {
+            return ics;
+        }
+        for (Object o : objCounts) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                ics.add(ic);
+            }
+        }
+        return ics;
+    }
+    
 }
