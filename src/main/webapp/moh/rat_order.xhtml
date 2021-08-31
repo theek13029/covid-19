@@ -26,7 +26,7 @@
 
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel class= "h6 fw-bold mb-2" value="Lab"></h:outputLabel>
-                                        <p:autoComplete style="width: 100%;"
+                                        <p:autoComplete 
                                                         inputStyleClass="autocomplete"
                                                         value="#{mohController.rat.referalInstitution}"
                                                         forceSelection="true" tabindex="100" 
@@ -42,8 +42,7 @@
                                                          required="true" 
                                                          requiredMessage="Please select the category for ordering the test. If you select other, please give that reason under the other area."
                                                          value="#{mohController.rat.pcrOrderingCategory}" 
-                                                         tabindex="102" 
-                                                         style="width: 100%;" >
+                                                         tabindex="102" >
                                             <f:selectItem itemLabel="Select" ></f:selectItem>
                                             <f:selectItems value="#{mohController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
                                                            itemValue="#{tt}" ></f:selectItems>
@@ -52,7 +51,7 @@
 
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel class= "h6 fw-bold mb-2" value="Sampled at"></h:outputLabel>
-                                        <p:calendar class="form-select w-100" style="width: 100%;" inputStyle="width:100%;"  value="#{mohController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
+                                        <p:calendar class="form-select w-100"  inputStyle="width:100%;"  value="#{mohController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
                                     </div>
 
                                 </div>
@@ -78,8 +77,7 @@
                                         <h:outputLabel class= "h6 fw-bold mb-2" value="PHN No.:" for="phn" />
                                         <p:inputText id="phn" autocomplete="off"
                                                      tabindex="104" 
-                                                     class="form-control w-100" value="#{mohController.rat.client.phn}" title="Phn" placeholder="New PHN"
-                                                     style="width: 100%;"></p:inputText>
+                                                     class="form-control w-100" value="#{mohController.rat.client.phn}" title="Phn" placeholder="New PHN"></p:inputText>
                                     </div>
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel class= "h6 fw-bold mb-2" value="Other Ordering Category:"  />
@@ -92,8 +90,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel class= "h6 fw-bold mb-2" value="NIC/NIC of the guardian/Passport No. :" for="nic" />
-                                        <h:inputText id="nic" class="form-control w-100"
-                                                     style="width: 100%;" 
+                                        <h:inputText id="nic" class="form-control w-100" 
                                                      tabindex="3"  
                                                      autocomplete="off" 
                                                      value="#{mohController.rat.client.person.nic}"
@@ -108,15 +105,14 @@
                                         <h:outputLabel class= "h6 fw-bold mb-2" value="Gender:"  for="sex" />
                                         <h:selectOneMenu
                                             class="form-select w-100" id="sex" value="#{mohController.rat.client.person.sex}" required="true"
-                                            tabindex="107" requiredMessage="Please select Gender"
-                                            style="width: 100%;">
+                                            tabindex="107" requiredMessage="Please select Gender" >
                                             <f:selectItems value="#{mohController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
                                         </h:selectOneMenu>
                                     </div>
                                     
                                     <div class="col-md-3 mb-4">
                                         
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Age: (Years/Months)*" style="width: 100%;"/>
+                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Age: (Years/Months)*"/>
                                         <div class="d-inline-flex">
                                             <div class="mr-2">
                                             <p:inputText class="form-control w-100" autocomplete="off" id="year" 
@@ -124,12 +120,12 @@
                                                          requiredMessage="Please enter the age"
                                                          placeholder="Years"
                                                          value="#{mohController.rat.client.person.ageYears}"
-                                                         required="true" style="width: 90px;">
+                                                         required="true" >
                                                 <f:ajax event="keyup" execute="@this month day" render="calDob" />
                                             </p:inputText>
                                             </div>
                                             <div class="mr-2">
-                                            <p:inputText class="form-control w-100" tabindex="108"  autocomplete="off" id="month" placeholder="Months" style="width: 90px; " 
+                                            <p:inputText class="form-control w-100" tabindex="108"  autocomplete="off" id="month" placeholder="Months" 
                                                          value="#{mohController.rat.client.person.ageMonths}">
                                                 <f:ajax event="keyup" execute="@this year day" render="calDob" />
                                             </p:inputText>
@@ -149,7 +145,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel class= "h6 fw-bold mb-2" value="Current Residential Address:" for="address" />
-                                        <p:commandLink id="lnkLastAddress" style="width: 5%; float: right;"
+                                        <p:commandLink id="lnkLastAddress" 
                                                        action="#{mohController.retrieveLastAddressForRat()}" process="lnkLastAddress" update="address" >
                                             <i class="pi pi-refresh"></i>
                                         </p:commandLink>
@@ -157,7 +153,7 @@
                                                      id="address" required="true" 
                                                      requiredMessage="Please enter the address"
                                                      value="#{mohController.rat.client.person.address}"
-                                                     title="Address ****" style="width:100%;"/>
+                                                     title="Address ****" />
 
                                     </div>
                                     <div class="col-md-3 mb-4">
@@ -165,7 +161,7 @@
                                         <p:autoComplete required="true" 
                                                         requiredMessage="Please select a district"
                                                         tabindex="110" 
-                                                        style="width: 100%;" inputStyle="width:100%;"
+                                                        inputStyle="width:100%;"
                                                         id="district"
                                                         value="#{mohController.rat.client.person.district}" 
                                                         completeMethod="#{mohController.completeDistricts}" 
@@ -181,7 +177,7 @@
                                                         tabindex="111" 
                                                         value="#{mohController.rat.client.person.mohArea}" 
                                                         completeMethod="#{mohController.completeMohAreas}"
-                                                        style="width: 100%;" inputStyle="width:100%;"
+                                                        inputStyle="width:100%;"
                                                         var="m" itemLabel="#{m.name}" itemValue="#{m}" maxResults="15" forceSelection="true" minQueryLength="3">
                                             <f:ajax event="itemSelect" execute="moh"></f:ajax>
                                             <f:ajax event="blur" execute="moh"></f:ajax>
@@ -191,7 +187,6 @@
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel class= "h6 fw-bold mb-2" value="Unit/Ward:"  />
                                         <p:inputText class="form-control w-100" tabindex="114" value="#{mohController.rat.unitWard}"
-                                                     style="width:100%;"
                                                      placeholder="Not Known" >
                                         </p:inputText>
                                     </div>
@@ -201,7 +196,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel class= "h6 fw-bold mb-2" value="Contact Number :" for="phone1" />
-                                        <p:commandLink id="lnkLastphone1" style="float: right;" 
+                                        <p:commandLink id="lnkLastphone1"  
                                                        action="#{mohController.retrieveLastPhoneForRat()}" process="lnkLastphone1" update="phone1">
                                             <i class="pi pi-refresh"></i>
                                         </p:commandLink>
@@ -216,11 +211,11 @@
                                     </div>
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel class= "h6 fw-bold mb-2" value="GN Area:" for="gn" />
-                                        <p:commandLink id="lnkLastGn" style="float: right;"  
+                                        <p:commandLink id="lnkLastGn"  
                                                        action="#{mohController.retrieveLastGnRat()}" process="lnkLastGn" update="gn">
                                             <i class="pi pi-refresh"></i>
                                         </p:commandLink>
-                                        <p:autoComplete tabindex="6" style="width: 100%;"
+                                        <p:autoComplete tabindex="6" 
                                                         inputStyle="width:100%;"
                                                         id="gn" value="#{mohController.rat.client.person.gnArea}" 
                                                         completeMethod="#{mohController.completeGnAreasForRat}" 
@@ -242,7 +237,7 @@
                                                         inputStyle="width:100%;"
                                                         maxResults="20" 
                                                         forceSelection="true"
-                                                        style="width:100%;" 
+                                                        
                                                         placeholder="Not Known" minQueryLength="2">
                                         </p:autoComplete>
                                     </div>
@@ -257,10 +252,10 @@
                                 
                                 <div class="my-4">
                                     <h:commandButton class="btn btn-success mx-2"  
-                                             style="float: left;" tabindex="7"
+                                             tabindex="7"
                                              action="#{mohController.saveRatAndToNewRatOrder()}" value="Save and NEW RAT Order"></h:commandButton>
                             <h:commandButton class="btn btn-success mx-2"  
-                                             style="float: left;" tabindex="8"
+                                             tabindex="8"
                                              action="#{mohController.saveRatAndToRatOrderView()}" value="Save and View RAT Order"></h:commandButton>
                                 </div>
                                 
