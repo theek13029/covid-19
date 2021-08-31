@@ -29,6 +29,7 @@ import be.ceau.chart.data.BarData;
 import be.ceau.chart.dataset.BarDataset;
 import be.ceau.chart.options.BarOptions;
 import java.util.Date;
+import java.util.List;
 import javax.json.Json;
 import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.Institution;
@@ -55,6 +56,10 @@ public class CovidData {
     
     
     private Long dailyPositives;
+    private Long ratPositives;
+    private Long pcrPositives;
+    
+    private List<OrderingCategoryResults> orderingCategoryResults;
     
 
     public Long getDailyPositives() {
@@ -125,7 +130,7 @@ public class CovidData {
                 .addLabels("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
                 .addDataset(dataset);
         BarChart barChart= new BarChart(data);
-//        barChart.setHorizontal();
+        barChart.setHorizontal();
 //        barChart.setOptions(options);
         positivesBySubArea =barChart.toJson();
         return positivesBySubArea;
@@ -137,6 +142,30 @@ public class CovidData {
 
     public void setType(WebUserRoleLevel type) {
         this.type = type;
+    }
+
+    public Long getRatPositives() {
+        return ratPositives;
+    }
+
+    public void setRatPositives(Long ratPositives) {
+        this.ratPositives = ratPositives;
+    }
+
+    public Long getPcrPositives() {
+        return pcrPositives;
+    }
+
+    public void setPcrPositives(Long pcrPositives) {
+        this.pcrPositives = pcrPositives;
+    }
+
+    public List<OrderingCategoryResults> getOrderingCategoryResults() {
+        return orderingCategoryResults;
+    }
+
+    public void setOrderingCategoryResults(List<OrderingCategoryResults> orderingCategoryResults) {
+        this.orderingCategoryResults = orderingCategoryResults;
     }
 
    

@@ -50,6 +50,7 @@ import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.NumbersFacade;
 import lk.gov.health.phsp.pojcs.CovidData;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
+import lk.gov.health.phsp.pojcs.OrderingCategoryResults;
 import org.joda.time.DateTimeComparator;
 
 /**
@@ -821,18 +822,52 @@ public class DashboardApplicationController {
         cd.setType(WebUserRoleLevel.Moh);
         cd.setFrom(CommonController.startOfTheDate(date));
         cd.setTo(CommonController.endOfTheDate(date));
-        cd.setDailyPositives(getConfirmedCount(a,
+        cd.setRatPositives(getConfirmedCount(a,
                 cd.getFrom(),
                 cd.getTo(),
-                null,
+                itemApplicationController.getRat(),
                 null,
                 itemApplicationController.getPcrPositive(),
                 null));
+        cd.setPcrPositives(getConfirmedCount(a,
+                cd.getFrom(),
+                cd.getTo(),
+                itemApplicationController.getPcr(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null));
+        cd.setDailyPositives(cd.getPcrPositives() + cd.getRatPositives());
+        List<OrderingCategoryResults> ocrs = new ArrayList<>();
+        for (Item oc : itemApplicationController.getCovidTestOrderingCategories()) {
+            OrderingCategoryResults r = new OrderingCategoryResults();
+            r.setOrderingCategory(oc);
+            r.setOrdered(getConfirmedCount(
+                    a,
+                    cd.getFrom(),
+                    cd.getTo(),
+                    null,
+                    oc,
+                    null,
+                    null));
+            r.setPositives(getConfirmedCount(
+                    a,
+                    cd.getFrom(),
+                    cd.getTo(),
+                    null,
+                    oc,
+                    itemApplicationController.getPcrPositive(),
+                    null));
+            if (r.getOrdered() != null && r.getPositives() != null && r.getOrdered() > 0) {
+                r.setPositivityRate((double)r.getOrdered() / r.getPositives());
+                ocrs.add(r);
+            }
+        }
+        cd.setOrderingCategoryResults(ocrs);
         return cd;
     }
 
     public List<CovidData> getCovidDatas() {
-        if(covidDatas==null){
+        if (covidDatas == null) {
             covidDatas = new ArrayList<>();
         }
         return covidDatas;
