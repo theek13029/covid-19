@@ -11,6 +11,11 @@
   }
   ul {
     background-color: #2c3d4f;
+    li {
+      &:hover {
+        background-color: lighten($color: #2c3d4f, $amount: 10%);
+      }
+    }
   }
 }
 
@@ -92,4 +97,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 1.25em;
+}
+
+.ui-chkbox-box {
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.ui-selection-column {
+  padding: 8px;
+  .ui-chkbox-box {
+    margin: 0;
+  }
 }
