@@ -7,8 +7,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
-    <body>
-
+    <h:body>
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
@@ -65,7 +64,6 @@
                             <p:column width="50" >
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
                             </p:column>
-
                             <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
@@ -109,13 +107,6 @@
                             <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Test"  sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Test"  sortBy="#{c.referalInstitution.name}" 
-                                      filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
-                            </p:column>
                         </p:dataTable>
                     </h:form>
 
@@ -124,5 +115,5 @@
                 </p:panelGrid>
             </ui:define>
         </ui:composition>
-    </body>
+    </h:body>
 </html>
