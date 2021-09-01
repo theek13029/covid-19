@@ -51,6 +51,10 @@
                                          action="#{clientController.toLabPrintSelectedBulk()}" 
                                          onclick="form.target = '_blank'"></p:commandButton>
 
+                        <p:commandButton value="Transfer SELECTED To Enter Results" ajax="false" 
+                                         action="#{clientController.toLabPrintSelectedBulk()}" 
+                                         onclick="form.target = '_blank'"></p:commandButton>
+
 
                         <p:dataTable id="tbl" value="#{clientController.listedToPrint}" 
                                      rowIndexVar="n"
@@ -61,15 +65,7 @@
                             <p:column width="50" >
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="ID"  sortBy="#{c.id}">
-                                <p:outputLabel value="#{c.id}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
-                            </p:column>
-                              <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
-                            </p:column>
+
                             <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
@@ -106,6 +102,19 @@
                             <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
                                       filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Test"  sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Test"  sortBy="#{c.referalInstitution.name}" 
+                                      filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
                     </h:form>
