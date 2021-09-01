@@ -9,15 +9,20 @@
     <h:body>
         <ui:composition template="/regional/reports_index.xhtml">
             <ui:define name="reports" class="bg-white">
-                <p:panelGrid columns="1" styleClass="alignTop border border-light w-100 bg-white" >
+                <!--<p:panelGrid columns="1" styleClass="alignTop border border-light w-100 bg-white" >
                     <f:facet name="header" >
                         <h:outputLabel class="fs-5 fw-bold my-2" value="List of first contacts wihout MOH" ></h:outputLabel>
-                    </f:facet>
+                    </f:facet>-->
 
                     <h:form >
-                        
-                        <p:panelGrid columns="2" class="border border-light bg-white">
-                            <p:panelGrid columns="2" class="border border-light bg-white">
+                        <div class="row" >
+                        <div class="col-12 text-center mt-4 mb-2" >
+                            <h4 class="fw-bold"><h:outputLabel  value="List of first contacts wihout MOH" ></h:outputLabel></h4>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 d-flex justify-content-center" >
+                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
                             <h:outputLabel class="fs-6 fw-bold" value="From" ></h:outputLabel>
                             <p:calendar class="fs-6" value="#{regionalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
@@ -31,8 +36,10 @@
                             </h:commandButton>
                             <h:commandButton class="btn btn-warning w-100" value="Process" 
                                              action="#{regionalController.toListOfFirstContactsWithoutMohForRegionalLevel()}" ></h:commandButton>
-                            </p:panelGrid>
-                            <p:panelGrid columns="2" class="border border-light bg-white">
+                            </h:panelGrid>
+                            </div>
+                            <div class="col-6 d-flex flex-column" >
+                            <h:panelGrid columns="2" class="border border-light bg-white">
                                 <h:outputLabel class="fs-6 fw-bold" value="Assigning MOH Area" ></h:outputLabel>
                                 <h:selectOneMenu class="form-select" value="#{regionalController.mohArea}" >
                                     <f:selectItem itemLabel="Select" ></f:selectItem>
@@ -44,9 +51,9 @@
                             
                                 <h:commandButton class="btn btn-success w-100" action="#{regionalController.assignMohAreaToContactScreeningAtRegionalLevel()}"
                                                  value="Assign MOH Areas to Selected Contacts" ></h:commandButton>
-                            </p:panelGrid>
-
-                        </p:panelGrid>
+                            </h:panelGrid>
+                            </div>
+                        </div>
 
 
                         <p:dataTable id="tbl" value="#{regionalController.cecItems}" rendered="true"
@@ -85,7 +92,7 @@
 
 
 
-                </p:panelGrid>
+                <!--</p:panelGrid>-->
             </ui:define>
 
         </ui:composition>

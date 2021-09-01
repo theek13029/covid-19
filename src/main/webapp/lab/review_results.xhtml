@@ -12,13 +12,19 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                <p:panelGrid columns="1" styleClass="alignTop w-100 bg-white border border-light">
+                <!--<p:panelGrid columns="1" styleClass="alignTop w-100 bg-white border border-light">
                     <f:facet name="header" >
                         <h:outputLabel class="fs-5 fw-bold" value="Review Test Results" ></h:outputLabel>
-                    </f:facet>
+                    </f:facet>-->
 
                     <h:form >
-                        <p:panelGrid columns="2" styleClass="border border-light">
+                        <div class="row" >
+                            <div class="col-12 text-center mt-4 mb-2" >
+                                <h4 class="fw-bold"><h:outputLabel  value="Review Test Results" ></h:outputLabel></h4>
+                            </div>
+                        </div>
+                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
                             <h:outputLabel class="fs-6 fw-bold" value="From" ></h:outputLabel>
                             <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
@@ -41,7 +47,8 @@
                                              action="#{clientController.toLabReviewResults()}" ></h:commandButton>
 
 
-                        </p:panelGrid>
+                        </h:panelGrid>
+                        </div>
                     </h:form>
 
 
@@ -49,7 +56,7 @@
                         <h:commandButton class="btn btn-success w-25 my-2" value="MARK AS REVIEWED FOR SELECTED" 
                                          action="#{clientController.reviewOkForSelectedResults()}" ></h:commandButton>
 
-
+                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -108,9 +115,10 @@
                                 </h:selectOneMenu>
                             </p:column>
                         </p:dataTable>
+                        </h:panelGrid>
                     </h:form>
 
-                </p:panelGrid>
+                <!--</p:panelGrid>-->
             </ui:define>
         </ui:composition>
     </body>
