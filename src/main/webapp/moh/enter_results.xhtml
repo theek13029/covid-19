@@ -108,6 +108,26 @@
                             <p:column headerText="Test"  sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.pcrTestType.name}" ></h:outputLabel>
                             </p:column>
+                            <p:column id="colOrdered" headerText="Ordered Date" >
+                                <p:calendar id="calOd" value="#{c.createdAt}" 
+                                            style="width:99%;"  disabled="#{c.receivedAtLab}" 
+                                            pattern="dd MMMM yyyy hh:mm"
+                                            >
+                                    <p:ajax event="dateSelect" process="calOd" 
+                                            listener="#{clientController.saveEncounterResultsAtMohForConfirmedDate(c)}" >
+                                    </p:ajax>
+                                </p:calendar>
+                            </p:column>
+                            <p:column id="colSampled" headerText="Sampled Date" >
+                                <p:calendar id="calCd" value="#{c.sampledAt}" 
+                                            style="width:99%;"  disabled="#{c.receivedAtLab}" 
+                                            pattern="dd MMMM yyyy hh:mm"
+                                            >
+                                    <p:ajax event="dateSelect" process="calCd" 
+                                            listener="#{clientController.saveEncounterResultsAtMohForConfirmedDate(c)}" >
+                                    </p:ajax>
+                                </p:calendar>
+                            </p:column>
                             <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}" filterBy="#{c.referalInstitution.name}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.referalInstitution.name}" ></h:outputLabel>
                             </p:column>
