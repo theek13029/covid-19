@@ -367,7 +367,7 @@ public class NationalController implements Serializable {
         if (nullCounts != null) {
             InstitutionCount ic = new InstitutionCount();
             Area a = new Area();
-            a.setName("No RDHS");
+            a.setName("Non RDHS");
             ic.setArea(a);
             ic.setCount(nullCounts);
             institutionCounts.add(ic);

@@ -73,6 +73,7 @@
                             <p:column headerText="Number of Samples to Receive"  sortBy="#{c.count}" width="170">
                                 <h:outputLabel value="#{c.count}" ></h:outputLabel>
                             </p:column>
+                            
                             <p:column headerText="Actions" exportable="false" >
                                 <h:commandButton value="Mark All as Received" class="btn btn-success w-100" action="#{clientController.labReceiveAll()}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
@@ -83,6 +84,7 @@
                                     </f:setPropertyActionListener>
                                 </h:commandButton>
                             </p:column>
+                            
                         </p:dataTable>
                         </h:panelGrid>
                     </h:form>
