@@ -13,7 +13,7 @@
                 <div class="row bg-white pt-4 pb-2">
                     <h4 class="text-center fw-bold">RAT Details</h4>
                         <h5 class="card-header">
-                            <h:outputlabel class="form-label" value="RAT Details"></h:outputlabel class="form-label">
+                            <h:outputLabel class="form-label" value="RAT Details"></h:outputLabel>
                             <p:commandButton class="btn btn-primary" ajax="false" style="float: left;" tabindex="7"
                                 action="#{mohController.saveRatAndToNewRat()}" value="Save and NEW RAT">
                             </p:commandButton>
@@ -26,7 +26,7 @@
                             <div class="my-2 #{mohController.rat.pcrResult.name eq 'Positive'?'text-danger':''}">
                                 <div class="my-4 row">
                                     <div class="col-md-3">
-                                        <h:outputLabel class="form-label" for="result" value="Result"></h:outputlabel>
+                                        <h:outputLabel class="form-label" for="result" value="Result"></h:outputLabel>
                                         <h:selectOneMenu id="result" required="true"
                                             requiredMessage="Please select result"
                                             value="#{mohController.rat.pcrResult}" var="r" class="form-select"
@@ -131,7 +131,7 @@
                                                 value="#{mohController.rat.client.person.ageYears}" required="true"
                                                 class="form-control">
                                                 <f:ajax event="keyup" execute="@this month day" render="calDob" />
-                                                </p:inputText>
+                                            </h:inputText>
                                                 <h:inputText tabindex="108" autocomplete="off" id="month"
                                                     placeholder="Months" class="form-control"
                                                     value="#{mohController.rat.client.person.ageMonths}">
