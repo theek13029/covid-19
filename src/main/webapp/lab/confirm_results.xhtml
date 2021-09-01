@@ -12,49 +12,50 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
-                    <f:facet name="header" >
+                <!--<p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >-->
+                    <!--<f:facet name="header" >
                         <p:outputLabel value="Confirm Test Results" ></p:outputLabel>
-                    </f:facet>
+                    </f:facet>-->
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="From" ></p:outputLabel>
+                        <div class="row" >
+                            <div class="col-12 text-center mt-4 mb-2" >
+                                <h4 class="fw-bold"><h:outputLabel  value="Confirm Test Results" ></h:outputLabel></h4>
+                            </div>
+                        </div>
+                        <div class="container bg-none mb-4 w-100 d-flex justify-content-around align-items-center" >
+                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
+                                <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
                                 <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                                <p:outputLabel value="To" ></p:outputLabel>
+                                <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
                                 <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                                <p:outputLabel value="Ordered Institution" ></p:outputLabel>
+                                <h:outputLabel class="h6 fw-bold" value="Ordered Institution" ></h:outputLabel>
                                 <p:autoComplete value="#{clientController.institution}"
                                                 completeMethod="#{institutionController.completeInstitutions}"
                                                 var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                                 </p:autoComplete>
 
-                                <p:outputLabel value="Plate No." ></p:outputLabel>
-                                <p:inputText value="#{clientController.plateNo}" ></p:inputText>
-                            </p:panelGrid>
-                            <p:panelGrid columns="1" >
-                                <p:commandButton ajax="false" value="Process"  style="width: 100%;"
-                                                 action="#{clientController.toConfirmResults()}" ></p:commandButton>
-                                <p:commandButton ajax="false" value="Generate Excel" style="width: 100%;">
+                                <h:outputLabel class="h6 fw-bold" value="Plate No." ></h:outputLabel>
+                                <h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1" class="shadow-lg p-3 mb-5 bg-white rounded" >
+                                <h:commandButton value="Process" class="btn btn-warning w-100"
+                                                 action="#{clientController.toConfirmResults()}" ></h:commandButton>
+                                <h:commandButton value="Generate Excel" class="btn btn-success w-100">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
-                                </p:commandButton>
-                                <p:commandButton value="CONFIRM SELECTED" ajax="false" 
-                                                 action="#{clientController.confirmSelectedResults()}" ></p:commandButton>
-                                <p:commandButton value="Reject selected" ajax="false" 
-                                                 action="#{clientController.markR}" ></p:commandButton>
-                                <p:commandButton value="Mark as Pending" ajax="false" 
-                                                 action="#{clientController.confirmSelectedResults()}" ></p:commandButton>
-                            </p:panelGrid>
-                        </p:panelGrid>
+                                </h:commandButton>
+                                <h:commandButton value="Conform selected" class="btn btn-success w-100"
+                                                 action="#{clientController.confirmSelectedResults()}" ></h:commandButton>
+                                <h:commandButton value="Reject selected" class="btn btn-danger w-100" 
+                                                 action="#{clientController.markR}" ></h:commandButton>
+                                <h:commandButton value="Mark as Pending" class="btn btn-primary w-100"
+                                                 action="#{clientController.confirmSelectedResults()}" ></h:commandButton>
+                            </h:panelGrid>
+                        </div>
 
-
-
-
-
-
+                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{clientController.listedToConfirm}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      rowsPerPageTemplate="5,10,50,100,250,{ShowAll|'All'}"
@@ -62,41 +63,41 @@
                             <p:column selectionMode="multiple" width="30" >
                             </p:column>
                             <p:column width="50" >
-                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
+                                <h:outputLabel value="#{n+1}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="ID"  sortBy="#{c.id}">
-                                <p:outputLabel value="#{c.id}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.id}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.unitWard}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.bht}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" 
                                       filterBy="#{c.encounterNumber}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.encounterNumber}" ></h:outputLabel>
                             </p:column>`
                             <p:column headerText="Lab No" sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.labNumber}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Name" sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Age" >
-                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.age}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Sex" >
-                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.sex.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="NIC" sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.nic}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Address" sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}"  filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.address}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Phone" rendered="false" >
-                                <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.phone1}" ></h:outputLabel>
                             </p:column>
                             <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
                                        filterBy="#{c.ctValue}" filterMatchMode="contains" >
@@ -122,11 +123,12 @@
                                 </p:selectOneMenu>
                             </p:column>
                         </p:dataTable>
+                        </h:panelGrid>
                     </h:form>
 
 
 
-                </p:panelGrid>
+                <!--</p:panelGrid>-->
             </ui:define>
         </ui:composition>
     </body>

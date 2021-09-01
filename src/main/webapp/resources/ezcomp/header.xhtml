@@ -12,16 +12,16 @@
             <div class="container-fluid">
                 <h:graphicImage library="image" class="mx-2" name="sllogo.webp" height="60"></h:graphicImage>
                 <h:form>
-                    <h:commandLink class="navbar-brand text-wrap h4 text-uppercase" action="/index" style="width: 40rem;">
+                    <h:commandLink class="navbar-brand text-wrap h4 text-uppercase" action="/index">
                         National COVID-19 Health Information System<br/>
                     </h:commandLink>
-                    <div class="text-wrap h6" style="width: 40rem;">
+                    <div class="text-wrap h6 text-secondary mt-1">
                         <h:outputLabel value="#{webUserController.loggedUser.institution.name}" ></h:outputLabel>
                     </div>
                 </h:form>
 
                 <div class="collapse navbar-collapse" id="navbarScroll">
-                    <ul class="navbar-nav w-100 mx-4">
+                    <ul class="navbar-nav w-50 mx-4 flex-grow-1">
                         <h:form class="w-100">
                             <div class="input-group" id="search-box">
                                 <p:inputText class="form-control border-white" autocomplete="off" value="#{clientController.searchingId}" placeholder="Search Here..."></p:inputText>
@@ -31,7 +31,7 @@
                             </div>
                         </h:form>
                     </ul>
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav d-flex flex-grow-1 justify-content-center">
                         <li class="nav-item">
                             <button type="button" class="btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span>
@@ -42,11 +42,10 @@
                             </button>
                         </li>
                         <li class="nav-item dropdown" id="logoutDropdown">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
+                            <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 #{webUserController.loggedUser.person.nameWithTitle}
                             </button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <h:form>
                                     <h:commandButton action="#{webUserController.toChangeMyPassword()}"
                                                      class="dropdown-item" value="Change My Password">

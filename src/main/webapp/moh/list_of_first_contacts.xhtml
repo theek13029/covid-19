@@ -10,32 +10,36 @@
 
         <ui:composition template="/moh/reports_index.xhtml">
             <ui:define name="reports">
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <!--<p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
                         <p:outputLabel value="First Contacts List" ></p:outputLabel>
-                    </f:facet>
+                    </f:facet>-->
 
                     <h:form >
-                        
-                        <p:panelGrid columns="2" >
-                            <p:panelGrid columns="2" >
-                            <p:outputLabel value="From" ></p:outputLabel>
+                        <div class="row" >
+                            <div class="col-12 text-center mt-4 mb-2" >
+                                <h4 class="fw-bold"><h:outputLabel  value="First Contacts List" ></h:outputLabel></h4>
+                            </div>
+                        </div>
+                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
+                            <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
                             <p:calendar value="#{provincialController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
-                            <p:outputLabel value="To" ></p:outputLabel>
+                            <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
                             <p:calendar value="#{provincialController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                            <p:commandButton ajax="false" value="Generate Excel">
+                            <h:commandButton value="Generate Excel" class="btn btn-success w-100">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{provincialController.toListOfFirstContacts()}" ></p:commandButton>
-                            </p:panelGrid>
-                        </p:panelGrid>
+                            </h:commandButton>
+                            <h:commandButton value="Process" class="btn btn-warning w-100"
+                                             action="#{provincialController.toListOfFirstContacts()}" ></h:commandButton>
+                            </h:panelGrid>
+                        </div>
 
-
+                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{provincialController.cecItems}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
@@ -49,23 +53,23 @@
                                      >
                             <p:column selectionMode="multiple" width="30"></p:column>
                             <p:column headerText="Name"  sortBy="#{c.shortTextValue}" filterBy="#{c.shortTextValue}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.shortTextValue}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.shortTextValue}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Address"  sortBy="#{c.longTextValue}" 
                                       filterBy="#{c.longTextValue}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.longTextValue}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.longTextValue}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Contact Number" sortBy="#{c.shortTextValue2}" 
                                       filterBy="#{c.shortTextValue2}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.shortTextValue2}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.shortTextValue2}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="District"  sortBy="#{c.areaValue2.name}"
                                       filterBy="#{c.areaValue2.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.areaValue2.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.areaValue2.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="MOH"  sortBy="#{c.areaValue.name}"
                                       filterBy="#{c.areaValue.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.areaValue.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.areaValue.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false" rendered="false" >
                                 <p:commandLink value="View Order" action="#{provincialController.toViewTest()}" ajax="false" >
@@ -76,11 +80,12 @@
                                 </p:commandLink>
                             </p:column>
                         </p:dataTable>
+                        </h:panelGrid>
                     </h:form>
 
 
 
-                </p:panelGrid>
+                <!--</p:panelGrid>-->
             </ui:define>
 
         </ui:composition>
