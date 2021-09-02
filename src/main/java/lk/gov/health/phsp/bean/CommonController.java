@@ -22,6 +22,9 @@ import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import lk.gov.health.phsp.bean.util.JsfUtil;
+import lk.gov.health.phsp.entity.Client;
+import lk.gov.health.phsp.entity.Encounter;
 import lk.gov.health.phsp.enums.ComponentSetType;
 import lk.gov.health.phsp.enums.ComponentSex;
 import lk.gov.health.phsp.enums.DataCompletionStrategy;
@@ -60,12 +63,58 @@ import org.joda.time.PeriodType;
 @SessionScoped
 public class CommonController implements Serializable {
 
+    private Client client;
+    private Encounter encounter;
+
     private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new instance of HOSecurity
      */
     public CommonController() {
+    }
+
+    public String toViewClient() {
+        if (client == null) {
+            JsfUtil.addErrorMessage("No Client Selected");
+            return "";
+        }
+        return "/common/client_view";
+    }
+
+    public String toViewEncounter() {
+        if (encounter == null) {
+            JsfUtil.addErrorMessage("No Encounter Selected");
+            return "";
+        }
+        if (encounter.getEncounterType() == null) {
+            return "";
+        }
+        switch (encounter.getEncounterType()) {
+            case Case_Enrollment:
+                return toViewCaseIx();
+            case Test_Enrollment:
+                return toViewTest();
+            case Death:
+                return "";
+        }
+        return "";
+    }
+
+    public String toViewTest() {
+        if (encounter == null) {
+            JsfUtil.addErrorMessage("No Encounter Selected");
+            return "";
+        }
+        return "/common/test_view";
+    }
+
+    public String toViewCaseIx() {
+        if (encounter == null) {
+            JsfUtil.addErrorMessage("No Encounter Selected");
+            return "";
+        }
+        return "/common/case_view";
     }
 
     public static String formatDate() {
@@ -1131,6 +1180,22 @@ public class CommonController implements Serializable {
     public static String prepareAsCode(String str) {
         String after = str.trim().replaceAll(" +", "_");
         return after.toLowerCase();
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Encounter getEncounter() {
+        return encounter;
+    }
+
+    public void setEncounter(Encounter encounter) {
+        this.encounter = encounter;
     }
 
 }

@@ -119,6 +119,34 @@
                         </div>
                     </div>
                 </h:panelGroup>
+                
+                <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'List_Box'}" >
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <p:outputLabel for="lbIcM" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                        </div>
+                        <div class="col-md-4">
+                            <p:selectOneMenu id="lbIcM" value="#{ii.addingItem.ci.itemValue}" >
+                                <f:selectItems value="#{ii.availableItemsForSelection}" var="li"
+                                               itemLabel="#{li.displayName}" itemValue="#{li}" ></f:selectItems>
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="col-md-4">
+                            <p:commandButton id="btnAddM3a"  value="Add" process="lbIcM btnAddM3a" update="@form"
+                                             action="#{clientEncounterComponentItemController.addAnotherDataItem(ii)}"></p:commandButton>
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                                <p:column >
+                                    <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </h:panelGroup>
 
                 <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'Autocomplete'}" >
                     <div class="form-group row">
@@ -350,6 +378,22 @@
                         </div>
                     </div>
                 </h:panelGroup>
+                
+                <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'List_Box'}" >
+                    <div class="row p-1" >
+                        <div class="col-md-4" >
+                            <p:outputLabel for="lbIc" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                        </div>
+                        <div class="col-md-8" >
+                            <p:selectOneListbox  id="lbIc" value="#{ii.ci.itemValue}" >
+                                <f:selectItems value="#{ii.availableItemsForSelection}" var="li"
+                                               itemLabel="#{li.displayName}" itemValue="#{li}" ></f:selectItems>
+                                <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
+                            </p:selectOneListbox>
+                        </div>
+                    </div>
+                </h:panelGroup>
+                
                 <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'Autocomplete'}" >
                     <div class="row p-1" >
                         <div class="col-md-6" >

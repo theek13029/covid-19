@@ -7,8 +7,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
-    <body>
-
+    <h:body>
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
@@ -51,6 +50,10 @@
                                          action="#{clientController.toLabPrintSelectedBulk()}" 
                                          onclick="form.target = '_blank'"></p:commandButton>
 
+                        <p:commandButton value="Transfer SELECTED To Enter Results" ajax="false" 
+                                         action="#{clientController.toLabPrintSelectedBulk()}" 
+                                         onclick="form.target = '_blank'"></p:commandButton>
+
 
                         <p:dataTable id="tbl" value="#{clientController.listedToPrint}" 
                                      rowIndexVar="n"
@@ -60,15 +63,6 @@
                             </p:column>
                             <p:column width="50" >
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="ID"  sortBy="#{c.id}">
-                                <p:outputLabel value="#{c.id}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
-                            </p:column>
-                              <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
@@ -107,6 +101,12 @@
                                       filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
+                            </p:column>
                         </p:dataTable>
                     </h:form>
 
@@ -115,5 +115,5 @@
                 </p:panelGrid>
             </ui:define>
         </ui:composition>
-    </body>
+    </h:body>
 </html>
