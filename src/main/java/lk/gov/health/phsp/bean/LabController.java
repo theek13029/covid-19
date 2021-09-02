@@ -114,6 +114,7 @@ public class LabController implements Serializable {
     private Encounter covidCase;
     private Encounter test;
     private Encounter deleting;
+    private Institution institution;
 
     private WebUser assignee;
 
@@ -740,65 +741,23 @@ public class LabController implements Serializable {
         return "/moh/investigated_list";
     }
 
-//    public String toListOfTestsRegional() {
-//        return "/regional/list_of_tests";
-//    }
-    public String toCaseReports() {
-        switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case ChiefEpidemiologist:
-            case Client:
-            case Epidemiologist:
-            case Hospital_Admin:
-            case Hospital_User:
-            case Lab_Consultant:
-            case Lab_Mlt:
-            case Lab_Mo:
-            case Lab_National:
-            case Lab_User:
-            case Moh:
-            case Amoh:
-            case Nurse:
-            case Pdhs:
-            case Phi:
-            case Phm:
-            case Rdhs:
-            case Re:
-            case Super_User:
-            case System_Administrator:
-            case User:
-        }
-        return "/moh/list_of_tests";
-    }
+
 
     public String toReportsIndex() {
-        switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case Rdhs:
-            case Re:
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
                 return "/regional/reports_index";
-            case ChiefEpidemiologist:
-            case Client:
-            case Epidemiologist:
-            case Super_User:
-            case System_Administrator:
-            case User:
+            case National:
                 return "/national/reports_index";
-            case Hospital_Admin:
-            case Hospital_User:
-            case Nurse:
+            case Hospital:
                 return "/hospital/reports_index";
-            case Lab_Consultant:
-            case Lab_Mlt:
-            case Lab_Mo:
-            case Lab_User:
+            case Lab:
                 return "/lab/reports_index";
-            case Lab_National:
+            case National_Lab:
                 return "/national/lab_reports_index";
             case Moh:
-            case Amoh:
-            case Phi:
-            case Phm:
                 return "/moh/reports_index";
-            case Pdhs:
+            case Provincial:
                 return "/provincial/reports_index";
             default:
                 return "";
@@ -1097,6 +1056,9 @@ public class LabController implements Serializable {
         pcr.setSampled(true);
         pcr.setSampledAt(new Date());
         pcr.setSampledBy(webUserController.getLoggedUser());
+        pcr.setSentToLab(true);
+        pcr.setSentToLabAt(new Date());
+        pcr.setSentToLabBy(webUserController.getLoggedUser());
         pcr.setCreatedAt(new Date());
         return "/lab/pcr";
     }
@@ -1401,6 +1363,11 @@ public class LabController implements Serializable {
             return "";
         }
         Institution createdIns = null;
+        pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+        
+        Institution moh = institutionApplicationController.findMinistryOfHealth();
+        
         if (pcr.getClient().getCreateInstitution() == null) {
             if (webUserController.getLoggedUser().getInstitution().getPoiInstitution() != null) {
                 createdIns = webUserController.getLoggedUser().getInstitution().getPoiInstitution();
@@ -1753,9 +1720,7 @@ public class LabController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -1772,12 +1737,9 @@ public class LabController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
-
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
-        return "/lab/list_of_tests_without_results";
+        return "/lab/list_of_tests";
     }
 
     public String toListOfTestsRegional() {
@@ -2033,6 +1995,8 @@ public class LabController implements Serializable {
     public Encounter getCovidCase() {
         return covidCase;
     }
+    
+    
 
     public void setCovidCase(Encounter covidCase) {
         this.covidCase = covidCase;
@@ -2237,6 +2201,14 @@ public class LabController implements Serializable {
 
     public void setSelectedToDispatch(List<Encounter> selectedToDispatch) {
         this.selectedToDispatch = selectedToDispatch;
+    }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
     }
 
 }

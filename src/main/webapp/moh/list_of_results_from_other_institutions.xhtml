@@ -8,7 +8,7 @@
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <h:body>
-        <ui:composition template="/provincial/reports_index.xhtml">
+        <ui:composition template="/moh/reports_index.xhtml">
             <ui:define name="reports">
                 <h:outputStylesheet library="css" name="tem1.css"/>
 
@@ -52,7 +52,7 @@
                                 </p:selectOneMenu>
 
                                 <p:outputLabel  value="Lab"></p:outputLabel>
-                                <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
+                                <p:autoComplete style="width: 100%;"
                                                 inputStyleClass="autocomplete"
                                                 value="#{mohController.lab}"
                                                 forceSelection="true" tabindex="100" 

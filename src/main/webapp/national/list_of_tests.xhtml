@@ -35,7 +35,7 @@
                             </p:selectOneMenu>
 
                             <p:outputLabel  value="Lab"></p:outputLabel>
-                            <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
+                            <p:autoComplete style="width: 100%;"
                                             inputStyleClass="autocomplete"
                                             value="#{nationalController.lab}"
                                             forceSelection="true" tabindex="100" 
@@ -63,6 +63,7 @@
 
 
                         <p:dataTable id="tbl" value="#{nationalController.tests}" rendered="true"
+                                     lazy="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
@@ -99,7 +100,7 @@
                             <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Contact Numbers" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
+                            <p:column headerText="Phone" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                                 <p:outputLabel rendered="#{c.client.person.phone2 ne null}" value=", " ></p:outputLabel>
                                 <p:outputLabel rendered="#{c.client.person.phone2 ne null}" value="#{c.client.person.phone2}" ></p:outputLabel>

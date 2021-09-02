@@ -121,10 +121,16 @@
                                                      value="#{mohController.rat.client.person.nic}"
                                                      title="Nic" 
                                                      validatorMessage="Please check the number">
-                                            <f:ajax event="blur" 
-                                                    render="year month sex" 
-                                                    execute="@this"/>
+                                               <f:ajax event="blur" execute="@this" render="nicExists year month sex" 
+                                                    listener="#{mohController.checkNicExistsForRat()}" ></f:ajax>
                                         </p:inputText>
+                                        <h:panelGroup id="nicExists" >
+                                            <p:commandLink rendered="#{mohController.nicExistsForRat}"  ajax="false"
+                                                           immediate="true"
+                                                           action="#{mohController.toAddNewRatWithExistingNic()}"
+                                                           value="NIC Exists. Click here to Load Patient" >
+                                            </p:commandLink>
+                                        </h:panelGroup>
                                     </div>
                                     <div class="col-md-3">
                                         <p:outputLabel value="Gender:"  for="sex" />

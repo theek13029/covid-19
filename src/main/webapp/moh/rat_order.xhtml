@@ -4,9 +4,6 @@
 
     <h:body>
         <ui:composition template="/template1.xhtml">
-            <ui:define name="title" >
-                NCHIS - RAT Order
-            </ui:define>
             <ui:define name="content">
                 <h:form class="form" >
                     <p:focus for="txtTestNo" ></p:focus>
@@ -32,7 +29,7 @@
 
                                     <div class="col-md-3">
                                         <p:outputLabel  value="Lab"></p:outputLabel>
-                                        <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
+                                        <p:autoComplete style="width: 100%;"
                                                         inputStyleClass="autocomplete"
                                                         value="#{mohController.rat.referalInstitution}"
                                                         forceSelection="true" tabindex="100" 

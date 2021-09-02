@@ -32,9 +32,17 @@
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
+                            
+                             <p:outputLabel value="Institution Type" ></p:outputLabel>
+                             <p:selectOneMenu value="#{nationalController.institutionType}" >
+                                <f:selectItem itemLabel="All" ></f:selectItem>
+                                <f:selectItems value="#{institutionApplicationController.institutionTypes}" 
+                                               var="it" itemLabel="#{it.label}"
+                                               itemValue="#{it}" ></f:selectItems>
+                            </p:selectOneMenu>
 
                             <p:outputLabel  value="Lab"></p:outputLabel>
-                            <p:autoComplete style="margin: 0px; padding: 0px; width: 100%;"
+                            <p:autoComplete style="width: 100%;"
                                             inputStyleClass="autocomplete"
                                             value="#{nationalController.lab}"
                                             forceSelection="true" tabindex="100" 
@@ -70,15 +78,31 @@
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
                                      >
-                            <p:column headerText="Institution" sortBy="#{c.institution.name}"
-                                      filterBy="#{c.institution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
+                            <p:column headerText="Province" sortBy="#{c.institution.province.name}"
+                                      filterBy="#{c.institution.province.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.institution.province.name}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="PDHS" sortBy="#{c.institution.pdhsArea.name}"
+                                      filterBy="#{c.institution.pdhsArea.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.institution.pdhsArea.name}" ></p:outputLabel>
+                            </p:column>
+
                             <p:column headerText="RDHS" sortBy="#{c.institution.rdhsArea.name}"
                                       filterBy="#{c.institution.rdhsArea.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.institution.rdhsArea.name}" ></p:outputLabel>
                             </p:column>
-                            
+                            <p:column headerText="District" sortBy="#{c.institution.district.name}"
+                                      filterBy="#{c.institution.district.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.institution.district.name}"></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Institution" sortBy="#{c.institution.name}"
+                                      filterBy="#{c.institution.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Institution Type" sortBy="#{c.institution.institutionType.label}"
+                                      filterBy="#{c.institution.institutionType.label}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.institution.institutionType.label}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Count"  sortBy="#{c.count}">
                                 <p:outputLabel value="#{c.count}" ></p:outputLabel>
                             </p:column>

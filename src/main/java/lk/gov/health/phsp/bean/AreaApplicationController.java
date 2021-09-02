@@ -233,10 +233,18 @@ public class AreaApplicationController {
     public List<Area> getMohAreasOfAnRdhs(Area rdhs) {
         List<Area> tas = new ArrayList<>();
         for (Area a : getAllAreas(AreaType.MOH)) {
-            if (a.getParentArea() != null && a.getParentArea().equals(rdhs)) {
-                tas.add(a);
-            }else if(a.getRdhsArea()!=null && a.getRdhsArea().equals(rdhs)){
-                tas.add(a);
+            if (rdhs.getType() == AreaType.RdhsAra) {
+                if (a.getParentArea() != null && a.getParentArea().equals(rdhs)) {
+                    tas.add(a);
+                } else if (a.getRdhsArea() != null && a.getRdhsArea().equals(rdhs)) {
+                    tas.add(a);
+                }
+            }else if (rdhs.getType() == AreaType.District) {
+                if (a.getParentArea() != null && a.getParentArea().equals(rdhs)) {
+                    tas.add(a);
+                } else if (a.getDistrict() != null && a.getDistrict().equals(rdhs)) {
+                    tas.add(a);
+                }
             }
         }
         return tas;

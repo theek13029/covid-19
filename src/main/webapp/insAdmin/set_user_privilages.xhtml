@@ -67,6 +67,12 @@ THE SOFTWARE.
                                         </f:facet>
                                         <h:outputText value="#{item.institution.name}"/>
                                     </p:column>  
+                                    <p:column sortBy="#{item.institution.parent.name}" filterBy="#{item.institution.parent.name}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Parent Institution"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.institution.parent.name}"/>
+                                    </p:column>
                                     <p:column sortBy="#{item.webUserRole.label}" filterBy="#{item.webUserRole.label}" filterMatchMode="contains">
                                         <f:facet name="header">
                                             <h:outputText value="Role"/>

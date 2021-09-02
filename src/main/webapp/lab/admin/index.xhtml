@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui">
+
+
+    <h:body>
+
+        <ui:composition template="/template1.xhtml">
+
+            <ui:define name="content">
+
+                <div class="container-fluid" >
+                    <div class="row" >
+                        <div class="col-12 p-2"   >
+                            <p:messages ></p:messages>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-3" >
+
+                            <div class="card" >
+                                <div class="card-header" >
+                                    <h:outputLabel value="System Administration" ></h:outputLabel>
+                                </div>
+                                <div class="card-body container-fluid">
+                                     <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink value="Preferences" 
+                                                               action="#{menuController.toPreferences()}" 
+                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               >
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink value="View Users" 
+                                                               action="#{menuController.toListUser()}" 
+                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               >
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink value="Add New User" 
+                                                               action="#{menuController.toAddNewUser()}" 
+                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               >
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+
+                                                <h:commandLink disabled="true" value="View Institutions" 
+                                                               action="#{regionalController.toCountOfResultsByOrderedInstitution()}" 
+                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               >
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+
+                                                <h:commandLink disabled="true" value="Add Institution" 
+                                                               action="#{regionalController.toCountOfResultsByLab()}" 
+                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               >
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-9" >
+                            <ui:insert name="admin" >
+                            </ui:insert>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

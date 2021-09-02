@@ -134,8 +134,7 @@ public class ClientController implements Serializable {
 
     private Integer startRow = 1;
 
-    Boolean institutionSelectable;
-    Boolean nationalLevel;
+    
 
     private Item selectedTest;
 
@@ -1658,6 +1657,19 @@ public class ClientController implements Serializable {
         selectedToPrint = null;
         return "/lab/printing_results_bulk";
     }
+    
+    public String toSelectedToEnterResults() {
+        for (Encounter e : selectedToPrint) {
+            e.setResultEntered(false);
+            e.setResultConfirmed(false);
+            e.setResultPrinted(false);
+            e.setResultReviewed(false);
+            encounterFacade.edit(e);
+        }
+        bulkPrintReport = generateLabReportsBulk(selectedToPrint);
+        selectedToPrint = null;
+        return "/lab/printing_results_bulk";
+    }
 
     public String toMohPrintSelected() {
         for (Encounter e : selectedToPrint) {
@@ -2039,7 +2051,6 @@ public class ClientController implements Serializable {
         selectedClientEncounters = null;
         selectedClinic = null;
         yearMonthDay = new YearMonthDay();
-        userTransactionController.recordTransaction("to add a new client for case");
         DesignComponentFormSet dfs = designComponentFormSetController.getFirstCaseEnrollmentFormSet();
         if (dfs == null) {
             JsfUtil.addErrorMessage("No Default Form Set");
@@ -2054,7 +2065,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";
         }
-        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+//        clientEncounterComponentFormSetController.loadOldFormset(cefs);
         if (cefs.getEncounter() != null) {
             testEncounter.setReferenceCase(cefs.getEncounter());
             encounterFacade.edit(testEncounter);
@@ -2570,7 +2581,7 @@ public class ClientController implements Serializable {
 
         if (c.getId() == null) {
             getFacade().create(c);
-        }else{
+        } else {
             getFacade().edit(c);
         }
         encounterFacade.create(pcr);
@@ -4953,47 +4964,6 @@ public class ClientController implements Serializable {
         return tm;
     }
 
-    private void prepareSelectionPrivileges() {
-        switch (webUserController.getLoggedUser().getWebUserRole()) {
-            case Moh:
-            case Amoh:
-            case Nurse:
-            case Phi:
-            case Phm:
-            case Client:
-            case Hospital_Admin:
-            case Hospital_User:
-                institution = webUserController.getLoggedUser().getInstitution();
-                institutionSelectable = false;
-                nationalLevel = false;
-                break;
-            case ChiefEpidemiologist:
-            case Epidemiologist:
-            case Super_User:
-            case System_Administrator:
-            case User:
-                institution = null;
-                institutionSelectable = true;
-                nationalLevel = true;
-                break;
-            case Pdhs:
-            case Rdhs:
-            case Re:
-                institution = null;
-                institutionSelectable = true;
-                nationalLevel = false;
-                break;
-            case Lab_Consultant:
-            case Lab_Mo:
-            case Lab_Mlt:
-            case Lab_User:
-                institution = null;
-                institutionSelectable = true;
-                nationalLevel = true;
-                break;
-
-        }
-    }
 
     public String toListCases() {
         return "/client/case_list";
@@ -5038,27 +5008,9 @@ public class ClientController implements Serializable {
         Map m = new HashMap();
         String j = "select c from Encounter c "
                 + " where c.retired=false";
-        if (getInstitutionSelectable()) {
 
-            if (getNationalLevel()) {
-                if (getInstitution() == null) {
-                } else {
-                    j += " and c.institution = :ins ";
-                    m.put("ins", getInstitution());
-                }
-            } else {
-                if (getInstitution() == null) {
-                    j += " and c.institution in :inss ";
-                    m.put("inss", webUserController.getLoggableInstitutions());
-                } else {
-                    j += " and c.institution = :ins ";
-                    m.put("ins", getInstitution());
-                }
-            }
-        } else {
-            j += " and c.institution=:ins ";
-            m.put("ins", webUserController.getLoggedUser().getInstitution());
-        }
+        j += " and c.institution=:ins ";
+        m.put("ins", webUserController.getLoggedUser().getInstitution());
 
         j += " and c.encounterDate between :fd and :td "
                 + " and c.encounterType=:t "
@@ -5121,28 +5073,6 @@ public class ClientController implements Serializable {
 
     public void setListedToReceive(List<Encounter> listedToReceive) {
         this.listedToReceive = listedToReceive;
-    }
-
-    public Boolean getInstitutionSelectable() {
-        if (institutionSelectable == null) {
-            prepareSelectionPrivileges();
-        }
-        return institutionSelectable;
-    }
-
-    public void setInstitutionSelectable(Boolean institutionSelectable) {
-        this.institutionSelectable = institutionSelectable;
-    }
-
-    public Boolean getNationalLevel() {
-        if (nationalLevel == null) {
-            prepareSelectionPrivileges();
-        }
-        return nationalLevel;
-    }
-
-    public void setNationalLevel(Boolean nationalLevel) {
-        this.nationalLevel = nationalLevel;
     }
 
     public List<Encounter> getTestList() {
