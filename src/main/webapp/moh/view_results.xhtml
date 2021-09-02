@@ -64,7 +64,7 @@
                                     <p:dataExporter target="tbl" type="xlsx" fileName="results" ></p:dataExporter>
                                 </p:commandButton>
                                 <p:commandButton ajax="false" value="Process" 
-                                                 action="#{mohController.toListOfResultsForOrdersFromMyMoh()}" ></p:commandButton>
+                                                 action="#{mohController.toViewResults()}" ></p:commandButton>
 
 
                             </p:panelGrid>
@@ -107,7 +107,21 @@
                                     </p:ajax>
                                 </p:outputLabel>
                             </p:column>
-                           
+                           <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
+                                    <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}" 
+                                                     value="Investigate" 
+                                                     action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
+                                        <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
+                                        </f:setPropertyActionListener>
+                                    </p:commandButton>
+                                <p:commandButton rendered="#{c.referenceCase ne null}" 
+                                                     ajax="false" value="View Investigation Details" 
+                                                     action="#{clientController.toViewOrEditCaseEnrollmentFromEncounter()}"
+                                                     style="width: 100%;" >
+                                    <f:setPropertyActionListener value="#{c.referenceCase}" target="#{clientController.selectedEncounter}" >
+                                        </f:setPropertyActionListener>
+                                    </p:commandButton>
+                            </p:column>
 
                         </p:dataTable>
 
