@@ -8,7 +8,7 @@
 
     <body>
 
-        <ui:composition template="./../template1.xhtml">
+        <ui:composition template="/template1.xhtml">
 
             <ui:define name="title">
                 List of Tests
@@ -111,7 +111,6 @@
                             </p:column>
 
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
-
                                 <p:panelGrid columns="1" >
                                     <p:commandButton value="Edit Order" action="#{labController.toEditTest()}" ajax="false"  style="width: 100%;" >
                                         <f:setPropertyActionListener value="#{c}" target="#{labController.test}" ></f:setPropertyActionListener>
@@ -123,14 +122,9 @@
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
                                 </p:panelGrid>
-
-
                             </p:column>
                         </p:dataTable>
                     </h:form>
-
-
-
                 </p:panelGrid>
             </ui:define>
 
