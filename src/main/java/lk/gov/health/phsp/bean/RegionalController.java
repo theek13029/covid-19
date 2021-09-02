@@ -308,80 +308,6 @@ public class RegionalController implements Serializable {
         return menuController.toDivertSamples();
     }
 
-    public String toAssignInvestigation() {
-        testType = itemApplicationController.getPcr();
-        result = itemApplicationController.getPcrPositive();
-
-        System.out.println("toTestList");
-        Map m = new HashMap();
-
-        String j = "select c "
-                + " from Encounter c "
-                + " where (c.retired is null or c.retired=:ret) "
-                + " and (c.completed is null or c.completed=:com) ";
-        m.put("ret", false);
-        m.put("com", false);
-
-        j += " and c.encounterType=:etype ";
-        m.put("etype", EncounterType.Test_Enrollment);
-
-        j += " and c.client.person.mohArea=:moh ";
-        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
-
-        j += " and c.createdAt between :fd and :td ";
-        m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
-        m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
-        if (testType != null) {
-            j += " and c.pcrTestType=:tt ";
-            m.put("tt", testType);
-        }
-        if (orderingCategory != null) {
-            j += " and c.pcrOrderingCategory=:oc ";
-            m.put("oc", orderingCategory);
-        }
-        if (result != null) {
-            j += " and c.pcrResult=:result ";
-            m.put("result", result);
-        }
-        if (lab != null) {
-            j += " and c.referalInstitution=:ri ";
-            m.put("ri", lab);
-        }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
-
-        tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
-
-        return "/moh/assign_investigation";
-    }
-
-    public String toStartInvestigation() {
-        return "/moh/start_investigation";
-    }
-
-    public String toViewInvestigatedCases() {
-        return "/moh/view_investigated_cases";
-    }
-
-    public void assignToInvestigate() {
-        if (assignee == null) {
-            JsfUtil.addErrorMessage("Please select someone to assign the investigation");
-            return;
-        }
-        if (selectedToAssign == null || selectedToAssign.isEmpty()) {
-            JsfUtil.addErrorMessage("Please select cases to assign the investigation");
-            return;
-        }
-        for (Encounter e : selectedToAssign) {
-            e.setCompletedBy(assignee);
-            encounterFacade.edit(e);
-        }
-        selectedToAssign = null;
-    }
-
     public String assignMohAreaToContactScreeningAtRegionalLevel() {
         if (selectedCecis == null || selectedCecis.isEmpty()) {
             JsfUtil.addErrorMessage("Please select contacts");
@@ -426,101 +352,7 @@ public class RegionalController implements Serializable {
         return toListOfTestsWithoutMoh();
     }
 
-    public Boolean checkNicExists(String nic, Client c) {
-        String jpql = "select count(c) from Client c "
-                + " where c.retired=:ret "
-                + " and c.reservedClient<>:res "
-                + " and c.person.nic=:nic ";
-        Map m = new HashMap();
-        m.put("ret", false);
-        m.put("res", true);
-        m.put("nic", nic);
-        if (c != null && c.getPerson() != null && c.getPerson().getId() != null) {
-            jpql += " and c.person <> :person";
-            m.put("person", c.getPerson());
-        }
-        Long count = clientFacade.countByJpql(jpql, m);
-        if (count == null || count == 0l) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public void checkNicExistsForRat() {
-        nicExistsForRat = null;
-        if (rat == null) {
-            return;
-        }
-        if (rat.getClient() == null) {
-            return;
-        }
-        if (rat.getClient().getPerson() == null) {
-            return;
-        }
-        if (rat.getClient().getPerson().getNic() == null) {
-            return;
-        }
-        if (rat.getClient().getPerson().getNic().trim().equals("")) {
-            return;
-        }
-        nicExistsForRat = checkNicExists(rat.getClient().getPerson().getNic(), rat.getClient());
-    }
-
-    public void checkNicExistsForPcr() {
-        nicExistsForPcr = null;
-        if (pcr == null) {
-            return;
-        }
-        if (pcr.getClient() == null) {
-            return;
-        }
-        if (pcr.getClient().getPerson() == null) {
-            return;
-        }
-        if (pcr.getClient().getPerson().getNic() == null) {
-            return;
-        }
-        if (pcr.getClient().getPerson().getNic().trim().equals("")) {
-            return;
-        }
-        nicExistsForPcr = checkNicExists(pcr.getClient().getPerson().getNic(), pcr.getClient());
-    }
-
-    public Client lastClientWithNic(String nic, Client c) {
-        if (nic == null || nic.trim().equals("")) {
-            return null;
-        }
-        String jpql = "select c "
-                + " from Client c "
-                + " where c.retired=:ret "
-                + " and c.person.nic=:nic ";
-        Map m = new HashMap();
-        m.put("ret", false);
-        m.put("nic", nic);
-        if (c != null && c.getPerson() != null && c.getPerson().getId() != null) {
-            jpql += " and c.person <> :person";
-            m.put("person", c.getPerson());
-        }
-        jpql += " order by c.id desc";
-        return clientFacade.findFirstByJpql(jpql, m);
-    }
-
-    public String toPcrPositiveReportsIndexNational() {
-        fromDate = CommonController.startOfTheDate();
-        toDate = CommonController.endOfTheDate();
-        return "/national/pcr_positive_links";
-    }
-
-    public String toLabReportsIndexNational() {
-        fromDate = CommonController.startOfTheDate();
-        toDate = CommonController.endOfTheDate();
-        return "/national/lab_report_links";
-    }
-
-    public String toPcrPositiveCasesList() {
-        result = itemApplicationController.getPcrPositive();
-        testType = itemApplicationController.getPcr();
+    public String toMohAreaResultList() {
         Map m = new HashMap();
         String j = "select c "
                 + " from Encounter c "
@@ -530,15 +362,13 @@ public class RegionalController implements Serializable {
         m.put("etype", EncounterType.Test_Enrollment);
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         j += " and c.pcrTestType=:tt ";
         m.put("tt", testType);
         j += " and c.pcrResult=:result ";
         m.put("result", result);
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        return "/national/result_list_pcr_positive";
+        return "/regional/list_of_results_moh";
     }
 
     public String toPcrPositiveByDistrict() {

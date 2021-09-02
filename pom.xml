@@ -292,6 +292,12 @@
             <version>2.2.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>be.ceau</groupId>
+            <artifactId>chart</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+
                                          
     </dependencies>
 

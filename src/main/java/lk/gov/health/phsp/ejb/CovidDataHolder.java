@@ -81,7 +81,7 @@ public class CovidDataHolder {
     @Schedule(month = "*", hour = "2", dayOfMonth = "*", year = "*", minute = "1", second = "0", persistent = false)
     public void generateCovidCountsForToday() {
         calculateNumbers();
-        generateCovidCounts();
+       
     }
 
     @Asynchronous
@@ -94,51 +94,10 @@ public class CovidDataHolder {
         this.hospitals = hospitals;
         this.areas = areas;
         this.labs = labs;
-        generateCovidCounts();
+       
     }
 
-    public void generateCovidCounts() {
-        covidDatasForMohs = new ArrayList<>();
-
-        /**
-         * cases deaths test orders rat orders pcr orders
-         */
-        Calendar t = Calendar.getInstance();
-
-        Date today = t.getTime();
-        t.add(Calendar.DATE, -1);
-        Date yesterday = t.getTime();
-        t.add(Calendar.DATE, -6);
-        Date sevenDaysAgo = t.getTime();
-        t.add(Calendar.DATE, -7);
-        Date fourteenDaysAgo = t.getTime();
-        Date firstDayOfMonth = CommonController.startOfTheMonth();
-        Date firstDayOfYear = CommonController.startOfTheYear();
-        //TODO 
-        for (Institution ins : mohs) {
-            CovidData cd = new CovidData();
-            cd.setInstitution(ins);
-            cd.setTodaysCases(findCount(ins, null, today, "case"));
-            cd.setTodaysTests(findCount(ins, null, today, "test orders"));
-            cd.setTodaysPcrs(findCount(ins, null, today, "pcr"));
-            cd.setTodaysRats(findCount(ins, null, today, "rat"));
-
-            // // System.out.println("firstDayOfMonth = " + firstDayOfMonth);
-            // // System.out.println("today = " + today);
-            
-            // // System.out.println("CommonController.dateTimeToString(firstDayOfMonth); = " + CommonController.dateTimeToString(firstDayOfMonth));
-            // // System.out.println("CommonController.dateTimeToString(today) = " + CommonController.dateTimeToString(today));
-            
-            cd.setThisMonthCases(findCount(ins, null, firstDayOfMonth, today, "case"));
-            cd.setThisMonthTests(findCount(ins, null, firstDayOfMonth, today, "test orders"));
-            cd.setThisMonthPcrs(findCount(ins, null, firstDayOfMonth, today, "pcr"));
-            cd.setThisMonthRats(findCount(ins, null, firstDayOfMonth, today, "rat"));
-
-            covidDatasForMohs.add(cd);
-            //TODO
-        }
-    }
-
+  
     public void calculateNumbers() {
         calculateNumbers(new Date());
     }
