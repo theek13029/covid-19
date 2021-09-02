@@ -817,7 +817,8 @@ public class WebUserController implements Serializable {
         toDate = c.getTime();
         c.add(Calendar.DAY_OF_MONTH, -7);
         fromDate = c.getTime();
-
+        dashboardController.setMyCovidData(null);
+        
         if (null != loggedUser.getWebUserRoleLevel()) {
             switch (loggedUser.getWebUserRoleLevel()) {
                 case Lab:
@@ -846,6 +847,7 @@ public class WebUserController implements Serializable {
                     break;
             }
         }
+
         fillUsersForMyInstitute();
         fillAreasForMe();
         return "/index";
