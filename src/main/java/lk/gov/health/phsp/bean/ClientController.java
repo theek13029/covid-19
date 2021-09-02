@@ -2280,7 +2280,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";
         }
-        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+//        clientEncounterComponentFormSetController.loadOldFormset(cefs);
         updateYearDateMonth();
         return "/client/client_test_enrollment";
     }
