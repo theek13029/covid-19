@@ -17,9 +17,7 @@
         <ui:composition template="./template.xhtml">
 
             <ui:define name="content">
-
-
-                <table style="width: 99%; top: 0px; margin: auto; margin-top: 0px; vertical-align: top; " >
+                <table>
                     <tr style="height: 50px;">
                         <td colspan="3" >
                             <h3>Add Files to Project</h3>
@@ -29,7 +27,7 @@
                     <tr >
                         <td colspan="3" >
                             <h:form>
-                                <h:commandButton   class="w3-btn w3-yellow btn350" value="Back" 
+                                <h:commandButton   class="w3-btn w3-yellow btn350" value="Back"
                                                   action="/project"></h:commandButton>
                             </h:form>
                         </td>
@@ -79,7 +77,7 @@
                                         </p:outputLabel>
                                     </p:column>
                                     <p:column headerText="Actions" >
-                                        <p:commandButton value="Download" ajax="false" 
+                                        <p:commandButton value="Download" ajax="false"
                                                          onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
                                             <f:setPropertyActionListener value="#{u}" target="#{webUserController.currentUpload}" ></f:setPropertyActionListener>
                                             <p:fileDownload value="#{webUserController.downloadingFile}" />

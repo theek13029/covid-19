@@ -12,15 +12,15 @@
                 <div class="container-fluid" >
                     <div class="row" >
                         <div class="col-12 p-2"   >
-                            <p:messages ></p:messages>
+                            <h:messages ></h:messages>
                         </div>
                     </div>
                     <div class="row" >
                         <div class="col-3" >
 
                             <div class="card" >
-                                <div class="card-header" >
-                                    <h:outputLabel value="Administration" ></h:outputLabel>
+                                <div class="card-header bg-success text-white" >
+                                    <h:outputLabel value="Administration" class="fs-5 fw-bold my-3  "></h:outputLabel>
                                 </div>
                                 <div class="card-body container-fluid">
                                     <div class="row">
@@ -28,7 +28,7 @@
                                             <h:form>
                                                 <h:commandLink value="View Users" 
                                                                action="#{regionalController.toCountOfTestsByOrderedInstitution()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100" 
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -39,7 +39,7 @@
                                             <h:form>
                                                 <h:commandLink value="Add New User" 
                                                                action="#{regionalController.toCountOfResultsByOrderedInstitution()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -51,7 +51,7 @@
 
                                                 <h:commandLink value="View Institutions" 
                                                                action="#{regionalController.toCountOfResultsByOrderedInstitution()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -63,7 +63,7 @@
 
                                                 <h:commandLink value="Add Institution" 
                                                                action="#{regionalController.toCountOfResultsByLab()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -88,8 +88,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6">
-                                    <p:commandButton ajax="false" value="Cases by Management Plan" action="#{mohController.toListCasesByManagementForRegionalLevel()}">
-                                    </p:commandButton>
+                                    <h:commandButton value="Cases by Management Plan" action="#{mohController.toListCasesByManagementForRegionalLevel()}">
+                                    </h:commandButton>
                                 </div>
 
                             </div>

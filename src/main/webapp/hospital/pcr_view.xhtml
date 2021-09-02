@@ -21,10 +21,10 @@
                         <h:form>
                             <p:outputLabel value="Patient Data For PCR Ordering" ></p:outputLabel>
                             <p:commandButton value="To Edit Details" action="#{hospitalController.toPcrEdit()}" ajax="false"
-                                             style="float: right;">
+                                             >
                             </p:commandButton>
                             <p:commandButton value="Add New PCR Order" ajax="false"
-                                             action="#{hospitalController.toAddNewPcrWithNewClient()}" style="float: right;">
+                                             action="#{hospitalController.toAddNewPcrWithNewClient()}">
                             </p:commandButton>
                         </h:form>
                     </h5>
@@ -32,14 +32,13 @@
                         <div class="form-group row">
                             <div class="col-md-3">
                                 <p:outputLabel value="Test Number"></p:outputLabel>
-                                <p:outputLabel id="txtTestNo"  
-                                               value="#{hospitalController.pcr.encounterNumber}" 
-                                               style="width:100%;font-weight: bolder;">
+                                <p:outputLabel id="txtTestNo"
+                                               value="#{hospitalController.pcr.encounterNumber}"></p:outputLabel>
                                 </p:outputLabel>
                             </div>
                             <div class="col-md-3">
                                 <p:outputLabel  value="Lab"></p:outputLabel>
-                                <p:outputLabel style="margin: 0px; padding: 0px; width: 100%;font-weight: bolder;"
+                                <p:outputLabel
                                                value="#{hospitalController.pcr.referalInstitution.name}"
                                                >
                                 </p:outputLabel>
@@ -47,14 +46,14 @@
                             <div class="col-md-3">
                                 <p:outputLabel  value="Ordering Category"></p:outputLabel>
                                 <p:outputLabel id="orderingCat"
-                                               value="#{hospitalController.pcr.pcrOrderingCategory.name}" 
-                                               style="margin: 0px; padding: 0px; width: 100%;font-weight: bolder;" >
+                                               value="#{hospitalController.pcr.pcrOrderingCategory.name}"
+                                                >
                                 </p:outputLabel>
                             </div>
                             <div class="col-md-3" >
                                 <p:outputLabel value="Sampled at"></p:outputLabel>
-                                <p:outputLabel id="test" value="#{hospitalController.pcr.sampledAt}" 
-                                               style="margin: 0px; padding: 0px; width: 100%;font-weight: bolder;">
+                                <p:outputLabel id="test" value="#{hospitalController.pcr.sampledAt}"
+                                               >
                                     <f:convertDateTime pattern="dd MMMM yyyy hh:mm" ></f:convertDateTime>
                                 </p:outputLabel>
                             </div>
@@ -64,26 +63,26 @@
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <p:outputLabel value="Name:" />
-                                <p:outputLabel value="#{hospitalController.pcr.client.person.name}" title="Name" style="width:100%;font-weight: bolder;"/>
+                                <p:outputLabel value="#{hospitalController.pcr.client.person.name}" title="Name" />
                             </div>
                             <div class="col-md-1">
                                 <p:outputLabel value="Citizenship:" for="citizenship" />
-                                <p:outputLabel id="citizenship" value="#{hospitalController.pcr.client.person.citizenship.name}" style="width:100%;font-weight: bolder;">
+                                <p:outputLabel id="citizenship" value="#{hospitalController.pcr.client.person.citizenship.name}" >
                                 </p:outputLabel>
                             </div>
                             <div class="col-md-2">
                                 <p:outputLabel value="PHN No.:"  />
-                                <p:outputLabel id="phn" value="#{hospitalController.pcr.client.phn}" title="Phn" 
-                                               style="width: 100%;font-weight: bolder;"></p:outputLabel>
+                                <p:outputLabel id="phn" value="#{hospitalController.pcr.client.phn}" title="Phn"
+                                               ></p:outputLabel>
                             </div>
                             <div class="col-md-2">
                                 <p:outputLabel value="Other Ordering Category:"  />
-                                <p:outputLabel value="#{hospitalController.pcr.pcrOrderingCategoryOther}" style="width:100%;font-weight: bolder;"/>
+                                <p:outputLabel value="#{hospitalController.pcr.pcrOrderingCategoryOther}"/>
                             </div>
                             <div class="col-md-1">
                                 <p:outputLabel value="Symptomatic:"  />
-                                <p:outputLabel tabindex="106" 
-                                               value="#{hospitalController.pcr.symptomatic?'Yes':''}" style="width:100%;font-weight: bolder;" ></p:outputLabel>
+                                <p:outputLabel tabindex="106"
+                                               value="#{hospitalController.pcr.symptomatic?'Yes':''}" ></p:outputLabel>
                             </div>
 
 
@@ -92,21 +91,21 @@
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
-                                <p:outputLabel id="nic" 
-                                               style="width: 100%;font-weight: bolder;"  value="#{hospitalController.pcr.client.person.nic}" title="Nic" >
+                                <p:outputLabel id="nic"
+                                                 value="#{hospitalController.pcr.client.person.nic}" title="Nic" >
                                 </p:outputLabel>
                             </div>
                             <div class="col-md-3">
                                 <p:outputLabel value="Gender:"  for="sex" />
                                 <p:outputLabel
-                                    id="sex" value="#{hospitalController.pcr.client.person.sex}" 
-                                    style="width: 100%;font-weight: bolder;">
+                                    id="sex" value="#{hospitalController.pcr.client.person.sex}"
+                                    >
                                 </p:outputLabel>
                             </div>
                             <div class="col-md-3">
-                                <p:outputLabel value="Age:" style="width: 100%;"/>
+                                <p:outputLabel value="Age:" />
                                 <h:panelGroup>
-                                    <p:outputLabel value="#{hospitalController.pcr.client.person.age}"  style="width:100%;font-weight: bolder;">
+                                    <p:outputLabel value="#{hospitalController.pcr.client.person.age}" >
                                     </p:outputLabel>
                                 </h:panelGroup>
                             </div>
@@ -114,43 +113,43 @@
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <p:outputLabel value="Current Residential Address:" for="address" />
-                                <p:outputLabel tabindex="4" 
+                                <p:outputLabel tabindex="4"
                                                id="address"
                                                value="#{hospitalController.pcr.client.person.address}"
-                                               title="Address ****" style="width:100%;font-weight: bolder;font-weight: bolder;"/>
+                                               title="Address ****" />
 
                             </div>
 
                             <div class="col-md-3">
                                 <p:outputLabel value="District:"  />
-                                <p:outputLabel value="#{hospitalController.pcr.client.person.district.name}" style="width: 100%;font-weight: bolder;"/>
+                                <p:outputLabel value="#{hospitalController.pcr.client.person.district.name}" />
                             </div>
 
 
                             <div class="col-md-3">
                                 <p:outputLabel value="MOH Area:" />
-                                <p:outputLabel value="#{hospitalController.pcr.client.person.mohArea.name}" style="width: 100%;font-weight: bolder;"/>
+                                <p:outputLabel value="#{hospitalController.pcr.client.person.mohArea.name}" />
                             </div>
 
                         </div>
                         <div class="form-group row">
                             <div class="col-md-3">
                                 <p:outputLabel value="Contact Number :" />
-                                <p:outputLabel value="#{hospitalController.pcr.client.person.phone1}" style="width: 100%;font-weight: bolder;"/>
+                                <p:outputLabel value="#{hospitalController.pcr.client.person.phone1}" />
                             </div>
                             <div class="col-md-3">
                                 <p:outputLabel value="GN Area:"  />
-                                <p:outputLabel value="#{hospitalController.pcr.client.person.gnArea.name}" style="width: 100%;font-weight: bolder;"/>
+                                <p:outputLabel value="#{hospitalController.pcr.client.person.gnArea.name}" />
                             </div>
 
                             <div class="col-md-3">
                                 <p:outputLabel value="PHI Area:" />
-                                <p:outputLabel value="#{hospitalController.pcr.client.person.phiArea.name}" style="width: 100%;font-weight: bolder;"/>
+                                <p:outputLabel value="#{hospitalController.pcr.client.person.phiArea.name}" />
                             </div>
 
                             <div class="col-md-2">
                                 <p:outputLabel value="Unit/Ward:"  />
-                                <p:outputLabel value="#{hospitalController.pcr.unitWard}" style="width:100%;font-weight: bolder;"/>
+                                <p:outputLabel value="#{hospitalController.pcr.unitWard}" />
                             </div>
 
 

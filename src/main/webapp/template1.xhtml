@@ -10,10 +10,8 @@
         <h:head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+            <h:outputStylesheet library="css" name="styles.min.css"></h:outputStylesheet>
             <link rel="shortcut icon" href="#{resource['image/favicon.ico']}" type="image/x-icon" />
-            <h:outputStylesheet library="css" name="adminlte.min.css"></h:outputStylesheet>
-            <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
-            <h:outputStylesheet library="css" name="all.min.css"></h:outputStylesheet>
             <title >
                 <ui:insert name="title">
                     National COVID-19 Health Information System
@@ -28,18 +26,14 @@
 
             <h:panelGroup rendered="#{webUserController.loggedUser ne null}" >
                 <div class="container-fluid">
-                    <div class="row" >
-                        <div class="col-12" >
+                    <div class="row bg-primary">
+                        <div class="col-auto" >
                             <ez:menu/>
                         </div>
                     </div>
-                    <div class="row" >
-                        <div class="col-12" style="font-size: 1rem;" >
-                            <ui:insert name="content">
-                                Contents
-                            </ui:insert>
-                        </div>
-                    </div>
+                    <ui:insert name="content">
+                        Contents
+                    </ui:insert>
                 </div>
             </h:panelGroup>
 
@@ -57,9 +51,7 @@
             </ui:insert>
 
             <ez:footer/>
-            
-            <h:outputScript library="js" name="bootstrap.bundle.min.js"></h:outputScript>
-            <h:outputScript library="js" name="adminlte.min.js"></h:outputScript>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js" integrity="sha512-PqRelaJGXVuQ81N6wjUrRQelCDR7z8RvKGiR9SbSxKHPIt15eJDmIVv9EJgwq0XvgylszsjzvQ0+VyI2WtIshQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             <h:outputScript library="js" name="jquery.easing.min.js"></h:outputScript>
         </h:body>
     </f:view>
