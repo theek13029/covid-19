@@ -25,11 +25,12 @@
                         <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
                             <h:outputLabel class="h6 fw-bold" value="Ordered From" ></h:outputLabel>
                             <p:calendar value="#{mohController.fromDate}" 
-                                        pattern="dd MMMM yyyy hh:mm a">
+                                        pattern="dd MMMM yyyy">
                             </p:calendar><!-- comment -->
 
                             <h:outputLabel class="h6 fw-bold" value="Ordered To" ></h:outputLabel>
-                            <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <p:calendar value="#{mohController.toDate}" 
+                                        pattern="dd MMMM yyyy"></p:calendar>
 
                             <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
                             <h:selectOneMenu value="#{mohController.orderingCategory}" class="form-select">
