@@ -1657,6 +1657,19 @@ public class ClientController implements Serializable {
         selectedToPrint = null;
         return "/lab/printing_results_bulk";
     }
+    
+    public String toSelectedToEnterResults() {
+        for (Encounter e : selectedToPrint) {
+            e.setResultEntered(false);
+            e.setResultConfirmed(false);
+            e.setResultPrinted(false);
+            e.setResultReviewed(false);
+            encounterFacade.edit(e);
+        }
+        bulkPrintReport = generateLabReportsBulk(selectedToPrint);
+        selectedToPrint = null;
+        return "/lab/printing_results_bulk";
+    }
 
     public String toMohPrintSelected() {
         for (Encounter e : selectedToPrint) {

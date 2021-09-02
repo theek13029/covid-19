@@ -89,6 +89,7 @@ public class Person implements Serializable {
     private String occupation;
     private String workPlace;
     private String workplaceContact;
+    private String workplaceContactDetails;
     
     
 
@@ -195,6 +196,8 @@ public class Person implements Serializable {
         ageInDays = ((long) period.getDays());
     }
 
+    
+    
     public String getAge() {
         if (dateOfBirth != null) {
             calAgeFromDob();
@@ -724,6 +727,14 @@ public class Person implements Serializable {
 
     public void setWorkplaceContact(String workplaceContact) {
         this.workplaceContact = workplaceContact;
+    }
+
+    public String getWorkplaceContactDetails() {
+        return workplaceContactDetails;
+    }
+
+    public void setWorkplaceContactDetails(String workplaceContactDetails) {
+        this.workplaceContactDetails = workplaceContactDetails;
     }
 
 }

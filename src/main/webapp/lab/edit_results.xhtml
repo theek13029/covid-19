@@ -12,18 +12,22 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                <p:panelGrid columns="1" styleClass="alignTop border border-light w-100">
+               <!--<p:panelGrid columns="1" styleClass="alignTop border border-light w-100">
                     <f:facet name="header" >
                         <h:outputLabel class="fs-5 fw-bold" value="Edit Test Results" ></h:outputLabel>
-                    </f:facet>
+                    </f:facet>-->
 
                     <h:form enctype="multipart/form-data" >
 
                         <p:growl></p:growl>
                         <h:messages ></h:messages>
-
-                        <p:panelGrid columns="3" class="border border-light">
-                            <p:panelGrid columns="2" rendered="true" class="border border-light">
+                        <div class="row" >
+                            <div class="col-12 text-center mt-4 mb-2" >
+                                <h4 class="fw-bold"><h:outputLabel  value="Edit Test Results" ></h:outputLabel></h4>
+                            </div>
+                        </div>
+                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                            <h:panelGrid columns="2" rendered="true" class="shadow-lg p-3 mb-5 bg-white rounded">
                                 <h:outputLabel class="fs-6 fw-bold" value="From Date" ></h:outputLabel>
                                 <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
                                 <h:outputLabel  class="fs-6 fw-bold" value="To Date" ></h:outputLabel>
@@ -46,10 +50,10 @@
                                     <p:dataExporter target="tblNegative" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                                 </h:commandButton>
 
-                            </p:panelGrid>
+                            </h:panelGrid>
 
-                        </p:panelGrid>
-
+                        </div>
+                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}"
                                      rendered="true"
                                      var="c" 
@@ -127,7 +131,8 @@
                                 </h:inputText>
                             </p:column>
                         </p:dataTable>
-
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tblNegative" value="#{clientController.listedToEnterResults}"  rendered="true"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" style="display: none;" >
                             <p:column headerText="ID" width="60">
@@ -156,10 +161,11 @@
                             <p:column headerText="Comments" >
                             </p:column>
                         </p:dataTable>
+                        </h:panelGrid>
                     </h:form>
 
 
-                </p:panelGrid>
+                <!--</p:panelGrid>-->
             </ui:define>
         </ui:composition>
     </body>

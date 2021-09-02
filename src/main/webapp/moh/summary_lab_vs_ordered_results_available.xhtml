@@ -12,13 +12,19 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content" class="bg-white">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                <p:panelGrid columns="1" styleClass="alignTop w-100 border border-light bg-white" >
+                <!--<p:panelGrid columns="1" styleClass="alignTop w-100 border border-light bg-white" >
                     <f:facet name="header" >
                         <h:outputLabel class="fs-5 fw-bold my-2" value="Orders To Receive" ></h:outputLabel>
-                    </f:facet>
+                    </f:facet>-->
 
                     <h:form >
-                        <p:panelGrid columns="2" class="border border-light bg-white">
+                        <div class="row" >
+                            <div class="col-12 text-center mt-4 mb-2" >
+                                <h4 class="fw-bold"><h:outputLabel  value="Orders To Receive" ></h:outputLabel></h4>
+                            </div>
+                        </div>
+                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
                             <h:outputLabel class="fs-6 fw-bold" value="From" ></h:outputLabel>
                             <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
@@ -31,9 +37,9 @@
                                 <p:dataExporter type="xlsx" fileName="Lab Order Summery" target="tbl" ></p:dataExporter>
                             </h:commandButton>
 
-                        </p:panelGrid>
-
-
+                        </h:panelGrid>
+                        </div>
+                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{clientController.labSummariesToReceive}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
@@ -57,9 +63,10 @@
                                 <h:outputLabel class="fs-6" value="#{c.count}" ></h:outputLabel>
                             </p:column>
                         </p:dataTable>
+                        </h:panelGrid>
                     </h:form>
 
-                </p:panelGrid>
+                <!--</p:panelGrid>-->
             </ui:define>
         </ui:composition>
     </body>

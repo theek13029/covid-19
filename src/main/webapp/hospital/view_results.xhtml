@@ -8,52 +8,65 @@
 
     <body>
 
-        <ui:composition template="./../template1.xhtml">
-
-            <ui:define name="title">
-                Assign Investigation
-            </ui:define>
-
+        <ui:composition template="/template1.xhtml">
             <ui:define name="content">
-                <!--<h:panelGrid columns="1" styleClass="alignTop">-->
-                    <!--<f:facet name="header" >
-                        <h:outputLabel value="Start to Investigate" ></h:outputLabel>
-                    </f:facet>-->
+                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                    <f:facet name="header" >
+                        <p:outputLabel value="View Results" ></p:outputLabel>
+                    </f:facet>
 
                     <h:form >
-                        <div class="row" >
-                            <div class="col-12 text-center mt-4 mb-2" >
-                                <h4 class="fw-bold"><h:outputLabel  value="Start to Investigate" ></h:outputLabel></h4>
-                            </div>
-                        </div>
-                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
-                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded" >
-                                <h:outputLabel class="h6 fw-bold" value="Assigned From" ></h:outputLabel>
-                                <p:calendar value="#{mohController.fromDate}" 
-                                            pattern="dd MMMM yyyy hh:mm a">
-                                </p:calendar>
+                        <p:panelGrid columns="2" >
+                            <p:outputLabel value="Ordered From" ></p:outputLabel>
+                            <p:calendar value="#{hospitalController.fromDate}" 
+                                        pattern="dd MMMM yyyy hh:mm a">
+                            </p:calendar><!-- comment -->
 
-                                <h:outputLabel class="h6 fw-bold" value="Assigned To" ></h:outputLabel>
-                                <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <p:outputLabel value="Ordered To" ></p:outputLabel>
+                            <p:calendar value="#{hospitalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                                <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
-                                <h:selectOneMenu value="#{mohController.orderingCategory}" class="form-select" >
-                                    <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{mohController.covidTestOrderingCategories}" 
-                                                   var="c" itemLabel="#{c.name}"
-                                                   itemValue="#{c}" ></f:selectItems>
-                                </h:selectOneMenu>
+                            <p:outputLabel value="Ordering Category" ></p:outputLabel>
+                            <p:selectOneMenu value="#{hospitalController.orderingCategory}" >
+                                <f:selectItem itemLabel="All" ></f:selectItem>
+                                <f:selectItems value="#{hospitalController.covidTestOrderingCategories}" 
+                                               var="c" itemLabel="#{c.name}"
+                                               itemValue="#{c}" ></f:selectItems>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Test" ></p:outputLabel>
+                            <p:selectOneMenu value="#{hospitalController.testType}" >
+                                <f:selectItem itemLabel="All" ></f:selectItem>
+                                <f:selectItems value="#{hospitalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                                               itemValue="#{c}" ></f:selectItems>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Result" ></p:outputLabel>
+                            <p:selectOneMenu value="#{hospitalController.result}" >
+                                <f:selectItem itemLabel="All" ></f:selectItem>
+                                <f:selectItems value="#{hospitalController.resultTypes}" var="c" itemLabel="#{c.name}"
+                                               itemValue="#{c}" ></f:selectItems>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel  value="Lab"></p:outputLabel>
+                            <p:autoComplete style="width: 100%;"
+                                            inputStyleClass="autocomplete"
+                                            value="#{hospitalController.lab}"
+                                            forceSelection="true" tabindex="100" 
+                                            completeMethod="#{hospitalController.completeLab}" 
+                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
+                            </p:autoComplete>
+
+                            <p:commandButton ajax="false" value="Generate Excel">
+                                <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
+                            </p:commandButton>
+                            <p:commandButton ajax="false" value="Process" 
+                                             action="#{hospitalController.toTestList()}" ></p:commandButton>
 
 
-                                <h:commandButton value="Generate Excel" class="btn btn-success text-white">
-                                    <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                                </h:commandButton>
-                                <h:commandButton value="Process" class="btn btn-warning text-white w-100"
-                                                 action="#{mohController.toStartInvestigation()}" ></h:commandButton>
-                            </h:panelGrid>
-                        </div>
-                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true" class="table"
+                        </p:panelGrid>
+
+
+                        <p:dataTable id="tbl" value="#{hospitalController.tests}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
@@ -63,9 +76,7 @@
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
-                                     selection="#{mohController.selectedToAssign}"
                                      >
-                            <p:column selectionMode="multiple" width="40" ></p:column>
                             <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
@@ -117,27 +128,34 @@
                                 <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
-                                    <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}" 
-                                                     value="Investigate" 
-                                                     action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
+
+                                <p:panelGrid columns="1" >
+                                    <p:commandButton rendered="#{c.referenceCase ne null}" 
+                                                     ajax="false" value="View case" 
+                                                     action="#{clientController.toNewCaseInvestigationFromTest()}"
+                                                     style="width: 100%;" >
                                         <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
-                                <p:commandButton rendered="#{c.referenceCase ne null}" 
-                                                     ajax="false" value="Investigate" 
-                                                     action="#{clientController.toViewOrEditCaseEnrollmentFromEncounter()}"
-                                                     style="width: 100%;" >
-                                    <f:setPropertyActionListener value="#{c.referenceCase}" target="#{clientController.selectedEncounter}" >
+                                    <p:commandButton value="View Results" action="#{hospitalController.toViewResult()}" ajax="false"  style="width: 100%;" >
+                                        <f:setPropertyActionListener value="#{c}" target="#{hospitalController.test}" ></f:setPropertyActionListener>
+                                    </p:commandButton>
+                                    <p:commandButton ajax="false" value="Delete"  action="#{hospitalController.deleteTest()}"  style="width: 100%;" 
+                                                     onclick="if (!confirm('Are you sure you want to delete?'))
+                                                                 return false" >
+                                        <f:setPropertyActionListener value="#{c}" target="#{hospitalController.deleting}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
+                                </p:panelGrid>
+
+
                             </p:column>
                         </p:dataTable>
-                        </h:panelGrid>
                     </h:form>
 
 
 
-                <!--</h:panelGrid>-->
+                </p:panelGrid>
             </ui:define>
 
         </ui:composition>
