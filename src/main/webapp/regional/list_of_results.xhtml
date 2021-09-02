@@ -87,55 +87,34 @@
                             <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}" filterBy="#{c.referalInstitution.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Ordering Category"  sortBy="#{c.pcrOrderingCategory.name}"
-                                      filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrOrderingCategory.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Test"  sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
+                            <p:column headerText="Test"  style="width: 6rem;"  sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age"  sortBy="#{c.client.person.age}" filterBy="#{c.client.person.age}" filterMatchMode="contains" >
-                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Sex"  sortBy="#{c.client.person.sex.name}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains" >
-                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Phone"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains" >
+                            <p:column headerText="Phone"  style="width: 10rem;"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Address"  sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Result" exportable="false"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
+                            <p:column headerText="Result"  style="width: 8rem;"  exportable="false"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
                                 <p:outputLabel id="cmbResult" value="#{c.pcrResult.name}" style="width: 98%;" >
                                 </p:outputLabel>
                             </p:column>
-                            <p:column id="ct1" headerText="CT 1" >
+                            <p:column id="ct1" headerText="CT1"   style="width: 3rem;" sortBy="#{c.ctValue}">
                                 <p:outputLabel id="txtCt" value="#{c.ctValue}" style="width:99%;"  rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
                                 </p:outputLabel>
                             </p:column>
-                            <p:column id="ct2" headerText="CT 2" >
+                            <p:column id="ct2" headerText="CT2"   style="width: 3rem;" sortBy="#{c.ctValue2}" >
                                 <p:outputLabel id="txtCt2" value="#{c.ctValue2}" style="width:99%;"   rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
                                     <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResultsAtMohForConfirmedDate(c)}" >
                                     </p:ajax>
                                 </p:outputLabel>
                             </p:column>
-                            <p:column id="colResultDate" headerText="Result Date" >
-                                <p:outputLabel id="calRd" value="#{c.resultConfirmedAt}">
-                                    <f:convertDateTime pattern="dd MMM yy" ></f:convertDateTime>
-                                </p:outputLabel>
-                            </p:column>
-
                         </p:dataTable>
-
-
                     </h:form>
-
-
-
                 </p:panelGrid>
             </ui:define>
         </ui:composition>
