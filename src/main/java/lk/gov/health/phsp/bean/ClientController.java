@@ -912,6 +912,13 @@ public class ClientController implements Serializable {
                         + "/";
                 break;
             case "CustomCount":
+                if(serialStart==null){
+                    JsfUtil.addErrorMessage("Need a Starting Number");
+                    return "";
+                }
+                if(serialPrefix==null){
+                    serialPrefix = "";
+                }
                 startCount = this.serialStart;
                 labPrefix = this.serialPrefix;
                 break;
@@ -956,6 +963,7 @@ public class ClientController implements Serializable {
             startCount++;
             encounterFacade.edit(e);
         }
+        serialStart = startCount;
         return toLabReceiveAll();
     }
 
@@ -971,6 +979,7 @@ public class ClientController implements Serializable {
                 + " and c.receivedAtLab is null";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
+        m.put("rej", false);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("rins", webUserController.getLoggedUser().getInstitution());
@@ -1584,6 +1593,13 @@ public class ClientController implements Serializable {
                         + "/";
                 break;
             case "CustomCount":
+                if(serialStart==null){
+                    JsfUtil.addErrorMessage("Please add a start number");
+                    return "";
+                }
+                if(serialPrefix==null){
+                    serialPrefix="";
+                }
                 startCount = this.serialStart;
                 labPrefix = this.serialPrefix;
                 break;

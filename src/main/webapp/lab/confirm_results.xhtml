@@ -61,44 +61,35 @@
                                      selection="#{clientController.selectedToConfirm}">
                             <p:column selectionMode="multiple" width="30" >
                             </p:column>
-                            <p:column width="50" >
-                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="ID"  sortBy="#{c.id}">
-                                <p:outputLabel value="#{c.id}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                            <p:column width="60" headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
+                            <p:column width="60" headerText="BHT/OPD/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" 
+                            <p:column width="120" headerText="Tube No" sortBy="#{c.encounterNumber}" 
                                       filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>`
-                            <p:column headerText="Lab No" sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
+                            <p:column width="120" headerText="Lab No" sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Name" sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age" >
+                            <p:column width="60" headerText="Age" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Sex" >
+                            <p:column width="60" headerText="Sex" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="NIC" sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
+                            <p:column width="60" headerText="NIC" sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Address" sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}"  filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Phone" rendered="false" >
+                            <p:column width="60" headerText="Phone" rendered="false" >
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
-                            <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
+                            <p:column   headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
                                        filterBy="#{c.ctValue}" filterMatchMode="contains" >
                                 <p:inputText id="txtCt1" value="#{c.ctValue}" style="width: 98px;" >
                                     <p:ajax event="keyup" process="txtCt1" listener="#{clientController.saveEncounterResults(c)}" >
@@ -112,7 +103,7 @@
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="Result" >
+                            <p:column headerText="Result" sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
                                 <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}"  >
                                     <f:selectItem itemLabel="Select Result" ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"

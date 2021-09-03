@@ -55,12 +55,22 @@
                         </p:panelGrid>
 
                         <p:dataTable id="tbl" value="#{clientController.listedToEnterResults}"  rendered="true"
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10" rowIndexVar="n"
-                                     rowStyleClass="#{c.resultPositive?'redRow':''}">
+                                     var="c" 
+                                     rowKey="#{c.id}" 
+                                     rowIndexVar="n"
+                                     rowStyleClass="#{c.resultPositive?'redRow':''}"
+
+                                     rows="10"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="5,10,20,{ShowAll|'All'}"
+
+                                     >
                             <p:column headerText="ID" width="60" rendered="false">
                                 <p:outputLabel value="#{c.id}" ></p:outputLabel>
                             </p:column>
-                           
+
                             <p:column headerText="Tube No" width="100" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
@@ -112,13 +122,13 @@
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                             <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                            <p:column headerText="Unit/Ward" width="60"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
+                            <p:column headerText="BHT/OPD No/Clinic No" width="60"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Actions" width="60" exportable="false">
+                            <p:column headerText="Actions" width="160" exportable="false">
                                 <p:commandButton value="Reject" style="width: 90%;" ajax="false" action="#{clientController.markSelectedAsRejectedAtDataEntry(c)}" >
                                 </p:commandButton>
                             </p:column>

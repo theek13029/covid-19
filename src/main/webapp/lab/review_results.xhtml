@@ -58,26 +58,21 @@
 
                                      rowStyleClass="#{c.resultPositive?'redRow':''}"
                                      selection="#{clientController.selectedToReview}">
-                            <p:column selectionMode="multiple" ></p:column>
-                            <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Lab No"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
+                            <p:column selectionMode="multiple" width="30" ></p:column>
+                           
+                            <p:column width="140" headerText="Lab No"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                            <p:column width="140" headerText="Tube No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Name" >
+                            <p:column headerText="Name" sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age" >
+                            <p:column width="40" headerText="Age" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Sex" >
+                            <p:column width="40" headerText="Sex" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Phone" >
@@ -97,7 +92,7 @@
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="Result" 
+                            <p:column width="160" headerText="Result" 
                                       sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
                                 <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}"  >
                                     <f:selectItem itemLabel="Select Result" ></f:selectItem>
@@ -106,6 +101,12 @@
                                     <p:ajax event="change" process="cmbResult" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:selectOneMenu>
+                            </p:column>
+                            <p:column headerText="Unit/Ward" width="60"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="BHT/OPD/Clinic No" width="60"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
                     </h:form>
