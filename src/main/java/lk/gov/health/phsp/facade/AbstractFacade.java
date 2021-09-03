@@ -951,6 +951,32 @@ public abstract class AbstractFacade<T> {
         }
     }
 
+    
+     public List<Object[]> findAggregates(String jpql, Map<String, Object> parameters, TemporalType tt, int maxResults) {
+        TypedQuery<Object[]> qry = getEntityManager().createQuery(jpql, Object[].class);
+        Set s = parameters.entrySet();
+        Iterator it = s.iterator();
+        while (it.hasNext()) {
+            Map.Entry m = (Map.Entry) it.next();
+            Object pVal = m.getValue();
+            String pPara = (String) m.getKey();
+            qry.setMaxResults(maxResults);
+            if (pVal instanceof Date) {
+                Date pDate = (Date) pVal;
+                // qry.setParameter(pPara, pDate, TemporalType.DATE);
+                qry.setParameter(pPara, pDate, tt);
+            } else {
+                qry.setParameter(pPara, pVal);
+            }
+        }
+        try {
+            return qry.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    
     private void setParameterObjectList(TypedQuery<Object[]> qry, Map<String, Object> parameters, TemporalType temporalType) {
         if (parameters == null) {
             return;
