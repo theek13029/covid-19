@@ -164,7 +164,7 @@ public class LabController implements Serializable {
         m.put("stl", false);
         m.put("ins", webUserController.getLoggedUser().getInstitution());
         listedToDispatch = encounterFacade.findByJpql(j, m, TemporalType.DATE);
-        return "/moh/dispatch_samples";
+        return "/lab/dispatch_samples";
     }
 
     public String toDispatchSamples() {
@@ -183,7 +183,7 @@ public class LabController implements Serializable {
         m.put("td", getToDate());
         m.put("ins", webUserController.getLoggedUser().getInstitution());
         listedToDispatch = encounterFacade.findByJpql(j, m, TemporalType.DATE);
-        return "/moh/dispatch_samples";
+        return "/lab/dispatch_samples";
     }
 
     public String toAssignInvestigation() {
@@ -233,15 +233,15 @@ public class LabController implements Serializable {
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
 
-        return "/moh/assign_investigation";
+        return "/lab/assign_investigation";
     }
 
     public String toStartInvestigation() {
-        return "/moh/start_investigation";
+        return "/lab/start_investigation";
     }
 
     public String toViewInvestigatedCases() {
-        return "/moh/view_investigated_cases";
+        return "/lab/view_investigated_cases";
     }
 
     public void assignToInvestigate() {
@@ -591,7 +591,7 @@ public class LabController implements Serializable {
     }
 
     public String toListOfTests() {
-        return "/moh/list_of_tests";
+        return "/lab/list_of_tests";
     }
 
     public String toListOfTestsWithoutMohForRegionalLevel() {
@@ -704,7 +704,7 @@ public class LabController implements Serializable {
         System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("cecItems = " + cecItems.size());
-        return "/moh/order_tests_for_moh";
+        return "/lab/order_tests_for_moh";
     }
 
     public String toListOfFirstContactsForRegionalLevel() {
@@ -738,7 +738,7 @@ public class LabController implements Serializable {
     }
 
     public String toListOfInvestigatedCasesForMoh() {
-        return "/moh/investigated_list";
+        return "/lab/investigated_list";
     }
 
 
@@ -756,7 +756,7 @@ public class LabController implements Serializable {
             case National_Lab:
                 return "/national/lab_reports_index";
             case Moh:
-                return "/moh/reports_index";
+                return "/lab/reports_index";
             case Provincial:
                 return "/provincial/reports_index";
             default:
@@ -902,7 +902,7 @@ public class LabController implements Serializable {
             JsfUtil.addErrorMessage("Not a RAT");
             return "";
         }
-        return "/moh/rat";
+        return "/lab/rat";
     }
 
     public String toRatOrderEdit() {
@@ -914,7 +914,7 @@ public class LabController implements Serializable {
             JsfUtil.addErrorMessage("Not a RAT");
             return "";
         }
-        return "/moh/rat_order";
+        return "/lab/rat_order";
     }
 
     public String toPcrEdit() {
@@ -926,7 +926,7 @@ public class LabController implements Serializable {
             JsfUtil.addErrorMessage("Not a PCR");
             return "";
         }
-        return "/moh/pcr";
+        return "/lab/pcr";
     }
 
     public List<Area> completeDistricts(String qry) {
@@ -1044,6 +1044,8 @@ public class LabController implements Serializable {
                 pcr.setInstitution(webUserController.getLoggedUser().getInstitution());
             }
         }
+        pcr.setInstitution(sessionController.getLastInstitution());
+        pcr.setUnitWard(sessionController.getLastWardUnit());
         pcr.setInstitutionUnit(sessionController.getLastInstitutionUnit());
         pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         pcr.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
@@ -1113,7 +1115,7 @@ public class LabController implements Serializable {
         pcr.setSampledAt(new Date());
         pcr.setSampledBy(webUserController.getLoggedUser());
         pcr.setCreatedAt(new Date());
-        return "/moh/pcr";
+        return "/lab/pcr";
     }
 
     public String toAddNewRatOrderWithExistingNic() {
@@ -1167,7 +1169,7 @@ public class LabController implements Serializable {
         rat.setSampledAt(new Date());
         rat.setSampledBy(webUserController.getLoggedUser());
         rat.setCreatedAt(new Date());
-        return "/moh/rat_order";
+        return "/lab/rat_order";
     }
 
     public String toAddNewRatWithExistingNic() {
@@ -1225,7 +1227,7 @@ public class LabController implements Serializable {
         rat.setResultConfirmedBy(webUserController.getLoggedUser());
 
         rat.setCreatedAt(new Date());
-        return "/moh/rat";
+        return "/lab/rat";
     }
 
     public String saveRatAndToNewRat() {
@@ -1350,7 +1352,7 @@ public class LabController implements Serializable {
         sessionController.getRats().put(rat.getId(), rat);
 
         JsfUtil.addSuccessMessage("Saved.");
-        return "/moh/rat_view";
+        return "/lab/rat_view";
     }
 
     public String savePcr() {
@@ -1427,15 +1429,26 @@ public class LabController implements Serializable {
             pcr.setEncounterNumber(encounterController.createTestNumber(webUserController.getLoggedUser().getInstitution()));
         }
 
+        pcr.setSampled(true);
+        pcr.setSampledAt(new Date());
+        pcr.setSampledBy(webUserController.getLoggedUser());
+        
+        pcr.setSentToLab(true);
+        pcr.setSentToLabAt(new Date());
+        pcr.setSentToLabBy(webUserController.getLoggedUser());
+        
         encounterController.save(pcr);
 
         sessionController.setLastPcrOrdringCategory(pcr.getPcrOrderingCategory());
+        sessionController.setLastInstitution(pcr.getInstitution());
+        sessionController.setLastWardUnit(pcr.getUnitWard());
+        
         sessionController.setLastPcr(pcr);
         lab = pcr.getReferalInstitution();
         sessionController.getPcrs().put(pcr.getId(), pcr);
 
         JsfUtil.addSuccessMessage("PCR Saved.");
-        return "/moh/pcr_view";
+        return "/lab/pcr_view";
     }
 
     public void retrieveLastAddressForRat() {
@@ -1583,7 +1596,7 @@ public class LabController implements Serializable {
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
-        return "/moh/list_of_tests";
+        return "/lab/list_of_tests";
     }
 
     public String toDistrictViceTestListForOrderingCategories() {
@@ -1679,7 +1692,7 @@ public class LabController implements Serializable {
             }
         }
         institutionCounts = tics;
-        return "/moh/ordering_category_moh";
+        return "/lab/ordering_category_moh";
     }
 
     public String toTestRequestDistrictCounts() {
@@ -1702,7 +1715,7 @@ public class LabController implements Serializable {
             m.put("oc", orderingCategory);
         }
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        return "/moh/list_of_tests";
+        return "/lab/list_of_tests";
     }
 
     public String toTestListWithoutResults() {
@@ -1714,9 +1727,6 @@ public class LabController implements Serializable {
 
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
-
-        j += " and c.institution=:ins ";
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
@@ -1733,9 +1743,9 @@ public class LabController implements Serializable {
             j += " and c.pcrResult=:result ";
             m.put("result", result);
         }
-        if (lab != null) {
-            j += " and c.referalInstitution=:ri ";
-            m.put("ri", lab);
+        if (institution != null) {
+            j += " and c.institution=:ins ";
+            m.put("ins", institution);
         }
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
@@ -1924,7 +1934,7 @@ public class LabController implements Serializable {
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         System.out.println("tests = " + tests.size());
-        return "/moh/enter_results";
+        return "/lab/enter_results";
     }
 
     public List<Item> getCovidTestOrderingCategories() {

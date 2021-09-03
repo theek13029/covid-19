@@ -38,8 +38,18 @@
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
 
-                            <h:outputLabel class="fs-6 fw-bold" value="Test" ></h:outputLabel>
-                            <h:selectOneMenu class="form-select" value="#{labController.testType}" >
+                            <h:outputLabel value="Institution" class="form-label"></h:outputLabel>
+                            <p:autoComplete class="w-100"
+                                            id="acIns"
+                                            value="#{labController.institution}"
+                                            forceSelection="true" tabindex="100"
+                                            completeMethod="#{institutionController.completeInstitutions}"
+                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
+                                <p:ajax process="acIns" event="blur" ></p:ajax>
+                            </p:autoComplete>
+
+                            <p:outputLabel value="Test" ></p:outputLabel>
+                            <p:selectOneMenu value="#{labController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{labController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>

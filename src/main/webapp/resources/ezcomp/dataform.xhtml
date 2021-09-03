@@ -126,10 +126,10 @@
                             <p:outputLabel for="lbIcM" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>
                         <div class="col-md-4">
-                            <p:selectOneMenu id="lbIcM" value="#{ii.addingItem.ci.itemValue}" >
+                            <p:selectOneButton id="lbIcM" value="#{ii.addingItem.ci.itemValue}" >
                                 <f:selectItems value="#{ii.availableItemsForSelection}" var="li"
                                                itemLabel="#{li.displayName}" itemValue="#{li}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </p:selectOneButton>
                         </div>
                         <div class="col-md-4">
                             <p:commandButton id="btnAddM3a"  value="Add" process="lbIcM btnAddM3a" update="@form"
