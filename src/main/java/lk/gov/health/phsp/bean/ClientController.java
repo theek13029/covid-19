@@ -128,13 +128,11 @@ public class ClientController implements Serializable {
     private String nameCol = "B";
     private String ageColumn = "C";
     private String sexCol = "D";
-    private String nicCol = "F";
-    private String phoneCol = "E";
-    private String addressCol = "F";
+    private String nicCol = "E";
+    private String phoneCol = "F";
+    private String addressCol = "G";
 
     private Integer startRow = 1;
-
-    
 
     private Item selectedTest;
 
@@ -967,6 +965,7 @@ public class ClientController implements Serializable {
                 + " where c.retired=false "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
+                + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
                 + " and c.referalInstitution=:rins "
                 + " and c.sentToLab is not null "
                 + " and c.receivedAtLab is null";
@@ -1657,7 +1656,7 @@ public class ClientController implements Serializable {
         selectedToPrint = null;
         return "/lab/printing_results_bulk";
     }
-    
+
     public String toSelectedToEnterResults() {
         for (Encounter e : selectedToPrint) {
             e.setResultEntered(false);
@@ -4963,7 +4962,6 @@ public class ClientController implements Serializable {
         }
         return tm;
     }
-
 
     public String toListCases() {
         return "/client/case_list";

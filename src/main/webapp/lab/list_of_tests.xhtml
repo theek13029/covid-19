@@ -38,6 +38,16 @@
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
+                            <p:outputLabel value="Institution" ></p:outputLabel>
+                            <p:autoComplete 
+                                            id="acIns" style="margin: 0px; padding: 0px; width: 100%;"
+                                            value="#{labController.institution}"
+                                            forceSelection="true" tabindex="100" inputStyle="width:100%;"
+                                            completeMethod="#{institutionController.completeInstitutions}" 
+                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
+                                <p:ajax process="acIns" event="blur" ></p:ajax>
+                            </p:autoComplete>
+
                             <p:outputLabel value="Test" ></p:outputLabel>
                             <p:selectOneMenu value="#{labController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
