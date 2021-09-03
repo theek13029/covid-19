@@ -971,6 +971,7 @@ public class ClientController implements Serializable {
                 + " and c.receivedAtLab is null";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
+        m.put("rej", false);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("rins", webUserController.getLoggedUser().getInstitution());
