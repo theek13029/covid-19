@@ -102,6 +102,11 @@
   margin: 0;
 }
 
+.ui-selectonemenu-items-wrapper {
+  background-color: #fff;
+  border: 1px solid;
+}
+
 .border-none {
   border-radius: 0;
 }

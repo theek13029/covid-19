@@ -19,7 +19,7 @@
         <h:form>
 
             <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper" style="margin: 10px;">
+            <div class="content-wrapper" style="margin: 20px;">
                 <!-- Main content -->
                 <section class="content">
                     <div class="container-fluid">
@@ -28,16 +28,22 @@
                             <div class="col-lg-3 col-6">
                                 <!-- small box -->
                                 <div class="small-box bg-info">
-                                    <div class="inner">
-                                        <h3>#{dashboardController.samplesToReceive}</h3>
-                                        <p>Samples To Receive</p>
+                                    <div class="card-header text-white">
+                                        <h5 class="fw-bold text-center">Samples To Receive</h5>
+                                        
+                                        
                                     </div>
-                                    <div class="icon">
+                                    <div class="card-header text-white p-4">
+                                      
+                                        <h3 class="text-center">#{dashboardController.samplesToReceive}</h3>
+                                        
+                                    </div>
+                                    <div class="icon p-2 b-2">
                                         <i class="ion ion-bag"></i>
                                     </div>
-                                    <h:commandLink class="small-box-footer"
+                                    <h:commandLink class="d-grid gap-2 text-white px-5"
                                                    action="#{dashboardController.toReceiveLabSamples}" >
-                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                        For More information <i class="fas fa-arrow-circle-right"></i>
                                     </h:commandLink>
                                 </div>
                             </div>
@@ -45,17 +51,24 @@
                             <div class="col-lg-3 col-6">
                                 <!-- small box -->
                                 <div class="small-box bg-success">
-                                    <div class="inner">
-                                        <h3>#{dashboardController.samplesReceived}</h3>
+                                    <div class="card-header text-white">
+                                        <h5 class="fw-bold text-center">Samples Received</h5>
+                                        
 
-                                        <p>Samples Received</p>
+                                        
                                     </div>
-                                    <div class="icon">
+                                    <div class="card-header text-white p-4">
+                                        
+                                        <h3 class="text-center">#{dashboardController.samplesReceived}</h3>
+
+                                        
+                                    </div>
+                                    <div class="icon p-2 b-2">
                                         <i class="ion ion-stats-bars"></i>
                                     </div>
-                                    <h:commandLink class="small-box-footer"
+                                    <h:commandLink class="d-grid gap-2 text-white px-5"
                                                    action="#{dashboardController.toLabSummarySamplesReceived()}" >
-                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                        For More information <i class="fas fa-arrow-circle-right"></i>
                                     </h:commandLink>
                                 </div>
                             </div>
@@ -63,17 +76,24 @@
                             <div class="col-lg-3 col-6">
                                 <!-- small box -->
                                 <div class="small-box bg-warning">
-                                    <div class="inner">
-                                        <h3>#{dashboardController.samplesResultReviewed}</h3>
+                                    <div class="card-header text-white">
+                                        <h5 class="fw-bold text-center">Samples Reviewed</h5>
+                                       
 
-                                        <p>Samples Reviewed</p>
+                                        
                                     </div>
-                                    <div class="icon">
+                                    <div class="card-header text-white p-4">
+                                       
+                                        <h3 class="text-center">#{dashboardController.samplesResultReviewed}</h3>
+
+                                        
+                                    </div>
+                                    <div class="icon p-2 b-2">
                                         <i class="ion ion-person-add"></i>
                                     </div>
-                                    <h:commandLink class="small-box-footer"
+                                    <h:commandLink class="d-grid gap-2 text-white px-5"
                                                    action="#{dashboardController.toLabSummarySamplesReviewed()}" >
-                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                        For More information <i class="fas fa-arrow-circle-right"></i>
                                     </h:commandLink>
                                 </div>
                             </div>
@@ -81,17 +101,24 @@
                             <div class="col-lg-3 col-6">
                                 <!-- small box -->
                                 <div class="small-box bg-danger">
-                                    <div class="inner">
-                                        <h3>#{dashboardController.samplesResultsConfirmed}</h3>
+                                    <div class="card-header text-white">
+                                        <h5 class="fw-bold text-center">Samples Confirmed</h5>
+                                        
 
-                                        <p>Samples Confirmed</p>
+                                        
                                     </div>
-                                    <div class="icon">
+                                    <div class="card-header text-white p-4">
+                                        
+                                        <h3 class="text-center">#{dashboardController.samplesResultsConfirmed}</h3>
+
+                                        
+                                    </div>
+                                    <div class="icon p-2 b-2">
                                         <i class="ion ion-pie-graph"></i>
                                     </div>
-                                    <h:commandLink class="small-box-footer"
+                                    <h:commandLink class="d-grid gap-2 text-white px-5"
                                                    action="#{dashboardController.toLabSummarySamplesConfirmed()}" >
-                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                        For More information <i class="fas fa-arrow-circle-right"></i>
                                     </h:commandLink>
                                 </div>
                             </div>
