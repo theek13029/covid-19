@@ -130,7 +130,7 @@
                                 <p:outputLabel id="txtCt2" value="#{c.ctValue2}" style="width: 98px;" >
                                 </p:outputLabel>
                             </p:column>
-                            <p:column headerText="Comments"  >
+                            <p:column headerText="Comments"  filterBy="#{c.comments}" filterMatchMode="contains"  >
                                 <p:outputLabel value="#{c.comments}" ></p:outputLabel>
                             </p:column>
 
