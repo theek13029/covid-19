@@ -39,13 +39,9 @@
                                 <p:commandButton ajax="false" value="Process"  style="width: 100%;"
                                                  action="#{clientController.toConfirmResults()}" ></p:commandButton>
                                 <p:commandButton ajax="false" value="Generate Excel" style="width: 100%;">
-                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
+                                    <p:dataExporter target="tbl" type="xlsx" fileName="Result_lists" ></p:dataExporter>
                                 </p:commandButton>
-                                <p:commandButton value="CONFIRM SELECTED" ajax="false" 
-                                                 action="#{clientController.confirmSelectedResults()}" ></p:commandButton>
-                                <p:commandButton value="Reject selected" ajax="false" 
-                                                 action="#{clientController.markR}" ></p:commandButton>
-                                <p:commandButton value="Mark as Pending" ajax="false" 
+                                <p:commandButton value="Approve Selected" ajax="false" 
                                                  action="#{clientController.confirmSelectedResults()}" ></p:commandButton>
                             </p:panelGrid>
                         </p:panelGrid>
@@ -77,7 +73,7 @@
                             <p:column headerText="Name" sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column width="60" headerText="Age" >
+                            <p:column width="60" headerText="Age" sortBy="#{c.client.person.age}" filterBy="#{c.client.person.age}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
                             <p:column width="60" headerText="Sex" >
