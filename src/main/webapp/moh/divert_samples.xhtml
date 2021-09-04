@@ -70,12 +70,12 @@
 
                         </p:panelGrid>
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToDivert}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToDivert}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="1000"
                                      
                                      
                                      selection="#{clientController.selectedToDivert}">
-                            <p:column selectionMode="multiple" ></p:column>
+                            <p:column selectionMode="multiple" width="25"></p:column>
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>

@@ -62,7 +62,7 @@
                     <p:panelGrid columns="1" >
 
 
-                        <p:dataTable value="#{relationshipController.items}"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{relationshipController.items}"
                                      var="r"
                                      rowKey="#{r.id}"
                                      rowIndexVar="n"

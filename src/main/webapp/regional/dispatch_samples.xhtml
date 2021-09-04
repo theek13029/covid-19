@@ -66,7 +66,7 @@
 
                         </p:panelGrid>
 
-                        <p:dataTable id="tbl" value="#{regionalController.listedToDispatch}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{regionalController.listedToDispatch}" 
                                      var="c" rowKey="#{c.id}" 
 
                                      selection="#{regionalController.selectedToDispatch}"
@@ -78,7 +78,7 @@
 
 
                                      >
-                            <p:column selectionMode="multiple" width="30"></p:column>
+                            <p:column selectionMode="multiple" width="30" resizable="false"></p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>

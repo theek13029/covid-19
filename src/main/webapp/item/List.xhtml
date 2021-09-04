@@ -19,7 +19,7 @@
                 </p:commandButton>
 
                 <p:panel header="#{bundleClinical.ListItemTitle}">
-                    <p:dataTable id="datalist" value="#{itemController.items}" var="item"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{itemController.items}" var="item"
                                  selectionMode="single" selection="#{itemController.selected}"
                                  paginator="true"
                                  rowKey="#{item.id}"

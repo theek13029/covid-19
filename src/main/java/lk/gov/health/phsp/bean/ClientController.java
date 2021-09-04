@@ -1312,7 +1312,6 @@ public class ClientController implements Serializable {
                 + " where c.retired=:ret "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
-                + " and c.institution=:ins "
                 + " and c.referalInstitution=:rins"
                 + " and c.resultConfirmed is not null "
                 + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) ";
@@ -1322,8 +1321,13 @@ public class ClientController implements Serializable {
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
-        m.put("ins", institution);
+
         m.put("rins", referingInstitution);
+
+        if (institution != null) {
+            m.put("ins", institution);
+            j += " and c.institution=:ins ";
+        }
         if (plateNo != null && !plateNo.trim().equals("")) {
             m.put("pn", plateNo);
             j += " and c.plateNumber=:pn ";
