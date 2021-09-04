@@ -11,10 +11,10 @@
         <ui:composition template="/template1.xhtml">
 
             <ui:define name="content">
-                
+
                 <p:panel header="Select Client" style="height: 100%; text-align: center;" >
-                    
-                    
+
+
                     <h:form>
 
                         <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{clientController.selectedClients}" var="item">
@@ -33,12 +33,6 @@
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="PHN"/>
-                                </f:facet>
-                                <h:outputText value="#{item.phn}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
                                     <h:outputText value="Phone No"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.phone1}">
@@ -46,9 +40,9 @@
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Email"/>
+                                    <h:outputText value="Address"/>
                                 </f:facet>
-                                <h:outputText value="#{item.person.email}">
+                                <h:outputText value="#{item.person.address}">
                                 </h:outputText>
                             </p:column>
                             <p:column>
@@ -59,16 +53,16 @@
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Religion"/>
+                                    <h:outputText value="GN Area"/>
                                 </f:facet>
-                                <h:outputText value="#{item.person.religion.name}">
+                                <h:outputText value="#{item.person.gnArea.name}">
                                 </h:outputText>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Ethnicity"/>
+                                    <h:outputText value="MOH Area"/>
                                 </f:facet>
-                                <h:outputText value="#{item.person.ethinicGroup.name}"/>
+                                <h:outputText value="#{item.person.mohArea.name}"/>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
@@ -108,12 +102,12 @@
                     </h:form>
 
 
-                    
+
                 </p:panel>
 
 
-              
-                
+
+
             </ui:define>
 
         </ui:composition>
