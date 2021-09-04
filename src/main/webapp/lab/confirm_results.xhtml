@@ -54,6 +54,7 @@
                         <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToConfirm}" 
                                      var="c" 
                                      rowKey="#{c.id}"
+                                     class="table table-bordered table-striped"
 
                                      rows="10"
                                      paginator="true"
@@ -91,10 +92,10 @@
                             <p:column headerText="Name" sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}"  style="width: 98%;" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age" >
+                            <p:column headerText="Age" sortBy="#{c.client.person.age}" filterBy="#{c.client.person.age}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.age}"  style="width: 98%;" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Sex"  >
+                            <p:column headerText="Sex" sortBy="#{c.client.person.sex.name}" filterBy="#{c.client.person.sex.name}" filterMatchMode="startsWith" >
                                 <p:outputLabel value="#{c.client.person.sex.name}"  style="width: 98%;" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="NIC" sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
@@ -103,7 +104,9 @@
                             <p:column headerText="Address" sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}"  filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.address}"  style="width: 98%;" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Phone" rendered="false" >
+                            <p:column headerText="Phone" 
+                                      sortBy="#{c.client.person.phone1}" 
+                                      filterBy="#{c.client.person.phone1}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.phone1}"  style="width: 98%;" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Result" >
