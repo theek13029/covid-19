@@ -43,7 +43,7 @@
 
                     </h:panelGrid>
 
-                    <p:dataTable value="#{clientController.importedClients}"
+                    <p:dataTable resizableColumns="true" value="#{clientController.importedClients}"
                                  selection="#{clientController.selectedClients}"
                                  var="c" 
                                  rowKey="#{c.id}"
@@ -139,7 +139,7 @@
 
 
 
-                    <p:dataTable value="#{clientController.importedClients}"
+                    <p:dataTable resizableColumns="true" value="#{clientController.importedClients}"
                                  var="c" id="tbl"
                                  rowKey="#{c.id}" style="display: none;" >
                         <p:column headerText="PHN"  >

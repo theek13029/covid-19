@@ -22,7 +22,7 @@
                             <p:commandButton ajax="false" value="Back" action="#{clientController.toClientProfile()}" ></p:commandButton>
                         </f:facet>
 
-                        <p:dataTable value="#{clientEncounterComponentFormSetController.items}"
+                        <p:dataTable resizableColumns="true" value="#{clientEncounterComponentFormSetController.items}"
                                      var="s" rowKey="#{s.id}" rowIndexVar="n"
                                      rows="10"
                                      paginator="true"

@@ -98,7 +98,7 @@
                     </div>   
 
                     <p:panelGrid columns="1" style="width: 100%;" >
-                        <p:dataTable value="#{clientController.selectedClientEncounters}" 
+                        <p:dataTable resizableColumns="true" value="#{clientController.selectedClientEncounters}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" >
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.encounterDate}" >

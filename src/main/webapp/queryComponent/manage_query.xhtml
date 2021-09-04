@@ -28,7 +28,7 @@
 
 
                             <p:panel header="Existing Creteria" >
-                                <p:dataTable id="lst" value="#{queryComponentController.selectedCretiria}" var="f" >
+                                <p:dataTable resizableColumns="true" id="lst" value="#{queryComponentController.selectedCretiria}" var="f" >
                                     <p:column headerText="Order No" width="60" >
                                         <p:outputLabel value="#{f.orderNo}" >
                                             <f:convertNumber pattern="0" ></f:convertNumber>

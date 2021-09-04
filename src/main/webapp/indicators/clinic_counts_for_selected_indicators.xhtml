@@ -60,7 +60,7 @@
 
                                 <p:outputLabel value="Indicator" for="indicators" ></p:outputLabel>
 
-                                <p:dataTable id="indicators" value="#{queryComponentController.indicators}" var="i"
+                                <p:dataTable resizableColumns="true" id="indicators" value="#{queryComponentController.indicators}" var="i"
                                              rowKey="#{i.id}"
                                              paginator="true"
                                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

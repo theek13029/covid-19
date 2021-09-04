@@ -161,7 +161,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h:form>
-                            <p:dataTable value="#{sessionController.ratList}" id="tbl"
+                            <p:dataTable resizableColumns="true" value="#{sessionController.ratList}" id="tbl"
                                          var="c" paginator="true" rowKey="#{c.id}" rows="10" >
                                 <f:facet name="header">
                                     Last Entries

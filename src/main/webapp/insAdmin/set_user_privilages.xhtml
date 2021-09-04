@@ -39,7 +39,7 @@ THE SOFTWARE.
                                 <p:outputLabel value="User List" ></p:outputLabel>
                             </div>
                             <div class="card-body">
-                                <p:dataTable value="#{webUserController.items}" var="item"  
+                                <p:dataTable resizableColumns="true" value="#{webUserController.items}" var="item"  
                                              rowKey="#{item.id}" 
                                              rows="10"
                                              paginator="true"

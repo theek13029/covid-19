@@ -17,7 +17,7 @@
                         <p:dataExporter target="datalist" type="xls" fileName="areas" ></p:dataExporter>
                     </p:commandButton>
                     
-                    <p:dataTable id="datalist" value="#{areaController.items}" 
+                    <p:dataTable resizableColumns="true" id="datalist" value="#{areaController.items}" 
                                  var="item" 
                                  rowKey="#{item.id}"
                                  paginator="true"

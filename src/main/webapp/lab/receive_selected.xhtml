@@ -49,7 +49,7 @@
                         <p:commandButton value="RECEIVE SELECTED" ajax="false" 
                                          action="#{clientController.markSelectedAsReceivedResults()}" ></p:commandButton>
 
-                                         <p:dataTable id="tbl" value="#{clientController.listedToReceive}" 
+                                         <p:dataTable resizableColumns="true" id="tbl" value="#{clientController.listedToReceive}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      selection="#{clientController.selectedToReceive}">
                             <p:column selectionMode="multiple" ></p:column>

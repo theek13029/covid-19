@@ -40,7 +40,7 @@
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{clientController.testList}" 
+                        <p:dataTable resizableColumns="true" id="tbl" value="#{clientController.testList}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
                             <p:column headerText="No"  sortBy="#{c.encounterNumber}" width="40">

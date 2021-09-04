@@ -34,7 +34,7 @@
 
 
                         </p:panelGrid>
-                        <p:dataTable id="tbl" value="#{clientController.caseList}" 
+                        <p:dataTable resizableColumns="true" id="tbl" value="#{clientController.caseList}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
                             <p:column headerText="No" >

@@ -22,7 +22,7 @@
                                 <p:commandButton ajax="false" value="Back" action="query" style="float: right;" ></p:commandButton>
                             </f:facet>
 
-                            <p:dataTable value="#{queryComponentController.criteria()}" var="item">
+                            <p:dataTable resizableColumns="true" value="#{queryComponentController.criteria()}" var="item">
 
                                 <p:column>
                                     <f:facet name="header">

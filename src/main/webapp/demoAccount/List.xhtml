@@ -16,7 +16,7 @@
         <ui:define name="webUserContents">
             <h:form id="DemoAccountListForm">
                 <p:panel header="#{bundleDemo.ListDemoAccountTitle}">
-                    <p:dataTable id="datalist" value="#{demoAccountController.items}" var="item"
+                    <p:dataTable resizableColumns="true" id="datalist" value="#{demoAccountController.items}" var="item"
                                  selectionMode="single" selection="#{demoAccountController.selected}"
                                  paginator="true"
                                  rowKey="#{item.id}"

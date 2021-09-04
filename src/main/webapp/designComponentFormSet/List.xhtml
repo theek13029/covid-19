@@ -18,7 +18,7 @@
                             <p:commandButton ajax="false" value="Back to Manage Metadata"
                                              action="/systemAdmin/index" style="float: right;" ></p:commandButton>
                         </f:facet>
-                        <p:dataTable id="datalist" 
+                        <p:dataTable resizableColumns="true" id="datalist" 
                                      value="#{designComponentFormSetController.items}" var="item"
                                      selectionMode="single" selection="#{designComponentFormSetController.selected}"
                                      paginator="true"

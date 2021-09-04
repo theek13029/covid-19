@@ -166,7 +166,7 @@
 
 
                     <h:form>
-                        <p:dataTable value="#{clientController.institutionCaseEnrollments}" 
+                        <p:dataTable resizableColumns="true" value="#{clientController.institutionCaseEnrollments}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" >
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>

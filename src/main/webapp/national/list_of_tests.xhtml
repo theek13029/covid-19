@@ -62,7 +62,7 @@
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{nationalController.tests}" rendered="true"
+                        <p:dataTable resizableColumns="true" id="tbl" value="#{nationalController.tests}" rendered="true"
                                      lazy="true"
                                      rowIndexVar="n"
                                      var="c" 
@@ -84,6 +84,10 @@
                             </p:column>
                             <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
+                            </p:column>
+                             <p:column headerText="Test No"  sortBy="#{c.encounterNumber}" 
+                                       filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>

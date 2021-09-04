@@ -50,7 +50,7 @@
                                          action="#{clientController.reviewOkForSelectedResults()}" ></p:commandButton>
 
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}" 
+                        <p:dataTable resizableColumns="true" id="tbl" value="#{clientController.listedToReviewResults}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"

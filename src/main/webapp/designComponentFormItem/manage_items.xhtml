@@ -21,7 +21,7 @@
                                 <p:commandButton ajax="false" value="Back to Manage Forms" action="/designComponentFormSet/manage_forms" style="float: right;" ></p:commandButton>
                             </f:facet>
                             <p:panel header="Existing Forms Items" >  
-                                <p:dataTable id="lst" value="#{designComponentFormItemController.designComponentFormItems}" var="f" >
+                                <p:dataTable resizableColumns="true" id="lst" value="#{designComponentFormItemController.designComponentFormItems}" var="f" >
                                     <p:column headerText="Order No" width="60" >
                                         <p:outputLabel value="#{f.orderNo}" >
                                             <f:convertNumber pattern="0" ></f:convertNumber>

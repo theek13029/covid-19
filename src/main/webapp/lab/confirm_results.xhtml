@@ -43,10 +43,6 @@
                                 </p:commandButton>
                                 <p:commandButton value="CONFIRM SELECTED" ajax="false" 
                                                  action="#{clientController.confirmSelectedResults()}" ></p:commandButton>
-                                <p:commandButton value="Reject selected" ajax="false" 
-                                                 action="#{clientController.markR}" ></p:commandButton>
-                                <p:commandButton value="Mark as Pending" ajax="false" 
-                                                 action="#{clientController.confirmSelectedResults()}" ></p:commandButton>
                             </p:panelGrid>
                         </p:panelGrid>
 
@@ -55,7 +51,7 @@
 
 
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToConfirm}" 
+                        <p:dataTable resizableColumns="true" resizableColumns="true" id="tbl" value="#{clientController.listedToConfirm}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      rowsPerPageTemplate="5,10,50,100,250,{ShowAll|'All'}"
                                      selection="#{clientController.selectedToConfirm}">
@@ -86,7 +82,7 @@
                             <p:column headerText="Age" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Sex" >
+                            <p:column headerText="Sex"  >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="NIC" sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">

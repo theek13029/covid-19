@@ -55,7 +55,7 @@
                                          onclick="form.target = '_blank'"></p:commandButton>
 
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToPrint}" 
+                        <p:dataTable resizableColumns="true" id="tbl" value="#{clientController.listedToPrint}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      selection="#{clientController.selectedToPrint}">

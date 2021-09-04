@@ -57,7 +57,7 @@
 
                         </p:panelGrid>
 
-                        <p:dataTable id="tbl" value="#{mohController.listedToDispatch}" 
+                        <p:dataTable resizableColumns="true" id="tbl" value="#{mohController.listedToDispatch}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      selection="#{mohController.selectedToDispatch}"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
