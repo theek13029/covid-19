@@ -50,13 +50,11 @@
 
                         </p:panelGrid>
 
-                    </h:form>
+                   
 
 
-                    <h:form>
-
-
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToReviewResults}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" 
+                                     value="#{clientController.listedToReviewResults}" 
                                      var="c" paginator="true" rowKey="#{c.id}" 
                                      
                                      rows="10" 
