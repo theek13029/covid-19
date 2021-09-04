@@ -13,35 +13,35 @@
             <ui:define name="content">
 
                 <h:form>
-                    <p:panelGrid columns="2" columnClasses="alignLeft alignLeft" class="pageCenter">
+                    <p:panelGrid columns="2" columnClasses="alignLeft alignLeft" class="pageCenter bg-white border border-light">
 
                         <f:facet name="header" >
-                            Change My Details
+                            <div class="my-2 fs-5 fw-bold"> Change My Details</div>
                         </f:facet>
 
 
-                        <h:outputLabel value="Name" for="webUserPerson" />
-                        <h:inputText id="webUserPerson" value="#{webUserController.selected.person.name}" title="#{bundle.EditWebUserTitle_webUserPerson}" >
+                        <h:outputLabel class="fs-6 fw-bold" value="Name" for="webUserPerson" />
+                        <h:inputText class="form-control" id="webUserPerson" value="#{webUserController.selected.person.name}" title="#{bundle.EditWebUserTitle_webUserPerson}" >
                         </h:inputText>
 
 
-                        <h:outputLabel value="Username" for="name" />
-                        <h:inputText disabled="true" id="name" value="#{webUserController.selected.name}" title="#{bundle.EditWebUserTitle_name}" required="true" requiredMessage="#{bundle.EditWebUserRequiredMessage_name}"/>
+                        <h:outputLabel class="fs-6 fw-bold" value="Username" for="name" />
+                        <h:inputText  class="form-control text-muted" disabled="true" id="name" value="#{webUserController.selected.name}" title="#{bundle.EditWebUserTitle_name}" required="true" requiredMessage="#{bundle.EditWebUserRequiredMessage_name}"/>
 
 
-                        <h:outputLabel value="Email" for="email" />
-                        <h:inputText id="email" value="#{webUserController.selected.email}" title="#{bundle.EditWebUserTitle_email}" />
+                        <h:outputLabel class="fs-6 fw-bold" value="Email" for="email" />
+                        <h:inputText class="form-control" id="email" value="#{webUserController.selected.email}" title="#{bundle.EditWebUserTitle_email}" />
 
-                        <h:outputLabel value="Phone" for="telNo" />
-                        <h:inputText id="telNo" value="#{webUserController.selected.telNo}" title="#{bundle.EditWebUserTitle_telNo}" />
+                        <h:outputLabel class="fs-6 fw-bold" value="Phone" for="telNo" />
+                        <h:inputText class="form-control" id="telNo" value="#{webUserController.selected.telNo}" title="#{bundle.EditWebUserTitle_telNo}" />
 
 
-                        <h:outputLabel value="Institution" for="institution" />
-                        <h:outputLabel id="institution" value="#{webUserController.selected.institution.name}"  >
+                        <h:outputLabel class="fs-6 fw-bold" value="Institution" for="institution" />
+                        <h:outputLabel class="fs-6"  id="institution" value="#{webUserController.selected.institution.name}"  >
                         </h:outputLabel>
 
-                        <h:outputLabel value="Language"  />
-                        <h:selectOneMenu value="#{webUserController.selected.defLocale}" >
+                        <h:outputLabel class="fs-6 fw-bold" value="Language"  />
+                        <h:selectOneMenu class="form-control" value="#{webUserController.selected.defLocale}" >
                             <f:selectItem itemLabel="Sinhala" itemValue="si" ></f:selectItem>
                             <f:selectItem itemLabel="Tamil" itemValue="ta" ></f:selectItem>
                             <f:selectItem itemLabel="English" itemValue="en" ></f:selectItem>
@@ -49,7 +49,7 @@
 
 
                         <p:spacer></p:spacer>
-                        <p:commandButton ajax="false" action="#{webUserController.updateMyDetails()}" value="Save" ></p:commandButton>
+                        <h:commandButton class="w-100 my-2 btn btn-success"  action="#{webUserController.updateMyDetails()}" value="Save" ></h:commandButton>
 
                     </p:panelGrid>
 

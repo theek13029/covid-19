@@ -147,6 +147,7 @@ public class Encounter implements Serializable {
     private String pcrResultStr;
     private String resultComments;
 
+    @Deprecated
     private Boolean resultPositive;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date resultDate;

@@ -14,46 +14,49 @@
                 <h:outputStylesheet library="css" name="tem1.css"/>
 
 
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" rendered="true" >
+                <h:panelGrid columns="1"  styleClass="alignTop" rendered="true" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Entering Test Results" ></p:outputLabel>
+                        <p class="fs-4">Entering Test Results</p>
+                        
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="Ordered From" ></p:outputLabel>
-                                <p:calendar value="#{hospitalController.fromDate}" 
+                        <h:panelGrid columns="2" >
+                            <h:panelGrid columns="2" >
+                                <h:outputLabel  value="Ordered From" ></h:outputLabel>
+                                <p:calendar  value="#{hospitalController.fromDate}" 
                                             pattern="dd MMMM yyyy hh:mm a">
                                 </p:calendar>
 
-                                <p:outputLabel value="Ordered To" ></p:outputLabel>
-                                <p:calendar value="#{hospitalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                                <h:outputLabel  value="Ordered To" ></h:outputLabel>
+                                <p:calendar  value="#{hospitalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
                                 <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                                <p:selectOneMenu value="#{hospitalController.orderingCategory}" >
+                                <h:selectOneMenu   class="form-control" value="#{hospitalController.orderingCategory}" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{hospitalController.covidTestOrderingCategories}" 
+                                    <f:selectItems  
+                                                     value="#{hospitalController.covidTestOrderingCategories}"  
                                                    var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
-                                </p:selectOneMenu>
+                                                  
+                                </h:selectOneMenu>
 
-                                <p:outputLabel value="Test" ></p:outputLabel>
-                                <p:selectOneMenu value="#{hospitalController.testType}" >
+                                <h:outputLabel value="Test" ></h:outputLabel>
+                                <h:selectOneMenu value="#{hospitalController.testType}" class="form-control" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
                                     <f:selectItems value="#{hospitalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
-                                </p:selectOneMenu>
+                                </h:selectOneMenu>
 
-                                <p:outputLabel value="Result" ></p:outputLabel>
-                                <p:selectOneMenu value="#{hospitalController.result}" >
+                                <h:outputLabel value="Result" ></h:outputLabel>
+                                <h:selectOneMenu value="#{hospitalController.result}" class="form-control" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
                                     <f:selectItems value="#{hospitalController.resultTypes}" var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
-                                </p:selectOneMenu>
+                                </h:selectOneMenu>
 
-                                <p:outputLabel  value="Lab"></p:outputLabel>
-                                <p:autoComplete style="width: 100%;"
+                                <h:outputLabel  value="Lab"></h:outputLabel>
+                                <p:autoComplete 
                                                 inputStyleClass="autocomplete"
                                                 value="#{hospitalController.lab}"
                                                 forceSelection="true" tabindex="100" 
@@ -61,16 +64,20 @@
                                                 var="l" itemLabel="#{l.name}" itemValue="#{l}">
                                 </p:autoComplete>
 
-                                <p:commandButton ajax="false" value="Generate Excel">
-                                    <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="Process" 
-                                                 action="#{hospitalController.toEnterResults()}" ></p:commandButton>
+                                <h:commandButton  
+                                    style="margin-left: 1.4em" class="btn btn-success" 
+                                    value="Generate Excel">
+                                    <p:dataExporter target="tbl" type="xlsx" fileName="Entering_test_result" ></p:dataExporter>
+                                </h:commandButton>
+                                <h:commandButton  
+                                    style="margin-left: 1.4em" class="btn btn-success" 
+                                    value="Process" 
+                                                 action="#{hospitalController.toEnterResults()}" ></h:commandButton>
 
 
-                            </p:panelGrid>
+                            </h:panelGrid>
 
-                        </p:panelGrid>
+                        </h:panelGrid>
 
 
 
@@ -108,20 +115,20 @@
                                 <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
                             </p:column>
                             <p:column id="ct1" headerText="CT 1" >
-                                <p:inputText id="txtCt" value="#{c.ctValue}" style="width:99%;" disabled="#{c.receivedAtLab}"  rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
+                                <p:inputText id="txtCt" value="#{c.ctValue}"  disabled="#{c.receivedAtLab}"  rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
                                     <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResultsAtMohForConfirmedDate(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
                             <p:column id="ct2" headerText="CT 2" >
-                                <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width:99%;"  disabled="#{c.receivedAtLab}" rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
+                                <p:inputText id="txtCt2" value="#{c.ctValue2}"  disabled="#{c.receivedAtLab}" rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
                                     <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResultsAtMohForConfirmedDate(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
                             <p:column id="colResultDate" headerText="Result Date" >
                                 <p:calendar id="calRd" value="#{c.resultConfirmedAt}" 
-                                            style="width:99%;"  disabled="#{c.receivedAtLab}" 
+                                             disabled="#{c.receivedAtLab}" 
                                             pattern="dd MMMM yyyy hh:mm"
                                             >
                                     <p:ajax event="dateSelect" process="calRd" 
@@ -152,7 +159,7 @@
 
 
 
-                </p:panelGrid>
+                </h:panelGrid>
             </ui:define>
         </ui:composition>
     </body>

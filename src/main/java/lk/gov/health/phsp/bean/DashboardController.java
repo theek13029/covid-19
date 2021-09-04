@@ -89,6 +89,8 @@ public class DashboardController implements Serializable {
     private Long yesterdayPositiveRat;
     private Long yesterdayTests;
     private Long todaysTests;
+    
+    private CovidData myCovidData;
 
     private List<CovidData> covidDatasForMohs;
     private List<CovidData> covidDatasForAreas;
@@ -878,6 +880,8 @@ public class DashboardController implements Serializable {
         }
         return yesterdayTests;
     }
+    
+    
 
     public Long getTodaysTests() {
         if (getTodayPcr() != null && getTodayRat() != null) {
@@ -902,6 +906,22 @@ public class DashboardController implements Serializable {
 
     public void setOrderingCategories(List<InstitutionCount> orderingCategories) {
         this.orderingCategories = orderingCategories;
+    }
+
+    public CovidData getMyCovidData() {
+        if(myCovidData==null){
+            myCovidData = findMyCovidData();
+        }
+        return myCovidData;
+    }
+
+    public void setMyCovidData(CovidData myCovidData) {
+        this.myCovidData = myCovidData;
+    }
+
+    private CovidData findMyCovidData() {
+        CovidData cd  = dashboardApplicationController.findMyCovidData(webUserController.getLoggedUser());
+        return cd;
     }
 
 }
