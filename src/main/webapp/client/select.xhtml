@@ -46,6 +46,13 @@
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
+                                    <h:outputText value="Email"/>
+                                </f:facet>
+                                <h:outputText value="#{item.person.email}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
                                     <h:outputText value="NIC"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.nic}"/>

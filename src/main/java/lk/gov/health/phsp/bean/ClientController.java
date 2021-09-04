@@ -62,7 +62,7 @@ import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.file.UploadedFile;
 
 // </editor-fold>
-@Named("clientController")
+@Named
 @SessionScoped
 public class ClientController implements Serializable {
 
@@ -231,6 +231,11 @@ public class ClientController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Navigation">
+    public String toSearchClientByName() {
+        userTransactionController.recordTransaction("To Search Client By Name");
+        return "/client/search_by_name";
+    }
+
     public String toSearchClientById() {
         userTransactionController.recordTransaction("To Search Client By Id");
         return "/client/search_by_id";
@@ -912,11 +917,11 @@ public class ClientController implements Serializable {
                         + "/";
                 break;
             case "CustomCount":
-                if(serialStart==null){
+                if (serialStart == null) {
                     JsfUtil.addErrorMessage("Need a Starting Number");
                     return "";
                 }
-                if(serialPrefix==null){
+                if (serialPrefix == null) {
                     serialPrefix = "";
                 }
                 startCount = this.serialStart;
@@ -1597,12 +1602,12 @@ public class ClientController implements Serializable {
                         + "/";
                 break;
             case "CustomCount":
-                if(serialStart==null){
+                if (serialStart == null) {
                     JsfUtil.addErrorMessage("Please add a start number");
                     return "";
                 }
-                if(serialPrefix==null){
-                    serialPrefix="";
+                if (serialPrefix == null) {
+                    serialPrefix = "";
                 }
                 startCount = this.serialStart;
                 labPrefix = this.serialPrefix;
@@ -2432,6 +2437,53 @@ public class ClientController implements Serializable {
     // <editor-fold defaultstate="collapsed" desc="Functions">
     public String toUploadOrders() {
         return "/lab/upload_orders";
+    }
+
+    public String searchByName() {
+        if (searchingName == null && searchingName.trim().equals("")) {
+            JsfUtil.addErrorMessage("Please enter a name to search");
+            return "";
+        }
+
+        if (searchingName.length() < 5) {
+            JsfUtil.addErrorMessage("Please enter at least 4 characters to serach");
+            return "";
+        }
+
+        Map m = new HashMap();
+        String jpql = "select c "
+                + " from Client c "
+                + " where c.retired=:ret "
+                + " and lower(c.person.name) like :name";
+
+        if(district!=null){
+            jpql += " and c.person.district=:dis ";
+             m.put("dis", district);
+        }
+        
+        jpql += " order by c.person.name";
+
+        m.put("ret", false);
+        m.put("name", "%" + searchingName.toLowerCase() + "%");
+
+        List<Client> tmpClients = ejbFacade.findByJpql(jpql, m, 100);
+
+        if (tmpClients == null || tmpClients.isEmpty()) {
+            JsfUtil.addErrorMessage("No matches found");
+            return "";
+        }
+
+        if (tmpClients.size() == 1) {
+            selected = tmpClients.get(0);
+            return toClientProfile();
+        } else {
+            if (tmpClients.size() > 99) {
+                JsfUtil.addErrorMessage("Only the first 100 records are shown. Please increase the length of search keyword.");
+            }
+            selectedClients = tmpClients;
+            return toSelectClient();
+        }
+
     }
 
     public String importOrdersFromExcel() {
