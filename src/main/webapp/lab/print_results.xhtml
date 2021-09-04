@@ -17,42 +17,44 @@
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:outputLabel value="From" ></p:outputLabel>
-                            <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+                        <p:panelGrid columns="2" style="width: 100%;">
+                            <p:panelGrid columns="2" >
+                                <p:outputLabel value="From" ></p:outputLabel>
+                                <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <p:outputLabel value="To" ></p:outputLabel>
-                            <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                                <p:outputLabel value="To" ></p:outputLabel>
+                                <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                            <p:outputLabel value="Ordered Institution" ></p:outputLabel>
-                            <p:autoComplete value="#{clientController.institution}"
-                                            completeMethod="#{institutionController.completeInstitutions}"
-                                            var="m" itemLabel="#{m.name}" itemValue="#{m}" >
-                            </p:autoComplete>
+                                <p:outputLabel value="Ordered Institution" ></p:outputLabel>
+                                <p:autoComplete value="#{clientController.institution}"
+                                                completeMethod="#{institutionController.completeInstitutions}"
+                                                var="m" itemLabel="#{m.name}" itemValue="#{m}" >
+                                </p:autoComplete>
 
-                            <p:outputLabel value="Plate No." ></p:outputLabel>
-                            <p:inputText value="#{clientController.plateNo}" ></p:inputText>
-
-                            <p:commandButton ajax="false" value="Generate Excel">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="test_enrollments" ></p:dataExporter>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{clientController.toLabToSelectForPrinting()}" ></p:commandButton>
+                                <p:outputLabel value="Plate No." ></p:outputLabel>
+                                <p:inputText value="#{clientController.plateNo}" ></p:inputText>
+                                <p:commandButton ajax="false" value="Process" 
+                                                 action="#{clientController.toLabToSelectForPrinting()}" ></p:commandButton>
 
 
+                            </p:panelGrid>
+                            <p:panelGrid columns="1" >
+                                <p:commandButton ajax="false" value="Generate Excel">
+                                    <p:dataExporter target="tbl" type="xlsx" 
+                                                    fileName="Result Sheet - #{clientController.institution} - From :  #{clientController.fromDate} - To : #{clientController.toDate}" ></p:dataExporter>
+                                </p:commandButton>
+                                <p:commandButton value="PRINT SELECTED AS INDIVIDUAL REPORTS" ajax="false" 
+                                                 action="#{clientController.toLabPrintSelected()}" 
+                                                 onclick="form.target = '_blank'"></p:commandButton>
+                                <p:commandButton value="PRINT SELECTED AS SINGLE REPORT" ajax="false" 
+                                                 action="#{clientController.toLabPrintSelectedBulk()}" 
+                                                 onclick="form.target = '_blank'"></p:commandButton>
+                                <p:commandButton value="Transfer SELECTED To Enter Results" ajax="false" 
+                                                 action="#{clientController.toLabPrintSelectedBulk()}" 
+                                                 onclick="form.target = '_blank'"></p:commandButton>
+                            </p:panelGrid>
                         </p:panelGrid>
 
-                        <p:commandButton value="PRINT SELECTED AS INDIVIDUAL REPORTS" ajax="false" 
-                                         action="#{clientController.toLabPrintSelected()}" 
-                                         onclick="form.target = '_blank'"></p:commandButton>
-
-                        <p:commandButton value="PRINT SELECTED AS SINGLE REPORT" ajax="false" 
-                                         action="#{clientController.toLabPrintSelectedBulk()}" 
-                                         onclick="form.target = '_blank'"></p:commandButton>
-
-                        <p:commandButton value="Transfer SELECTED To Enter Results" ajax="false" 
-                                         action="#{clientController.toLabPrintSelectedBulk()}" 
-                                         onclick="form.target = '_blank'"></p:commandButton>
 
 
                         <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToPrint}" 
@@ -70,6 +72,12 @@
                                      rowStyleClass="#{c.pcrResult.name eq 'Positive'?'alert alert-danger':''}"
 
                                      class="table table-striped">
+                            <f:facet name="header" >
+                                <h:outputText value="Institution : #{clientController.institution} &nbsp;&nbsp;||&nbsp;&nbsp;Ordered From : #{clientController.fromDate} &nbsp;&nbsp;||&nbsp;&nbsp; Ordered To : #{clientController.toDate}" >
+                                </h:outputText>
+                            </f:facet>
+
+
                             <p:column selectionMode="multiple" width="30" >
                             </p:column>
                             <p:column rendered="#{clientController.institution eq null}" sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" filterMatchMode="contains">
@@ -100,24 +108,32 @@
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
-                            <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
-                                       filterBy="#{c.ctValue}" filterMatchMode="contains" >
-                                <p:inputText id="txtCt1" value="#{c.ctValue}" style="width: 98px;" >
-                                    <p:ajax event="keyup" process="txtCt1" listener="#{clientController.saveEncounterResults(c)}" >
-                                    </p:ajax>
-                                </p:inputText>
+                            <p:column headerText="Address" sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}"  filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.address}"  style="width: 98%;" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="CT 2" width="100"  sortBy="#{c.ctValue2}"
-                                      filterBy="#{c.ctValue2}" filterMatchMode="contains" >
-                                <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 98px;" >
-                                    <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResults(c)}" >
-                                    </p:ajax>
-                                </p:inputText>
+                            <p:column headerText="Phone" 
+                                      sortBy="#{c.client.person.phone1}" 
+                                      filterBy="#{c.client.person.phone1}" filterMatchMode="contains" >
+                                <p:outputLabel value="#{c.client.person.phone1}"  style="width: 98%;" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
                                       filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
                             </p:column>
+                            <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
+                                       filterBy="#{c.ctValue}" filterMatchMode="contains" >
+                                <p:outputLabel id="txtCt1" value="#{c.ctValue}" style="width: 98px;" >
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column headerText="CT 2" width="100"  sortBy="#{c.ctValue2}"
+                                      filterBy="#{c.ctValue2}" filterMatchMode="contains" >
+                                <p:outputLabel id="txtCt2" value="#{c.ctValue2}" style="width: 98px;" >
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Comments"  >
+                                <p:outputLabel value="#{c.comments}" ></p:outputLabel>
+                            </p:column>
+
 
                         </p:dataTable>
                     </h:form>

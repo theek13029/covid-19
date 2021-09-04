@@ -39,7 +39,8 @@
                                 <p:commandButton ajax="false" value="Process"  style="width: 100%;"
                                                  action="#{clientController.toConfirmResults()}" ></p:commandButton>
                                 <p:commandButton ajax="false" value="Generate Excel" style="width: 100%;">
-                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
+                                    <p:dataExporter target="tbl" type="xlsx" 
+                                                    fileName="To Approve - #{clientController.institution} - From :  #{clientController.fromDate} - To : #{clientController.toDate}" ></p:dataExporter>
                                 </p:commandButton>
                                 <p:commandButton value="CONFIRM SELECTED" ajax="false" 
                                                  action="#{clientController.confirmSelectedResults()}" ></p:commandButton>
@@ -132,8 +133,8 @@
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="Comments" width="500" >
-                                <p:inputText id="txtCom" value="#{c.comments}" style="width: 98%;" >
+                            <p:column headerText="Comments" width="500" filterBy="#{c.comments}" filterMatchMode="contains" >
+                                <p:inputText id="txtCom" value="#{c.comments}" style="width: 98%;" maxlength="250">
                                     <p:ajax event="keyup" process="txtCom" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>
