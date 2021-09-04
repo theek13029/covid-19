@@ -36,16 +36,11 @@
                                 <p:outputLabel value="Plate No." ></p:outputLabel>
                                 <p:inputText value="#{clientController.plateNo}" ></p:inputText>
 
-                                <p:spacer ></p:spacer>
                                 <p:commandButton ajax="false" value="Process" 
                                                  action="#{clientController.toLabEditResults()}" ></p:commandButton>
                                 <p:commandButton ajax="false" value="Generate Excel">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="entered_results" ></p:dataExporter>
                                 </p:commandButton>
-                                <p:commandButton ajax="false" value="Generate Excel with Negative Results">
-                                    <p:dataExporter target="tblNegative" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
-                                </p:commandButton>
-
                             </p:panelGrid>
 
                         </p:panelGrid>
@@ -62,15 +57,22 @@
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,20,50,100,{ShowAll|'All'}"
 
+                                     rowStyleClass="#{c.pcrResult.name eq 'Positive'?'alert alert-danger':''}"
+
 
                                      >
-                            <p:column headerText="ID" width="60" rendered="false">
-                                <p:outputLabel value="#{c.id}" ></p:outputLabel>
+                            <p:column headerText="Institution" 
+                                      rendered="#{clientController.institution eq null}"  
+                                      sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.institution.name}"  style="width: 98%;" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                            <p:column headerText="Unit/Ward"  width="60"    rendered="#{clientController.institution.institutionType ne 'MOH_Office'}"  
+                                      sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
                             </p:column>
-                              <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
+                            <p:column headerText="BHT/OPD No/Clinic No"   width="60"  
+                                      rendered="#{clientController.institution.institutionType ne 'MOH_Office'}"  
+                                      sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Tube No" width="140" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
@@ -92,26 +94,17 @@
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Sex" width="60"  sortBy="#{c.client.person.sex.name}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains" >
+                            <p:column headerText="Sex" width="60"  sortBy="#{c.client.person.sex.name}" 
+                                      filterBy="#{c.client.person.sex.name}" filterMatchMode="startsWith" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column id="resultCt" headerText="CT 1" width="100"  sortBy="#{c.ctValue}" 
-                                      filterBy="#{c.ctValue}" filterMatchMode="contains" >
-                                <p:inputText id="txtCt" value="#{c.ctValue}" style="width: 98px;" >
-                                    <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
-                                    </p:ajax>
-                                </p:inputText>
+
+                            <p:column headerText="Phone"  width="60"   sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
-                            <p:column id="resultCt1" headerText="CT 2" width="100" 
-                                      sortBy="#{c.ctValue2}" 
-                                      filterBy="#{c.ctValue2}" filterMatchMode="contains" >
-                                <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 98px;" >
-                                    <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
-                                    </p:ajax>
-                                </p:inputText>
-                            </p:column>
+
                             <p:column headerText="Result" width="100"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
-                                <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}" style="width: 98px;" >
+                                <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}" style="width: 98%;" >
                                     <f:selectItem itemLabel="Select Result"  ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
                                                    var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
@@ -119,8 +112,24 @@
                                     </p:ajax>
                                 </p:selectOneMenu>
                             </p:column>
-                            <p:column headerText="Comments" width="150"  sortBy="#{c.resultComments}" filterBy="#{c.resultComments}" filterMatchMode="contains" >
-                                <p:inputText id="txtComments" value="#{c.resultComments}"  style="width: 148px;">
+                            <p:column id="resultCt" headerText="CT 1" width="100"  sortBy="#{c.ctValue}" 
+                                      filterBy="#{c.ctValue}" filterMatchMode="contains" >
+                                <p:inputText id="txtCt" value="#{c.ctValue}" style="width: 98%;" >
+                                    <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
+                                    </p:ajax>
+                                </p:inputText>
+                            </p:column>
+                            <p:column id="resultCt1" headerText="CT 2" width="100" 
+                                      sortBy="#{c.ctValue2}" 
+                                      filterBy="#{c.ctValue2}" filterMatchMode="contains" >
+                                <p:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 98%;" >
+                                    <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
+                                    </p:ajax>
+                                </p:inputText>
+                            </p:column>
+
+                            <p:column headerText="Comments" width="300"  filterBy="#{c.resultComments}" filterMatchMode="contains" >
+                                <p:inputText id="txtComments" value="#{c.resultComments}"  style="width: 98%;">
                                     <p:ajax event="blur" process="txtComments" 
                                             listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
@@ -128,34 +137,6 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tblNegative" value="#{clientController.listedToEnterResults}"  rendered="true"
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10" style="display: none;" >
-                            <p:column headerText="ID" width="60">
-                                <p:outputLabel value="#{c.id}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Tube No" width="80">
-                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Lab No" width="200">
-                                <p:outputLabel value="#{c.labNumber}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Name" >
-                                <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Age" width="5rem;" >
-                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Sex" >
-                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column id="result" headerText="CT" >
-                            </p:column>
-                            <p:column headerText="Result" >
-                                <p:outputLabel value="#{preferenceController.pcrNegativeTerm}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Comments" >
-                            </p:column>
-                        </p:dataTable>
                     </h:form>
 
 
