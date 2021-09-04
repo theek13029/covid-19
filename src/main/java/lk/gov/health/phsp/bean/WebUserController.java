@@ -854,7 +854,6 @@ public class WebUserController implements Serializable {
                 case Hospital:
                     dashboardController.prepareHospitalDashboard();
                     break;
-
                 default:
                     break;
             }

@@ -912,6 +912,13 @@ public class ClientController implements Serializable {
                         + "/";
                 break;
             case "CustomCount":
+                if(serialStart==null){
+                    JsfUtil.addErrorMessage("Need a Starting Number");
+                    return "";
+                }
+                if(serialPrefix==null){
+                    serialPrefix = "";
+                }
                 startCount = this.serialStart;
                 labPrefix = this.serialPrefix;
                 break;
@@ -956,6 +963,7 @@ public class ClientController implements Serializable {
             startCount++;
             encounterFacade.edit(e);
         }
+        serialStart = startCount;
         return toLabReceiveAll();
     }
 
@@ -1589,6 +1597,13 @@ public class ClientController implements Serializable {
                         + "/";
                 break;
             case "CustomCount":
+                if(serialStart==null){
+                    JsfUtil.addErrorMessage("Please add a start number");
+                    return "";
+                }
+                if(serialPrefix==null){
+                    serialPrefix="";
+                }
                 startCount = this.serialStart;
                 labPrefix = this.serialPrefix;
                 break;
