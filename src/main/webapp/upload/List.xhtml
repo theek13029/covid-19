@@ -14,7 +14,7 @@
         <ui:define name="body">
             <h:form id="UploadListForm">
                 <p:panel header="#{bundleClinical.ListUploadTitle}">
-                    <p:dataTable id="datalist" value="#{uploadController.items}" var="item"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{uploadController.items}" var="item"
                                  selectionMode="single" selection="#{uploadController.selected}"
                                  paginator="true"
                                  rowKey="#{item.id}"

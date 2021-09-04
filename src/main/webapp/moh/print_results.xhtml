@@ -46,11 +46,11 @@
                                           onclick="form.target='_blank'"></p:commandButton>
 
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToPrint}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToPrint}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      selection="#{clientController.selectedToPrint}">
-                            <p:column selectionMode="multiple" ></p:column>
+                            <p:column selectionMode="multiple" width="25"></p:column>
                             <p:column headerText="No"  sortBy="#{c.encounterNumber}">
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
                             </p:column>

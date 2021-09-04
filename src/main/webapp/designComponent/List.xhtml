@@ -14,7 +14,7 @@
         <ui:define name="body">
             <h:form id="DesignComponentListForm">
                 <p:panel header="#{bundleClinical.ListDesignComponentTitle}">
-                    <p:dataTable id="datalist" value="#{designComponentController.items}" var="item"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{designComponentController.items}" var="item"
                                  selectionMode="single" selection="#{designComponentController.selected}"
                                  paginator="true"
                                  rowKey="#{item.id}"

@@ -10,31 +10,30 @@
         <ui:composition template="/national/reports_index.xhtml">
             <ui:define name="reports">
 
-                <h:panelGrid columns="1" styleClass="alignTop" >
+                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
                         <p:outputLabel value="Test Counts by Institution Counts" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
-                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded" >
-                            <h:outputLabel class="h6 fw-bold" value="Ordered From" ></h:outputLabel>
+                        <p:panelGrid columns="2" >
+                            <p:outputLabel value="Ordered From" ></p:outputLabel>
                             <p:calendar value="#{nationalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
-                            <h:outputLabel value="Ordered To" class="h6 fw-bold" ></h:outputLabel>
+                            <p:outputLabel value="Ordered To" ></p:outputLabel>
                             <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                            <h:outputLabel value="Ordering Category" class="h6 fw-bold" ></h:outputLabel>
-                            <h:selectOneMenu value="#{nationalController.orderingCategory}" class="form-select" >
+                            <p:outputLabel value="Ordering Category" ></p:outputLabel>
+                            <p:selectOneMenu value="#{nationalController.orderingCategory}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{nationalController.covidTestOrderingCategories}" 
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </h:selectOneMenu>
+                            </p:selectOneMenu>
 
-                            <h:outputLabel class="h6 fw-bold" value="Lab"></h:outputLabel>
+                            <p:outputLabel  value="Lab"></p:outputLabel>
                             <p:autoComplete style="width: 100%;"
                                             inputStyleClass="autocomplete"
                                             value="#{nationalController.lab}"
@@ -43,26 +42,26 @@
                                             var="l" itemLabel="#{l.name}" itemValue="#{l}">
                             </p:autoComplete>
 
-                            <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
-                            <h:selectOneMenu value="#{nationalController.testType}" class="form-select" >
+                            <p:outputLabel value="Test" ></p:outputLabel>
+                            <p:selectOneMenu value="#{nationalController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{nationalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </h:selectOneMenu>
+                            </p:selectOneMenu>
 
 
 
-                            <h:commandButton value="Generate Excel" class="btn btn-success w-100">
+                            <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                            </h:commandButton>
-                            <h:commandButton value="Process" class="btn btn-warning w-100"
-                                             action="#{nationalController.toCountOfTestsByInstitutionType()}" ></h:commandButton>
+                            </p:commandButton>
+                            <p:commandButton ajax="false" value="Process" 
+                                             action="#{nationalController.toCountOfTestsByInstitutionType()}" ></p:commandButton>
 
 
-                        </h:panelGrid>
-                        </div>
-                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{nationalController.institutionTypeCounts}" rendered="true"
+                        </p:panelGrid>
+
+
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{nationalController.institutionTypeCounts}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      paginator="true" 
@@ -83,12 +82,11 @@
                                 </h:commandLink>
                             </p:column>
                         </p:dataTable>
-                        </h:panelGrid>
                     </h:form>
 
 
 
-                </h:panelGrid>
+                </p:panelGrid>
             </ui:define>
 
         </ui:composition>
