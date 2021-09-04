@@ -20,7 +20,7 @@
                                              action="#{designComponentFormSetController.back()}" style="float: right;" ></p:commandButton>
                         </f:facet>
                         
-                        <p:dataTable resizableColumns="true" id="datalist" value="#{designComponentFormSetController.items}" var="item"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{designComponentFormSetController.items}" var="item"
                                      selectionMode="single" selection="#{designComponentFormSetController.selected}"
                                      paginator="true"
                                      rowKey="#{item.id}"

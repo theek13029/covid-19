@@ -11,7 +11,7 @@
             <ui:define name="content">
 
                 <h:form id="AreaListForm">
-                    <p:dataTable resizableColumns="true" id="datalist" value="#{areaController.items}" 
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{areaController.items}" 
                                  var="item" 
                                  rowKey="#{item.id}"
                                  paginator="true"

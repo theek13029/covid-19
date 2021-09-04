@@ -87,7 +87,7 @@
 
                         </h:panelGrid>
 
-                        <p:dataTable resizableColumns="true" value="#{reportController.reportResults}" var="r" >
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{reportController.reportResults}" var="r" >
                             <p:column headerText="Created Data" >
                                 <p:outputLabel value="#{r.createdAt}" >
                                     <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>

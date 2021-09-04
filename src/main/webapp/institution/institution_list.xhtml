@@ -12,7 +12,7 @@
 
             <ui:define name="insadmin">
                 <h:form >
-                    <p:dataTable resizableColumns="true" id="datalist" value="#{webUserController.loggableInstitutions}" var="item"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{webUserController.loggableInstitutions}" var="item"
                                  selectionMode="single" 
                                  selection="#{institutionController.selected}"
                                  rowKey="#{item.id}"

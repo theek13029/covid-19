@@ -65,7 +65,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <p:dataTable resizableColumns="true" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet"
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet"
                                          rowIndexVar="se">
                                 <p:column headerText="No" width="40" >
                                     <p:outputLabel value="#{se+1}" ></p:outputLabel>
@@ -111,7 +111,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <p:dataTable resizableColumns="true" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
                                 <p:column >
                                     <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
                                 </p:column>
@@ -139,7 +139,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <p:dataTable resizableColumns="true" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
                                 <p:column >
                                     <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
                                 </p:column>
@@ -170,7 +170,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-4">
-                            <p:dataTable resizableColumns="true" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
                                 <p:column >
                                     <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
                                 </p:column>
@@ -201,7 +201,7 @@
                     </div>
                     <div class="row" >
                         <div class="col-md-12" >
-                            <p:dataTable resizableColumns="true" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
                                 <p:column >
                                     <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
                                 </p:column>

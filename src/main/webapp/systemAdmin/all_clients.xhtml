@@ -53,7 +53,7 @@
 
 
 
-                        <p:dataTable resizableColumns="true" value="#{clientController.clients}"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{clientController.clients}"
                                      id="tbl"
                                      var="c" 
                                      rowKey="#{c.id}"

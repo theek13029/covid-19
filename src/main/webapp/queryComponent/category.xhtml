@@ -20,7 +20,7 @@
                                 </p:outputLabel>
                             </f:facet>
 
-                            <p:dataTable resizableColumns="true" value="#{queryComponentController.categories}" var="item">
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{queryComponentController.categories}" var="item">
 
                                 <p:column>
                                     <f:facet name="header">

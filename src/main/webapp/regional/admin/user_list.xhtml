@@ -15,7 +15,7 @@
                         <f:facet name="header" >
                             <p:outputLabel value="User List" ></p:outputLabel>
                         </f:facet>
-                        <p:dataTable resizableColumns="true" value="#{webUserController.items}" var="item"  
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{webUserController.items}" var="item"  
                                      rowKey="#{item.id}" 
                                      selection="#{webUserController.current}" 
                                      rows="10"

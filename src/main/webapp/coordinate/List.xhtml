@@ -16,7 +16,7 @@
         <ui:define name="body">
             <h:form id="CoordinateListForm">
                 <p:panel header="#{bundleClinical.ListCoordinateTitle}">
-                    <p:dataTable resizableColumns="true" id="datalist" value="#{coordinateController.items}" var="item"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{coordinateController.items}" var="item"
                                  selectionMode="single" selection="#{coordinateController.selected}"
                                  paginator="true"
                                  rowKey="#{item.id}"

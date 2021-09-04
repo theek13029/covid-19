@@ -17,7 +17,7 @@
                     </f:facet>
 
                     <h:form>
-                        <p:dataTable resizableColumns="true" value="#{queryComponentController.populations}" var="item"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{queryComponentController.populations}" var="item"
 
                                      rowKey="#{item.id}"
                                      paginator="true"

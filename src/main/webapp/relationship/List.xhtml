@@ -16,7 +16,7 @@
             <h:form id="RelationshipListForm">
                 <p:commandButton ajax="false" value="Fill" action="#{relationshipController.fillAll()}" ></p:commandButton>
                 <p:panel header="#{bundleClinical.ListRelationshipTitle}">                     
-                    <p:dataTable resizableColumns="true" id="datalist" value="#{relationshipController.items}" var="item"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{relationshipController.items}" var="item"
                                  selectionMode="single" selection="#{relationshipController.selected}"
                                  paginator="true"
                                  rowKey="#{item.id}"

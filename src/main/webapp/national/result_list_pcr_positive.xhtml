@@ -32,7 +32,7 @@
                             <p:commandButton ajax="false" value="Process" 
                                              action="#{mohController.toPcrPositiveCasesList}" ></p:commandButton>
                         </p:panelGrid>
-                        <p:dataTable resizableColumns="true" id="tbl" value="#{mohController.tests}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.tests}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" 
                                      

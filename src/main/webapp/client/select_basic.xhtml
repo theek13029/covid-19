@@ -17,7 +17,7 @@
                     
                     <h:form>
 
-                        <p:dataTable resizableColumns="true" value="#{clientController.selectedClientsWithBasicData}" var="item">
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{clientController.selectedClientsWithBasicData}" var="item">
 
                             <p:column>
                                 <f:facet name="header">

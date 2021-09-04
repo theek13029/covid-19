@@ -29,7 +29,7 @@
 
                                 <h:panelGroup id="gpDataM" >
                                     <h:panelGroup rendered="#{ii.di.item.dataType eq 'Procedure_Request'}" >
-                                        <p:dataTable resizableColumns="true" value="#{ii.addedItems}" style="#{ii.di.css}"
+                                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{ii.addedItems}" style="#{ii.di.css}"
                                                      rendered="#{not empty ii.addedItems}"
                                                      var="ai" emptyMessage="Nothing added Yet">
                                             <f:facet name="header" >
@@ -48,7 +48,7 @@
 
                                     </h:panelGroup>
                                     <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference'}" >
-                                        <p:dataTable resizableColumns="true" value="#{ii.addedItems}" 
+                                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{ii.addedItems}" 
                                                      rendered="#{not empty ii.addedItems}" style="#{ii.di.css}"
                                                      var="ai" emptyMessage="Nothing added Yet">
                                             <f:facet name="header" >
@@ -69,7 +69,7 @@
                                         </td>
                                     </h:panelGroup>
                                     <h:panelGroup rendered="#{ii.di.item.dataType eq 'Area_Reference'}" >
-                                        <p:dataTable resizableColumns="true" value="#{ii.addedItems}" 
+                                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{ii.addedItems}" 
                                                      rendered="#{not empty ii.addedItems}" style="#{ii.di.css}"
                                                      var="ai" emptyMessage="Nothing added Yet">
                                             <f:facet name="header" >

@@ -54,7 +54,7 @@
                             </p:panelGrid>
                         </p:panelGrid>
 
-                        <p:dataTable resizableColumns="true" id="tbl" value="#{clientController.listedToEnterResults}"  rendered="true"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToEnterResults}"  rendered="true"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" rowIndexVar="n"
                                      rowStyleClass="#{c.resultPositive?'redRow':''}">
                             <p:column headerText="ID" width="60" rendered="false">
@@ -124,7 +124,7 @@
                             </p:column>
                         </p:dataTable>
 
-                        <p:dataTable resizableColumns="true" id="tblNegative" value="#{clientController.listedToEnterResults}"  rendered="true"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tblNegative" value="#{clientController.listedToEnterResults}"  rendered="true"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" style="display: none;" >
                             <p:column headerText="ID" width="60">
                                 <p:outputLabel value="#{c.id}" ></p:outputLabel>

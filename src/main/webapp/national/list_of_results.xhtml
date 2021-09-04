@@ -73,7 +73,7 @@
 
 
 
-                        <p:dataTable resizableColumns="true" id="tbl" value="#{nationalController.tests}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{nationalController.tests}" 
                                      var="c" rowKey="#{c.id}" 
                                      rows="10" 
                                      paginator="true" 

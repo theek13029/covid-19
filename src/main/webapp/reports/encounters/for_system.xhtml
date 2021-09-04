@@ -44,7 +44,7 @@
                         </p:panelGrid>
 
                         <p:panelGrid columns="1" >
-                            <p:dataTable resizableColumns="true" value="#{reportController.encounters}" var="c"
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{reportController.encounters}" var="c"
                                          rowKey="#{c.id}"
                                          rowIndexVar="n"
                                          paginator="true"

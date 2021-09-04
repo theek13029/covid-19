@@ -26,7 +26,7 @@
                             </f:facet>
                             
                             <p:panel header="Existing Forms" >
-                                <p:dataTable resizableColumns="true" id="lst" value="#{designComponentFormController.formsOfTheSelectedSet}" var="f" >
+                                <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="lst" value="#{designComponentFormController.formsOfTheSelectedSet}" var="f" >
                                     <p:column headerText="Order No" width="40" >
                                         <p:outputLabel value="#{f.orderNo}" >
                                             <f:convertNumber pattern="0" ></f:convertNumber>

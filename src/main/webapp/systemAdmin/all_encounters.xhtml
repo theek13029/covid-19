@@ -51,7 +51,7 @@
                         <p:dataExporter target="tbl" fileName="encounters" type="xls" ></p:dataExporter>
                     </p:commandButton>
 
-                    <p:dataTable resizableColumns="true" rendered="true" id="tbl" value="#{clientEncounterComponentFormSetController.items}"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" rendered="true" id="tbl" value="#{clientEncounterComponentFormSetController.items}"
                                  selection="#{clientEncounterComponentFormSetController.selectedItems}"
                                  var="c" 
                                  rowKey="#{c.id}"

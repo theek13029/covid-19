@@ -41,7 +41,7 @@
                         </p:panelGrid>
 
 
-                        <p:dataTable resizableColumns="true" id="tbl" value="#{mohController.cecItems}" rendered="true"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.cecItems}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
@@ -52,7 +52,7 @@
                                      rows="10"
                                      selection="#{mohController.selectedCecis}"
                                      >
-                            <p:column selectionMode="multiple" width="30"></p:column>
+                            <p:column selectionMode="multiple" width="30" resizable="false"></p:column>
                             <p:column headerText="Name"  sortBy="#{c.shortTextValue}" filterBy="#{c.shortTextValue}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.shortTextValue}" ></p:outputLabel>
                             </p:column>

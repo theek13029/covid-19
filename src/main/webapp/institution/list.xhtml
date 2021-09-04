@@ -10,7 +10,7 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:form id="InstitutionListForm">    
-                    <p:dataTable resizableColumns="true" id="datalist" value="#{institutionController.items}" var="item"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{institutionController.items}" var="item"
                                  selectionMode="single" selection="#{institutionController.selected}"
                                  paginator="true"
                                  rowKey="#{item.id}"

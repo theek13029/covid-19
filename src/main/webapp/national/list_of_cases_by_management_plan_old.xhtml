@@ -48,7 +48,7 @@
                         </p:panelGrid>
 
 
-                        <p:dataTable resizableColumns="true" id="tbl" value="#{mohController.tests}" rendered="true"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.tests}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 

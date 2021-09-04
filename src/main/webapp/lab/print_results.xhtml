@@ -55,14 +55,31 @@
                                          onclick="form.target = '_blank'"></p:commandButton>
 
 
-                        <p:dataTable resizableColumns="true" id="tbl" value="#{clientController.listedToPrint}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToPrint}" 
                                      rowIndexVar="n"
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10"
-                                     selection="#{clientController.selectedToPrint}">
+
+                                     var="c" rowKey="#{c.id}" 
+                                     selection="#{clientController.selectedToPrint}"
+
+                                     rows="10"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+
+                                     rowStyleClass="#{c.pcrResult.name eq 'Positive'?'alert alert-danger':''}"
+
+                                     class="table table-striped">
                             <p:column selectionMode="multiple" width="30" >
                             </p:column>
-                            <p:column width="50" >
-                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
+                            <p:column rendered="#{clientController.institution eq null}" sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Unit/Ward" rendered="#{clientController.institution.institutionType ne 'MOH_Office'}"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="BHT/OPD No/Clinic No" rendered="#{clientController.institution.institutionType ne 'MOH_Office'}" sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
@@ -101,12 +118,7 @@
                                       filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
-                            </p:column>
+
                         </p:dataTable>
                     </h:form>
 

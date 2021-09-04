@@ -31,7 +31,7 @@
                     </p:commandButton>
                 </p:panelGrid>
 
-                <p:dataTable resizableColumns="true" value="#{smsController.smses}" rows="10" paginator="true" var="s" rowIndexVar="#{s.id}" 
+                <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{smsController.smses}" rows="10" paginator="true" var="s" rowIndexVar="#{s.id}" 
                              rowIndexVar="n">
                     <p:column headerText="No" >
                         <p:outputLabel value="#{n + 1}" ></p:outputLabel>

@@ -162,7 +162,7 @@
 
 
                 <h:form>
-                    <p:dataTable resizableColumns="true" value="#{clientController.institutionTestEnrollments}" 
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{clientController.institutionTestEnrollments}" 
                                  var="c" paginator="true" rowKey="#{c.id}" rows="10" >
                         <p:column headerText="Test No" >
                             <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>

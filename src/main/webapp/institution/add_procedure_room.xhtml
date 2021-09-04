@@ -57,7 +57,7 @@
                                          action="#{relationshipController.saveProcedureRoom()}"  ></p:commandButton>
                     </p:panelGrid>
 
-                    <p:dataTable resizableColumns="true" id="tbl" value="#{relationshipController.items}" var="i" rowKey="#{i.id}" rowIndexVar="c"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{relationshipController.items}" var="i" rowKey="#{i.id}" rowIndexVar="c"
                                  rows="10"
                                  paginator="true">
                         <p:column headerText="Procedure Room" >

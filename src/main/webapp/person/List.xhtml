@@ -16,7 +16,7 @@
         <ui:define name="body">
             <h:form id="PersonListForm">
                 <p:panel header="#{bundleClinical.ListPersonTitle}">
-                    <p:dataTable resizableColumns="true" id="datalist" value="#{personController.items}" var="item"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{personController.items}" var="item"
                                  selectionMode="single" selection="#{personController.selected}"
                                  paginator="true"
                                  rowKey="#{item.id}"

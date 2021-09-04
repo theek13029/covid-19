@@ -50,7 +50,7 @@
                                          action="#{clientController.reviewOkForSelectedResults()}" ></p:commandButton>
 
 
-                        <p:dataTable resizableColumns="true" id="tbl" value="#{clientController.listedToReviewResults}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToReviewResults}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -58,7 +58,7 @@
 
                                      rowStyleClass="#{c.resultPositive?'redRow':''}"
                                      selection="#{clientController.selectedToReview}">
-                            <p:column selectionMode="multiple" ></p:column>
+                            <p:column selectionMode="multiple" width="25" ></p:column>
                             <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
                             </p:column>

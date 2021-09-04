@@ -61,7 +61,7 @@
                                 
                             </p:panelGrid>
                         
-                    <p:dataTable resizableColumns="true" id="tbl" value="#{userTransactionController.items}" var="item"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{userTransactionController.items}" var="item"
                                      rowKey="#{item.id}"
                                      paginator="true"
                                      rows="10"
