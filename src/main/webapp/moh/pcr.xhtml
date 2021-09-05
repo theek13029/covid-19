@@ -107,7 +107,8 @@
                                             <div class="col-md-2 mb-4">
                                                 <p:outputLabel value="Vaccination:"  for="vstatus" class="h6 fw-bold mb-2"/>
                                                 <h:selectOneMenu
-                                                    id="vstatus" value="#{mohController.pcr.vaccinationStatus}" class="form-select w-100"
+                                                    id="vstatus" value="#{mohController.pcr.vaccinationStatus}" 
+                                                    class="form-select w-100"
                                                     tabindex="107" 
                                                     style="width: 100%;">
                                                     <f:selectItem itemLabel="Please select" ></f:selectItem>
@@ -115,9 +116,16 @@
                                                 </h:selectOneMenu>
                                             </div>
                                             <div class="col-md-2">
-                                                <h:outputLabel value="Symptomatic:" class="h6 fw-bold mb-2" />
-                                                <p:selectBooleanButton tabindex="106"
-                                                                       value="#{mohController.pcr.symptomatic}"  class="form-select w-100" offLabel="No" onLabel="Yes"></p:selectBooleanButton>
+                                                <h:outputLabel for="sstatus" value="Symptomatic:" class="h6 fw-bold mb-2" />
+                                                <h:selectOneMenu 
+                                                    id="sstatus"
+                                                    tabindex="106"
+                                                    value="#{mohController.pcr.symptomaticStatus}"  
+                                                    class="form-select w-100" offLabel="No" onLabel="Yes">
+                                                    <f:selectItem itemLabel="Please select" ></f:selectItem>
+                                                    <f:selectItems value="#{itemApplicationController.symptomaticStatuses}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
+
+                                                </h:selectOneMenu>
                                             </div>
                                             <div class="col-md-2 mb-4">
                                                 <h:outputLabel value="Citizenship:" for="citizenship" class="h6 fw-bold mb-2"/>

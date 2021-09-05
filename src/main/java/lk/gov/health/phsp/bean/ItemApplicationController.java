@@ -65,6 +65,7 @@ public class ItemApplicationController {
     private List<Item> sexes;
     
     private List<Item> vaccinationStatuses;
+    private List<Item> symptomaticStatuses;
 
     private List<Item> covidTestOrderingCategories;
     private List<Item> covidTestTypes;
@@ -567,6 +568,17 @@ public class ItemApplicationController {
 
     public void setVaccinationStatuses(List<Item> vaccinationStatuses) {
         this.vaccinationStatuses = vaccinationStatuses;
+    }
+
+    public List<Item> getSymptomaticStatuses() {
+        if(symptomaticStatuses==null){
+            symptomaticStatuses = findChildDictionaryItems("symptomatic_statuses");
+        }
+        return symptomaticStatuses;
+    }
+
+    public void setSymptomaticStatuses(List<Item> symptomaticStatuses) {
+        this.symptomaticStatuses = symptomaticStatuses;
     }
     
     
