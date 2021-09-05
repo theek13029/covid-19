@@ -58,12 +58,15 @@ public class SessionController implements Serializable {
     private Institution lastLab;
     private String lastWorkplace;
     private String lastContactOfWorkplace;
+    private String lastContactOfWorkplaceDetails;
     
     
 
     private Map<Long, Encounter> rats;
     private Map<Long, Encounter> pcrs;
 
+    
+    
     public Encounter getLastRat() {
         return lastRat;
     }
@@ -168,6 +171,14 @@ public class SessionController implements Serializable {
 
     public void setLastWardUnit(String lastWardUnit) {
         this.lastWardUnit = lastWardUnit;
+    }
+
+    public String getLastContactOfWorkplaceDetails() {
+        return lastContactOfWorkplaceDetails;
+    }
+
+    public void setLastContactOfWorkplaceDetails(String lastContactOfWorkplaceDetails) {
+        this.lastContactOfWorkplaceDetails = lastContactOfWorkplaceDetails;
     }
     
 }
