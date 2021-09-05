@@ -5,49 +5,46 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-<body>
+    <body>
 
-    <ui:composition template="/template1.xhtml">
-        <ui:define name="content">
-            <div class="row bg-white">
-                <div class="container my-4">
-                    <div class="d-flex justify-content-center">
-                        <div class="col-md-6 px-4 py-3">
-                        
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content">
+                <div class="row">
+                    <div class="container my-4">
+                        <div class="d-flex justify-content-center">
                             <h:form>
-                                <p:outputLabel value="Name to search" 
-                                               for="txtSearchName"></p:outputLabel>
-                                <p:inputText id="txtSearchName"
-                                             required="true" 
-                                             requiredMessage="Please enter a name to search"
-                                             value="#{clientController.searchingName}" >
-                                </p:inputText>
-                                
-                                <p:outputLabel value="District" 
-                                               for="mnuDistrict"></p:outputLabel>
-                                <p:selectOneMenu id="mnuDistrict" value ="#{clientController.district}" >
-                                    <f:selectItem itemLabel="Any District" ></f:selectItem>
-                                    <f:selectItems value="#{areaApplicationController.allDistricts}"
-                                                   var="d"
-                                                   itemLabel="#{d.name}"
-                                                   itemValue="#{d}" ></f:selectItems>
-                                </p:selectOneMenu>
-                                
-                                
+                                <div class="text-center fw-bold fs-5">Search by Name</div>
+                                <p:panelGrid columns="2" class="bg-white border border-light">
+                                    <p:outputLabel  class="fs-6 fw-bold" value="Name" 
+                                                    for="txtSearchName"></p:outputLabel>
+                                    <p:inputText  class="form-control fs-6" id="txtSearchName"
+                                                  required="true" 
+                                                  requiredMessage="Please enter a name to search"
+                                                  value="#{clientController.searchingName}" >
+                                    </p:inputText>
+
+                                    <p:outputLabel class="fs-6 fw-bold" value="District" 
+                                                    for="mnuDistrict"></p:outputLabel>
+                                    <p:selectOneMenu  class="form-control form-control-sm w-100 fs-6" id="mnuDistrict" value ="#{clientController.district}" >
+                                        <f:selectItem itemLabel="Any District" ></f:selectItem>
+                                        <f:selectItems value="#{areaApplicationController.allDistricts}"
+                                                       var="d"
+                                                       itemLabel="#{d.name}"
+                                                       itemValue="#{d}" ></f:selectItems>
+                                    </p:selectOneMenu>
+                                    <div></div>
+                                    <h:commandButton class="btn btn-success w-100 my-2" value="Search" action="#{clientController.searchByName()}" >
+                                    </h:commandButton>
+                                </p:panelGrid>
                                 <p:messages ></p:messages>
-                                
-                                <p:commandButton value="Search" ajax="false" action="#{clientController.searchByName()}" >
-                                </p:commandButton>
-                                
+
                             </h:form>
-                            
                         </div>
                     </div>
                 </div>
-            </div>
-        </ui:define>
-    </ui:composition>
+            </ui:define>
+        </ui:composition>
 
-</body>
+    </body>
 
 </html>
