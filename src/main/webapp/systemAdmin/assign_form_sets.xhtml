@@ -53,7 +53,7 @@
                                 </p:panelGrid>
                                 
                                 
-                                <p:dataTable value="#{relationshipController.items}" var="i" rowKey="#{i.id}" paginator="true" 
+                                <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{relationshipController.items}" var="i" rowKey="#{i.id}" paginator="true" 
                                              rows="10">
                                     <p:column headerText="Institution" >
                                         <p:outputLabel value="#{i.institution.name}" ></p:outputLabel>

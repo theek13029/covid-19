@@ -751,6 +751,9 @@ public class DashboardApplicationController {
                         break;
                     case Moh:
                         if (cd.getType() == WebUserRoleLevel.Moh) {
+                            if(cd.getArea()==null ||  user.getInstitution()==null|| user.getInstitution().getMohArea()==null){
+                                continue;
+                            }
                             if (cd.getArea().equals(user.getInstitution().getMohArea())) {
                                 mcd = cd;
                             }

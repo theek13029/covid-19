@@ -13,7 +13,7 @@
             <ui:define name="metadata">
 
                 <h:form >
-                    <p:dataTable value="#{itemController.vtms}" var="v" rowIndexVar="#{v.id}" >
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{itemController.vtms}" var="v" rowIndexVar="#{v.id}" >
                         <p:column headerText="Name" >
                             <p:outputLabel value="#{v.name}" ></p:outputLabel>
                         </p:column>

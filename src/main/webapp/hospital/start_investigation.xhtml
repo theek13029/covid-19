@@ -24,7 +24,7 @@
                         <p:panelGrid class="bg-white border-0 border border-success" columns="2" >
                             <p:panelGrid class="border border-light" columns="2" >
                                 <h:outputLabel class="fs-6 fw-bold" value="Assigned From" ></h:outputLabel>
-                                <p:calendar class="fs-6" value="#{hospitalController.fromDate}"
+                                <p:calendar class="fs-6" value="#{hospitalController.fromDate}" 
                                             pattern="dd MMMM yyyy hh:mm a">
                                 </p:calendar>
 
@@ -34,7 +34,7 @@
                                 <h:outputLabel class="fs-6 fw-bold" value="Ordering Category" ></h:outputLabel>
                                 <h:selectOneMenu class="form-select" value="#{hospitalController.orderingCategory}" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{hospitalController.covidTestOrderingCategories}"
+                                    <f:selectItems value="#{hospitalController.covidTestOrderingCategories}" 
                                                    var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
                                 </h:selectOneMenu>
@@ -43,17 +43,17 @@
                                 <p:commandButton class="btn btn-success my-2" value="Generate Excel">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                                 </p:commandButton>
-                                <p:commandButton class="btn btn-warning w-100 my-2" value="Process"
+                                <p:commandButton class="btn btn-warning w-100 my-2" value="Process" 
                                                  action="#{hospitalController.toStartInvestigation()}" ></p:commandButton>
                             </p:panelGrid>
                         </p:panelGrid>
 
-                        <p:dataTable id="tbl" value="#{hospitalController.tests}" rendered="true"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{hospitalController.tests}" rendered="true"
                                      rowIndexVar="n"
-                                     var="c"
-                                     rowKey="#{c.id}"
+                                     var="c" 
+                                     rowKey="#{c.id}" 
                                      rowStyleClass="#{c.resultCssClass}"
-                                     paginator="true"
+                                     paginator="true" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
@@ -82,7 +82,7 @@
                             <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.client.person.nic}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Phone" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
+                            <p:column headerText="Contact Numbers" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.client.person.phone1}" ></h:outputLabel>
                                 <h:outputLabel rendered="#{c.client.person.phone2 ne null}" value=", " ></h:outputLabel>
                                 <h:outputLabel rendered="#{c.client.person.phone2 ne null}" value="#{c.client.person.phone2}" ></h:outputLabel>
@@ -112,14 +112,14 @@
                                 <h:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
-                                <h:commandButton class="btn btn btn-warning" rendered="#{c.referenceCase eq null}"
-                                                 value="Start Investigating"
+                                <h:commandButton class="btn btn btn-warning" rendered="#{c.referenceCase eq null}" 
+                                                 value="Start Investigating" 
                                                  action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                     </f:setPropertyActionListener>
                                 </h:commandButton>
-                                <h:commandButton rendered="#{c.referenceCase ne null}"
-                                                 value="View case"
+                                <h:commandButton rendered="#{c.referenceCase ne null}" 
+                                                 value="View case" 
                                                  action="#{clientController.toViewOrEditCaseEnrollmentFromEncounter()}"
                                                  class="w-100 btn btn-warning">
                                     <f:setPropertyActionListener value="#{c.referenceCase}" target="#{clientController.selectedEncounter}" >

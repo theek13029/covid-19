@@ -13,79 +13,84 @@
             <ui:define name="content">
 
                 <p:panel header="Select Client" style="height: 100%; text-align: center;" >
+
+
                     <h:form>
-                        <p:dataTable styleClass="table table-striped" value="#{clientController.selectedClients}" var="item">
+
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{clientController.selectedClients}" var="item">
+
                             <p:column>
-                                <f:facet name="header" styleClass="table-primary">
+                                <f:facet name="header">
                                     <h:outputText value="Name"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.name}"/>
                             </p:column>
                             <p:column>
-                                <f:facet name="header" class="table-primary">
+                                <f:facet name="header">
                                     <h:outputText value="Gender"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.sex.name}"/>
                             </p:column>
                             <p:column>
-                                <f:facet name="header" class="table-primary">
-                                    <h:outputText value="PHN"/>
-                                </f:facet>
-                                <h:outputText value="#{item.phn}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header" class="table-primary">
+                                <f:facet name="header">
                                     <h:outputText value="Phone No"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.phone1}">
                                 </h:outputText>
                             </p:column>
                             <p:column>
-                                <f:facet name="header" class="table-primary">
+                                <f:facet name="header">
+                                    <h:outputText value="Address"/>
+                                </f:facet>
+                                <h:outputText value="#{item.person.address}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
                                     <h:outputText value="NIC"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.nic}"/>
                             </p:column>
                             <p:column>
-                                <f:facet name="header" class="table-primary">
-                                    <h:outputText value="Religion"/>
+                                <f:facet name="header">
+                                    <h:outputText value="GN Area"/>
                                 </f:facet>
-                                <h:outputText value="#{item.person.religion.name}">
+                                <h:outputText value="#{item.person.gnArea.name}">
                                 </h:outputText>
                             </p:column>
                             <p:column>
-                                <f:facet name="header" class="table-primary">
-                                    <h:outputText value="Ethnicity"/>
+                                <f:facet name="header">
+                                    <h:outputText value="MOH Area"/>
                                 </f:facet>
-                                <h:outputText value="#{item.person.ethinicGroup.name}"/>
+                                <h:outputText value="#{item.person.mohArea.name}"/>
                             </p:column>
                             <p:column>
-                                <f:facet name="header" class="table-primary">
+                                <f:facet name="header">
                                     <h:outputText value="Marietal Status"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.mariatalStatus.name}">
                                 </h:outputText>
                             </p:column>
                             <p:column>
-                                <f:facet name="header" class="table-primary">
+                                <f:facet name="header">
                                     <h:outputText value="Citizenship"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.citizenship.name}"/>
                             </p:column>
                             <p:column>
-                                <f:facet name="header" class="table-primary">
+                                <f:facet name="header">
                                     <h:outputText value="Address"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.address}"/>
                             </p:column>
                             <p:column>
-                                <f:facet name="header" class="table-primary">
+                                <f:facet name="header">
                                     <h:outputText value="Phn"/>
                                 </f:facet>
                                 <h:outputText value="#{item.phn}"/>
                             </p:column>
                             <p:column>
-                                <f:facet name="header" class="table-primary">
+                                <f:facet name="header">
                                     <h:outputText value="Actions"/>
                                 </f:facet>
                                 <p:commandButton ajax="false" action="#{clientController.toClientProfile()}" value="View Profile" >

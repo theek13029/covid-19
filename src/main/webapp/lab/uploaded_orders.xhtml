@@ -36,7 +36,7 @@
                         <h:commandButton value="Save Orders" action="#{clientController.saveUploadedOrders()}" ></h:commandButton>
                     </p:panelGrid>
 
-                    <p:dataTable value="#{clientController.clientImports}" var="c" 
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{clientController.clientImports}" var="c" 
                                  rowIndexVar="n"
                                  selection="#{clientController.clientImportsSelected}" 
                                  rowKey="#{c.id}"

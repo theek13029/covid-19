@@ -162,7 +162,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h:form>
-                            <p:dataTable value="#{sessionController.pcrList}" id="tbl"
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{sessionController.pcrList}" id="tbl"
                                          var="c" paginator="true" rowKey="#{c.id}" rows="10" >
                                 <f:facet name="header">
                                     Last Entries

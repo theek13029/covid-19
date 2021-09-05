@@ -34,7 +34,7 @@
                                 </p:commandButton>  
                             </p:panelGrid>
 
-                            <p:dataTable value="#{queryComponentController.criteriaOfSelectedCount}" var="item">
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{queryComponentController.criteriaOfSelectedCount}" var="item">
 
                                 <p:column>
                                     <f:facet name="header">

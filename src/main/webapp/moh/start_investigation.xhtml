@@ -15,45 +15,40 @@
             </ui:define>
 
             <ui:define name="content">
-                <!--<h:panelGrid columns="1" styleClass="alignTop">-->
-                    <!--<f:facet name="header" >
-                        <h:outputLabel value="Start to Investigate" ></h:outputLabel>
-                    </f:facet>-->
+                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                    <f:facet name="header" >
+                        <p:outputLabel value="Start to Investigate" ></p:outputLabel>
+                    </f:facet>
 
                     <h:form >
-                        <div class="row" >
-                            <div class="col-12 text-center mt-4 mb-2" >
-                                <h4 class="fw-bold"><h:outputLabel  value="Start to Investigate" ></h:outputLabel></h4>
-                            </div>
-                        </div>
-                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
-                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded" >
-                                <h:outputLabel class="h6 fw-bold" value="Assigned From" ></h:outputLabel>
+                        <p:panelGrid columns="2" >
+                            <p:panelGrid columns="2" >
+                                <p:outputLabel value="Assigned From" ></p:outputLabel>
                                 <p:calendar value="#{mohController.fromDate}" 
                                             pattern="dd MMMM yyyy hh:mm a">
                                 </p:calendar>
 
-                                <h:outputLabel class="h6 fw-bold" value="Assigned To" ></h:outputLabel>
+                                <p:outputLabel value="Assigned To" ></p:outputLabel>
                                 <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                                <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
-                                <h:selectOneMenu value="#{mohController.orderingCategory}" class="form-select" >
+                                <p:outputLabel value="Ordering Category" ></p:outputLabel>
+                                <p:selectOneMenu value="#{mohController.orderingCategory}" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
                                     <f:selectItems value="#{mohController.covidTestOrderingCategories}" 
                                                    var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
-                                </h:selectOneMenu>
+                                </p:selectOneMenu>
 
 
-                                <h:commandButton value="Generate Excel" class="btn btn-success text-white">
+                                <p:commandButton ajax="false" value="Generate Excel">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                                </h:commandButton>
-                                <h:commandButton value="Process" class="btn btn-warning text-white w-100"
-                                                 action="#{mohController.toStartInvestigation()}" ></h:commandButton>
-                            </h:panelGrid>
-                        </div>
-                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true" class="table"
+                                </p:commandButton>
+                                <p:commandButton ajax="false" value="Process" 
+                                                 action="#{mohController.toStartInvestigation()}" ></p:commandButton>
+                            </p:panelGrid>
+                        </p:panelGrid>
+
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.tests}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
@@ -132,12 +127,11 @@
                                     </p:commandButton>
                             </p:column>
                         </p:dataTable>
-                        </h:panelGrid>
                     </h:form>
 
 
 
-                <!--</h:panelGrid>-->
+                </p:panelGrid>
             </ui:define>
 
         </ui:composition>

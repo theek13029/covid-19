@@ -23,7 +23,7 @@
             </f:facet>
 
 
-            <p:dataTable id="tbl" value="#{queryComponentController.resultRelationshipList}" var="item">
+            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{queryComponentController.resultRelationshipList}" var="item">
 
                 <p:column sortBy="#{item.area.name}" filterBy="#{item.area.name}" filterMatchMode="contains">
                     <f:facet name="header">
