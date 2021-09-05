@@ -61,7 +61,7 @@
                         <div class="col-6 d-flex flex-column" >
                             <h:panelGrid columns="3" class="shadow bg-white rounded ">
                                 <h:outputLabel class="h6 fw-bold" value="Assign to" ></h:outputLabel>
-                                <p:selectOneMenu value="#{mohController.assignee}" var="wu" class="form-select" >
+                                <p:selectOneMenu value="#{mohController.assignee}" var="wu" class="form-control">
                                     <f:selectItems value="#{webUserController.usersForMyInstitute}" var="w"
                                                    itemLabel="#{w.area.name}" itemValue="#{w}" class="bg-dark" >
                                     </f:selectItems>
