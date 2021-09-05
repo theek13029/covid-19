@@ -34,7 +34,7 @@
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{clientController.labSummariesEntered}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.labSummariesEntered}" 
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
                             <p:column headerText="No" width="50" >

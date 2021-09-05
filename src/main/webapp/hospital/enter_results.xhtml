@@ -81,7 +81,7 @@
 
 
 
-                        <p:dataTable id="tbl" value="#{hospitalController.tests}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{hospitalController.tests}" 
                                      var="c" rowKey="#{c.id}" 
                                      rows="10" 
                                      paginator="true" 

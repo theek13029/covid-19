@@ -117,6 +117,11 @@ public class ItemController implements Serializable {
         items = itemApplicationController.findDictionaryItems();
         return "/item/List";
     }
+    
+    public String toAddDictionaryItem() {
+        items = itemApplicationController.findDictionaryItems();
+        return "/item/List";
+    }
 
     public String toEditVtm() {
         if (vtm == null) {

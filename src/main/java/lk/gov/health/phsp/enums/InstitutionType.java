@@ -19,6 +19,7 @@ public enum InstitutionType {
     Primary_Medical_Care_Unit("Primary Medical Care Unit"),
     MOH_Office("MOH Office"),
     Clinic("Clinic"),
+    OPD("OPD"),
     @Deprecated
     Medical_Clinic("Medical Clinic"),
     @Deprecated

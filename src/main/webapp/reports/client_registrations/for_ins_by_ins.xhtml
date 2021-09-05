@@ -40,7 +40,7 @@
                             </p:commandButton>
                         </p:panelGrid>
 
-                        <p:dataTable id="tbl" value="#{reportController.institutionCounts}" var="c"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{reportController.institutionCounts}" var="c"
                                      rowIndexVar="n"
                                      paginator="true"
                                      rows="10"

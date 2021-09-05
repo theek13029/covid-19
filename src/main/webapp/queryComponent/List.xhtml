@@ -19,7 +19,7 @@
 
             <h:form id="QueryComponentListForm">
                 <p:panel header="#{bundleQuery.ListQueryComponentTitle}">
-                    <p:dataTable id="datalist" value="#{queryComponentController.items}" var="item"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{queryComponentController.items}" var="item"
                                  selectionMode="single" selection="#{queryComponentController.selectedQuery}"
                                  paginator="true"
                                  rowKey="#{item.id}"

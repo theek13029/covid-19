@@ -79,7 +79,7 @@
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToReceive}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToReceive}" 
                                      var="c"
                                      selection="#{clientController.selectedToReceive}"
                                      rowKey="#{c.id}"
