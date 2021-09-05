@@ -63,6 +63,8 @@ public class ItemApplicationController {
     private List<Item> citizenships;
 
     private List<Item> sexes;
+    
+    private List<Item> vaccinationStatuses;
 
     private List<Item> covidTestOrderingCategories;
     private List<Item> covidTestTypes;
@@ -555,5 +557,18 @@ public class ItemApplicationController {
         }
         return sexes;
     }
+
+    public List<Item> getVaccinationStatuses() {
+        if(vaccinationStatuses==null){
+            vaccinationStatuses=findChildDictionaryItems("vaccinations_statuses");
+        }
+        return vaccinationStatuses;
+    }
+
+    public void setVaccinationStatuses(List<Item> vaccinationStatuses) {
+        this.vaccinationStatuses = vaccinationStatuses;
+    }
+    
+    
 
 }

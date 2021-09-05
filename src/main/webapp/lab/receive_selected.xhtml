@@ -40,19 +40,14 @@
 
 
                         </p:panelGrid>
-                    </h:form>
-
-
-                    <h:form>
-
 
                         <p:commandButton value="RECEIVE SELECTED" ajax="false" 
                                          action="#{clientController.markSelectedAsReceivedResults()}" ></p:commandButton>
 
-                                         <p:dataTable id="tbl" value="#{clientController.listedToReceive}" 
+                                         <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToReceive}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      selection="#{clientController.selectedToReceive}">
-                            <p:column selectionMode="multiple" ></p:column>
+                            <p:column selectionMode="multiple" width="25"></p:column>
                             <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
                             </p:column>

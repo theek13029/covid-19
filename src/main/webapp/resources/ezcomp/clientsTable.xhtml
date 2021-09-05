@@ -20,7 +20,7 @@
                     </p:dataExporter>
                 </p:commandButton>
             </f:facet>
-            <p:dataTable value="#{queryComponentController.resultClientList}" var="item"
+            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{queryComponentController.resultClientList}" var="item"
                          rows="10" id="tblClients"
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

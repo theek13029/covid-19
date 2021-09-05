@@ -1,38 +1,34 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <h:body>
-        <ui:composition template="/template1.xhtml">
-            <ui:define name="content">
-                <h:form>
-                    <p:panelGrid columns="2" columnClasses="width20 width80" >
-                        <f:facet name="header" >
-                            <p:outputLabel value="System Administration - Manage Data" ></p:outputLabel>
-                        </f:facet>
-                        <p:panelGrid columns="1" >
-                            <p:commandButton ajax="false"  styleClass="width18rem" 
-                                             action="#{dashboardController.toCalculateNumbers()}" 
-                                             value="Calculate Numbers"   ></p:commandButton>
-                            
-                             <p:commandButton ajax="false"  styleClass="width18rem" 
-                                              action="#{dashboardController.prepareMohDashboard()}" 
-                                             value="Update Dashboard"   ></p:commandButton>
-                             <p:commandButton ajax="false"  styleClass="width18rem" 
-                                              action="/systemAdmin/modification" 
-                                             value="Data Modification"   ></p:commandButton>
-                        </p:panelGrid>
-                        <ui:insert name="reports" >
-                            
-                        </ui:insert>
-                    </p:panelGrid>
+<h:body>
+    <ui:composition template="/template1.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <div class="row py-4 bg-white justify-content-center">
+                    <div class="col-md-6">
+                        <h4 class="fw-bold text-center">System Administration - Manage Data</h4>
+                        <div class="d-grid gap-2 my-2">
+                            <h:commandButton class="btn btn-success w-100 fw-bold"
+                                action="#{dashboardController.toCalculateNumbers()}" value="Calculate Numbers">
+                            </h:commandButton>
 
-                </h:form>
-            </ui:define>
-        </ui:composition>
-    </h:body>
+                            <h:commandButton class="btn btn-success w-100 fw-bold"
+                                action="#{dashboardController.prepareMohDashboard()}" value="Update Dashboard">
+                            </h:commandButton>
+                            <h:commandButton class="btn btn-success w-100 fw-bold" action="/systemAdmin/modification"
+                                value="Data Modification"></h:commandButton>
+                            <ui:insert name="reports">
+                            </ui:insert>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+
 </html>

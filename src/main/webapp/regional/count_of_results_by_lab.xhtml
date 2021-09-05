@@ -18,7 +18,7 @@
                     <h:form >
                         <p:panelGrid columns="2" >
                             <p:outputLabel value="Ordered From" ></p:outputLabel>
-                            <p:calendar value="#{regionalController.fromDate}" 
+                            <p:calendar value="#{regionalController.fromDate}"
                                         pattern="dd MMMM yyyy hh:mm">
                             </p:calendar><!-- comment -->
 
@@ -28,12 +28,12 @@
                             <p:outputLabel value="Ordering Category" ></p:outputLabel>
                             <p:selectOneMenu value="#{regionalController.orderingCategory}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{regionalController.covidTestOrderingCategories}" 
+                                <f:selectItems value="#{regionalController.covidTestOrderingCategories}"
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
-                            
+
 
                             <p:outputLabel value="Test" ></p:outputLabel>
                             <p:selectOneMenu value="#{regionalController.testType}" >
@@ -50,22 +50,22 @@
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
-                           
+
 
                             <p:commandButton ajax="false" value="Generate Excel">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
+                                <p:dataExporter target="tbl" type="xlsx" fileName="test_counts_by_lab" ></p:dataExporter>
                             </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
+                            <p:commandButton ajax="false" value="Process"
                                              action="#{regionalController.toCountOfResultsByLab()}" ></p:commandButton>
 
 
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{regionalController.institutionCounts}" rendered="true"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{regionalController.institutionCounts}" rendered="true"
                                      rowIndexVar="n"
-                                     var="c" 
-                                     paginator="true" 
+                                     var="c"
+                                     paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"

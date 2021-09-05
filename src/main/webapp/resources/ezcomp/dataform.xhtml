@@ -65,7 +65,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet"
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet"
                                          rowIndexVar="se">
                                 <p:column headerText="No" width="40" >
                                     <p:outputLabel value="#{se+1}" ></p:outputLabel>
@@ -111,7 +111,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
                                 <p:column >
                                     <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
                                 </p:column>
@@ -126,10 +126,10 @@
                             <p:outputLabel for="lbIcM" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>
                         <div class="col-md-4">
-                            <p:selectOneMenu id="lbIcM" value="#{ii.addingItem.ci.itemValue}" >
+                            <p:selectOneButton id="lbIcM" value="#{ii.addingItem.ci.itemValue}" >
                                 <f:selectItems value="#{ii.availableItemsForSelection}" var="li"
                                                itemLabel="#{li.displayName}" itemValue="#{li}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </p:selectOneButton>
                         </div>
                         <div class="col-md-4">
                             <p:commandButton id="btnAddM3a"  value="Add" process="lbIcM btnAddM3a" update="@form"
@@ -139,7 +139,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
                                 <p:column >
                                     <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
                                 </p:column>
@@ -170,7 +170,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-4">
-                            <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
                                 <p:column >
                                     <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
                                 </p:column>
@@ -201,7 +201,7 @@
                     </div>
                     <div class="row" >
                         <div class="col-md-12" >
-                            <p:dataTable value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{ii.addedItems}" var="ai" emptyMessage="Nothing added Yet">
                                 <p:column >
                                     <p:outputLabel value="#{ai.ci.itemValue.name}" ></p:outputLabel>
                                 </p:column>

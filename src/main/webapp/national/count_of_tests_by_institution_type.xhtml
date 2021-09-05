@@ -61,7 +61,7 @@
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{nationalController.institutionTypeCounts}" rendered="true"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{nationalController.institutionTypeCounts}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      paginator="true" 

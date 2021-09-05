@@ -28,33 +28,45 @@ package lk.gov.health.phsp.enums;
  * @author Dr M H B Ariyaratne
  */
 public enum WebUserRole {
+    //National
     System_Administrator("System Administrator"),
     Super_User("Super User"),
     User("User"),
+    ChiefEpidemiologist("Chief Epidemiologist"),
+    Epidemiologist("Epidemiologist"),
+    Lab_National("Lab National"),
+    //PD Level
     Pdhs("PDHS"),
     Provincial_Admin("Provincial System Administrator"),
     Pdhs_Staff("PDHS Staff"),
+    //RD Level
     Rdhs("RDHS"),
     Regional_Admin("Regional System Administrator"),
     Re("Regional Epidemiologist"),
     Rdhs_Staff("RDHS Staff"),
+    //MOH Level
     Moh("MOH"),
     Amoh("AMOH"),
+    Sphi("SPHI"),
+    Phns("PHNS"),
+    Sphm("SPHM"),
     Phi("PHI"),
     Phm("PHM"),
     MohStaff("MOH Staff"),
-    Epidemiologist("Epidemiologist"),
-    Nurse("Nurse"),
-    ChiefEpidemiologist("Midwife"),
-    Client("Client"),
+    //Hospital Staff
     Hospital_Admin("Hospital System Administrator"),
     Hospital_User("Hospital User"),
+    Doctor("Hospital Doctor"),
+    Nurse("Nurse"),
+    //Lab staff
     Lab_Admin("Lab System Administrator"),
     Lab_Consultant("Lab Consultant"),
     Lab_Mo("Lab Medical Officer"),
     Lab_Mlt("MLT"),
     Lab_User("Lab Assistant"),
-    Lab_National("Lab National");
+    //Client
+    Client("Client");
+   
     private final String label;
 
     private WebUserRole(String label) {

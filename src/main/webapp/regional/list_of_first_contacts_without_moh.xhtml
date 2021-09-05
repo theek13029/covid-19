@@ -8,48 +8,55 @@
 
     <h:body>
         <ui:composition template="/regional/reports_index.xhtml">
-            <ui:define name="reports">
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+            <ui:define name="reports" class="bg-white">
+                <!--<p:panelGrid columns="1" styleClass="alignTop border border-light w-100 bg-white" >
                     <f:facet name="header" >
-                        <p:outputLabel value="List of first contacts wihout MOH" ></p:outputLabel>
-                    </f:facet>
+                        <h:outputLabel class="fs-5 fw-bold my-2" value="List of first contacts wihout MOH" ></h:outputLabel>
+                    </f:facet>-->
 
                     <h:form >
-                        
-                        <p:panelGrid columns="2" >
-                            <p:panelGrid columns="2" >
-                            <p:outputLabel value="From" ></p:outputLabel>
-                            <p:calendar value="#{regionalController.fromDate}" 
+                        <div class="row" >
+                        <div class="col-12 text-center mt-4 mb-2" >
+                            <h4 class="fw-bold"><h:outputLabel  value="List of first contacts wihout MOH" ></h:outputLabel></h4>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 d-flex justify-content-center" >
+                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
+                            <h:outputLabel class="fs-6 fw-bold" value="From" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{regionalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
-                            <p:outputLabel value="To" ></p:outputLabel>
-                            <p:calendar value="#{regionalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <h:outputLabel class="fs-6 fw-bold" value="To" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{regionalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                            <p:commandButton ajax="false" value="Generate Excel">
+                            <h:commandButton class="btn btn-success w-100" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{regionalController.toListOfFirstContactsWithoutMohForRegionalLevel()}" ></p:commandButton>
-                            </p:panelGrid>
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="Assigning MOH Area" ></p:outputLabel>
-                                <p:selectOneMenu value="#{regionalController.mohArea}" >
+                            </h:commandButton>
+                            <h:commandButton class="btn btn-warning w-100" value="Process" 
+                                             action="#{regionalController.toListOfFirstContactsWithoutMohForRegionalLevel()}" ></h:commandButton>
+                            </h:panelGrid>
+                            </div>
+                            <div class="col-6 d-flex flex-column" >
+                            <h:panelGrid columns="2" class="border border-light bg-white">
+                                <h:outputLabel class="fs-6 fw-bold" value="Assigning MOH Area" ></h:outputLabel>
+                                <h:selectOneMenu class="form-select" value="#{regionalController.mohArea}" >
                                     <f:selectItem itemLabel="Select" ></f:selectItem>
                                     <f:selectItems value="#{webUserController.loggableMohAreas}" var="c"
                                                    itemValue="#{c}"
                                                    itemLabel="#{c.name}" >
                                     </f:selectItems>
-                                </p:selectOneMenu>                            
+                                </h:selectOneMenu>                            
                             
-                                <p:commandButton ajax="false" action="#{regionalController.assignMohAreaToContactScreeningAtRegionalLevel()}"
-                                                 value="Assign MOH Areas to Selected Contacts" ></p:commandButton>
-                            </p:panelGrid>
+                                <h:commandButton class="btn btn-success w-100" action="#{regionalController.assignMohAreaToContactScreeningAtRegionalLevel()}"
+                                                 value="Assign MOH Areas to Selected Contacts" ></h:commandButton>
+                            </h:panelGrid>
+                            </div>
+                        </div>
 
-                        </p:panelGrid>
 
-
-                        <p:dataTable id="tbl" value="#{regionalController.cecItems}" rendered="true"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{regionalController.cecItems}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
@@ -60,32 +67,32 @@
                                      rows="10"
                                      selection="#{regionalController.selectedCecis}"
                                      >
-                            <p:column selectionMode="multiple" width="30"></p:column>
+                            <p:column selectionMode="multiple" width="30" resizable="false"></p:column>
                             <p:column headerText="Name"  sortBy="#{c.shortTextValue}" filterBy="#{c.shortTextValue}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.shortTextValue}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.shortTextValue}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Address"  sortBy="#{c.longTextValue}" width="60"
                                       filterBy="#{c.longTextValue}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.longTextValue}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.longTextValue}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Contact Number" sortBy="#{c.shortTextValue2}" 
                                       filterBy="#{c.shortTextValue2}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.shortTextValue2}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.shortTextValue2}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="MOH"  sortBy="#{c.areaValue.name}"
                                       filterBy="#{c.areaValue.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.areaValue.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.areaValue.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="District"  sortBy="#{c.areaValue2.name}"
                                       filterBy="#{c.areaValue2.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.areaValue2.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.areaValue2.name}" ></h:outputLabel>
                             </p:column>
                         </p:dataTable>
                     </h:form>
 
 
 
-                </p:panelGrid>
+                <!--</p:panelGrid>-->
             </ui:define>
 
         </ui:composition>

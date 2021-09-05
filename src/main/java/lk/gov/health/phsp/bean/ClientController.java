@@ -62,7 +62,7 @@ import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.file.UploadedFile;
 
 // </editor-fold>
-@Named("clientController")
+@Named
 @SessionScoped
 public class ClientController implements Serializable {
 
@@ -128,13 +128,11 @@ public class ClientController implements Serializable {
     private String nameCol = "B";
     private String ageColumn = "C";
     private String sexCol = "D";
-    private String nicCol = "F";
-    private String phoneCol = "E";
-    private String addressCol = "F";
+    private String nicCol = "E";
+    private String phoneCol = "F";
+    private String addressCol = "G";
 
     private Integer startRow = 1;
-
-    
 
     private Item selectedTest;
 
@@ -233,6 +231,11 @@ public class ClientController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Navigation">
+    public String toSearchClientByName() {
+        userTransactionController.recordTransaction("To Search Client By Name");
+        return "/client/search_by_name";
+    }
+
     public String toSearchClientById() {
         userTransactionController.recordTransaction("To Search Client By Id");
         return "/client/search_by_id";
@@ -914,6 +917,13 @@ public class ClientController implements Serializable {
                         + "/";
                 break;
             case "CustomCount":
+                if (serialStart == null) {
+                    JsfUtil.addErrorMessage("Need a Starting Number");
+                    return "";
+                }
+                if (serialPrefix == null) {
+                    serialPrefix = "";
+                }
                 startCount = this.serialStart;
                 labPrefix = this.serialPrefix;
                 break;
@@ -958,6 +968,7 @@ public class ClientController implements Serializable {
             startCount++;
             encounterFacade.edit(e);
         }
+        serialStart = startCount;
         return toLabReceiveAll();
     }
 
@@ -967,11 +978,13 @@ public class ClientController implements Serializable {
                 + " where c.retired=false "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
+                + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
                 + " and c.referalInstitution=:rins "
                 + " and c.sentToLab is not null "
                 + " and c.receivedAtLab is null";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
+        m.put("rej", false);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("rins", webUserController.getLoggedUser().getInstitution());
@@ -1304,7 +1317,6 @@ public class ClientController implements Serializable {
                 + " where c.retired=:ret "
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
-                + " and c.institution=:ins "
                 + " and c.referalInstitution=:rins"
                 + " and c.resultConfirmed is not null "
                 + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) ";
@@ -1314,8 +1326,13 @@ public class ClientController implements Serializable {
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
-        m.put("ins", institution);
+
         m.put("rins", referingInstitution);
+
+        if (institution != null) {
+            m.put("ins", institution);
+            j += " and c.institution=:ins ";
+        }
         if (plateNo != null && !plateNo.trim().equals("")) {
             m.put("pn", plateNo);
             j += " and c.plateNumber=:pn ";
@@ -1585,6 +1602,13 @@ public class ClientController implements Serializable {
                         + "/";
                 break;
             case "CustomCount":
+                if (serialStart == null) {
+                    JsfUtil.addErrorMessage("Please add a start number");
+                    return "";
+                }
+                if (serialPrefix == null) {
+                    serialPrefix = "";
+                }
                 startCount = this.serialStart;
                 labPrefix = this.serialPrefix;
                 break;
@@ -1657,7 +1681,7 @@ public class ClientController implements Serializable {
         selectedToPrint = null;
         return "/lab/printing_results_bulk";
     }
-    
+
     public String toSelectedToEnterResults() {
         for (Encounter e : selectedToPrint) {
             e.setResultEntered(false);
@@ -2280,7 +2304,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No Patient Form Set");
             return "";
         }
-        clientEncounterComponentFormSetController.loadOldFormset(cefs);
+//        clientEncounterComponentFormSetController.loadOldFormset(cefs);
         updateYearDateMonth();
         return "/client/client_test_enrollment";
     }
@@ -2413,6 +2437,53 @@ public class ClientController implements Serializable {
     // <editor-fold defaultstate="collapsed" desc="Functions">
     public String toUploadOrders() {
         return "/lab/upload_orders";
+    }
+
+    public String searchByName() {
+        if (searchingName == null && searchingName.trim().equals("")) {
+            JsfUtil.addErrorMessage("Please enter a name to search");
+            return "";
+        }
+
+        if (searchingName.length() < 5) {
+            JsfUtil.addErrorMessage("Please enter at least 4 characters to serach");
+            return "";
+        }
+
+        Map m = new HashMap();
+        String jpql = "select c "
+                + " from Client c "
+                + " where c.retired=:ret "
+                + " and lower(c.person.name) like :name";
+
+        if(district!=null){
+            jpql += " and c.person.district=:dis ";
+             m.put("dis", district);
+        }
+        
+        jpql += " order by c.person.name";
+
+        m.put("ret", false);
+        m.put("name", "%" + searchingName.toLowerCase() + "%");
+
+        List<Client> tmpClients = ejbFacade.findByJpql(jpql, m, 100);
+
+        if (tmpClients == null || tmpClients.isEmpty()) {
+            JsfUtil.addErrorMessage("No matches found");
+            return "";
+        }
+
+        if (tmpClients.size() == 1) {
+            selected = tmpClients.get(0);
+            return toClientProfile();
+        } else {
+            if (tmpClients.size() > 99) {
+                JsfUtil.addErrorMessage("Only the first 100 records are shown. Please increase the length of search keyword.");
+            }
+            selectedClients = tmpClients;
+            return toSelectClient();
+        }
+
     }
 
     public String importOrdersFromExcel() {
@@ -4963,7 +5034,6 @@ public class ClientController implements Serializable {
         }
         return tm;
     }
-
 
     public String toListCases() {
         return "/client/case_list";

@@ -21,15 +21,15 @@
                 <div class="container-fluid" >
                     <div class="row" >
                         <div class="col-12 p-2"   >
-                            <p:messages ></p:messages>
+                            <h:messages ></h:messages>
                         </div>
                     </div>
                     <div class="row" >
                         <div class="col-3" >
 
-                            <div class="card" >
-                                <div class="card-header" >
-                                    <h:outputLabel value="Counts" ></h:outputLabel>
+                            <div class="card border border-success" >
+                                <div class="card-header bg-success" >
+                                    <h:outputLabel class="fs-6 fw-bold  my-1 text-light" value="Counts" ></h:outputLabel>
                                 </div>
                                 <div class="card-body container-fluid">
                                     <div class="row">
@@ -37,7 +37,7 @@
                                             <h:form>
                                                 <h:commandLink value="PCR/RAT Counts by GN Area" 
                                                                action="#{mohController.toCountOfTestsByGn()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100" 
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -48,7 +48,7 @@
                                             <h:form>
                                                 <h:commandLink value="PCR/RAT Counts by PHI Area" 
                                                                action="#{mohController.toCountOfTestsByPhi()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100" 
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -60,7 +60,7 @@
 
                                                 <h:commandLink value="Result Counts by GN Area" 
                                                                action="#{mohController.toCountOfResultsByGnArea()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -71,7 +71,7 @@
                                             <h:form>
                                                 <h:commandLink value="Result Counts by PHI Area" 
                                                                action="#{mohController.toCountOfResultsByPhiArea()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -80,9 +80,9 @@
                                 </div>
                             </div>
 
-                            <div class="card" >
-                                <div class="card-header" >
-                                    <h:outputLabel value="Lists" ></h:outputLabel>
+                            <div class="card my-3 border border-success" >
+                                <div class="card-header bg-success" >
+                                    <h:outputLabel class="fs-6 fw-bold my-1 text-light" value="Lists" ></h:outputLabel>
                                 </div>
                                 <div class="card-body container-fluid">
                                     <div class="row">
@@ -90,7 +90,7 @@
                                             <h:form>
                                                 <h:commandLink value="PCR/RAT Orders from My MOH" 
                                                                action="#{mohController.toListOfOrderesByMyMoh}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -101,7 +101,7 @@
                                             <h:form>
                                                 <h:commandLink value="Results for Orders from my MOH" 
                                                                action="#{mohController.toListOfResultsForOrdersFromMyMoh()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -112,7 +112,7 @@
                                             <h:form>
                                                 <h:commandLink value="Results for Orders from other Institutes" 
                                                                action="#{mohController.toListOfResultsForOrdersFromOtherInstitutes()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -122,7 +122,7 @@
                                         <div class="col-12 p-2">
                                             <h:form>
                                                 <h:commandLink value="Results for Persons in My MOH Area"
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100"
                                                                action="#{mohController.toListOfResultsForPersonsInMyArea()}">
                                                 </h:commandLink>
                                             </h:form>
@@ -131,7 +131,7 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-                                                <h:commandLink class="btn btn-outline-primary btn-lg btn-block"
+                                                <h:commandLink class="btn btn-outline-primary btn-lg btn-block w-100"
                                                                value="List of First Contacts" action="#{mohController.toListOfFirstContacts()}">
                                                 </h:commandLink>
                                             </h:form>
@@ -141,7 +141,7 @@
                                         <div class="col-12 p-2">
                                             <h:form>
                                                 <h:commandLink 
-                                                    class="btn btn-outline-primary btn-lg btn-block"
+                                                    class="btn btn-outline-primary btn-lg btn-block w-100"
                                                     value="List by Management Plan" action="#{mohController.toListCasesByManagement()}">
                                                 </h:commandLink>
                                             </h:form>

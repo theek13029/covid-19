@@ -44,6 +44,7 @@ import lk.gov.health.phsp.enums.Privilege;
 import lk.gov.health.phsp.enums.PrivilegeTreeNode;
 import lk.gov.health.phsp.enums.RelationshipType;
 import lk.gov.health.phsp.facade.UserPrivilegeFacade;
+import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.file.UploadedFile;
@@ -202,6 +203,17 @@ public class WebUserController implements Serializable {
         userTransactionController.recordTransaction("Invalidating the Session", this.toString());
     }
 
+    
+    public void onResize(ColumnResizeEvent event) {
+        String viewId = event.getFacesContext().getViewRoot().getViewId();
+        String columnId = event.getColumn().getClientId();
+        Integer w = event.getWidth();
+        Integer h = event.getHeight();
+        String colName = event.getColumn().getHeaderText();
+    }
+    
+  
+    
     private void findIpAddress() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         ipAddress = request.getHeader("X-FORWARDED-FOR");
@@ -817,7 +829,8 @@ public class WebUserController implements Serializable {
         toDate = c.getTime();
         c.add(Calendar.DAY_OF_MONTH, -7);
         fromDate = c.getTime();
-
+        dashboardController.setMyCovidData(null);
+        
         if (null != loggedUser.getWebUserRoleLevel()) {
             switch (loggedUser.getWebUserRoleLevel()) {
                 case Lab:
@@ -841,11 +854,11 @@ public class WebUserController implements Serializable {
                 case Hospital:
                     dashboardController.prepareHospitalDashboard();
                     break;
-
                 default:
                     break;
             }
         }
+
         fillUsersForMyInstitute();
         fillAreasForMe();
         return "/index";

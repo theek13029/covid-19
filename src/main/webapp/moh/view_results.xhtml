@@ -73,7 +73,7 @@
 
 
 
-                        <p:dataTable id="tbl" value="#{mohController.tests}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.tests}" 
                                      var="c" rowKey="#{c.id}" 
                                      rows="10" 
                                      paginator="true" 
@@ -107,7 +107,21 @@
                                     </p:ajax>
                                 </p:outputLabel>
                             </p:column>
-                           
+                           <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
+                                    <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}" 
+                                                     value="Investigate" 
+                                                     action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
+                                        <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
+                                        </f:setPropertyActionListener>
+                                    </p:commandButton>
+                                <p:commandButton rendered="#{c.referenceCase ne null}" 
+                                                     ajax="false" value="View Investigation Details" 
+                                                     action="#{clientController.toViewOrEditCaseEnrollmentFromEncounter()}"
+                                                     style="width: 100%;" >
+                                    <f:setPropertyActionListener value="#{c.referenceCase}" target="#{clientController.selectedEncounter}" >
+                                        </f:setPropertyActionListener>
+                                    </p:commandButton>
+                            </p:column>
 
                         </p:dataTable>
 

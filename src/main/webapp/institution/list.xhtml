@@ -9,8 +9,9 @@
     <body>
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
+                <h1 class=" text-center mt-3 mb-3">List of Institutions</h1>
                 <h:form id="InstitutionListForm">    
-                    <p:dataTable id="datalist" value="#{institutionController.items}" var="item"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{institutionController.items}" var="item"
                                  selectionMode="single" selection="#{institutionController.selected}"
                                  paginator="true"
                                  rowKey="#{item.id}"
@@ -56,6 +57,7 @@
                                 <h:outputText value="District"/>
                             </f:facet>
                             <h:outputText value="#{item.district.name}"/>
+
                         </p:column>
                         <p:column sortBy="#{item.rdhsArea.name}" filterBy="#{item.rdhsArea.name}" filterMatchMode="contains" >
                             <f:facet name="header">
@@ -78,17 +80,13 @@
                         </p:column>
 
                         <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleClinical.Create}" actionListener="#{institutionController.prepareCreate}" update=":InstitutionCreateForm" oncomplete="PF('InstitutionCreateDialog').show()"/>
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleClinical.View}" update=":InstitutionViewForm" oncomplete="PF('InstitutionViewDialog').show()" disabled="#{empty institutionController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleClinical.Edit}" update=":InstitutionEditForm" oncomplete="PF('InstitutionEditDialog').show()" disabled="#{empty institutionController.selected}"/>
-                            <p:commandButton id="deleteButton" 
-                                             onclick="if (!confirm('Are you sure you want to delete?'))
-                                                         return false"
-                                             icon="ui-icon-trash"  value="#{bundleClinical.Delete}" action="#{institutionController.deleteInstitution()}" ajax="false" disabled="#{empty institutionController.selected}"
-
-                                             >
-                                <f:setPropertyActionListener value="#{institutionController.selected}" target="#{institutionController.deleting}" ></f:setPropertyActionListener>
-                            </p:commandButton>
+                            <h:commandLink class="btn btn-primary m-2" id="createButton"    value="#{bundleClinical.Create}" actionListener="#{institutionController.prepareCreate}"><i class= "bi bi-plus-lg m-2"></i><f:ajax render=":InstitutionCreateForm" onevent="PF('InstitutionCreateDialog').show()"></f:ajax> </h:commandLink>
+                            <h:commandLink class="btn btn-primary m-2" id="viewButton"  value="#{bundleClinical.View}" disabled="#{empty institutionController.selected}"><f:ajax render=":InstitutionViewForm" onevent="PF('InstitutionViewDialog').show()"></f:ajax><i class="bi bi-search m-2"></i></h:commandLink>
+                            <h:commandLink class="btn btn-primary m-2" id="editButton"    value="#{bundleClinical.Edit}" disabled="#{empty institutionController.selected}"><f:ajax render=":InstitutionEditForm" onevent="PF('InstitutionEditDialog').show()"></f:ajax><i class="bi bi-pencil m-2"></i></h:commandLink>
+                            <h:commandLink class="btn btn-primary m-2" id="deleteButton" onclick="if (!confirm('Are you sure you want to delete?')) return false"                                                        
+                                               value="#{bundleClinical.Delete}" action="#{institutionController.deleteInstitution()}"  disabled="#{empty institutionController.selected}">
+                                <f:setPropertyActionListener value="#{institutionController.selected}" target="#{institutionController.deleting}" ></f:setPropertyActionListener><i class="bi bi-trash m-2"></i>
+                            </h:commandLink>
                         </f:facet>
                     </p:dataTable>
                 </h:form>
