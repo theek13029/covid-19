@@ -117,10 +117,18 @@ public class ItemController implements Serializable {
         items = itemApplicationController.findDictionaryItems();
         return "/item/List";
     }
-    
+
     public String toAddDictionaryItem() {
-        items = itemApplicationController.findDictionaryItems();
-        return "/item/List";
+        selected = new Item();
+        return "/item/item";
+    }
+
+    public String toEditDictionaryItem() {
+        if (selected == null) {
+            JsfUtil.addErrorMessage("Please select an item to edit");
+            return "";
+        }
+        return "/item/item";
     }
 
     public String toEditVtm() {
@@ -220,12 +228,10 @@ public class ItemController implements Serializable {
             name = name.toLowerCase();
             selected.setCode(name);
         }
-        if (selected.getDisplayName()== null || selected.getDisplayName().trim().equals("")) {
+        if (selected.getDisplayName() == null || selected.getDisplayName().trim().equals("")) {
             selected.setDisplayName(selected.getName().trim());
         }
     }
-
-   
 
     public void fillDuplicateItemsInAFormSet(DesignComponentFormSet s) {
         String j = "select di.item from DesignComponentFormItem di "
@@ -258,8 +264,6 @@ public class ItemController implements Serializable {
         List<String> ss = getFacade().findString(j, m);
         return ss;
     }
-
-    
 
     public List<Item> completeDictionaryItems(String qry) {
         return findItemList(null, ItemType.Dictionary_Item, qry);
@@ -667,6 +671,7 @@ public class ItemController implements Serializable {
         itemApplicationController.invalidateItems();
         items = null;
         getItems();
+        JsfUtil.addSuccessMessage("Dictionary was reloaded.");
     }
 
     public Item getItem(java.lang.Long id) {

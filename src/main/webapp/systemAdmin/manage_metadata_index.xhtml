@@ -18,22 +18,26 @@
                                 <div class="col-3" >
                                     <h:form>
                                         <p:commandButton  class="btn btn-primary w-100 m-1" ajax="false" action="/designComponentFormSet/List" value="Fromset Management" ></p:commandButton>
-                                        <p:commandButton  class="btn btn-primary w-100 m-1" ajax="false" action="#{itemController.toManageDictionary()}" value="List Dictionaty Item" ></p:commandButton>
-                                        <p:commandButton  class="btn btn-primary w-100 m-1" ajax="false" action="#{itemController.toManageDictionary()}" value="List Dictionaty Item" ></p:commandButton>
-                                        <p:commandButton  class="btn btn-primary w-100 m-1" ajax="false" action="/client/import_clients" value="Import Patients" ></p:commandButton>
-                                        <p:commandButton  class="btn btn-primary w-100 m-1" ajax="false" action="/item/import" value="Import Items" ></p:commandButton>
-                                        <p:commandButton  class="btn btn-primary w-100 m-1" ajax="false" action="/item/import" value="Import Institutions" ></p:commandButton>
+                                        <hr/>
+                                        <p:commandButton  class="btn btn-primary w-100 m-1" ajax="false" action="#{itemController.toAddDictionaryItem()}" value="Add Dictionaty Item" ></p:commandButton>
+                                        <p:commandButton  class="btn btn-primary w-100 m-1" ajax="false" action="#{itemController.toManageDictionary()}" value="List Dictionaty Items" ></p:commandButton>
+                                       
                                         <p:commandButton value="Reload Dictionary" 
                                                          class="btn btn-primary w-100 m-1" 
                                                          ajax="false" 
                                                          action="#{itemController.reloadItems()}" >
                                         </p:commandButton>
+                                        <p:commandButton  class="btn btn-primary w-100 m-1" 
+                                                          ajax="false" action="/item/import" value="Import Dictionary Items" ></p:commandButton>
                                     </h:form>
                                 </div>
                                 <div class="col-9" >
                                     <ui:insert name="metadata" >
                                     </ui:insert>
                                 </div>
+                            </div>
+                            <div class="row" >
+                                <p:messages ></p:messages>
                             </div>
                         </div>
                     </div>

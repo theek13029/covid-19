@@ -6,12 +6,12 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition>
+    <ui:composition template="/systemAdmin/manage_metadata_index.xhtml">
 
-       <h:form id="ItemEditForm">
+
+        <ui:define name="metadata">
+            <h:form id="ItemEditForm">
                 <h:panelGroup id="display">
-
-
                     <p:tabView >
                         <p:tab title="Basic Details" >
                             <p:panelGrid columns="2" rendered="#{itemController.selected != null}">
@@ -24,7 +24,6 @@
                                                    itemValue="#{itemTypes}"
                                                    itemLabel="#{itemTypes.label}"></f:selectItems>
                                 </p:selectOneMenu>
-
                                 <p:outputLabel value="Institution Type" for="insType" />
                                 <p:selectOneMenu
                                     id="insType" value="#{itemController.selected.insType}" >
@@ -93,7 +92,7 @@
                             </p:panelGrid>
                         </p:tab>
                         <p:tab title="Validation">
-                            <p:panelGrid columns="2" id="tabValidation" >
+                            <p:panelGrid rendered="false" columns="2" id="tabValidation" >
 
                                 <p:outputLabel rendered="#{itemController.selected.dataTypeReal}" value="Absolute Minimum for Real Numbers:" for="minDbl" />
                                 <p:inputText id="minDbl"  rendered="#{itemController.selected.dataTypeReal}" 
@@ -145,7 +144,10 @@
                     <p:commandButton action="#{itemController.save()}" value="#{bundleClinical.Save}" ajax="false" />
                 </h:panelGroup>
             </h:form>
-     
+        </ui:define>
+
+
+
 
     </ui:composition>
 </html>
