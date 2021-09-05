@@ -19,7 +19,7 @@
             </title>
         </h:head>
 
-        <h:body>
+        <h:body >
             <h:panelGroup rendered="#{webUserController.loggedUser ne null}">
                 <ez:header></ez:header>
             </h:panelGroup>
@@ -31,7 +31,9 @@
                             <ez:menu/>
                         </div>
                     </div>
-                    <ui:insert name="content">
+                </div>
+                <div class="container-fluid w-100" >
+                     <ui:insert name="content">
                         Contents
                     </ui:insert>
                 </div>

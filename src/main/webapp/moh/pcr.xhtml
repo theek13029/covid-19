@@ -93,7 +93,7 @@
 
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-md-3 mb-4">
+                                            <div class="col-md-4 mb-4">
                                                 <p:outputLabel value="Name:" for="name" class="h6 fw-bold mb-2"/>
                                                 <p:inputText autocomplete="off"
                                                              tabindex="2"
@@ -103,6 +103,21 @@
                                                              requiredMessage="Please give a name"
                                                              style="width: 100%;"
                                                              value="#{mohController.pcr.client.person.name}" title="Name" />
+                                            </div>
+                                            <div class="col-md-2 mb-4">
+                                                <p:outputLabel value="Vaccination:"  for="vstatus" class="h6 fw-bold mb-2"/>
+                                                <h:selectOneMenu
+                                                    id="vstatus" value="#{mohController.pcr.vaccinationStatus}" class="form-select w-100"
+                                                    tabindex="107" 
+                                                    style="width: 100%;">
+                                                    <f:selectItem itemLabel="Please select" ></f:selectItem>
+                                                    <f:selectItems value="#{itemApplicationController.vaccinationStatuses}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
+                                                </h:selectOneMenu>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <h:outputLabel value="Symptomatic:" class="h6 fw-bold mb-2" />
+                                                <p:selectBooleanButton tabindex="106"
+                                                                       value="#{mohController.pcr.symptomatic}"  class="form-select w-100" offLabel="No" onLabel="Yes"></p:selectBooleanButton>
                                             </div>
                                             <div class="col-md-2 mb-4">
                                                 <h:outputLabel value="Citizenship:" for="citizenship" class="h6 fw-bold mb-2"/>
@@ -181,11 +196,23 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="col-md-3">
-                                                <h:outputLabel value="Symptomatic:" class="h6 fw-bold mb-2" />
-                                                <p:selectBooleanButton tabindex="106"
-                                                                       value="#{mohController.pcr.symptomatic}"  class="form-select w-100" offLabel="No" onLabel="Yes"></p:selectBooleanButton>
+                                            <div class="col-md-2 bg-primary text-white">
+                                                <h:outputLabel value="Workplace:"  class="h6 fw-bold"/>
+                                                <h:inputText tabindex="114" class="form-control w-100" value="#{mohController.pcr.client.person.workPlace}"
+                                                             style="width:100%;" >
+                                                </h:inputText>
+                                            </div>
+                                            <div class="col-md-2 bg-primary text-white">
+                                                <h:outputLabel value="Contact Person:" class="h6 fw-bold" />
+                                                <h:inputText tabindex="114" class="form-control w-100" value="#{mohController.pcr.client.person.workplaceContact}"
+                                                             style="width:100%;" >
+                                                </h:inputText>
+                                            </div>
+                                            <div class="col-md-2 bg-primary text-white">
+                                                <h:outputLabel value="Contact Number: " class="h6 fw-bold" />
+                                                <h:inputText tabindex="114" class="form-control w-100" value="#{mohController.pcr.client.person.workplaceContactDetails}"
+                                                             style="width:100%;" >
+                                                </h:inputText>
                                             </div>
 
                                         </div>
@@ -258,18 +285,7 @@
 
 
 
-                                            <div class="col-md-3 mb-4">
-                                                <h:outputLabel value="Workplace:"  class="h6 fw-bold mb-2"/>
-                                                <h:inputText tabindex="114" class="form-control w-100" value="#{mohController.pcr.client.person.workPlace}"
-                                                             style="width:100%;" >
-                                                </h:inputText>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <h:outputLabel value="Workplace Contact:" class="h6 fw-bold mb-2" />
-                                                <h:inputText tabindex="114" class="form-control w-100" value="#{mohController.pcr.client.person.workplaceContact}"
-                                                             style="width:100%;" >
-                                                </h:inputText>
-                                            </div>
+
 
 
                                         </div>
