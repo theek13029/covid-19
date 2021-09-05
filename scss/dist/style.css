@@ -192,6 +192,16 @@ table tbody.active-row {
   height: 1.25rem;
 }
 
+.ui-icon-circle-triangle-w {
+  content: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSIxMDI0IiB3aWR0aD0iMzgzLjc1IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0wIDUxMS44NzVsMzgzLjc1IDM4My43NXYtNzY3LjVMMCA1MTEuODc1eiIvPjwvc3ZnPg==");
+  height: 1.25rem;
+}
+
+.ui-icon-circle-triangle-e {
+  content: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSIxMDI0IiB3aWR0aD0iMzgzLjg3NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMC4wNjIgMTI4LjI1TDM4My44MTIgNTEyIDAuMDYyIDg5NS43NVYxMjguMjV6Ii8+PC9zdmc+");
+  height: 1.25rem;
+}
+
 html, body, * {
   font-family: "Noto Sans JP", sans-serif !important;
 }
