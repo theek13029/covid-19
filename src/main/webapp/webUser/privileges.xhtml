@@ -5,15 +5,24 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-
+<!-- This is my comment as lakshitha -->
     <h:body>
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:form>
                     <p:panel header="Manage Privileges" >
                         <f:facet name="header" >
-                            <p:commandButton id="btnUpdate" ajax="false" action="#{webUserController.updateUserPrivileges()}" value="#{bundleClinical.Save}" />
-                            <p:commandButton ajax="false" value="Back" action="#{webUserController.toManageUserIndexForSystemAdmin()}"/>
+                            <div class="row" >
+                                <div class="col-12 text-center mt-4 mb-2" >
+                                    <h4 class="fw-bold"><h:outputLabel  value="Manage Privileges" ></h:outputLabel></h4>
+                                </div>
+                            </div> 
+                            <div class="row" >
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <h:commandButton class="btn btn-success" value="Back" action="#{webUserController.toManageUserIndexForSystemAdmin()}"/>
+                                    <h:commandButton class="btn btn-success" id="btnUpdate"  action="#{webUserController.updateUserPrivileges()}" value="#{bundleClinical.Save}"/>
+                                </div>
+                            </div> 
                         </f:facet>
 
                         <p:tree id="tree"  value="#{webUserController.allPrivilegeRoot}" var="node" selectionMode="checkbox" selection="#{webUserController.selectedNodes}">  

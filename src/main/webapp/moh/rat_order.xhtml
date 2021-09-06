@@ -14,13 +14,13 @@
                             <div>
                                 <div class="form-group row">
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Test Number"></h:outputLabel>
+                                        <h:outputLabel class= "form-label fw-bold" value="Test Number"></h:outputLabel>
                                         <h:inputText id="txtTestNo" class="form-control w-100" value="#{mohController.rat.encounterNumber}" tabindex="1" >
                                         </h:inputText>
                                     </div>
 
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Lab"></h:outputLabel>
+                                        <h:outputLabel class= "form-label fw-bold" value="Lab"></h:outputLabel>
                                         <p:autoComplete
                                                         inputStyleClass="autocomplete"
                                                         value="#{mohController.rat.referalInstitution}"
@@ -31,7 +31,7 @@
                                     </div>
 
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel  class= "h6 fw-bold mb-2" value="Ordering Category"
+                                        <h:outputLabel  class= "form-label fw-bold" value="Ordering Category"
                                                         for="orderingCat"></h:outputLabel>
                                         <h:selectOneMenu class="form-select w-100" id="orderingCat"
                                                          required="true"
@@ -42,17 +42,18 @@
                                             <f:selectItems value="#{mohController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
                                                            itemValue="#{tt}" ></f:selectItems>
                                         </h:selectOneMenu>
+                                        <h:message class="text-danger small" for="orderingCat"></h:message>
                                     </div>
 
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Sampled at"></h:outputLabel>
-                                        <p:calendar class="form-select w-100"  inputStyle="width:100%;"  value="#{mohController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
+                                        <h:outputLabel class= "form-label fw-bold" value="Sampled at"></h:outputLabel>
+                                        <p:calendar inputClass="w-100" class="w-100" value="#{mohController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
                                     </div>
 
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Name:" for="name" />
+                                        <h:outputLabel class= "form-label fw-bold" value="Name:" for="name" />
                                         <h:inputText autocomplete="off"
                                                      class="form-control w-100"
                                                      tabindex="2"
@@ -60,22 +61,23 @@
                                                      required="true"
                                                      requiredMessage="Please give a name"
                                                      value="#{mohController.rat.client.person.name}" title="Name" />
+                                        <h:message class="text-danger small" for="name"></h:message>
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Citizenship:" for="citizenship" />
+                                        <h:outputLabel class= "form-label fw-bold" value="Citizenship:" for="citizenship" />
                                         <h:selectOneMenu class="form-select w-100" id="citizenship" value="#{mohController.rat.client.person.citizenship}"
                                                          tabindex="103" >
                                             <f:selectItems value="#{mohController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}"></f:selectItems>
                                         </h:selectOneMenu>
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="PHN No.:" for="phn" />
+                                        <h:outputLabel class= "form-label fw-bold" value="PHN No.:" for="phn" />
                                         <p:inputText id="phn" autocomplete="off"
                                                      tabindex="104"
                                                      class="form-control w-100" value="#{mohController.rat.client.phn}" title="Phn" placeholder="New PHN"></p:inputText>
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Other Ordering Category:"  />
+                                        <h:outputLabel class= "form-label fw-bold" value="Other Ordering Category:"  />
                                         <h:inputText class="form-control w-100" value="#{mohController.rat.pcrOrderingCategoryOther}"
                                                      tabindex="105" ></h:inputText>
                                     </div>
@@ -84,7 +86,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="NIC/NIC of the guardian/Passport No. :" for="nic" />
+                                        <h:outputLabel class= "form-label fw-bold" value="NIC/NIC of the guardian/Passport No. :" for="nic" />
                                         <h:inputText id="nic" class="form-control w-100"
                                                      tabindex="3"
                                                      autocomplete="off"
@@ -97,17 +99,18 @@
                                         </h:inputText>
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Gender:"  for="sex" />
+                                        <h:outputLabel class= "form-label fw-bold" value="Gender:"  for="sex" />
                                         <h:selectOneMenu
                                             class="form-select w-100" id="sex" value="#{mohController.rat.client.person.sex}" required="true"
                                             tabindex="107" requiredMessage="Please select Gender" >
                                             <f:selectItems value="#{mohController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
                                         </h:selectOneMenu>
+                                        <h:message class="text-danger small" for="sex"></h:message>
                                     </div>
 
                                     <div class="col-md-3 mb-4">
 
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Age: (Years/Months)*"/>
+                                        <h:outputLabel class= "form-label fw-bold" value="Age: (Years/Months)*"/>
                                         <div class="d-inline-flex">
                                             <div class="mr-2">
                                             <p:inputText class="form-control w-100" autocomplete="off" id="year"
@@ -125,12 +128,13 @@
                                                 <f:ajax event="keyup" execute="@this year day" render="calDob" />
                                             </p:inputText>
                                             </div>
+                                            <h:message class="text-danger small" for="year"></h:message>
                                         </div>
 
                                     </div>
 
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Symptomatic:"  />
+                                        <h:outputLabel class= "form-label fw-bold" value="Symptomatic:"  />
                                         <p:selectBooleanButton class="form-select w-100" tabindex="106"
                                                                value="#{mohController.rat.symptomatic}"  offLabel="No" onLabel="Yes"></p:selectBooleanButton>
                                     </div>
@@ -139,7 +143,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Current Residential Address:" for="address" />
+                                        <h:outputLabel class= "form-label fw-bold" value="Current Residential Address:" for="address" />
                                         <p:commandLink id="lnkLastAddress"
                                                        action="#{mohController.retrieveLastAddressForRat()}" process="lnkLastAddress" update="address" >
                                             <i class="pi pi-refresh"></i>
@@ -149,14 +153,14 @@
                                                      requiredMessage="Please enter the address"
                                                      value="#{mohController.rat.client.person.address}"
                                                      title="Address ****" />
+                                        <h:message class="text-danger small" for="address"></h:message>
 
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="District:"  for="district" />
+                                        <h:outputLabel class= "form-label fw-bold" value="District:"  for="district" />
                                         <p:autoComplete required="true"
                                                         requiredMessage="Please select a district"
                                                         tabindex="110"
-                                                        inputStyle="width:100%;"
                                                         id="district"
                                                         value="#{mohController.rat.client.person.district}"
                                                         completeMethod="#{mohController.completeDistricts}"
@@ -165,9 +169,10 @@
                                             <f:ajax event="itemSelect" execute="district"></f:ajax>
                                             <f:ajax event="blur" execute="district"></f:ajax>
                                         </p:autoComplete>
+                                        <h:message class="text-danger small" for="district"></h:message>
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="MOH Area:" for="moh" />
+                                        <h:outputLabel class= "form-label fw-bold" value="MOH Area:" for="moh" />
                                         <p:autoComplete id="moh"
                                                         tabindex="111"
                                                         value="#{mohController.rat.client.person.mohArea}"
@@ -180,7 +185,7 @@
                                     </div>
 
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Unit/Ward:"  />
+                                        <h:outputLabel class= "form-label fw-bold" value="Unit/Ward:"  />
                                         <p:inputText class="form-control w-100" tabindex="114" value="#{mohController.rat.unitWard}"
                                                      placeholder="Not Known" >
                                         </p:inputText>
@@ -190,7 +195,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="Contact Number :" for="phone1" />
+                                        <h:outputLabel class= "form-label fw-bold" value="Contact Number :" for="phone1" />
                                         <p:commandLink id="lnkLastphone1"
                                                        action="#{mohController.retrieveLastPhoneForRat()}" process="lnkLastphone1" update="phone1">
                                             <i class="pi pi-refresh"></i>
@@ -202,10 +207,10 @@
                                                      value="#{mohController.rat.client.person.phone1}" title="Mobile"
                                                      validatorMessage="Please check the number">
                                         </h:inputText>
-
+                                        <h:message class="tex-danger small" for="phone1"></h:message>
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="GN Area:" for="gn" />
+                                        <h:outputLabel class= "form-label fw-bold" value="GN Area:" for="gn" />
                                         <p:commandLink id="lnkLastGn"
                                                        action="#{mohController.retrieveLastGnRat()}" process="lnkLastGn" update="gn">
                                             <i class="pi pi-refresh"></i>
@@ -221,7 +226,7 @@
                                     </div>
 
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "h6 fw-bold mb-2" value="PHI Area:" for="phi" />
+                                        <h:outputLabel class= "form-label fw-bold" value="PHI Area:" for="phi" />
                                         <p:autoComplete tabindex="113"
                                                         id="phi"
                                                         value="#{mohController.rat.client.person.phiArea}"
@@ -241,7 +246,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <h:messages ></h:messages>
+                                        <p:messages ></p:messages>
                                     </div>
                                 </div>
 

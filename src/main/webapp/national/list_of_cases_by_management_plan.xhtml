@@ -10,40 +10,39 @@
 
        <ui:composition template="/national/reports_index.xhtml">
             <ui:define name="reports">
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <p:panelGrid columns="1" styleClass="alignTop" >
                     <f:facet name="header" >
                         <p:outputLabel value="First Contacts" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        
-                        <p:panelGrid columns="2" >
-                            <p:panelGrid columns="2" >
-                            <p:outputLabel value="From" ></p:outputLabel>
+                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
+                            <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
                             <p:calendar value="#{nationalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
-                            <p:outputLabel value="To" ></p:outputLabel>
+                            <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
                             <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
                             
-                            <p:outputLabel value="Plan of Management" ></p:outputLabel>
-                            <p:selectOneMenu value="#{nationalController.managementType}" >
+                            <h:outputLabel class="h6 fw-bold" value="Plan of Management" ></h:outputLabel>
+                            <h:selectOneMenu value="#{nationalController.managementType}" class="form-select">
                                 <f:selectItem itemLabel="Any" ></f:selectItem>
                                 <f:selectItems value="#{nationalController.managementTypes}" var="m" itemLabel="#{m.name}"
                                                itemValue="#{m}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
-                            <p:commandButton ajax="false" value="Generate Excel">
+                            <h:commandButton value="Generate Excel" class="btn btn-success w-100">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{nationalController.toListCasesByManagementForRegionalLevel()}" ></p:commandButton>
-                            </p:panelGrid>
-                        </p:panelGrid>
+                            </h:commandButton>
+                            <h:commandButton value="Process" class="btn btn-warning w-100"
+                                             action="#{nationalController.toListCasesByManagementForRegionalLevel()}" ></h:commandButton>
+                            </h:panelGrid>
+                        </div>
 
-
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{nationalController.cecItems}" rendered="true"
+                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
+                        <p:dataTable id="tbl" value="#{nationalController.cecItems}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
@@ -54,33 +53,34 @@
                                      rows="10"
                                      selection="#{nationalController.selectedCecis}"
                                      >
-                            <p:column selectionMode="multiple" width="30" resizable="false"></p:column>
+                            <p:column selectionMode="multiple" width="30"></p:column>
                             <p:column headerText="Name"  sortBy="#{c.shortTextValue}" filterBy="#{c.shortTextValue}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.shortTextValue}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.shortTextValue}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Address"  sortBy="#{c.longTextValue}" 
                                       filterBy="#{c.longTextValue}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.longTextValue}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.longTextValue}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Contact Number" sortBy="#{c.shortTextValue2}" 
                                       filterBy="#{c.shortTextValue2}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.shortTextValue2}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.shortTextValue2}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="District"  sortBy="#{c.areaValue2.name}"
                                       filterBy="#{c.areaValue2.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.areaValue2.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.areaValue2.name}" ></h:outputLabel>
                             </p:column>
                            
                             <p:column headerText="Actions" exportable="false" rendered="false" >
                                 <p:commandLink value="Order PCR" action="#{nationalController.toViewTest()}" ajax="false" >
                                     <f:setPropertyActionListener value="#{c}" target="#{nationalController.test}" ></f:setPropertyActionListener>
                                 </p:commandLink>
-                                <p:outputLabel value=" | " ></p:outputLabel>
+                                <h:outputLabel value=" | " ></h:outputLabel>
                                 <p:commandLink value="Order RAT" action="#{nationalController.toViewResult()}" ajax="false" >
                                     <f:setPropertyActionListener value="#{c}" target="#{nationalController.test}" ></f:setPropertyActionListener>
                                 </p:commandLink>
                             </p:column>
                         </p:dataTable>
+                        </h:panelGrid>
                     </h:form>
 
 
