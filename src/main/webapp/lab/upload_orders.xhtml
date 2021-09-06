@@ -15,53 +15,35 @@
     <h:body>
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
-                <h:form enctype="multipart/form-data" >
-                    <p:panelGrid columns="2" class="bg-white border border-light" >
-                        <h:outputLabel class="text-center fs-6 fw-bold" value="Institution" ></h:outputLabel>
-                        <p:autoComplete id="parent" value="#{clientController.institution}"
-                                         maxResults="15" minQueryLength="3"
+                <h:form enctype="multipart/form-data" >                    
+                    <p:panelGrid columns="2"  >
+                        <p:outputLabel value="Institution" ></p:outputLabel>
+                        <p:autoComplete  id="parent" value="#{clientController.institution}"  
+                                         maxResults="15" minQueryLength="4"
                                          completeMethod="#{institutionController.completeInstitutions}"
                                          var="i" itemLabel="#{i.name}" itemValue="#{i}">
                         </p:autoComplete >
-
-                        <h:outputLabel class="text-center fs-6 fw-bold" value="Test" ></h:outputLabel>
-                        <p:selectOneMenu class="form-select form-select-sm w-100" value="#{clientController.lastTestPcrOrRat}" >
+                        
+                        <h:outputLabel value="Test" ></h:outputLabel>
+                        <p:selectOneMenu value="#{clientController.lastTestPcrOrRat}" >
                             <f:selectItem itemLabel="Select" ></f:selectItem>
                             <f:selectItems value="#{itemApplicationController.covidTestTypes}" var="t" itemValue="#{t}" itemLabel="#{t.name}" >
                             </f:selectItems>
                         </p:selectOneMenu>
-
-                        <h:outputLabel class="text-center fs-6 fw-bold" value="Sampled at" ></h:outputLabel>
+                        
+                        <p:outputLabel value="Sampled at" ></p:outputLabel>
                         <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy hh:mm" >
                         </p:calendar>
-
-                        <h:outputLabel class="text-center fs-6 fw-bold" value="Dispatched at" ></h:outputLabel>
+                        
+                        <p:outputLabel value="Dispatched at" ></p:outputLabel>
                         <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy hh:mm" >
                         </p:calendar>
-
-                        <h:outputLabel class="text-center fs-6 fw-bold" value="Start Row" ></h:outputLabel>
-                        <h:inputText class="form-control" value="#{clientController.startRow}" ></h:inputText>
-
-                        <p:outputLabel class="text-center fs-6 fw-bold" value="Test No Column" ></p:outputLabel>
-                        <h:selectOneMenu class="form-select" value="#{clientController.testNoCol}" >
-                            <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
-                            <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
-                            <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
-                            <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
-                            <f:selectItem itemLabel="E" itemValue="E"></f:selectItem>
-                            <f:selectItem itemLabel="F" itemValue="F"></f:selectItem>
-                            <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
-                            <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
-                            <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
-                            <f:selectItem itemLabel="J" itemValue="J"></f:selectItem>
-                            <f:selectItem itemLabel="K" itemValue="K"></f:selectItem>
-                            <f:selectItem itemLabel="L" itemValue="L"></f:selectItem>
-                            <f:selectItem itemLabel="M" itemValue="M"></f:selectItem>
-                            <f:selectItem itemLabel="N" itemValue="N"></f:selectItem>
-                        </h:selectOneMenu>
-
-                        <h:outputLabel class="text-center fs-6 fw-bold" value="Name Column" ></h:outputLabel>
-                        <h:selectOneMenu class="form-select" value="#{clientController.nameCol}" >
+                        
+                        <p:outputLabel value="Start Row" ></p:outputLabel><!-- comment -->
+                        <p:inputText value="#{clientController.startRow}" ></p:inputText>
+                        
+                        <p:outputLabel value="Test No Column" ></p:outputLabel>
+                        <p:selectOneMenu value="#{clientController.testNoCol}" >
                             <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
                             <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
                             <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
@@ -76,10 +58,10 @@
                             <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                        </h:selectOneMenu>
+                        </p:selectOneMenu>
 
-                        <h:outputLabel class="text-center fs-6 fw-bold" value="Age in years column" ></h:outputLabel>
-                        <h:selectOneMenu class="form-select" value="#{clientController.ageColumn}" >
+                        <p:outputLabel value="Name Column" ></p:outputLabel>
+                        <p:selectOneMenu value="#{clientController.nameCol}" >
                             <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
                             <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
                             <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
@@ -94,10 +76,10 @@
                             <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                        </h:selectOneMenu>
+                        </p:selectOneMenu>
 
-                        <h:outputLabel class="text-center fs-6 fw-bold" value="Sex Column" ></h:outputLabel>
-                        <h:selectOneMenu class="form-select" value="#{clientController.sexCol}" >
+                        <p:outputLabel value="Age in years column" ></p:outputLabel>
+                        <p:selectOneMenu value="#{clientController.ageColumn}" >
                             <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
                             <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
                             <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
@@ -112,10 +94,10 @@
                             <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                        </h:selectOneMenu>
+                        </p:selectOneMenu>
 
-                         <h:outputLabel class="text-center fs-6 fw-bold" value="NIC Column" ></h:outputLabel>
-                         <h:selectOneMenu class="form-select" value="#{clientController.nicCol}" >
+                        <p:outputLabel value="Sex Column" ></p:outputLabel>
+                        <p:selectOneMenu value="#{clientController.sexCol}" >
                             <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
                             <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
                             <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
@@ -130,11 +112,10 @@
                             <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                        </h:selectOneMenu>
-
-
-                        <h:outputLabel class="text-center fs-6 fw-bold" value="Phone Column" ></h:outputLabel>
-                        <h:selectOneMenu class="form-select" value="#{clientController.phoneCol}" >
+                        </p:selectOneMenu>
+                        
+                         <p:outputLabel value="NIC Column" ></p:outputLabel>
+                         <p:selectOneMenu value="#{clientController.nicCol}" >
                             <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
                             <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
                             <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
@@ -149,10 +130,11 @@
                             <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                        </h:selectOneMenu>
+                        </p:selectOneMenu>
 
-                        <h:outputLabel class="text-center fs-6 fw-bold" value="Address Column" ></h:outputLabel>
-                        <h:selectOneMenu class="form-select" value="#{clientController.addressCol}" >
+
+                        <p:outputLabel value="Phone Column" ></p:outputLabel>
+                        <p:selectOneMenu value="#{clientController.phoneCol}" >
                             <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
                             <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
                             <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
@@ -167,15 +149,37 @@
                             <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
-                        </h:selectOneMenu>
+                        </p:selectOneMenu>
 
-                            <p:fileUpload class="my-3" value="#{clientController.file}" mode="simple"/>
-                            <h:commandButton class="btn btn-success w-100" value="Upload Results from Excel"
-                                             action="#{clientController.importOrdersFromExcel()}"  >
-                            </h:commandButton>
+                        <p:outputLabel value="Address Column" ></p:outputLabel>
+                        <p:selectOneMenu value="#{clientController.addressCol}" >
+                            <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
+                            <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
+                            <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
+                            <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
+                            <f:selectItem itemLabel="E" itemValue="E"></f:selectItem><!-- comment -->
+                            <f:selectItem itemLabel="F" itemValue="F"></f:selectItem><!-- comment -->
+                            <f:selectItem itemLabel="G" itemValue="G"></f:selectItem>
+                            <f:selectItem itemLabel="H" itemValue="H"></f:selectItem>
+                            <f:selectItem itemLabel="I" itemValue="I"></f:selectItem>
+                            <f:selectItem itemLabel="J" itemValue="J"></f:selectItem><!-- comment -->
+                            <f:selectItem itemLabel="K" itemValue="K"></f:selectItem><!-- comment -->
+                            <f:selectItem itemLabel="L" itemValue="L"></f:selectItem><!-- comment -->
+                            <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
+                            <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
+                        </p:selectOneMenu>
+
+                        <h:panelGroup >
+                            <p:fileUpload value="#{clientController.file}" mode="simple"/>
+                            <p:commandButton ajax="false" value="Upload Results from Excel" 
+                                             action="#{clientController.importOrdersFromExcel()}"  ></p:commandButton>
+                        </h:panelGroup>
+
                     </p:panelGrid>
+
                 </h:form>
             </ui:define>
         </ui:composition>
+
     </h:body>
 </html>
