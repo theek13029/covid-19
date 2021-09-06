@@ -13,91 +13,74 @@
             <ui:define name="content">
                 <h:form class="form">
                     <div class="card">
-                        <h5 class="card-header">
-                            <p:outputLabel value="Patient Data" ></p:outputLabel>
-                            <p:spacer height="1" width="10" ></p:spacer>
-                            <p:commandButton ajax="false" value="To Edit Details" action="/client/client" style="float: right;"/>
-                            <p:spacer height="1" width="10" ></p:spacer>
-                            <p:commandButton ajax="false"  value="Add New PCR" action="#{mohController.toAddNewPcrWithExistingClient()}" />
-                            <p:spacer height="1" width="10" ></p:spacer>
-                            <p:commandButton ajax="false"  value="Add New RAT Result" action="#{mohController.toAddNewRatWithExistingClient()}" />
-                            <p:spacer height="1" width="10" ></p:spacer>
-                            <p:commandButton ajax="false"  value="Add New RAT" action="#{mohController.toAddNewRatOrderWithExistingClient()}" />
-                            
-                        </h5>
                         <div class="card-body">
-                            <div class="form-group row">
-                                <div class="col-md-6">
-                                    <p:outputLabel style="font-weight: bold;" value="Name"></p:outputLabel>
-                                    <p:outputLabel class="form-control border-0" value="#{clientController.selected.person.nameWithTitle}"></p:outputLabel>
-                                </div>
-                                <div class="col-md-3">
-                                    <p:outputLabel value="PHN" style="font-weight: bold;" ></p:outputLabel>
-                                    <p:outputLabel value="#{clientController.selected.phn}" class="form-control border-0"></p:outputLabel>
-                                </div>
-                                <div class="col-md-3">
-                                    <p:outputLabel value="NIC/NIC of the guardian/Passport No" style="font-weight: bold;" ></p:outputLabel>
-                                    <p:outputLabel value="#{clientController.selected.person.nic}" class="form-control border-0"></p:outputLabel>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-1">
-                                    <p:outputLabel value="Gender" style="font-weight: bold;"></p:outputLabel>
-                                    <p:outputLabel value="#{clientController.selected.person.sex.name}" class="form-control border-0" ></p:outputLabel>
-                                </div>
-                                <div class="col-md-2">
-                                    <p:outputLabel value="Citizenship" style="font-weight: bold;"></p:outputLabel>
-                                    <p:outputLabel value="#{clientController.selected.person.citizenship.name}" class="form-control border-0" ></p:outputLabel>
-                                </div>
-                                <div class="col-md-1">
-                                    <p:outputLabel value="Age" style="font-weight: bold;"></p:outputLabel>
-                                    <p:outputLabel value="#{clientController.selected.person.age}" class="form-control border-0" ></p:outputLabel>
-                                </div>
-                                <div class="col-md-2">
-                                    <p:outputLabel value="Date of Birth" style="font-weight: bold;"></p:outputLabel>
-                                    <p:outputLabel value="#{clientController.selected.person.dateOfBirth}" class="form-control border-0" >
-                                        <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>
-                                    </p:outputLabel>
-                                </div>
-                                <div class="col-md-3">
-                                    <p:outputLabel value="Primary Contact Number" style="font-weight: bold;"></p:outputLabel>
-                                    <p:outputLabel value="#{clientController.selected.person.phone1}" class="form-control border-0" ></p:outputLabel>
-                                </div>
-                                <div class="col-md-3">
-                                    <p:outputLabel value="Secondary Contact Number" style="font-weight: bold;"></p:outputLabel>
-                                    <p:outputLabel value="#{clientController.selected.person.phone2}" class="form-control border-0" ></p:outputLabel>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-6">
-                                    <p:outputLabel value="Current Residential Address" style="font-weight: bold;"></p:outputLabel>
-                                    <p:outputLabel value="#{clientController.selected.person.address}" class="form-control border-0" ></p:outputLabel>
-                                </div>
-                                <div class="col-md-6">
-                                    <p:outputLabel value="Date of Registration" style="font-weight: bold;"></p:outputLabel>
-                                    <p:outputLabel value="#{clientController.selected.createdAt}" class="form-control border-0" >
-                                        <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>
-                                    </p:outputLabel>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-3">
-                                    <p:outputLabel value="MOH Area" style="font-weight: bold;"></p:outputLabel>
-                                    <p:outputLabel value="#{clientController.selected.person.mohArea.name}" class="form-control border-0" ></p:outputLabel>
-                                </div>
-                                <div class="col-md-3">
-                                    <p:outputLabel value="District" style="font-weight: bold;"></p:outputLabel>
-                                    <p:outputLabel value="#{clientController.selected.person.district.name}" class="form-control border-0" ></p:outputLabel>
-                                </div>
-                                <div class="col-md-6">
-                                    <p:outputLabel value="GN Area" style="font-weight: bold;"></p:outputLabel>
-                                    <p:outputLabel value="#{clientController.selected.person.gnArea.name}" class="form-control border-0" ></p:outputLabel>
+                            <div class=" text-center">
+                                <p:outputLabel class="fs-4 fw-bold my-2" value="Patient Data" ></p:outputLabel>
+                            </div>   
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p:panelGrid columns="4"  class="w-100 border border-light">
+                                        <p:outputLabel value="Name" class="fw-bold"></p:outputLabel>
+                                        <p:outputLabel class="form-control border-0" value="#{clientController.selected.person.nameWithTitle}"></p:outputLabel>
+                                        <p:outputLabel value="PHN" class="fw-bold"></p:outputLabel>
+                                        <p:outputLabel value="#{clientController.selected.phn}" class="form-control border-0"></p:outputLabel>
+
+                                        <p:outputLabel value="NIC/NIC of the guardian/Passport No" class="fw-bold"></p:outputLabel>
+                                        <p:outputLabel value="#{clientController.selected.person.nic}" class="form-control border-0"></p:outputLabel>
+                                        <p:outputLabel value="Gender" class="fw-bold"></p:outputLabel>
+                                        <p:outputLabel value="#{clientController.selected.person.sex.name}" class="form-control border-0" ></p:outputLabel>
+
+                                        <p:outputLabel value="Citizenship" class="fw-bold"></p:outputLabel> 
+                                        <p:outputLabel value="#{clientController.selected.person.citizenship.name}" class="form-control border-0" ></p:outputLabel>
+                                        <p:outputLabel value="Age" class="fw-bold"></p:outputLabel>
+                                        <p:outputLabel value="#{clientController.selected.person.age}" class="form-control border-0" ></p:outputLabel>
+
+
+                                        <p:outputLabel value="Date of Birth" class="fw-bold"></p:outputLabel> 
+                                        <p:outputLabel value="#{clientController.selected.person.dateOfBirth}" class="form-control border-0" >
+                                            <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>
+                                        </p:outputLabel> 
+                                        <p:outputLabel value="Primary Contact Number" class="fw-bold"></p:outputLabel>
+                                        <p:outputLabel value="#{clientController.selected.person.phone1}" class="form-control border-0" ></p:outputLabel>
+
+                                        <p:outputLabel value="Secondary Contact Number" class="fw-bold"></p:outputLabel> 
+                                        <p:outputLabel value="#{clientController.selected.person.phone2}" class="form-control border-0" ></p:outputLabel>
+                                        <p:outputLabel value="Current Residential Address" class="fw-bold"></p:outputLabel>
+                                        <p:outputLabel value="#{clientController.selected.person.address}" class="form-control border-0" ></p:outputLabel>
+
+
+                                        <p:outputLabel value="Date of Registration" class="fw-bold"></p:outputLabel>
+                                        <p:outputLabel value="#{clientController.selected.createdAt}" class="form-control border-0" >
+                                            <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>
+                                        </p:outputLabel>
+                                        <p:outputLabel value="MOH Area" class="fw-bold"></p:outputLabel>
+                                        <p:outputLabel value="#{clientController.selected.person.mohArea.name}" class="form-control border-0" ></p:outputLabel>
+
+                                        <p:outputLabel value="District" class="fw-bold"></p:outputLabel>
+                                        <p:outputLabel value="#{clientController.selected.person.district.name}" class="form-control border-0" ></p:outputLabel>
+                                        <p:outputLabel value="GN Area" class="fw-bold"></p:outputLabel>
+                                        <p:outputLabel value="#{clientController.selected.person.gnArea.name}" class="form-control border-0" ></p:outputLabel>
+
+                                    </p:panelGrid>
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer d-flex justify-content-between bg-white">
+                            <div>
+                                <h:commandButton class="btn btn-warning my-2 ms-2" value="To Edit Details" action="/client/client" style="float: right;"/>
+                                <h:commandButton class="btn btn-success my-2" value="Add New PCR" action="#{mohController.toAddNewPcrWithExistingClient()}" />
+                                <h:commandButton class="btn btn-success my-2  ms-2" value="Add New RAT Result" action="#{mohController.toAddNewRatWithExistingClient()}" />
+                            </div>
+                            <div>
+                                <h:commandButton  class="btn btn-success my-2" value="Add New RAT" action="#{mohController.toAddNewRatOrderWithExistingClient()}" />
+                            </div>
+
+
+
+                        </div>
                     </div>   
 
-                    <p:panelGrid columns="1" style="width: 100%;" >
+                    <p:panelGrid columns="1" class="w-100">
                         <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{clientController.selectedClientEncounters}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" >
                             <p:column headerText="Name" >
@@ -115,21 +98,21 @@
                             <p:column headerText="Institution" >
                                 <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>
-                             <p:column headerText="Result" >
-                                 <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
+                            <p:column headerText="Result" >
+                                <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Actions" >
-                                <p:commandButton value="View Order" ajax="false" action="#{mohController.toViewTest()}" rendered="#{c.encounterType eq 'Test_Enrollment'}" >
+                            <p:column headerText="Actions">
+                                <h:commandButton  class="btn btn-success mb-2 d-flex flex-column w-100  align-items-center" value="View Order" action="#{mohController.toViewTest()}" rendered="#{c.encounterType eq 'Test_Enrollment'}" >
                                     <f:setPropertyActionListener value="#{c}" 
                                                                  target="#{mohController.test}" >
                                     </f:setPropertyActionListener>
-                                </p:commandButton>
-                                <p:commandButton value="View Results" ajax="false" action="#{mohController.toViewResult()}" rendered="#{c.encounterType eq 'Test_Enrollment'}" >
+                                </h:commandButton>
+                                <h:commandButton class="btn btn-warning d-flex flex-column w-100  align-items-center" value="View Results" action="#{mohController.toViewResult()}" rendered="#{c.encounterType eq 'Test_Enrollment'}" >
                                     <f:setPropertyActionListener value="#{c}" 
                                                                  target="#{mohController.test}" >
                                     </f:setPropertyActionListener>
-                                </p:commandButton>
-                                
+                                </h:commandButton>
+
                             </p:column>
                         </p:dataTable>
                     </p:panelGrid>
