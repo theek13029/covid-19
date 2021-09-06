@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
-
+<!-- This is my comment as lakshitha -->
     <body>
 
         <ui:composition template="/template1.xhtml">
@@ -19,190 +19,119 @@
                 <div class="card">
                     <h5 class="card-header">
                         <h:form>
-                            <p:outputLabel value="Patient Data For PCR Ordering" ></p:outputLabel>
-                            <p:commandButton value="To Edit Details" action="#{mohController.toPcrEdit()}" ajax="false"
-                                             style="float: right;">
-                            </p:commandButton>
-                            <p:commandButton value="Add New PCR Order" ajax="false"
-                                             action="#{mohController.toAddNewPcrWithNewClient()}" style="float: right;">
-                            </p:commandButton>
+                            <div class="row" >
+                                <div class="col-12 text-center mt-4 mb-2" >
+                                    <h4 class="fw-bold"><h:outputLabel  value="Patient Data For PCR Ordering" ></h:outputLabel></h4>
+                                </div>
+                            </div> 
+                            <div class="row" >
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <h:commandButton class="btn btn-success" value="Add New PCR Order" 
+                                             action="#{mohController.toAddNewPcrWithNewClient()}" />
+                                    
+                                    <h:commandButton class="btn btn-success" value="To Edit Details" action="#{mohController.toPcrEdit()}" />
+                                </div>
+                            </div> 
                         </h:form>
                     </h5>
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <p:outputLabel value="Test Number"></p:outputLabel>
-                                <p:outputLabel id="txtTestNo"  
-                                               value="#{mohController.pcr.encounterNumber}" 
-                                               style="width:100%;font-weight: bolder;">
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel  value="Lab"></p:outputLabel>
-                                <p:outputLabel style="margin: 0px; padding: 0px; width: 100%;font-weight: bolder;"
-                                               value="#{mohController.pcr.referalInstitution.name}"
-                                               >
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel  value="Ordering Category"></p:outputLabel>
-                                <p:outputLabel id="orderingCat"
-                                               value="#{mohController.pcr.pcrOrderingCategory.name}" 
-                                               style="margin: 0px; padding: 0px; width: 100%;font-weight: bolder;" >
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3" >
-                                <p:outputLabel value="Sampled at"></p:outputLabel>
-                                <p:outputLabel id="test" value="#{mohController.pcr.sampledAt}" 
-                                               style="margin: 0px; padding: 0px; width: 100%;font-weight: bolder;">
-                                    <f:convertDateTime pattern="dd MMMM yyyy hh:mm" ></f:convertDateTime>
-                                </p:outputLabel>
-                            </div>
+                     <div class="row px-3">
+                        <div class="col-md-12">
+                           <p:panelGrid columns="4"  class="w-100 border border-light">
+                                        <h:outputLabel value="Test Number:" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel class="form-control border-0" id="txtTestNo" value="#{mohController.pcr.encounterNumber}"></h:outputLabel>
+                                        <h:outputLabel value="Lab:" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel value="#{mohController.pcr.referalInstitution.name}" class="form-control border-0"></h:outputLabel>
+
+                                        <h:outputLabel value="Ordering Category" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel id="orderingCat" value="#{mohController.pcr.pcrOrderingCategory.name}" class="form-control border-0"></h:outputLabel>
+                                        <h:outputLabel value="Sampled at" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel id="test" value="#{mohController.pcr.sampledAt}" class="form-control border-0" >
+                                            <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>
+                                        </h:outputLabel>
+
+                                        <h:outputLabel value="Name:" class="fw-bold"></h:outputLabel> 
+                                        <h:outputLabel value="#{mohController.pcr.client.person.name}" title="Name" class="form-control border-0" ></h:outputLabel>
+                                        <h:outputLabel value="Citizenship:" for="citizenship" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel id="citizenship" value="#{mohController.pcr.client.person.citizenship.name}" class="form-control border-0" ></h:outputLabel>
 
 
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <p:outputLabel value="Name:" />
-                                <p:outputLabel value="#{mohController.pcr.client.person.name}" title="Name" style="width:100%;font-weight: bolder;"/>
-                            </div>
-                            <div class="col-md-1">
-                                <p:outputLabel value="Citizenship:" for="citizenship" />
-                                <p:outputLabel id="citizenship" value="#{mohController.pcr.client.person.citizenship.name}" style="width:100%;font-weight: bolder;">
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-2">
-                                <p:outputLabel value="PHN No.:"  />
-                                <p:outputLabel id="phn" value="#{mohController.pcr.client.phn}" title="Phn" 
-                                               style="width: 100%;font-weight: bolder;"></p:outputLabel>
-                            </div>
-                            <div class="col-md-2">
-                                <p:outputLabel value="Other Ordering Category:"  />
-                                <p:outputLabel value="#{mohController.pcr.pcrOrderingCategoryOther}" style="width:100%;font-weight: bolder;"/>
-                            </div>
-                            <div class="col-md-1">
-                                <p:outputLabel value="Symptomatic:"  />
-                                <p:outputLabel tabindex="106" 
-                                               value="#{mohController.pcr.symptomatic?'Yes':''}" style="width:100%;font-weight: bolder;" ></p:outputLabel>
-                            </div>
+                                        <h:outputLabel value="PHN No.:" class="fw-bold"></h:outputLabel> 
+                                        <h:outputLabel id="phn" value="#{mohController.pcr.client.phn}" title="Phn" class="form-control border-0" ></h:outputLabel> 
+                                        <h:outputLabel value="Other Ordering Category:" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel value="#{mohController.pcr.pcrOrderingCategoryOther}" class="form-control border-0" ></h:outputLabel>
+
+                                        
+                                        <h:outputLabel value="Symptomatic:" class="fw-bold"></h:outputLabel> 
+                                        <h:outputLabel tabindex="106" value="#{mohController.pcr.symptomatic?'Yes':''}" class="form-control border-0" ></h:outputLabel>
+                                        <h:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel id="nic"  value="#{mohController.pcr.client.person.nic}" title="Nic" class="form-control border-0" ></h:outputLabel>
 
 
+                                        <h:outputLabel value="Gender:"  for="sex" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel id="sex" value="#{mohController.pcr.client.person.sex}" class="form-control border-0" ></h:outputLabel>
+                                        <h:outputLabel value="Age:" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel value="#{mohController.pcr.client.person.age}" class="form-control border-0" ></h:outputLabel>
 
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
-                                <p:outputLabel id="nic" 
-                                               style="width: 100%;font-weight: bolder;"  value="#{mohController.pcr.client.person.nic}" title="Nic" >
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel value="Gender:"  for="sex" />
-                                <p:outputLabel
-                                    id="sex" value="#{mohController.pcr.client.person.sex}" 
-                                    style="width: 100%;font-weight: bolder;">
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel value="Age:" style="width: 100%;"/>
-                                <h:panelGroup>
-                                    <p:outputLabel value="#{mohController.pcr.client.person.age}"  style="width:100%;font-weight: bolder;">
-                                    </p:outputLabel>
-                                </h:panelGroup>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <p:outputLabel value="Current Residential Address:" for="address" />
-                                <p:outputLabel tabindex="4" 
-                                               id="address"
-                                               value="#{mohController.pcr.client.person.address}"
-                                               title="Address ****" style="width:100%;font-weight: bolder;font-weight: bolder;"/>
+                                        <h:outputLabel value="Current Residential Address:" for="address" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel tabindex="4" id="address" value="#{mohController.pcr.client.person.address}" title="Address ****" class="form-control border-0" ></h:outputLabel>
+                                        <h:outputLabel value="District:" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel value="#{mohController.pcr.client.person.district.name}" class="form-control border-0" ></h:outputLabel>
 
-                            </div>
-
-                            <div class="col-md-3">
-                                <p:outputLabel value="District:"  />
-                                <p:outputLabel value="#{mohController.pcr.client.person.district.name}" style="width: 100%;font-weight: bolder;"/>
-                            </div>
-
-
-                            <div class="col-md-3">
-                                <p:outputLabel value="MOH Area:" />
-                                <p:outputLabel value="#{mohController.pcr.client.person.mohArea.name}" style="width: 100%;font-weight: bolder;"/>
-                            </div>
-
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <p:outputLabel value="Contact Number :" />
-                                <p:outputLabel value="#{mohController.pcr.client.person.phone1}" style="width: 100%;font-weight: bolder;"/>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel value="GN Area:"  />
-                                <p:outputLabel value="#{mohController.pcr.client.person.gnArea.name}" style="width: 100%;font-weight: bolder;"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <p:outputLabel value="PHI Area:" />
-                                <p:outputLabel value="#{mohController.pcr.client.person.phiArea.name}" style="width: 100%;font-weight: bolder;"/>
-                            </div>
-
-                            <div class="col-md-2">
-                                <p:outputLabel value="Unit/Ward:"  />
-                                <p:outputLabel value="#{mohController.pcr.unitWard}" style="width:100%;font-weight: bolder;"/>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-md-12">
+                                        
+                                        <h:outputLabel value="MOH Area:" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel value="#{mohController.pcr.client.person.mohArea.name}" class="form-control border-0" ></h:outputLabel>
+                                        <h:outputLabel value="Contact Number :" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel value="#{mohController.pcr.client.person.phone1}" class="form-control border-0" ></h:outputLabel>
+                                        
+                                        
+                                        <h:outputLabel value="GN Area:" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel value="#{mohController.pcr.client.person.gnArea.name}" class="form-control border-0" ></h:outputLabel>
+                                        <h:outputLabel value="PHI Area:" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel value="#{mohController.pcr.client.person.phiArea.name}" class="form-control border-0" ></h:outputLabel>
+                                        
+                                        <h:outputLabel value="Unit/Ward:" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel value="#{mohController.pcr.unitWard}" class="form-control border-0" ></h:outputLabel>
+                                        <h:outputLabel  class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel  class="form-control border-0" ></h:outputLabel>
+                                        
+                                    </p:panelGrid>
                         <h:form>
-                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{sessionController.pcrList}" id="tbl"
+                            <p:dataTable value="#{sessionController.pcrList}" id="tbl"
                                          var="c" paginator="true" rowKey="#{c.id}" rows="10" >
                                 <f:facet name="header">
                                     Last Entries
                                 </f:facet>
                                 <p:column headerText="Test No" sortBy="#{c.encounterNumber}">
-                                    <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                                    <h:outputLabel value="#{c.encounterNumber}" ></h:outputLabel>
                                 </p:column>
                                 <p:column headerText="Name" sortBy="#{c.client.person.name}" >
-                                    <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                                    <h:outputLabel value="#{c.client.person.name}" ></h:outputLabel>
                                 </p:column>
                                 <p:column headerText="Age" sortBy="#{c.client.person.ageInDays}" >
-                                    <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                                    <h:outputLabel value="#{c.client.person.age}" ></h:outputLabel>
                                 </p:column>
                                 <p:column headerText="Sex" sortBy="#{c.client.person.sex.name}">
-                                    <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                                    <h:outputLabel value="#{c.client.person.sex.name}" ></h:outputLabel>
                                 </p:column>
                                 <p:column headerText="NIC" sortBy="#{c.client.person.nic}" >
-                                    <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                                    <h:outputLabel value="#{c.client.person.nic}" ></h:outputLabel>
                                 </p:column>
                                 <p:column headerText="Address" >
-                                    <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
+                                    <h:outputLabel value="#{c.client.person.address}" ></h:outputLabel>
                                 </p:column>
                                 <p:column headerText="Actions" >
-                                    <p:commandButton value="Edit" ajax="false" action="#{mohController.toPcrEdit()}" >
+                                    <h:commandButton value="Edit" class="btn btn-warning btn-sm " action="#{mohController.toPcrEdit()}" >
                                         <f:setPropertyActionListener value="#{c}" target="#{mohController.pcr}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
-                                    <p:commandButton value="Delete" ajax="false" action="#{mohController.toDeleteTestFromLastPcrList()}" >
+                                    </h:commandButton>
+                                    <h:commandButton value="Delete" class="btn btn-danger btn-sm " action="#{mohController.toDeleteTestFromLastPcrList()}" >
                                         <f:setPropertyActionListener value="#{c}" target="#{mohController.deleting}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
+                                    </h:commandButton>
                                 </p:column>
                             </p:dataTable>
                         </h:form>
                     </div>
                 </div>
-
-
-
-
-
+                </div>
             </ui:define>
         </ui:composition>
     </body>
