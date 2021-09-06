@@ -23,7 +23,7 @@
                     <h:form >
                         <p:panelGrid columns="2" class="border border-light bg-white my-4">
                             <h:outputLabel class="fs-6 fw-bold" value="Ordered From" ></h:outputLabel>
-                            <p:calendar class="fs-6" value="#{hospitalController.fromDate}"
+                            <p:calendar class="fs-6" value="#{hospitalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
@@ -33,7 +33,7 @@
                             <p:outputLabel class="fs-6 fw-bold" value="Ordering Category" ></p:outputLabel>
                             <h:selectOneMenu class="form-select" value="#{hospitalController.orderingCategory}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{hospitalController.covidTestOrderingCategories}"
+                                <f:selectItems value="#{hospitalController.covidTestOrderingCategories}" 
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
@@ -54,18 +54,18 @@
                             <h:commandButton class="btn btn-success w-100" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                             </h:commandButton>
-                            <h:commandButton class="btn btn-warning w-100" value="Process"
+                            <h:commandButton class="btn btn-warning w-100" value="Process" 
                                              action="#{hospitalController.toTestListWithoutResults()}" ></h:commandButton>
 
 
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{hospitalController.tests}" rendered="true"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{hospitalController.tests}" rendered="true"
                                      rowIndexVar="n"
-                                     var="c"
-                                     rowKey="#{c.id}"
-                                     paginator="true"
+                                     var="c" 
+                                     rowKey="#{c.id}" 
+                                     paginator="true" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
@@ -101,7 +101,7 @@
                             <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
                                 <h:outputLabel class="fs-6" value="#{c.client.person.nic}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Phone" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
+                            <p:column headerText="Contact Numbers" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
                                 <h:outputLabel class="fs-6" value="#{c.client.person.phone1}" ></h:outputLabel>
                                 <h:outputLabel class="fs-6" rendered="#{c.client.person.phone2 ne null}" value=", " ></h:outputLabel>
                                 <h:outputLabel class="fs-6" rendered="#{c.client.person.phone2 ne null}" value="#{c.client.person.phone2}" ></h:outputLabel>
@@ -124,7 +124,7 @@
                                     <h:commandButton class="btn btn-success w-100" value="Edit Order" action="#{hospitalController.toEditTest()}"  style="width: 100%;" >
                                         <f:setPropertyActionListener value="#{c}" target="#{hospitalController.test}" ></f:setPropertyActionListener>
                                     </h:commandButton>
-                                    <h:commandButton class="btn btn-danger w-100" value="Delete"  action="#{hospitalController.deleteTest()}"  style="width: 100%;"
+                                    <h:commandButton class="btn btn-danger w-100" value="Delete"  action="#{hospitalController.deleteTest()}"  style="width: 100%;" 
                                                      onclick="if (!confirm('Are you sure you want to delete?'))
                                                                  return false" >
                                         <f:setPropertyActionListener value="#{c}" target="#{hospitalController.deleting}" >

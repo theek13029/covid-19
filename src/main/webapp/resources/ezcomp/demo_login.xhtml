@@ -17,7 +17,7 @@
 
             <h:panelGroup rendered="#{applicationController.demoSetup}" >
 
-                <p:dataTable id="datalist" value="#{demoAccountController.items}" var="item"
+                <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{demoAccountController.items}" var="item"
                              rowKey="#{item.id}"
                              >
                     <f:facet name="header" >

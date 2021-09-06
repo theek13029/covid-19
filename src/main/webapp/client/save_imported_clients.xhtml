@@ -43,7 +43,7 @@
 
                     </h:panelGrid>
 
-                    <p:dataTable value="#{clientController.importedClients}"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{clientController.importedClients}"
                                  selection="#{clientController.selectedClients}"
                                  var="c" 
                                  rowKey="#{c.id}"
@@ -51,7 +51,7 @@
                                  rows="20"
                                  rowsPerPageTemplate="10,20,30,40,50"
                                  >
-                        <p:column selectionMode="multiple" width="15" >
+                        <p:column selectionMode="multiple" width="20" resizable="false" >
                         </p:column>
 
                         <p:column headerText="PHN" width="200" sortBy="#{c.phn}" filterBy="#{c.phn}" filterMatchMode="contains">
@@ -139,7 +139,7 @@
 
 
 
-                    <p:dataTable value="#{clientController.importedClients}"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{clientController.importedClients}"
                                  var="c" id="tbl"
                                  rowKey="#{c.id}" style="display: none;" >
                         <p:column headerText="PHN"  >

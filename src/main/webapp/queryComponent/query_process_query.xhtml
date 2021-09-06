@@ -22,7 +22,7 @@
                                 <p:commandButton ajax="false" value="Back" action="query_process_subcategory" style="float: right;" ></p:commandButton>
                             </f:facet>
 
-                            <p:dataTable value="#{queryComponentController.queries()}" var="item">
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{queryComponentController.queries()}" var="item">
 
                                 <p:column>
                                     <f:facet name="header">

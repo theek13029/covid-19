@@ -74,7 +74,7 @@
                         </p:panelGrid>
 
 
-                        <p:dataTable id="tbl" value="#{provincialController.tests}" rendered="true"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{provincialController.tests}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 

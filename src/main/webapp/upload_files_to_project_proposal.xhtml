@@ -58,7 +58,7 @@
 
                         <td valign="top">
                             <h:form>
-                                <p:dataTable value="#{webUserController.currentProjectUploads}" var="u" >
+                                <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{webUserController.currentProjectUploads}" var="u" >
                                     <p:column headerText="Date/Time" >
                                         <p:outputLabel value="#{u.createdAt}" >
                                             <f:convertDateTime pattern="dd/MMM/yyyy hh:mm a" ></f:convertDateTime>

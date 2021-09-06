@@ -11,7 +11,7 @@
             <ui:define name="content">
                 <h1 class=" text-center mt-3 mb-3">List of Institutions</h1>
                 <h:form id="InstitutionListForm">    
-                    <p:dataTable id="datalist" value="#{institutionController.items}" var="item"
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="datalist" value="#{institutionController.items}" var="item"
                                  selectionMode="single" selection="#{institutionController.selected}"
                                  paginator="true"
                                  rowKey="#{item.id}"

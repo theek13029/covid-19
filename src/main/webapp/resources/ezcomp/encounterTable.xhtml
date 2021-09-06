@@ -11,7 +11,7 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <p:dataTable value="#{queryComponentController.resultEncounterList}" 
+        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{queryComponentController.resultEncounterList}" 
                      var="cv"
                      >
             <f:facet name="header" >

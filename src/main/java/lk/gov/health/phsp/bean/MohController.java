@@ -1202,6 +1202,10 @@ public class MohController implements Serializable {
             rat.getClient().getPerson().setWorkplaceContact(sessionController.getLastContactOfWorkplace());
         }
 
+        if (sessionController.getLastContactOfWorkplaceDetails() != null) {
+            rat.getClient().getPerson().setWorkplaceContactDetails(sessionController.getLastContactOfWorkplaceDetails());
+        }
+
         rat.setCreatedAt(new Date());
         return "/moh/rat";
     }
@@ -1236,6 +1240,10 @@ public class MohController implements Serializable {
 
         if (sessionController.getLastContactOfWorkplace() != null) {
             rat.getClient().getPerson().setWorkplaceContact(sessionController.getLastContactOfWorkplace());
+        }
+        
+         if (sessionController.getLastContactOfWorkplaceDetails()!= null) {
+            rat.getClient().getPerson().setWorkplaceContactDetails(sessionController.getLastContactOfWorkplaceDetails());
         }
 
         return "/moh/rat_order";
@@ -1272,6 +1280,10 @@ public class MohController implements Serializable {
 
         if (sessionController.getLastContactOfWorkplace() != null) {
             pcr.getClient().getPerson().setWorkplaceContact(sessionController.getLastContactOfWorkplace());
+        }
+        
+        if (sessionController.getLastContactOfWorkplaceDetails()!= null) {
+            pcr.getClient().getPerson().setWorkplaceContactDetails(sessionController.getLastContactOfWorkplaceDetails());
         }
 
         return "/moh/pcr";
@@ -1321,13 +1333,12 @@ public class MohController implements Serializable {
         return "/moh/pcr";
     }
 
-    
     public String toAddNewPcrWithExistingClient() {
         if (clientController.getSelected() == null) {
             JsfUtil.addErrorMessage("No Client");
             return "";
         }
-        
+
         Client nicClient = clientController.getSelected();
         if (nicClient == null) {
             return "";
@@ -1359,8 +1370,6 @@ public class MohController implements Serializable {
         return "/moh/pcr";
     }
 
-    
-    
     public String toAddNewRatOrderWithExistingNic() {
         if (rat == null) {
             return "";
@@ -1443,8 +1452,6 @@ public class MohController implements Serializable {
         return "/moh/rat_order";
     }
 
-    
-    
     public String toAddNewRatWithExistingNic() {
         if (rat == null) {
             return "";
@@ -1495,7 +1502,7 @@ public class MohController implements Serializable {
         rat.setCreatedAt(new Date());
         return "/moh/rat";
     }
-    
+
     public String toAddNewRatWithExistingClient() {
         if (clientController.getSelected() == null) {
             JsfUtil.addErrorMessage("No Client");
@@ -1538,7 +1545,6 @@ public class MohController implements Serializable {
         rat.setCreatedAt(new Date());
         return "/moh/rat";
     }
-    
 
     public String saveRatAndToNewRat() {
         if (saveRat() == null) {
@@ -1666,6 +1672,10 @@ public class MohController implements Serializable {
             sessionController.setLastContactOfWorkplace(rat.getClient().getPerson().getWorkplaceContact());
         }
 
+        if (rat.getClient().getPerson().getWorkplaceContactDetails() != null) {
+            sessionController.setLastContactOfWorkplaceDetails(rat.getClient().getPerson().getWorkplaceContactDetails());
+        }
+
         sessionController.setLastRat(rat);
 
         sessionController.getRats().put(rat.getId(), rat);
@@ -1754,6 +1764,10 @@ public class MohController implements Serializable {
 
         if (pcr.getClient().getPerson().getWorkplaceContact() != null) {
             sessionController.setLastContactOfWorkplace(pcr.getClient().getPerson().getWorkplaceContact());
+        }
+
+        if (pcr.getClient().getPerson().getWorkplaceContactDetails() != null) {
+            sessionController.setLastContactOfWorkplaceDetails(pcr.getClient().getPerson().getWorkplaceContactDetails());
         }
 
         lab = pcr.getReferalInstitution();
@@ -2014,7 +2028,7 @@ public class MohController implements Serializable {
         System.out.println("tests = " + tests.size());
         return "/moh/list_of_results_for_orders_from_my_moh";
     }
-    
+
     public String toViewResults() {
         System.out.println("toTestList");
         Map m = new HashMap();
@@ -2060,8 +2074,8 @@ public class MohController implements Serializable {
         return "/moh/view_results";
     }
 
-    public String toListOfResultsForPersonsInMyArea(){
-                Map m = new HashMap();
+    public String toListOfResultsForPersonsInMyArea() {
+        Map m = new HashMap();
 
         String j = "select c "
                 + " from Encounter c "
@@ -2103,7 +2117,7 @@ public class MohController implements Serializable {
         System.out.println("tests = " + tests.size());
         return "/moh/list_of_results_for_persons_in_my_area";
     }
-    
+
     public String toListOfResultsForOrdersFromOtherInstitutes() {
         Map m = new HashMap();
 
