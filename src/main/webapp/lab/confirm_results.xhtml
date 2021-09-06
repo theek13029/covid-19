@@ -26,10 +26,10 @@
                         <div class="container bg-none mb-4 w-100 d-flex justify-content-around align-items-center" >
                             <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
                                 <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
-                                <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+                                <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
                                 <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
-                                <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                                <p:calendar  class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
                                 <h:outputLabel class="h6 fw-bold" value="Ordered Institution" ></h:outputLabel>
                                 <p:autoComplete value="#{clientController.institution}"
