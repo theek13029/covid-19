@@ -25,18 +25,18 @@
                         </p:autoComplete >
 
                         <h:outputLabel class="text-center fs-6 fw-bold" value="Test" ></h:outputLabel>
-                        <p:selectOneMenu class="form-select form-select-sm w-100" value="#{clientController.lastTestPcrOrRat}" >
+                        <p:selectOneMenu class="form-control form-select-sm w-100" value="#{clientController.lastTestPcrOrRat}" >
                             <f:selectItem itemLabel="Select" ></f:selectItem>
                             <f:selectItems value="#{itemApplicationController.covidTestTypes}" var="t" itemValue="#{t}" itemLabel="#{t.name}" >
                             </f:selectItems>
                         </p:selectOneMenu>
 
                         <h:outputLabel class="text-center fs-6 fw-bold" value="Sampled at" ></h:outputLabel>
-                        <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy hh:mm" >
+                        <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy hh:mm" >
                         </p:calendar>
 
                         <h:outputLabel class="text-center fs-6 fw-bold" value="Dispatched at" ></h:outputLabel>
-                        <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy hh:mm" >
+                        <p:calendar  class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy hh:mm" >
                         </p:calendar>
 
                         <h:outputLabel class="text-center fs-6 fw-bold" value="Start Row" ></h:outputLabel>
