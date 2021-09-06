@@ -26,17 +26,10 @@ package lk.gov.health.phsp.bean;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
-import javax.persistence.TemporalType;
 import lk.gov.health.phsp.bean.util.JsfUtil;
 import lk.gov.health.phsp.entity.UserPrivilege;
-import lk.gov.health.phsp.enums.EncounterType;
 import lk.gov.health.phsp.enums.Privilege;
-import lk.gov.health.phsp.pojcs.InstitutionCount;
 
 /**
  *

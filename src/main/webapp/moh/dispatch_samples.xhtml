@@ -34,7 +34,14 @@
                                 <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
                                 <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                                <h:commandButton value="Generate Excel" class="btn btn-success w-100">
+                                <h:outputLabel class="form-label" value="Test" ></p:outputLabel>
+                                <h:selectOneMenu class="form-select" value="#{mohController.testType}" >
+                                    <f:selectItem itemLabel="All" ></f:selectItem>
+                                    <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                                                   itemValue="#{c}" ></f:selectItems>
+                                </h:selectOneMenu>
+
+                                <h:commandButton ajax="false" value="Generate Excel" class="btn btn-success">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                                 </h:commandButton>
                                 <h:commandButton value="Process" class="btn btn-warning w-100"
@@ -82,14 +89,14 @@
                             <p:column headerText="Phone"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.client.person.phone1}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" 
-                                      filterBy="#{c.pcrTestType.name}" 
+                            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}"
+                                      filterBy="#{c.pcrTestType.name}"
                                       filterMatchMode="contains">
                                 <h:outputLabel value="#{c.pcrTestType.name}"></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Current Lab" 
-                                      sortBy="#{c.referalInstitution.name}" 
-                                      filterBy="#{c.referalInstitution.name}" 
+                            <p:column headerText="Current Lab"
+                                      sortBy="#{c.referalInstitution.name}"
+                                      filterBy="#{c.referalInstitution.name}"
                                       filterMatchMode="contains">
                                 <h:outputLabel value="#{c.referalInstitution.name}" ></h:outputLabel>
                             </p:column>
