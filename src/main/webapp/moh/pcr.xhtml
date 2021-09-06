@@ -53,7 +53,7 @@
 
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel value="Sampled at" class="h6 fw-bold mb-2"></h:outputLabel>
-                                        <p:calendar style="width: 100%;" inputStyle="width:100%;"  class="form-select w-100"  value="#{mohController.pcr.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
+                                        <p:calendar  inputStyle="width:100%;"  class="form-select w-100"  value="#{mohController.pcr.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
                                     </div>
 
                                 </div>
@@ -67,7 +67,7 @@
                                                      class="form-control w-100"
                                                      required="true"
                                                      requiredMessage="Please give a name"
-                                                     style="width: 100%;"
+                                                   
                                                      value="#{mohController.pcr.client.person.name}" title="Name" />
                                     </div>
                                     <div class="col-md-3 mb-4">
@@ -95,7 +95,7 @@
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" class="h6 fw-bold mb-2"/>
                                         <h:inputText id="nic" class="form-control w-100"
-                                                     style="width: 100%;"
+                                                    
                                                      tabindex="3"
                                                      autocomplete="off"
                                                      value="#{mohController.pcr.client.person.nic}"
@@ -118,12 +118,12 @@
                                         <h:selectOneMenu
                                             id="sex" value="#{mohController.pcr.client.person.sex}" required="true" class="form-select w-100"
                                             tabindex="107" requiredMessage="Please select Gender"
-                                            style="width: 100%;">
+                                            >
                                             <f:selectItems value="#{mohController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
                                         </h:selectOneMenu>
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel value="Age: (Years/Months)*" style="width: 100%;" class="form-label h6 fw-bold mb-2"/>
+                                        <h:outputLabel value="Age: (Years/Months)*"  class="form-label h6 fw-bold mb-2"/>
                                         <div class="d-inline-flex">
                                             <div class="mr-2">
                                                 <p:inputText autocomplete="off" id="year"
