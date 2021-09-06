@@ -35,3 +35,8 @@ package-lock.json
 
 # Mac Specific frile
 .DS_Store
+
+#settings files
+.setting
+.project
+.classpath
