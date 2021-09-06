@@ -50,7 +50,9 @@ import lk.gov.health.phsp.entity.WebUser;
 import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.facade.ClientEncounterComponentItemFacade;
+import lk.gov.health.phsp.facade.InstitutionFacade;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
+import lk.gov.health.phsp.pojcs.InstitutionPeformance;
 import lk.gov.health.phsp.pojcs.InstitutionTypeCount;
 // </editor-fold>
 
@@ -71,6 +73,8 @@ public class NationalController implements Serializable {
     ClientEncounterComponentItemFacade ceciFacade;
     @EJB
     private SmsFacade smsFacade;
+    @EJB
+    InstitutionFacade institutionFacade;
 
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Controllers">
@@ -134,6 +138,7 @@ public class NationalController implements Serializable {
     private List<Institution> regionalMohsAndHospitals;
     private List<InstitutionCount> institutionCounts;
     private List<InstitutionTypeCount> institutionTypeCounts;
+    private List<InstitutionPeformance> institutionPeformances;
 
     private Area district;
     private Area mohArea;
@@ -183,7 +188,7 @@ public class NationalController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        if(institutionType!=null){
+        if (institutionType != null) {
             j += " and c.institution.institutionType=:it ";
             m.put("it", institutionType);
         }
@@ -374,8 +379,7 @@ public class NationalController implements Serializable {
         }
         return "/national/count_of_tests_by_pdhs";
     }
-    
-    
+
     public String toCountOfTestsByInstitutionType() {
         Map m = new HashMap();
 
@@ -465,13 +469,12 @@ public class NationalController implements Serializable {
         }
         return "/national/count_of_tests_by_institution_type";
     }
-    
-    
+
     public String toCountOfTestsByRdhsWithoutSpecifyingPdhs() {
-        pdhs=null;
+        pdhs = null;
         return toCountOfTestsByRdhs();
     }
-    
+
     public String toCountOfTestsByRdhs() {
         Map m = new HashMap();
 
@@ -516,12 +519,11 @@ public class NationalController implements Serializable {
 
         System.out.println("j = " + j);
         System.out.println("m = " + m);
-        
-        
+
         List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
 
         System.out.println("objCounts.size() = " + objCounts.size());
-        
+
         if (objCounts == null || objCounts.isEmpty()) {
             return "/national/count_of_tests_by_rdhs";
         }
@@ -548,7 +550,7 @@ public class NationalController implements Serializable {
         if (pdhs != null) {
             j += " and (c.institution.rdhsArea is null and c.institution.province=:pro) ";
             m.put("pro", pdhs.getProvince());
-        }else{
+        } else {
             j += " and (c.institution.rdhsArea is null) ";
         }
         if (testType != null) {
@@ -624,8 +626,11 @@ public class NationalController implements Serializable {
                 institutionCounts.add(ic);
             }
         }
-
         return "/national/count_of_results_by_ordered_institution";
+    }
+
+    public void processInstitutionVicePeformanceReport() {
+
     }
 
     public String toCountOfResultsByLab() {
@@ -673,7 +678,6 @@ public class NationalController implements Serializable {
         return "/national/count_of_results_by_lab";
     }
 
-    
     public String toCountOfResultsByMohArea() {
         Map m = new HashMap();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.mohArea, count(c))   "
@@ -719,8 +723,6 @@ public class NationalController implements Serializable {
         return "/national/count_of_results_by_moh_area";
     }
 
-    
-    
     public String toAssignInvestigation() {
         testType = itemApplicationController.getPcr();
         result = itemApplicationController.getPcrPositive();
@@ -1101,6 +1103,10 @@ public class NationalController implements Serializable {
             regionalMohsAndHospitals = new ArrayList<>();
         }
 
+    }
+
+    public String toInstitutionvicePeformanceReport() {
+        return "/national/institution_vice_peformance_report";
     }
 
     public String toListOfTests() {
@@ -2063,8 +2069,6 @@ public class NationalController implements Serializable {
     public List<Encounter> getSelectedToAssign() {
         return selectedToAssign;
     }
-    
-    
 
     public void setSelectedToAssign(List<Encounter> selectedToAssign) {
         this.selectedToAssign = selectedToAssign;
@@ -2128,6 +2132,13 @@ public class NationalController implements Serializable {
 
     public void setInstitutionType(InstitutionType institutionType) {
         this.institutionType = institutionType;
+    }
+
+    public List<InstitutionPeformance> getInstitutionPeformances() {
+        if(institutionPeformances==null){
+            institutionPeformances = new ArrayList<>();
+        }
+        return institutionPeformances;
     }
 
     
