@@ -8,7 +8,7 @@
 
     <body>
 
-        <ui:composition template="./../template1.xhtml">
+        <ui:composition template="/template1.xhtml">
 
             <ui:define name="title">
                 List of Tests
@@ -25,7 +25,7 @@
                             <p:outputLabel value="Ordered From" ></p:outputLabel>
                             <p:calendar value="#{mohController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
-                            </p:calendar><!-- comment -->
+                            </p:calendar>
 
                             <p:outputLabel value="Ordered To" ></p:outputLabel>
                             <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
@@ -45,42 +45,33 @@
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
-                            <p:outputLabel value="Result" ></p:outputLabel>
-                            <p:selectOneMenu value="#{mohController.result}" >
-                                <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{mohController.resultTypes}" var="c" itemLabel="#{c.name}"
-                                               itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
-
-                            <p:outputLabel  value="Lab"></p:outputLabel>
-                            <p:autoComplete style="width: 100%;"
-                                            inputStyleClass="autocomplete"
-                                            value="#{mohController.lab}"
-                                            forceSelection="true" tabindex="100" 
-                                            completeMethod="#{mohController.completeLab}" 
-                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
+                            <p:outputLabel value="Lab" ></p:outputLabel>
+                            <p:autoComplete value="#{mohController.lab}"
+                                            completeMethod="#{institutionController.completeLab}"
+                                            var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                             </p:autoComplete>
 
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                             </p:commandButton>
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{mohController.toListOfResults()}" ></p:commandButton>
+                                             action="#{mohController.toTestList()}" ></p:commandButton>
 
 
                         </p:panelGrid>
 
 
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.tests}" rendered="true"
+                        <p:dataTable resizableColumns="true" multiViewState="true" id="tbl" value="#{mohController.tests}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
-                                     rowStyleClass="#{c.resultCssClass}"
                                      paginator="true" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
+                                     reflow="true"
+                                     resizeMode="expand"
                                      >
                             <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
@@ -88,15 +79,8 @@
                             <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Ward" sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
-                            </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="BHT/OPD/Clinic No."  sortBy="#{c.bht}" 
-                                      filterBy="#{c.bht}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Age"  sortBy="#{c.client.person.age}" width="60"
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains">
@@ -119,37 +103,29 @@
                                       filterBy="#{c.client.person.address}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="GN Area"  sortBy="#{c.client.person.gnArea.name}"
+                                      filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.gnArea.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="PHI"  sortBy="#{c.client.person.phiArea.name}"
+                                      filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.client.person.phiArea.name}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Ordering Category"  sortBy="#{c.pcrOrderingCategory.name}"
                                       filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrOrderingCategory.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
-                                      filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></p:outputLabel>
-                            </p:column>
+
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
-                                    <p:commandButton rendered="#{c.referenceCase ne null}" 
-                                                     ajax="false" value="View case" 
-                                                     action="#{clientController.toNewCaseInvestigationFromTest()}"
-                                                     style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
-                                        </f:setPropertyActionListener>
-                                    </p:commandButton>
-                                    <p:commandButton value="Edit Order" action="#{mohController.toEditTest()}" ajax="false"  style="width: 100%;" >
+                                    <p:commandButton value="Edit Order" action="#{mohController.toEditTest()}" ajax="false"   >
                                         <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
                                     </p:commandButton>
-                                    <p:commandButton value="View Results" action="#{mohController.toViewResult()}" ajax="false"  style="width: 100%;" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.test}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
-                                    <p:commandButton ajax="false" value="Delete"  action="#{mohController.deleteTest()}"  style="width: 100%;" 
+                                    <p:commandButton ajax="false" value="Delete"  action="#{mohController.deleteTest()}"  
                                                      onclick="if (!confirm('Are you sure you want to delete?'))
                                                                  return false" >
                                         <f:setPropertyActionListener value="#{c}" target="#{mohController.deleting}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
-                                </p:panelGrid>
-
-
                             </p:column>
                         </p:dataTable>
                     </h:form>
