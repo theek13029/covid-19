@@ -26,7 +26,7 @@
                         <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
                             <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
                                 <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
-                                <p:calendar value="#{mohController.fromDate}" 
+                                <p:calendar value="#{mohController.fromDate}"
                                             pattern="dd MMMM yyyy hh:mm a">
                                 </p:calendar>
 
@@ -36,7 +36,7 @@
                                 <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
                                 <h:selectOneMenu value="#{mohController.orderingCategory}" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{mohController.covidTestOrderingCategories}" 
+                                    <f:selectItems value="#{mohController.covidTestOrderingCategories}"
                                                    var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
                                 </h:selectOneMenu>
@@ -59,28 +59,33 @@
                                 <p:autoComplete style="width: 100%;"
                                                 inputStyleClass="autocomplete"
                                                 value="#{mohController.lab}"
-                                                forceSelection="true" tabindex="100" 
-                                                completeMethod="#{mohController.completeLab}" 
+                                                forceSelection="true" tabindex="100"
+                                                completeMethod="#{mohController.completeLab}"
                                                 var="l" itemLabel="#{l.name}" itemValue="#{l}">
                                 </p:autoComplete>
 
                                 <p:commandButton ajax="false" value="Generate Excel" class="btn btn-success w-100">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="results" ></p:dataExporter>
                                 </p:commandButton>
-                                <p:commandButton ajax="false" value="Process" class="btn btn-warning w-100"
+                                <p:commandButton ajax="false" value="Process"
                                                  action="#{mohController.toViewResults()}" ></p:commandButton>
+
+
+                            </p:panelGrid>
+
+                        </p:panelGrid>
 
 
                             </h:panelGrid>
 
-                            
+
                         </div>
-                        
+
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{mohController.tests}" 
-                                     var="c" rowKey="#{c.id}" 
-                                     rows="10" 
-                                     paginator="true" 
+                        <p:dataTable id="tbl" value="#{mohController.tests}"
+                                     var="c" rowKey="#{c.id}"
+                                     rows="10"
+                                     paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,50,100,{ShowAll|'All'}"
@@ -112,14 +117,14 @@
                                 </p:outputLabel>
                             </p:column>
                            <p:column headerText="Actions" exportable="false">
-                                    <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}" 
-                                                     value="Investigate" 
+                                    <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}"
+                                                     value="Investigate"
                                                      action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
                                         <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
-                                <p:commandButton rendered="#{c.referenceCase ne null}" 
-                                                     ajax="false" value="View Investigation Details" 
+                                <p:commandButton rendered="#{c.referenceCase ne null}"
+                                                     ajax="false" value="View Investigation Details"
                                                      action="#{clientController.toViewOrEditCaseEnrollmentFromEncounter()}"
                                                      style="width: 100%;" >
                                     <f:setPropertyActionListener value="#{c.referenceCase}" target="#{clientController.selectedEncounter}" >
