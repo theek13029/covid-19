@@ -22,7 +22,7 @@
                                         <h:outputLabel value="Test Number" class="h6 fw-bold mb-2" ></h:outputLabel>
                                         <h:inputText id="txtTestNo"
                                                      value="#{hospitalController.pcr.encounterNumber}"
-                                                     tabindex="1" style="width: 98%;" class="form-control w-100" >
+                                                     tabindex="1"  class="form-control w-100" >
                                             <p:ajax process="txtTestNo" event="blur" ></p:ajax>
                                         </h:inputText>
                                     </div>
@@ -30,7 +30,7 @@
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel value="BHT / OPD No/ Clinic No:" for="bhtNo" class="h6 fw-bold mb-2"  />
                                         <h:inputText id="bhtNo"  value="#{hospitalController.pcr.bht}"
-                                                     style="width:100%;"
+                                                     
                                                      required="true"
                                                      tabindex="2"
                                                      class="form-control w-100"
@@ -46,7 +46,7 @@
                                                          value="#{hospitalController.pcr.pcrOrderingCategory}"
                                                          tabindex="102"
                                                          class="form-select w-100"
-                                                         style="width: 100%;" >
+                                                          >
                                             <f:selectItem itemLabel="Select" ></f:selectItem>
                                             <f:selectItems value="#{hospitalController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
                                                            itemValue="#{tt}" ></f:selectItems>
@@ -57,7 +57,7 @@
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel value="Ward / Unit / Clinic:" for="wardunit" class="h6 fw-bold mb-2"  />
                                         <h:inputText id="wardunit" tabindex="114" value="#{hospitalController.pcr.unitWard}"
-                                                     style="width:100%;" class="form-control w-100"
+                                                      class="form-control w-100"
                                                      required="true"
                                                      requiredMessage="Need a Ward / Unit / Clinic">
                                         </h:inputText>
@@ -74,7 +74,7 @@
                                                      class="form-control w-100"
                                                      required="true"
                                                      requiredMessage="Please give a name"
-                                                     style="width: 100%;"
+                                                     
                                                      value="#{hospitalController.pcr.client.person.name}" title="Name" />
                                     </div>
                                     <div class="col-md-3 mb-4">
@@ -102,7 +102,7 @@
                                                      class="form-control w-100"
                                                      id="comments"
                                                      required="false"
-                                                     style="width: 100%;"
+                                                    
                                                      value="#{hospitalController.pcr.comments}" title="Name" />
                                     </div>
                                     <div class="col-md-3 mb-4">
@@ -116,7 +116,7 @@
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" class="h6 fw-bold mb-2" />
                                         <h:inputText id="nic"
-                                                     style="width: 100%;"
+                                                     
                                                      tabindex="5"
                                                      autocomplete="off"
                                                      value="#{hospitalController.pcr.client.person.nic}"
@@ -140,7 +140,7 @@
                                         <h:selectOneMenu
                                             id="sex" value="#{hospitalController.pcr.client.person.sex}" required="true"
                                             tabindex="107" requiredMessage="Please select Gender" class="form-select w-100"
-                                            style="width: 100%;">
+                                            >
                                             <f:selectItems value="#{hospitalController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
                                         </h:selectOneMenu>
                                     </div>
@@ -156,13 +156,13 @@
                                                          placeholder="Years"
                                                          class="form-control w-100"
                                                          value="#{hospitalController.pcr.client.person.ageYears}"
-                                                         required="true" style="width: 90px;">
+                                                         required="true" >
                                                 <f:ajax event="keyup" execute="@this month day" render="calDob" />
                                             </p:inputText>
                                             </div>
 
                                             <div class="mr-2">
-                                            <p:inputText tabindex="108"  autocomplete="off" id="month" placeholder="Months" style="width: 90px; "
+                                            <p:inputText tabindex="108"  autocomplete="off" id="month" placeholder="Months" 
                                                          value="#{hospitalController.pcr.client.person.ageMonths}" class="form-control w-100" >
                                                 <f:ajax event="keyup" execute="@this year day" render="calDob" />
                                             </p:inputText>
@@ -245,7 +245,7 @@
                                                        action="#{hospitalController.retrieveLastPhoneForPcr()}" process="lnkLastphone1" update="phone1">
                                          <i class="bi bi-arrow-clockwise"></i>
                                         </p:commandLink>
-                                        <h:inputText tabindex="7"  style="width: 100%;"
+                                        <h:inputText tabindex="7" 
                                                      id="phone1" required="true"
                                                      class="form-control w-100"
                                                      requiredMessage="Please select a contact number"
