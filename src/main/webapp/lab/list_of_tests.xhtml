@@ -15,35 +15,35 @@
             </ui:define>
 
             <ui:define name="content">
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <p:panelGrid columns="1" styleClass="alignTop w-100 bg-white border border-light" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Test List" ></p:outputLabel>
+                        <h:outputLabel class="fs-5 fw-bold" value="Test List" ></h:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:outputLabel value="Ordered From" ></p:outputLabel>
-                            <p:calendar value="#{labController.fromDate}" 
+                        <p:panelGrid columns="2"  class="border border-light">
+                            <h:outputLabel class="fs-6 fw-bold" value="Ordered From" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{labController.fromDate}"
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
-                            <p:outputLabel value="Ordered To" ></p:outputLabel>
-                            <p:calendar value="#{labController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <h:outputLabel class="fs-6 fw-bold" value="Ordered To" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{labController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                            <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                            <p:selectOneMenu value="#{labController.orderingCategory}" >
+                            <h:outputLabel class="fs-6 fw-bold" value="Ordering Category" ></h:outputLabel>
+                            <h:selectOneMenu class="form-select" value="#{labController.orderingCategory}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{labController.covidTestOrderingCategories}" 
+                                <f:selectItems value="#{labController.covidTestOrderingCategories}"
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
-                            <p:outputLabel value="Institution" ></p:outputLabel>
-                            <p:autoComplete 
-                                            id="acIns" style="margin: 0px; padding: 0px; width: 100%;"
+                            <h:outputLabel value="Institution" class="form-label"></h:outputLabel>
+                            <p:autoComplete class="w-100"
+                                            id="acIns"
                                             value="#{labController.institution}"
-                                            forceSelection="true" tabindex="100" inputStyle="width:100%;"
-                                            completeMethod="#{institutionController.completeInstitutions}" 
+                                            forceSelection="true" tabindex="100"
+                                            completeMethod="#{institutionController.completeInstitutions}"
                                             var="l" itemLabel="#{l.name}" itemValue="#{l}">
                                 <p:ajax process="acIns" event="blur" ></p:ajax>
                             </p:autoComplete>
@@ -53,59 +53,59 @@
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{labController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
 
 
-                            <p:commandButton ajax="false" value="Generate Excel">
+                            <h:commandButton class="btn btn-success my-2" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{labController.toTestListWithoutResults()}" ></p:commandButton>
+                            </h:commandButton>
+                            <h:commandButton class="btn btn-warning w-100" value="Process"
+                                             action="#{labController.toTestListWithoutResults()}" ></h:commandButton>
 
 
                         </p:panelGrid>
 
 
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{labController.tests}" rendered="true"
+                        <p:dataTable id="tbl" value="#{labController.tests}" rendered="true"
                                      rowIndexVar="n"
-                                     var="c" 
-                                     rowKey="#{c.id}" 
-                                     paginator="true" 
+                                     var="c"
+                                     rowKey="#{c.id}"
+                                     paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
                                      >
                             <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.encounterNumber}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.pcrTestType.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Age"  sortBy="#{c.client.person.age}" width="60"
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.age}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Gender"
                                       width="80"
                                       sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.sex.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.nic}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Phone" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
-                                <p:outputLabel rendered="#{c.client.person.phone2 ne null}" value=", " ></p:outputLabel>
-                                <p:outputLabel rendered="#{c.client.person.phone2 ne null}" value="#{c.client.person.phone2}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.phone1}" ></h:outputLabel>
+                                <h:outputLabel rendered="#{c.client.person.phone2 ne null}" value=", " ></h:outputLabel>
+                                <h:outputLabel rendered="#{c.client.person.phone2 ne null}" value="#{c.client.person.phone2}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Address"  sortBy="#{c.client.person.address}"
                                       filterBy="#{c.client.person.address}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.address}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Unit / Ward"  sortBy="#{c.unitWard}"
                                       filterBy="#{c.unitWard}" filterMatchMode="contains">
@@ -117,20 +117,24 @@
                             </p:column>
                             <p:column headerText="Ordering Category"  sortBy="#{c.pcrOrderingCategory.name}"
                                       filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrOrderingCategory.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.pcrOrderingCategory.name}" ></h:outputLabel>
                             </p:column>
 
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
                                 <p:panelGrid columns="1" >
-                                    <p:commandButton value="Edit Order" action="#{labController.toEditTest()}" ajax="false"  style="width: 100%;" >
+
+
+                                    <h:commandButton class="w-100" value="Edit Order" action="#{labController.toEditTest()}">
                                         <f:setPropertyActionListener value="#{c}" target="#{labController.test}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
-                                    <p:commandButton ajax="false" value="Delete"  action="#{labController.deleteTest()}"  style="width: 100%;" 
+                                    </h:commandButton>
+
+                                    <h:commandButton class="w-100" value="Delete"  action="#{labController.deleteTest()}"
                                                      onclick="if (!confirm('Are you sure you want to delete?'))
                                                                  return false" >
                                         <f:setPropertyActionListener value="#{c}" target="#{labController.deleting}" >
                                         </f:setPropertyActionListener>
-                                    </p:commandButton>
+                                    </h:commandButton>
+
                                 </p:panelGrid>
                             </p:column>
                         </p:dataTable>

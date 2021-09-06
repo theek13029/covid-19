@@ -15,16 +15,21 @@
             </ui:define>
 
             <ui:define name="content">
-                <h:panelGrid columns="1" styleClass="alignTop">
-                    <f:facet name="header" >
+                <!--<h:panelGrid columns="1" styleClass="alignTop">-->
+                    <!--<f:facet name="header" >
                         <h:outputLabel value="Start to Investigate" ></h:outputLabel>
-                    </f:facet>
+                    </f:facet>-->
 
                     <h:form >
+                        <div class="row" >
+                            <div class="col-12 text-center mt-4 mb-2" >
+                                <h4 class="fw-bold"><h:outputLabel  value="Start to Investigate" ></h:outputLabel></h4>
+                            </div>
+                        </div>
                         <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
                             <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded" >
                                 <h:outputLabel class="h6 fw-bold" value="Assigned From" ></h:outputLabel>
-                                <p:calendar value="#{mohController.fromDate}" 
+                                <p:calendar value="#{mohController.fromDate}"
                                             pattern="dd MMMM yyyy hh:mm a">
                                 </p:calendar>
 
@@ -34,7 +39,7 @@
                                 <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
                                 <h:selectOneMenu value="#{mohController.orderingCategory}" class="form-select" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{mohController.covidTestOrderingCategories}" 
+                                    <f:selectItems value="#{mohController.covidTestOrderingCategories}"
                                                    var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
                                 </h:selectOneMenu>
@@ -50,10 +55,10 @@
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true" class="table"
                                      rowIndexVar="n"
-                                     var="c" 
-                                     rowKey="#{c.id}" 
+                                     var="c"
+                                     rowKey="#{c.id}"
                                      rowStyleClass="#{c.resultCssClass}"
-                                     paginator="true" 
+                                     paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
@@ -112,14 +117,14 @@
                                 <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
-                                    <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}" 
-                                                     value="Investigate" 
+                                    <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}"
+                                                     value="Investigate"
                                                      action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
                                         <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                         </f:setPropertyActionListener>
                                     </p:commandButton>
-                                <p:commandButton rendered="#{c.referenceCase ne null}" 
-                                                     ajax="false" value="Investigate" 
+                                <p:commandButton rendered="#{c.referenceCase ne null}"
+                                                     ajax="false" value="Investigate"
                                                      action="#{clientController.toViewOrEditCaseEnrollmentFromEncounter()}"
                                                      style="width: 100%;" >
                                     <f:setPropertyActionListener value="#{c.referenceCase}" target="#{clientController.selectedEncounter}" >
@@ -132,7 +137,7 @@
 
 
 
-                </h:panelGrid>
+                <!--</h:panelGrid>-->
             </ui:define>
 
         </ui:composition>

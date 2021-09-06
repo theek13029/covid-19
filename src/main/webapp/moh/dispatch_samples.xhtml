@@ -12,90 +12,94 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
-                    <f:facet name="header" >
+                <!--<p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >-->
+                    <!--<f:facet name="header" >
                         <p:outputLabel value="Dispatch Samples" ></p:outputLabel>
-                    </f:facet>
+                    </f:facet>-->
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-
-                            <p:panelGrid columns="2" >
+                        <div class="row" >
+                            <div class="col-12 text-center mt-4 mb-2" >
+                                <h4 class="fw-bold"><h:outputLabel  value="Dispatch Samples" ></h:outputLabel></h4>
+                            </div>
+                        </div>
+                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-around align-items-center" >
+                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
                                 <f:facet name="header" >
                                     <p:outputLabel value="Listing" ></p:outputLabel>
                                 </f:facet>
-                                <p:outputLabel value="From" ></p:outputLabel>
+                                <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
                                 <p:calendar value="#{mohController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                                <p:outputLabel value="To" ></p:outputLabel>
+                                <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
                                 <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                                <p:commandButton ajax="false" value="Generate Excel">
+                                <h:commandButton value="Generate Excel" class="btn btn-success w-100">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="Process" 
-                                                 action="#{mohController.toDispatchSamples()}" ></p:commandButton>
+                                </h:commandButton>
+                                <h:commandButton value="Process" class="btn btn-warning w-100"
+                                                 action="#{mohController.toDispatchSamples()}" ></h:commandButton>
 
 
-                            </p:panelGrid>
-                            <p:panelGrid columns="2" >
+                            </h:panelGrid>
+                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
                                 <f:facet name="header" >
-                                    <p:outputLabel value="Dispatching" ></p:outputLabel>
+                                    <h:outputLabel class="h6 fw-bold" value="Dispatching" ></h:outputLabel>
                                 </f:facet>
 
-                                <p:outputLabel value="Lab to Dispatch" ></p:outputLabel>
+                                <h:outputLabel class="h6 fw-bold" value="Lab to Dispatch" ></h:outputLabel>
                                 <p:autoComplete value="#{mohController.dispatchingLab}"
                                                 completeMethod="#{institutionController.completeLab}"
                                                 var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                                 </p:autoComplete>
 
-                                <p:commandButton ajax="false" value="Dispatch" 
-                                                 action="#{mohController.dispatchSelectedSamples()}" ></p:commandButton>
+                                <h:commandButton value="Dispatch" class="btn btn-primary w-100"
+                                                 action="#{mohController.dispatchSelectedSamples()}" ></h:commandButton>
 
 
-                            </p:panelGrid>
-
-                        </p:panelGrid>
-
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.listedToDispatch}" 
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
+                        <p:dataTable id="tbl" value="#{mohController.listedToDispatch}" class="table"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10"
                                      selection="#{mohController.selectedToDispatch}"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="5,10,25,100,1000"
                                      >
-                            <p:column selectionMode="multiple" width="30" resizable="false"></p:column>
+                            <p:column selectionMode="multiple" width="30"></p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Age" >
-                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.age}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Sex" >
-                                <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.sex.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Address"  sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.address}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Phone"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.phone1}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" 
                                       filterBy="#{c.pcrTestType.name}" 
                                       filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrTestType.name}"></p:outputLabel>
+                                <h:outputLabel value="#{c.pcrTestType.name}"></h:outputLabel>
                             </p:column>
                             <p:column headerText="Current Lab" 
                                       sortBy="#{c.referalInstitution.name}" 
                                       filterBy="#{c.referalInstitution.name}" 
                                       filterMatchMode="contains">
-                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.referalInstitution.name}" ></h:outputLabel>
                             </p:column>
                         </p:dataTable>
+                        </h:panelGrid>
                     </h:form>
 
 
 
-                </p:panelGrid>
+                <!--</p:panelGrid>-->
             </ui:define>
         </ui:composition>
     </body>
