@@ -9,62 +9,69 @@
     <h:body>
         <ui:composition template="/moh/reports_index.xhtml">
             <ui:define name="reports">
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <!--<p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
                         <p:outputLabel value="Test List" ></p:outputLabel>
-                    </f:facet>
+                    </f:facet>-->
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:outputLabel value="Ordered From" ></p:outputLabel>
-                            <p:calendar value="#{mohController.fromDate}" 
+                        <div class="row" >
+                            <div class="col-12 text-center mt-4 mb-2" >
+                                <h4 class="fw-bold"><h:outputLabel  value="Test List" ></h:outputLabel></h4>
+                            </div>
+                        </div>
+                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
+                            <h:outputLabel class="h6 fw-bold" value="Ordered From" ></h:outputLabel>
+                            <p:calendar value="#{mohController.fromDate}"
                                         pattern="dd MMMM yyyy">
                             </p:calendar><!-- comment -->
 
-                            <p:outputLabel value="Ordered To" ></p:outputLabel>
+                            <h:outputLabel class="h6 fw-bold" value="Ordered To" ></h:outputLabel>
                             <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                            <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                            <p:selectOneMenu value="#{mohController.orderingCategory}" >
+                            <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
+                            <h:selectOneMenu value="#{mohController.orderingCategory}" class="form-select">
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{mohController.covidTestOrderingCategories}" 
+                                <f:selectItems value="#{mohController.covidTestOrderingCategories}"
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
-                            <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{mohController.testType}" >
+                            <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
+                            <h:selectOneMenu value="#{mohController.testType}" class="form-select" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
-                            <p:outputLabel value="Lab" ></p:outputLabel>
+                            <h:outputLabel class="h6 fw-bold" value="Lab" ></h:outputLabel>
                             <p:autoComplete value="#{mohController.lab}"
                                             completeMethod="#{institutionController.completeLab}"
                                             var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                             </p:autoComplete>
 
-                            <p:commandButton ajax="false" value="Generate Excel">
+                            <h:commandButton value="Generate Excel" class="btn btn-success w-100">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{mohController.toListOfOrderesByMyMoh()}" ></p:commandButton>
+                            </h:commandButton>
+                            <h:commandButton value="Process" class="btn btn-warning w-100"
+                                             action="#{mohController.toListOfOrderesByMyMoh()}" ></h:commandButton>
 
 
-                        </p:panelGrid>
-
-
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.tests}" rendered="true"
+                        </h:panelGrid>
+                        </div>
+                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
+                        <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true"
                                      rowIndexVar="n"
-                                     var="c" 
-                                     rowKey="#{c.id}" 
-                                     paginator="true" 
+                                     var="c"
+                                     rowKey="#{c.id}"
+                                     paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
                                      reflow="true"
+                                     resizeMode="expand"
                                      >
                             <p:column headerText="Tube No."   style="width: 5rem;"  sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
@@ -82,14 +89,15 @@
                             </p:column>
                             <p:column headerText="Address"  sortBy="#{c.client.person.address}"
                                       filterBy="#{c.client.person.address}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.client.person.address}" ></h:outputLabel>
                             </p:column>
                         </p:dataTable>
+                        </h:panelGrid>
                     </h:form>
 
 
 
-                </p:panelGrid>
+                <!--</p:panelGrid>-->
             </ui:define>
 
         </ui:composition>

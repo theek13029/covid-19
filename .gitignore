@@ -35,3 +35,9 @@ package-lock.json
 
 # Mac Specific frile
 .DS_Store
+
+#settings files
+.settings
+.project
+.classpath
+.vscode
