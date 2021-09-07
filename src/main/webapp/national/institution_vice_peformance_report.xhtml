@@ -49,6 +49,7 @@
 
                         </p:panelGrid>
 
+                        
                         <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" 
                                      value="#{nationalController.institutionPeformances}" rendered="true"
 
@@ -62,7 +63,9 @@
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
                                      >
-                            <p:ajax event="filter" process="tbl" update=":form:tbl:sumP" 
+                            <p:ajax event="filter" process="tbl" update=":form:tbl:sumR :form:tbl:sumP :form:tbl:sumRp :form:tbl:sumPp" 
+                                    listener="#{nationalController.generateFilteredInstitutionPeformanceSummery}" />
+                             <p:ajax event="blur" process="tbl" update=":form:tbl:sumR :form:tbl:sumP :form:tbl:sumRp :form:tbl:sumPp" 
                                     listener="#{nationalController.generateFilteredInstitutionPeformanceSummery}" />
                             <p:column headerText="Institution" sortBy="#{c.institution.name}"
                                       filterBy="#{c.institution.name}" filterMatchMode="contains">
@@ -83,13 +86,13 @@
                             <p:column headerText="RAT Orders"  sortBy="#{c.pcrs}">
                                 <p:outputLabel value="#{c.rats}" ></p:outputLabel>
                                 <f:facet name="footer" >
-                                    <h:outputText styleClass="footerToUpdate" value="#{nationalController.institutionPeformancesSummery.rats}" />
+                                    <h:outputText id="sumR" styleClass="footerToUpdate" value="#{nationalController.institutionPeformancesSummery.rats}" />
                                 </f:facet>
                             </p:column>
                             <p:column headerText="PCR Positives"  sortBy="#{c.pcrs}">
                                 <p:outputLabel value="#{c.rats}" ></p:outputLabel>
                                 <f:facet name="footer" >
-                                    <h:outputText styleClass="footerToUpdate" value="#{nationalController.institutionPeformancesSummery.pcrPositives}" />
+                                    <h:outputText id="sumPp" styleClass="footerToUpdate" value="#{nationalController.institutionPeformancesSummery.pcrPositives}" />
                                 </f:facet>
                             </p:column>
                             <p:column headerText="RAT Positives"  sortBy="#{c.pcrs}">
