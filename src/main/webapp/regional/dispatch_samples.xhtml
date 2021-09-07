@@ -79,6 +79,11 @@
 
                                      >
                             <p:column selectionMode="multiple" width="30" resizable="false"></p:column>
+                            
+                            <p:column headerText="Tube No"  sortBy="#{c.encounterNumber}"
+                                      filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
@@ -99,6 +104,12 @@
                                       filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrTestType.name}"></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Entered at" sortBy="#{c.createdAt}" 
+                                      filterMatchMode="contains">
+                                <p:outputLabel value="#{c.createdAt}">
+                                </p:outputLabel>
+                            </p:column>
+                            
                             <p:column headerText="Current Lab" 
                                       sortBy="#{c.referalInstitution.name}" 
                                       filterBy="#{c.referalInstitution.name}" 
