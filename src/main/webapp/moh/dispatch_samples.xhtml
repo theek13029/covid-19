@@ -34,14 +34,14 @@
                                 <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
                                 <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                                <h:outputLabel class="form-label" value="Test" ></p:outputLabel>
+                                <h:outputLabel class="form-label" value="Test" ></h:outputLabel>
                                 <h:selectOneMenu class="form-select" value="#{mohController.testType}" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
                                     <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
                                 </h:selectOneMenu>
 
-                                <h:commandButton ajax="false" value="Generate Excel" class="btn btn-success">
+                                <h:commandButton  value="Generate Excel" class="btn btn-success">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                                 </h:commandButton>
                                 <h:commandButton value="Process" class="btn btn-warning w-100"
@@ -61,7 +61,8 @@
                                 </p:autoComplete>
 
                                 <h:commandButton value="Dispatch" class="btn btn-primary w-100"
-                                                 action="#{mohController.dispatchSelectedSamples()}" ></h:commandButton>
+                                                 action="#{mohController.dispatchSelectedSamples()}" >
+                                </h:commandButton>
 
 
                             </h:panelGrid>

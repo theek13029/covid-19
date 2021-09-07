@@ -1264,15 +1264,18 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.institution=:ins "
                 + " and c.referalInstitution=:rins "
-                + " and c.resultEntered is null "
+                + " and (c.receivedAtLab is null or c.receivedAtLab=:rec) "
                 + " order by c.id";
         Map m = new HashMap();
         m.put("ret", false);
+        m.put("rec", false);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("ins", institution);
         m.put("rins", referingInstitution);
+        System.out.println("m = " + m);
+        System.out.println("j = " + j);
         listedToDivert = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/moh/divert_samples";
     }
@@ -2456,11 +2459,11 @@ public class ClientController implements Serializable {
                 + " where c.retired=:ret "
                 + " and lower(c.person.name) like :name";
 
-        if(district!=null){
+        if (district != null) {
             jpql += " and c.person.district=:dis ";
-             m.put("dis", district);
+            m.put("dis", district);
         }
-        
+
         jpql += " order by c.person.name";
 
         m.put("ret", false);
@@ -2634,6 +2637,7 @@ public class ClientController implements Serializable {
         pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         pcr.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
 
+        pcr.setEncounterNumber(ci.getTestNo());
         pcr.setEncounterType(EncounterType.Test_Enrollment);
         pcr.setEncounterDate(fromDate);
         pcr.setEncounterFrom(new Date());
@@ -4197,6 +4201,41 @@ public class ClientController implements Serializable {
         }
         getInstitutionCaseEnrollmentMap().put(selected.getId(), clientEncounterComponentFormSetController.getSelected().getEncounter());
 
+        JsfUtil.addSuccessMessage("Saved.");
+        return "/client/profile_case_enrollment";
+    }
+
+    public String saveSelectedClient() {
+        if (selected == null) {
+            JsfUtil.addErrorMessage("Nothing to save");
+            return "";
+        }
+        if (selected.getId() == null) {
+            if (checkPhnExists(selected.getPhn(), null)) {
+                JsfUtil.addErrorMessage("PHN already exists.");
+                return null;
+            }
+            if (selected.getPerson().getNic() != null && !selected.getPerson().getNic().trim().equals("")) {
+
+                if (checkNicExists(selected.getPerson().getNic(), null)) {
+                    JsfUtil.addErrorMessage("NIC already exists.");
+                    return null;
+                }
+            }
+        } else {
+            if (checkPhnExists(selected.getPhn(), selected)) {
+                JsfUtil.addErrorMessage("PHN already exists.");
+                return null;
+            }
+            if (selected.getPerson().getNic() != null && !selected.getPerson().getNic().trim().equals("")) {
+                if (checkNicExists(selected.getPerson().getNic(), selected)) {
+                    JsfUtil.addErrorMessage("NIC already exists.");
+                    return null;
+                }
+            }
+        }
+        selected.setReservedClient(false);
+        saveClient(selected);
         JsfUtil.addSuccessMessage("Saved.");
         return "/client/profile_case_enrollment";
     }

@@ -99,6 +99,9 @@
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
+                            <p:column headerText="Created at" sortBy="#{c.createdAt}"  >
+                                <p:outputLabel value="#{c.createdAt}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Name" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
