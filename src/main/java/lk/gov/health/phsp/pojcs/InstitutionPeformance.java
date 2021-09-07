@@ -30,9 +30,62 @@ import lk.gov.health.phsp.entity.Institution;
  * @author buddhika
  */
 public class InstitutionPeformance {
-    Institution institution;
-    Long pcrs;
-    Long rats;
-    Long pcrPositives;
-    Long ratPositives;
+    private Institution institution;
+    private Long pcrs;
+    private Long rats;
+    private Long pcrPositives;
+    private Long ratPositives;
+    private Long id;
+    
+    
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
+
+    public Long getPcrs() {
+        return pcrs;
+    }
+
+    public void setPcrs(Long pcrs) {
+        this.pcrs = pcrs;
+    }
+
+    public Long getRats() {
+        return rats;
+    }
+
+    public void setRats(Long rats) {
+        this.rats = rats;
+    }
+
+    public Long getPcrPositives() {
+        return pcrPositives;
+    }
+
+    public void setPcrPositives(Long pcrPositives) {
+        this.pcrPositives = pcrPositives;
+    }
+
+    public Long getRatPositives() {
+        return ratPositives;
+    }
+
+    public void setRatPositives(Long ratPositives) {
+        this.ratPositives = ratPositives;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    
 }

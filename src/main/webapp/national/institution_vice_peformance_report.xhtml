@@ -15,12 +15,12 @@
                         <p:outputLabel value="Institution-vice Peformance Report" ></p:outputLabel>
                     </f:facet>
 
-                    <h:form >
+                    <h:form id="form" >
                         <p:panelGrid columns="2" >
                             <p:outputLabel value="From" ></p:outputLabel>
-                            <p:calendar value="#{nationalController.fromDate}" 
+                            <p:datePicker value="#{nationalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm">
-                            </p:calendar>
+                            </p:datePicker>
                             <p:outputLabel value="To" ></p:outputLabel>
                             <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy hh:mm"></p:calendar>
 
@@ -33,8 +33,13 @@
                             </p:selectOneMenu>
 
                             <p:outputLabel value="RDHS" ></p:outputLabel>
-                            <p:selectOneMenu value="#{nationalController}" ></p:selectOneMenu>
-                            
+                            <p:selectOneMenu value="#{nationalController.rdhs}" filterMatchMode="contains">
+                                <f:selectItem itemLabel="Select" ></f:selectItem>
+                                <f:selectItems value="#{areaApplicationController.allRdhsAreas}"
+                                               var="i" itemLabel="#{i.name}" itemValue="#{i}" >
+                                </f:selectItems>
+                            </p:selectOneMenu>
+
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="institution vice peformance report" ></p:dataExporter>
                             </p:commandButton>
@@ -44,22 +49,12 @@
 
                         </p:panelGrid>
 
+                        
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" 
+                                     value="#{nationalController.institutionPeformances}" rendered="true"
 
-                        <p:dataTable value="#{nationalController.regionalMohsAndHospitals}" 
-                                     var="i" >
-                            <p:column >
-                                <h:outputText value="#{i.name}" ></h:outputText>
-                            </p:column>
-                            <p:column >
-                                <h:outputText value="#{i.retired}" ></h:outputText>
-                            </p:column>
-                             <p:column >
-                                 <h:outputText value="#{i.institutionType}" ></h:outputText>
-                            </p:column>
-                        </p:dataTable>
+                                     filteredValue="#{nationalController.institutionPeformancesFiltered}"
 
-
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{nationalController.institutionCounts}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      paginator="true" 
@@ -68,12 +63,43 @@
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
                                      >
-                            <p:column headerText="Lab" sortBy="#{c.institution.name}"
+                            <p:ajax event="filter" process="tbl" update=":form:tbl:sumR :form:tbl:sumP :form:tbl:sumRp :form:tbl:sumPp" 
+                                    listener="#{nationalController.generateFilteredInstitutionPeformanceSummery}" />
+                             <p:ajax event="blur" process="tbl" update=":form:tbl:sumR :form:tbl:sumP :form:tbl:sumRp :form:tbl:sumPp" 
+                                    listener="#{nationalController.generateFilteredInstitutionPeformanceSummery}" />
+                            <p:column headerText="Institution" sortBy="#{c.institution.name}"
                                       filterBy="#{c.institution.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Count"  sortBy="#{c.count}">
-                                <p:outputLabel value="#{c.count}" ></p:outputLabel>
+                            <p:column headerText="Institution Type" sortBy="#{c.institution.institutionType.label}"
+                                      filterBy="#{c.institution.institutionType.label}" filterMatchMode="contains">
+                                <p:outputLabel value="#{c.institution.institutionType.label}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="PCR Orders"  sortBy="#{c.pcrs}">
+                                <p:outputLabel value="#{c.pcrs}" ></p:outputLabel>
+                                <f:facet name="footer" >
+                                    <h:outputText id="sumP"
+                                                  styleClass="footerToUpdate"
+                                                  value="#{nationalController.institutionPeformancesSummery.pcrs}" />
+                                </f:facet>
+                            </p:column>
+                            <p:column headerText="RAT Orders"  sortBy="#{c.pcrs}">
+                                <p:outputLabel value="#{c.rats}" ></p:outputLabel>
+                                <f:facet name="footer" >
+                                    <h:outputText id="sumR" styleClass="footerToUpdate" value="#{nationalController.institutionPeformancesSummery.rats}" />
+                                </f:facet>
+                            </p:column>
+                            <p:column headerText="PCR Positives"  sortBy="#{c.pcrs}">
+                                <p:outputLabel value="#{c.rats}" ></p:outputLabel>
+                                <f:facet name="footer" >
+                                    <h:outputText id="sumPp" styleClass="footerToUpdate" value="#{nationalController.institutionPeformancesSummery.pcrPositives}" />
+                                </f:facet>
+                            </p:column>
+                            <p:column headerText="RAT Positives"  sortBy="#{c.pcrs}">
+                                <p:outputLabel value="#{c.rats}" ></p:outputLabel>
+                                <f:facet name="footer" >
+                                    <h:outputText id="sumRp" styleClass="footerToUpdate" value="#{nationalController.institutionPeformancesSummery.ratPositives}" />
+                                </f:facet>
                             </p:column>
                         </p:dataTable>
                     </h:form>

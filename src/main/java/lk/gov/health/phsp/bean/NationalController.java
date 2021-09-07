@@ -93,10 +93,6 @@ public class NationalController implements Serializable {
     @Inject
     private WebUserController webUserController;
     @Inject
-    private EncounterController encounterController;
-    @Inject
-    private ItemController itemController;
-    @Inject
     private ItemApplicationController itemApplicationController;
     @Inject
     private InstitutionController institutionController;
@@ -105,9 +101,7 @@ public class NationalController implements Serializable {
     @Inject
     private AreaController areaController;
     @Inject
-    private UserTransactionController userTransactionController;
-    @Inject
-    private PreferenceController preferenceController;
+    DashboardApplicationController dashboardApplicationController;
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Variables">
@@ -139,10 +133,13 @@ public class NationalController implements Serializable {
     private List<InstitutionCount> institutionCounts;
     private List<InstitutionTypeCount> institutionTypeCounts;
     private List<InstitutionPeformance> institutionPeformances;
+    private List<InstitutionPeformance> institutionPeformancesFiltered;
+    private InstitutionPeformance institutionPeformancesSummery;
 
     private Area district;
     private Area mohArea;
     private Area pdhs;
+    private Area rdhs;
     private InstitutionType institutionType;
 
 // </editor-fold>
@@ -630,7 +627,43 @@ public class NationalController implements Serializable {
     }
 
     public void processInstitutionVicePeformanceReport() {
-
+        if (rdhs == null) {
+            JsfUtil.addErrorMessage("Please select the RDHS");
+            return;
+        }
+        institutionPeformances = new ArrayList<>();
+        List<InstitutionType> types = new ArrayList<>();
+        types.add(InstitutionType.Base_Hospital);
+        types.add(InstitutionType.District_General_Hospital);
+        types.add(InstitutionType.Divisional_Hospital);
+        types.add(InstitutionType.Hospital);
+        types.add(InstitutionType.Intermediate_Care_Centre);
+        types.add(InstitutionType.Lab);
+        types.add(InstitutionType.MOH_Office);
+        types.add(InstitutionType.Mobile_Lab);
+        types.add(InstitutionType.National_Hospital);
+        types.add(InstitutionType.Private_Sector_Institute);
+        types.add(InstitutionType.Primary_Medical_Care_Unit);
+        types.add(InstitutionType.Private_Sector_Labatory);
+        types.add(InstitutionType.Provincial_General_Hospital);
+        types.add(InstitutionType.Teaching_Hospital);
+        List<Institution> inss = institutionApplicationController.findRegionalInstitutions(types, rdhs);
+        fromDate = CommonController.startOfTheDate(fromDate);
+        toDate = CommonController.endOfTheDate(toDate);
+        for (Institution ins : inss) {
+            InstitutionPeformance ip = new InstitutionPeformance();
+            ip.setInstitution(ins);
+            ip.setPcrs(dashboardApplicationController.getOrderCount(ins, fromDate, toDate,
+                    itemApplicationController.getPcr(), orderingCategory, null, null));
+            ip.setRats(dashboardApplicationController.getOrderCount(ins, fromDate, toDate,
+                    itemApplicationController.getRat(), orderingCategory, null, null));
+            ip.setPcrPositives(dashboardApplicationController.getOrderCount(ins, fromDate, toDate,
+                    itemApplicationController.getPcr(), orderingCategory, itemApplicationController.getPcrPositive(), null));
+            ip.setRatPositives(dashboardApplicationController.getOrderCount(ins, fromDate, toDate,
+                    itemApplicationController.getRat(), orderingCategory, itemApplicationController.getPcrPositive(), null));
+            institutionPeformances.add(ip);
+        }
+        generateInstitutionPeformanceSummery();
     }
 
     public String toCountOfResultsByLab() {
@@ -2135,12 +2168,103 @@ public class NationalController implements Serializable {
     }
 
     public List<InstitutionPeformance> getInstitutionPeformances() {
-        if(institutionPeformances==null){
+        if (institutionPeformances == null) {
             institutionPeformances = new ArrayList<>();
         }
         return institutionPeformances;
     }
 
+    public Area getRdhs() {
+        return rdhs;
+    }
+
+    public void setRdhs(Area rdhs) {
+        this.rdhs = rdhs;
+    }
+
+    public List<InstitutionPeformance> getInstitutionPeformancesFiltered() {
+        if (institutionPeformancesFiltered == null) {
+            institutionPeformancesFiltered = new ArrayList<>();
+        }
+        return institutionPeformancesFiltered;
+    }
+
+    public void setInstitutionPeformancesFiltered(List<InstitutionPeformance> institutionPeformancesFiltered) {
+        this.institutionPeformancesFiltered = institutionPeformancesFiltered;
+    }
+
+    public void generateInstitutionPeformanceSummery() {
+        System.out.println("generateInstitutionPeformanceSummery");
+        Long p = 0l;
+        Long r = 0l;
+        Long pp = 0l;
+        Long rp = 0l;
+        if (getInstitutionPeformances() != null && !getInstitutionPeformances().isEmpty()) {
+            for (InstitutionPeformance ip : getInstitutionPeformances()) {
+                if (ip.getPcrPositives() != null) {
+                    pp += ip.getPcrPositives();
+                }
+                if (ip.getRatPositives() != null) {
+                    rp += ip.getRatPositives();
+                }
+                if (ip.getPcrs() != null) {
+                    p += ip.getPcrs();
+                }
+                if (ip.getRats() != null) {
+                    r += ip.getRats();
+                }
+            }
+        }
+        getInstitutionPeformancesSummery().setId(0l);
+        getInstitutionPeformancesSummery().setPcrPositives(pp);
+        getInstitutionPeformancesSummery().setPcrs(p);
+        getInstitutionPeformancesSummery().setRats(r);
+        getInstitutionPeformancesSummery().setRatPositives(rp);
+    }
     
-    
+    public void generateFilteredInstitutionPeformanceSummery() {
+        System.out.println("generateFilteredInstitutionPeformanceSummery");
+        Long p = 0l;
+        Long r = 0l;
+        Long pp = 0l;
+        Long rp = 0l;
+        if (getInstitutionPeformancesFiltered() != null && !getInstitutionPeformancesFiltered().isEmpty()) {
+            for (InstitutionPeformance ip : getInstitutionPeformancesFiltered()) {
+                if (ip.getPcrPositives() != null) {
+                    pp += ip.getPcrPositives();
+                }
+                if (ip.getRatPositives() != null) {
+                    rp += ip.getRatPositives();
+                }
+                if (ip.getPcrs() != null) {
+                    p += ip.getPcrs();
+                }
+                if (ip.getRats() != null) {
+                    r += ip.getRats();
+                }
+            }
+        }
+        getInstitutionPeformancesSummery().setId(0l);
+        getInstitutionPeformancesSummery().setPcrPositives(pp);
+        getInstitutionPeformancesSummery().setPcrs(p);
+        getInstitutionPeformancesSummery().setRats(r);
+        getInstitutionPeformancesSummery().setRatPositives(rp);
+        
+        System.out.println("getInstitutionPeformancesSummery().getPcrPositives(); = " + getInstitutionPeformancesSummery().getPcrPositives());
+        System.out.println("getInstitutionPeformancesSummery().getPcrs() = " + getInstitutionPeformancesSummery().getPcrs());
+        System.out.println("getInstitutionPeformancesSummery().getRats() = " + getInstitutionPeformancesSummery().getRats());
+        System.out.println("getInstitutionPeformancesSummery().getRatPositives() = " + getInstitutionPeformancesSummery().getRatPositives());
+    }
+
+    public InstitutionPeformance getInstitutionPeformancesSummery() {
+        if (institutionPeformancesSummery == null) {
+            institutionPeformancesSummery = new InstitutionPeformance();
+        }
+        return institutionPeformancesSummery;
+    }
+
+    public void setInstitutionPeformancesSummery(InstitutionPeformance institutionPeformancesSummery) {
+        this.institutionPeformancesSummery = institutionPeformancesSummery;
+    }
+
 }

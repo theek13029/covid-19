@@ -75,11 +75,11 @@
                             </p:column>
                             
                             <p:column headerText="Actions" exportable="false" >
-                                <h:commandButton value="Mark All as Received" class="btn btn-success w-100" action="#{clientController.labReceiveAll()}" >
+                                <h:commandButton value="Mark All as Received" class="btn btn-success mx-2" action="#{clientController.labReceiveAll()}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                 </h:commandButton>
-                                <h:commandButton value="To Receive or Reject" class="btn btn-success w-100" action="#{clientController.toLabReceiveSelected()}" >
+                                <h:commandButton value="To Receive or Reject" class="btn btn-success mx-2" action="#{clientController.toLabReceiveSelected()}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                 </h:commandButton>
