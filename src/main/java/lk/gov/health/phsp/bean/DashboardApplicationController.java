@@ -175,7 +175,7 @@ public class DashboardApplicationController {
         	double tempRate = ((double) this.todayPositivePcr/this.todayPcr) * 100;
         	this.todayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.todayPcrPositiveRate = "0.0%";
+        	this.todayPcrPositiveRate = "0.00%";
         }
 
 //		This will return today's rat positive rate as a percentage
