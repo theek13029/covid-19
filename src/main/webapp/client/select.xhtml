@@ -12,101 +12,84 @@
 
             <ui:define name="content">
 
-                <p:panel header="Select Client" style="height: 100%; text-align: center;" >
-
-
+                <p:panel class="text-center h-100">
+                    
+                    <h:outputText class="fs-4 fw-bold my-2" value="Select Client"/>
+                    
                     <h:form>
 
                         <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{clientController.selectedClients}" var="item">
 
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Name"/>
+                                    <h:outputText class="fs-6" value="Name"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.name}"/>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Gender"/>
+                                    <h:outputText class="fs-6" value="Gender"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.sex.name}"/>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Phone No"/>
+                                    <h:outputText class="fs-6" value="Phone No"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.phone1}">
                                 </h:outputText>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Address"/>
+                                    <h:outputText class="fs-6" value="Address"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.address}">
                                 </h:outputText>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="NIC"/>
+                                    <h:outputText class="fs-6" value="NIC"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.nic}"/>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="GN Area"/>
+                                    <h:outputText class="fs-6" value="GN Area"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.gnArea.name}">
                                 </h:outputText>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="MOH Area"/>
+                                    <h:outputText class="fs-6" value="MOH Area"/>
                                 </f:facet>
                                 <h:outputText value="#{item.person.mohArea.name}"/>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Marietal Status"/>
+                                    <h:outputText class="fs-6" value="District"/>
                                 </f:facet>
-                                <h:outputText value="#{item.person.mariatalStatus.name}">
-                                </h:outputText>
+                                <h:outputText value="#{item.person.district.name}"/>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Citizenship"/>
+                                    <h:outputText class="fs-6" value="Address"/>
                                 </f:facet>
-                                <h:outputText value="#{item.person.citizenship.name}"/>
+                                <h:outputText class="fs-6" value="#{item.person.address}"/>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Address"/>
+                                    <h:outputText class="fs-6" value="Actions"/>
                                 </f:facet>
-                                <h:outputText value="#{item.person.address}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Phn"/>
-                                </f:facet>
-                                <h:outputText value="#{item.phn}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Actions"/>
-                                </f:facet>
-                                <p:commandButton ajax="false" action="#{clientController.toClientProfile()}" value="View Profile" >
+                                <h:commandButton class="btn btn-dark-success w-100" action="#{clientController.toClientProfile()}" value="View Profile" >
                                     <f:setPropertyActionListener target="#{clientController.selected}" value="#{item}" ></f:setPropertyActionListener>
-                                </p:commandButton>
+                                </h:commandButton>
                             </p:column>
 
                         </p:dataTable>
                     </h:form>
 
-
-
                 </p:panel>
-
-
-
 
             </ui:define>
 
