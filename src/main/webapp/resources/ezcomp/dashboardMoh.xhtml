@@ -22,7 +22,7 @@
                                     PCRs
                                 </h4>
                                 <div class="d-flex">
-                                    <div class="p-2 w-100">
+                                    <div class="p-2 flex-grow-1">
                                         <h5 class="fw-bold">Today</h5>
                                     </div>
                                     <div class="p-2 flex-shrink-1 fw-semi-bold">
@@ -32,7 +32,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex">
-                                    <div class="p-2 w-100">
+                                    <div class="p-2 flex-grow-1">
                                         <h5 class="fw-bold">Yesterday</h5>
                                     </div>
                                     <div class="p-2 flex-shrink-1 fw-semi-bold">
@@ -57,7 +57,7 @@
                                     RATs
                                 </h4>
                                 <div class="d-flex">
-                                    <div class="p-2 w-100">
+                                    <div class="p-2 flex-grow-1">
                                         <h5 class="fw-bold">Today</h5>
                                     </div>
                                     <div class="p-2 flex-shrink-1 fw-semi-bold">
@@ -67,7 +67,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex">
-                                    <div class="p-2 w-100">
+                                    <div class="p-2 flex-grow-1">
                                         <h5 class="fw-bold">Yesterday</h5>
                                     </div>
                                     <div class="p-2 flex-shrink-1 fw-semi-bold">
@@ -92,22 +92,28 @@
                                     PCR Positives
                                 </h4>
                                 <div class="d-flex">
-                                    <div class="p-2 w-100">
+                                    <div class="p-2 flex-grow-1">
                                         <h5 class="fw-bold">Today</h5>
                                     </div>
                                     <div class="p-2 flex-shrink-1 fw-semi-bold">
                                         <h5>
-                                            <h:outputLabel value="#{dashboardController.todayPositivePcr}" ></h:outputLabel>
+                                            #{dashboardController.todayPositivePcr}
+                                            <small>
+                                                (#{dashboardController.todayPcrPositiveRate})
+                                            </small>
                                         </h5>
                                     </div>
                                 </div>
                                 <div class="d-flex">
-                                    <div class="p-2 w-100">
+                                    <div class="p-2 flex-grow-1">
                                         <h5 class="fw-bold">Yesterday</h5>
                                     </div>
                                     <div class="p-2 flex-shrink-1 fw-semi-bold">
                                         <h5>
-                                            <h:outputLabel value="#{dashboardController.yesterdayPositivePcr}" ></h:outputLabel>
+                                            #{dashboardController.yesterdayPositivePcr}
+                                            <small>
+                                                (#{dashboardController.yesterdayPcrPositiveRate})
+                                            </small>
                                         </h5>
                                     </div>
                                 </div>
@@ -127,22 +133,28 @@
                                     RAT Positives
                                 </h4>
                                 <div class="d-flex">
-                                    <div class="p-2 w-100">
+                                    <div class="p-2 flex-grow-1">
                                         <h5 class="fw-bold">Today</h5>
                                     </div>
                                     <div class="p-2 flex-shrink-1 fw-semi-bold">
                                         <h5>
-                                            <h:outputLabel value="#{dashboardController.todayPositiveRat}" ></h:outputLabel>
+                                            #{dashboardController.todayPositiveRat}
+                                            <small>
+                                                (#{dashboardController.todayRatPositiveRate})
+                                            </small>
                                         </h5>
                                     </div>
                                 </div>
                                 <div class="d-flex">
-                                    <div class="p-2 w-100">
+                                    <div class="p-2 flex-grow-1">
                                         <h5 class="fw-bold">Yesterday</h5>
                                     </div>
                                     <div class="p-2 flex-shrink-1 fw-semi-bold">
                                         <h5>
-                                            <h:outputLabel value="#{dashboardController.yesterdayPositiveRat}" ></h:outputLabel>
+                                            #{dashboardController.yesterdayPositiveRat}
+                                            <small>
+                                                (#{dashboardController.yesterdayRatPositiveRate})
+                                            </small>
                                         </h5>
                                     </div>
                                 </div>
