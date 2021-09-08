@@ -94,6 +94,7 @@ public class DashboardController implements Serializable {
     private String todayRatPositiveRate;
     private String yesterdayPcrPositiveRate;
     private String yesterdayRatPositiveRate;
+    private Long patientsWithNoMohArea;
 
     private CovidData myCovidData;
 
@@ -491,6 +492,16 @@ public class DashboardController implements Serializable {
                 webUserController.getLoggedUser().getInstitution().getRdhsArea(),
                 yesterdayStart,
                 yesterdayEnd,
+                itemApplicationController.getRat(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null);
+
+//        Set patients with no MOH area for last two days
+        this.patientsWithNoMohArea = dashboardApplicationController.getOrderCountWithoutMoh(
+                webUserController.getLoggedUser().getInstitution().getRdhsArea(),
+                yesterdayStart,
+                now,
                 itemApplicationController.getRat(),
                 null,
                 itemApplicationController.getPcrPositive(),
@@ -984,6 +995,12 @@ public class DashboardController implements Serializable {
 		}
 		return todayRatPositiveRate;
 	}
+
+//    Getter and setter for patients with no moh area
+    public Long getPatientsWithNoMohArea() {
+        return this.getPatientsWithNoMohArea();
+    }
+
 
 	/**
 	 * @param todayRatPositiveRate the todayRatPositiveRate to set
