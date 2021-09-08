@@ -2746,7 +2746,7 @@ public class ClientController implements Serializable {
         }
         int count = 0;
         for (ClientImport ci : getClientImportsSelected()) {
-            toAddNewPcrWithNewClient(ci);
+            toAddNewPcrResultWithNewClient(ci);
             count++;
         }
         String msg = "" + count + " Orders Imported.";
