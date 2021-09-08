@@ -94,13 +94,26 @@
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Age"  sortBy="#{c.client.person.age}" 
+                                      filterBy="#{c.client.person.age}" filterMatchMode="contains" >
+                                <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                            </p:column>
+                             <p:column headerText="Sex"  sortBy="#{c.client.person.sex.name}" 
+                                      filterBy="#{c.client.person.sex.name}" filterMatchMode="contains" >
+                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="NIC"  style="width: 10rem;"  
+                                      sortBy="#{c.client.person.nic}" 
+                                      filterBy="#{c.client.person.nic}" filterMatchMode="contains" >
+                                <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Phone"  style="width: 10rem;"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Address"  sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Result"  style="width: 8rem;"  exportable="false"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
+                            <p:column headerText="Result"  style="width: 8rem;"   sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
                                 <p:outputLabel id="cmbResult" value="#{c.pcrResult.name}" style="width: 98%;" >
                                 </p:outputLabel>
                             </p:column>
