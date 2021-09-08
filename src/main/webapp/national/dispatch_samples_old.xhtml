@@ -25,22 +25,16 @@
                                     <p:outputLabel value="Listing" ></p:outputLabel>
                                 </f:facet>
                                 <p:outputLabel value="From" ></p:outputLabel>
-                                <p:calendar value="#{nationalController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+                                <p:calendar value="#{mohController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
                                 <p:outputLabel value="To" ></p:outputLabel>
-                                <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
-
-                                <p:outputLabel value="Ordered Institution" ></p:outputLabel>
-                                <p:autoComplete value="#{nationalController.institution}"
-                                                completeMethod="#{institutionController.completeInstitutions}"
-                                                var="m" itemLabel="#{m.name}" itemValue="#{m}" >
-                                </p:autoComplete>
+                                <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
                                 <p:commandButton ajax="false" value="Generate Excel">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                                 </p:commandButton>
                                 <p:commandButton ajax="false" value="Process" 
-                                                 action="#{nationalController.toDispatchSamples()}" ></p:commandButton>
+                                                 action="#{mohController.toDispatchSamples()}" ></p:commandButton>
 
 
                             </p:panelGrid>
@@ -50,53 +44,26 @@
                                 </f:facet>
 
                                 <p:outputLabel value="Lab to Dispatch" ></p:outputLabel>
-                                <p:autoComplete value="#{nationalController.dispatchingLab}"
+                                <p:autoComplete value="#{mohController.dispatchingLab}"
                                                 completeMethod="#{institutionController.completeLab}"
                                                 var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                                 </p:autoComplete>
 
-                                <p:commandButton ajax="false" value="Generate Excel">
-                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
-                                </p:commandButton>
                                 <p:commandButton ajax="false" value="Dispatch" 
-                                                 action="#{nationalController.dispatchSelectedSamples()}" ></p:commandButton>
+                                                 action="#{mohController.dispatchSelectedSamples()}" ></p:commandButton>
 
 
                             </p:panelGrid>
 
                         </p:panelGrid>
 
-                        <p:dataTable resizableColumns="true" multiViewState="true" 
-                                     resizeMode="expand" 
-                                     id="tbl" 
-                                     value="#{nationalController.listedToDispatch}" 
-                                     var="c" rowKey="#{c.id}" 
-                                     rowIndexVar="n"
-
-                                     selection="#{nationalController.selectedToDispatch}"
-                                     rows="10"
-                                     paginator="true"
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.listedToDispatch}" 
+                                     var="c" paginator="true" rowKey="#{c.id}" rows="10"
+                                     selection="#{mohController.selectedToDispatch}"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                     rowsPerPageTemplate="5,10,{ShowAll|'All'}"
-
-
+                                     rowsPerPageTemplate="5,10,25,100,1000"
                                      >
                             <p:column selectionMode="multiple" width="50" resizable="false"></p:column>
-
-
-                            <p:column headerText="No" width="50">
-                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
-                            </p:column>
-
-                            <p:column headerText="Tube No"  sortBy="#{c.encounterNumber}"
-                                      filterBy="#{c.encounterNumber}" filterMatchMode="contains">
-                                <p:inputText id="txtTubeNo" value="#{c.encounterNumber}" style="width: 95%;" >
-                                    <p:ajax event="blur" process="txtTubeNo" 
-                                            listener="#{clientController.saveLabNo(c)}" >
-                                    </p:ajax>
-                                </p:inputText>
-                            </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
@@ -117,21 +84,12 @@
                                       filterMatchMode="contains">
                                 <p:outputLabel value="#{c.pcrTestType.name}"></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Entered at" sortBy="#{c.createdAt}" 
-                                      filterMatchMode="contains">
-                                <p:outputLabel value="#{c.createdAt}">
-                                </p:outputLabel>
-                            </p:column>
-
                             <p:column headerText="Current Lab" 
                                       sortBy="#{c.referalInstitution.name}" 
                                       filterBy="#{c.referalInstitution.name}" 
                                       filterMatchMode="contains">
                                 <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
                             </p:column>
-
-                            
-
                         </p:dataTable>
                     </h:form>
 

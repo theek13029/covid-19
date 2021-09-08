@@ -66,6 +66,7 @@ public class MenuController implements Serializable {
                 regionalController.prepareSummaryByOrderedInstitution();
                 return "/regional/summary_lab_ordered";
             case National:
+                nationalController.prepareSummaryByOrderedInstitution();
                 return "/national/summary_lab_ordered";
             case Hospital:
                 return "/hospital/summary_lab_ordered";

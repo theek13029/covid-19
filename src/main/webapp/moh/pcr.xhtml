@@ -50,9 +50,9 @@
                                 </div>
                                 <div class="col-md-3">
                                     <h:outputLabel for="sampledAt" value="Sampled at" class="d-block form-label fw-bold"></h:outputLabel>
-                                    <p:calendar class="w-100"
+                                    <p:datePicker class="w-100"
                                         value="#{mohController.pcr.sampledAt}" pattern="dd MMMM yyyy hh:mm">
-                                    </p:calendar>
+                                    </p:datePicker>
                                 </div>
                             </div>
                             <div class="my-4 row">
@@ -68,22 +68,22 @@
                                         class="form-label fw-bold"></h:outputLabel>
                                     <div class="d-inline-flex">
                                         <div>
-                                            <h:inputText autocomplete="off" id="year" class="form-control"
+                                            <p:inputText autocomplete="off" id="year" class="form-control"
                                                 tabindex="108" requiredMessage="Please enter the age"
                                                 placeholder="Years"
                                                 value="#{mohController.pcr.client.person.ageYears}"
                                                 required="true">
                                                 <f:ajax event="keyup" execute="year month day"
                                                     render="calDob" />
-                                            </h:inputText>
+                                            </p:inputText>
                                         </div>
                                         <div>
-                                            <h:inputText tabindex="108" class="form-control" autocomplete="off"
+                                            <p:inputText tabindex="108" class="form-control" autocomplete="off"
                                                 id="month" placeholder="Months"
                                                 value="#{mohController.pcr.client.person.ageMonths}">
                                                 <f:ajax event="keyup" execute="year month day"
                                                     render="calDob" />
-                                            </h:inputText>
+                                            </p:inputText>
                                         </div>
                                         <h:message class="text-danger small" for="year"></h:message>
                                         <h:message class="text-danger small" for="month"></h:message>
