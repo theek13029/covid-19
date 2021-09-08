@@ -4,17 +4,17 @@
       xmlns:cc="http://xmlns.jcp.org/jsf/composite"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 
-   <!-- INTERFACE -->
+    <!-- INTERFACE -->
     <cc:interface>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-         <h:outputScript library="js" name="demo.js"></h:outputScript>
-         <h:outputScript library="js" name="chart.js"></h:outputScript>
-         <h:form>
-            
-             <div class="container">
+        <h:outputScript library="js" name="demo.js"></h:outputScript>
+        <h:outputScript library="js" name="chart.js"></h:outputScript>
+        <h:form>
+
+            <div class="container">
                 <div class="row gx-4 my-2">
                     <div class="col">
                         <div class="d-flex bg-success px-3 py-2 align-items-center">
@@ -47,14 +47,14 @@
                         </div>
                         <div class="d-grid gap-2">
                             <h:commandButton value="More Information"
-                            class="btn text-white btn-small btn-dark-success border-none" type="button">
+                                             class="btn text-white btn-small btn-dark-success border-none" type="button">
                             </h:commandButton>
                         </div>
                     </div>
-                    
-                    
-                    
-                    
+
+
+
+
                     <div class="col">
                         <div class="d-flex bg-success px-3 py-2 align-items-center">
                             <div class="flex-grow-1 text-white">
@@ -86,7 +86,7 @@
                         </div>
                         <div class="d-grid gap-2">
                             <h:commandButton value="More Information"
-                            class="btn text-white btn-small btn-dark-success border-none" type="button">
+                                             class="btn text-white btn-small btn-dark-success border-none" type="button">
                             </h:commandButton>
                         </div>
                     </div>
@@ -166,13 +166,90 @@
                         </div>
                         <div class="d-grid gap-2">
                             <h:commandButton value="More Information"
-                                class="btn text-white btn-small btn-dark-danger border-none" type="button">
+                                             class="btn text-white btn-small btn-dark-danger border-none" type="button">
+                            </h:commandButton>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second row -->
+
+                <div class="row gx-4 my-2">
+                    <div class="col-md-3">
+                        <div class="d-flex bg-success px-3 py-2 align-items-center">
+                            <div class="flex-grow-1 text-white">
+                                <h4 class="fw-bold">
+                                    <i class="bi mx-2 bi-info-circle-fill"></i>
+                                    PCRs
+                                </h4>
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <h5 class="fw-bold">Today</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardController.todayPcr}" ></h:outputLabel>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <h5 class="fw-bold">Yesterday</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardController.yesterdayPcr}" ></h:outputLabel>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <h:commandButton value="More Information"
+                                             class="btn text-white btn-small btn-dark-success border-none" type="button">
+                            </h:commandButton>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="d-flex bg-success px-3 py-2 align-items-center">
+                            <div class="flex-grow-1 text-white">
+                                <h4 class="fw-bold">
+                                    <i class="bi mx-2 bi-info-circle-fill"></i>
+                                    RATs
+                                </h4>
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <h5 class="fw-bold">Today</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardController.todayRat}" ></h:outputLabel>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <h5 class="fw-bold">Yesterday</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardController.yesterdayRat}" ></h:outputLabel>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <h:commandButton value="More Information"
+                                             class="btn text-white btn-small btn-dark-success border-none" type="button">
                             </h:commandButton>
                         </div>
                     </div>
                 </div>
             </div>
-             
+
         </h:form>
 
 
