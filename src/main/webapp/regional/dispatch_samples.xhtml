@@ -66,8 +66,12 @@
 
                         </p:panelGrid>
 
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{regionalController.listedToDispatch}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" 
+                                     resizeMode="expand" 
+                                     id="tbl" 
+                                     value="#{regionalController.listedToDispatch}" 
                                      var="c" rowKey="#{c.id}" 
+                                     rowIndexVar="n"
 
                                      selection="#{regionalController.selectedToDispatch}"
                                      rows="10"
@@ -78,7 +82,12 @@
 
 
                                      >
-                            <p:column selectionMode="multiple" width="30" resizable="false"></p:column>
+                            <p:column selectionMode="multiple" width="50" resizable="false"></p:column>
+                            
+                            
+                            <p:column headerText="No" width="50">
+                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
+                            </p:column>
                             
                             <p:column headerText="Tube No"  sortBy="#{c.encounterNumber}"
                                       filterBy="#{c.encounterNumber}" filterMatchMode="contains">
