@@ -43,6 +43,9 @@ public class InstitutionCount {
     private EncounterType encounerType;
     private Item item;
     private Item itemValue;
+    private Long id;
+    
+    
 
     
     public InstitutionCount(Long count, Institution institution, Date date, EncounterType encounerType) {
@@ -170,6 +173,14 @@ public class InstitutionCount {
 
     public void setReferralInstitution(Institution referralInstitution) {
         this.referralInstitution = referralInstitution;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }

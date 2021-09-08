@@ -536,6 +536,7 @@ public class ClientController implements Serializable {
                 + " and c.referalInstitution=:rins "
                 + " and c.sentToLab is not null "
                 + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
+                + " and (c.sampleMissing is null or c.sampleMissing=:sm) "
                 + " and c.receivedAtLab is null "
                 + " group by c.institution";
         Map m = new HashMap();
@@ -543,6 +544,7 @@ public class ClientController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("rej", false);
+        m.put("sm", false);
         m.put("rins", referingInstitution);
         // // System.out.println("j = " + j);
         // // System.out.println("m = " + m);
@@ -692,14 +694,19 @@ public class ClientController implements Serializable {
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired=false "
-                + " and c.encounterType=:type "
-                + " and c.encounterDate between :fd and :td "
-                + " and c.receivedAtLab is null "
-                + " group by c.institution, c.referalInstitution";
+                + " and c.encounterType=:type ";
+        j += " and c.encounterDate between :fd and :td "
+                + " and (c.receivedAtLab is null or c.receivedAtLab=:rl ) "
+                + " and c.institution.rdhsArea=:rd ";
+        j += " and c.sentToLab=:sl ";
+        j += " group by c.institution, c.referalInstitution";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
+        m.put("rl", false);
+        m.put("sl", true);
+        m.put("rd", webUserController.getLoggedUser().getInstitution().getRdhsArea());
         labSummariesToReceive = new ArrayList<>();
         List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
         // // System.out.println("obs = " + obs.size());
@@ -948,11 +955,13 @@ public class ClientController implements Serializable {
                 + " and c.institution=:ins "
                 + " and c.sentToLab is not null "
                 + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
+                + " and (c.sampleMissing is null or c.sampleMissing=:sm) "
                 + " and c.receivedAtLab is null "
                 + " order by c.encounterNumber";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
         m.put("rej", false);
+        m.put("sm", false);
         m.put("fd", fromDate);
         m.put("td", toDate);
         m.put("ins", institution);
@@ -979,12 +988,14 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:type "
                 + " and c.encounterDate between :fd and :td "
                 + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
+                + " and (c.sampleMissing is null or c.sampleMissing=:sm) "
                 + " and c.referalInstitution=:rins "
                 + " and c.sentToLab is not null "
                 + " and c.receivedAtLab is null";
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
         m.put("rej", false);
+        m.put("sm", false);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("rins", webUserController.getLoggedUser().getInstitution());
@@ -1080,7 +1091,8 @@ public class ClientController implements Serializable {
                 + " and c.referalInstitution=:rins"
                 + " and c.receivedAtLab=:rec "
                 + " and c.resultEntered is null "
-                + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) ";
+                + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
+                + " and (c.sampleMissing is null or c.sampleMissing=:sm) ";
         Map m = new HashMap();
         m.put("ret", true);
         m.put("rec", true);
@@ -1088,6 +1100,7 @@ public class ClientController implements Serializable {
         m.put("fd", fromDate);
         m.put("td", toDate);
         m.put("rej", false);
+        m.put("sm", false);
         m.put("rins", referingInstitution);
         if (institution != null) {
             m.put("ins", institution);
@@ -1264,15 +1277,18 @@ public class ClientController implements Serializable {
                 + " and c.encounterDate between :fd and :td "
                 + " and c.institution=:ins "
                 + " and c.referalInstitution=:rins "
-                + " and c.resultEntered is null "
+                + " and (c.receivedAtLab is null or c.receivedAtLab=:rec) "
                 + " order by c.id";
         Map m = new HashMap();
         m.put("ret", false);
+        m.put("rec", false);
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("ins", institution);
         m.put("rins", referingInstitution);
+        System.out.println("m = " + m);
+        System.out.println("j = " + j);
         listedToDivert = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/moh/divert_samples";
     }
@@ -1653,6 +1669,17 @@ public class ClientController implements Serializable {
     public String markUnassigned() {
         for (Encounter e : selectedToReceive) {
             e.setReferalInstitution(null);
+            e.setSentToLab(false);
+            encounterFacade.edit(e);
+        }
+        selectedToReceive = null;
+        return toLabReceiveAll();
+    }
+
+    public String markSampleMissing() {
+        for (Encounter e : selectedToReceive) {
+            e.setReferalInstitution(null);
+            e.setSentToLab(false);
             encounterFacade.edit(e);
         }
         selectedToReceive = null;
@@ -2456,11 +2483,11 @@ public class ClientController implements Serializable {
                 + " where c.retired=:ret "
                 + " and lower(c.person.name) like :name";
 
-        if(district!=null){
+        if (district != null) {
             jpql += " and c.person.district=:dis ";
-             m.put("dis", district);
+            m.put("dis", district);
         }
-        
+
         jpql += " order by c.person.name";
 
         m.put("ret", false);
@@ -2634,6 +2661,7 @@ public class ClientController implements Serializable {
         pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
         pcr.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
 
+        pcr.setEncounterNumber(ci.getTestNo());
         pcr.setEncounterType(EncounterType.Test_Enrollment);
         pcr.setEncounterDate(fromDate);
         pcr.setEncounterFrom(new Date());
@@ -4197,6 +4225,41 @@ public class ClientController implements Serializable {
         }
         getInstitutionCaseEnrollmentMap().put(selected.getId(), clientEncounterComponentFormSetController.getSelected().getEncounter());
 
+        JsfUtil.addSuccessMessage("Saved.");
+        return "/client/profile_case_enrollment";
+    }
+
+    public String saveSelectedClient() {
+        if (selected == null) {
+            JsfUtil.addErrorMessage("Nothing to save");
+            return "";
+        }
+        if (selected.getId() == null) {
+            if (checkPhnExists(selected.getPhn(), null)) {
+                JsfUtil.addErrorMessage("PHN already exists.");
+                return null;
+            }
+            if (selected.getPerson().getNic() != null && !selected.getPerson().getNic().trim().equals("")) {
+
+                if (checkNicExists(selected.getPerson().getNic(), null)) {
+                    JsfUtil.addErrorMessage("NIC already exists.");
+                    return null;
+                }
+            }
+        } else {
+            if (checkPhnExists(selected.getPhn(), selected)) {
+                JsfUtil.addErrorMessage("PHN already exists.");
+                return null;
+            }
+            if (selected.getPerson().getNic() != null && !selected.getPerson().getNic().trim().equals("")) {
+                if (checkNicExists(selected.getPerson().getNic(), selected)) {
+                    JsfUtil.addErrorMessage("NIC already exists.");
+                    return null;
+                }
+            }
+        }
+        selected.setReservedClient(false);
+        saveClient(selected);
         JsfUtil.addSuccessMessage("Saved.");
         return "/client/profile_case_enrollment";
     }
