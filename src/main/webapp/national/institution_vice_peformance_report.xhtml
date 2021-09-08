@@ -65,9 +65,7 @@
                                      >
                             <p:ajax event="filter" process="tbl" update=":form:tbl:sumR :form:tbl:sumP :form:tbl:sumRp :form:tbl:sumPp" 
                                     listener="#{nationalController.generateFilteredInstitutionPeformanceSummery}" />
-                             <p:ajax event="blur" process="tbl" update=":form:tbl:sumR :form:tbl:sumP :form:tbl:sumRp :form:tbl:sumPp" 
-                                    listener="#{nationalController.generateFilteredInstitutionPeformanceSummery}" />
-                            <p:column headerText="Institution" sortBy="#{c.institution.name}"
+                             <p:column headerText="Institution" sortBy="#{c.institution.name}"
                                       filterBy="#{c.institution.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>

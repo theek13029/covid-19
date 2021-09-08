@@ -111,6 +111,10 @@
                                       filterBy="#{c.client.person.address}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                             </p:column>
+                             <p:column headerText="District"  sortBy="#{c.client.person.district.name}"
+                                      filterBy="#{c.client.person.district.name}" filterMatchMode="contains">
+                                 <p:outputLabel value="#{c.client.person.district.name}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Added at"  sortBy="#{c.institution.name}"
                                       filterBy="#{c.institution.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>

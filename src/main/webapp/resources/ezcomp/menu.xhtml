@@ -46,13 +46,15 @@
                     <p:menuitem ajax="false" value="Order RATs for Contacts" action="#{mohController.toStartInvestigation()}" />
                 </p:submenu>
                 <p:submenu class="submenu mx-2" label="Samples" rendered="#{webUserController.hasPrivilege('Sample_Management')}" >
-                    <p:menuitem ajax="false" value="Order Summary"
+                    <p:menuitem ajax="false" value="Requests Summary"
                                 action="#{menuController.toSummaryByOrderedInstitution}" />
-                    <p:menuitem ajax="false" value="Order Summary - To Receive at the Lab"
-                                action="#{clientController.toSummaryByOrderedInstitutionVsLabToReceive()}" />
-                    <p:menuitem ajax="false" value="Order Summary - Received at the Lab"
+                    <p:menuitem ajax="false" value="Awaiting to be Dispatched Summary"
+                                action="#{menuController.toDispatchSummary()}" />
+                    <p:menuitem ajax="false" value="To be Receive at the Lab Summary"
+                                action="#{menuController.toDivertSummary()}" />
+                    <p:menuitem ajax="false" value="Received at the Lab Summary"
                                 action="#{clientController.toSummaryByOrderedInstitutionVsLabReceived()}" />
-                    <p:menuitem ajax="false" value="Order Summary - Results available"
+                    <p:menuitem ajax="false" value="Results available Summary"
                                 action="#{clientController.toSummaryByOrderedInstitutionVsLabConfirmed()}" />
                 </p:submenu>
                 <p:submenu class="submenu mx-2" label="Lab"  rendered="#{webUserController.hasPrivilege('Lab_Management')}"  >

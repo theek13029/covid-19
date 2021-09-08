@@ -45,6 +45,14 @@ public class MenuController implements Serializable {
     WebUserApplicationController webUserApplicationController;
     @Inject
     RegionalController regionalController;
+    @Inject
+    NationalController nationalController;
+    @Inject
+    ProvincialController provincialController;
+    @Inject
+    MohController mohController;
+    @Inject
+    HospitalController hospitalController;
 
     /**
      * Creates a new instance of MenuController
@@ -52,9 +60,8 @@ public class MenuController implements Serializable {
     public MenuController() {
     }
 
-    
     public String toSummaryByOrderedInstitution() {
-         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
                 regionalController.prepareSummaryByOrderedInstitution();
                 return "/regional/summary_lab_ordered";
@@ -74,19 +81,40 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
-    
-    
-    public String toDivertSamples() {
+
+    public String toDispatchSummary() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
-                return "/regional/divert_samples";
+                return "/regional/dispatch_summary";
             case National:
-                return "/national/divert_samples";
+                return "/national/dispatch_summary";
+            case Hospital:
+                return "/hospital/dispatch_summary";
+            case Lab:
+                return "/lab/dispatch_summary";
+            case National_Lab:
+                return "/national/dispatch_summary";
+            case Moh:
+                return "/moh/dispatch_samplas";
+            case Provincial:
+                return "/provincial/dispatch_summary";
+            default:
+                return "";
+        }
+    }
+
+    public String toDivertSummary() {
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return regionalController.toSummaryByOrderedInstitutionVsLabToReceive();
+            case National:
+                return nationalController.toSummaryByOrderedInstitutionVsLabToReceive();
             case Hospital:
                 return "/hospital/divert_samples";
             case Lab:
                 return "/lab/divert_samples";
             case National_Lab:
+                nationalController.toSummaryByOrderedInstitutionVsLabToReceive();
                 return "/national/divert_samples";
             case Moh:
                 return "/moh/divert_samples";
@@ -96,7 +124,7 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
-    
+
     public String toReportsIndex() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
@@ -151,7 +179,7 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
-    
+
     public String toPreferences() {
         boolean privileged = false;
         for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
@@ -289,8 +317,8 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
-    
-     public String toEditPassword() {
+
+    public String toEditPassword() {
         boolean privileged = false;
         for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
             if (up.getPrivilege() == Privilege.Institution_Administration) {
