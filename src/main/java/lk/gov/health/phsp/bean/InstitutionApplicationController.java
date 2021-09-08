@@ -294,17 +294,20 @@ public class InstitutionApplicationController {
             return tins;
         } else {
             cins.forEach(i -> {
-                tins.addAll(findChildrenInstitutions(i));
+                List<Institution> cis = findChildrenInstitutions(i);
+                if (cis != null) {
+                    tins.addAll(cis);
+                }
             });
         }
         return tins;
     }
-    
-    public Institution findMinistryOfHealth(){
-        Institution moh=null;
-        for(Institution i: getInstitutions()){
-            if(i.getInstitutionType()==InstitutionType.Ministry_of_Health){
-                moh =i;
+
+    public Institution findMinistryOfHealth() {
+        Institution moh = null;
+        for (Institution i : getInstitutions()) {
+            if (i.getInstitutionType() == InstitutionType.Ministry_of_Health) {
+                moh = i;
                 return moh;
             }
         }

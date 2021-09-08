@@ -66,14 +66,18 @@
                                 <f:facet name="header" >
                                     <h:outputLabel value="Other Actions" ></h:outputLabel>
                                 </f:facet>
-                                <p:commandButton value="Reject Selected" ajax="false" 
+                                <p:commandButton value="Mark as REJECTED" ajax="false" 
                                                  onclick="if (!confirm('Are you sure you want to reject?'))
                                                              return false"
                                                  action="#{clientController.markSelectedAsRejectAtReceive()}" ></p:commandButton>
-                                <p:commandButton value="Mark not expected at the Lab" ajax="false" 
+                                <p:commandButton value="Mark as NOT EXPECTED" ajax="false" 
                                                  onclick="if (!confirm('Are you sure you want to mark as NOT expected?'))
                                                              return false"
                                                  action="#{clientController.markUnassigned()}" ></p:commandButton>
+                                <p:commandButton value="Mark as SAMPLE IS MISSING" ajax="false" 
+                                                 onclick="if (!confirm('Are you sure you want to mark as NOT expected?'))
+                                                             return false"
+                                                 action="#{clientController.markSampleMissing()}" ></p:commandButton>
                             </p:panelGrid>
 
                         </p:panelGrid>

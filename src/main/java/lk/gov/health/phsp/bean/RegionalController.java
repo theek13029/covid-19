@@ -137,6 +137,10 @@ public class RegionalController implements Serializable {
 
     private List<Institution> regionalMohsAndHospitals;
     private List<InstitutionCount> institutionCounts;
+    private List<InstitutionCount> awaitingDispatch;
+    private List<InstitutionCount> awaitingReceipt;
+    private List<InstitutionCount> awaitingResults;
+    private List<InstitutionCount> resultsAvailable;
 
     private Institution institution;
     private Institution referingInstitution;
@@ -187,12 +191,81 @@ public class RegionalController implements Serializable {
         }
 
         j += " group by c.institution";
+        institutionCounts = new ArrayList<>();
+        List<Object> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
+        // // System.out.println("obs = " + obs.size());
+        Long c=1l;
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic=(InstitutionCount) o;
+                ic.setId(c);
+                c++;
+                institutionCounts.add(ic);
+            }
+        }
+    }
+    
+    public String toSummaryByOrderedInstitutionVsLabToReceive() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution.rdhsArea=:rd "
+                + " and (c.receivedAtLab is null or c.receivedAtLab=:ral) "
+                + " and c.sentToLab=:sl "
+                + " group by c.institution, c.referalInstitution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("ral", false);
+        m.put("sl", true);
+        m.put("rd", webUserController.getLoggedUser().getInstitution().getRdhsArea());
         labSummariesToReceive = new ArrayList<>();
         List<Object> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
         // // System.out.println("obs = " + obs.size());
         for (Object o : obs) {
             if (o instanceof InstitutionCount) {
                 labSummariesToReceive.add((InstitutionCount) o);
+            }
+        }
+        return "/regional/summary_lab_vs_ordered_to_receive";
+    }
+
+    public void prepareDispatchSummery() {
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
+                + " from Encounter c "
+                + " where (c.retired=:ret or c.retired is null) "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution.rdhsArea=:rdhs ";
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        j += " and (c.sentToLab is null or c.sentToLab=:sl or c.referalInstitution is null) "
+                + " group by c.institution "
+                + " order by c.institution.name";
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("sl", false);
+        m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        List<Object> os = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("os = " + os.size());
+        awaitingDispatch = new ArrayList<>();
+        Long c=0l;
+        for (Object o : os) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                ic.setId(c);
+                c++;
+                awaitingDispatch.add(ic);
             }
         }
     }
@@ -209,7 +282,7 @@ public class RegionalController implements Serializable {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
         }
-        j += " and c.sentToLab is null "
+        j += " and (c.sentToLab is null or c.sentToLab=:sl or c.referalInstitution is null) "
                 + " order by c.id";
 
         m.put("ret", false);
@@ -217,7 +290,8 @@ public class RegionalController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("ins", institution);
-        listedToDispatch = encounterFacade.findByJpql(j, m, TemporalType.DATE);
+        m.put("sl", false);
+        listedToDispatch = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         return "/regional/dispatch_samples";
     }
 
@@ -284,7 +358,7 @@ public class RegionalController implements Serializable {
             encounterFacade.edit(e);
         }
         selectedToDivert = null;
-        return menuController.toDivertSamples();
+        return menuController.toDivertSummary();
     }
 
     public String listToSelectDivertingSamples() {
@@ -305,7 +379,7 @@ public class RegionalController implements Serializable {
         m.put("ins", institution);
         m.put("rins", referingInstitution);
         listedToDivert = encounterFacade.findByJpql(j, m, TemporalType.DATE);
-        return menuController.toDivertSamples();
+        return menuController.toDivertSummary();
     }
 
     public String assignMohAreaToContactScreeningAtRegionalLevel() {
@@ -781,8 +855,6 @@ public class RegionalController implements Serializable {
         return "/regional/count_of_results_by_moh";
     }
 
-    
-    
     public String toListOfTestsWithoutMoh() {
         Map m = new HashMap();
         String j = "select c "
@@ -1819,6 +1891,38 @@ public class RegionalController implements Serializable {
 
     public void setSelectedToDispatch(List<Encounter> selectedToDispatch) {
         this.selectedToDispatch = selectedToDispatch;
+    }
+
+    public List<InstitutionCount> getResultsAvailable() {
+        return resultsAvailable;
+    }
+
+    public void setResultsAvailable(List<InstitutionCount> resultsAvailable) {
+        this.resultsAvailable = resultsAvailable;
+    }
+
+    public List<InstitutionCount> getAwaitingDispatch() {
+        return awaitingDispatch;
+    }
+
+    public void setAwaitingDispatch(List<InstitutionCount> awaitingDispatch) {
+        this.awaitingDispatch = awaitingDispatch;
+    }
+
+    public List<InstitutionCount> getAwaitingReceipt() {
+        return awaitingReceipt;
+    }
+
+    public void setAwaitingReceipt(List<InstitutionCount> awaitingReceipt) {
+        this.awaitingReceipt = awaitingReceipt;
+    }
+
+    public List<InstitutionCount> getAwaitingResults() {
+        return awaitingResults;
+    }
+
+    public void setAwaitingResults(List<InstitutionCount> awaitingResults) {
+        this.awaitingResults = awaitingResults;
     }
 
 }

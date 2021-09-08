@@ -43,9 +43,17 @@
                         </p:panelGrid>
 
 
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{regionalController.labSummariesToReceive}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" 
+                                     id="tbl" 
+                                     value="#{regionalController.institutionCounts}" 
                                      rowIndexVar="n"
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10">
+                                     var="c" 
+                                     rowKey="#{c.id}" 
+                                     
+                                     rows="10"
+                                     paginator="true" 
+                                     
+                                     >
                             <p:column headerText="No" width="50" >
                                 <p:outputLabel value="#{n+1}" ></p:outputLabel>
                             </p:column>
@@ -55,24 +63,6 @@
                             </p:column>
                             <p:column headerText="Number of Orders"  sortBy="#{c.count}" width="70">
                                 <p:outputLabel value="#{c.count}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Actions" exportable="false"  >
-                                <p:commandButton  rendered="#{c.referralInstitution ne null}" ajax="false" value="To Dispatch Samples" action="#{regionalController.toDispatchSamplesWithReferringLab()}" >
-                                    <f:setPropertyActionListener value="#{c.institution}" target="#{regionalController.institution}" >
-                                    </f:setPropertyActionListener>
-                                    <f:setPropertyActionListener value="#{c.referralInstitution}" target="#{regionalController.dispatchingLab}" >
-                                    </f:setPropertyActionListener>
-                                </p:commandButton>
-                                <p:commandButton rendered="#{c.referralInstitution eq null}" ajax="false" value="To Dispatch Samples" action="#{regionalController.toDispatchSamples}" >
-                                    <f:setPropertyActionListener value="#{c.institution}" target="#{regionalController.institution}" >
-                                    </f:setPropertyActionListener>
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="To Divert" action="#{regionalController.toDivertSamples()}" >
-                                    <f:setPropertyActionListener value="#{c.institution}" target="#{regionalController.institution}" >
-                                    </f:setPropertyActionListener>
-                                    <f:setPropertyActionListener value="#{c.referralInstitution}" target="#{regionalController.referingInstitution}" >
-                                    </f:setPropertyActionListener>
-                                </p:commandButton>
                             </p:column>
                         </p:dataTable>
                     </h:form>

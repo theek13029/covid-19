@@ -87,6 +87,12 @@ public class Encounter implements Serializable {
     private Date sentToLabAt;
     @ManyToOne(fetch = FetchType.LAZY)
     private WebUser sentToLabBy;
+    
+    private Boolean sampleMissing;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date sampleMissingAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebUser sampleMissingBy;
 
     private Boolean receivedAtLab;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -864,6 +870,8 @@ public class Encounter implements Serializable {
         return sampleRejectedAtLab;
     }
 
+    
+    
     public void setSampleRejectedAtLab(Boolean sampleRejectedAtLab) {
         this.sampleRejectedAtLab = sampleRejectedAtLab;
     }
@@ -1025,6 +1033,30 @@ public class Encounter implements Serializable {
 
     public void setSymptomaticStatus(Item symptomaticStatus) {
         this.symptomaticStatus = symptomaticStatus;
+    }
+
+    public Boolean getSampleMissing() {
+        return sampleMissing;
+    }
+
+    public void setSampleMissing(Boolean sampleMissing) {
+        this.sampleMissing = sampleMissing;
+    }
+
+    public Date getSampleMissingAt() {
+        return sampleMissingAt;
+    }
+
+    public void setSampleMissingAt(Date sampleMissingAt) {
+        this.sampleMissingAt = sampleMissingAt;
+    }
+
+    public WebUser getSampleMissingBy() {
+        return sampleMissingBy;
+    }
+
+    public void setSampleMissingBy(WebUser sampleMissingBy) {
+        this.sampleMissingBy = sampleMissingBy;
     }
     
     
