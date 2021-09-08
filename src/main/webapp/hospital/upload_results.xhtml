@@ -15,26 +15,27 @@
     <h:body>
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
-                <h:form enctype="multipart/form-data" >                    
+                <h:form enctype="multipart/form-data" >  
+                    <p:messages ></p:messages>
                     <p:panelGrid columns="2"  >
                         <h:outputLabel value="Test" ></h:outputLabel>
-                        <p:selectOneMenu value="#{clientController.lastTestPcrOrRat}" >
+                        <p:selectOneMenu required="true" requiredMessage="Please select PCR or RAT" value="#{clientController.lastTestPcrOrRat}" >
                             <f:selectItem itemLabel="Select" ></f:selectItem>
                             <f:selectItems value="#{itemApplicationController.covidTestTypes}" var="t" itemValue="#{t}" itemLabel="#{t.name}" >
                             </f:selectItems>
                         </p:selectOneMenu>
-                        
+
                         <p:outputLabel value="Sampled at" ></p:outputLabel>
-                        <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy hh:mm" >
-                        </p:calendar>
-                        
+                        <p:datePicker value="#{clientController.fromDate}" pattern="dd MMMM yyyy hh:mm" >
+                        </p:datePicker>
+
                         <p:outputLabel value="Result at" ></p:outputLabel>
-                        <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy hh:mm" >
-                        </p:calendar>
-                        
+                        <p:datePicker value="#{clientController.toDate}" pattern="dd MMMM yyyy hh:mm" >
+                        </p:datePicker>
+
                         <p:outputLabel value="Start Row" ></p:outputLabel><!-- comment -->
                         <p:inputText value="#{clientController.startRow}" ></p:inputText>
-                        
+
                         <p:outputLabel value="Tube No Column" ></p:outputLabel>
                         <p:selectOneMenu value="#{clientController.testNoCol}" >
                             <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
@@ -106,9 +107,9 @@
                             <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
                         </p:selectOneMenu>
-                        
-                         <p:outputLabel value="NIC Column" ></p:outputLabel>
-                         <p:selectOneMenu value="#{clientController.nicCol}" >
+
+                        <p:outputLabel value="NIC Column" ></p:outputLabel>
+                        <p:selectOneMenu value="#{clientController.nicCol}" >
                             <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
                             <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
                             <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
@@ -161,7 +162,7 @@
                             <f:selectItem itemLabel="M" itemValue="M"></f:selectItem><!-- comment -->
                             <f:selectItem itemLabel="N" itemValue="N"></f:selectItem><!-- comment -->
                         </p:selectOneMenu>
-                        
+
                         <p:outputLabel value="Result Column" ></p:outputLabel>
                         <p:selectOneMenu value="#{clientController.resultCol}" >
                             <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>

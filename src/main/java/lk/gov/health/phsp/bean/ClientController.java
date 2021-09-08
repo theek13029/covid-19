@@ -2746,7 +2746,7 @@ public class ClientController implements Serializable {
         }
         int count = 0;
         for (ClientImport ci : getClientImportsSelected()) {
-            toAddNewPcrResultWithNewClient(ci);
+            toAddNewPcrWithNewClient(ci);
             count++;
         }
         String msg = "" + count + " Orders Imported.";
@@ -2755,17 +2755,20 @@ public class ClientController implements Serializable {
     }
 
     public String saveUploadedOrdersPlusResults() {
+        System.out.println("saveUploadedOrdersPlusResults");
         if (getClientImportsSelected().isEmpty()) {
             JsfUtil.addErrorMessage("Nothing Selected");
             return "";
         }
         int count = 0;
         for (ClientImport ci : getClientImportsSelected()) {
-            toAddNewPcrWithNewClient(ci);
+            toAddNewPcrResultWithNewClient(ci);
             count++;
         }
         String msg = "" + count + " Orders Imported.";
         JsfUtil.addSuccessMessage(msg);
+        clientImports = new ArrayList<>();
+        clientImportsSelected = new ArrayList<>();
         return toUploadOrders();
     }
 
@@ -2877,6 +2880,8 @@ public class ClientController implements Serializable {
         pcr.setResultConfirmedAt(toDate);
         pcr.setResultConfirmedBy(webUserController.getLoggedUser());
 
+        pcr.setResultDate(toDate);
+        
         pcr.setPcrResult(ci.getResult());
 
         if (c.getId() == null) {
