@@ -329,28 +329,28 @@ public class DashboardController implements Serializable {
                 null);
 
 //      Calculate today's positive PCR percentage
-        if (this.todayPcr != 0) {
+        if (this.todayPcr != 0 ) {
         	double tempRate = (this.todayPositivePcr/this.todayPcr) * 100;
         	this.todayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
         	this.todayPcrPositiveRate = "0%";
         }
 //      Calculate today's RAT percentage
-        if (this.todayRat != 0) {
+        if (this.todayRat != 0 ) {
         	double tempRate = (this.todayPositiveRat/this.todayRat) * 100;
         	this.todayRatPositiveRate = df.format(tempRate) + "%";
         } else {
         	this.todayRatPositiveRate = "0%";
         }
 //        Calculate yesterday's PCR positive percentage
-        if (this.yesterdayPcr != 0) {
+        if (this.yesterdayPcr != 0 ) {
         	double tempRate = (this.yesterdayPositivePcr/this.yesterdayPcr) * 100;
         	this.yesterdayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
         	this.yesterdayPcrPositiveRate = "0%";
         }
 //        Calculates yesterday's Rat positive percentage
-        if (this.yesterdayRat != 0) {
+        if (this.yesterdayRat != 0 ) {
         	double tempRate = (this.yesterdayPositiveRat/this.yesterdayRat) * 100;
         	this.yesterdayRatPositiveRate = df.format(tempRate) + "%";
         } else {
@@ -408,7 +408,7 @@ public class DashboardController implements Serializable {
                 null);
 
 //      Calculate today's positive PCR percentage
-        if (this.todayPcr != 0) {
+        if (this.todayPcr != 0 ) {
         	double tempRate = (this.todayPositivePcr/this.todayPcr) * 100;
         	this.todayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
