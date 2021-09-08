@@ -136,6 +136,8 @@ public class NationalController implements Serializable {
     private List<InstitutionPeformance> institutionPeformancesFiltered;
     private InstitutionPeformance institutionPeformancesSummery;
 
+    private List<InstitutionCount> labSummariesToReceive;
+
     private Area district;
     private Area mohArea;
     private Area pdhs;
@@ -149,6 +151,34 @@ public class NationalController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
+    public String toSummaryByOrderedInstitutionVsLabToReceive() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution.rdhsArea=:rd "
+                + " and (c.receivedAtLab is null c.receivedAtLab=:ral) "
+                + " and c.sentToLab=:sl "
+                + " group by c.institution, c.referalInstitution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("ral", false);
+        m.put("sl", true);
+        m.put("rd", webUserController.getLoggedUser().getInstitution().getRdhsArea());
+        labSummariesToReceive = new ArrayList<>();
+        List<Object> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
+        // // System.out.println("obs = " + obs.size());
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labSummariesToReceive.add((InstitutionCount) o);
+            }
+        }
+        return "/regional/summary_lab_vs_ordered_to_receive";
+    }
+
     public String toCountOfTestsByOrderedInstitution() {
         Map m = new HashMap();
 
@@ -2221,7 +2251,7 @@ public class NationalController implements Serializable {
         getInstitutionPeformancesSummery().setRats(r);
         getInstitutionPeformancesSummery().setRatPositives(rp);
     }
-    
+
     public void generateFilteredInstitutionPeformanceSummery() {
         System.out.println("generateFilteredInstitutionPeformanceSummery");
         Long p = 0l;
@@ -2249,7 +2279,7 @@ public class NationalController implements Serializable {
         getInstitutionPeformancesSummery().setPcrs(p);
         getInstitutionPeformancesSummery().setRats(r);
         getInstitutionPeformancesSummery().setRatPositives(rp);
-        
+
         System.out.println("getInstitutionPeformancesSummery().getPcrPositives(); = " + getInstitutionPeformancesSummery().getPcrPositives());
         System.out.println("getInstitutionPeformancesSummery().getPcrs() = " + getInstitutionPeformancesSummery().getPcrs());
         System.out.println("getInstitutionPeformancesSummery().getRats() = " + getInstitutionPeformancesSummery().getRats());
@@ -2266,5 +2296,15 @@ public class NationalController implements Serializable {
     public void setInstitutionPeformancesSummery(InstitutionPeformance institutionPeformancesSummery) {
         this.institutionPeformancesSummery = institutionPeformancesSummery;
     }
+
+    public List<InstitutionCount> getLabSummariesToReceive() {
+        return labSummariesToReceive;
+    }
+
+    public void setLabSummariesToReceive(List<InstitutionCount> labSummariesToReceive) {
+        this.labSummariesToReceive = labSummariesToReceive;
+    }
+    
+    
 
 }
