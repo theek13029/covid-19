@@ -94,6 +94,14 @@ public class DashboardController implements Serializable {
     private String todayRatPositiveRate;
     private String yesterdayPcrPositiveRate;
     private String yesterdayRatPositiveRate;
+//    PCR positive patients with no MOH are
+    private Long pcrPatientsWithNoMohArea;
+//    RAT positive patients with no MOH area
+    private Long ratPatientsWithNoMohArea;
+//    First encounters with no MOH area
+    private Long firstContactsWithNoMOHArea;
+//    Samples awaiting dispatch
+    private Long samplesAwaitingDispatch;
 
     private CovidData myCovidData;
 
@@ -496,6 +504,37 @@ public class DashboardController implements Serializable {
                 null,
                 itemApplicationController.getPcrPositive(),
                 null);
+
+//        Set patients with no MOH area for last two days
+        this.pcrPatientsWithNoMohArea = dashboardApplicationController.getOrderCountWithoutMoh(
+            webUserController.getLoggedUser().getInstitution().getRdhsArea(),
+            yesterdayStart,
+            now,
+            itemApplicationController.getPcr(),
+            null,
+            itemApplicationController.getPcrPositive(),
+            null
+        );
+
+//        Set RAT positive patients with no MOH area for the last two days
+        this.ratPatientsWithNoMohArea = dashboardApplicationController.getOrderCountWithoutMoh(
+                webUserController.getLoggedUser().getInstitution().getRdhsArea(),
+                yesterdayStart,
+                now,
+                itemApplicationController.getRat(),
+                null,
+                itemApplicationController.getPcrPositive(),
+                null
+        );
+
+//        Set first encounters for the last two days with no MOH area
+//        Set samples awaiting dispatch
+        this.samplesAwaitingDispatch = dashboardApplicationController.samplesAwaitingDispatch(
+                this.webUserController.getLoggedUser().getInstitution().getRdhsArea(),
+                yesterdayStart,
+                now,
+                null
+        );
 
 //      Calculate today's positive PCR percentage
         if (this.todayPcr != 0) {
@@ -986,7 +1025,24 @@ public class DashboardController implements Serializable {
 		return todayRatPositiveRate;
 	}
 
-	/**
+//    Getter and setter for patients with no moh area
+    public Long getPcrPatientsWithNoMohArea() {
+        return this.pcrPatientsWithNoMohArea;
+    }
+//  getter for rat patients with no moh area
+    public Long getRatPatientsWithNoMohArea() {
+        return this.ratPatientsWithNoMohArea;
+    }
+
+    public Long getFirstContactsWithNoMOHArea() {
+        return firstContactsWithNoMOHArea;
+    }
+
+    public Long getSamplesAwaitingDispatch() {
+        return samplesAwaitingDispatch;
+    }
+
+    /**
 	 * @param todayRatPositiveRate the todayRatPositiveRate to set
 	 */
 	public void setTodayRatPositiveRate(String todayRatPositiveRate) {
