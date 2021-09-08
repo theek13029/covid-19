@@ -18,66 +18,66 @@
                         <p:outputLabel value="List of Results for Persons in my Area" ></p:outputLabel>
                     </f:facet>-->
 
-                    <h:form >
-                        <div class="row" >
-                            <div class="col-12 text-center mt-4 mb-2" >
-                                <h4 class="fw-bold"><h:outputLabel  value="List of Results for Persons in my Area" ></h:outputLabel></h4>
-                            </div>
+                <h:form >
+                    <div class="row" >
+                        <div class="col-12 text-center mt-4 mb-2" >
+                            <h4 class="fw-bold"><h:outputLabel  value="List of Results for Persons in my Area" ></h:outputLabel></h4>
                         </div>
-                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
-                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
-                                <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
-                                <p:calendar value="#{mohController.fromDate}"
-                                            pattern="dd MMMM yyyy hh:mm a">
-                                </p:calendar>
+                    </div>
+                    <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
+                            <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
+                            <p:calendar value="#{mohController.fromDate}"
+                                        pattern="dd MMMM yyyy hh:mm a">
+                            </p:calendar>
 
-                                <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
-                                <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
+                            <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                                <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
-                                <h:selectOneMenu value="#{mohController.orderingCategory}" class="form-select">
-                                    <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{mohController.covidTestOrderingCategories}"
-                                                   var="c" itemLabel="#{c.name}"
-                                                   itemValue="#{c}" ></f:selectItems>
-                                </h:selectOneMenu>
+                            <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
+                            <h:selectOneMenu value="#{mohController.orderingCategory}" class="form-select">
+                                <f:selectItem itemLabel="All" ></f:selectItem>
+                                <f:selectItems value="#{mohController.covidTestOrderingCategories}"
+                                               var="c" itemLabel="#{c.name}"
+                                               itemValue="#{c}" ></f:selectItems>
+                            </h:selectOneMenu>
 
-                                <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
-                                <h:selectOneMenu value="#{mohController.testType}" class="form-select">
-                                    <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
-                                                   itemValue="#{c}" ></f:selectItems>
-                                </h:selectOneMenu>
+                            <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
+                            <h:selectOneMenu value="#{mohController.testType}" class="form-select">
+                                <f:selectItem itemLabel="All" ></f:selectItem>
+                                <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                                               itemValue="#{c}" ></f:selectItems>
+                            </h:selectOneMenu>
 
-                                <h:outputLabel class="h6 fw-bold" value="Result" ></h:outputLabel>
-                                <h:selectOneMenu value="#{mohController.result}" class="form-select">
-                                    <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{mohController.resultTypes}" var="c" itemLabel="#{c.name}"
-                                                   itemValue="#{c}" ></f:selectItems>
-                                </h:selectOneMenu>
+                            <h:outputLabel class="h6 fw-bold" value="Result" ></h:outputLabel>
+                            <h:selectOneMenu value="#{mohController.result}" class="form-select">
+                                <f:selectItem itemLabel="All" ></f:selectItem>
+                                <f:selectItems value="#{mohController.resultTypes}" var="c" itemLabel="#{c.name}"
+                                               itemValue="#{c}" ></f:selectItems>
+                            </h:selectOneMenu>
 
-                                <h:outputLabel class="h6 fw-bold"  value="Lab"></h:outputLabel>
-                                <p:autoComplete style="width: 100%;"
-                                                inputStyle="width: 100%;"
-                                                value="#{mohController.lab}"
-                                                forceSelection="true" tabindex="100"
-                                                completeMethod="#{mohController.completeLab}"
-                                                var="l" itemLabel="#{l.name}" itemValue="#{l}">
-                                </p:autoComplete>
+                            <h:outputLabel class="h6 fw-bold"  value="Lab"></h:outputLabel>
+                            <p:autoComplete style="width: 100%;"
+                                            inputStyle="width: 100%;"
+                                            value="#{mohController.lab}"
+                                            forceSelection="true" tabindex="100"
+                                            completeMethod="#{mohController.completeLab}"
+                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
+                            </p:autoComplete>
 
-                                <h:commandButton value="Generate Excel" class="btn btn-success w-100">
-                                    <p:dataExporter target="tbl" type="xlsx" fileName="results" ></p:dataExporter>
-                                </h:commandButton>
-                                <h:commandButton value="Process" class="btn btn-warning w-100"
-                                                 action="#{mohController.toListOfResultsForPersonsInMyArea()}" ></h:commandButton>
-
-
-                            </h:panelGrid>
-
-                        </div>
+                            <h:commandButton value="Generate Excel" class="btn btn-success w-100">
+                                <p:dataExporter target="tbl" type="xlsx" fileName="results" ></p:dataExporter>
+                            </h:commandButton>
+                            <h:commandButton value="Process" class="btn btn-warning w-100"
+                                             action="#{mohController.toListOfResultsForPersonsInMyArea()}" ></h:commandButton>
 
 
-                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
+                        </h:panelGrid>
+
+                    </div>
+
+
+                    <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{mohController.tests}"
                                      var="c" rowKey="#{c.id}"
                                      rows="10"
@@ -110,12 +110,12 @@
                                 <p:outputLabel id="txtCt2" value="#{c.ctValue2}" style="width:99%;"   rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
                                     <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResultsAtMohForConfirmedDate(c)}" >
                                     </p:ajax>
-                                </h:outputLabel>
+                                </p:outputLabel>
                             </p:column>
                         </p:dataTable>
-                        </h:panelGrid>
+                    </h:panelGrid>
 
-                    </h:form>
+                </h:form>
 
 
 

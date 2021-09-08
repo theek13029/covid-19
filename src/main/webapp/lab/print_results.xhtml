@@ -21,48 +21,59 @@
                         <div class="col-12 text-center mt-4 mb-2" >
                             <h4 class="fw-bold"><h:outputLabel  value="Test Order List" ></h:outputLabel></h4>
                         </div>
+
                     </div>
-                    <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
-                        <p:panelGrid columns="2" styleClass="bg-white border border-light">
-                            <h:outputLabel class="fs-6 fw-bold" value="From" ></h:outputLabel>
-                            <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <h:outputLabel class="fs-6 fw-bold" value="To" ></h:outputLabel>
-                            <p:calendar class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
-
-                            <h:outputLabel class="fs-6 fw-bold" value="Ordered Institution" ></h:outputLabel>
-                            <p:autoComplete value="#{clientController.institution}"
-                                            completeMethod="#{institutionController.completeInstitutions}"
-                                            var="m" itemLabel="#{m.name}" itemValue="#{m}" >
-                            </p:autoComplete>
-
-                            <h:outputLabel class="fs-6 fw-bold" value="Plate No." ></h:outputLabel>
-                            <h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText>
-
-                            <h:commandButton class="btn btn-success w-100 my-2" value="Generate Excel">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="test_enrollments" ></p:dataExporter>
-                            </h:commandButton>
-                            <h:commandButton class="btn btn-warning w-100" value="Process"
-                                             action="#{clientController.toLabToSelectForPrinting()}" ></h:commandButton>
-
-
-                        </p:panelGrid>
-                    </div>
                     <div class="row">
-                        <div class="col-12 d-flex justify-content-around">
-                            <h:commandButton class="btn btn-success me-3 mt-3 w-100" value="PRINT SELECTED AS INDIVIDUAL REPORTS"
-                                             action="#{clientController.toLabPrintSelected()}"
-                                             onclick="form.target = '_blank'"></h:commandButton>
+                        <div class="col-6" >
+                            <p:panelGrid columns="2" styleClass="bg-white border border-light">
+                                <h:outputLabel class="fs-6 fw-bold" value="From" ></h:outputLabel>
+                                <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <h:commandButton class="btn btn-success mt-3 w-100" value="PRINT SELECTED AS SINGLE REPORT"
-                                             action="#{clientController.toLabPrintSelectedBulk()}"
-                                             onclick="form.target = '_blank'"></h:commandButton>
+                                <h:outputLabel class="fs-6 fw-bold" value="To" ></h:outputLabel>
+                                <p:calendar class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                            <h:commandButton value="Transfer SELECTED To Enter Results" 
-                                             action="#{clientController.toLabPrintSelectedBulk()}"
-                                             onclick="form.target = '_blank'"></h:commandButton>
+                                <h:outputLabel class="fs-6 fw-bold" value="Ordered Institution" ></h:outputLabel>
+                                <p:autoComplete value="#{clientController.institution}"
+                                                completeMethod="#{institutionController.completeInstitutions}"
+                                                var="m" itemLabel="#{m.name}" itemValue="#{m}" >
+                                </p:autoComplete>
+
+                                <h:outputLabel class="fs-6 fw-bold" value="Plate No." ></h:outputLabel>
+                                <h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText>
+
+                                <h:commandButton class="btn btn-success w-100 my-2" value="Generate Excel">
+                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_enrollments" ></p:dataExporter>
+                                </h:commandButton>
+                                <h:commandButton class="btn btn-warning w-100" value="Process"
+                                                 action="#{clientController.toLabToSelectForPrinting()}" ></h:commandButton>
 
 
+                            </p:panelGrid>
+                        </div>
+                        <div class="col-6">
+
+                            <p:panelGrid columns="1" styleClass="bg-white border border-light">
+                                <h:commandButton class="btn btn-success me-3 mt-3 w-100" value="PRINT SELECTED AS INDIVIDUAL REPORTS"
+                                                 action="#{clientController.toLabPrintSelected()}"
+                                                 onclick="form.target = '_blank'"></h:commandButton>
+
+                                <h:commandButton class="btn btn-success mt-3 w-100" value="PRINT SELECTED AS SINGLE REPORT"
+                                                 action="#{clientController.toLabPrintSelectedBulk()}"
+                                                 onclick="form.target = '_blank'"></h:commandButton>
+
+                                <h:commandButton class="btn btn-success mt-3 w-100" 
+                                                 value="Transfer SELECTED To Enter Results" 
+                                                 action="#{clientController.toLabPrintSelectedBulk()}"
+                                                 onclick="form.target = '_blank'"></h:commandButton>
+                            </p:panelGrid>
+
+
+
+
+                        </div>
+
+                        <div class="row" >
                             <p:dataTable id="tbl" value="#{clientController.listedToPrint}"
                                          rowIndexVar="n"
                                          var="c" paginator="true" rowKey="#{c.id}" rows="10"
