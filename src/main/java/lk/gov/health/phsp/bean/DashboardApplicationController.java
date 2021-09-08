@@ -172,34 +172,35 @@ public class DashboardApplicationController {
 
 //      This will return today's pcr positive rate as a percentage
         if (this.todayPcr != 0) {
-        	double tempRate = (this.todayPositivePcr/this.todayPcr) * 100;
+        	double tempRate = ((double) this.todayPositivePcr/this.todayPcr) * 100;
         	this.todayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.todayPcrPositiveRate = "0%";
+        	this.todayPcrPositiveRate = "0.0%";
         }
 
 //		This will return today's rat positive rate as a percentage
         if (this.todayRat != 0) {
-        	double tempRate = (this.todayPositiveRat/this.todayRat) * 100;
+        	double tempRate = ((double) this.todayPositiveRat/this.todayRat) * 100;
         	this.todayRatPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.todayRatPositiveRate = "0%";
+        	this.todayRatPositiveRate = "0.00%";
         }
 
 //      This will return yesterday's pcr positive rate as a percentage
         if (this.yesterdayPcr != 0) {
-        	double tempRate = (this.yesterdayPositivePcr/this.yesterdayPcr) * 100;
+        	double tempRate = ((double) this.yesterdayPositivePcr/this.yesterdayPcr) * 100;
         	this.yesterdayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.yesterdayPcrPositiveRate = "0%";
+        	this.yesterdayPcrPositiveRate = "0.00%";
         }
 
 //		This will return yesterday's RAT positive rate as a percentage
         if (this.yesterdayRat != 0) {
-        	double tempRate = (this.yesterdayPositiveRat/this.yesterdayRat) * 100;
+        	double tempRate = ((double) this.yesterdayPositiveRat/this.yesterdayRat) * 100;
         	this.yesterdayRatPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.yesterdayRatPositiveRate = "0%";
+        	this.yesterdayRatPositiveRate = "0.00%";
+
         }
         categorizeOrderingCounts(orderingCounts);
     }
