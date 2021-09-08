@@ -439,6 +439,7 @@ public class DashboardController implements Serializable {
     }
 
     public void prepareRegionalDashboard() {
+        System.out.println("prepareRegionalDashboard");
         Calendar c = Calendar.getInstance();
         Date now = c.getTime();
         Date todayStart = CommonController.startOfTheDate();
@@ -463,7 +464,7 @@ public class DashboardController implements Serializable {
                 itemApplicationController.getRat(), null, null, null);
 
         todayPositivePcr = dashboardApplicationController.getConfirmedCount(
-                webUserController.getLoggedUser().getInstitution().getRdhsArea(),
+                webUserController.getLoggedUser().getInstitution().getRdhsArea().getDistrict(),
                 todayStart,
                 now,
                 itemApplicationController.getPcr(),
@@ -471,7 +472,7 @@ public class DashboardController implements Serializable {
                 itemApplicationController.getPcrPositive(),
                 null);
         todayPositiveRat = dashboardApplicationController.getConfirmedCount(
-                webUserController.getLoggedUser().getInstitution().getRdhsArea(),
+                webUserController.getLoggedUser().getInstitution().getRdhsArea().getDistrict(),
                 todayStart,
                 now,
                 itemApplicationController.getRat(),
@@ -480,7 +481,7 @@ public class DashboardController implements Serializable {
                 null);
 
         yesterdayPositivePcr = dashboardApplicationController.getConfirmedCount(
-                webUserController.getLoggedUser().getInstitution().getRdhsArea(),
+                webUserController.getLoggedUser().getInstitution().getRdhsArea().getDistrict(),
                 yesterdayStart,
                 yesterdayEnd,
                 itemApplicationController.getPcr(),
@@ -488,7 +489,7 @@ public class DashboardController implements Serializable {
                 itemApplicationController.getPcrPositive(),
                 null);
         yesterdayPositiveRat = dashboardApplicationController.getConfirmedCount(
-                webUserController.getLoggedUser().getInstitution().getRdhsArea(),
+                webUserController.getLoggedUser().getInstitution().getRdhsArea().getDistrict(),
                 yesterdayStart,
                 yesterdayEnd,
                 itemApplicationController.getRat(),

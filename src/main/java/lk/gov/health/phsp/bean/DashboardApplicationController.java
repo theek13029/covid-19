@@ -399,6 +399,8 @@ public class DashboardApplicationController {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
 
