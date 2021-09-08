@@ -998,7 +998,7 @@ public class DashboardController implements Serializable {
 
 //    Getter and setter for patients with no moh area
     public Long getPatientsWithNoMohArea() {
-        return this.getPatientsWithNoMohArea();
+        return this.patientsWithNoMohArea;
     }
 
 
