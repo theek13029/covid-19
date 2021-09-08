@@ -349,6 +349,53 @@ public class DashboardApplicationController {
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
 
+//  This will return the count of investigations pending dispatch
+public Long samplesAwaitingDispatch(
+        Area area,
+        Date fromDate,
+        Date toDate,
+        Institution institution
+) {
+    Map hashMap = new HashMap();
+    String jpql = "select count(c) "
+            + " from Encounter c "
+            + " where c.retired=:ret "
+            + " and c.encounterType=:type "
+            + " and c.encounterDate between :fd and :td ";
+
+    if (institution != null){
+        jpql += " and c.institution=:ins ";
+    }
+
+    if( area != null) {
+        if (area.getType() == AreaType.RdhsAra) {
+            jpql += "and (c.institution.rdhsArea=:rdArea or c.institution.district=:district) ";
+            hashMap.put("area", area);
+            hashMap.put("district", area.getDistrict());
+        } else if (area.getType() == AreaType.Province) {
+            jpql += " and (c.institution.pdhsArea=:pdArea or c.institution.province=:province) ";
+            hashMap.put("phArea", area);
+            hashMap.put("province", area.getProvince());
+        } else if (area.getType() == AreaType.MOH) {
+            jpql += " and (c.institution.mohArea=:mohArea)";
+            hashMap.put("mohArea", area);
+        }
+    }
+
+
+
+    jpql += " and c.sentToLab is null";
+
+    hashMap.put("ret", false);
+    hashMap.put("type", EncounterType.Test_Enrollment);
+    hashMap.put("fd", fromDate);
+    hashMap.put("td", toDate);
+    hashMap.put("ins", institution);
+
+    return encounterFacade.findLongByJpql(jpql, hashMap, TemporalType.DATE);
+
+}
+
 //  This will return count of Investigations where MOH area is not given
     public Long getOrderCountWithoutMoh(Area area,
                               Date fromDate,
