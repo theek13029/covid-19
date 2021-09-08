@@ -39,10 +39,13 @@ public class ClientImport {
     private String phone;
     private String address;
     private Item sex;
+    private Item result;
     private int ageInYears;
     private int ageInMonths;
     private int ageInDays;
     private Client client;
+    
+    
 
     public String getTestNo() {
         return testNo;
@@ -130,6 +133,14 @@ public class ClientImport {
 
     public void setNic(String nic) {
         this.nic = nic;
+    }
+
+    public Item getResult() {
+        return result;
+    }
+
+    public void setResult(Item result) {
+        this.result = result;
     }
 
 }
