@@ -488,8 +488,8 @@ public class MohController implements Serializable {
         selectedToAssign = null;
     }
 
-    public String assignMohAreaToContactScreeningAtRegionalLevel() {
-        if (selectedCecis == null || selectedCecis.isEmpty()) {
+    public String assignMohAreaToContactScreeningAtRegionalLevel(){
+        if(selectedCecis==null || selectedCecis.isEmpty()){
             JsfUtil.addErrorMessage("Please select contacts");
             return "";
         }

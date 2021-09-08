@@ -23,6 +23,7 @@
  */
 package lk.gov.health.phsp.bean;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -94,6 +95,13 @@ public class DashboardApplicationController {
     private Long foreignCount;
     private Long hospitalCount;
     private Long otherCount;
+    private String todayPcrPositiveRate;
+    private String todayRatPositiveRate;
+    private String yesterdayPcrPositiveRate;
+    private String yesterdayRatPositiveRate;
+
+//  Round double values to two decimal format
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
     private List<InstitutionCount> orderingCounts;
     List<CovidData> covidDatas;
@@ -161,6 +169,38 @@ public class DashboardApplicationController {
                 itemApplicationController.getPcrPositive(),
                 null);
         orderingCounts = listOrderingCategoryCounts(null, yesterdayStart, now, null, null, null, null);
+
+//      This will return today's pcr positive rate as a percentage
+        if (this.todayPcr != 0) {
+        	double tempRate = (this.todayPositivePcr/this.todayPcr) * 100;
+        	this.todayPcrPositiveRate = df.format(tempRate) + "%";
+        } else {
+        	this.todayPcrPositiveRate = "0%";
+        }
+
+//		This will return today's rat positive rate as a percentage
+        if (this.todayRat != 0) {
+        	double tempRate = (this.todayPositiveRat/this.todayRat) * 100;
+        	this.todayRatPositiveRate = df.format(tempRate) + "%";
+        } else {
+        	this.todayRatPositiveRate = "0%";
+        }
+
+//      This will return yesterday's pcr positive rate as a percentage
+        if (this.yesterdayPcr != 0) {
+        	double tempRate = (this.yesterdayPositivePcr/this.yesterdayPcr) * 100;
+        	this.yesterdayPcrPositiveRate = df.format(tempRate) + "%";
+        } else {
+        	this.yesterdayPcrPositiveRate = "0%";
+        }
+
+//		This will return yesterday's RAT positive rate as a percentage
+        if (this.yesterdayRat != 0) {
+        	double tempRate = (this.yesterdayPositiveRat/this.yesterdayRat) * 100;
+        	this.yesterdayRatPositiveRate = df.format(tempRate) + "%";
+        } else {
+        	this.yesterdayRatPositiveRate = "0%";
+        }
         categorizeOrderingCounts(orderingCounts);
     }
 
@@ -624,7 +664,78 @@ public class DashboardApplicationController {
         return yesterdayPcr;
     }
 
-    public void setYesterdayPcr(Long yesterdayPcr) {
+
+
+
+    /**
+	 * @return the todayPcrPositiveRate
+	 */
+	public String getTodayPcrPositiveRate() {
+		if (this.todayPcr == null) {
+			this.updateDashboard();
+		}
+		return todayPcrPositiveRate;
+	}
+
+	/**
+	 * @param todayPcrPositiveRate the todayPcrPositiveRate to set
+	 */
+	public void setTodayPcrPositiveRate(String todayPcrPositiveRate) {
+		this.todayPcrPositiveRate = todayPcrPositiveRate;
+	}
+
+	/**
+	 * @return the todayRatPositiveRate
+	 */
+	public String getTodayRatPositiveRate() {
+		if (this.todayRat == null) {
+			this.updateDashboard();
+		}
+		return todayRatPositiveRate;
+	}
+
+	/**
+	 * @param todayRatPositiveRate the todayRatPositiveRate to set
+	 */
+	public void setTodayRatPositiveRate(String todayRatPositiveRate) {
+		this.todayRatPositiveRate = todayRatPositiveRate;
+	}
+
+	/**
+	 * @return the yesterdayPcrPositiveRate
+	 */
+	public String getYesterdayPcrPositiveRate() {
+		if (this.yesterdayPcr == null) {
+			this.updateDashboard();
+		}
+		return yesterdayPcrPositiveRate;
+	}
+
+	/**
+	 * @param yesterdayPcrPositiveRate the yesterdayPcrPositiveRate to set
+	 */
+	public void setYesterdayPcrPositiveRate(String yesterdayPcrPositiveRate) {
+		this.yesterdayPcrPositiveRate = yesterdayPcrPositiveRate;
+	}
+
+	/**
+	 * @return the yesterdayRatPositiveRate
+	 */
+	public String getYesterdayRatPositiveRate() {
+		if (this.yesterdayRat == null) {
+			this.updateDashboard();
+		}
+		return yesterdayRatPositiveRate;
+	}
+
+	/**
+	 * @param yesterdayRatPositiveRate the yesterdayRatPositiveRate to set
+	 */
+	public void setYesterdayRatPositiveRate(String yesterdayRatPositiveRate) {
+		this.yesterdayRatPositiveRate = yesterdayRatPositiveRate;
+	}
+
+	public void setYesterdayPcr(Long yesterdayPcr) {
         this.yesterdayPcr = yesterdayPcr;
     }
 
@@ -808,8 +919,8 @@ public class DashboardApplicationController {
 
             case National_Lab:
                 cd = generateNationalCovidData(date);
-                
-                
+
+
             case Provincial:
 
             case Regional:
@@ -923,7 +1034,7 @@ public class DashboardApplicationController {
         return cd;
     }
 
-    
+
     public List<CovidData> getCovidDatas() {
         if (covidDatas == null) {
             covidDatas = new ArrayList<>();
@@ -935,9 +1046,9 @@ public class DashboardApplicationController {
         this.covidDatas = covidDatas;
     }
 
-    
-    public List<InstitutionCount> countOfResultsByGnArea(Area moh, 
-            Date from, 
+
+    public List<InstitutionCount> countOfResultsByGnArea(Area moh,
+            Date from,
             Date to,
             Item orderingCategory,
             Item result,
@@ -993,9 +1104,9 @@ public class DashboardApplicationController {
         }
         return ics;
     }
-    
-    public List<InstitutionCount> countOfResultsByProvince( 
-            Date from, 
+
+    public List<InstitutionCount> countOfResultsByProvince(
+            Date from,
             Date to,
             Item orderingCategory,
             Item result,
@@ -1023,7 +1134,7 @@ public class DashboardApplicationController {
         if (result != null) {
             j += " and c.pcrResult=:result ";
             m.put("result", result);
-        } 
+        }
         j += " group by c.client.person.district.province "
                 + " order by count(c) desc ";
 
@@ -1047,5 +1158,5 @@ public class DashboardApplicationController {
         }
         return ics;
     }
-    
+
 }
