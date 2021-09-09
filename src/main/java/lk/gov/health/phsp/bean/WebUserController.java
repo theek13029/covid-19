@@ -202,6 +202,8 @@ public class WebUserController implements Serializable {
     private TreeNode[] selectedNodes;
     private TreeNode[] selectedNodeSet;
 
+    private InstitutionType institutionType;
+
     @PostConstruct
     public void init() {
         emptyModel = new DefaultMapModel();
@@ -1210,6 +1212,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.View_aggragate_date);
 
                 break;
+            case Lab_National:
             case Super_User:
                 wups.add(Privilege.User);
                 wups.add(Privilege.System_Administration);
@@ -1255,6 +1258,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.View_individual_data);
                 wups.add(Privilege.View_aggragate_date);
                 break;
+            case Lab_Admin:
             case Lab_Consultant:
             case Lab_Mo:
                 wups.add(Privilege.Manage_Users);
@@ -1270,17 +1274,21 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Print_Results);
                 break;
             case Hospital_Admin:
+                wups.add(Privilege.Manage_Users);
+                wups.add(Privilege.Lab_Reports);
+                wups.add(Privilege.Confirm_Results);
+                wups.add(Privilege.Lab_Management);
+                wups.add(Privilege.View_Orders);
+                wups.add(Privilege.Enter_Results);
+                wups.add(Privilege.Receive_Samples);
+                wups.add(Privilege.Review_Results);
+                wups.add(Privilege.Print_Results);
+                break;
             case Hospital_User:
                 wups.add(Privilege.Monitoring_and_evaluation);
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
                 wups.add(Privilege.View_individual_data);
                 wups.add(Privilege.View_aggragate_date);
-                break;
-            case Lab_Admin:
-
-                break;
-            case Lab_National:
-
                 break;
             case MohStaff:
                 wups.add(Privilege.Client_Management);
@@ -1717,6 +1725,70 @@ public class WebUserController implements Serializable {
             newUser.setPerson(newPerson);
             newUser.setInstitution(institution);
             newUser.setArea(area);
+            newUser.setWebUserRole(userRole);
+            newUser.setWebUserPassword(commonController.hash("abcd1234"));
+            newUser.setCreatedAt(new Date());
+            newUser.setCreater(getLoggedUser());
+            save(newUser);
+            addWebUserPrivileges(newUser, getInitialPrivileges(newUser.getWebUserRole()));
+            save(newUser);
+            addedUsers.add(newUser);
+        }
+
+        bulkText = "";
+        return "";
+    }
+
+    public String addMultipleInstitutionAndUsers() {
+        addedUsers = new ArrayList<>();
+        if (bulkText == null || bulkText.trim().equals("")) {
+            JsfUtil.addErrorMessage("Text ?");
+            return "";
+        }
+        if (institutionType == null) {
+            JsfUtil.addErrorMessage("Institution Type?");
+            return "";
+        }
+        if (institution == null) {
+            JsfUtil.addErrorMessage("Institution?");
+            return "";
+        }
+        if (userRole == null) {
+            JsfUtil.addErrorMessage("Institution?");
+            return "";
+        }
+
+        String lines[] = bulkText.split("\\r?\\n");
+
+        for (String line : lines) {
+            if (line == null || line.trim().equals("")) {
+                continue;
+            }
+            line = line.trim();
+
+            Institution newIns = new Institution();
+            newIns.setName(line);
+            newIns.setCode(CommonController.prepareAsCode(line));
+            newIns.setParent(institution);
+            newIns.setDistrict(institution.getDistrict());
+            newIns.setInstitutionType(institutionType);
+            newIns.setPdhsArea(institution.getPdhsArea());
+            newIns.setPoiInstitution(institution.getPoiInstitution());
+            newIns.setProvince(institution.getProvince());
+            newIns.setRdhsArea(institution.getRdhsArea());
+            newIns.setCreatedAt(new Date());
+            newIns.setCreater(getLoggedUser());
+            institutionController.save(newIns);
+
+            Person newPerson = new Person();
+            newPerson.setName("System Administrator of " + line);
+            personController.save(newPerson);
+
+            WebUser newUser = new WebUser();
+            newUser.setName("sa" + CommonController.prepareAsCode(line).toLowerCase());
+            newUser.setPerson(newPerson);
+            newUser.setInstitution(newIns);
+            newUser.setArea(institution.getRdhsArea());
             newUser.setWebUserRole(userRole);
             newUser.setWebUserPassword(commonController.hash("abcd1234"));
             newUser.setCreatedAt(new Date());
@@ -2644,8 +2716,18 @@ public class WebUserController implements Serializable {
         return bulkText;
     }
 
+    
+    
     public void setBulkText(String bulkText) {
         this.bulkText = bulkText;
+    }
+
+    public InstitutionType getInstitutionType() {
+        return institutionType;
+    }
+
+    public void setInstitutionType(InstitutionType institutionType) {
+        this.institutionType = institutionType;
     }
 
     @FacesConverter(forClass = WebUser.class)

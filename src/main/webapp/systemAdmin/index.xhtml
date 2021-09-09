@@ -4,82 +4,54 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
-
-    <body>
-
-        <ui:composition template="./../template1.xhtml">
-
+    <h:body>
+        <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:form>
-                    <p:panel header="System Administration" >
-                        <p:tabView orientation="left" >
-                            <p:tab title="Form Sets" >
-                                <p:panelGrid columns="1" >
-                                    <p:commandButton ajax="false" action="#{designComponentFormSetController.toManageSystemFormssets()}" 
-                                                     value="Management Master Form Sets" ></p:commandButton>
-                                    <p:commandButton ajax="false" action="#{designComponentFormSetController.toImportFormsets()}" 
-                                                     value="Create Form Sets to Institutions from Master Form Sets" ></p:commandButton>
-                                    
-                                    <p:commandButton ajax="false" action="#{designComponentFormSetController.toImportFormsets()}" value="Create Form Sets to Institutions from Master Form Sets" ></p:commandButton>
-                                    <p:commandButton ajax="false" action="#{designComponentFormSetController.toManageInstitutionFormssets()}" value="Manage Institution Form Sets" ></p:commandButton>
-                                </p:panelGrid>
-                            </p:tab> 
-                            <p:tab title="Data" >
-                                <p:panelGrid columns="1" >
-                                    <p:commandButton ajax="false" action="/item/List" value="Manage Dictionaty" ></p:commandButton>
-                                    <p:commandButton ajax="false" action="/systemAdmin/gn_areas_for_pmci" value="GN Areas of PMCI" ></p:commandButton>
-                                    <p:commandButton ajax="false" action="/systemAdmin/area_empanellement" value="Empanelled Population Data" ></p:commandButton>
-                                </p:panelGrid>
-                            </p:tab>
-                            <p:tab title="Development" >
-                                <p:panelGrid columns="1" >
-                                    <p:commandButton ajax="false" action="/demoAccount/List" value="Demo Accounts" ></p:commandButton>
-                                    <p:commandButton ajax="false" action="/client/import_clients" value="Import Patients" ></p:commandButton>
-                                    <p:commandButton ajax="false" action="/item/import" value="Import Items" ></p:commandButton>
-                                    <p:commandButton ajax="false" action="/item/import" value="Import Institutions" ></p:commandButton>
-                                    <p:commandButton ajax="false" action="/systemAdmin/all_clients" value="Client List"  onclick="this.form.target = '_blank'" ></p:commandButton>
-                                    <p:commandButton ajax="false" action="#{itemController.addInitialMetadata()}" value="Add Initial Metadata" ></p:commandButton>
-                                    <p:commandButton ajax="false" action="/systemAdmin/client_import_error_correction" value="Error Correction for Client Import" ></p:commandButton>
-                                </p:panelGrid>
-                            </p:tab> 
-                            <p:tab title="Entered data" >
-                                <p:panelGrid columns="1" >
-                                    <p:commandButton ajax="false" 
-                                                     action="#{analysisController.toCountsForSystemAdmin()}" 
-                                                     value="Counts"   ></p:commandButton>
-                                    <p:commandButton ajax="false" 
-                                                     action="#{clientController.toRegisterdClientsWithDatesForSystemAdmin()}" 
-                                                     value="Client List"   ></p:commandButton>
-                                    <p:commandButton ajax="false" 
-                                                     action="#{clientEncounterComponentFormSetController.fillEncountersFormSetsForSysadmin}" 
-                                                     value="Encounter List"   ></p:commandButton>
-                                </p:panelGrid>
-                            </p:tab> 
+                    <h:panelGrid columns="" rendered="#{webUserController.hasPrivilege('System_Administration')}" >
+
+                        <p:commandButton value="New User" action="#{webUserController.toCreateNewUserBySysAdmin()}" ajax="false"
+                                         />
+                        <p:commandButton value="View Users" action="#{webUserController.toManageAllUsers()}" ajax="false"
+                                         />
+                        <p:commandButton value="Add Multiple Users" action="/webUser/adding_Multiple_users" ajax="false"
+                                         />
+                        <p:commandButton value="Set User Privilages" action="#{webUserController.toSetUserPrivilages()}" ajax="false"
+                                         />
+                        <p:commandButton value="View Transactions" action="#{userTransactionController.toSearchUserTransactions()}" ajax="false"
+                                         />
+                        <p:commandButton value="Suspicious Login Attempts" action="#{userTransactionController.toSuspiciousLoginAttempts()}" ajax="false"
+                                         />
+                        <hr/>
+
+                        <p:commandButton value="New Institution" action="#{institutionController.toAddInstitution}" ajax="false"
+                                    />
+                        <p:commandButton value="List Institutions" action="#{institutionController.toListInstitutions()}" ajax="false"
+                                    />
+                        <p:commandButton value="Add Multiple new Institutions and Users" action="/systemAdmin/adding_Multiple_institutions_and_users" ajax="false"
+                                    />
+                        <p:commandButton value="Relod Institutions" action="#{institutionController.resetAllInstitutions()}" ajax="false"
+                                    />
+                        <hr/>
+                        <p:commandButton value="Add Area" action="#{areaController.toAddArea()}" ajax="false"
+                                    />
+                        <p:commandButton value="List Area" action="#{areaController.toListAreasForSysAdmin()}" ajax="false"
+                                    />
+                        <p:commandButton value="Adding MOH with Users" action="/area/moh_adding" ajax="false"
+                                    />
+                        <p:commandButton value="Reload Areas" action="#{areaApplicationController.invalidateItems()}" ajax="false"
+                                    />
+                        <hr/>
+                        <p:commandButton value="Manage Metadata" action="/systemAdmin/manage_metadata_index"    ajax="false" />
+                        <p:commandButton value="Manage Data" action="/systemAdmin/manage_data_index"    ajax="false" />
+                        <p:commandButton value="Manage Preferences" action="#{preferenceController.toManagePreferences()}"    ajax="false" />
+                    </h:panelGrid>
 
 
 
-                            <p:tab title="Corrections" >
-                                <p:panelGrid columns="1" >
-                                    <p:commandButton ajax="false" action="#{designComponentFormController.toListSystemForms()}" value="Forms"   ></p:commandButton>
-                                    <p:commandButton ajax="false" action="/systemAdmin/clients_with_phn_error" value="Client with wrong PHN"  onclick="this.form.target = '_blank'" ></p:commandButton>
-                                    <p:commandButton ajax="false" action="#{designComponentFormItemController.addDataTypesToDictionaryItemsFromFormItems}" value="Transfer Data Type from FormItem to Item" ></p:commandButton>
-                                    <p:commandButton ajax="false" action="#{itemController.generateDisplayNames()}" value="Generate Display Names" ></p:commandButton>
-                                    <p:commandButton ajax="false" value="Detect Duplicate PHN numbers" 
-                                                     action="#{clientController.toDetectPhnDuplicates()}">
-
-                                    </p:commandButton>
-                                </p:panelGrid>
-                            </p:tab> 
-
-
-
-
-                        </p:tabView>
-                    </p:panel>
                 </h:form>
             </ui:define>
 
         </ui:composition>
-
-    </body>
+    </h:body>
 </html>
