@@ -15,146 +15,78 @@
             </ui:define>
             <ui:define name="content">
 
-
-                <div class="card">
-                    <h5 class="card-header">
+                <div class="card my-3">
+                    <h5 class="card-header bg-success">
                         <h:form>
-                            <p:outputLabel value="Patient Data For PCR Ordering" ></p:outputLabel>
-                            <p:commandButton value="To Edit Details" action="#{hospitalController.toPcrEdit()}" ajax="false"
-                                             >
-                            </p:commandButton>
-                            <p:commandButton value="Add New PCR Order" ajax="false"
-                                             action="#{hospitalController.toAddNewPcrWithNewClient()}">
-                            </p:commandButton>
+                            <p:outputLabel class="text-white fs-5 fw-bold my-2" value="Patient Data For PCR Ordering" ></p:outputLabel>
                         </h:form>
                     </h5>
                     <div class="card-body">
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <p:outputLabel value="Test Number"></p:outputLabel>
-                                <p:outputLabel id="txtTestNo"
-                                               value="#{hospitalController.pcr.encounterNumber}"></p:outputLabel>
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel  value="Lab"></p:outputLabel>
-                                <p:outputLabel
-                                               value="#{hospitalController.pcr.referalInstitution.name}"
-                                               >
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel  value="Ordering Category"></p:outputLabel>
-                                <p:outputLabel id="orderingCat"
-                                               value="#{hospitalController.pcr.pcrOrderingCategory.name}"
-                                                >
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3" >
-                                <p:outputLabel value="Sampled at"></p:outputLabel>
-                                <p:outputLabel id="test" value="#{hospitalController.pcr.sampledAt}"
-                                               >
-                                    <f:convertDateTime pattern="dd MMMM yyyy hh:mm" ></f:convertDateTime>
-                                </p:outputLabel>
-                            </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p:panelGrid columns="4"  class="w-100 border border-light">
 
+                                    <p:outputLabel class="fs-6 fw-bold" value="Test Number:"></p:outputLabel>
+                                    <p:outputLabel id="txtTestNo" value="#{hospitalController.pcr.encounterNumber}"></p:outputLabel>
+                                    <p:outputLabel class="fs-6 fw-bold"  value="Lab:"></p:outputLabel>
+                                    <p:outputLabel value="#{hospitalController.pcr.referalInstitution.name}"></p:outputLabel>
 
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <p:outputLabel value="Name:" />
-                                <p:outputLabel value="#{hospitalController.pcr.client.person.name}" title="Name" />
-                            </div>
-                            <div class="col-md-1">
-                                <p:outputLabel value="Citizenship:" for="citizenship" />
-                                <p:outputLabel id="citizenship" value="#{hospitalController.pcr.client.person.citizenship.name}" >
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-2">
-                                <p:outputLabel value="PHN No.:"  />
-                                <p:outputLabel id="phn" value="#{hospitalController.pcr.client.phn}" title="Phn"
-                                               ></p:outputLabel>
-                            </div>
-                            <div class="col-md-2">
-                                <p:outputLabel value="Other Ordering Category:"  />
-                                <p:outputLabel value="#{hospitalController.pcr.pcrOrderingCategoryOther}"/>
-                            </div>
-                            <div class="col-md-1">
-                                <p:outputLabel value="Symptomatic:"  />
-                                <p:outputLabel tabindex="106"
-                                               value="#{hospitalController.pcr.symptomatic?'Yes':''}" ></p:outputLabel>
-                            </div>
-
-
-
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
-                                <p:outputLabel id="nic"
-                                                 value="#{hospitalController.pcr.client.person.nic}" title="Nic" >
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel value="Gender:"  for="sex" />
-                                <p:outputLabel
-                                    id="sex" value="#{hospitalController.pcr.client.person.sex}"
-                                    >
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel value="Age:" />
-                                <h:panelGroup>
-                                    <p:outputLabel value="#{hospitalController.pcr.client.person.age}" >
+                                    <p:outputLabel class="fs-6 fw-bold" value="Ordering Category:"></p:outputLabel>
+                                    <p:outputLabel id="orderingCat" value="#{hospitalController.pcr.pcrOrderingCategory.name}"></p:outputLabel>
+                                    <p:outputLabel class="fs-6 fw-bold" value="Sampled at:"></p:outputLabel>
+                                    <p:outputLabel id="test" value="#{hospitalController.pcr.sampledAt}">
+                                        <f:convertDateTime pattern="dd MMMM yyyy hh:mm" ></f:convertDateTime>
                                     </p:outputLabel>
-                                </h:panelGroup>
+
+                                    <p:outputLabel class="fs-6 fw-bold" value="Name:" />
+                                    <p:outputLabel value="#{hospitalController.pcr.client.person.name}" title="Name" />
+                                    <p:outputLabel class="fs-6 fw-bold" value="Citizenship:" for="citizenship" />
+                                    <p:outputLabel id="citizenship" value="#{hospitalController.pcr.client.person.citizenship.name}" ></p:outputLabel>
+
+
+                                    <p:outputLabel class="fs-6 fw-bold" value="PHN No:"  />
+                                    <p:outputLabel id="phn" value="#{hospitalController.pcr.client.phn}" title="Phn"></p:outputLabel>
+                                    <p:outputLabel class="fs-6 fw-bold" value="Other Ordering Category:"  />
+                                    <p:outputLabel value="#{hospitalController.pcr.pcrOrderingCategoryOther}"/>
+
+                                    <p:outputLabel class="fs-6 fw-bold" value="Symptomatic:"  />
+                                    <p:outputLabel tabindex="106" value="#{hospitalController.pcr.symptomatic?'Yes':''}" ></p:outputLabel>
+                                    <p:outputLabel class="fs-6 fw-bold" value="NIC/NIC of the guardian/Passport No. :" for="nic" />
+                                    <p:outputLabel id="nic" value="#{hospitalController.pcr.client.person.nic}" title="Nic" ></p:outputLabel>
+
+                                    <p:outputLabel class="fs-6 fw-bold" value="Gender:"  for="sex" />
+                                    <p:outputLabel id="sex" value="#{hospitalController.pcr.client.person.sex}"></p:outputLabel>
+                                    <p:outputLabel class="fs-6 fw-bold" value="Age:" />
+                                    <h:panelGroup><p:outputLabel value="#{hospitalController.pcr.client.person.age}" ></p:outputLabel></h:panelGroup>
+
+                                    <p:outputLabel class="fs-6 fw-bold" value="Current Residential Address:" for="address" />
+                                    <p:outputLabel tabindex="4" id="address" value="#{hospitalController.pcr.client.person.address}" title="Address ****" />
+                                    <p:outputLabel class="fs-6 fw-bold" value="District:"  />
+                                    <p:outputLabel value="#{hospitalController.pcr.client.person.district.name}" />
+
+                                    <p:outputLabel class="fs-6 fw-bold" value="MOH Area:" />
+                                    <p:outputLabel value="#{hospitalController.pcr.client.person.mohArea.name}" />
+                                    <p:outputLabel class="fs-6 fw-bold" value="Contact Number :" />
+                                    <p:outputLabel value="#{hospitalController.pcr.client.person.phone1}" />
+
+                                    <p:outputLabel class="fs-6 fw-bold" value="GN Area:"  />
+                                    <p:outputLabel value="#{hospitalController.pcr.client.person.gnArea.name}" />
+                                    <p:outputLabel class="fs-6 fw-bold" value="PHI Area:" />
+                                    <p:outputLabel value="#{hospitalController.pcr.client.person.phiArea.name}" />
+
+                                    <p:outputLabel class="fs-6 fw-bold" value="Unit/Ward:"  />
+                                    <p:outputLabel value="#{hospitalController.pcr.unitWard}" />
+
+                                </p:panelGrid>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <p:outputLabel value="Current Residential Address:" for="address" />
-                                <p:outputLabel tabindex="4"
-                                               id="address"
-                                               value="#{hospitalController.pcr.client.person.address}"
-                                               title="Address ****" />
-
-                            </div>
-
-                            <div class="col-md-3">
-                                <p:outputLabel value="District:"  />
-                                <p:outputLabel value="#{hospitalController.pcr.client.person.district.name}" />
-                            </div>
-
-
-                            <div class="col-md-3">
-                                <p:outputLabel value="MOH Area:" />
-                                <p:outputLabel value="#{hospitalController.pcr.client.person.mohArea.name}" />
-                            </div>
-
+                    </div>
+                    <div class="card-footer bg-white">
+                        <div class="col-md-6">
+                            <h:commandButton class="my-2 btn btn-warning w-25 me-2" value="To Edit Details" action="#{hospitalController.toPcrEdit()}" ></h:commandButton>
+                            <h:commandButton class="my-2 btn btn-success w-25" value="Add New PCR Order" action="#{hospitalController.toAddNewPcrWithNewClient()}">
+                            </h:commandButton>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <p:outputLabel value="Contact Number :" />
-                                <p:outputLabel value="#{hospitalController.pcr.client.person.phone1}" />
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel value="GN Area:"  />
-                                <p:outputLabel value="#{hospitalController.pcr.client.person.gnArea.name}" />
-                            </div>
-
-                            <div class="col-md-3">
-                                <p:outputLabel value="PHI Area:" />
-                                <p:outputLabel value="#{hospitalController.pcr.client.person.phiArea.name}" />
-                            </div>
-
-                            <div class="col-md-2">
-                                <p:outputLabel value="Unit/Ward:"  />
-                                <p:outputLabel value="#{hospitalController.pcr.unitWard}" />
-                            </div>
-
-
-                        </div>
-
                     </div>
                 </div>
 
@@ -165,33 +97,33 @@
                             <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{sessionController.pcrList}" id="tbl"
                                          var="c" paginator="true" rowKey="#{c.id}" rows="10" >
                                 <f:facet name="header">
-                                    Last Entries
+                                    <h4  class="fs-4 my-3 fw-bold">Last Entries</h4>
                                 </f:facet>
-                                <p:column headerText="Test No" sortBy="#{c.encounterNumber}">
+                                <p:column class="fs-6" headerText="Test No" sortBy="#{c.encounterNumber}">
                                     <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                                 </p:column>
-                                <p:column headerText="Name" sortBy="#{c.client.person.name}" >
+                                <p:column class="fs-6" headerText="Name" sortBy="#{c.client.person.name}" >
                                     <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                                 </p:column>
-                                <p:column headerText="Age" sortBy="#{c.client.person.ageInDays}" >
+                                <p:column class="fs-6" headerText="Age" sortBy="#{c.client.person.ageInDays}" >
                                     <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                                 </p:column>
-                                <p:column headerText="Sex" sortBy="#{c.client.person.sex.name}">
+                                <p:column class="fs-6" headerText="Sex" sortBy="#{c.client.person.sex.name}">
                                     <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                                 </p:column>
-                                <p:column headerText="NIC" sortBy="#{c.client.person.nic}" >
+                                <p:column class="fs-6" headerText="NIC" sortBy="#{c.client.person.nic}" >
                                     <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
                                 </p:column>
-                                <p:column headerText="Address" >
+                                <p:column class="fs-6" headerText="Address" >
                                     <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
                                 </p:column>
                                 <p:column headerText="Actions" >
-                                    <p:commandButton value="Edit" ajax="false" action="#{hospitalController.toPcrEdit()}" >
+                                    <h:commandButton class="btn btn-warning w-100" value="Edit" action="#{hospitalController.toPcrEdit()}" >
                                         <f:setPropertyActionListener value="#{c}" target="#{hospitalController.pcr}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
-                                    <p:commandButton value="Delete" ajax="false" action="#{hospitalController.toDeleteTestFromLastPcrList()}" >
+                                    </h:commandButton>
+                                    <h:commandButton class="btn btn-danger w-100" value="Delete" action="#{hospitalController.toDeleteTestFromLastPcrList()}" >
                                         <f:setPropertyActionListener value="#{c}" target="#{hospitalController.deleting}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
+                                    </h:commandButton>
                                 </p:column>
                             </p:dataTable>
                         </h:form>
