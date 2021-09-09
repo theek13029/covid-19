@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content">
+                <h:form id="AreaListForm">
+                    <div class="card">
+                        <div class="card-header">
+                            <p:outputLabel value="Adding MOH" ></p:outputLabel>
+                            <p:commandButton ajax="false" class="btn btn-primary" style="float: left;" value="Add Mutiple Users"
+                                             action="#{webUserController.addMultipleUsers()}"/> 
+                            <p:commandButton ajax="false" class="btn btn-primary" style="float: left;" value="Clear Added Users"
+                                             action="#{webUserController.clearAddedUsers()}"/> 
+                        </div>
+
+
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <p:outputLabel value="Province" class="col-md-2" /> 
+                                <div class="col-md-4">
+                                    <p:autoComplete class="form-control" value="#{areaController.province}"
+                                                    completeMethod="#{areaApplicationController.completeProvinces}"
+                                                    var="p"
+                                                    itemLabel="#{p.name}"
+                                                    itemValue="#{p}" ></p:autoComplete>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <p:outputLabel value="PDHS" class="col-md-2" ></p:outputLabel>
+                                <div class="col-md-4">
+                                    <p:autoComplete value="#{areaController.pdhs}" class="form-control"
+                                                    completeMethod="#{areaApplicationController.completePdhsAreas}"
+                                                    var="pd"
+                                                    itemLabel="#{pd.name}"
+                                                    itemValue="#{pd}" ></p:autoComplete>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <p:outputLabel value="District" class="col-md-2" ></p:outputLabel>
+                                <div class="col-md-4">
+                                    <p:autoComplete value="#{areaController.district}" class="form-control"
+                                                    completeMethod="#{areaApplicationController.completeDistricts}"
+                                                    var="d"
+                                                    itemLabel="#{d.name}"
+                                                    itemValue="#{d}" ></p:autoComplete>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <p:outputLabel value="RDHS Area" class="col-md-2" ></p:outputLabel>
+                                <div class="col-md-4">
+                                    <p:autoComplete value="#{areaController.rdhs}" class="form-control"
+                                                    completeMethod="#{areaApplicationController.completeRdhsAreas}"
+                                                    var="rd"
+                                                    itemLabel="#{rd.name}"
+                                                    itemValue="#{rd}" ></p:autoComplete>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <p:outputLabel value="Parent Institution" class="col-md-2" ></p:outputLabel>
+                                <div class="col-md-4">
+                                    <p:autoComplete class="form-control" value="#{areaController.rdhsInstitution}"
+                                                    completeMethod="#{institutionController.completeRdhs}"
+                                                    var="rd"
+                                                    itemLabel="#{rd.name}"
+                                                    itemValue="#{rd}" ></p:autoComplete>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <p:outputLabel value="MOH Areas Seperated by Line Breaks" class="col-md-2" ></p:outputLabel>
+                                <div class="col-md-4">
+                                    <p:inputTextarea class="form-control" value="#{areaController.bulkText}" rows="30" cols="40" ></p:inputTextarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

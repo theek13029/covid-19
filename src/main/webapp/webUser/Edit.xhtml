@@ -19,10 +19,10 @@
                             </div>
                         </div> 
 
-                        <h:panelGrid columns="2" rendered="#{webUserController.selected != null}" style="margin: auto; text-align: left;">
+                        <h:panelGrid columns="2" rendered="#{webUserController.selected != null}" style="margin: auto; text-align: left; background-color: #cecece;">
                             <p:outputLabel value="Username" for="username" />
                             <h:inputText class="form-control" id="username" value="#{webUserController.selected.name}" title="#{bundleClinical.EditWebUserTitle_name}"
-                                          readonly="true" required="true" requiredMessage="#{bundleClinical.EditWebUserRequiredMessage_name}"/>
+                                          readonly="false" required="true" requiredMessage="#{bundleClinical.EditWebUserRequiredMessage_name}"/>
 
                             <p:outputLabel value="Title" for="title" />
                             <h:selectOneMenu class="form-select" id="title"  value="#{webUserController.selected.person.title}"  >
@@ -41,8 +41,8 @@
                             
                             <p:autoComplete  id="institution" value="#{webUserController.selected.institution}" 
                                              completeMethod="#{institutionController.completeInstitutions}"
-                                             var="i" itemLabel="#{i.name}" itemValue="#{i}"
-                                             forceSelection="true" maxResults="15" minQueryLength="3">
+                                             var="ins" itemLabel="#{ins.name}" itemValue="#{ins}"
+                                             forceSelection="true" maxResults="15" minQueryLength="2">
                             </p:autoComplete >
 
                             <p:outputLabel value="Area" for="area" class="col-md-2" />
