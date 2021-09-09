@@ -505,8 +505,8 @@ public class DashboardController implements Serializable {
                 itemApplicationController.getPcrPositive(),
                 null);
 
-//        Set patients with no MOH area for last two days
-        this.pcrPatientsWithNoMohArea = dashboardApplicationController.getOrderCountWithoutMoh(
+//      Set patients with no MOH area for last two days
+        Long tmepPcrPatientsWithNoMohArea = dashboardApplicationController.getOrderCountWithoutMoh(
             webUserController.getLoggedUser().getInstitution().getRdhsArea(),
             yesterdayStart,
             now,
@@ -516,8 +516,14 @@ public class DashboardController implements Serializable {
             null
         );
 
-//        Set RAT positive patients with no MOH area for the last two days
-        this.ratPatientsWithNoMohArea = dashboardApplicationController.getOrderCountWithoutMoh(
+        if (tmepPcrPatientsWithNoMohArea == null) {
+            this.pcrPatientsWithNoMohArea = 0L;
+        } else {
+            this.pcrPatientsWithNoMohArea = tmepPcrPatientsWithNoMohArea;
+        }
+
+//      Set RAT positive patients with no MOH area for the last two days
+        Long tempRatPatientsWithNoMohArea = dashboardApplicationController.getOrderCountWithoutMoh(
                 webUserController.getLoggedUser().getInstitution().getRdhsArea(),
                 yesterdayStart,
                 now,
@@ -526,6 +532,12 @@ public class DashboardController implements Serializable {
                 itemApplicationController.getPcrPositive(),
                 null
         );
+
+        if (tempRatPatientsWithNoMohArea == null) {
+            this.ratPatientsWithNoMohArea = 0L;
+        } else {
+            this.ratPatientsWithNoMohArea = tempRatPatientsWithNoMohArea;
+        }
 
 //        Set first encounters for the last two days with no MOH area
 //        Set samples awaiting dispatch
