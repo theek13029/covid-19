@@ -2523,7 +2523,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("File ?");
             return "";
         }
-       
+
         district = institution.getDistrict();
 
         String strTestNo;
@@ -2575,7 +2575,7 @@ public class ClientController implements Serializable {
                 strTestNo = cellValue(row.getCell(testNoColInt));
                 strNic = cellValue(row.getCell(nicColInt));
                 Client c = null;
-                if (strNic != null && !strNic.trim().equals("")) {
+                if (strNic != null && !strNic.trim().equals("") && strNic.trim().length() >5) {
                     c = getClientByNic(strNic);
                 }
 
@@ -2844,7 +2844,6 @@ public class ClientController implements Serializable {
             c = ci.getClient();
         }
 
-        
         pcr.setClient(c);
 
         pcr.setInstitution(institution);
@@ -2881,11 +2880,11 @@ public class ClientController implements Serializable {
         pcr.setResultConfirmedBy(webUserController.getLoggedUser());
 
         pcr.setResultDate(toDate);
-        
+
         pcr.setPcrResult(ci.getResult());
-        
+
         System.out.println("lastTestPcrOrRat = " + lastTestPcrOrRat);
-        
+
         pcr.setPcrTestType(lastTestPcrOrRat);
 
         if (c.getId() == null) {
@@ -2935,19 +2934,25 @@ public class ClientController implements Serializable {
     }
 
     private int cellValueInt(Cell cell) {
-        int str = 0;
+        int intNum = 0;
+        if (cell == null) {
+            return intNum;
+        }
+        if(cell.getCellType()==null){
+            return intNum;
+        }
         if (null != cell.getCellType()) {
             switch (cell.getCellType()) {
                 case NUMERIC:
                     Double d = cell.getNumericCellValue();
-                    str = d.intValue();
+                    intNum = d.intValue();
                     break;
                 default:
-                    str = 0;
+                    intNum = 0;
                     break;
             }
         }
-        return str;
+        return intNum;
     }
 
     public List<Area> completeClientsGnArea(String qry) {
