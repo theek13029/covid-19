@@ -202,6 +202,15 @@ table tbody.active-row {
   height: 1.25rem;
 }
 
+.ui-slider .ui-slider-handle {
+  content: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaWQ9IkxheWVyXzFfMV8iIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMTYgMTYiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxjaXJjbGUgY3g9IjgiIGN5PSI4IiByPSI4Ii8+PC9zdmc+");
+}
+
+.ui-slider-horizontal {
+  background-color: #d8d8d8;
+  height: 0.5em;
+}
+
 html, body, * {
   font-family: "Noto Sans JP", sans-serif !important;
 }
