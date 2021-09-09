@@ -8,7 +8,7 @@
 
     <h:head>
         <ui:define name="title">
-            Upload Orders
+            Upload Results
         </ui:define>
     </h:head>
 
@@ -19,9 +19,27 @@
                     <p:messages ></p:messages>
                     <p:panelGrid columns="2"  >
                         <h:outputLabel value="Test" ></h:outputLabel>
-                        <p:selectOneMenu required="true" requiredMessage="Please select PCR or RAT" value="#{clientController.lastTestPcrOrRat}" >
+                        <p:selectOneMenu required="true" 
+                                         requiredMessage="Please select PCR or RAT" 
+                                         value="#{clientController.lastTestPcrOrRat}" >
                             <f:selectItem itemLabel="Select" ></f:selectItem>
                             <f:selectItems value="#{itemApplicationController.covidTestTypes}" var="t" itemValue="#{t}" itemLabel="#{t.name}" >
+                            </f:selectItems>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Ordered From" ></h:outputLabel>
+                        <p:selectOneMenu value="#{clientController.institution}" >
+                            <f:selectItem itemLabel="Select" ></f:selectItem>
+                            <f:selectItems value="#{webUserController.loggableInstitutions}" var="l"
+                                           itemLabel="#{l.name}" itemValue="#{l}" >
+                            </f:selectItems>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Lab" ></h:outputLabel>
+                        <p:selectOneMenu value="#{clientController.referingInstitution}" >
+                            <f:selectItem itemLabel="Select" ></f:selectItem>
+                            <f:selectItems value="#{webUserController.loggableInstitutions}" var="l"
+                                           itemLabel="#{l.name}" itemValue="#{l}" >
                             </f:selectItems>
                         </p:selectOneMenu>
 

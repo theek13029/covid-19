@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package lk.gov.health.phsp.enums;
 
 /**
@@ -29,14 +28,23 @@ package lk.gov.health.phsp.enums;
  * @author User
  */
 public enum AreaType {
-    GN,
-    PHM,
-    PHI,
-    MOH,
-    DsArea,
-    District,
-    Province,
-    National,
-    RdhsAra,
-    PdhsArea,
+    GN("GN Area"),
+    PHM("PHM Area"),
+    PHI("PHI Area"),
+    MOH("MOH Area"),
+    DsArea("DS Division"),
+    District("District"),
+    Province("Province"),
+    National("National"),
+    RdhsAra("RDHS Area"),
+    PdhsArea("PDHS Area");
+    public final String label;
+
+    private AreaType(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
+    }
 }

@@ -2523,7 +2523,7 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("File ?");
             return "";
         }
-        institution = webUserController.getLoggedUser().getInstitution();
+       
         district = institution.getDistrict();
 
         String strTestNo;
@@ -2847,9 +2847,9 @@ public class ClientController implements Serializable {
         pcr.setPcrTestType(lastTestPcrOrRat);
         pcr.setClient(c);
 
-        pcr.setInstitution(webUserController.getLoggedUser().getInstitution());
-        pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
-        pcr.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setInstitution(institution);
+        pcr.setCreatedInstitution(institution);
+        pcr.setReferalInstitution(referingInstitution);
 
         pcr.setEncounterNumber(ci.getTestNo());
         pcr.setEncounterType(EncounterType.Test_Enrollment);

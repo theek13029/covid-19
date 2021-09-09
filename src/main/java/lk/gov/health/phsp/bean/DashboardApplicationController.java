@@ -368,27 +368,42 @@ public Long samplesAwaitingDispatch(
     }
 
     if( area != null) {
-        if (area.getType() == AreaType.RdhsAra) {
-            jpql += "and (c.institution.rdhsArea=:rdArea or c.institution.district=:district) ";
-            hashMap.put("area", area);
-            hashMap.put("district", area.getDistrict());
-        } else if (area.getType() == AreaType.Province) {
-            jpql += " and (c.institution.pdhsArea=:pdArea or c.institution.province=:province) ";
-            hashMap.put("phArea", area);
-            hashMap.put("province", area.getProvince());
-        } else if (area.getType() == AreaType.MOH) {
-            jpql += " and (c.institution.mohArea=:mohArea)";
-            hashMap.put("mohArea", area);
+        if (null != area.getType()) switch (area.getType()) {
+            case District:
+                jpql += "and c.institution.district=:district ";
+                hashMap.put("district", area.getDistrict());
+                break;
+            case RdhsAra:
+                jpql += "and (c.institution.rdhsArea=:rdArea or c.institution.district=:district) ";
+                hashMap.put("rdArea", area);
+                hashMap.put("district", area.getDistrict());
+                break;
+            case PdhsArea:
+                jpql += " and (c.institution.pdhsArea=:pdArea or c.institution.province=:province) ";
+                hashMap.put("phArea", area);
+                hashMap.put("province", area.getProvince());
+                break;
+            case Province:
+                jpql += " and c.institution.province=:province ";
+                hashMap.put("province", area.getProvince());
+                break;
+            case MOH:
+                jpql += " and (c.institution.mohArea=:mohArea)";
+                hashMap.put("mohArea", area);
+                break;
+            default:
+                break;
         }
     }
 
 
 
-    jpql += " and c.sentToLab is null";
+    jpql += " and (c.sentToLab is null or c.sentToLab is :sl) ";
 
     hashMap.put("ret", false);
     hashMap.put("type", EncounterType.Test_Enrollment);
     hashMap.put("fd", fromDate);
+    hashMap.put("sl", false);
     hashMap.put("td", toDate);
     hashMap.put("ins", institution);
 

@@ -21,6 +21,8 @@
                     <p:panelGrid columns="2"  >
                         <h:outputLabel value="Institution" ></h:outputLabel>
                         <h:outputLabel value="#{clientController.institution.name}" ></h:outputLabel>
+                         <h:outputLabel value="Lab" ></h:outputLabel>
+                         <h:outputLabel value="#{clientController.referingInstitution.name}" ></h:outputLabel>
                         <h:outputLabel value="District" ></h:outputLabel>
                         <h:outputLabel value="#{clientController.district.name}" ></h:outputLabel>
                         <h:outputLabel value="Test" ></h:outputLabel>
@@ -35,7 +37,8 @@
                             <f:convertDateTime pattern="dd MMMM yyyy hh:mm" ></f:convertDateTime>
                         </h:outputLabel>
                         <h:outputLabel ></h:outputLabel>
-                        <h:commandButton value="Save Orders" action="#{clientController.saveUploadedOrdersPlusResults()}" ></h:commandButton>
+                        <h:commandButton value="Save Orders" 
+                                         action="#{clientController.saveUploadedOrdersPlusResults()}" ></h:commandButton>
                     </p:panelGrid>
 
                     <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{clientController.clientImports}" var="c" 
