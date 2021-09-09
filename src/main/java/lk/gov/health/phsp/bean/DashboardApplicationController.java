@@ -379,16 +379,16 @@ public Long samplesAwaitingDispatch(
                 hashMap.put("district", area.getDistrict());
                 break;
             case PdhsArea:
-                jpql += " and (c.institution.pdhsArea=:pdArea or c.institution.province=:province) ";
+                jpql += "and (c.institution.pdhsArea=:pdArea or c.institution.province=:province) ";
                 hashMap.put("phArea", area);
                 hashMap.put("province", area.getProvince());
                 break;
             case Province:
-                jpql += " and c.institution.province=:province ";
+                jpql += "and c.institution.province=:province ";
                 hashMap.put("province", area.getProvince());
                 break;
             case MOH:
-                jpql += " and (c.institution.mohArea=:mohArea)";
+                jpql += "and (c.institution.mohArea=:mohArea) ";
                 hashMap.put("mohArea", area);
                 break;
             default:
@@ -396,9 +396,7 @@ public Long samplesAwaitingDispatch(
         }
     }
 
-
-
-    jpql += " and (c.sentToLab is null or c.sentToLab is :sl) ";
+    jpql += "and (c.sentToLab is null or c.sentToLab=:sl)";
 
     hashMap.put("ret", false);
     hashMap.put("type", EncounterType.Test_Enrollment);
