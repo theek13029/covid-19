@@ -14,28 +14,28 @@
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Regional Orders Summery" ></p:outputLabel>
+                        <p:outputLabel value="National Orders Summery" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
                         <p:panelGrid columns="2" >
                             <p:outputLabel value="From" ></p:outputLabel>
-                            <p:calendar value="#{regionalController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+                            <p:calendar value="#{nationalController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
                             <p:outputLabel value="To" ></p:outputLabel>
-                            <p:calendar value="#{regionalController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                            <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
                             
                             
                             
                             <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{regionalController.testType}" >
+                            <p:selectOneMenu value="#{nationalController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{regionalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                                <f:selectItems value="#{nationalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{regionalController.prepareSummaryByOrderedInstitution()}" ></p:commandButton>
+                                             action="#{nationalController.prepareSummaryByOrderedInstitution()}" ></p:commandButton>
                             <p:commandButton ajax="false" value="Generate Excel" >
                                 <p:dataExporter type="xlsx" fileName="Orders Summery" target="tbl" ></p:dataExporter>
                             </p:commandButton>
@@ -45,7 +45,7 @@
 
                         <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" 
                                      id="tbl" 
-                                     value="#{regionalController.institutionCounts}" 
+                                     value="#{nationalController.institutionCounts}" 
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 

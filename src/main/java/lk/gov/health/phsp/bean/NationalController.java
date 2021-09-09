@@ -206,8 +206,6 @@ public class NationalController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
 
-        m.put("dis", webUserController.getLoggedUser().getInstitution().getDistrict());
-
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -234,8 +232,7 @@ public class NationalController implements Serializable {
                 + " from Encounter c "
                 + " where (c.retired=:ret or c.retired is null) "
                 + " and c.encounterType=:type "
-                + " and c.encounterDate between :fd and :td "
-                + " and c.institution.rdhsArea=:rdhs ";
+                + " and c.encounterDate between :fd and :td ";
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -248,7 +245,6 @@ public class NationalController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("sl", false);
-        m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
         System.out.println("j = " + j);
         System.out.println("m = " + m);
         List<Object> os = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
@@ -2327,7 +2323,7 @@ public class NationalController implements Serializable {
         m.put("ins", institution);
         m.put("sl", false);
         listedToDispatch = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        return "/regional/dispatch_samples";
+        return "/national/dispatch_samples";
     }
 
     public void setInstitutionPeformancesFiltered(List<InstitutionPeformance> institutionPeformancesFiltered) {
@@ -2476,6 +2472,22 @@ public class NationalController implements Serializable {
         return selectedToDispatch;
     }
 
+      public String dispatchSelectedSamples() {
+        if (dispatchingLab == null) {
+            JsfUtil.addErrorMessage("Please select a lab to send samples");
+            return "";
+        }
+        for (Encounter e : selectedToDispatch) {
+            e.setSentToLab(true);
+            e.setSentToLabAt(new Date());
+            e.setSentToLabBy(webUserController.getLoggedUser());
+            e.setReferalInstitution(dispatchingLab);
+            encounterFacade.edit(e);
+        }
+        selectedToDispatch = null;
+        return toDispatchSamples();
+    }
+    
     public void setSelectedToDispatch(List<Encounter> selectedToDispatch) {
         this.selectedToDispatch = selectedToDispatch;
     }

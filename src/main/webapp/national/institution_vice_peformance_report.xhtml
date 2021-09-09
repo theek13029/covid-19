@@ -88,13 +88,13 @@
                                 </f:facet>
                             </p:column>
                             <p:column headerText="PCR Positives"  sortBy="#{c.pcrs}">
-                                <p:outputLabel value="#{c.rats}" ></p:outputLabel>
+                                <p:outputLabel value="#{c.pcrPositives}" ></p:outputLabel>
                                 <f:facet name="footer" >
                                     <h:outputText id="sumPp" styleClass="footerToUpdate" value="#{nationalController.institutionPeformancesSummery.pcrPositives}" />
                                 </f:facet>
                             </p:column>
                             <p:column headerText="RAT Positives"  sortBy="#{c.pcrs}">
-                                <p:outputLabel value="#{c.rats}" ></p:outputLabel>
+                                <p:outputLabel value="#{c.ratPositives}" ></p:outputLabel>
                                 <f:facet name="footer" >
                                     <h:outputText id="sumRp" styleClass="footerToUpdate" value="#{nationalController.institutionPeformancesSummery.ratPositives}" />
                                 </f:facet>
