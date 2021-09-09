@@ -144,6 +144,21 @@ public class NationalController implements Serializable {
     private Area rdhs;
     private InstitutionType institutionType;
 
+    private Institution institution;
+    private Institution referingInstitution;
+    private Institution dispatchingLab;
+    private Institution divertingLab;
+
+    private List<InstitutionCount> awaitingDispatch;
+    private List<InstitutionCount> awaitingReceipt;
+    private List<InstitutionCount> awaitingResults;
+    private List<InstitutionCount> resultsAvailable;
+
+    private List<Encounter> listedToDispatch;
+    private List<Encounter> listedToDivert;
+    private List<Encounter> selectedToDivert;
+    private List<Encounter> selectedToDispatch;
+
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Constructors">
     public NationalController() {
@@ -177,6 +192,73 @@ public class NationalController implements Serializable {
             }
         }
         return "/regional/summary_lab_vs_ordered_to_receive";
+    }
+
+    public void prepareSummaryByOrderedInstitution() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td ";
+
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+
+        j += " group by c.institution";
+        institutionCounts = new ArrayList<>();
+        List<Object> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
+        // // System.out.println("obs = " + obs.size());
+        Long c = 1l;
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                ic.setId(c);
+                c++;
+                institutionCounts.add(ic);
+            }
+        }
+    }
+
+    public void prepareDispatchSummery() {
+        Map m = new HashMap();
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
+                + " from Encounter c "
+                + " where (c.retired=:ret or c.retired is null) "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td ";
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        j += " and (c.sentToLab is null or c.sentToLab=:sl or c.referalInstitution is null) "
+                + " group by c.institution "
+                + " order by c.institution.name";
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("sl", false);
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+        List<Object> os = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("os = " + os.size());
+        awaitingDispatch = new ArrayList<>();
+        Long c = 0l;
+        for (Object o : os) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                ic.setId(c);
+                c++;
+                awaitingDispatch.add(ic);
+            }
+        }
     }
 
     public String toCountOfTestsByOrderedInstitution() {
@@ -2219,6 +2301,31 @@ public class NationalController implements Serializable {
         return institutionPeformancesFiltered;
     }
 
+    public String toDispatchSamples() {
+        Map m = new HashMap();
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired=:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td "
+                + " and c.institution=:ins ";
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        j += " and (c.sentToLab is null or c.sentToLab=:sl or c.referalInstitution is null) "
+                + " order by c.id";
+
+        m.put("ret", false);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("ins", institution);
+        m.put("sl", false);
+        listedToDispatch = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
+        return "/national/dispatch_samples";
+    }
+
     public void setInstitutionPeformancesFiltered(List<InstitutionPeformance> institutionPeformancesFiltered) {
         this.institutionPeformancesFiltered = institutionPeformancesFiltered;
     }
@@ -2303,6 +2410,118 @@ public class NationalController implements Serializable {
 
     public void setLabSummariesToReceive(List<InstitutionCount> labSummariesToReceive) {
         this.labSummariesToReceive = labSummariesToReceive;
+    }
+
+    public List<InstitutionCount> getAwaitingDispatch() {
+        return awaitingDispatch;
+    }
+
+    public void setAwaitingDispatch(List<InstitutionCount> awaitingDispatch) {
+        this.awaitingDispatch = awaitingDispatch;
+    }
+
+    public List<InstitutionCount> getAwaitingReceipt() {
+        return awaitingReceipt;
+    }
+
+    public void setAwaitingReceipt(List<InstitutionCount> awaitingReceipt) {
+        this.awaitingReceipt = awaitingReceipt;
+    }
+
+    public List<InstitutionCount> getAwaitingResults() {
+        return awaitingResults;
+    }
+
+    public void setAwaitingResults(List<InstitutionCount> awaitingResults) {
+        this.awaitingResults = awaitingResults;
+    }
+
+    public List<InstitutionCount> getResultsAvailable() {
+        return resultsAvailable;
+    }
+
+    public void setResultsAvailable(List<InstitutionCount> resultsAvailable) {
+        this.resultsAvailable = resultsAvailable;
+    }
+
+    public List<Encounter> getListedToDispatch() {
+        return listedToDispatch;
+    }
+
+    public void setListedToDispatch(List<Encounter> listedToDispatch) {
+        this.listedToDispatch = listedToDispatch;
+    }
+
+    public List<Encounter> getListedToDivert() {
+        return listedToDivert;
+    }
+
+    public void setListedToDivert(List<Encounter> listedToDivert) {
+        this.listedToDivert = listedToDivert;
+    }
+
+    public List<Encounter> getSelectedToDivert() {
+        return selectedToDivert;
+    }
+
+    public void setSelectedToDivert(List<Encounter> selectedToDivert) {
+        this.selectedToDivert = selectedToDivert;
+    }
+
+    public List<Encounter> getSelectedToDispatch() {
+        return selectedToDispatch;
+    }
+
+      public String dispatchSelectedSamples() {
+        if (dispatchingLab == null) {
+            JsfUtil.addErrorMessage("Please select a lab to send samples");
+            return "";
+        }
+        for (Encounter e : selectedToDispatch) {
+            e.setSentToLab(true);
+            e.setSentToLabAt(new Date());
+            e.setSentToLabBy(webUserController.getLoggedUser());
+            e.setReferalInstitution(dispatchingLab);
+            encounterFacade.edit(e);
+        }
+        selectedToDispatch = null;
+        return toDispatchSamples();
+    }
+    
+    public void setSelectedToDispatch(List<Encounter> selectedToDispatch) {
+        this.selectedToDispatch = selectedToDispatch;
+    }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
+
+    public Institution getReferingInstitution() {
+        return referingInstitution;
+    }
+
+    public void setReferingInstitution(Institution referingInstitution) {
+        this.referingInstitution = referingInstitution;
+    }
+
+    public Institution getDispatchingLab() {
+        return dispatchingLab;
+    }
+
+    public void setDispatchingLab(Institution dispatchingLab) {
+        this.dispatchingLab = dispatchingLab;
+    }
+
+    public Institution getDivertingLab() {
+        return divertingLab;
+    }
+
+    public void setDivertingLab(Institution divertingLab) {
+        this.divertingLab = divertingLab;
     }
     
     
