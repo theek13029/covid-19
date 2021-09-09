@@ -70,7 +70,7 @@
                                     <p:dataExporter target="tbl" type="xls" fileName="New Users - #{webUserController.institution.name}" ></p:dataExporter>
                                 </h:commandButton>
 
-                                <p:dataTable value="#{webUserController.addedUsers}" var="u" >
+                                <p:dataTable id="tbl" value="#{webUserController.addedUsers}" var="u" >
                                     <p:column headerText="Name" >
                                         <h:outputLabel value="#{u.person.name}"></h:outputLabel>
                                     </p:column>
