@@ -2565,7 +2565,7 @@ public class ClientController implements Serializable {
             XSSFSheet mySheet = myWorkBook.getSheetAt(0);
             Iterator<Row> rowIterator = mySheet.iterator();
             Long count = 0l;
-            startRow++;
+            startRow--;
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 if (row.getRowNum() < startRow) {
@@ -2623,7 +2623,7 @@ public class ClientController implements Serializable {
                 getClientImports().add(ci);
 
             }
-            startRow--;
+            startRow++;
             return "/hospital/uploaded_results";
         } catch (IOException e) {
             JsfUtil.addErrorMessage(e.getMessage());
@@ -2844,7 +2844,7 @@ public class ClientController implements Serializable {
             c = ci.getClient();
         }
 
-        pcr.setPcrTestType(lastTestPcrOrRat);
+        
         pcr.setClient(c);
 
         pcr.setInstitution(institution);
@@ -2883,6 +2883,10 @@ public class ClientController implements Serializable {
         pcr.setResultDate(toDate);
         
         pcr.setPcrResult(ci.getResult());
+        
+        System.out.println("lastTestPcrOrRat = " + lastTestPcrOrRat);
+        
+        pcr.setPcrTestType(lastTestPcrOrRat);
 
         if (c.getId() == null) {
             getFacade().create(c);

@@ -398,7 +398,7 @@ public Long samplesAwaitingDispatch(
 
 
 
-    jpql += " and (c.sentToLab is null or c.sentToLab is :sl) ";
+    jpql += " and (c.sentToLab is null or c.sentToLab = :sl) ";
 
     hashMap.put("ret", false);
     hashMap.put("type", EncounterType.Test_Enrollment);
