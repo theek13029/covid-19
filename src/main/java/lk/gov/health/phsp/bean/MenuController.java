@@ -165,7 +165,7 @@ public class MenuController implements Serializable {
             case Regional:
                 return "/regional/admin/index";
             case National:
-                return "/national/admin/index";
+                return "/systemAdmin/index";
             case Hospital:
                 return "/hospital/admin/index";
             case Lab:
