@@ -288,6 +288,16 @@ public class AreaApplicationController {
         }
         return tas;
     }
+    
+    public List<Area> completeAreas(String qry) {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getAllAreas()) {
+            if (a.getName().toLowerCase().contains(qry.trim().toLowerCase())) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
 
     public List<Area> completeProvinces(String qry) {
         List<Area> tas = new ArrayList<>();

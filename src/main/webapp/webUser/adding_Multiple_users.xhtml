@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -22,62 +23,69 @@
 
                         <div class="card-body">
                             <div class="form-group row">
-                                <p:outputLabel value="Province" class="col-md-2" /> 
+                                <p:outputLabel value="Area" class="col-md-2" /> 
                                 <div class="col-md-4">
-                                    <p:autoComplete class="form-control" value="#{areaController.province}"
-                                                    completeMethod="#{areaApplicationController.completeProvinces}"
-                                                    var="p"
-                                                    itemLabel="#{p.name}"
-                                                    itemValue="#{p}" ></p:autoComplete>
+                                    <p:autoComplete class="form-control" value="#{webUserController.area}"
+                                                    completeMethod="#{areaApplicationController.completeAreas}"
+                                                    var="a"
+                                                    itemLabel="#{a.name}"
+                                                    itemValue="#{a}" ></p:autoComplete>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <p:outputLabel value="PDHS" class="col-md-2" ></p:outputLabel>
+                                <p:outputLabel value="Institution" class="col-md-2" ></p:outputLabel>
                                 <div class="col-md-4">
-                                    <p:autoComplete value="#{areaController.pdhs}" class="form-control"
-                                                    completeMethod="#{areaApplicationController.completePdhsAreas}"
-                                                    var="pd"
-                                                    itemLabel="#{pd.name}"
-                                                    itemValue="#{pd}" ></p:autoComplete>
+                                    <p:autoComplete value="#{webUserController.institution}" class="form-control"
+                                                    completeMethod="#{institutionController.completeInstitutions}"
+                                                    var="ins"
+                                                    itemLabel="#{ins.name}"
+                                                    itemValue="#{ins}" ></p:autoComplete>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <p:outputLabel value="District" class="col-md-2" ></p:outputLabel>
+                                <p:outputLabel value="User Role" class="col-md-2" ></p:outputLabel>
                                 <div class="col-md-4">
-                                    <p:autoComplete value="#{areaController.district}" class="form-control"
-                                                    completeMethod="#{areaApplicationController.completeDistricts}"
-                                                    var="d"
-                                                    itemLabel="#{d.name}"
-                                                    itemValue="#{d}" ></p:autoComplete>
+                                    <p:selectOneMenu value="#{webUserController.userRole}" class="form-control"
+                                                     >
+                                        <f:selectItem itemLabel="Select" ></f:selectItem>
+                                        <f:selectItems value="#{commonController.webUserRoles}"
+                                                       var="ur"
+                                                       itemLabel="#{ur.label}"
+                                                       itemValue="#{ur}" ></f:selectItems>
+                                    </p:selectOneMenu>
                                 </div>
                             </div>
+
                             <div class="form-group row">
-                                <p:outputLabel value="RDHS Area" class="col-md-2" ></p:outputLabel>
+                                <p:outputLabel value="User Names Seperated by Line Breaks" class="col-md-2" ></p:outputLabel>
                                 <div class="col-md-4">
-                                    <p:autoComplete value="#{areaController.rdhs}" class="form-control"
-                                                    completeMethod="#{areaApplicationController.completeRdhsAreas}"
-                                                    var="rd"
-                                                    itemLabel="#{rd.name}"
-                                                    itemValue="#{rd}" ></p:autoComplete>
+                                    <p:inputTextarea class="form-control" value="#{webUserController.bulkText}" rows="30" cols="40" ></p:inputTextarea>
                                 </div>
                             </div>
+
                             <div class="form-group row">
-                                <p:outputLabel value="Parent Institution" class="col-md-2" ></p:outputLabel>
-                                <div class="col-md-4">
-                                    <p:autoComplete class="form-control" value="#{areaController.rdhsInstitution}"
-                                                    completeMethod="#{institutionController.completeRdhs}"
-                                                    var="rd"
-                                                    itemLabel="#{rd.name}"
-                                                    itemValue="#{rd}" ></p:autoComplete>
-                                </div>
+
+                                <h:commandButton value="Download" >
+                                    <p:dataExporter target="tbl" type="xls" fileName="New Users - #{webUserController.institution.name}" ></p:dataExporter>
+                                </h:commandButton>
+
+                                <p:dataTable value="#{webUserController.addedUsers}" var="u" >
+                                    <p:column headerText="Name" >
+                                        <h:outputLabel value="#{u.person.name}"></h:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Institution" >
+                                        <h:outputLabel value="#{u.institution.name}"></h:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Username" >
+                                        <h:outputLabel value="#{u.name}"></h:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="Password" >
+                                        <h:outputLabel value="abcd1234"></h:outputLabel>
+                                    </p:column>
+                                </p:dataTable>
                             </div>
-                            <div class="form-group row">
-                                <p:outputLabel value="MOH Areas Seperated by Line Breaks" class="col-md-2" ></p:outputLabel>
-                                <div class="col-md-4">
-                                    <p:inputTextarea class="form-control" value="#{areaController.bulkText}" rows="30" cols="40" ></p:inputTextarea>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </h:form>

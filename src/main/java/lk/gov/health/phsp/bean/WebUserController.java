@@ -187,7 +187,7 @@ public class WebUserController implements Serializable {
     private int metadataTabIndex;
 
     private String ipAddress;
-    
+
     private String bulkText;
     Area area;
     List<WebUser> addedUsers;
@@ -213,7 +213,6 @@ public class WebUserController implements Serializable {
         userTransactionController.recordTransaction("Invalidating the Session", this.toString());
     }
 
-    
     public void onResize(ColumnResizeEvent event) {
         String viewId = event.getFacesContext().getViewRoot().getViewId();
         String columnId = event.getColumn().getClientId();
@@ -221,9 +220,7 @@ public class WebUserController implements Serializable {
         Integer h = event.getHeight();
         String colName = event.getColumn().getHeaderText();
     }
-    
-  
-    
+
     private void findIpAddress() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         ipAddress = request.getHeader("X-FORWARDED-FOR");
@@ -840,7 +837,7 @@ public class WebUserController implements Serializable {
         c.add(Calendar.DAY_OF_MONTH, -7);
         fromDate = c.getTime();
         dashboardController.setMyCovidData(null);
-        
+
         if (null != loggedUser.getWebUserRoleLevel()) {
             switch (loggedUser.getWebUserRoleLevel()) {
                 case Lab:
@@ -1680,10 +1677,10 @@ public class WebUserController implements Serializable {
         return "";
     }
 
-    public void clearAddedUsers(){
+    public void clearAddedUsers() {
         addedUsers = new ArrayList<>();
     }
-    
+
     public String addMultipleUsers() {
         addedUsers = new ArrayList<>();
         if (bulkText == null || bulkText.trim().equals("")) {
@@ -1694,15 +1691,15 @@ public class WebUserController implements Serializable {
             JsfUtil.addErrorMessage("Institution?");
             return "";
         }
-        if(area==null){
-             JsfUtil.addErrorMessage("Area?");
+        if (area == null) {
+            JsfUtil.addErrorMessage("Area?");
             return "";
         }
-        if(userRole==null){
+        if (userRole == null) {
             JsfUtil.addErrorMessage("Institution?");
             return "";
         }
-        
+
         String lines[] = bulkText.split("\\r?\\n");
 
         for (String line : lines) {
@@ -1710,33 +1707,30 @@ public class WebUserController implements Serializable {
                 continue;
             }
             line = line.trim();
-            
 
-            Person mohPerson = new Person();
-            mohPerson.setName(line);
-            personController.save(mohPerson);
+            Person newPerson = new Person();
+            newPerson.setName(line);
+            personController.save(newPerson);
 
-            WebUser mohUser = new WebUser();
-            mohUser.setName("moh" + line);
-            mohUser.setPerson(mohPerson);
-            mohUser.setInstitution(institution);
-            mohUser.setArea(area);
-            mohUser.setWebUserRole(userRole);
-            mohUser.setWebUserPassword(commonController.hash("abcd1234"));
-            mohUser.setCreatedAt(new Date());
-            mohUser.setCreater(getLoggedUser());
-            save(mohUser);
-            addWebUserPrivileges(mohUser, getInitialPrivileges(mohUser.getWebUserRole()));
-            save(mohUser);
-            addedUsers.add(mohUser);
+            WebUser newUser = new WebUser();
+            newUser.setName(line.toLowerCase());
+            newUser.setPerson(newPerson);
+            newUser.setInstitution(institution);
+            newUser.setArea(area);
+            newUser.setWebUserRole(userRole);
+            newUser.setWebUserPassword(commonController.hash("abcd1234"));
+            newUser.setCreatedAt(new Date());
+            newUser.setCreater(getLoggedUser());
+            save(newUser);
+            addWebUserPrivileges(newUser, getInitialPrivileges(newUser.getWebUserRole()));
+            save(newUser);
+            addedUsers.add(newUser);
         }
 
         bulkText = "";
         return "";
     }
-    
-    
-    
+
     public void save(WebUser u) {
         if (u == null) {
             return;
@@ -2507,6 +2501,10 @@ public class WebUserController implements Serializable {
         return reportTabIndex;
     }
 
+    public List<WebUser> getAddedUsers() {
+        return addedUsers;
+    }
+
     public void setReportTabIndex(int reportTabIndex) {
         this.reportTabIndex = reportTabIndex;
     }
@@ -2642,10 +2640,6 @@ public class WebUserController implements Serializable {
         this.area = area;
     }
 
-  
-
-    
-    
     public String getBulkText() {
         return bulkText;
     }

@@ -114,6 +114,9 @@
                                     rendered="#{webUserController.hasPrivilege('System_Administration')}"/>
                         <p:menuitem value="View Users" action="#{webUserController.toManageAllUsers()}" ajax="false"
                                     rendered="#{webUserController.hasPrivilege('System_Administration')}"/>
+                        <p:menuitem value="Add Multiple Users" action="/webUser/adding_Multiple_users" ajax="false"
+                                    rendered="#{webUserController.hasPrivilege('System_Administration')}"/>
+                        
                         <p:menuitem value="Set User Privilages" action="#{webUserController.toSetUserPrivilages()}" ajax="false"
                                     rendered="#{webUserController.hasPrivilege('System_Administration')}" />
                         <p:menuitem value="View Transactions" action="#{userTransactionController.toSearchUserTransactions()}" ajax="false"

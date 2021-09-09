@@ -81,6 +81,7 @@ public class AreaController implements Serializable {
     private Area province;
     private Area rdhs;
     private Area pdhs;
+    private Area area;
 
     private Institution rdhsInstitution;
     
@@ -1264,6 +1265,8 @@ public class AreaController implements Serializable {
         this.institutionColumnNumber = institutionColumnNumber;
     }
 
+    
+    
     public InstitutionController getInstitutionController() {
         return institutionController;
     }
@@ -1360,6 +1363,14 @@ public class AreaController implements Serializable {
 
     public void setRdhsInstitution(Institution rdhsInstitution) {
         this.rdhsInstitution = rdhsInstitution;
+    }
+
+    public Area getArea() {
+        return area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
     }
 
     // </editor-fold>
