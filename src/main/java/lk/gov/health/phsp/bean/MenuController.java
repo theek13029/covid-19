@@ -165,7 +165,7 @@ public class MenuController implements Serializable {
             case Regional:
                 return "/regional/admin/index";
             case National:
-                return "/systemAdmin/index";
+                return "/national/admin/index";
             case Hospital:
                 return "/hospital/admin/index";
             case Lab:
@@ -250,21 +250,29 @@ public class MenuController implements Serializable {
         }
     }
 
-    public String toListUser() {
+    public String toListUsers() {
         boolean privileged = false;
+        boolean national=false;
+        boolean subNational=false;
         for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
             if (up.getPrivilege() == Privilege.Institution_Administration) {
                 privileged = true;
+                subNational=true;
             }
             if (up.getPrivilege() == Privilege.System_Administration) {
                 privileged = true;
+                national = true;
             }
         }
         if (!privileged) {
             JsfUtil.addErrorMessage("You are NOT autherized");
             return "";
         }
-        webUserController.prepareListingUsers();
+        if(national){
+            webUserController.prepareListingAllUsers();
+        }else{
+            webUserController.prepareListingUsersUnderMe();
+        }
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
                 return "/regional/admin/user_list";
@@ -285,6 +293,51 @@ public class MenuController implements Serializable {
         }
     }
 
+    
+    public String toPrivileges() {
+        boolean privileged = false;
+        boolean national=false;
+        for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
+            if (up.getPrivilege() == Privilege.Institution_Administration) {
+                privileged = true;
+            }
+            if (up.getPrivilege() == Privilege.System_Administration) {
+                privileged = true;
+                national = true;
+            }
+        }
+        if (!privileged) {
+            JsfUtil.addErrorMessage("You are NOT autherized");
+            return "";
+        }
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                webUserController.preparePrivileges(webUserApplicationController.getRegionalPrivilegeRoot());
+                return "/regional/admin/privileges";
+            case National:
+                webUserController.preparePrivileges(webUserApplicationController.getAllPrivilegeRoot());
+                return "/national/admin/privileges";
+            case Hospital:
+                webUserController.preparePrivileges(webUserApplicationController.getHospitalPrivilegeRoot());
+                return "/hospital/admin/privileges";
+            case Lab:
+                webUserController.preparePrivileges(webUserApplicationController.getLabPrivilegeRoot());
+                return "/lab/admin/privileges";
+            case National_Lab:
+                webUserController.preparePrivileges(webUserApplicationController.getAllPrivilegeRoot());
+                return "/national/admin/privileges";
+            case Moh:
+                webUserController.preparePrivileges(webUserApplicationController.getMohPrivilegeRoot());
+                return "/moh/admin/privileges";
+            case Provincial:
+                webUserController.preparePrivileges(webUserApplicationController.getProvincialPrivilegeRoot());
+                return "/provincial/admin/privileges";
+            default:
+                return "";
+        }
+    }
+
+    
     public String toEditUser() {
         boolean privileged = false;
         for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
@@ -333,6 +386,7 @@ public class MenuController implements Serializable {
             JsfUtil.addErrorMessage("You are NOT autherized");
             return "";
         }
+        webUserController.prepareEditPassword();
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
                 return "/regional/admin/user_password";

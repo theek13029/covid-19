@@ -7,8 +7,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-        <ui:composition template="/template1.xhtml">
-            <ui:define name="content" >                
+        <ui:composition template="/national/admin/index.xhtml">
+            <ui:define name="admin" >                
                 <p:panel class="h-100 text-center" rendered="#{!webUserController.loggedUser.systemAdministrator}">
                     <h1>You are NOT authorized</h1>
                 </p:panel>
@@ -129,7 +129,9 @@
                                 </div>
                             </div>
                             <div class="card-footer bg-white">
-                                <h:commandButton class="btn btn-success px-5 my-3" action="#{webUserController.saveNewWebUser()}" value="#{bundleClinical.Save}"/>
+                                <h:commandButton class="btn btn-success px-5 my-3" 
+                                                 action="#{webUserController.saveNewWebUser()}" 
+                                                 value="#{bundleClinical.Save}"/>
                             </div>
                         </div>
                         <div class="row" >
