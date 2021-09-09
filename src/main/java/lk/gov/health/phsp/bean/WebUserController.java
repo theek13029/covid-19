@@ -37,12 +37,15 @@ import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import lk.gov.health.phsp.entity.Person;
 import lk.gov.health.phsp.entity.Relationship;
 import lk.gov.health.phsp.entity.UserPrivilege;
+import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.enums.Privilege;
 import lk.gov.health.phsp.enums.PrivilegeTreeNode;
 import lk.gov.health.phsp.enums.RelationshipType;
+import lk.gov.health.phsp.enums.WebUserRoleLevel;
 import lk.gov.health.phsp.facade.UserPrivilegeFacade;
 import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.model.StreamedContent;
@@ -76,6 +79,8 @@ public class WebUserController implements Serializable {
     Controllers
      */
 
+    @Inject
+    PersonController personController;
     @Inject
     private CommonController commonController;
     @Inject
@@ -125,6 +130,7 @@ public class WebUserController implements Serializable {
     private List<Institution> loggableProcedureRooms;
 
     private List<Area> loggableGnAreas;
+    private WebUserRole userRole;
 
     private Area selectedProvince;
     private Area selectedDistrict;
@@ -181,6 +187,10 @@ public class WebUserController implements Serializable {
     private int metadataTabIndex;
 
     private String ipAddress;
+    
+    private String bulkText;
+    Area area;
+    List<WebUser> addedUsers;
 
     /**
      *
@@ -1670,6 +1680,63 @@ public class WebUserController implements Serializable {
         return "";
     }
 
+    public void clearAddedUsers(){
+        addedUsers = new ArrayList<>();
+    }
+    
+    public String addMultipleUsers() {
+        addedUsers = new ArrayList<>();
+        if (bulkText == null || bulkText.trim().equals("")) {
+            JsfUtil.addErrorMessage("Text ?");
+            return "";
+        }
+        if (institution == null) {
+            JsfUtil.addErrorMessage("Institution?");
+            return "";
+        }
+        if(area==null){
+             JsfUtil.addErrorMessage("Area?");
+            return "";
+        }
+        if(userRole==null){
+            JsfUtil.addErrorMessage("Institution?");
+            return "";
+        }
+        
+        String lines[] = bulkText.split("\\r?\\n");
+
+        for (String line : lines) {
+            if (line == null || line.trim().equals("")) {
+                continue;
+            }
+            line = line.trim();
+            
+
+            Person mohPerson = new Person();
+            mohPerson.setName(line);
+            personController.save(mohPerson);
+
+            WebUser mohUser = new WebUser();
+            mohUser.setName("moh" + line);
+            mohUser.setPerson(mohPerson);
+            mohUser.setInstitution(institution);
+            mohUser.setArea(area);
+            mohUser.setWebUserRole(userRole);
+            mohUser.setWebUserPassword(commonController.hash("abcd1234"));
+            mohUser.setCreatedAt(new Date());
+            mohUser.setCreater(getLoggedUser());
+            save(mohUser);
+            addWebUserPrivileges(mohUser, getInitialPrivileges(mohUser.getWebUserRole()));
+            save(mohUser);
+            addedUsers.add(mohUser);
+        }
+
+        bulkText = "";
+        return "";
+    }
+    
+    
+    
     public void save(WebUser u) {
         if (u == null) {
             return;
@@ -2557,6 +2624,34 @@ public class WebUserController implements Serializable {
 
     public void setLoggableMohAreas(List<Area> loggableMohAreas) {
         this.loggableMohAreas = loggableMohAreas;
+    }
+
+    public WebUserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(WebUserRole userRole) {
+        this.userRole = userRole;
+    }
+
+    public Area getArea() {
+        return area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
+  
+
+    
+    
+    public String getBulkText() {
+        return bulkText;
+    }
+
+    public void setBulkText(String bulkText) {
+        this.bulkText = bulkText;
     }
 
     @FacesConverter(forClass = WebUser.class)

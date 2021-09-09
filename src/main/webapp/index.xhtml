@@ -23,6 +23,15 @@
                         <ez:dashboardHospital rendered="#{webUserController.loggedUser.hospitalDashboard}"/>
                     </h:panelGroup>
                 </div>
+
+                <h:panelGroup rendered="true" >
+                    <p:autoComplete  id="institution" value="#{institutionController.selected}" 
+                                     completeMethod="#{institutionController.completeInstitutions}"
+                                     var="i" itemLabel="#{i.name}" itemValue="#{i}"
+                                     forceSelection="true" maxResults="15" minQueryLength="3">
+                    </p:autoComplete >
+                </h:panelGroup>
+
             </ui:define>
         </ui:composition>
     </h:body>

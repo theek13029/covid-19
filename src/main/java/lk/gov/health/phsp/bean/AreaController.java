@@ -263,6 +263,7 @@ public class AreaController implements Serializable {
             newMoh.setName(line);
             newMoh.setType(AreaType.MOH);
             newMoh.setCode("moh_area_" + line);
+            newMoh.setPmci(rdhsInstitution.getParent());
             getFacade().create(newMoh);
 
             insMoh.setMohArea(newMoh);
