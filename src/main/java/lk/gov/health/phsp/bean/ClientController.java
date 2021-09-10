@@ -1696,7 +1696,7 @@ public class ClientController implements Serializable {
             encounterFacade.edit(e);
         }
 //        selectedToPrint = null;
-        return "/lab/printing_results";
+        return "/lab/print_preview";
     }
 
     public String toLabPrintSelectedBulk() {
