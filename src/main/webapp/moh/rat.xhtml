@@ -76,7 +76,7 @@
                                         </div>
 
                                         <div class="col-md-2">
-                                            <h:outputLabel class= "h6 fw-bold mb-2" value="District:"  for="district" />
+                                            <h:outputLabel class= "h6 fw-bold mb-2" value="District"  for="district" />
                                             <p:autoComplete required="true"
                                                             requiredMessage="Please select a district"
                                                             tabindex="110"
@@ -93,7 +93,7 @@
 
 
                                         <div class="col-md-2">
-                                            <h:outputLabel class= "h6 fw-bold mb-2" value="MOH Area:" for="moh" />
+                                            <h:outputLabel class= "h6 fw-bold mb-2" value="MOH Area" for="moh" />
                                             <p:autoComplete id="moh"
                                                             tabindex="111" style="width:100%;"
                                                             value="#{mohController.rat.client.person.mohArea}"
@@ -107,7 +107,7 @@
                                     </div>
                                     <div class="my-4 row">
                                         <div class="col-md-4">
-                                            <h:outputLabel class= "h6 fw-bold mb-2" value="Name:" for="name" />
+                                            <h:outputLabel class= "h6 fw-bold mb-2" value="Name" for="name" />
                                             <h:inputText autocomplete="off"
                                                          class="form-control"
                                                          tabindex="2"
@@ -117,7 +117,7 @@
                                                          value="#{mohController.rat.client.person.name}" title="Name" />
                                         </div>
                                         <div class="col-md-2">
-                                            <p:outputLabel value="Vaccination:"  for="vstatus" class="h6 fw-bold mb-2"/>
+                                            <p:outputLabel value="Vaccination"  for="vstatus" class="h6 fw-bold mb-2"/>
                                             <h:selectOneMenu
                                                 id="vstatus" value="#{mohController.rat.vaccinationStatus}" 
                                                 class="form-select w-100"
@@ -128,7 +128,7 @@
                                             </h:selectOneMenu>
                                         </div>
                                         <div class="col-md-2">
-                                            <h:outputLabel class= "h6 fw-bold mb-2" value="Symptomatic:"  />
+                                            <h:outputLabel class= "h6 fw-bold mb-2" value="Symptomatic"  />
                                             <h:selectOneMenu 
                                                 id="sstatus"
                                                 tabindex="106"
@@ -140,14 +140,14 @@
                                         </div>
 
                                         <div class="col-md-2">
-                                            <h:outputLabel class= "h6 fw-bold mb-2" value="Citizenship:" for="citizenship" />
+                                            <h:outputLabel class= "h6 fw-bold mb-2" value="Citizenship" for="citizenship" />
                                             <h:selectOneMenu class="form-select w-100" id="citizenship" value="#{mohController.rat.client.person.citizenship}"
                                                              tabindex="103" >
                                                 <f:selectItems value="#{mohController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}"></f:selectItems>
                                             </h:selectOneMenu>
                                         </div>
                                         <div class="col-md-2">
-                                            <h:outputLabel class= "h6 fw-bold mb-2" value="PHN No.:" for="phn" />
+                                            <h:outputLabel class= "h6 fw-bold mb-2" value="PHN No" for="phn" />
                                             <p:inputText id="phn" autocomplete="off"
                                                          tabindex="104"
                                                          class="form-control" value="#{mohController.rat.client.phn}" title="Phn" placeholder="New PHN"
@@ -157,7 +157,7 @@
 
                                     <div class="my-4 row">
                                         <div class="col-md-2">
-                                            <h:outputLabel class= "h6 fw-bold mb-2" value="NIC :" for="nic" />
+                                            <h:outputLabel class= "h6 fw-bold mb-2" value="NIC" for="nic" />
                                             <h:inputText id="nic" class="form-control"
                                                          tabindex="3"
                                                          autocomplete="off"
@@ -176,7 +176,7 @@
                                             </h:panelGroup>
                                         </div>
                                         <div class="col-md-2">
-                                            <h:outputLabel class= "h6 fw-bold mb-2" value="Gender:"  for="sex" />
+                                            <h:outputLabel class= "h6 fw-bold mb-2" value="Gender"  for="sex" />
                                             <h:selectOneMenu
                                                 class="form-select w-100"
                                                 id="sex" value="#{mohController.rat.client.person.sex}" required="true"
@@ -229,29 +229,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 bg-light text-dark">
-                                            <h:outputLabel class= "h6 mb-2" value="Workplace:"  />
-                                            <h:inputText class= "form-control w-100" tabindex="114" value="#{mohController.rat.client.person.workPlace}"
-                                                         >
-                                            </h:inputText>
-                                        </div>
-                                        <div class="col-md-2 bg-light text-dark">
-                                            <h:outputLabel class= "h6 mb-2" value="Workplace Contact Name:"  />
-                                            <h:inputText class= "form-control w-100" tabindex="114" value="#{mohController.rat.client.person.workplaceContact}"
-                                                         >
-                                            </h:inputText>
-                                        </div>
-                                        <div class="col-md-2 bg-light text-dark">
-                                            <h:outputLabel value="Contact Number: " class="h6 mb-2" />
-                                            <h:inputText tabindex="114" class="form-control w-100" value="#{mohController.rat.client.person.workplaceContactDetails}"
-                                                         style="width:100%;" >
-                                            </h:inputText>
-                                        </div>
-                                    </div>
-
-                                    <div class="my-4 row">
                                         <div class="col-md-3">
-                                            <p:outputLabel class="h6 fw-bold mb-2" value="Address:" for="address" />
+                                            <p:outputLabel class="h6 fw-bold mb-2" value="Address" for="address" />
                                             <p:commandLink id="lnkLastAddress" style="width: 5%; float: right;"
                                                            action="#{mohController.retrieveLastAddressForRat()}" process="lnkLastAddress" update="address" >
                                                 <i class="bi bi-arrow-clockwise"></i>
@@ -271,7 +250,7 @@
 
 
                                         <div class="col-md-3">
-                                            <p:outputLabel class= "h6 fw-bold mb-2" value="Contact Number :" for="phone1" />
+                                            <p:outputLabel class= "h6 fw-bold mb-2" value="Contact Number" for="phone1" />
                                             <p:commandLink id="lnkLastphone1" style="float: right;"
                                                            action="#{mohController.retrieveLastPhoneForRat()}" process="lnkLastphone1" update="phone1">
                                                 <i class="bi bi-arrow-clockwise"></i>
@@ -285,8 +264,31 @@
                                             </h:inputText>
 
                                         </div>
+                                    </div>
+                                    <div class="my-4 row">
+                                        <div class="col-md-4 bg-light text-dark">
+                                            <h:outputLabel class= "h6 fw-bold mb-2" value="Workplace"  />
+                                            <h:inputText class= "form-control w-100 mb-2" tabindex="114" value="#{mohController.rat.client.person.workPlace}"
+                                                         >
+                                            </h:inputText>
+                                        </div>
+                                        <div class="col-md-4 bg-light text-dark">
+                                            <h:outputLabel class= "h6 fw-bold mb-2" value="Workplace Contact Name"  />
+                                            <h:inputText class= "form-control w-100 mb-2" tabindex="114" value="#{mohController.rat.client.person.workplaceContact}"
+                                                         >
+                                            </h:inputText>
+                                        </div>
+                                        <div class="col-md-4 bg-light text-dark">
+                                            <h:outputLabel value="Contact Number" class="h6 fw-bold mb-2" />
+                                            <h:inputText tabindex="114" class="form-control w-100 mb-2" value="#{mohController.rat.client.person.workplaceContactDetails}"
+                                                         style="width:100%;" >
+                                            </h:inputText>
+                                        </div>
+                                    </div>
+                                    <div class="my-4 row">
+                                        
                                         <div class="col-md-3">
-                                            <h:outputLabel class= "h6 fw-bold mb-2" value="GN Area:" for="gn" />
+                                            <h:outputLabel class= "h6 fw-bold mb-2" value="GN Area" for="gn" />
                                             <p:commandLink id="lnkLastGn" style="float: right;"
                                                            action="#{mohController.retrieveLastGnRat()}" process="lnkLastGn" update="gn">
                                                 <i class="bi bi-arrow-clockwise"></i>
@@ -304,7 +306,7 @@
 
 
                                         <div class="col-md-3 ">
-                                            <h:outputLabel class= "h6 fw-bold mb-2" value="PHI Area:" for="phi" />
+                                            <h:outputLabel class= "h6 fw-bold mb-2" value="PHI Area" for="phi" />
                                             <p:autoComplete tabindex="113"
                                                             id="phi"
                                                             value="#{mohController.rat.client.person.phiArea}"
