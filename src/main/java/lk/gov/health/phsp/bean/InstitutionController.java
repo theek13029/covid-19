@@ -37,6 +37,7 @@ import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.InstitutionType;
+import lk.gov.health.phsp.enums.WebUserRoleLevel;
 import lk.gov.health.phsp.facade.AreaFacade;
 import org.primefaces.model.file.UploadedFile;
 
@@ -290,10 +291,10 @@ public class InstitutionController implements Serializable {
     }
 
     public List<Institution> findChildrenPmcis(Institution ins, String qry) {
-        if(qry==null || qry.trim().equals("")){
+        if (qry == null || qry.trim().equals("")) {
             return null;
         }
-        qry=qry.toLowerCase();
+        qry = qry.toLowerCase();
         List<Institution> allIns = institutionApplicationController.getInstitutions();
         List<Institution> cins = new ArrayList<>();
         for (Institution i : allIns) {
@@ -315,7 +316,7 @@ public class InstitutionController implements Serializable {
         }
         List<Institution> ttins = new ArrayList<>();
         for (Institution i : tins) {
-            if(i.getName().toLowerCase().contains(qry)){
+            if (i.getName().toLowerCase().contains(qry)) {
                 ttins.add(i);
             }
         }
@@ -580,12 +581,22 @@ public class InstitutionController implements Serializable {
         initializeEmbeddableKey();
         return selected;
     }
-    
-    public void prepareToAddNewInstitution(){
+
+    public void prepareToAddNewInstitution() {
         selected = new Institution();
     }
 
- 
+    public void prepareToListInstitution() {
+        if(webUserController.getLoggedUser()==null){
+            items = null;
+        }
+        if (webUserController.getLoggedUser().getWebUserRoleLevel() == WebUserRoleLevel.National
+                || webUserController.getLoggedUser().getWebUserRoleLevel() == WebUserRoleLevel.National_Lab) {
+            items = institutionApplicationController.getInstitutions();
+        }else{
+            items = webUserController.findAutherizedInstitutions();
+        }
+    }
 
     public void saveOrUpdateInstitution() {
         if (selected == null) {
