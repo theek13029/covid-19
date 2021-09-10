@@ -1846,11 +1846,11 @@ public class ClientController implements Serializable {
                 html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue("pcrInconclusiveComment", webUserController.getLoggedInstitution()));
             } else {
                 html = html.replace("{pcr_result_string}", getPreferenceController().findPreferanceValue(""));
-                html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue("pcrInconclusiveComment", ""));
+                html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue( ""));
             }
         } else {
             html = html.replace("{pcr_result_string}", getPreferenceController().findPreferanceValue(""));
-            html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue("pcrInconclusiveComment", ""));
+            html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue( ""));
         }
 
         return html;
