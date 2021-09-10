@@ -57,10 +57,20 @@
     }
   </style>
 </head>
-    <h:body>
-        <button class="no-print" id="print-button" onclick="window.print()">
-            Print Investigations
-        </button>
-        <h:outputText value="#{clientController.bulkPrintReport}" escape="false" ></h:outputText>
-    </h:body>
+
+<body>
+  <button class="no-print" id="print-button" onclick="window.print()">
+    Print Investigation
+  </button>
+
+  <ui:repeat value="#{clientController.selectedToPrint}" var="p">
+
+    <div class="content-area">
+      <div class="print-area">
+        <h:outputText value="#{clientController.generateLabReport(p)}" escape="false"></h:outputText>
+      </div>
+    </div>
+  </ui:repeat>
+</body>
+
 </html>
