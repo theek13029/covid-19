@@ -53,6 +53,7 @@ import lk.gov.health.phsp.pojcs.CovidData;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
 import lk.gov.health.phsp.pojcs.OrderingCategoryResults;
 import org.joda.time.DateTimeComparator;
+import org.json.JSONObject;
 
 /**
  *
@@ -99,6 +100,10 @@ public class DashboardApplicationController {
     private String todayRatPositiveRate;
     private String yesterdayPcrPositiveRate;
     private String yesterdayRatPositiveRate;
+
+//  Json data of PCR and RAT positive cases to be used to generate chart
+    private JSONObject pcrPositiveCasesJSON;
+    private JSONObject ratPositiveCasesJSON;
 
 //  Round double values to two decimal format
     private static DecimalFormat df = new DecimalFormat("0.00");
@@ -169,6 +174,26 @@ public class DashboardApplicationController {
                 itemApplicationController.getPcrPositive(),
                 null);
         orderingCounts = listOrderingCategoryCounts(null, yesterdayStart, now, null, null, null, null);
+
+//        Get the PCR Positive cases within the last 14 days
+        Map<String, String> pcrPositiveSeries = this.getSeriesOfCases(
+                now,
+                14,
+                this.itemApplicationController.getPcr(),
+                this.itemApplicationController.getPcrPositive()
+        );
+
+//        Get the RAT positive cases within the last 14 dats
+        Map<String, String> ratPositiveSeries = this.getSeriesOfCases(
+                now,
+                14,
+                this.itemApplicationController.getRat(),
+                this.itemApplicationController.getPcrPositive()
+        );
+
+
+        this.pcrPositiveCasesJSON = new JSONObject(pcrPositiveSeries);
+        this.ratPositiveCasesJSON = new JSONObject(ratPositiveSeries);
 
 //      This will return today's pcr positive rate as a percentage
         if (this.todayPcr != 0) {
@@ -406,10 +431,42 @@ public Long samplesAwaitingDispatch(
     hashMap.put("fd", fromDate);
     hashMap.put("sl", false);
     hashMap.put("td", toDate);
-   
+
 
     return encounterFacade.findLongByJpql(jpql, hashMap, TemporalType.DATE);
 
+}
+
+//This function will return a series of cases depending on a provided time period
+public Map<String, String> getSeriesOfCases(
+        Date fromDate,
+        int duration,
+        Item testType,
+        Item result
+) {
+    int MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
+
+    Map<String, String> hashMap = new HashMap<String, String>();
+    Date startOfTheDate = CommonController.startOfTheDate(fromDate);
+
+    if (duration < 1) {
+        hashMap.put("", "");
+    } else {
+        for (int i = 0; i <= duration; i++) {
+            Date currentDate = new Date(startOfTheDate.getTime() - (long) MILLIS_IN_A_DAY * i);
+            Date endDate = CommonController.endOfTheDate(currentDate);
+            Long positive_cases = this.getConfirmedCount(
+                    null,
+                    currentDate,
+                    endDate,
+                    testType,
+                    null,
+                    result,
+                    null);
+            hashMap.put(currentDate.toString(), Long.toString(positive_cases));
+        }
+    }
+    return hashMap;
 }
 
 //  This will return count of Investigations where MOH area is not given
@@ -778,6 +835,15 @@ public Long samplesAwaitingDispatch(
             updateDashboard();
         }
         return todayPositiveRat;
+    }
+
+//    Getter for cases JSON data
+    public JSONObject getPcrPositiveCasesJSON() {
+        return pcrPositiveCasesJSON;
+    }
+
+    public JSONObject getRatPositiveCasesJSON() {
+        return ratPositiveCasesJSON;
     }
 
     public Long getYesterdayPcr() {
