@@ -365,6 +365,7 @@ public Long samplesAwaitingDispatch(
 
     if (institution != null){
         jpql += " and c.institution=:ins ";
+         hashMap.put("ins", institution);
     }
 
     if( area != null) {
@@ -405,7 +406,7 @@ public Long samplesAwaitingDispatch(
     hashMap.put("fd", fromDate);
     hashMap.put("sl", false);
     hashMap.put("td", toDate);
-    hashMap.put("ins", institution);
+   
 
     return encounterFacade.findLongByJpql(jpql, hashMap, TemporalType.DATE);
 
