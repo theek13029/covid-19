@@ -76,7 +76,17 @@
                         <div class="row" >
                             <p:dataTable id="tbl" value="#{clientController.listedToPrint}"
                                          rowIndexVar="n"
-                                         var="c" paginator="true" rowKey="#{c.id}" rows="10"
+                                         var="c" 
+                                         rowKey="#{c.id}" 
+
+                                         rows="10"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                         rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+
+                                          rowStyleClass="#{(c.pcrResult.name) eq 'Positive'?'bg-danger':''}"
+                                         
                                          selection="#{clientController.selectedToPrint}">
                                 <p:column selectionMode="multiple" width="50" >
                                 </p:column>

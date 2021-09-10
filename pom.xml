@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.divudi</groupId>
-    <artifactId>dev</artifactId>
+    <artifactId>dev2</artifactId>
     <version>0.1</version>
     <packaging>war</packaging>
 
-    <name>dev</name>
+    <name>dev2</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
