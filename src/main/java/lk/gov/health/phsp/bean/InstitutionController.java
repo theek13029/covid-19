@@ -580,6 +580,10 @@ public class InstitutionController implements Serializable {
         initializeEmbeddableKey();
         return selected;
     }
+    
+    public void prepareToAddNewInstitution(){
+        selected = new Institution();
+    }
 
  
 

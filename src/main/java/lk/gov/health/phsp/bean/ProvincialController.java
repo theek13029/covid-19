@@ -161,7 +161,7 @@ public class ProvincialController implements Serializable {
         m.put("etype", EncounterType.Test_Enrollment);
 
         j += " and c.client.person.mohArea=:moh ";
-        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
+        m.put("moh", webUserController.getLoggedInstitution().getMohArea());
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
@@ -499,7 +499,7 @@ public class ProvincialController implements Serializable {
             return;
         }
         if (deleting.getReceivedAtLab() != null && deleting.getReferalInstitution() != null) {
-            if (deleting.getReceivedAtLab() != null && deleting.getReferalInstitution() != webUserController.getLoggedUser().getInstitution()) {
+            if (deleting.getReceivedAtLab() != null && deleting.getReferalInstitution() != webUserController.getLoggedInstitution()) {
                 JsfUtil.addErrorMessage("Already receievd by the Lab. Can't delete.");
                 return;
             }
@@ -516,8 +516,8 @@ public class ProvincialController implements Serializable {
         its.add(InstitutionType.Hospital);
         its.add(InstitutionType.MOH_Office);
         Area rdhs;
-        if (webUserController.getLoggedUser().getInstitution() != null && webUserController.getLoggedUser().getInstitution().getRdhsArea() != null) {
-            rdhs = webUserController.getLoggedUser().getInstitution().getRdhsArea();
+        if (webUserController.getLoggedInstitution() != null && webUserController.getLoggedInstitution().getRdhsArea() != null) {
+            rdhs = webUserController.getLoggedInstitution().getRdhsArea();
             regionalMohsAndHospitals = institutionApplicationController.findRegionalInstitutions(its, rdhs);
         } else {
             regionalMohsAndHospitals = new ArrayList<>();
@@ -535,8 +535,8 @@ public class ProvincialController implements Serializable {
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
         j += " and (c.institution.pdhsArea=:pdhs or c.institution.province=:province ) ";
-        m.put("pdhs", webUserController.getLoggedUser().getInstitution().getPdhsArea());
-        m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
+        m.put("pdhs", webUserController.getLoggedInstitution().getPdhsArea());
+        m.put("province", webUserController.getLoggedInstitution().getProvince());
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
         System.out.println("getFromDate() = " + getFromDate());
@@ -577,8 +577,8 @@ public class ProvincialController implements Serializable {
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
         j += " and (c.institution.pdhsArea=:pdhs or c.institution.province=:province ) ";
-        m.put("pdhs", webUserController.getLoggedUser().getInstitution().getPdhsArea());
-        m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
+        m.put("pdhs", webUserController.getLoggedInstitution().getPdhsArea());
+        m.put("province", webUserController.getLoggedInstitution().getProvince());
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
         System.out.println("getFromDate() = " + getFromDate());
@@ -630,8 +630,8 @@ public class ProvincialController implements Serializable {
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
         j += " and (c.institution.pdhsArea=:pdhs or c.institution.province=:province ) ";
-        m.put("pdhs", webUserController.getLoggedUser().getInstitution().getPdhsArea());
-        m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
+        m.put("pdhs", webUserController.getLoggedInstitution().getPdhsArea());
+        m.put("province", webUserController.getLoggedInstitution().getProvince());
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
         m.put("td", getToDate());
@@ -679,8 +679,8 @@ public class ProvincialController implements Serializable {
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
         j += " and (c.institution.pdhsArea=:pdhs or c.institution.province=:province ) ";
-        m.put("pdhs", webUserController.getLoggedUser().getInstitution().getPdhsArea());
-        m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
+        m.put("pdhs", webUserController.getLoggedInstitution().getPdhsArea());
+        m.put("province", webUserController.getLoggedInstitution().getProvince());
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
         m.put("td", getToDate());
@@ -732,8 +732,8 @@ public class ProvincialController implements Serializable {
             m.put("ins", mohOrHospital);
         } else {
             j += " and (c.institution.province=:pdhs or c.client.person.province=:province) ";
-            m.put("pdhs", webUserController.getLoggedUser().getInstitution().getPdhsArea());
-            m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
+            m.put("pdhs", webUserController.getLoggedInstitution().getPdhsArea());
+            m.put("province", webUserController.getLoggedInstitution().getProvince());
         }
 
         j += " and c.createdAt between :fd and :td ";
@@ -784,7 +784,7 @@ public class ProvincialController implements Serializable {
         m.put("code", "first_contacts");
 
         j += " and ci.areaValue2=:district ";
-        m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
+        m.put("district", webUserController.getLoggedInstitution().getDistrict());
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
@@ -811,7 +811,7 @@ public class ProvincialController implements Serializable {
         m.put("etype", EncounterType.Case_Enrollment);
 
         j += " and ci.areaValue=:mymoh ";
-        m.put("mymoh", webUserController.getLoggedUser().getInstitution().getMohArea());
+        m.put("mymoh", webUserController.getLoggedInstitution().getMohArea());
 
         j += " and ci.item.code=:code ";
         m.put("code", "first_contacts");
@@ -844,7 +844,7 @@ public class ProvincialController implements Serializable {
         m.put("code", "first_contacts");
 
         j += " and ci.areaValue2.province=:province ";
-        m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
+        m.put("province", webUserController.getLoggedInstitution().getProvince());
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
@@ -1052,8 +1052,8 @@ public class ProvincialController implements Serializable {
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
         j += " and (c.institution.pdhsArea=:pdhs or c.institution.province=:province ) ";
-        m.put("pdhs", webUserController.getLoggedUser().getInstitution().getPdhsArea());
-        m.put("province", webUserController.getLoggedUser().getInstitution().getProvince());
+        m.put("pdhs", webUserController.getLoggedInstitution().getPdhsArea());
+        m.put("province", webUserController.getLoggedInstitution().getProvince());
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
         m.put("td", getToDate());
@@ -1210,7 +1210,7 @@ public class ProvincialController implements Serializable {
         m.put("etype", EncounterType.Test_Enrollment);
 
         j += " and c.institution=:ins ";
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        m.put("ins", webUserController.getLoggedInstitution());
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
@@ -1261,8 +1261,8 @@ public class ProvincialController implements Serializable {
             m.put("ins", mohOrHospital);
         } else {
             j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
-            m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
-            m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
+            m.put("rdhs", webUserController.getLoggedInstitution().getRdhsArea());
+            m.put("district", webUserController.getLoggedInstitution().getDistrict());
         }
 
         if (mohArea != null) {
@@ -1314,8 +1314,8 @@ public class ProvincialController implements Serializable {
             m.put("ins", mohOrHospital);
         } else {
             j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
-            m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
-            m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
+            m.put("rdhs", webUserController.getLoggedInstitution().getRdhsArea());
+            m.put("district", webUserController.getLoggedInstitution().getDistrict());
         }
 
         j += " and c.createdAt between :fd and :td ";
@@ -1388,7 +1388,7 @@ public class ProvincialController implements Serializable {
         m.put("etype", EncounterType.Test_Enrollment);
 
         j += " and c.institution=:ins ";
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        m.put("ins", webUserController.getLoggedInstitution());
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());

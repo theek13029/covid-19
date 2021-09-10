@@ -192,6 +192,8 @@ public class WebUserController implements Serializable {
     Area area;
     List<WebUser> addedUsers;
 
+    private Institution loggedInstitution;
+
     /**
      *
      * Privileges
@@ -346,7 +348,7 @@ public class WebUserController implements Serializable {
                 }
             }
         }
-        return "/insAdmin/set_user_privilages";
+        return "/national/admin/multiple_user_privilages";
     }
 
     public boolean hasSelectedUsers() {
@@ -364,11 +366,10 @@ public class WebUserController implements Serializable {
         return "/insAdmin/user_list";
     }
 
-    
     public void prepareListingAllUsers() {
-        items=webUserApplicationController.getItems();
+        items = webUserApplicationController.getItems();
     }
-    
+
     public void prepareListingUsersUnderMe() {
         items = new ArrayList<>();
         if (loggedUser == null) {
@@ -380,7 +381,7 @@ public class WebUserController implements Serializable {
         } else {
             i = loggedUser.getInstitution();
         }
-        
+
         for (WebUser wu : webUserApplicationController.getItems()) {
             if (wu.getInstitution() == null) {
             } else {
@@ -512,16 +513,15 @@ public class WebUserController implements Serializable {
     public String toManageUserIndexForSystemAdmin() {
         return "/webUser/index";
     }
-    
-    
+
     public void preparePrivileges(TreeNode allPrevs) {
         if (current == null) {
             JsfUtil.addErrorMessage("Nothing Selected");
-            return ;
+            return;
         }
-        if(allPrevs==null){
+        if (allPrevs == null) {
             JsfUtil.addErrorMessage("No Privilege Error");
-            return ;
+            return;
         }
         selectedNodes = new TreeNode[0];
         List<UserPrivilege> userps = userPrivilegeList(current);
@@ -561,7 +561,6 @@ public class WebUserController implements Serializable {
         }
         selectedNodes = temSelected.toArray(new TreeNode[temSelected.size()]);
     }
-    
 
     public String toManagePrivileges() {
 
@@ -818,6 +817,7 @@ public class WebUserController implements Serializable {
     public String logOut() {
         userTransactionController.recordTransaction("Logout");
         loggedUser = null;
+        loggedInstitution = null;
         return "/index";
     }
 
@@ -861,6 +861,7 @@ public class WebUserController implements Serializable {
         loggableInstitutions = null;
         loggablePmcis = null;
         loggableGnAreas = null;
+        loggedInstitution = null;
         institutionController.setMyClinics(null);
 
         if (userName == null || userName.trim().equals("")) {
@@ -924,6 +925,9 @@ public class WebUserController implements Serializable {
 
         fillUsersForMyInstitute();
         fillAreasForMe();
+        if (loggedUser != null) {
+            loggedInstitution = loggedUser.getInstitution();
+        }
         return "/index";
     }
 
@@ -1740,7 +1744,9 @@ public class WebUserController implements Serializable {
     }
 
     public String addMultipleUsers() {
-        addedUsers = new ArrayList<>();
+        if (addedUsers == null) {
+            addedUsers = new ArrayList<>();
+        }
         if (bulkText == null || bulkText.trim().equals("")) {
             JsfUtil.addErrorMessage("Text ?");
             return "";
@@ -2765,8 +2771,6 @@ public class WebUserController implements Serializable {
         return bulkText;
     }
 
-    
-    
     public void setBulkText(String bulkText) {
         this.bulkText = bulkText;
     }
@@ -2777,6 +2781,19 @@ public class WebUserController implements Serializable {
 
     public void setInstitutionType(InstitutionType institutionType) {
         this.institutionType = institutionType;
+    }
+
+    public Institution getLoggedInstitution() {
+        if (loggedInstitution == null) {
+            if (getLoggedUser() != null) {
+                loggedInstitution = getLoggedUser().getInstitution();
+            }
+        }
+        return loggedInstitution;
+    }
+
+    public void setLoggedInstitution(Institution loggedInstitution) {
+        this.loggedInstitution = loggedInstitution;
     }
 
     @FacesConverter(forClass = WebUser.class)

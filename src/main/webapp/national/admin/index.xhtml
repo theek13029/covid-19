@@ -7,58 +7,66 @@
     <h:body>
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
-                <p:panelGrid columns="2" >
-                    <h:form>
-                        <h:panelGrid columns="1"
-                                     rendered="#{webUserController.hasPrivilege('System_Administration')}" >
 
-                            <p:commandButton value="New User" action="#{menuController.toAddNewUser()}" ajax="false"
-                                             />
-                            <p:commandButton value="View Users" action="#{menuController.toListUsers()}" ajax="false"
-                                             />
-                            <h:commandButton class="btn btn-success" value="Reload" action="#{webUserApplicationController.resetWebUsers()}" />
-                            
-                            <p:commandButton value="Add Multiple Users" action="/webUser/adding_Multiple_users" ajax="false"
-                                             />
-                            <p:commandButton value="Set User Privilages" action="#{webUserController.toSetUserPrivilages()}" ajax="false"
-                                             />
-                            <p:commandButton value="View Transactions" action="#{userTransactionController.toSearchUserTransactions()}" ajax="false"
-                                             />
-                            <p:commandButton value="Suspicious Login Attempts" action="#{userTransactionController.toSuspiciousLoginAttempts()}" ajax="false"
-                                             />
-                            <hr/>
+                <h:panelGroup rendered="#{webUserController.hasPrivilege('System_Administration')}" >
 
-                            <p:commandButton value="New Institution" action="#{institutionController.toAddInstitution}" ajax="false"
-                                             />
-                            <p:commandButton value="List Institutions" action="#{institutionController.toListInstitutions()}" ajax="false"
-                                             />
-                            <p:commandButton value="Add Multiple new Institutions and Users" action="/systemAdmin/adding_Multiple_institutions_and_users" ajax="false"
-                                             />
-                            <p:commandButton value="Relod Institutions" action="#{institutionController.resetAllInstitutions()}" ajax="false"
-                                             />
-                            <hr/>
-                            <p:commandButton value="Add Area" action="#{areaController.toAddArea()}" ajax="false"
-                                             />
-                            <p:commandButton value="List Area" action="#{areaController.toListAreasForSysAdmin()}" ajax="false"
-                                             />
-                            <p:commandButton value="Adding MOH with Users" action="/area/moh_adding" ajax="false"
-                                             />
-                            <p:commandButton value="Reload Areas" action="#{areaApplicationController.invalidateItems()}" ajax="false"
-                                             />
-                            <hr/>
-                            <p:commandButton value="Manage Metadata" action="/systemAdmin/manage_metadata_index"    ajax="false" />
-                            <p:commandButton value="Manage Data" action="/systemAdmin/manage_data_index"    ajax="false" />
-                            <p:commandButton value="Manage Preferences" action="#{preferenceController.toManagePreferences()}"    ajax="false" />
-                        </h:panelGrid>
-                    </h:form>
-                    <h:panelGroup >
-                        <ui:insert name="admin" >
-                            
-                        </ui:insert>
-                    </h:panelGroup>
-                    
-                </p:panelGrid>
+                    <h:panelGrid columns="2" class="align-top w-100" >
+                        <h:panelGroup class="align-top" >
+                            <h:form>
+                                <h:panelGrid columns="1" >
+                                    <p:commandButton value="New User" action="#{menuController.toAddNewUser()}" ajax="false"
+                                                     class="btn btn-success w-100"   />
+                                    <p:commandButton class="btn btn-success w-100" value="View Users" action="#{menuController.toListUsers()}" ajax="false"
+                                                     />
+                                    <h:commandButton class="btn btn-success w-100" value="Reload" action="#{webUserApplicationController.resetWebUsers()}" />
 
+                                    <p:commandButton  class="btn btn-success w-100"  value="Add Multiple Users" action="/national/admin/add_multiple_users" ajax="false"
+                                                     />
+                                    <p:commandButton value="Set Multiple User Privileges" action="#{webUserController.toSetUserPrivilages()}" ajax="false"
+                                                     />
+                                    <p:commandButton value="View Transactions" action="#{userTransactionController.toSearchUserTransactions()}" ajax="false"
+                                                     />
+                                    <p:commandButton value="Suspicious Login Attempts" action="#{userTransactionController.toSuspiciousLoginAttempts()}" ajax="false"
+                                                     />
+                                    <hr/>
+
+                                    <p:commandButton value="New Institution"  class="btn btn-success w-100" action="#{menuController.toAddNewInstitution()}" ajax="false"
+                                                     />
+                                    <p:commandButton value="List Institutions"  class="btn btn-success w-100" action="#{menuController.toListInstitutions()}" ajax="false"
+                                                     />
+                                    <p:commandButton value="Add Multiple new Institutions and Users"  class="btn btn-success w-100" action="/national/admin/add_multiple_institutions_with_a_user" ajax="false"
+                                                     />
+                                    <p:commandButton value="Relod Institutions"  class="btn btn-success w-100" action="#{institutionController.resetAllInstitutions()}" ajax="false"
+                                                     />
+                                    <hr/>
+                                    <p:commandButton value="Add Area" action="#{areaController.toAddArea()}" ajax="false"
+                                                     />
+                                    <p:commandButton value="List Area" action="#{areaController.toListAreasForSysAdmin()}" ajax="false"
+                                                     />
+                                    <p:commandButton value="Adding MOH with Users"  class="btn btn-success w-100" action="/national/admin/add_multiple_moh_areas_with_users" ajax="false"
+                                                     />
+                                    <p:commandButton value="Reload Areas" action="#{areaApplicationController.invalidateItems()}" ajax="false"
+                                                     />
+                                    <hr/>
+                                    <p:commandButton value="Manage Metadata"  class="btn btn-success w-100"  action="/systemAdmin/manage_metadata_index"    ajax="false" />
+                                    <p:commandButton value="Manage Data"  class="btn btn-success w-100"  action="/systemAdmin/manage_data_index"    ajax="false" />
+                                    <p:commandButton value="Manage Preferences"  class="btn btn-success w-100" action="#{preferenceController.toManagePreferences()}"    ajax="false" />
+
+                                </h:panelGrid>
+                            </h:form>
+                        </h:panelGroup>
+
+
+                        <h:panelGroup class="align-top" >
+                            <ui:insert name="admin" >
+
+                            </ui:insert>
+                        </h:panelGroup>
+
+
+                    </h:panelGrid>
+
+                </h:panelGroup>
 
             </ui:define>
 

@@ -9,13 +9,9 @@
     <body>
         <ui:composition template="/national/admin/index.xhtml">
             <ui:define name="admin" >                
-                <p:panel class="h-100 text-center" rendered="#{!webUserController.loggedUser.systemAdministrator}">
-                    <h1>You are NOT authorized</h1>
-                </p:panel>
-
-                <h:form class="form">
-                    <p:panel class="main-panel" >
-                        <div class="card">
+                <h:form >
+                    <p:panel id="WebUserEditDlg"  >
+                        <div class="card w-100 form">
                             <div class="card-header bg-success text-white">
                                 <h:outputLabel class="fs-5 my-2 fw-bold" value="New User Detais" ></h:outputLabel>                                
                             </div>
@@ -140,6 +136,8 @@
                             </div>
                         </div>
                     </p:panel>
+
+
                 </h:form>                
             </ui:define>
         </ui:composition>

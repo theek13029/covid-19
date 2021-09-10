@@ -8,27 +8,17 @@
     <h:body>
         <ui:composition template="/national/admin/index.xhtml">
             <ui:define name="admin"> 
+
                 <h:form >
-                    <div class="row" >
-                        <div class="col-12 text-center mt-4 mb-2" >
-                            <h4 class="fw-bold"><h:outputLabel  value="User List" ></h:outputLabel></h4>
-                        </div>
-                    </div> 
-                    <div class="row" >
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <h:commandButton class="btn btn-success" value="Download" rendered="true">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="Users" ></p:dataExporter>
-                            </h:commandButton>
-                        </div>
-                    </div> 
-                     <h:panelGrid columns="2">
+
+                    <h:panelGrid columns="2">
                         <p:dataTable  id="tbl" value="#{webUserController.items}" var="item" rowKey="#{item.id}" 
-                                     selection="#{webUserController.current}" 
-                                     rows="10"
-                                     paginator="true"
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                     rowsPerPageTemplate="5,10,20,50,{ShowAll|'All'}">
+                                      selection="#{webUserController.current}" 
+                                      rows="5"
+                                      paginator="true"
+                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                      rowsPerPageTemplate="5,10,20,50,{ShowAll|'All'}">
 
                             <p:column width="250" sortBy="#{item.person.name}" filterBy="#{item.person.name}" filterMatchMode="contains">
                                 <f:facet name="header">
@@ -48,11 +38,11 @@
                                 </f:facet>
                                 <h:outputText value="#{item.institution.name}"/>
                             </p:column>
-                             <p:column  width="150" sortBy="#{item.institution.parent.name}" filterBy="#{item.institution.parent.name}" filterMatchMode="contains">
+                            <p:column  width="150" sortBy="#{item.institution.parent.name}" filterBy="#{item.institution.parent.name}" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Parent Institution"/>
                                 </f:facet>
-                                 <h:outputText value="#{item.institution.parent.name}"/>
+                                <h:outputText value="#{item.institution.parent.name}"/>
                             </p:column>
                             <p:column  width="120"  sortBy="#{item.telNo}" filterBy="#{item.telNo}" filterMatchMode="contains">
                                 <f:facet name="header">
@@ -73,7 +63,7 @@
                                 <div class="d-grid gap-2 ">
                                     <h:commandButton  value="Edit" class="btn btn-warning btn-sm "
                                                       action="#{menuController.toEditUser()}" >
-                                    <f:setPropertyActionListener value="#{item}" target="#{webUserController.current}" ></f:setPropertyActionListener>
+                                        <f:setPropertyActionListener value="#{item}" target="#{webUserController.current}" ></f:setPropertyActionListener>
                                     </h:commandButton>
                                     <h:commandButton  value="Privileges" class="btn btn-warning btn-sm"
                                                       action="#{menuController.toPrivileges()}" >
@@ -86,17 +76,24 @@
                                         <f:setPropertyActionListener value="#{item}" target="#{webUserController.current}" ></f:setPropertyActionListener>
                                     </h:commandButton>
                                     <h:commandButton  value="Delete" class="btn btn-danger btn-sm "
+                                                       onclick="if (! confirm('Are you sure you want to delete?')) return false"
                                                       action="#{webUserController.deleteUser()}" >
                                         <f:setPropertyActionListener value="#{item}" target="#{webUserController.current}" ></f:setPropertyActionListener>
                                     </h:commandButton>
                                 </div>
-                                
+
                             </p:column>
                         </p:dataTable>
                     </h:panelGrid>
+                    <div class="row" >
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <h:commandButton class="btn btn-success" value="Download" rendered="true">
+                                <p:dataExporter target="tbl" type="xlsx" fileName="Users" ></p:dataExporter>
+                            </h:commandButton>
+                        </div>
+                    </div> 
                 </h:form>
-                <br/>
-                <br/>
+
             </ui:define>
         </ui:composition>
 

@@ -53,6 +53,10 @@ public class MenuController implements Serializable {
     MohController mohController;
     @Inject
     HospitalController hospitalController;
+    @Inject
+    InstitutionController institutionController;
+    @Inject
+    PreferenceController preferenceController;
 
     /**
      * Creates a new instance of MenuController
@@ -195,6 +199,7 @@ public class MenuController implements Serializable {
             JsfUtil.addErrorMessage("You are NOT autherized");
             return "";
         }
+        preferenceController.preparePreferences();
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
                 return "/regional/admin/preferences";
@@ -249,15 +254,48 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
+    
+    public String toAddNewInstitution() {
+        boolean privileged = false;
+        for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
+            if (up.getPrivilege() == Privilege.Institution_Administration) {
+                privileged = true;
+            }
+            if (up.getPrivilege() == Privilege.System_Administration) {
+                privileged = true;
+            }
+        }
+        if (!privileged) {
+            JsfUtil.addErrorMessage("You are NOT autherized");
+            return "";
+        }
+        institutionController.prepareToAddNewInstitution();
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/admin/institution";
+            case National:
+                return "/national/admin/institution";
+            case Hospital:
+                return "/hospital/admin/institution";
+            case Lab:
+                return "/lab/admin/institution";
+            case National_Lab:
+                return "/national/admin/institution";
+            case Moh:
+                return "/moh/admin/institution";
+            case Provincial:
+                return "/provincial/admin/institution";
+            default:
+                return "";
+        }
+    }
 
     public String toListUsers() {
         boolean privileged = false;
         boolean national=false;
-        boolean subNational=false;
         for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
             if (up.getPrivilege() == Privilege.Institution_Administration) {
                 privileged = true;
-                subNational=true;
             }
             if (up.getPrivilege() == Privilege.System_Administration) {
                 privileged = true;
@@ -286,6 +324,43 @@ public class MenuController implements Serializable {
                 return "/national/admin/user_list";
             case Moh:
                 return "/moh/admin/user_list";
+            case Provincial:
+                return "/provincial/admin/user_list";
+            default:
+                return "";
+        }
+    }
+    
+ 
+    public String toListInstitutions() {
+        boolean privileged = false;
+        boolean national=false;
+        for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
+            if (up.getPrivilege() == Privilege.Institution_Administration) {
+                privileged = true;
+            }
+            if (up.getPrivilege() == Privilege.System_Administration) {
+                privileged = true;
+                national = true;
+            }
+        }
+        if (!privileged) {
+            JsfUtil.addErrorMessage("You are NOT autherized");
+            return "";
+        }
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/admin/institution_list";
+            case National:
+                return "/national/admin/institution_list";
+            case Hospital:
+                return "/hospital/admin/institution_list";
+            case Lab:
+                return "/lab/admin/institution_list";
+            case National_Lab:
+                return "/national/admin/institution_list";
+            case Moh:
+                return "/moh/admin/institution_list";
             case Provincial:
                 return "/provincial/admin/user_list";
             default:
@@ -372,6 +447,42 @@ public class MenuController implements Serializable {
         }
     }
 
+    
+    public String toEditInstitution() {
+        boolean privileged = false;
+        for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
+            if (up.getPrivilege() == Privilege.Institution_Administration) {
+                privileged = true;
+            }
+            if (up.getPrivilege() == Privilege.System_Administration) {
+                privileged = true;
+            }
+        }
+        if (!privileged) {
+            JsfUtil.addErrorMessage("You are NOT autherized");
+            return "";
+        }
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/admin/institution";
+            case National:
+                return "/national/admin/institution";
+            case Hospital:
+                return "/hospital/admin/institution";
+            case Lab:
+                return "/lab/admin/institution";
+            case National_Lab:
+                return "/national/admin/institution";
+            case Moh:
+                return "/moh/admin/institution";
+            case Provincial:
+                return "/provincial/admin/institution";
+            default:
+                return "";
+        }
+    }
+
+    
     public String toEditPassword() {
         boolean privileged = false;
         for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
