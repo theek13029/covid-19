@@ -1,16 +1,66 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <h:outputStylesheet library="css" name="lab_report_print.css" ></h:outputStylesheet>
-    </h:head>
+<!DOCTYPE html>
+<html lang="en"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Print Result</title>
+
+  <style>
+    @media screen {
+        body {
+        padding: 10px;
+      }
+      .print-area {
+        border: 1px solid #000;
+        padding: 2cm;
+        width: 210mm;
+        height: 297mm;
+      }
+
+      .content-area {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      #print-button {
+        background-color: #4267B2;
+        color: rgb(255, 255, 255);
+        padding-top: 8px;
+        padding-left: 16px;
+        padding-bottom: 8px;
+        padding-right: 16px;
+        border-radius: 10px;
+        border: none;
+        font-weight: 700;
+        cursor: pointer;
+      }
+    }
+    @page {
+      size: A4;
+    }
+    @media print {
+      .no-print {
+        display: none;
+      }
+      .print-area {
+        margin-top: 0.5cm;
+        margin-bottom: 0.5mm;
+        padding: 2cm;
+        width: 210mm;
+        height: 297mm;
+      }
+    }
+  </style>
+</head>
     <h:body>
-        <h:form>
-            <p:commandButton value="Print" class="no-print" onclick="window.print();return false;" ajax="false" ></p:commandButton>
-        </h:form>
+        <button class="no-print" id="print-button" onclick="window.print()">
+            Print Investigations
+        </button>
         <h:outputText value="#{clientController.bulkPrintReport}" escape="false" ></h:outputText>
     </h:body>
 </html>
