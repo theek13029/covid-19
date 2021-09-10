@@ -130,19 +130,10 @@
 
 
                                    
-                                    <p:textEditor id="editor"
-                                                  allowFormatting="true" 
-                                                  allowBlocks="true"
-                                                  allowImages="true"
-                                                  allowLinks="true"
-                                                  allowStyles="true"
-                                                  height="800"
-                                                  secure="false"
-                                                  
-                                                  value="#{preferenceController.labReportHtml}">
-                                    </p:textEditor>
 
-                                    <p:growl id="growl" ></p:growl>
+                                    <p:inputTextarea style="width: 100%; min-width: 800px; height: 90vh; min-height: 100px;" value="#{preferenceController.labReportHtml}" ></p:inputTextarea>
+                                    
+                                    
                                 </p:panelGrid>
                             </p:tab>
 
