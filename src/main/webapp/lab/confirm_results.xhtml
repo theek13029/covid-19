@@ -12,7 +12,7 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-               
+
                 <h:form >
                     <div class="row" >
                         <div class="col-12 text-center mt-4 mb-2" >
@@ -48,13 +48,13 @@
                     </div>
 
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        
+
                         <p:outputLabel value="c"  ></p:outputLabel>
-                        
+
                         <p:dataTable id="tbl" value="#{clientController.listedToConfirm}" 
                                      var="c"  rowKey="#{c.id}" 
                                      resizeMode="expand" resizableColumns="true"
-                                     
+
                                      rows="10"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -70,9 +70,6 @@
                             <p:column width="50" >
                                 <h:outputLabel value="#{n+1}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="ID"  sortBy="#{c.id}">
-                                <h:outputLabel value="#{c.id}" ></h:outputLabel>
-                            </p:column>
                             <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.unitWard}" ></h:outputLabel>
                             </p:column>
@@ -81,10 +78,18 @@
                             </p:column>
                             <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" 
                                       filterBy="#{c.encounterNumber}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.encounterNumber}" ></h:outputLabel>
+                                <h:inputText value="#{c.encounterNumber}" id="txtTubeNo" >
+                                    <p:ajax event="blur" process="txtTubeNo" 
+                                            listener="#{clientController.saveLabNo(c)}" >
+                                    </p:ajax>
+                                </h:inputText>
                             </p:column>`
-                            <p:column headerText="Lab No" sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.labNumber}" ></h:outputLabel>
+                            <p:column id="txtLabNo" headerText="Lab No" sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
+                                <h:inputText value="#{c.labNumber}" >
+                                <p:ajax event="blur" process="txtLabNo" 
+                                            listener="#{clientController.saveLabNo(c)}" >
+                                    </p:ajax>
+                                </h:inputText>
                             </p:column>
                             <p:column headerText="Name" sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.client.person.name}" ></h:outputLabel>
