@@ -46,7 +46,7 @@
                     <p:menuitem ajax="false" value="Order PCR for Contacts" action="#{mohController.toAssignInvestigation()}" />
                     <p:menuitem ajax="false" value="Order RATs for Contacts" action="#{mohController.toStartInvestigation()}" />
                 </p:submenu>
-                <p:submenu class="submenu mx-2" label="Samples" rendered="#{webUserController.hasPrivilege('Sample_Management')  and (webUserController.loggedUser.webUserRoleLevel eq 'Moh' or webUserController.loggedUser.webUserRoleLevel eq 'Regional' or webUserController.loggedUser.webUserRoleLevel eq 'Provincial' or webUserController.loggedUser.webUserRoleLevel eq 'National_Lab' or webUserController.loggedUser.webUserRoleLevel eq 'National' ) }}" >
+                <p:submenu class="submenu mx-2" label="Samples" rendered="#{webUserController.hasPrivilege('Sample_Management')  and (webUserController.loggedUser.webUserRoleLevel eq 'Moh' or webUserController.loggedUser.webUserRoleLevel eq 'Regional' or webUserController.loggedUser.webUserRoleLevel eq 'Provincial' or webUserController.loggedUser.webUserRoleLevel eq 'National_Lab' or webUserController.loggedUser.webUserRoleLevel eq 'National' )}" >
                     <p:menuitem ajax="false" value="Requests Summary"
                                 action="#{menuController.toSummaryByOrderedInstitution}" />
                     <p:menuitem ajax="false" value="Awaiting to be Dispatched Summary"
