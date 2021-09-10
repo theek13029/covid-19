@@ -857,32 +857,37 @@ public class WebUserController implements Serializable {
     }
 
     public String loginNew() {
-
         loggableInstitutions = null;
         loggablePmcis = null;
         loggableGnAreas = null;
         loggedInstitution = null;
         institutionController.setMyClinics(null);
-
         if (userName == null || userName.trim().equals("")) {
             JsfUtil.addErrorMessage("Please enter a Username");
             return "";
         }
-
         if (password == null || password.trim().equals("")) {
             JsfUtil.addErrorMessage("Please enter the Password");
             return "";
         }
-
         if (!checkLoginNew()) {
             JsfUtil.addErrorMessage("Username/Password Error. Please retry.");
             userTransactionController.recordTransaction("Failed Login Attempt", userName);
             System.out.println("No Match");
             return "";
         }
-
-        System.out.println("username & password correct");
         loggedUserPrivileges = userPrivilegeList(loggedUser);
+        if (loggedUser != null) {
+            loggedInstitution = loggedUser.getInstitution();
+        }
+        
+        executeSuccessfulLoginActions();
+        fillUsersForMyInstitute();
+        fillAreasForMe();
+        return "/index";
+    }
+
+    private void executeSuccessfulLoginActions() {
 
         JsfUtil.addSuccessMessage("Successfully Logged");
         userTransactionController.recordTransaction("Successful Login");
@@ -922,13 +927,6 @@ public class WebUserController implements Serializable {
                     break;
             }
         }
-
-        fillUsersForMyInstitute();
-        fillAreasForMe();
-        if (loggedUser != null) {
-            loggedInstitution = loggedUser.getInstitution();
-        }
-        return "/index";
     }
 
     private void fillAreasForMe() {
@@ -1019,7 +1017,16 @@ public class WebUserController implements Serializable {
             default:
         }
     }
+    
+    public String toChangeLoggedInstitution(){
+        return "/webUser/change_logged_institute";
+    }
 
+    public String changeLoggedInstitution(){
+        executeSuccessfulLoginActions();
+        return "/index";
+    }
+    
     private void fillUsersForMyInstitute() {
         String j = "select u from WebUser u "
                 + " where u.retired=false "
