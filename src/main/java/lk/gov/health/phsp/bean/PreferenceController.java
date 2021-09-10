@@ -91,7 +91,12 @@ public class PreferenceController implements Serializable {
     public String findPreferanceValue(String name, Institution ins) {
         Preference p = findPreferance(name, ins);
         if (p != null) {
-            return p.getLongTextValue();
+            if(p.getLongTextValue()!=null){
+                return p.getLongTextValue();
+            }else{
+                return "";
+            }
+            
         } else {
             return "";
         }
