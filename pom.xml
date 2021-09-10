@@ -299,6 +299,14 @@
         </dependency>
 
 
+        <!-- https://mvnrepository.com/artifact/org.primefaces.extensions/primefaces-extensions -->
+        <dependency>
+            <groupId>org.primefaces.extensions</groupId>
+            <artifactId>primefaces-extensions</artifactId>
+            <version>10.0.5</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

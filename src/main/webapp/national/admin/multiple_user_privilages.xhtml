@@ -30,8 +30,8 @@ THE SOFTWARE.
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-        <ui:composition template="/template1.xhtml">
-            <ui:define name="content">
+        <ui:composition template="/national/admin/index.xhtml">
+            <ui:define name="admin">
                 <h:form>
                     <div class="row py-4 px-4 bg-white">
                         <div class="col-md-8">
@@ -93,7 +93,7 @@ THE SOFTWARE.
                                     </p:treeNode>
                                 </p:tree>
                             </div>
-                            <h:commandButton class="btn fw-bold btn-success" ajax="false" action="#{webUserController.updatePrivilagesPerUsers()}" value="#{bundleClinical.Save}"></h:commandButton>
+                            <h:commandButton class="btn fw-bold btn-success" action="#{webUserController.updatePrivilagesPerUsers()}" value="#{bundleClinical.Save}"></h:commandButton>
                         </div>
                     </div>
                 </h:form>
