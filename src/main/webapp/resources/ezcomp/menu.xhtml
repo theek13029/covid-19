@@ -35,18 +35,18 @@
                     <p:menuitem ajax="false" value="Upload Results" action="#{clientController.toUploadResultsForHospitals()}" />
                 </p:submenu>
 
-                <p:submenu class="submenu mx-2" label="Investigate" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
+                <p:submenu class="submenu mx-2" label="Investigate" rendered="#{webUserController.hasPrivilege('Client_Management') and webUserController.loggedUser.webUserRoleLevel eq 'Moh' }}" >
                     <p:menuitem ajax="false" value="Assign Cases to Investigate" action="#{mohController.toAssignInvestigation()}" />
                     <p:menuitem ajax="false" value="Cases Awaiting Investigation" action="#{mohController.toStartInvestigation()}" />
                     <p:menuitem ajax="false" value="New Patient &amp; Investigate" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
                     <p:menuitem ajax="false" value="View Investigated Cases" action="#{mohController.toListOfInvestigatedCasesForMoh()}" />
                 </p:submenu>
-                <p:submenu class="submenu mx-2" label="Contacts" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
+                <p:submenu class="submenu mx-2" label="Contacts" rendered="#{webUserController.hasPrivilege('Client_Management') and webUserController.loggedUser.webUserRoleLevel eq 'Moh' }}" >
                     <p:menuitem ajax="false" value="List of First Contacts" action="#{mohController.toListOfFirstContactsToTest()}" />
                     <p:menuitem ajax="false" value="Order PCR for Contacts" action="#{mohController.toAssignInvestigation()}" />
                     <p:menuitem ajax="false" value="Order RATs for Contacts" action="#{mohController.toStartInvestigation()}" />
                 </p:submenu>
-                <p:submenu class="submenu mx-2" label="Samples" rendered="#{webUserController.hasPrivilege('Sample_Management')}" >
+                <p:submenu class="submenu mx-2" label="Samples" rendered="#{webUserController.hasPrivilege('Sample_Management')  and (webUserController.loggedUser.webUserRoleLevel eq 'Moh' or webUserController.loggedUser.webUserRoleLevel eq 'Regional' or webUserController.loggedUser.webUserRoleLevel eq 'Provincial' or webUserController.loggedUser.webUserRoleLevel eq 'National_Lab' or webUserController.loggedUser.webUserRoleLevel eq 'National' )}" >
                     <p:menuitem ajax="false" value="Requests Summary"
                                 action="#{menuController.toSummaryByOrderedInstitution}" />
                     <p:menuitem ajax="false" value="Awaiting to be Dispatched Summary"
@@ -91,24 +91,6 @@
                 <p:menuitem class="text-white" ajax="false" value="Reports" action="#{menuController.toReportsIndex()}" />
                 <p:menuitem class="text-white" ajax="false" value="Administration" action="#{menuController.toAdministrationIndex()}" />
 
-
-                <p:submenu class="submenu mx-2" label="Institution Administration" rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
-                    <p:submenu label="Manage Users" rendered="#{webUserController.hasPrivilege('Institution_Administration')}">
-                        <p:menuitem value="New User" action="#{webUserController.toAddNewUserByInsAdmin()}" ajax="false"
-                                    rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                        <p:menuitem value="View Users" action="#{webUserController.toManageInstitutionUsers()}" ajax="false"
-                                    rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                    </p:submenu>
-                    <p:menuitem value="Manage Institutions" action="/insAdmin/institution_index" rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                    <p:submenu label="Manage Areas" rendered="#{webUserController.hasPrivilege('Institution_Administration')}">
-                        <p:menuitem value="New PHI Area" action="#{areaController.toAddPhiAreaForInsAdmin()}" ajax="false"
-                                    rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                        <p:menuitem value="View PHI Areas" action="#{areaController.toListPhiAreasForInsAdmin()}" ajax="false"
-                                    rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                    </p:submenu>
-                    <p:menuitem value="Manage Preferences"  action="#{preferenceController.toManagePreferencesInstitution()}"    ajax="false" rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                </p:submenu>
-                
                 <p:submenu class="submenu mx-2" label="Help" >
                     <p:menuitem value="User Manual" action="/wiki"   ajax="false" />
                     <p:menuitem value="Feedback" action="/feedback"   ajax="false" />

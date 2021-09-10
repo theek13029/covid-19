@@ -105,6 +105,7 @@ public class ClientController implements Serializable {
     private ClientEncounterComponentItemController clientEncounterComponentItemController;
     @Inject
     private PreferenceController preferenceController;
+
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Variables">
     private List<Client> items = null;
@@ -266,19 +267,19 @@ public class ClientController implements Serializable {
     }
 
     public void markNilReturnForCases() {
-        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getLoggedUser().getInstitution(),
+        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getLoggedInstitution(),
                 EncounterType.No_Covid, new Date());
         JsfUtil.addSuccessMessage("Marked");
     }
 
     public void markNilReturnForTests() {
-        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getLoggedUser().getInstitution(),
+        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getLoggedInstitution(),
                 EncounterType.No_test, new Date());
         JsfUtil.addSuccessMessage("Marked");
     }
 
     public void reverseNilReturnForTests() {
-        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getLoggedUser().getInstitution(),
+        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getLoggedInstitution(),
                 EncounterType.No_test, new Date());
         nilCases.setRetired(true);
         nilCases.setRetiredBy(webUserController.getLoggedUser());
@@ -288,7 +289,7 @@ public class ClientController implements Serializable {
     }
 
     public void reverseNilReturnForCases() {
-        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getLoggedUser().getInstitution(),
+        Encounter nilCases = encounterController.getInstitutionTypeEncounter(webUserController.getLoggedInstitution(),
                 EncounterType.No_Covid, new Date());
         nilCases.setRetired(true);
         nilCases.setRetiredBy(webUserController.getLoggedUser());
@@ -377,7 +378,7 @@ public class ClientController implements Serializable {
         s.setEncounter(e);
         s.setCreatedAt(new Date());
         s.setCreater(webUserController.getLoggedUser());
-        s.setInstitution(webUserController.getLoggedUser().getInstitution());
+        s.setInstitution(webUserController.getLoggedInstitution());
         s.setReceipientNumber(number);
         smsTemplate = smsTemplate.replace("#{name}", s.getEncounter().getClient().getPerson().getName());
         smsTemplate = smsTemplate.replace("#{institution}", s.getEncounter().getInstitution().getName());
@@ -430,7 +431,7 @@ public class ClientController implements Serializable {
         s.setEncounter(e);
         s.setCreatedAt(new Date());
         s.setCreater(webUserController.getLoggedUser());
-        s.setInstitution(webUserController.getLoggedUser().getInstitution());
+        s.setInstitution(webUserController.getLoggedInstitution());
         s.setReceipientNumber(number);
 
         // // System.out.println("smsTemplate = " + smsTemplate);
@@ -528,7 +529,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabReceiveAll() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired=false "
@@ -564,7 +565,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabReceiveAll1() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired=false "
@@ -596,7 +597,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabSummarySamplesReceived() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired=false "
@@ -620,7 +621,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabSummaryResultsEntered() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired=false "
@@ -644,7 +645,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabSummarySamplesReviewed() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired=false "
@@ -668,7 +669,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabSummarySamplesConfirmed() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired=false "
@@ -707,7 +708,7 @@ public class ClientController implements Serializable {
         m.put("td", getToDate());
         m.put("rl", false);
         m.put("sl", true);
-        m.put("rd", webUserController.getLoggedUser().getInstitution().getRdhsArea());
+        m.put("rd", webUserController.getLoggedInstitution().getRdhsArea());
         labSummariesToReceive = new ArrayList<>();
         List<Object> obs = getFacade().findObjectByJpql(j, m, TemporalType.DATE);
         // // System.out.println("obs = " + obs.size());
@@ -868,36 +869,36 @@ public class ClientController implements Serializable {
         String yearString = CommonController.formatDate("yy");
         switch (getPreferenceController().getLabNumberGeneration()) {
             case "InsLabDateCount":
-                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                startCount = insLabDateCount(institution, webUserController.getLoggedInstitution(), new Date());
                 labPrefix = institution.getCode()
                         + "/"
-                        + webUserController.getLoggedUser().getInstitution().getCode()
+                        + webUserController.getLoggedInstitution().getCode()
                         + "/"
                         + dateString
                         + "/";
                 break;
             case "InsDateCount":
-                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                startCount = insLabDateCount(institution, webUserController.getLoggedInstitution(), new Date());
                 labPrefix = institution.getCode()
                         + "/"
                         + dateString
                         + "/";
                 break;
             case "LabDateCount":
-                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                startCount = insLabDateCount(institution, webUserController.getLoggedInstitution(), new Date());
                 labPrefix = institution.getCode()
                         + "/"
                         + dateString
                         + "/";
                 break;
             case "DateCount":
-                startCount = labDateCount(webUserController.getLoggedUser().getInstitution(), new Date());
+                startCount = labDateCount(webUserController.getLoggedInstitution(), new Date());
                 labPrefix
                         = dateString
                         + "/";
                 break;
             case "Count":
-                startCount = labCount(webUserController.getLoggedUser().getInstitution());
+                startCount = labCount(webUserController.getLoggedInstitution());
                 Long add = 0l;
                 try {
                     add = Long.parseLong(preferenceController.getStartingSerialCount());
@@ -906,10 +907,10 @@ public class ClientController implements Serializable {
                 }
                 startCount += add;
                 labPrefix
-                        = webUserController.getLoggedUser().getInstitution().getCode();
+                        = webUserController.getLoggedInstitution().getCode();
                 break;
             case "YearCount":
-                startCount = labPeriodCount(webUserController.getLoggedUser().getInstitution(),
+                startCount = labPeriodCount(webUserController.getLoggedInstitution(),
                         CommonController.startOfTheYear(),
                         CommonController.endOfYear());
                 labPrefix
@@ -917,7 +918,7 @@ public class ClientController implements Serializable {
                         + "/";
                 break;
             case "MonthCount":
-                startCount = labPeriodCount(webUserController.getLoggedUser().getInstitution(),
+                startCount = labPeriodCount(webUserController.getLoggedInstitution(),
                         CommonController.startOfTheMonth(),
                         CommonController.endOfTheMonth());
                 labPrefix
@@ -966,7 +967,7 @@ public class ClientController implements Serializable {
         m.put("fd", fromDate);
         m.put("td", toDate);
         m.put("ins", institution);
-        m.put("rins", webUserController.getLoggedUser().getInstitution());
+        m.put("rins", webUserController.getLoggedInstitution());
         labSummariesToReceive = new ArrayList<>();
         List<Encounter> receivingSamplesTmp = encounterFacade.findByJpql(j, m);
         for (Encounter e : receivingSamplesTmp) {
@@ -999,7 +1000,7 @@ public class ClientController implements Serializable {
         m.put("sm", false);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
-        m.put("rins", webUserController.getLoggedUser().getInstitution());
+        m.put("rins", webUserController.getLoggedInstitution());
         if (institution != null) {
             j += " and c.institution=:ins ";
             m.put("ins", institution);
@@ -1015,7 +1016,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabOrderByReferringInstitution() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         Map m = new HashMap();
         String j = "select c "
                 + " from Encounter c "
@@ -1038,7 +1039,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabListReceivedByInstitution() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         Map m = new HashMap();
         String j = "select c "
                 + " from Encounter c "
@@ -1083,7 +1084,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabEnterResults() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired<>:ret "
@@ -1117,7 +1118,7 @@ public class ClientController implements Serializable {
     }
 
     public String toMohEnterResults() {
-        institution = webUserController.getLoggedUser().getInstitution();
+        institution = webUserController.getLoggedInstitution();
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired<>:ret "
@@ -1147,7 +1148,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabReviewResults() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired<>:ret "
@@ -1179,7 +1180,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabEditResults() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired<>:ret "
@@ -1244,7 +1245,7 @@ public class ClientController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("stl", false);
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        m.put("ins", webUserController.getLoggedInstitution());
         listedToDispatch = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
         return "/moh/dispatch_samples";
     }
@@ -1295,7 +1296,7 @@ public class ClientController implements Serializable {
     }
 
     public String toConfirmResults() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired=:ret "
@@ -1328,7 +1329,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabToSelectForPrinting() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired=:ret "
@@ -1360,7 +1361,7 @@ public class ClientController implements Serializable {
     }
 
     public String toMohToSelectForPrinting() {
-        institution = webUserController.getLoggedUser().getInstitution();
+        institution = webUserController.getLoggedInstitution();
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired=:ret "
@@ -1383,7 +1384,7 @@ public class ClientController implements Serializable {
         if (se == null) {
             return;
         }
-        String labApprovalSteps = preferenceController.findPreferanceValue("labApprovalSteps", webUserController.getLoggedUser().getInstitution());
+        String labApprovalSteps = preferenceController.findPreferanceValue("labApprovalSteps", webUserController.getLoggedInstitution());
 
         switch (labApprovalSteps) {
             case "Entry":
@@ -1559,36 +1560,36 @@ public class ClientController implements Serializable {
         // System.out.println("labNoGen = " + labNoGen);
         switch (labNoGen) {
             case "InsLabDateCount":
-                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                startCount = insLabDateCount(institution, webUserController.getLoggedInstitution(), new Date());
                 labPrefix = institution.getCode()
                         + "/"
-                        + webUserController.getLoggedUser().getInstitution().getCode()
+                        + webUserController.getLoggedInstitution().getCode()
                         + "/"
                         + dateString
                         + "/";
                 break;
             case "InsDateCount":
-                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                startCount = insLabDateCount(institution, webUserController.getLoggedInstitution(), new Date());
                 labPrefix = institution.getCode()
                         + "/"
                         + dateString
                         + "/";
                 break;
             case "LabDateCount":
-                startCount = insLabDateCount(institution, webUserController.getLoggedUser().getInstitution(), new Date());
+                startCount = insLabDateCount(institution, webUserController.getLoggedInstitution(), new Date());
                 labPrefix = institution.getCode()
                         + "/"
                         + dateString
                         + "/";
                 break;
             case "DateCount":
-                startCount = labDateCount(webUserController.getLoggedUser().getInstitution(), new Date());
+                startCount = labDateCount(webUserController.getLoggedInstitution(), new Date());
                 labPrefix
                         = dateString
                         + "/";
                 break;
             case "Count":
-                startCount = labCount(webUserController.getLoggedUser().getInstitution());
+                startCount = labCount(webUserController.getLoggedInstitution());
                 // System.out.println("startCount = " + startCount);
                 Long add = 0l;
                 try {
@@ -1600,10 +1601,10 @@ public class ClientController implements Serializable {
                 startCount += add;
                 // System.out.println("startCount = " + startCount);
                 labPrefix
-                        = webUserController.getLoggedUser().getInstitution().getCode();
+                        = webUserController.getLoggedInstitution().getCode();
                 break;
             case "YearCount":
-                startCount = labPeriodCount(webUserController.getLoggedUser().getInstitution(),
+                startCount = labPeriodCount(webUserController.getLoggedInstitution(),
                         CommonController.startOfTheYear(),
                         CommonController.endOfYear());
                 labPrefix
@@ -1611,7 +1612,7 @@ public class ClientController implements Serializable {
                         + "/";
                 break;
             case "MonthCount":
-                startCount = labPeriodCount(webUserController.getLoggedUser().getInstitution(),
+                startCount = labPeriodCount(webUserController.getLoggedInstitution(),
                         CommonController.startOfTheMonth(),
                         CommonController.endOfTheMonth());
                 labPrefix
@@ -1739,7 +1740,7 @@ public class ClientController implements Serializable {
         if (e == null) {
             return "No Encounter";
         }
-        String html = getPreferenceController().findPreferanceValue("labReportHeader", webUserController.getLoggedUser().getInstitution());
+        String html = getPreferenceController().findPreferanceValue("labReportHeader", webUserController.getLoggedInstitution());
         System.out.println("html = " + html);
         if (html == null || html.trim().equals("")) {
             return "No Report Format";
@@ -1810,17 +1811,48 @@ public class ClientController implements Serializable {
             html = html.replace("{pcr_result}", e.getPcrResult().getName());
         }
         if (e.getPcrResultStr() != null) {
-            html = html.replace("{pcr_result}", e.getPcrResultStr());
+            html = html.replace("{pcr_result_string}", e.getPcrResultStr());
+        } else {
+            html = html.replace("{pcr_result_string}", "");
         }
         if (e.getCtValue() != null) {
             html = html.replace("{pcr_ct1}", e.getCtValue().toString());
+        } else {
+            html = html.replace("{pcr_ct1}", "");
         }
         if (e.getCtValue2() != null) {
             html = html.replace("{pcr_ct2}", e.getCtValue2().toString());
+        } else {
+            html = html.replace("{pcr_ct2}", "");
         }
         if (e.getResultComments() != null) {
             html = html.replace("{pcr_comments}", e.getResultComments());
+        } else {
+            html = html.replace("{pcr_comments}", "");
         }
+
+        if (e.getPcrResult() != null) {
+            if (e.getPcrResult().equals(itemApplicationController.getPcrPositive())) {
+                html = html.replace("{pcr_result_string}", getPreferenceController().findPreferanceValue("pcrPositiveTerm", webUserController.getLoggedInstitution()));
+                html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue("pcrPositiveComment", webUserController.getLoggedInstitution()));
+            } else if (e.getPcrResult().equals(itemApplicationController.getPcrNegative())) {
+                html = html.replace("{pcr_result_string}", getPreferenceController().findPreferanceValue("pcrNegativeTerm", webUserController.getLoggedInstitution()));
+                html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue("pcrNegativeComment", webUserController.getLoggedInstitution()));
+            } else if (e.getPcrResult().equals(itemApplicationController.getPcrInconclusive())) {
+                html = html.replace("{pcr_result_string}", getPreferenceController().findPreferanceValue("pcrInvalidTerm", webUserController.getLoggedInstitution()));
+                html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue("pcrInvalidComment", webUserController.getLoggedInstitution()));
+            } else if (e.getPcrResult().equals(itemApplicationController.getPcrInvalid())) {
+                html = html.replace("{pcr_result_string}", getPreferenceController().findPreferanceValue("pcrInconclusiveTerm", webUserController.getLoggedInstitution()));
+                html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue("pcrInconclusiveComment", webUserController.getLoggedInstitution()));
+            } else {
+                html = html.replace("{pcr_result_string}", getPreferenceController().findPreferanceValue(""));
+                html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue( ""));
+            }
+        } else {
+            html = html.replace("{pcr_result_string}", getPreferenceController().findPreferanceValue(""));
+            html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue( ""));
+        }
+
         return html;
     }
 
@@ -1918,7 +1950,7 @@ public class ClientController implements Serializable {
         if (rh == null || rh.getEncounters().isEmpty()) {
             return "No Encounters";
         }
-        String html = getPreferenceController().findPreferanceValue("labReportBulkHtml", webUserController.getLoggedUser().getInstitution());
+        String html = getPreferenceController().findPreferanceValue("labReportBulkHtml", webUserController.getLoggedInstitution());
         if (html == null || html.trim().equals("")) {
             return "No Report Format";
         }
@@ -2010,7 +2042,7 @@ public class ClientController implements Serializable {
     }
 
     public String toLabOrderByReferringInstitutionToPrintResults() {
-        referingInstitution = webUserController.getLoggedUser().getInstitution();
+        referingInstitution = webUserController.getLoggedInstitution();
         String j = "select c "
                 + " from Encounter c "
                 + " where c.retired<>:ret "
@@ -2035,8 +2067,8 @@ public class ClientController implements Serializable {
     public String toAddNewClientForCaseEnrollment() {
         setSelected(new Client());
         selected.setRetired(true);
-        selected.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
-        selected.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        selected.getPerson().setDistrict(webUserController.getLoggedInstitution().getDistrict());
+        selected.getPerson().setMohArea(webUserController.getLoggedInstitution().getMohArea());
         saveClient(selected);
         clearRegisterNewExistsValues();
         selectedClientsClinics = null;
@@ -2283,8 +2315,8 @@ public class ClientController implements Serializable {
 
     public String toAddNewClientForTestEnrollment() {
         setSelected(new Client());
-        selected.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
-        selected.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        selected.getPerson().setDistrict(webUserController.getLoggedInstitution().getDistrict());
+        selected.getPerson().setMohArea(webUserController.getLoggedInstitution().getMohArea());
 
         selected.setRetired(true);
         saveClient(selected);
@@ -2575,7 +2607,7 @@ public class ClientController implements Serializable {
                 strTestNo = cellValue(row.getCell(testNoColInt));
                 strNic = cellValue(row.getCell(nicColInt));
                 Client c = null;
-                if (strNic != null && !strNic.trim().equals("") && strNic.trim().length() >5) {
+                if (strNic != null && !strNic.trim().equals("") && strNic.trim().length() > 5) {
                     c = getClientByNic(strNic);
                 }
 
@@ -2796,8 +2828,8 @@ public class ClientController implements Serializable {
         pcr.setClient(c);
 
         pcr.setInstitution(institution);
-        pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
-        pcr.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setCreatedInstitution(webUserController.getLoggedInstitution());
+        pcr.setReferalInstitution(webUserController.getLoggedInstitution());
 
         pcr.setEncounterNumber(ci.getTestNo());
         pcr.setEncounterType(EncounterType.Test_Enrollment);
@@ -2938,7 +2970,7 @@ public class ClientController implements Serializable {
         if (cell == null) {
             return intNum;
         }
-        if(cell.getCellType()==null){
+        if (cell.getCellType() == null) {
             return intNum;
         }
         if (null != cell.getCellType()) {
@@ -3333,9 +3365,9 @@ public class ClientController implements Serializable {
         Map m = new HashMap();
         m.put("ret", false);
         m.put("res", true);
-        if (webUserController.getLoggedUser().getInstitution() != null) {
+        if (webUserController.getLoggedInstitution() != null) {
             j += " and c.createInstitution=:ins ";
-            m.put("ins", webUserController.getLoggedUser().getInstitution());
+            m.put("ins", webUserController.getLoggedInstitution());
         } else {
             items = new ArrayList<>();
         }
@@ -3351,9 +3383,9 @@ public class ClientController implements Serializable {
         Map m = new HashMap();
         m.put("ret", false);
         m.put("res", true);
-        if (webUserController.getLoggedUser().getInstitution() != null) {
+        if (webUserController.getLoggedInstitution() != null) {
             j += " and c.createInstitution=:ins ";
-            m.put("ins", webUserController.getLoggedUser().getInstitution());
+            m.put("ins", webUserController.getLoggedInstitution());
         }
         j = j + " and c.createdAt between :fd and :td ";
         j = j + " order by c.id desc";
@@ -3651,7 +3683,7 @@ public class ClientController implements Serializable {
         encounter.setCreatedAt(new Date());
         encounter.setCreatedBy(webUserController.getLoggedUser());
         encounter.setInstitution(selectedClinic);
-        encounter.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
+        encounter.setCreatedInstitution(webUserController.getLoggedInstitution());
         if (clinicDate != null) {
             encounter.setEncounterDate(clinicDate);
         } else {
@@ -3669,15 +3701,15 @@ public class ClientController implements Serializable {
             return;
         }
         Institution poiIns;
-        if (webUserController.getLoggedUser().getInstitution() == null) {
+        if (webUserController.getLoggedInstitution() == null) {
             JsfUtil.addErrorMessage("You do not have an Institution. Please contact support.");
             return;
         }
-        //// // System.out.println("webUserController.getLoggedUser().getInstitution() = " + webUserController.getLoggedUser().getInstitution().getLastHin());
-        if (webUserController.getLoggedUser().getInstitution().getPoiInstitution() != null) {
-            poiIns = webUserController.getLoggedUser().getInstitution().getPoiInstitution();
+        //// // System.out.println("webUserController.getLoggedInstitution() = " + webUserController.getLoggedInstitution().getLastHin());
+        if (webUserController.getLoggedInstitution().getPoiInstitution() != null) {
+            poiIns = webUserController.getLoggedInstitution().getPoiInstitution();
         } else {
-            poiIns = webUserController.getLoggedUser().getInstitution();
+            poiIns = webUserController.getLoggedInstitution();
         }
         if (poiIns.getPoiNumber() == null || poiIns.getPoiNumber().trim().equals("")) {
             JsfUtil.addErrorMessage("A Point of Issue is NOT assigned to your Institution. Please discuss with the System Administrator.");
@@ -3775,11 +3807,11 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("No Client is Selected");
             return;
         }
-        if (webUserController.getLoggedUser().getInstitution().getPoiNumber().trim().equals("")) {
+        if (webUserController.getLoggedInstitution().getPoiNumber().trim().equals("")) {
             JsfUtil.addErrorMessage("No POI is configured for your institution. Please contact support.");
             return;
         }
-        selected.setPhn(applicationController.createNewPersonalHealthNumber(webUserController.getLoggedUser().getInstitution()));
+        selected.setPhn(applicationController.createNewPersonalHealthNumber(webUserController.getLoggedInstitution()));
     }
 
     public String searchByPhn() {
@@ -4089,7 +4121,7 @@ public class ClientController implements Serializable {
         Map m = new HashMap();
         m.put("res", true);
         m.put("q", refNo.trim().toLowerCase());
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        m.put("ins", webUserController.getLoggedInstitution());
         return getFacade().findByJpql(j, m);
     }
 
@@ -4379,10 +4411,10 @@ public class ClientController implements Serializable {
         Institution createdIns = null;
         selected.setRetired(false);
         if (selected.getCreateInstitution() == null) {
-            if (webUserController.getLoggedUser().getInstitution().getPoiInstitution() != null) {
-                createdIns = webUserController.getLoggedUser().getInstitution().getPoiInstitution();
+            if (webUserController.getLoggedInstitution().getPoiInstitution() != null) {
+                createdIns = webUserController.getLoggedInstitution().getPoiInstitution();
             } else {
-                createdIns = webUserController.getLoggedUser().getInstitution();
+                createdIns = webUserController.getLoggedInstitution();
             }
             selected.setCreateInstitution(createdIns);
         } else {
@@ -4439,7 +4471,7 @@ public class ClientController implements Serializable {
 
         if (clientEncounterComponentFormSetController.getSelected().getEncounter() != null) {
 
-            clientEncounterComponentFormSetController.getSelected().getEncounter().setEncounterNumber(encounterController.createCaseNumber(webUserController.getLoggedUser().getInstitution()));
+            clientEncounterComponentFormSetController.getSelected().getEncounter().setEncounterNumber(encounterController.createCaseNumber(webUserController.getLoggedInstitution()));
 
             clientEncounterComponentFormSetController.getSelected().getEncounter().setRetired(false);
             encounterFacade.edit(clientEncounterComponentFormSetController.getSelected().getEncounter());
@@ -4495,10 +4527,10 @@ public class ClientController implements Serializable {
         Institution createdIns = null;
         selected.setRetired(false);
         if (selected.getCreateInstitution() == null) {
-            if (webUserController.getLoggedUser().getInstitution().getPoiInstitution() != null) {
-                createdIns = webUserController.getLoggedUser().getInstitution().getPoiInstitution();
+            if (webUserController.getLoggedInstitution().getPoiInstitution() != null) {
+                createdIns = webUserController.getLoggedInstitution().getPoiInstitution();
             } else {
-                createdIns = webUserController.getLoggedUser().getInstitution();
+                createdIns = webUserController.getLoggedInstitution();
             }
             selected.setCreateInstitution(createdIns);
         } else {
@@ -4556,7 +4588,7 @@ public class ClientController implements Serializable {
 
             if (clientEncounterComponentFormSetController.getSelected().getEncounter().getEncounterNumber() == null
                     || clientEncounterComponentFormSetController.getSelected().getEncounter().getEncounterNumber().trim().equals("")) {
-                clientEncounterComponentFormSetController.getSelected().getEncounter().setEncounterNumber(encounterController.createTestNumber(webUserController.getLoggedUser().getInstitution()));
+                clientEncounterComponentFormSetController.getSelected().getEncounter().setEncounterNumber(encounterController.createTestNumber(webUserController.getLoggedInstitution()));
             }
             Encounter te
                     = clientEncounterComponentFormSetController.getSelected().getEncounter();
@@ -4584,10 +4616,10 @@ public class ClientController implements Serializable {
         Institution createdIns;
         int i = 0;
 
-        if (webUserController.getLoggedUser().getInstitution().getPoiInstitution() != null) {
-            createdIns = webUserController.getLoggedUser().getInstitution().getPoiInstitution();
+        if (webUserController.getLoggedInstitution().getPoiInstitution() != null) {
+            createdIns = webUserController.getLoggedInstitution().getPoiInstitution();
         } else {
-            createdIns = webUserController.getLoggedUser().getInstitution();
+            createdIns = webUserController.getLoggedInstitution();
         }
 
         if (createdIns == null) {
@@ -4647,10 +4679,10 @@ public class ClientController implements Serializable {
                 c.setCreatedOn(new Date());
             }
             if (c.getCreateInstitution() == null) {
-                if (webUserController.getLoggedUser().getInstitution().getPoiInstitution() != null) {
-                    c.setCreateInstitution(webUserController.getLoggedUser().getInstitution().getPoiInstitution());
-                } else if (webUserController.getLoggedUser().getInstitution() != null) {
-                    c.setCreateInstitution(webUserController.getLoggedUser().getInstitution());
+                if (webUserController.getLoggedInstitution().getPoiInstitution() != null) {
+                    c.setCreateInstitution(webUserController.getLoggedInstitution().getPoiInstitution());
+                } else if (webUserController.getLoggedInstitution() != null) {
+                    c.setCreateInstitution(webUserController.getLoggedInstitution());
                 }
             }
             if (c.getPerson().getCreatedAt() == null) {
@@ -5285,7 +5317,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:t "
                 + " order by c.id desc";
         Map m = new HashMap();
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        m.put("ins", webUserController.getLoggedInstitution());
         m.put("d", new Date());
         m.put("t", EncounterType.Case_Enrollment);
         List<Encounter> cs = getEncounterFacade().findByJpql(j, m);
@@ -5306,7 +5338,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:t "
                 + " order by c.id desc";
         Map m = new HashMap();
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        m.put("ins", webUserController.getLoggedInstitution());
         m.put("d", new Date());
         m.put("t", EncounterType.Test_Enrollment);
         List<Encounter> cs = getEncounterFacade().findByJpql(j, m);
@@ -5335,7 +5367,7 @@ public class ClientController implements Serializable {
                 + " and c.encounterType=:t "
                 + " order by c.id";
         Map m = new HashMap();
-        Institution ins = webUserController.getLoggedUser().getInstitution();
+        Institution ins = webUserController.getLoggedInstitution();
         m.put("ins", ins);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
@@ -5364,7 +5396,7 @@ public class ClientController implements Serializable {
                 + " where c.retired=false";
 
         j += " and c.institution=:ins ";
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        m.put("ins", webUserController.getLoggedInstitution());
 
         j += " and c.encounterDate between :fd and :td "
                 + " and c.encounterType=:t "
@@ -5381,7 +5413,7 @@ public class ClientController implements Serializable {
         String j = "select c from Encounter c "
                 + " where c.retired=false";
         j += " and c.institution=:ins ";
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        m.put("ins", webUserController.getLoggedInstitution());
         j += " and c.encounterDate between :fd and :td "
                 + " and c.encounterType=:t "
                 + " order by c.id";

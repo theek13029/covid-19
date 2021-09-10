@@ -20,7 +20,10 @@
                             <div class="form-group row">
                                 <p:outputLabel value="Title:" class="col-md-2" for="title" />
                                 <div class="col-md-4">
-                                    <p:selectOneMenu id="title" value="#{webUserController.selected.person.title}" style="width: 100%;">
+                                    <p:selectOneMenu id="title" filter="true"
+                                                     filterMatchMode="contains"
+                                                     value="#{webUserController.selected.person.title}" style="width: 100%;">
+                                        <f:selectItem itemLabel="Select" ></f:selectItem>
                                         <f:selectItems value="#{itemController.titles}" var="t" itemLabel="#{t.name}"
                                                        itemValue="#{t}" ></f:selectItems>
                                     </p:selectOneMenu>

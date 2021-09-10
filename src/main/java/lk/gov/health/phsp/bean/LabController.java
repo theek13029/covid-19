@@ -162,7 +162,7 @@ public class LabController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("stl", false);
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        m.put("ins", webUserController.getLoggedInstitution());
         listedToDispatch = encounterFacade.findByJpql(j, m, TemporalType.DATE);
         return "/lab/dispatch_samples";
     }
@@ -181,7 +181,7 @@ public class LabController implements Serializable {
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        m.put("ins", webUserController.getLoggedInstitution());
         listedToDispatch = encounterFacade.findByJpql(j, m, TemporalType.DATE);
         return "/lab/dispatch_samples";
     }
@@ -204,7 +204,7 @@ public class LabController implements Serializable {
         m.put("etype", EncounterType.Test_Enrollment);
 
         j += " and c.client.person.mohArea=:moh ";
-        m.put("moh", webUserController.getLoggedUser().getInstitution().getMohArea());
+        m.put("moh", webUserController.getLoggedInstitution().getMohArea());
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
@@ -564,7 +564,7 @@ public class LabController implements Serializable {
             return;
         }
         if (deleting.getReceivedAtLab() != null && deleting.getReferalInstitution() != null) {
-            if (deleting.getReceivedAtLab() != null && deleting.getReferalInstitution() != webUserController.getLoggedUser().getInstitution()) {
+            if (deleting.getReceivedAtLab() != null && deleting.getReferalInstitution() != webUserController.getLoggedInstitution()) {
                 JsfUtil.addErrorMessage("Already receievd by the Lab. Can't delete.");
                 return;
             }
@@ -581,8 +581,8 @@ public class LabController implements Serializable {
         its.add(InstitutionType.Hospital);
         its.add(InstitutionType.MOH_Office);
         Area rdhs;
-        if (webUserController.getLoggedUser().getInstitution() != null && webUserController.getLoggedUser().getInstitution().getRdhsArea() != null) {
-            rdhs = webUserController.getLoggedUser().getInstitution().getRdhsArea();
+        if (webUserController.getLoggedInstitution() != null && webUserController.getLoggedInstitution().getRdhsArea() != null) {
+            rdhs = webUserController.getLoggedInstitution().getRdhsArea();
             regionalMohsAndHospitals = institutionApplicationController.findRegionalInstitutions(its, rdhs);
         } else {
             regionalMohsAndHospitals = new ArrayList<>();
@@ -611,8 +611,8 @@ public class LabController implements Serializable {
             m.put("ins", mohOrHospital);
         } else {
             j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
-            m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
-            m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
+            m.put("rdhs", webUserController.getLoggedInstitution().getRdhsArea());
+            m.put("district", webUserController.getLoggedInstitution().getDistrict());
         }
 
         j += " and c.createdAt between :fd and :td ";
@@ -663,7 +663,7 @@ public class LabController implements Serializable {
         m.put("code", "first_contacts");
 
         j += " and ci.areaValue2=:district ";
-        m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
+        m.put("district", webUserController.getLoggedInstitution().getDistrict());
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
@@ -690,7 +690,7 @@ public class LabController implements Serializable {
         m.put("etype", EncounterType.Case_Enrollment);
 
         j += " and ci.areaValue=:mymoh ";
-        m.put("mymoh", webUserController.getLoggedUser().getInstitution().getMohArea());
+        m.put("mymoh", webUserController.getLoggedInstitution().getMohArea());
 
         j += " and ci.item.code=:code ";
         m.put("code", "first_contacts");
@@ -723,7 +723,7 @@ public class LabController implements Serializable {
         m.put("code", "first_contacts");
 
         j += " and ci.areaValue2=:district ";
-        m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
+        m.put("district", webUserController.getLoggedInstitution().getDistrict());
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
@@ -950,8 +950,8 @@ public class LabController implements Serializable {
         nicExistsForRat = null;
         Date d = new Date();
         Client c = new Client();
-        c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
-        c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        c.getPerson().setDistrict(webUserController.getLoggedInstitution().getDistrict());
+        c.getPerson().setMohArea(webUserController.getLoggedInstitution().getMohArea());
         rat.setPcrTestType(itemApplicationController.getRat());
         rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
         rat.setClient(c);
@@ -959,15 +959,15 @@ public class LabController implements Serializable {
         if (sessionController.getLastInstitution() != null) {
             rat.setInstitution(sessionController.getLastInstitution());
         } else {
-            if (webUserController.getLoggedUser().getInstitution().getParent() != null) {
-                rat.setInstitution(webUserController.getLoggedUser().getInstitution().getParent());
+            if (webUserController.getLoggedInstitution().getParent() != null) {
+                rat.setInstitution(webUserController.getLoggedInstitution().getParent());
             } else {
-                rat.setInstitution(webUserController.getLoggedUser().getInstitution());
+                rat.setInstitution(webUserController.getLoggedInstitution());
             }
         }
         rat.setInstitutionUnit(sessionController.getLastInstitutionUnit());
-        rat.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
-        rat.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setCreatedInstitution(webUserController.getLoggedInstitution());
+        rat.setReferalInstitution(webUserController.getLoggedInstitution());
 
         rat.setEncounterType(EncounterType.Test_Enrollment);
         rat.setEncounterDate(d);
@@ -993,8 +993,8 @@ public class LabController implements Serializable {
         nicExistsForRat = null;
         Date d = new Date();
         Client c = new Client();
-        c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
-        c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        c.getPerson().setDistrict(webUserController.getLoggedInstitution().getDistrict());
+        c.getPerson().setMohArea(webUserController.getLoggedInstitution().getMohArea());
         rat.setPcrTestType(itemApplicationController.getRat());
         rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
         rat.setClient(c);
@@ -1002,15 +1002,15 @@ public class LabController implements Serializable {
         if (sessionController.getLastInstitution() != null) {
             rat.setInstitution(sessionController.getLastInstitution());
         } else {
-            if (webUserController.getLoggedUser().getInstitution().getParent() != null) {
-                rat.setInstitution(webUserController.getLoggedUser().getInstitution().getParent());
+            if (webUserController.getLoggedInstitution().getParent() != null) {
+                rat.setInstitution(webUserController.getLoggedInstitution().getParent());
             } else {
-                rat.setInstitution(webUserController.getLoggedUser().getInstitution());
+                rat.setInstitution(webUserController.getLoggedInstitution());
             }
         }
         rat.setInstitutionUnit(sessionController.getLastInstitutionUnit());
-        rat.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
-        rat.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setCreatedInstitution(webUserController.getLoggedInstitution());
+        rat.setReferalInstitution(webUserController.getLoggedInstitution());
 
         rat.setEncounterType(EncounterType.Test_Enrollment);
         rat.setEncounterDate(d);
@@ -1030,25 +1030,25 @@ public class LabController implements Serializable {
         nicExistsForPcr = null;
         Date d = new Date();
         Client c = new Client();
-        c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
-        c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        c.getPerson().setDistrict(webUserController.getLoggedInstitution().getDistrict());
+        c.getPerson().setMohArea(webUserController.getLoggedInstitution().getMohArea());
         pcr.setPcrTestType(itemApplicationController.getPcr());
         pcr.setPcrOrderingCategory(sessionController.getLastPcrOrdringCategory());
         pcr.setClient(c);
         if (sessionController.getLastInstitution() != null) {
             pcr.setInstitution(sessionController.getLastInstitution());
         } else {
-            if (webUserController.getLoggedUser().getInstitution().getParent() != null) {
-                pcr.setInstitution(webUserController.getLoggedUser().getInstitution().getParent());
+            if (webUserController.getLoggedInstitution().getParent() != null) {
+                pcr.setInstitution(webUserController.getLoggedInstitution().getParent());
             } else {
-                pcr.setInstitution(webUserController.getLoggedUser().getInstitution());
+                pcr.setInstitution(webUserController.getLoggedInstitution());
             }
         }
         pcr.setInstitution(sessionController.getLastInstitution());
         pcr.setUnitWard(sessionController.getLastWardUnit());
         pcr.setInstitutionUnit(sessionController.getLastInstitutionUnit());
-        pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
-        pcr.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setCreatedInstitution(webUserController.getLoggedInstitution());
+        pcr.setReferalInstitution(webUserController.getLoggedInstitution());
         pcr.setEncounterType(EncounterType.Test_Enrollment);
         pcr.setEncounterDate(d);
         pcr.setEncounterFrom(d);
@@ -1088,23 +1088,23 @@ public class LabController implements Serializable {
         pcr.setEncounterNumber(tmpEnc.getEncounterNumber());
         Date d = new Date();
         Client c = nicClient;
-        c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
-        c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        c.getPerson().setDistrict(webUserController.getLoggedInstitution().getDistrict());
+        c.getPerson().setMohArea(webUserController.getLoggedInstitution().getMohArea());
         pcr.setPcrTestType(itemApplicationController.getPcr());
         pcr.setPcrOrderingCategory(sessionController.getLastPcrOrdringCategory());
         pcr.setClient(c);
         if (sessionController.getLastInstitution() != null) {
             pcr.setInstitution(sessionController.getLastInstitution());
         } else {
-            if (webUserController.getLoggedUser().getInstitution().getParent() != null) {
-                pcr.setInstitution(webUserController.getLoggedUser().getInstitution().getParent());
+            if (webUserController.getLoggedInstitution().getParent() != null) {
+                pcr.setInstitution(webUserController.getLoggedInstitution().getParent());
             } else {
-                pcr.setInstitution(webUserController.getLoggedUser().getInstitution());
+                pcr.setInstitution(webUserController.getLoggedInstitution());
             }
         }
         pcr.setInstitutionUnit(sessionController.getLastInstitutionUnit());
-        pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
-        pcr.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setCreatedInstitution(webUserController.getLoggedInstitution());
+        pcr.setReferalInstitution(webUserController.getLoggedInstitution());
         pcr.setEncounterType(EncounterType.Test_Enrollment);
         pcr.setEncounterDate(d);
         pcr.setEncounterFrom(d);
@@ -1142,23 +1142,23 @@ public class LabController implements Serializable {
         Date d = new Date();
 
         Client c = nicClient;
-        c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
-        c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        c.getPerson().setDistrict(webUserController.getLoggedInstitution().getDistrict());
+        c.getPerson().setMohArea(webUserController.getLoggedInstitution().getMohArea());
         rat.setPcrTestType(itemApplicationController.getRat());
         rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
         rat.setClient(c);
         if (sessionController.getLastInstitution() != null) {
             rat.setInstitution(sessionController.getLastInstitution());
         } else {
-            if (webUserController.getLoggedUser().getInstitution().getParent() != null) {
-                rat.setInstitution(webUserController.getLoggedUser().getInstitution().getParent());
+            if (webUserController.getLoggedInstitution().getParent() != null) {
+                rat.setInstitution(webUserController.getLoggedInstitution().getParent());
             } else {
-                rat.setInstitution(webUserController.getLoggedUser().getInstitution());
+                rat.setInstitution(webUserController.getLoggedInstitution());
             }
         }
         rat.setInstitutionUnit(sessionController.getLastInstitutionUnit());
-        rat.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
-        rat.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setCreatedInstitution(webUserController.getLoggedInstitution());
+        rat.setReferalInstitution(webUserController.getLoggedInstitution());
         rat.setEncounterType(EncounterType.Test_Enrollment);
         rat.setEncounterDate(d);
         rat.setEncounterFrom(d);
@@ -1195,23 +1195,23 @@ public class LabController implements Serializable {
         rat.setEncounterNumber(tmpEnc.getEncounterNumber());
         Date d = new Date();
         Client c = nicClient;
-        c.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
-        c.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        c.getPerson().setDistrict(webUserController.getLoggedInstitution().getDistrict());
+        c.getPerson().setMohArea(webUserController.getLoggedInstitution().getMohArea());
         rat.setPcrTestType(itemApplicationController.getRat());
         rat.setPcrOrderingCategory(sessionController.getLastRatOrderingCategory());
         rat.setClient(c);
         if (sessionController.getLastInstitution() != null) {
             rat.setInstitution(sessionController.getLastInstitution());
         } else {
-            if (webUserController.getLoggedUser().getInstitution().getParent() != null) {
-                rat.setInstitution(webUserController.getLoggedUser().getInstitution().getParent());
+            if (webUserController.getLoggedInstitution().getParent() != null) {
+                rat.setInstitution(webUserController.getLoggedInstitution().getParent());
             } else {
-                rat.setInstitution(webUserController.getLoggedUser().getInstitution());
+                rat.setInstitution(webUserController.getLoggedInstitution());
             }
         }
         rat.setInstitutionUnit(sessionController.getLastInstitutionUnit());
-        rat.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
-        rat.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+        rat.setCreatedInstitution(webUserController.getLoggedInstitution());
+        rat.setReferalInstitution(webUserController.getLoggedInstitution());
         rat.setEncounterType(EncounterType.Test_Enrollment);
         rat.setEncounterDate(d);
         rat.setEncounterFrom(d);
@@ -1286,10 +1286,10 @@ public class LabController implements Serializable {
         }
         Institution createdIns = null;
         if (rat.getClient().getCreateInstitution() == null) {
-            if (webUserController.getLoggedUser().getInstitution().getPoiInstitution() != null) {
-                createdIns = webUserController.getLoggedUser().getInstitution().getPoiInstitution();
+            if (webUserController.getLoggedInstitution().getPoiInstitution() != null) {
+                createdIns = webUserController.getLoggedInstitution().getPoiInstitution();
             } else {
-                createdIns = webUserController.getLoggedUser().getInstitution();
+                createdIns = webUserController.getLoggedInstitution();
             }
             rat.getClient().setCreateInstitution(createdIns);
         } else {
@@ -1341,7 +1341,7 @@ public class LabController implements Serializable {
         clientController.saveClient(rat.getClient());
         if (rat.getEncounterNumber() == null
                 || rat.getEncounterNumber().trim().equals("")) {
-            rat.setEncounterNumber(encounterController.createTestNumber(webUserController.getLoggedUser().getInstitution()));
+            rat.setEncounterNumber(encounterController.createTestNumber(webUserController.getLoggedInstitution()));
         }
 
         encounterController.save(rat);
@@ -1365,16 +1365,16 @@ public class LabController implements Serializable {
             return "";
         }
         Institution createdIns = null;
-        pcr.setCreatedInstitution(webUserController.getLoggedUser().getInstitution());
-        pcr.setReferalInstitution(webUserController.getLoggedUser().getInstitution());
+        pcr.setCreatedInstitution(webUserController.getLoggedInstitution());
+        pcr.setReferalInstitution(webUserController.getLoggedInstitution());
         
         Institution moh = institutionApplicationController.findMinistryOfHealth();
         
         if (pcr.getClient().getCreateInstitution() == null) {
-            if (webUserController.getLoggedUser().getInstitution().getPoiInstitution() != null) {
-                createdIns = webUserController.getLoggedUser().getInstitution().getPoiInstitution();
+            if (webUserController.getLoggedInstitution().getPoiInstitution() != null) {
+                createdIns = webUserController.getLoggedInstitution().getPoiInstitution();
             } else {
-                createdIns = webUserController.getLoggedUser().getInstitution();
+                createdIns = webUserController.getLoggedInstitution();
             }
             pcr.getClient().setCreateInstitution(createdIns);
         } else {
@@ -1426,7 +1426,7 @@ public class LabController implements Serializable {
         clientController.saveClient(pcr.getClient());
         if (pcr.getEncounterNumber() == null
                 || pcr.getEncounterNumber().trim().equals("")) {
-            pcr.setEncounterNumber(encounterController.createTestNumber(webUserController.getLoggedUser().getInstitution()));
+            pcr.setEncounterNumber(encounterController.createTestNumber(webUserController.getLoggedInstitution()));
         }
 
         pcr.setSampled(true);
@@ -1567,7 +1567,7 @@ public class LabController implements Serializable {
         m.put("etype", EncounterType.Test_Enrollment);
 
         j += " and c.institution=:ins ";
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        m.put("ins", webUserController.getLoggedInstitution());
 
         //c.client.person.mohArea = :moh
         j += " and c.createdAt between :fd and :td ";
@@ -1772,8 +1772,8 @@ public class LabController implements Serializable {
             m.put("ins", mohOrHospital);
         } else {
             j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
-            m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
-            m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
+            m.put("rdhs", webUserController.getLoggedInstitution().getRdhsArea());
+            m.put("district", webUserController.getLoggedInstitution().getDistrict());
         }
 
         if (mohArea != null) {
@@ -1826,8 +1826,8 @@ public class LabController implements Serializable {
             m.put("ins", mohOrHospital);
         } else {
             j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
-            m.put("rdhs", webUserController.getLoggedUser().getInstitution().getRdhsArea());
-            m.put("district", webUserController.getLoggedUser().getInstitution().getDistrict());
+            m.put("rdhs", webUserController.getLoggedInstitution().getRdhsArea());
+            m.put("district", webUserController.getLoggedInstitution().getDistrict());
         }
 
         j += " and c.createdAt between :fd and :td ";
@@ -1906,7 +1906,7 @@ public class LabController implements Serializable {
         m.put("etype", EncounterType.Test_Enrollment);
 
         j += " and c.institution=:ins ";
-        m.put("ins", webUserController.getLoggedUser().getInstitution());
+        m.put("ins", webUserController.getLoggedInstitution());
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());

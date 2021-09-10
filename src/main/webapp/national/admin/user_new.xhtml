@@ -7,15 +7,11 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-        <ui:composition template="/template1.xhtml">
-            <ui:define name="content" >                
-                <p:panel class="h-100 text-center" rendered="#{!webUserController.loggedUser.systemAdministrator}">
-                    <h1>You are NOT authorized</h1>
-                </p:panel>
-
-                <h:form class="form">
-                    <p:panel class="main-panel" >
-                        <div class="card">
+        <ui:composition template="/national/admin/index.xhtml">
+            <ui:define name="admin" >                
+                <h:form >
+                    <p:panel id="WebUserEditDlg"  >
+                        <div class="card w-100 form">
                             <div class="card-header bg-success text-white">
                                 <h:outputLabel class="fs-5 my-2 fw-bold" value="New User Detais" ></h:outputLabel>                                
                             </div>
@@ -129,7 +125,9 @@
                                 </div>
                             </div>
                             <div class="card-footer bg-white">
-                                <h:commandButton class="btn btn-success px-5 my-3" action="#{webUserController.saveNewWebUser()}" value="#{bundleClinical.Save}"/>
+                                <h:commandButton class="btn btn-success px-5 my-3" 
+                                                 action="#{webUserController.saveNewWebUser()}" 
+                                                 value="#{bundleClinical.Save}"/>
                             </div>
                         </div>
                         <div class="row" >
@@ -138,6 +136,8 @@
                             </div>
                         </div>
                     </p:panel>
+
+
                 </h:form>                
             </ui:define>
         </ui:composition>
