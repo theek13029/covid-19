@@ -91,24 +91,6 @@
                 <p:menuitem class="text-white" ajax="false" value="Reports" action="#{menuController.toReportsIndex()}" />
                 <p:menuitem class="text-white" ajax="false" value="Administration" action="#{menuController.toAdministrationIndex()}" />
 
-
-                <p:submenu class="submenu mx-2" label="Institution Administration" rendered="#{webUserController.hasPrivilege('Institution_Administration')}"  >
-                    <p:submenu label="Manage Users" rendered="#{webUserController.hasPrivilege('Institution_Administration')}">
-                        <p:menuitem value="New User" action="#{webUserController.toAddNewUserByInsAdmin()}" ajax="false"
-                                    rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                        <p:menuitem value="View Users" action="#{webUserController.toManageInstitutionUsers()}" ajax="false"
-                                    rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                    </p:submenu>
-                    <p:menuitem value="Manage Institutions" action="/insAdmin/institution_index" rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                    <p:submenu label="Manage Areas" rendered="#{webUserController.hasPrivilege('Institution_Administration')}">
-                        <p:menuitem value="New PHI Area" action="#{areaController.toAddPhiAreaForInsAdmin()}" ajax="false"
-                                    rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                        <p:menuitem value="View PHI Areas" action="#{areaController.toListPhiAreasForInsAdmin()}" ajax="false"
-                                    rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                    </p:submenu>
-                    <p:menuitem value="Manage Preferences"  action="#{preferenceController.toManagePreferencesInstitution()}"    ajax="false" rendered="#{webUserController.hasPrivilege('Institution_Administration')}" />
-                </p:submenu>
-                
                 <p:submenu class="submenu mx-2" label="Help" >
                     <p:menuitem value="User Manual" action="/wiki"   ajax="false" />
                     <p:menuitem value="Feedback" action="/feedback"   ajax="false" />
