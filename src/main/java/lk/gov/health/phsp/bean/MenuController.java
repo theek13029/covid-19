@@ -348,7 +348,7 @@ public class MenuController implements Serializable {
             JsfUtil.addErrorMessage("You are NOT autherized");
             return "";
         }
-        institutionController.prepareToAddNewInstitution();
+        institutionController.prepareToListInstitution();
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
                 return "/regional/admin/institution_list";
