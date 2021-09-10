@@ -2,270 +2,281 @@
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-    xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-<!-- INTERFACE -->
-<cc:interface>
-</cc:interface>
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
 
-<!-- IMPLEMENTATION -->
-<cc:implementation>
-    <h:form>
-        <div class="container">
-            <div class="row gx-4 my-2">
-                <div class="col">
-                    <div class="d-flex bg-success px-3 py-2 align-items-center">
-                        <div class="flex-grow-1 text-white">
-                            <h4 class="fw-bold">
-                                <i class="bi mx-2 bi-info-circle-fill"></i>
-                                PCRs
-                            </h4>
-                            <div class="d-flex">
-                                <div class="p-2 flex-grow-1">
-                                    <h5 class="fw-bold">Today</h5>
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form>
+            <div class="container">
+                <div class="row gx-4 my-2">
+                    <div class="col">
+                        <div class="d-flex bg-success px-3 py-2 align-items-center">
+                            <div class="flex-grow-1 text-white">
+                                <h4 class="fw-bold">
+                                    <i class="bi mx-2 bi-info-circle-fill"></i>
+                                    PCRs
+                                </h4>
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <h5 class="fw-bold">Today</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardApplicationController.todayPcr}">
+                                            </h:outputLabel>
+                                        </h5>
+                                    </div>
                                 </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.todayPcr}">
-                                        </h:outputLabel>
-                                    </h5>
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <h5 class="fw-bold">Yesterday</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardApplicationController.yesterdayPcr}">
+                                            </h:outputLabel>
+                                        </h5>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="d-flex">
-                                <div class="p-2 flex-grow-1">
-                                    <h5 class="fw-bold">Yesterday</h5>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <h:commandButton value="More Information"
+                                             class="btn text-white btn-small btn-dark-success border-none" type="button">
+                            </h:commandButton>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="d-flex bg-success px-3 py-2 align-items-center">
+                            <div class="flex-grow-1 text-white">
+                                <h4 class="fw-bold">
+                                    <i class="bi mx-2 bi-info-circle-fill"></i>
+                                    RATS
+                                </h4>
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <h5 class="fw-bold">Today</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardApplicationController.todayRat}">
+                                            </h:outputLabel>
+                                        </h5>
+                                    </div>
                                 </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.yesterdayPcr}">
-                                        </h:outputLabel>
-                                    </h5>
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <h5 class="fw-bold">Yesterday</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardApplicationController.yesterdayRat}">
+                                            </h:outputLabel>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <h:commandButton value="More Information"
+                                             class="btn text-white btn-small btn-dark-success border-none"></h:commandButton>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="d-flex bg-danger px-3 py-2 align-items-center">
+                            <div class="flex-grow-1 text-white">
+                                <h4 class="fw-bold">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                    PCR POSITIVES
+                                </h4>
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <h5 class="fw-bold">Today</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            #{dashboardApplicationController.todayPositivePcr}
+                                            <small>(
+                                                <h:outputLabel value="#{dashboardApplicationController.todayPcrPositiveRate}">
+                                                    <f:convertDateTime pattern="#.0" ></f:convertDateTime>
+                                                </h:outputLabel>
+                                                )
+                                            </small>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <h5 class="fw-bold">Yesterday</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            #{dashboardApplicationController.yesterdayPositivePcr}
+                                            <small>
+                                                (
+                                                <h:outputLabel value="#{dashboardApplicationController.yesterdayPcrPositiveRate}">
+                                                    <f:convertDateTime pattern="#.0" ></f:convertDateTime>
+                                                </h:outputLabel>
+                                                )
+                                            </small>
+
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <h:commandButton value="More Information"
+                                             class="btn text-white btn-small btn-dark-danger border-none" type="button">
+                            </h:commandButton>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="d-flex bg-danger px-3 py-2 align-items-center">
+                            <div class="flex-grow-1 text-white">
+                                <h4 class="fw-bold">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                    RAT POSITIVES
+                                </h4>
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <h5 class="fw-bold">Today</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            #{dashboardApplicationController.todayPositiveRat}
+                                            <small>
+                                                (#{dashboardApplicationController.todayRatPositiveRate})
+                                            </small>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <h5 class="fw-bold">Yesterday</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            #{dashboardApplicationController.yesterdayPositiveRat}
+                                            <small>
+                                                <h:outputLabel value="#{dashboardApplicationController.yesterdayRatPositiveRate}">
+                                                    <f:convertDateTime pattern="#.0" ></f:convertDateTime>
+                                                </h:outputLabel>
+                                            </small>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <h:commandButton value="More Information"
+                                             class="btn btn-small text-white btn-dark-danger border-none" type="button">
+                            </h:commandButton>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-2 gx-4">
+                    <div class="col">
+                        <div class="d-flex bg-success px-3 py-2 align-items-center">
+                            <div class="flex-grow-1 text-white">
+                                <h4 class="fw-bold">
+                                    <i class="bi mx-2 bi-info-circle-fill"></i>
+                                    Test By Category
+                                </h4>
+                                <div class="d-flex">
+                                    <div class="p-2 w-100">
+                                        <h5>
+                                            <h:commandLink class="text-decoration-none text-white"  value="First Contacts"
+                                                           action="#{dashboardController.toContactNational()}"></h:commandLink>
+                                        </h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardApplicationController.todayPositivePcr}" ></h:outputLabel>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="p-2 w-100">
+                                        <h5>
+                                            <h:commandLink class="text-decoration-none text-white"  value="Community Random"
+                                                           action="#{dashboardController.toCommunityRandomNational()}"></h:commandLink>
+                                        </h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardApplicationController.communityRandomCount}">
+                                            </h:outputLabel>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="p-2 w-100">
+                                        <h5>
+                                            <h:commandLink class="text-decoration-none text-white" 
+                                                           value="Foreign returnees &amp; Tourists "
+                                                           action="#{dashboardController.toForeign()}"></h:commandLink>
+                                        </h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardApplicationController.foreignCount}">
+                                            </h:outputLabel>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="p-2 w-100">
+                                        <h5>
+                                            <h:commandLink class="text-decoration-none text-white"  value="Hospitals"
+                                                           action="#{dashboardController.toHospital()}"></h:commandLink>
+                                        </h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardApplicationController.hospitalCount}">
+                                            </h:outputLabel>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="p-2 w-100">
+                                        <h5>
+                                            <h:commandLink class="text-decoration-none text-white"  value="Other"
+                                                           action="#{dashboardController.toOtherOrderingCategory()}"></h:commandLink>
+                                        </h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardApplicationController.otherCount}">
+                                            </h:outputLabel>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="p-2 w-100">
+                                        <h5>
+                                            <h:commandLink class="text-white text-decoration-none" value="Find more details .."
+                                                           action="#{mohController.toDistrictViceTestListForOrderingCategories()}"></h:commandLink>
+                                        </h5>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="d-grid gap-2">
-                        <h:commandButton value="More Information"
-                            class="btn text-white btn-small btn-dark-success border-none" type="button">
-                        </h:commandButton>
-                    </div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
                 </div>
-                <div class="col">
-                    <div class="d-flex bg-success px-3 py-2 align-items-center">
-                        <div class="flex-grow-1 text-white">
-                            <h4 class="fw-bold">
-                                <i class="bi mx-2 bi-info-circle-fill"></i>
-                                RATS
-                            </h4>
-                            <div class="d-flex">
-                                <div class="p-2 flex-grow-1">
-                                    <h5 class="fw-bold">Today</h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.todayRat}">
-                                        </h:outputLabel>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="p-2 flex-grow-1">
-                                    <h5 class="fw-bold">Yesterday</h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.yesterdayRat}">
-                                        </h:outputLabel>
-                                    </h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <h:commandButton value="More Information"
-                            class="btn text-white btn-small btn-dark-success border-none"></h:commandButton>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="d-flex bg-danger px-3 py-2 align-items-center">
-                        <div class="flex-grow-1 text-white">
-                            <h4 class="fw-bold">
-                                <i class="bi bi-exclamation-circle-fill"></i>
-                                PCR POSITIVES
-                            </h4>
-                            <div class="d-flex">
-                                <div class="p-2 flex-grow-1">
-                                    <h5 class="fw-bold">Today</h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        #{dashboardApplicationController.todayPositivePcr}
-                                        <small>
-                                        	(#{dashboardApplicationController.todayPcrPositiveRate})
-                                        </small>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="p-2 flex-grow-1">
-                                    <h5 class="fw-bold">Yesterday</h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        #{dashboardApplicationController.yesterdayPositivePcr}
-                                       	<small>
-                                            (#{dashboardApplicationController.yesterdayPcrPositiveRate})
-                                        </small>
-                                    </h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <h:commandButton value="More Information"
-                            class="btn text-white btn-small btn-dark-danger border-none" type="button">
-                        </h:commandButton>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="d-flex bg-danger px-3 py-2 align-items-center">
-                        <div class="flex-grow-1 text-white">
-                            <h4 class="fw-bold">
-                                <i class="bi bi-exclamation-circle-fill"></i>
-                                RAT POSITIVES
-                            </h4>
-                            <div class="d-flex">
-                                <div class="p-2 flex-grow-1">
-                                    <h5 class="fw-bold">Today</h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        #{dashboardApplicationController.todayPositiveRat}
-                                        <small>
-                                            (#{dashboardApplicationController.todayRatPositiveRate})
-                                        </small>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="p-2 flex-grow-1">
-                                    <h5 class="fw-bold">Yesterday</h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        #{dashboardApplicationController.yesterdayPositiveRat}
-                                        <small>
-                                        	(#{dashboardApplicationController.yesterdayRatPositiveRate})
-                                        </small>
-                                    </h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <h:commandButton value="More Information"
-                            class="btn btn-small text-white btn-dark-danger border-none" type="button">
-                        </h:commandButton>
-                    </div>
-                </div>
+
             </div>
-            <div class="row my-2 gx-4">
-                <div class="col">
-                    <div class="d-flex bg-success px-3 py-2 align-items-center">
-                        <div class="flex-grow-1 text-white">
-                            <h4 class="fw-bold">
-                                <i class="bi mx-2 bi-info-circle-fill"></i>
-                                Test By Category
-                            </h4>
-                            <div class="d-flex">
-                                <div class="p-2 w-100">
-                                    <h5>
-                                        <h:commandLink class="text-decoration-none text-white" ajax="false" value="First Contacts"
-                                        action="#{dashboardController.toContactNational()}"></h:commandLink>
-                                    </h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.todayPositivePcr}" ></h:outputLabel>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="p-2 w-100">
-                                    <h5>
-                                        <h:commandLink class="text-decoration-none text-white" ajax="false" value="Community Random"
-                                        action="#{dashboardController.toCommunityRandomNational()}"></h:commandLink>
-                                    </h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.communityRandomCount}">
-                                        </h:outputLabel>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="p-2 w-100">
-                                    <h5>
-                                        <h:commandLink class="text-decoration-none text-white" ajax="false"
-                                        value="Foreign returnees &amp; Tourists "
-                                        action="#{dashboardController.toForeign()}"></h:commandLink>
-                                    </h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.foreignCount}">
-                                        </h:outputLabel>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="p-2 w-100">
-                                    <h5>
-                                        <h:commandLink class="text-decoration-none text-white" ajax="false" value="Hospitals"
-                                        action="#{dashboardController.toHospital()}"></h:commandLink>
-                                    </h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.hospitalCount}">
-                                        </h:outputLabel>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="p-2 w-100">
-                                    <h5>
-                                        <h:commandLink class="text-decoration-none text-white" ajax="false" value="Other"
-                                        action="#{dashboardController.toOtherOrderingCategory()}"></h:commandLink>
-                                    </h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.otherCount}">
-                                        </h:outputLabel>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="p-2 w-100">
-                                    <h5>
-                                        <h:commandLink class="text-white text-decoration-none" value="Find more details .."
-                                        action="#{mohController.toDistrictViceTestListForOrderingCategories()}"></h:commandLink>
-                                    </h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col"></div>
-                <div class="col"></div>
-                <div class="col"></div>
-            </div>
 
-        </div>
-
-    </h:form>
-</cc:implementation>
+        </h:form>
+    </cc:implementation>
 
 </html>
