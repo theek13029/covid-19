@@ -169,17 +169,51 @@ public class RegionalController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
-    public void prepareSummaryByOrderedInstitution() {
-        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
+    
+    
+    public String toSummaryByOrderedInstitutionVsLabToReceive() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type ";
+        j += " and c.encounterDate between :fd and :td "
+                + " and (c.receivedAtLab is null or c.receivedAtLab=:rl ) "
+                + " and c.institution.rdhsArea=:rd ";
+        j += " and c.sentToLab=:sl ";
+        j += " group by c.institution, c.referalInstitution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("rl", false);
+        m.put("sl", true);
+        m.put("rd", webUserController.getLoggedInstitution().getRdhsArea());
+        labSummariesToReceive = new ArrayList<>();
+        List<Object> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
+        // // System.out.println("obs = " + obs.size());
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labSummariesToReceive.add((InstitutionCount) o);
+            }
+        }
+        return "/regional/summary_received_at_lab";
+    }
+    
+    
+    public void processSummaryReceivedAtLab() {
+        System.out.println("processSummaryReceivedAtLab");
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired=false "
                 + " and c.encounterType=:type "
-                + " and c.encounterDate between :fd and :td ";
+                + " and c.encounterDate between :fd and :td "
+                + " and c.receivedAtLab=:rl ";
 
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
+        m.put("rl", true);
 
         j += " and (c.institution.rdhsArea=:rd or c.institution.district=:dis) ";
         m.put("rd", webUserController.getLoggedInstitution().getRdhsArea());
@@ -190,10 +224,14 @@ public class RegionalController implements Serializable {
             m.put("tt", testType);
         }
 
-        j += " group by c.institution";
+        j += " group by c.institution, c.referalInstitution";
         institutionCounts = new ArrayList<>();
-        List<Object> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
-        // // System.out.println("obs = " + obs.size());
+        
+        System.out.println("m = " + m);
+        System.out.println("j = " + j);
+        
+        List<Object> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
+        System.out.println("obs = " + obs.size());
         Long c=1l;
         for (Object o : obs) {
             if (o instanceof InstitutionCount) {
@@ -205,7 +243,7 @@ public class RegionalController implements Serializable {
         }
     }
     
-    public String toSummaryByOrderedInstitutionVsLabToReceive() {
+    public String toSummaryByOrderedInstitutionVsLabToReceive1() {
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired=false "
