@@ -167,10 +167,29 @@
                         </div>
                     </div>
                 </div>
+                <div class="row-gx-4 my-2">
+                    <div class="col">
+                        <div class="d-flex bg-success px-3 py-2 align-items-center">
+                            <div class="flex-grow-1 text-white">
+                                <h4 class="fw-bold">
+                                    <i class="bi mx-2 bi-info-circle-fill"></i>
+                                    Additional Details
+                                </h4>
+                                <div class="d-flex">
+                                    <div class="p-2 flex-grow-1">
+                                        <h5 class="fw-bold">Samples Awaiting Dispatch</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
+                                        <h5>
+                                            <h:outputLabel value="#{dashboardController.samplesAwaitingDispatch}" ></h:outputLabel>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </h:form>
-
-
-
     </cc:implementation>
 </html>
