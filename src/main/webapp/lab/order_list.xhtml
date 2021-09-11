@@ -12,11 +12,6 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                <!--<p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >-->
-                <!--<f:facet name="header" >
-                    <p:outputLabel value="Test Order List" ></p:outputLabel>
-                </f:facet>-->
-
                 <h:form >
                     <div class="row" >
                         <div class="col-12 text-center mt-4 mb-2" >
@@ -26,19 +21,19 @@
                     <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
                         <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
                             <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
-                            <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+                            <p:calendar value="#{labController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
                             <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
-                            <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                            <p:calendar value="#{labController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
                             <h:outputLabel class="h6 fw-bold" value="Ordered Institution" ></h:outputLabel>
-                            <p:autoComplete value="#{clientController.institution}"
+                            <p:autoComplete value="#{labController.institution}"
                                             completeMethod="#{institutionController.completeInstitutions}"
                                             var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                             </p:autoComplete>
 
                             <h:commandButton value="Process" class="btn btn-warning w-100"
-                                             action="#{clientController.toLabOrderByReferringInstitution()}" ></h:commandButton>
+                                             action="#{labController.toLabOrderByReferringInstitution()}" ></h:commandButton>
                             <h:commandButton value="Generate Excel" class="btn btn-success w-100">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="order list" ></p:dataExporter>
                             </h:commandButton>
@@ -46,7 +41,7 @@
                         </h:panelGrid>
                     </div>
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{clientController.testList}" class="table"
+                        <p:dataTable id="tbl" value="#{labController.testList}" class="table"
                                      rowIndexVar="n" rowKey="#{c.id}"
                                      var="c" 
 

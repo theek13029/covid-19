@@ -28,10 +28,12 @@
                         </p:selectOneMenu>
 
                         <h:outputLabel value="Ordered From" ></h:outputLabel>
-                        <p:autoComplete value="#{clientController.institution}" completeMethod="#{institutionController.completeInstitutions}"
-                                        var="ins" itemLabel="#{ins.name}" itemValue="#{ins}" >
-                        </p:autoComplete>
-
+                        <p:selectOneMenu value="#{clientController.institution}" >
+                            <f:selectItem itemLabel="Select" ></f:selectItem>
+                            <f:selectItems value="#{webUserController.loggableInstitutions}" var="l"
+                                           itemLabel="#{l.name}" itemValue="#{l}" >
+                            </f:selectItems>
+                        </p:selectOneMenu>
 
                         <h:outputLabel value="Lab" ></h:outputLabel>
                         <p:selectOneMenu value="#{clientController.referingInstitution}" >

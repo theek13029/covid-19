@@ -115,10 +115,13 @@ public class LabController implements Serializable {
     private Encounter test;
     private Encounter deleting;
     private Institution institution;
+    private Institution referingInstitution;
+    
 
     private WebUser assignee;
 
     private List<Encounter> tests;
+    private List<Encounter> testList;
     private List<ClientEncounterComponentItem> cecItems;
     private List<ClientEncounterComponentItem> selectedCecis;
     private List<Encounter> selectedToAssign;
@@ -147,6 +150,30 @@ public class LabController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
+    
+    public String toLabOrderByReferringInstitution() {
+        referingInstitution = webUserController.getLoggedInstitution();
+        Map m = new HashMap();
+        String j = "select c "
+                + " from Encounter c "
+                + " where c.retired<>:ret "
+                + " and c.encounterType=:type "
+                + " and c.encounterDate between :fd and :td ";
+        if (institution != null) {
+            j += " and c.institution=:ins ";
+            m.put("ins", institution);
+        }
+        j += " and c.referalInstitution=:rins"
+                + " order by c.encounterNumber";
+        m.put("ret", true);
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", fromDate);
+        m.put("td", toDate);
+        m.put("rins", referingInstitution);
+        testList = encounterFacade.findByJpql(j, m, TemporalType.DATE);
+        return "/lab/order_list";
+    }
+    
     public String toDispatchSamplesByMohOrHospital() {
         String j = "select c "
                 + " from Encounter c "
@@ -1451,6 +1478,8 @@ public class LabController implements Serializable {
         return "/lab/pcr_view";
     }
 
+    
+    
     public void retrieveLastAddressForRat() {
         if (rat == null || rat.getClient() == null || sessionController.getLastRat() == null || sessionController.getLastRat().getClient() == null) {
             return;
@@ -2219,6 +2248,22 @@ public class LabController implements Serializable {
 
     public void setInstitution(Institution institution) {
         this.institution = institution;
+    }
+
+    public Institution getReferingInstitution() {
+        return referingInstitution;
+    }
+
+    public void setReferingInstitution(Institution referingInstitution) {
+        this.referingInstitution = referingInstitution;
+    }
+
+    public List<Encounter> getTestList() {
+        return testList;
+    }
+
+    public void setTestList(List<Encounter> testList) {
+        this.testList = testList;
     }
 
 }
