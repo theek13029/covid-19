@@ -8,7 +8,7 @@
 
     <body>
         <ui:composition template="/template1.xhtml">
-            <ui:define name="content" >                
+            <ui:define name="content" >
                 <p:panel class="h-100 text-center" rendered="#{!webUserController.loggedUser.systemAdministrator}">
                     <h1>You are NOT authorized</h1>
                 </p:panel>
@@ -17,7 +17,7 @@
                     <p:panel class="main-panel" >
                         <div class="card">
                             <div class="card-header bg-success text-white">
-                                <h:outputLabel class="fs-5 my-2 fw-bold" value="New User Detais" ></h:outputLabel>                                
+                                <h:outputLabel class="fs-5 my-2 fw-bold" value="New User Details" ></h:outputLabel>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -64,7 +64,7 @@
                                         <div class="form-group row  mb-4">
                                             <h:outputLabel value="#{bundleClinical.EditWebUserLabel_institution}" for="institution" class="col-md-4 fs-6 fw-bold" />
                                             <div class="col-md-8">
-                                                <p:autoComplete styleClass="border w-100" id="institution" value="#{webUserController.selected.institution}" 
+                                                <p:autoComplete styleClass="border w-100" id="institution" value="#{webUserController.selected.institution}"
                                                                 completeMethod="#{institutionController.completeInstitutions}"
                                                                 var="i" itemLabel="#{i.name}" itemValue="#{i}" style="border : 1px #ddd solid; width: 100"
                                                                 forceSelection="true" required="true" requiredMessage="The Institution field is required." minQueryLength="3" maxResults="30">
@@ -74,9 +74,9 @@
                                         <div class="form-group row  mb-4">
                                             <h:outputLabel value="Area" for="area" class="col-md-4 fs-6 fw-bold" />
                                             <div class="col-md-8">
-                                                <p:autoComplete id="area" value="#{webUserController.selected.area}" 
+                                                <p:autoComplete id="area" value="#{webUserController.selected.area}"
                                                                 completeMethod="#{areaController.completeAreas}"
-                                                                var="i" itemLabel="#{i.name}" itemValue="#{i}" 
+                                                                var="i" itemLabel="#{i.name}" itemValue="#{i}"
                                                                 minQueryLength="3" maxResults="30"
                                                                 forceSelection="true" required="true" requiredMessage="The Area field is required." styleClass="border w-100">
                                                     <p:column headerText="Name">
@@ -109,8 +109,8 @@
                                                 <h:selectOneMenu class="form-select" id="webUserRole" value="#{webUserController.selected.webUserRole}" style="width: 100%;" required="true" requiredMessage="The Role field is required.">
                                                     <f:selectItem itemLabel="Please Select"></f:selectItem>
                                                     <f:selectItems value="#{applicationController.webUserRoles}"
-                                                                   var="webUserRoles" 
-                                                                   itemLabel="#{webUserRoles.label}" 
+                                                                   var="webUserRoles"
+                                                                   itemLabel="#{webUserRoles.label}"
                                                                    itemValue="#{webUserRoles}" >
                                                     </f:selectItems>
                                                 </h:selectOneMenu>
@@ -138,7 +138,7 @@
                             </div>
                         </div>
                     </p:panel>
-                </h:form>                
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>
