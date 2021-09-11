@@ -80,6 +80,10 @@ public class DashboardApplicationController {
     @Inject
     CovidDataHolder covidDataHolder;
 
+//    AreaController
+    @Inject
+    private AreaController areaController;
+
     private Long todayPcr;
     private Long todayRat;
     private Long todayPositivePcr;
@@ -304,6 +308,45 @@ public class DashboardApplicationController {
             }
         }
         return tics;
+    }
+
+//    This will generate a hashmap of PCR and RAT investigations that will be used to generate a chart at the MOH dashboard
+    public Map<String, List<String>> generateMohInvestigationHashmap(
+            Area rdhsArea
+    ) {
+        List<Area> mohAreas = areaController.getMohAreas(rdhsArea);
+        Map<String, List<String>> hashMap = new HashMap<>();
+
+        Date todayStart = CommonController.startOfTheDate();
+        Calendar calendar = Calendar.getInstance();
+        Date now = calendar.getTime();
+
+        for (Area mohArea:mohAreas) {
+            List<String> tempList = new ArrayList<>();
+            Long tempTodayPcr = this.getOrderCountArea(
+                    mohArea,
+                    todayStart,
+                    now,
+                    itemApplicationController.getPcr(),
+                    null,
+                    null,
+                    null
+            );
+            Long tempTodayRat = this.getOrderCountArea(
+                    mohArea,
+                    todayStart,
+                    now,
+                    itemApplicationController.getRat(),
+                    null,
+                    null,
+                    null
+            );
+            tempList.add(tempTodayPcr.toString());
+            tempList.add(tempTodayRat.toString());
+            hashMap.put(mohArea.toString(), tempList);
+        }
+
+        return hashMap;
     }
 
     public Long getOrderCount(Institution ins,
