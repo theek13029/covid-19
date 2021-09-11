@@ -6,10 +6,14 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:pe="http://primefaces.org/ui/extensions">
-    <h:body>
-        <ui:composition template="/lab/admin/index.xhtml">
+
+    <body>
+
+        <ui:composition template="/hospital/admin/index.xhtml">
+
             <ui:define name="admin">
                 <h:form>
+
                     <p:panelGrid columns="2" style="width: 100%;">
                         <f:facet name="header" >
                             <p:commandButton ajax="false" action="#{preferenceController.savePreferencesInstitution()}" 
@@ -93,7 +97,11 @@
                             </p:tab>
 
                             <p:tab title="Individual Print Report Format" >
-                                <p:panelGrid columns="2" style="width: 100%;">
+                                <p:panelGrid columns="1" style="width: 100%;">
+
+
+                                  <p:inputTextarea style="width: 100%; min-width: 800px; height: 90vh; min-height: 100px;" value="#{preferenceController.labReportHtml}" ></p:inputTextarea>
+
                                     <h:panelGroup >
                                         <p:outputLabel value="Lab Report HTML" ></p:outputLabel>
                                         {name}<br/>
@@ -120,8 +128,6 @@
                                         {entered_by}<br/>
                                         {approved_by}<br/>
                                         {test}<br/>
-                                        {unit_or_ward}<br/>
-                                        {bht}<br/>
                                         {pcr_result}<br/>
                                         {pcr_result_string}<br/>
                                         {pcr_ct1}<br/>
@@ -130,12 +136,6 @@
                                         {pcr_comment_string}<br/>
                                     </h:panelGroup>
 
-
-                                   
-
-                                    <p:inputTextarea style="width: 100%; min-width: 800px; height: 90vh; min-height: 100px;" value="#{preferenceController.labReportHtml}" ></p:inputTextarea>
-                                    
-                                    
                                 </p:panelGrid>
                             </p:tab>
 
@@ -180,11 +180,13 @@
 
                     </p:panelGrid>
 
+
                 </h:form>
 
 
             </ui:define>
 
         </ui:composition>
-    </h:body>
+
+    </body>
 </html>

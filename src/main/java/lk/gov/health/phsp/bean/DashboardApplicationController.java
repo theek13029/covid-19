@@ -101,7 +101,7 @@ public class DashboardApplicationController {
     private String yesterdayRatPositiveRate;
 
 //  Round double values to two decimal format
-    private static DecimalFormat df = new DecimalFormat("0.00");
+    private static DecimalFormat df = new DecimalFormat("0.0");
 
     private List<InstitutionCount> orderingCounts;
     List<CovidData> covidDatas;
@@ -175,7 +175,7 @@ public class DashboardApplicationController {
         	double tempRate = ((double) this.todayPositivePcr/this.todayPcr) * 100;
         	this.todayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.todayPcrPositiveRate = "0.00%";
+        	this.todayPcrPositiveRate = "0.0%";
         }
 
 //		This will return today's rat positive rate as a percentage
@@ -183,7 +183,7 @@ public class DashboardApplicationController {
         	double tempRate = ((double) this.todayPositiveRat/this.todayRat) * 100;
         	this.todayRatPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.todayRatPositiveRate = "0.00%";
+        	this.todayRatPositiveRate = "0.0%";
         }
 
 //      This will return yesterday's pcr positive rate as a percentage
@@ -191,7 +191,7 @@ public class DashboardApplicationController {
         	double tempRate = ((double) this.yesterdayPositivePcr/this.yesterdayPcr) * 100;
         	this.yesterdayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.yesterdayPcrPositiveRate = "0.00%";
+        	this.yesterdayPcrPositiveRate = "0.0%";
         }
 
 //		This will return yesterday's RAT positive rate as a percentage
@@ -199,7 +199,7 @@ public class DashboardApplicationController {
         	double tempRate = ((double) this.yesterdayPositiveRat/this.yesterdayRat) * 100;
         	this.yesterdayRatPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.yesterdayRatPositiveRate = "0.00%";
+        	this.yesterdayRatPositiveRate = "0.0%";
 
         }
         categorizeOrderingCounts(orderingCounts);
@@ -365,6 +365,7 @@ public Long samplesAwaitingDispatch(
 
     if (institution != null){
         jpql += " and c.institution=:ins ";
+         hashMap.put("ins", institution);
     }
 
     if( area != null) {
@@ -405,7 +406,7 @@ public Long samplesAwaitingDispatch(
     hashMap.put("fd", fromDate);
     hashMap.put("sl", false);
     hashMap.put("td", toDate);
-    hashMap.put("ins", institution);
+   
 
     return encounterFacade.findLongByJpql(jpql, hashMap, TemporalType.DATE);
 

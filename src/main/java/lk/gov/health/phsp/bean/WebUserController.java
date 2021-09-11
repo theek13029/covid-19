@@ -98,8 +98,6 @@ public class WebUserController implements Serializable {
     @Inject
     private UserTransactionController userTransactionController;
     @Inject
-    private ApplicationController applicationController;
-    @Inject
     InstitutionApplicationController institutionApplicationController;
     @Inject
     WebUserApplicationController webUserApplicationController;
@@ -187,10 +185,12 @@ public class WebUserController implements Serializable {
     private int metadataTabIndex;
 
     private String ipAddress;
-    
+
     private String bulkText;
     Area area;
     List<WebUser> addedUsers;
+
+    private Institution loggedInstitution;
 
     /**
      *
@@ -201,6 +201,8 @@ public class WebUserController implements Serializable {
     private TreeNode myPrivilegeRoot;
     private TreeNode[] selectedNodes;
     private TreeNode[] selectedNodeSet;
+
+    private InstitutionType institutionType;
 
     @PostConstruct
     public void init() {
@@ -213,7 +215,6 @@ public class WebUserController implements Serializable {
         userTransactionController.recordTransaction("Invalidating the Session", this.toString());
     }
 
-    
     public void onResize(ColumnResizeEvent event) {
         String viewId = event.getFacesContext().getViewRoot().getViewId();
         String columnId = event.getColumn().getClientId();
@@ -221,9 +222,7 @@ public class WebUserController implements Serializable {
         Integer h = event.getHeight();
         String colName = event.getColumn().getHeaderText();
     }
-    
-  
-    
+
     private void findIpAddress() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         ipAddress = request.getHeader("X-FORWARDED-FOR");
@@ -347,7 +346,7 @@ public class WebUserController implements Serializable {
                 }
             }
         }
-        return "/insAdmin/set_user_privilages";
+        return "/national/admin/multiple_user_privilages";
     }
 
     public boolean hasSelectedUsers() {
@@ -365,7 +364,11 @@ public class WebUserController implements Serializable {
         return "/insAdmin/user_list";
     }
 
-    public void prepareListingUsers() {
+    public void prepareListingAllUsers() {
+        items = webUserApplicationController.getItems();
+    }
+
+    public void prepareListingUsersUnderMe() {
         items = new ArrayList<>();
         if (loggedUser == null) {
             return;
@@ -376,6 +379,7 @@ public class WebUserController implements Serializable {
         } else {
             i = loggedUser.getInstitution();
         }
+
         for (WebUser wu : webUserApplicationController.getItems()) {
             if (wu.getInstitution() == null) {
             } else {
@@ -431,7 +435,6 @@ public class WebUserController implements Serializable {
         current = new WebUser();
         password = "";
         passwordReenter = "";
-        userTransactionController.recordTransaction("To Add New User By InsAdmin");
         return "/insAdmin/user_new";
     }
 
@@ -509,6 +512,54 @@ public class WebUserController implements Serializable {
         return "/webUser/index";
     }
 
+    public void preparePrivileges(TreeNode allPrevs) {
+        if (current == null) {
+            JsfUtil.addErrorMessage("Nothing Selected");
+            return;
+        }
+        if (allPrevs == null) {
+            JsfUtil.addErrorMessage("No Privilege Error");
+            return;
+        }
+        selectedNodes = new TreeNode[0];
+        List<UserPrivilege> userps = userPrivilegeList(current);
+
+        for (TreeNode n : allPrevs.getChildren()) {
+            n.setSelected(false);
+            for (TreeNode n1 : n.getChildren()) {
+                n1.setSelected(false);
+                for (TreeNode n2 : n1.getChildren()) {
+                    n2.setSelected(false);
+                }
+            }
+        }
+        List<TreeNode> temSelected = new ArrayList<>();
+        for (UserPrivilege wup : userps) {
+            for (TreeNode n : allPrevs.getChildren()) {
+                if (wup.getPrivilege().equals(((PrivilegeTreeNode) n).getP())) {
+                    n.setSelected(true);
+
+                    temSelected.add(n);
+                }
+                for (TreeNode n1 : n.getChildren()) {
+                    if (wup.getPrivilege().equals(((PrivilegeTreeNode) n1).getP())) {
+                        n1.setSelected(true);
+
+                        temSelected.add(n1);
+                    }
+                    for (TreeNode n2 : n1.getChildren()) {
+                        if (wup.getPrivilege().equals(((PrivilegeTreeNode) n2).getP())) {
+                            n2.setSelected(true);
+
+                            temSelected.add(n2);
+                        }
+                    }
+                }
+            }
+        }
+        selectedNodes = temSelected.toArray(new TreeNode[temSelected.size()]);
+    }
+
     public String toManagePrivileges() {
 
         if (current == null) {
@@ -552,7 +603,6 @@ public class WebUserController implements Serializable {
             }
         }
         selectedNodes = temSelected.toArray(new TreeNode[temSelected.size()]);
-        userTransactionController.recordTransaction("Manage Privileges in user list By SysAdmin");
         return "/webUser/privileges";
     }
 
@@ -765,6 +815,7 @@ public class WebUserController implements Serializable {
     public String logOut() {
         userTransactionController.recordTransaction("Logout");
         loggedUser = null;
+        loggedInstitution = null;
         return "/index";
     }
 
@@ -804,31 +855,37 @@ public class WebUserController implements Serializable {
     }
 
     public String loginNew() {
-
         loggableInstitutions = null;
         loggablePmcis = null;
         loggableGnAreas = null;
+        loggedInstitution = null;
         institutionController.setMyClinics(null);
-
         if (userName == null || userName.trim().equals("")) {
             JsfUtil.addErrorMessage("Please enter a Username");
             return "";
         }
-
         if (password == null || password.trim().equals("")) {
             JsfUtil.addErrorMessage("Please enter the Password");
             return "";
         }
-
         if (!checkLoginNew()) {
             JsfUtil.addErrorMessage("Username/Password Error. Please retry.");
             userTransactionController.recordTransaction("Failed Login Attempt", userName);
             System.out.println("No Match");
             return "";
         }
-
-        System.out.println("username & password correct");
         loggedUserPrivileges = userPrivilegeList(loggedUser);
+        if (loggedUser != null) {
+            loggedInstitution = loggedUser.getInstitution();
+        }
+
+        executeSuccessfulLoginActions();
+        fillUsersForMyInstitute();
+        fillAreasForMe();
+        return "/index";
+    }
+
+    private void executeSuccessfulLoginActions() {
 
         JsfUtil.addSuccessMessage("Successfully Logged");
         userTransactionController.recordTransaction("Successful Login");
@@ -840,7 +897,7 @@ public class WebUserController implements Serializable {
         c.add(Calendar.DAY_OF_MONTH, -7);
         fromDate = c.getTime();
         dashboardController.setMyCovidData(null);
-        
+
         if (null != loggedUser.getWebUserRoleLevel()) {
             switch (loggedUser.getWebUserRoleLevel()) {
                 case Lab:
@@ -868,10 +925,6 @@ public class WebUserController implements Serializable {
                     break;
             }
         }
-
-        fillUsersForMyInstitute();
-        fillAreasForMe();
-        return "/index";
     }
 
     private void fillAreasForMe() {
@@ -961,6 +1014,15 @@ public class WebUserController implements Serializable {
 
             default:
         }
+    }
+
+    public String toChangeLoggedInstitution() {
+        return "/webUser/change_logged_institute";
+    }
+
+    public String changeLoggedInstitution() {
+        executeSuccessfulLoginActions();
+        return "/index";
     }
 
     private void fillUsersForMyInstitute() {
@@ -1213,6 +1275,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.View_aggragate_date);
 
                 break;
+            case Lab_National:
             case Super_User:
                 wups.add(Privilege.User);
                 wups.add(Privilege.System_Administration);
@@ -1258,6 +1321,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.View_individual_data);
                 wups.add(Privilege.View_aggragate_date);
                 break;
+            case Lab_Admin:
             case Lab_Consultant:
             case Lab_Mo:
                 wups.add(Privilege.Manage_Users);
@@ -1273,17 +1337,21 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Print_Results);
                 break;
             case Hospital_Admin:
+                wups.add(Privilege.Manage_Users);
+                wups.add(Privilege.Lab_Reports);
+                wups.add(Privilege.Confirm_Results);
+                wups.add(Privilege.Lab_Management);
+                wups.add(Privilege.View_Orders);
+                wups.add(Privilege.Enter_Results);
+                wups.add(Privilege.Receive_Samples);
+                wups.add(Privilege.Review_Results);
+                wups.add(Privilege.Print_Results);
+                break;
             case Hospital_User:
                 wups.add(Privilege.Monitoring_and_evaluation);
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
                 wups.add(Privilege.View_individual_data);
                 wups.add(Privilege.View_aggragate_date);
-                break;
-            case Lab_Admin:
-
-                break;
-            case Lab_National:
-
                 break;
             case MohStaff:
                 wups.add(Privilege.Client_Management);
@@ -1604,12 +1672,11 @@ public class WebUserController implements Serializable {
         return u != null;
     }
 
-    public String saveNewWebUserBySysAdmin() {
+    public String saveNewWebUser() {
         if (getSelected() == null) {
             JsfUtil.addErrorMessage("Noting to save");
             return "";
         }
-
         if (!password.equals(passwordReenter)) {
             JsfUtil.addErrorMessage("Passwords do NOT match");
             return "";
@@ -1623,7 +1690,7 @@ public class WebUserController implements Serializable {
             getSelected().setLastEditeAt(new Date());
             getFacade().edit(getSelected());
             JsfUtil.addSuccessMessage("User Details Updated");
-            return "/webUser/index";
+            return menuController.toListUsers();
         }
         try {
             current.setWebUserPassword(commonController.hash(password));
@@ -1632,18 +1699,17 @@ public class WebUserController implements Serializable {
             getFacade().create(current);
             addWebUserPrivileges(current, getInitialPrivileges(current.getWebUserRole()));
             JsfUtil.addSuccessMessage(("A new User Created Successfully."));
-            userTransactionController.recordTransaction("NEW webUser Created");
+            userTransactionController.recordTransaction("New user Created");
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ("Error Occured. Please change username and try again."));
             return "";
         }
         webUserApplicationController.resetWebUsers();
-        userTransactionController.recordTransaction("New WebUser save BySysAdmin");
-        return "/webUser/index";
+        userTransactionController.recordTransaction("New User Created");
+        return menuController.toListUsers();
     }
 
     public String prepareEdit() {
-        userTransactionController.recordTransaction("Edit user list By SysAdmin");
         return "/webUser/Edit";
     }
 
@@ -1652,11 +1718,9 @@ public class WebUserController implements Serializable {
         return "/insAdmin/user_edit";
     }
 
-    public String prepareEditPassword() {
+    public void prepareEditPassword() {
         password = "";
         passwordReenter = "";
-        userTransactionController.recordTransaction("Edit Password user list By SysAdmin");
-        return "/webUser/Password";
     }
 
     public String prepareEditPasswordIns() {
@@ -1677,15 +1741,17 @@ public class WebUserController implements Serializable {
         save(current);
         webUserApplicationController.getItems().remove(current);
         getItems().remove(current);
-        return "";
+        return menuController.toListUsers();
     }
 
-    public void clearAddedUsers(){
+    public void clearAddedUsers() {
         addedUsers = new ArrayList<>();
     }
-    
+
     public String addMultipleUsers() {
-        addedUsers = new ArrayList<>();
+        if (addedUsers == null) {
+            addedUsers = new ArrayList<>();
+        }
         if (bulkText == null || bulkText.trim().equals("")) {
             JsfUtil.addErrorMessage("Text ?");
             return "";
@@ -1694,15 +1760,15 @@ public class WebUserController implements Serializable {
             JsfUtil.addErrorMessage("Institution?");
             return "";
         }
-        if(area==null){
-             JsfUtil.addErrorMessage("Area?");
+        if (area == null) {
+            JsfUtil.addErrorMessage("Area?");
             return "";
         }
-        if(userRole==null){
+        if (userRole == null) {
             JsfUtil.addErrorMessage("Institution?");
             return "";
         }
-        
+
         String lines[] = bulkText.split("\\r?\\n");
 
         for (String line : lines) {
@@ -1710,33 +1776,94 @@ public class WebUserController implements Serializable {
                 continue;
             }
             line = line.trim();
-            
 
-            Person mohPerson = new Person();
-            mohPerson.setName(line);
-            personController.save(mohPerson);
+            Person newPerson = new Person();
+            newPerson.setName(line);
+            personController.save(newPerson);
 
-            WebUser mohUser = new WebUser();
-            mohUser.setName("moh" + line);
-            mohUser.setPerson(mohPerson);
-            mohUser.setInstitution(institution);
-            mohUser.setArea(area);
-            mohUser.setWebUserRole(userRole);
-            mohUser.setWebUserPassword(commonController.hash("abcd1234"));
-            mohUser.setCreatedAt(new Date());
-            mohUser.setCreater(getLoggedUser());
-            save(mohUser);
-            addWebUserPrivileges(mohUser, getInitialPrivileges(mohUser.getWebUserRole()));
-            save(mohUser);
-            addedUsers.add(mohUser);
+            WebUser newUser = new WebUser();
+            newUser.setName(line.toLowerCase());
+            newUser.setPerson(newPerson);
+            newUser.setInstitution(institution);
+            newUser.setArea(area);
+            newUser.setWebUserRole(userRole);
+            newUser.setWebUserPassword(commonController.hash("abcd1234"));
+            newUser.setCreatedAt(new Date());
+            newUser.setCreater(getLoggedUser());
+            save(newUser);
+            addWebUserPrivileges(newUser, getInitialPrivileges(newUser.getWebUserRole()));
+            save(newUser);
+            addedUsers.add(newUser);
         }
 
         bulkText = "";
         return "";
     }
-    
-    
-    
+
+    public String addMultipleInstitutionAndUsers() {
+        addedUsers = new ArrayList<>();
+        if (bulkText == null || bulkText.trim().equals("")) {
+            JsfUtil.addErrorMessage("Text ?");
+            return "";
+        }
+        if (institutionType == null) {
+            JsfUtil.addErrorMessage("Institution Type?");
+            return "";
+        }
+        if (institution == null) {
+            JsfUtil.addErrorMessage("Institution?");
+            return "";
+        }
+        if (userRole == null) {
+            JsfUtil.addErrorMessage("Institution?");
+            return "";
+        }
+
+        String lines[] = bulkText.split("\\r?\\n");
+
+        for (String line : lines) {
+            if (line == null || line.trim().equals("")) {
+                continue;
+            }
+            line = line.trim();
+
+            Institution newIns = new Institution();
+            newIns.setName(line);
+            newIns.setCode(CommonController.prepareAsCode(line));
+            newIns.setParent(institution);
+            newIns.setDistrict(institution.getDistrict());
+            newIns.setInstitutionType(institutionType);
+            newIns.setPdhsArea(institution.getPdhsArea());
+            newIns.setPoiInstitution(institution.getPoiInstitution());
+            newIns.setProvince(institution.getProvince());
+            newIns.setRdhsArea(institution.getRdhsArea());
+            newIns.setCreatedAt(new Date());
+            newIns.setCreater(getLoggedUser());
+            institutionController.save(newIns);
+
+            Person newPerson = new Person();
+            newPerson.setName("System Administrator of " + line);
+            personController.save(newPerson);
+
+            WebUser newUser = new WebUser();
+            newUser.setName("sa" + CommonController.prepareAsCode(line).toLowerCase());
+            newUser.setPerson(newPerson);
+            newUser.setInstitution(newIns);
+            newUser.setArea(institution.getRdhsArea());
+            newUser.setWebUserRole(userRole);
+            newUser.setWebUserPassword(commonController.hash("abcd1234"));
+            newUser.setCreatedAt(new Date());
+            newUser.setCreater(getLoggedUser());
+            save(newUser);
+            addWebUserPrivileges(newUser, getInitialPrivileges(newUser.getWebUserRole()));
+            save(newUser);
+            addedUsers.add(newUser);
+        }
+
+        bulkText = "";
+        return "";
+    }
+
     public void save(WebUser u) {
         if (u == null) {
             return;
@@ -1756,8 +1883,8 @@ public class WebUserController implements Serializable {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(("Updated"));
-            userTransactionController.recordTransaction("webUser Update");
-            return "manage_users";
+            userTransactionController.recordTransaction("User Details Updated");
+            return menuController.toListUsers();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, e.getMessage());
             return null;
@@ -1794,7 +1921,6 @@ public class WebUserController implements Serializable {
         }
 
         userps = userPrivilegeList(current);
-
         for (UserPrivilege tup : userps) {
             boolean found = false;
             for (Privilege p : tps) {
@@ -1809,8 +1935,8 @@ public class WebUserController implements Serializable {
                 getUserPrivilegeFacade().edit(tup);
             }
         }
-        userTransactionController.recordTransaction("update User Privileges By SysAdmin");
-        return "/webUser/manage_users";
+        userTransactionController.recordTransaction("Updated User Privileges");
+        return menuController.toListUsers();
     }
 
     public String updatePrivilagesPerUsers() {
@@ -2507,6 +2633,10 @@ public class WebUserController implements Serializable {
         return reportTabIndex;
     }
 
+    public List<WebUser> getAddedUsers() {
+        return addedUsers;
+    }
+
     public void setReportTabIndex(int reportTabIndex) {
         this.reportTabIndex = reportTabIndex;
     }
@@ -2642,16 +2772,33 @@ public class WebUserController implements Serializable {
         this.area = area;
     }
 
-  
-
-    
-    
     public String getBulkText() {
         return bulkText;
     }
 
     public void setBulkText(String bulkText) {
         this.bulkText = bulkText;
+    }
+
+    public InstitutionType getInstitutionType() {
+        return institutionType;
+    }
+
+    public void setInstitutionType(InstitutionType institutionType) {
+        this.institutionType = institutionType;
+    }
+
+    public Institution getLoggedInstitution() {
+        if (loggedInstitution == null) {
+            if (getLoggedUser() != null) {
+                loggedInstitution = getLoggedUser().getInstitution();
+            }
+        }
+        return loggedInstitution;
+    }
+
+    public void setLoggedInstitution(Institution loggedInstitution) {
+        this.loggedInstitution = loggedInstitution;
     }
 
     @FacesConverter(forClass = WebUser.class)

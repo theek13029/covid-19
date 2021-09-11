@@ -81,6 +81,7 @@ public class AreaController implements Serializable {
     private Area province;
     private Area rdhs;
     private Area pdhs;
+    private Area area;
 
     private Institution rdhsInstitution;
     
@@ -216,7 +217,7 @@ public class AreaController implements Serializable {
     }
     
     public String toListPhiAreasForInsAdmin() {
-        items = areaApplicationController.listPhiAreasOfMoh(webUserController.getLoggedUser().getInstitution().getMohArea());
+        items = areaApplicationController.listPhiAreasOfMoh(webUserController.getLoggedInstitution().getMohArea());
         return "/area/list_phi";
     }
 
@@ -540,12 +541,12 @@ public class AreaController implements Serializable {
     public String toAddPhiAreaForInsAdmin() {
         selected = new Area();
         selected.setType(AreaType.PHI);
-        selected.setParentArea(webUserController.getLoggedUser().getInstitution().getMohArea());
-        selected.setMoh(webUserController.getLoggedUser().getInstitution().getMohArea());
-        selected.setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
-        selected.setRdhsArea(webUserController.getLoggedUser().getInstitution().getRdhsArea());
-        selected.setProvince(webUserController.getLoggedUser().getInstitution().getProvince());
-        selected.setPdhsArea(webUserController.getLoggedUser().getInstitution().getProvince());
+        selected.setParentArea(webUserController.getLoggedInstitution().getMohArea());
+        selected.setMoh(webUserController.getLoggedInstitution().getMohArea());
+        selected.setDistrict(webUserController.getLoggedInstitution().getDistrict());
+        selected.setRdhsArea(webUserController.getLoggedInstitution().getRdhsArea());
+        selected.setProvince(webUserController.getLoggedInstitution().getProvince());
+        selected.setPdhsArea(webUserController.getLoggedInstitution().getProvince());
         return "/area/area_phi_ins";
     }
 
@@ -1264,6 +1265,8 @@ public class AreaController implements Serializable {
         this.institutionColumnNumber = institutionColumnNumber;
     }
 
+    
+    
     public InstitutionController getInstitutionController() {
         return institutionController;
     }
@@ -1360,6 +1363,14 @@ public class AreaController implements Serializable {
 
     public void setRdhsInstitution(Institution rdhsInstitution) {
         this.rdhsInstitution = rdhsInstitution;
+    }
+
+    public Area getArea() {
+        return area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
     }
 
     // </editor-fold>

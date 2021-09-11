@@ -56,6 +56,10 @@ public class PreferenceController implements Serializable {
     private String pcrNegativeTerm;
     private String pcrInconclusiveTerm;
     private String pcrInvalidTerm;
+    private String pcrPositiveComment;
+    private String pcrNegativeComment;
+    private String pcrInconclusiveComment;
+    private String pcrInvalidComment;
     private String ct1Term;
     private String ct2Term;
     private String bulkExcelTitle;
@@ -87,7 +91,12 @@ public class PreferenceController implements Serializable {
     public String findPreferanceValue(String name, Institution ins) {
         Preference p = findPreferance(name, ins);
         if (p != null) {
-            return p.getLongTextValue();
+            if(p.getLongTextValue()!=null){
+                return p.getLongTextValue();
+            }else{
+                return "";
+            }
+            
         } else {
             return "";
         }
@@ -112,6 +121,10 @@ public class PreferenceController implements Serializable {
         return "/insAdmin/preferences";
     }
 
+    public void preparePreferences() {
+        loadPreferencesInstitution();
+    }
+
     public void loadPreferences() {
         // // System.out.println("loadPreferences");
         positiveRatSmsTemplate = findPreferanceValue("positiveRatSmsTemplate");
@@ -127,28 +140,35 @@ public class PreferenceController implements Serializable {
     }
 
     public void loadPreferencesInstitution() {
-        labApprovalSteps = findPreferanceValue("labApprovalSteps", webUserController.getLoggedUser().getInstitution());
-        labReportHtml = findPreferanceValue("labReportHeader", webUserController.getLoggedUser().getInstitution());
-        numberOfRowsPerPage = findPreferanceValue("numberOfRowsPerPage", webUserController.getLoggedUser().getInstitution());
-        pcrPositiveTerm = findPreferanceValue("pcrPositiveTerm", webUserController.getLoggedUser().getInstitution());
-        pcrNegativeTerm = findPreferanceValue("pcrNegativeTerm", webUserController.getLoggedUser().getInstitution());
-        pcrInconclusiveTerm = findPreferanceValue("pcrInconclusiveTerm", webUserController.getLoggedUser().getInstitution());
-        pcrInvalidTerm = findPreferanceValue("pcrInvalidTerm", webUserController.getLoggedUser().getInstitution());
-        startingSerialCount = findPreferanceValue("startingSerialCount", webUserController.getLoggedUser().getInstitution());
+        labApprovalSteps = findPreferanceValue("labApprovalSteps", webUserController.getLoggedInstitution());
+        labReportHtml = findPreferanceValue("labReportHeader", webUserController.getLoggedInstitution());
+        numberOfRowsPerPage = findPreferanceValue("numberOfRowsPerPage", webUserController.getLoggedInstitution());
 
-        ct1Term = findPreferanceValue("ct1Term", webUserController.getLoggedUser().getInstitution(), "");
-        ct2Term = findPreferanceValue("ct2Term", webUserController.getLoggedUser().getInstitution(), "");
-        bulkExcelTitle = findPreferanceValue("bulkExcelTitle", webUserController.getLoggedUser().getInstitution(), "");
-        bulkExcelSubtitle = findPreferanceValue("bulkExcelSubtitle", webUserController.getLoggedUser().getInstitution(), "");
-        bulkExcelLeftColTop = findPreferanceValue("bulkExcelLeftColTop", webUserController.getLoggedUser().getInstitution(), "");
-        bulkExcelRightColTop = findPreferanceValue("bulkExcelRightColTop", webUserController.getLoggedUser().getInstitution(), "");
-        bulkExcelFooter = findPreferanceValue("bulkExcelFooter", webUserController.getLoggedUser().getInstitution(), "");
-        bulkExcelSubFooter = findPreferanceValue("bulkExcelSubFooter", webUserController.getLoggedUser().getInstitution(), "");
-        bulkExcelLeftColBottom = findPreferanceValue("bulkExcelLeftColBottom", webUserController.getLoggedUser().getInstitution(), "");
-        bulkExcelRightColBottom = findPreferanceValue("bulkExcelRightColBottom", webUserController.getLoggedUser().getInstitution(), "");
-        labReportBulkHtml = findPreferanceValue("labReportBulkHtml", webUserController.getLoggedUser().getInstitution(), "");
+        pcrPositiveTerm = findPreferanceValue("pcrPositiveTerm", webUserController.getLoggedInstitution());
+        pcrNegativeTerm = findPreferanceValue("pcrNegativeTerm", webUserController.getLoggedInstitution());
+        pcrInconclusiveTerm = findPreferanceValue("pcrInconclusiveTerm", webUserController.getLoggedInstitution());
+        pcrInvalidTerm = findPreferanceValue("pcrInvalidTerm", webUserController.getLoggedInstitution());
 
-        labNumberGeneration = findPreferanceValue("labNumberGeneration", webUserController.getLoggedUser().getInstitution());
+        pcrPositiveComment = findPreferanceValue("pcrPositiveComment", webUserController.getLoggedInstitution());
+        pcrNegativeComment = findPreferanceValue("pcrNegativeComment", webUserController.getLoggedInstitution());
+        pcrInconclusiveComment = findPreferanceValue("pcrInconclusiveComment", webUserController.getLoggedInstitution());
+        pcrInvalidComment = findPreferanceValue("pcrInvalidComment", webUserController.getLoggedInstitution());
+
+        startingSerialCount = findPreferanceValue("startingSerialCount", webUserController.getLoggedInstitution());
+
+        ct1Term = findPreferanceValue("ct1Term", webUserController.getLoggedInstitution(), "");
+        ct2Term = findPreferanceValue("ct2Term", webUserController.getLoggedInstitution(), "");
+        bulkExcelTitle = findPreferanceValue("bulkExcelTitle", webUserController.getLoggedInstitution(), "");
+        bulkExcelSubtitle = findPreferanceValue("bulkExcelSubtitle", webUserController.getLoggedInstitution(), "");
+        bulkExcelLeftColTop = findPreferanceValue("bulkExcelLeftColTop", webUserController.getLoggedInstitution(), "");
+        bulkExcelRightColTop = findPreferanceValue("bulkExcelRightColTop", webUserController.getLoggedInstitution(), "");
+        bulkExcelFooter = findPreferanceValue("bulkExcelFooter", webUserController.getLoggedInstitution(), "");
+        bulkExcelSubFooter = findPreferanceValue("bulkExcelSubFooter", webUserController.getLoggedInstitution(), "");
+        bulkExcelLeftColBottom = findPreferanceValue("bulkExcelLeftColBottom", webUserController.getLoggedInstitution(), "");
+        bulkExcelRightColBottom = findPreferanceValue("bulkExcelRightColBottom", webUserController.getLoggedInstitution(), "");
+        labReportBulkHtml = findPreferanceValue("labReportBulkHtml", webUserController.getLoggedInstitution(), "");
+
+        labNumberGeneration = findPreferanceValue("labNumberGeneration", webUserController.getLoggedInstitution());
         if (labNumberGeneration == null) {
             labNumberGeneration = "InsLabDateCount";
         }
@@ -173,6 +193,18 @@ public class PreferenceController implements Serializable {
         if (pcrInvalidTerm == null) {
             pcrInvalidTerm = "Invalid";
         }
+        if (pcrPositiveComment == null) {
+            pcrPositiveComment = "";
+        }
+        if (pcrNegativeComment == null) {
+            pcrNegativeComment = "";
+        }
+        if (pcrInconclusiveComment == null) {
+            pcrInconclusiveComment = "";
+        }
+        if (pcrInvalidComment == null) {
+            pcrInvalidComment = "";
+        }
         if (startingSerialCount == null) {
             startingSerialCount = "1";
         }
@@ -192,28 +224,34 @@ public class PreferenceController implements Serializable {
     }
 
     public void savePreferencesInstitution() {
-        savePreference("labApprovalSteps", webUserController.getLoggedUser().getInstitution(), labApprovalSteps);
-        savePreference("labReportHeader", webUserController.getLoggedUser().getInstitution(), labReportHtml);
-        savePreference("numberOfRowsPerPage", webUserController.getLoggedUser().getInstitution(), numberOfRowsPerPage);
-        savePreference("pcrPositiveTerm", webUserController.getLoggedUser().getInstitution(), pcrPositiveTerm);
-        savePreference("pcrNegativeTerm", webUserController.getLoggedUser().getInstitution(), pcrNegativeTerm);
-        savePreference("pcrInvalidTerm", webUserController.getLoggedUser().getInstitution(), pcrInvalidTerm);
-        savePreference("startingSerialCount", webUserController.getLoggedUser().getInstitution(), startingSerialCount);
+        savePreference("labApprovalSteps", webUserController.getLoggedInstitution(), labApprovalSteps);
+        savePreference("labReportHeader", webUserController.getLoggedInstitution(), labReportHtml);
+        savePreference("numberOfRowsPerPage", webUserController.getLoggedInstitution(), numberOfRowsPerPage);
 
-        savePreference("pcrInconclusiveTerm", webUserController.getLoggedUser().getInstitution(), pcrInconclusiveTerm);
-        savePreference("labNumberGeneration", webUserController.getLoggedUser().getInstitution(), labNumberGeneration);
+        savePreference("pcrPositiveTerm", webUserController.getLoggedInstitution(), pcrPositiveTerm);
+        savePreference("pcrNegativeTerm", webUserController.getLoggedInstitution(), pcrNegativeTerm);
+        savePreference("pcrInvalidTerm", webUserController.getLoggedInstitution(), pcrInvalidTerm);
+        savePreference("pcrInvalidTerm", webUserController.getLoggedInstitution(), pcrInconclusiveTerm);
 
-        savePreference("ct1Term", webUserController.getLoggedUser().getInstitution(), ct1Term);
-        savePreference("ct2Term", webUserController.getLoggedUser().getInstitution(), ct2Term);
-        savePreference("bulkExcelTitle", webUserController.getLoggedUser().getInstitution(), bulkExcelTitle);
-        savePreference("bulkExcelSubtitle", webUserController.getLoggedUser().getInstitution(), bulkExcelSubtitle);
-        savePreference("bulkExcelLeftColTop", webUserController.getLoggedUser().getInstitution(), bulkExcelLeftColTop);
-        savePreference("bulkExcelRightColTop", webUserController.getLoggedUser().getInstitution(), bulkExcelRightColTop);
-        savePreference("bulkExcelFooter", webUserController.getLoggedUser().getInstitution(), bulkExcelFooter);
-        savePreference("bulkExcelSubFooter", webUserController.getLoggedUser().getInstitution(), bulkExcelSubFooter);
-        savePreference("bulkExcelLeftColBottom", webUserController.getLoggedUser().getInstitution(), bulkExcelLeftColBottom);
-        savePreference("bulkExcelRightColBottom", webUserController.getLoggedUser().getInstitution(), bulkExcelRightColBottom);
-        savePreference("labReportBulkHtml", webUserController.getLoggedUser().getInstitution(), labReportBulkHtml);
+        savePreference("pcrPositiveComment", webUserController.getLoggedInstitution(), pcrPositiveComment);
+        savePreference("pcrNegativeComment", webUserController.getLoggedInstitution(), pcrNegativeComment);
+        savePreference("pcrInvalidComment", webUserController.getLoggedInstitution(), pcrInvalidComment);
+        savePreference("pcrInconclusiveComment", webUserController.getLoggedInstitution(), pcrInconclusiveComment);
+
+        savePreference("startingSerialCount", webUserController.getLoggedInstitution(), startingSerialCount);
+        savePreference("labNumberGeneration", webUserController.getLoggedInstitution(), labNumberGeneration);
+
+        savePreference("ct1Term", webUserController.getLoggedInstitution(), ct1Term);
+        savePreference("ct2Term", webUserController.getLoggedInstitution(), ct2Term);
+        savePreference("bulkExcelTitle", webUserController.getLoggedInstitution(), bulkExcelTitle);
+        savePreference("bulkExcelSubtitle", webUserController.getLoggedInstitution(), bulkExcelSubtitle);
+        savePreference("bulkExcelLeftColTop", webUserController.getLoggedInstitution(), bulkExcelLeftColTop);
+        savePreference("bulkExcelRightColTop", webUserController.getLoggedInstitution(), bulkExcelRightColTop);
+        savePreference("bulkExcelFooter", webUserController.getLoggedInstitution(), bulkExcelFooter);
+        savePreference("bulkExcelSubFooter", webUserController.getLoggedInstitution(), bulkExcelSubFooter);
+        savePreference("bulkExcelLeftColBottom", webUserController.getLoggedInstitution(), bulkExcelLeftColBottom);
+        savePreference("bulkExcelRightColBottom", webUserController.getLoggedInstitution(), bulkExcelRightColBottom);
+        savePreference("labReportBulkHtml", webUserController.getLoggedInstitution(), labReportBulkHtml);
 
     }
 
@@ -429,8 +467,6 @@ public class PreferenceController implements Serializable {
         this.userTransactionController = userTransactionController;
     }
 
-    
-    
     public String getLabReportHtml() {
         if (labReportHtml == null) {
             loadPreferencesInstitution();
@@ -641,7 +677,7 @@ public class PreferenceController implements Serializable {
     }
 
     public String getNumberOfRowsPerPage() {
-        if(numberOfRowsPerPage==null){
+        if (numberOfRowsPerPage == null) {
             loadPreferencesInstitution();
         }
         return numberOfRowsPerPage;
@@ -649,6 +685,38 @@ public class PreferenceController implements Serializable {
 
     public void setNumberOfRowsPerPage(String numberOfRowsPerPage) {
         this.numberOfRowsPerPage = numberOfRowsPerPage;
+    }
+
+    public String getPcrPositiveComment() {
+        return pcrPositiveComment;
+    }
+
+    public void setPcrPositiveComment(String pcrPositiveComment) {
+        this.pcrPositiveComment = pcrPositiveComment;
+    }
+
+    public String getPcrNegativeComment() {
+        return pcrNegativeComment;
+    }
+
+    public void setPcrNegativeComment(String pcrNegativeComment) {
+        this.pcrNegativeComment = pcrNegativeComment;
+    }
+
+    public String getPcrInconclusiveComment() {
+        return pcrInconclusiveComment;
+    }
+
+    public void setPcrInconclusiveComment(String pcrInconclusiveComment) {
+        this.pcrInconclusiveComment = pcrInconclusiveComment;
+    }
+
+    public String getPcrInvalidComment() {
+        return pcrInvalidComment;
+    }
+
+    public void setPcrInvalidComment(String pcrInvalidComment) {
+        this.pcrInvalidComment = pcrInvalidComment;
     }
 
     // </editor-fold>
