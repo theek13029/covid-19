@@ -12,14 +12,20 @@
 
             <ui:define name="content">
 
-                <p:panel class="text-center h-100">
-                    
-                    <h:outputText class="fs-4 fw-bold my-2" value="Select Client"/>
-                    
+                <div class="text-center h-100 mt-3 container-fluid">
+                    <h:outputText class="fs-4 fw-bold" value="Select Client"/>
                     <h:form>
 
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{clientController.selectedClients}" var="item">
+                        <p:dataTable id="items" class="my-3" resizableColumns="true" resizeMode="expand" reflow="true" rows="5" paginator="true" value="#{clientController.selectedClients}" var="item">
 
+                            <f:facet name="header">
+                                <div class="d-flex justify-content-end">
+                                    <p:commandButton class="btn btn-dark btn-sm" id="toggler" type="button" value="Columns" icon="pi pi-align-justify"/>
+                                    <p:columnToggler class="w-100" datasource="items" trigger="toggler"/>
+                                </div>
+                            </f:facet>
+
+                        <p:dataTable class="my-3" resizableColumns="true" resizeMode="expand" reflow="true" rows="5" paginator="true" value="#{clientController.selectedClients}" var="item">
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText class="fs-6" value="Name"/>
@@ -81,15 +87,15 @@
                                 <f:facet name="header">
                                     <h:outputText class="fs-6" value="Actions"/>
                                 </f:facet>
-                                <h:commandButton class="btn btn-dark-success w-100" action="#{clientController.toClientProfile()}" value="View Profile" >
+                                <h:commandButton class="btn btn-success" action="#{clientController.toClientProfile()}" value="View Profile" >
                                     <f:setPropertyActionListener target="#{clientController.selected}" value="#{item}" ></f:setPropertyActionListener>
                                 </h:commandButton>
                             </p:column>
-
                         </p:dataTable>
-                    </h:form>
 
-                </p:panel>
+
+                    </h:form>
+                </div>
 
             </ui:define>
 
