@@ -76,6 +76,9 @@
                                      
                                      selection="#{clientController.selectedToDivert}">
                             <p:column selectionMode="multiple" width="25"></p:column>
+                            <p:column headerText="Test" sortBy="#{c.encounterNumber}" filterMatchMode="contains" filterBy="#{c.encounterNumber}" >
+                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Name" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>

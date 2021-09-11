@@ -41,7 +41,8 @@
                         </p:panelGrid>
 
 
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.labSummariesToReceive}" 
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" 
+                                     value="#{clientController.labSummariesToReceive}" 
                                      rowIndexVar="n"
                                      var="c" rowKey="#{c.id}" 
 
@@ -60,6 +61,7 @@
                             <p:column headerText="Lab"
                                       sortBy="#{c.referralInstitution.name}" filterBy="#{c.referralInstitution.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.referralInstitution.name}" ></p:outputLabel>
+                                1
                             </p:column>
                             <p:column headerText="Number of Orders"  sortBy="#{c.count}" width="70">
                                 <p:outputLabel value="#{c.count}" ></p:outputLabel>

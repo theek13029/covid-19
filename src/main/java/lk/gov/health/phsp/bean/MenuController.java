@@ -67,7 +67,7 @@ public class MenuController implements Serializable {
     public String toSummaryByOrderedInstitution() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
-                regionalController.prepareSummaryByOrderedInstitution();
+                regionalController.processSummaryReceivedAtLab();
                 return "/regional/summary_lab_ordered";
             case National:
                 nationalController.prepareSummaryByOrderedInstitution();
@@ -112,6 +112,28 @@ public class MenuController implements Serializable {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
                 return regionalController.toSummaryByOrderedInstitutionVsLabToReceive();
+            case National:
+                return nationalController.toSummaryByOrderedInstitutionVsLabToReceive();
+            case Hospital:
+                return "/hospital/divert_samples";
+            case Lab:
+                return "/lab/divert_samples";
+            case National_Lab:
+                nationalController.toSummaryByOrderedInstitutionVsLabToReceive();
+                return "/national/divert_samples";
+            case Moh:
+                return "/moh/divert_samples";
+            case Provincial:
+                return "/provincial/divert_samples";
+            default:
+                return "";
+        }
+    }
+    
+    public String toReceivedAtLabSummary() {
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/summary_received_at_lab";
             case National:
                 return nationalController.toSummaryByOrderedInstitutionVsLabToReceive();
             case Hospital:

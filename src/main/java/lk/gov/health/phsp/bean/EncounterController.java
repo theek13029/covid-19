@@ -35,11 +35,13 @@ public class EncounterController implements Serializable {
     @EJB
     private EncounterFacade ejbFacade;
     private List<Encounter> items = null;
+    private List<Encounter> selectedItems = null;
     private Encounter selected;
     @Inject
     private WebUserController webUserController;
     @Inject
     private UserTransactionController userTransactionController;
+    @Inject ItemApplicationController itemApplicationController;
 
     public EncounterController() {
     }
@@ -265,7 +267,32 @@ public class EncounterController implements Serializable {
     public List<Encounter> getItems(String jpql, Map m) {
         return getFacade().findByJpql(jpql, m);
     }
+    
+    public void listEncountersWithoutPctOrRat(){
+        String j = "select e "
+                + " from Encounter e "
+                + " where e.encounterType=:et "
+                + " and e.pcrTestType is null";
+        Map m = new HashMap();
+        m.put("et", EncounterType.Test_Enrollment);
+        items = ejbFacade.findByJpql(j, m);
+        selectedItems = null;
+    }
+    
+    public void markMissingEncountersAsPcr(){
+        int c=0;
+        for(Encounter e:selectedItems){
+            if(e.getPcrTestType()==null){
+                e.setPcrTestType(itemApplicationController.getPcr());
+                ejbFacade.edit(e);
+                c++;
+            }
+        }
+        JsfUtil.addErrorMessage("Record Count Updated = " +c);
+    }
 
+    
+    
     public List<Encounter> getItems(Client client) {
         String j = "select e "
                 + " from Encounter e "
@@ -322,6 +349,22 @@ public class EncounterController implements Serializable {
 
     public lk.gov.health.phsp.facade.EncounterFacade getEjbFacade() {
         return ejbFacade;
+    }
+
+    public List<Encounter> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Encounter> items) {
+        this.items = items;
+    }
+
+    public List<Encounter> getSelectedItems() {
+        return selectedItems;
+    }
+
+    public void setSelectedItems(List<Encounter> selectedItems) {
+        this.selectedItems = selectedItems;
     }
 
     @FacesConverter(forClass = Encounter.class)

@@ -38,8 +38,10 @@ public class InstitutionFacade extends AbstractFacade<Institution> {
     @PersistenceContext(unitName = "hmisPU")
     private EntityManager em;
 
+    
     @Override
     protected EntityManager getEntityManager() {
+        System.out.println("this = " + this);
         return em;
     }
 

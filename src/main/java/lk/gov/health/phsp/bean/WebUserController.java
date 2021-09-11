@@ -98,8 +98,6 @@ public class WebUserController implements Serializable {
     @Inject
     private UserTransactionController userTransactionController;
     @Inject
-    private ApplicationController applicationController;
-    @Inject
     InstitutionApplicationController institutionApplicationController;
     @Inject
     WebUserApplicationController webUserApplicationController;
@@ -880,7 +878,7 @@ public class WebUserController implements Serializable {
         if (loggedUser != null) {
             loggedInstitution = loggedUser.getInstitution();
         }
-        
+
         executeSuccessfulLoginActions();
         fillUsersForMyInstitute();
         fillAreasForMe();
@@ -1017,16 +1015,16 @@ public class WebUserController implements Serializable {
             default:
         }
     }
-    
-    public String toChangeLoggedInstitution(){
+
+    public String toChangeLoggedInstitution() {
         return "/webUser/change_logged_institute";
     }
 
-    public String changeLoggedInstitution(){
+    public String changeLoggedInstitution() {
         executeSuccessfulLoginActions();
         return "/index";
     }
-    
+
     private void fillUsersForMyInstitute() {
         String j = "select u from WebUser u "
                 + " where u.retired=false "

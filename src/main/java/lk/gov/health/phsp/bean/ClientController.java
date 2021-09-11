@@ -1830,6 +1830,16 @@ public class ClientController implements Serializable {
         } else {
             html = html.replace("{pcr_comments}", "");
         }
+        if (e.getUnitWard()!= null) {
+            html = html.replace("{unit_or_ward}", e.getUnitWard());
+        } else {
+            html = html.replace("{unit_or_ward}", "");
+        }
+        if (e.getBht()!= null) {
+            html = html.replace("{bht}", e.getBht());
+        } else {
+            html = html.replace("{bht}", "");
+        }
 
         if (e.getPcrResult() != null) {
             if (e.getPcrResult().equals(itemApplicationController.getPcrPositive())) {
