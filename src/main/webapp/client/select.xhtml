@@ -12,11 +12,18 @@
 
             <ui:define name="content">
 
-                <p:panel class="text-center h-100 mt-3">
-
+                <div class="text-center h-100 mt-3 container-fluid">
                     <h:outputText class="fs-4 fw-bold" value="Select Client"/>
-
                     <h:form>
+
+                        <p:dataTable id="items" class="my-3" resizableColumns="true" resizeMode="expand" reflow="true" rows="5" paginator="true" value="#{clientController.selectedClients}" var="item">
+
+                            <f:facet name="header">
+                                <div class="d-flex justify-content-end">
+                                    <p:commandButton class="btn btn-dark btn-sm" id="toggler" type="button" value="Columns" icon="pi pi-align-justify"/>
+                                    <p:columnToggler class="w-100" datasource="items" trigger="toggler"/>
+                                </div>
+                            </f:facet>
 
                         <p:dataTable class="my-3" resizableColumns="true" resizeMode="expand" reflow="true" rows="5" paginator="true" value="#{clientController.selectedClients}" var="item">
                             <p:column>
@@ -86,9 +93,9 @@
                             </p:column>
                         </p:dataTable>
 
-                    </h:form>
 
-                </p:panel>
+                    </h:form>
+                </div>
 
             </ui:define>
 
