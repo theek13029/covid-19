@@ -55,18 +55,85 @@ public class UserColumnController {
     public UserColumnController() {
     }
 
-    public boolean displayColumn(String colName) {
+    public void markChecked(String colName) {
         String j = "select u "
                 + " from UserColumn u "
                 + " where u.webUser=:wu "
                 + " u.viewId=:v "
                 + " u.columnName=:c";
         Map m = new HashMap();
+        String viewId = getFacesContext().getViewRoot().getViewId();
         m.put("u", getWebUserController().getLoggedUser());
-        m.put("v", getFacesContext().getViewRoot().getViewId());
+        m.put("v", viewId);
         m.put("c", colName);
-        UserColumn uc = getFacade().
-        return true;
+        UserColumn uc = getFacade().findFirstByJpql(j, m);
+        if (uc == null) {
+            uc = new UserColumn();
+            uc.setColumnName(colName);
+            uc.setDisplay(Boolean.TRUE);
+            uc.setViewId(viewId);
+            uc.setWebUser(getWebUserController().getLoggedUser());
+            getFacade().create(uc);
+        } else {
+            uc.setDisplay(true);
+            getFacade().edit(uc);
+        }
+    }
+
+    public void markUnChecked(String colName) {
+        String j = "select u "
+                + " from UserColumn u "
+                + " where u.webUser=:wu "
+                + " u.viewId=:v "
+                + " u.columnName=:c";
+        Map m = new HashMap();
+        String viewId = getFacesContext().getViewRoot().getViewId();
+        m.put("u", getWebUserController().getLoggedUser());
+        m.put("v", viewId);
+        m.put("c", colName);
+        UserColumn uc = getFacade().findFirstByJpql(j, m);
+        if (uc == null) {
+            uc = new UserColumn();
+            uc.setColumnName(colName);
+            uc.setDisplay(false);
+            uc.setViewId(viewId);
+            uc.setWebUser(getWebUserController().getLoggedUser());
+            getFacade().create(uc);
+        } else {
+            uc.setDisplay(false);
+            getFacade().edit(uc);
+        }
+    }
+
+    public boolean displayColumn(String colName) {
+        boolean display = true;
+        String j = "select u "
+                + " from UserColumn u "
+                + " where u.webUser=:wu "
+                + " u.viewId=:v "
+                + " u.columnName=:c";
+        Map m = new HashMap();
+        String viewId = getFacesContext().getViewRoot().getViewId();
+        m.put("u", getWebUserController().getLoggedUser());
+        m.put("v", viewId);
+        m.put("c", colName);
+        UserColumn uc = getFacade().findFirstByJpql(j, m);
+        if (uc == null) {
+            uc = new UserColumn();
+            uc.setColumnName(colName);
+            uc.setDisplay(Boolean.TRUE);
+            uc.setViewId(viewId);
+            uc.setWebUser(getWebUserController().getLoggedUser());
+            getFacade().create(uc);
+        }
+        if (uc.getDisplay() == null) {
+            uc.setDisplay(Boolean.TRUE);
+            getFacade().edit(uc);
+            display = true;
+        } else {
+            display = uc.getDisplay();
+        }
+        return display;
     }
 
     public UserColumnFacade getFacade() {
