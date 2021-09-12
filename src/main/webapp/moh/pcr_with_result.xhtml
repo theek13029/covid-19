@@ -6,97 +6,94 @@
   xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 <h:body>
   <ui:composition template="/template1.xhtml">
-    <ui:define name="title">
-      NCHIS - PCR Order
-    </ui:define>
+    <ui:define name="title">New PCR Request With Result</ui:define>
     <ui:define name="content">
       <h:form class="form">
-        <p:focus for="txtTestNo"></p:focus>
+        <p:focus for="result"></p:focus>
         <div class="row bg-white py-4">
-          <h4 class="text-center fw-bold">NEW PCR REQUEST</h4>
+          <h4 class="text-center fw-bold">NEW PCR REQUEST WITH RESULT</h4>
           <div class="my-2 px-4">
             <div class="row mb-4">
               <h5 class="text-muted fw-bold">Investigation Details</h5>
-              <div class="col md-3">
-                <label for="txtTestNo" class="form-label fw-bold">Test Number</label>
-                <h:inputText id="txtTestNo" value="#{mohController.pcr.encounterNumber}" class="form-control">
-                  <f:ajax process="txtTestNo" event="blur"></f:ajax>
-                </h:inputText>
+              <div class="col-md-3">
+                <label for="result" class="form-label fw-bold">Result</label>
+                <h:selectOneMenu class="form-select w-100" id="result" value="#{mohController.pcr.pcrResult}">
+                  <f:selectItems value="#{itemApplicationController.pcrResults}" var="testResults"
+                    itemLabel="#{testResults.name}" itemValue="#{testResults}">
+                  </f:selectItems>
+                  <p:column class="#{r.name eq 'Positive'?'bg-danger':''}">
+                    <h:outputLabel value="${r.name}"></h:outputLabel>
+                  </p:column>
+                </h:selectOneMenu>
               </div>
-              <div class="col md-3">
-                <label for="sampledAt" class="form-label fw-bold">Sampled Date</label>
-                <p:datePicker value="#{mohController.pcr.sampledAt}" pattern="dd MMMM yyyy hh:mm">
-                </p:datePicker>
+              <div class="col-md-3">
+                <label for="sampledAt" class="form-label d-block fw-bold">Result Issed Date</label>
+                <p:datePicker id="sampledAt" value="#{mohController.pcr.resultConfirmedAt}" inputClass="w-100 d-block"
+                  pattern="dd MMMM yyyy hh:mm"></p:datePicker>
               </div>
-              <div class="col md-3">
+              <div class="col-md-3">
                 <label for="orderingCat" class="form-label fw-bold">Ordering Category <small
-                    class="px-2 text-muted">Required</small></label>
-                <h:selectOneMenu id="orderingCat" required="true"
-                  requiredMessage="Please select the category for ordering the test."
-                  value="#{mohController.pcr.pcrOrderingCategory}" tabindex="102" class="form-select w-100">
+                    class="px-2 text-muted px-2">Required</small></label>
+                <h:selectOneMenu id="orderingCat" required="true" requiredMessage="Please select an ordering category"
+                  value="#{mohController.pcr.pcrOrderingCategory}" class="form-select">
                   <f:selectItem itemLabel="Select"></f:selectItem>
-                  <f:selectItems value="#{mohController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
-                    itemValue="#{tt}"></f:selectItems>
+                  <f:selectItems value="#{mohController.covidTestOrderingCategories}" var="catType"
+                    itemLabel="#{catType.name}" itemValue="#{catType}"></f:selectItems>
                   <p:ajax process="orderingCat" event="blur"></p:ajax>
                 </h:selectOneMenu>
                 <h:message for="orderingCat" class="text-danger small"></h:message>
               </div>
-              <div class="col md-3">
-                <label for="acLab" class="form-label fw-bold">Reffering Lab<small
+              <div class="col-md-3">
+                <label for="lab" class="form-label fw-bold">Reffering Lab <small
                     class="text-muted px-2">Required</small></label>
-                <p:autoComplete id="acLab" inputStyleClass="autocomplete"
-                  value="#{mohController.pcr.referalInstitution}" forceSelection="true"
-                  completeMethod="#{mohController.completeLab}" var="l" itemLabel="#{l.name}" itemValue="#{l}">
-                  <f:ajax process="acLab" event="blur"></f:ajax>
+                <p:autoComplete id="lab" inputStyleClass="autocomplete" value="#{mohController.pcr.referalInstitution}"
+                  forceSelection="true" completeMethod="#{mohController.completeLab}" var="labs"
+                  itemLabel="#{labs.name}" itemValue="#{labs}">
+                  <p:ajax process="lab" event="blur"></p:ajax>
                 </p:autoComplete>
               </div>
             </div>
             <div class="row mb-4">
               <h5 class="text-muted fw-bold">Reginoal Details</h5>
-              <div class="col md-3">
-                <label class="form-label fw-bold" for="district">District</label>
-                <p:autoComplete required="true" requiredMessage="Please select a district" tabindex="110" id="district"
+              <div class="col-md-3">
+                <label for="district" class="form-label fw-bold">District</label>
+                <p:autoComplete id="district" required="tue" requiredMessage="Please select a district"
                   value="#{mohController.pcr.client.person.district}"
-                  completeMethod="#{mohController.completeDistricts}" var="d" itemLabel="#{d.name}" itemValue="#{d}"
-                  maxResults="15" forceSelection="true" minQueryLength="3">
+                  completeMethod="#{mohController.completeDistricts}" var="districts" itemLabel="#{districts.name}"
+                  itemValue="#{districts}" maxResults="15" forceSelection="true" minQueryLength="3">
                   <f:ajax event="itemSelect" execute="district"></f:ajax>
                   <f:ajax event="blur" execute="district"></f:ajax>
                 </p:autoComplete>
-                <h:message for="district" value="District is required" class="text-danger small">
-                </h:message>
+                <h:message for="district" class="small text-danger"></h:message>
               </div>
-              <div class="col md-3">
-                <label for="mohArea" class="form-label fw-bold">MOH Area</label>
-                <p:autoComplete id="mohAre" tabindex="111" value="#{mohController.pcr.client.person.mohArea}"
-                  completeMethod="#{mohController.completeMohAreas}" var="m" itemLabel="#{m.name}" itemValue="#{m}"
-                  maxResults="15" forceSelection="true" minQueryLength="3">
-                  <f:ajax event="itemSelect" execute="moh"></f:ajax>
-                  <f:ajax event="blur" execute="moh"></f:ajax>
+              <div class="col-md-3">
+                <label for="mohArea" class="fw-bold form-label">MOH Area</label>
+                <p:autoComplete id="mohArea" value="#{mohController.pcr.client.person.mohArea}"
+                  completeMethod="#{mohController.completeMohAreas}" var="mohs" itemLabel="#{mohs.name}"
+                  itemValue="#{mohs}" maxResults="15" forceSelection="true" minQueryLength="3">
+                  <f:ajax event="itemSelect" execute="mohArea"></f:ajax>
+                  <f:ajax event="blur" execute="mohArea"></f:ajax>
                 </p:autoComplete>
               </div>
-              <div class="col md-3">
-                <label for="gnArea" class="form-label fw-bold">GN Division</label>
-                <h:commandLink id="lnkLastGn" action="#{mohController.retrieveLastGnPcr()}" process="lnkLastGn"
-                  update="gn">
+              <div class="col-md-3">
+                <label for="gnarea" class="form-label fw-bold">GN Division</label>
+                <h:commandLink id="lnkLastGn" action="#{mohController.retrieveLastGnPcr()}" update="gnarea">
                   <i class="bi bi-arrow-clockwise"></i>
                 </h:commandLink>
-                <p:autoComplete tabindex="6" id="gnArea" value="#{mohController.pcr.client.person.gnArea}"
-                  completeMethod="#{mohController.completeGnAreasForPcr}" var="gn" itemLabel="#{gn.name}"
-                  itemValue="#{gn}" maxResults="20" forceSelection="true" minQueryLength="2">
-                </p:autoComplete>
+                <p:autoComplete id="gnarea" completeMethod="#{mohController.completeGnAreasForPcr}" var="gnAreas"
+                  itemLabel="#{gnAreas.name}" itemValue="#{gnAreas}" maxResults="20" forceSelection="true"
+                  minQueryLength="2"></p:autoComplete>
               </div>
-              <div class="col md-3">
-                <label for="phiArea" class="form-label fw-bold">PHI Area</label>
-                <p:autoComplete tabindex="113" id="phiArea" value="#{mohController.pcr.client.person.phiArea}"
+              <div class="col-md-3">
+                <label for="phi" class="form-label fw-bold">PHI Area</label>
+                <p:autoComplete id="phi" value="#{mohController.pcr.client.person.phiArea}"
                   completeMethod="#{mohController.completePhiAreasForPcr}" var="gn" itemLabel="#{gn.name}"
                   itemValue="#{gn}" maxResults="20" forceSelection="true" minQueryLength="2">
                 </p:autoComplete>
               </div>
             </div>
             <div class="row mb-4">
-              <h5 class="text-muted fw-bold">
-                Personal Details
-              </h5>
+              <h5 class="text-muted fw-bold">Personal Details</h5>
               <div class="col-md-3">
                 <label for="name" class="form-label fw-bold">Name<small class="text-muted px-2">Required</small></label>
                 <h:inputText autocomplete="off" id="name" required="true"
@@ -108,23 +105,32 @@
                 <label for="age" class="form-label fw-bold">Age (Y|M|D)<small
                     class="text-muted px-2">Required</small></label>
                 <div class="d-flex">
-                  <h:inputText id="year" class="form-control w-50" autocomplete="false"
-                    requiredMessage="Age is required"
-                    value="#{mohController.pcr.client.person.ageYears}"
-                    required="true"
-                    >
+                  <p:inputText id="year" class="form-control w-50" autocomplete="false"
+                    requiredMessage="Year is required" placeholder="Year"
+                    value="#{mohController.pcr.client.person.ageYears}" required="true">
                     <f:ajax event="keyup" execute="year month day" render="calDob"></f:ajax>
-                  </h:inputText>
-                  <h:inputText id="month" class="form-control w-25" autocomplete="off"
+                  </p:inputText>
+                  <p:inputText id="month" class="form-control w-25" autocomplete="off"
                     value="#{mohController.pcr.client.person.ageMonths}">
                     <f:ajax event="keyup" execute="year month day" render="calBob"></f:ajax>
-                  </h:inputText>
-                  <h:inputText class="form-control w-25" id="day" autocomplete="off" placeholder="Days"
+                  </p:inputText>
+                  <p:inputText class="form-control w-25" id="day" autocomplete="off" placeholder="Days"
                     value="#{mohController.pcr.client.person.ageDays}">
                     <f:ajax event="keyup" execute="year month day" render="calDob"></f:ajax>
-                  </h:inputText>
+                  </p:inputText>
                   <h:message class="text-danger small" for="year"></h:message>
                 </div>
+              </div>
+              <div class="col-md-3">
+                <label for="gender" class="form-label fw-bold">Gender <small
+                    class="text-muted px-2">Required</small></label>
+                <h:selectOneMenu id="gender" value="#{mohController.pcr.client.person.sex}" required="true"
+                  class="form-select" requiredMessage="Please select gender">
+                  <f:selectItem itemLabel="Please select"></f:selectItem>
+                  <f:selectItems value="#{mohController.sexes}" var="genders" itemLabel="#{gender.name}"
+                    itemValue="#{genders}"></f:selectItems>
+                </h:selectOneMenu>
+                <h:message class="text-danger small" for="gender"></h:message>
               </div>
               <div class="col-md-3">
                 <label for="nic" class="form-label fw-bold">NIC</label>
@@ -139,17 +145,6 @@
                     action="#{mohController.toAddNewPcrWithExistingNic()}"
                     value="NIC exists. Click here to load the patient" class="btn btn-secondary btn-sm"></h:commandLink>
                 </h:panelGroup>
-              </div>
-              <div class="col-md-3">
-                <label for="gender" class="form-label fw-bold">Gender <small
-                    class="text-muted px-2">Required</small></label>
-                <h:selectOneMenu id="sex" value="#{mohController.pcr.client.person.sex}" required="true"
-                  class="form-select" requiredMessage="Please select gender">
-                  <f:selectItem itemLabel="Please select"></f:selectItem>
-                  <f:selectItems value="#{mohController.sexes}" var="genders" itemLabel="#{gender.name}"
-                    itemValue="#{genders}"></f:selectItems>
-                </h:selectOneMenu>
-                <h:message class="text-danger small" for="gender"></h:message>
               </div>
             </div>
             <div class="row mb-4">
@@ -205,7 +200,7 @@
                   process="lnkLastPhone" update="phone">
                   <i class="bi bi-arrow-clockwise"></i>
                 </h:commandLink>
-                <h:inputText id="phone" class="form-control" requiredMessage="Contact number is required" required="true"
+                <h:inputText id="phone" class="form-control" reqiredMessage="Contact number is required" required="true"
                   value="#{mohController.pcr.client.person.phone1}" aria-autocomplete="off"></h:inputText>
                 <h:message class="text-danger small" for="phone"></h:message>
               </div>
@@ -218,29 +213,26 @@
                 </h:inputText>
               </div>
               <div class="col md-4 bg-light py-2">
-                <label for="workplaceContactName" class="form-label fw-bold">Workplace Contact
-                  Name</label>
+                <label for="workplaceContactName" class="form-label fw-bold">Workplace Contact Person's Name</label>
                 <h:inputText class="form-control" id="workplaceContactName"
                   value="#{mohController.pcr.client.person.workplaceContact}"></h:inputText>
               </div>
               <div class="col md-4 bg-light py-2">
-                <label for="workplaceContact" class="form-label fw-bold">Workplace Contact
-                  Number</label>
+                <label for="workplaceContact" class="form-label fw-bold">Workplace Contact Number</label>
                 <h:inputText class="form-control" id="workplaceContact"
                   value="#{mohController.pcr.client.person.workplaceContactDetails}"></h:inputText>
               </div>
             </div>
             <div class="row">
-              <p:messages class="my-2 col"></p:messages>
+              <p:messages class="my-2"></p:messages>
             </div>
             <div class="row">
               <div class="col-md-12">
-                <h:commandButton class="btn btn-success fw-bold"
-                  action="#{mohController.savePcrAndToNewPcr()}" value="Save and NEW PCR">
+                <h:commandButton class="btn btn-success mx-2 fw-bold"
+                  action="#{mohController.toSaveAndNewPcrWithResult()}" value="Save and NEW PCR With Result">
                 </h:commandButton>
                 <h:commandButton class="btn btn-success mx-2 fw-bold"
-                  action="#{mohController.savePcrAndToPcrView()}" value="Save and VIEW PCR">
-                </h:commandButton>
+                  action="#{mohController.savePcrAndToPcrView()}" value="Save and View PCR"></h:commandButton>
               </div>
             </div>
           </div>

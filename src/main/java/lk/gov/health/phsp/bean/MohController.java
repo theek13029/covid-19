@@ -44,6 +44,9 @@ import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.SmsFacade;
 import javax.inject.Named;
 import javax.persistence.TemporalType;
+
+import com.itextpdf.text.html.WebColors;
+
 import lk.gov.health.phsp.entity.ClientEncounterComponentItem;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.entity.WebUser;
@@ -1167,6 +1170,68 @@ public class MohController implements Serializable {
         return itemApplicationController.getSexes();
     }
 
+    // Render the view PCR request with result
+    public String toAddNewPCRWithResult() {
+        pcr = new Encounter();
+        nicExistsForPcr = null;
+        Date date = new Date();
+        Client client = new Client();
+
+        client.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
+        client.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        client.getPerson().setPhiArea(webUserController.getLoggedUser().getInstitution().getPhiArea());
+        pcr.setPcrTestType(itemApplicationController.getPcr());
+        pcr.setPcrOrderingCategory(sessionController.getLastPcrOrdringCategory());
+        pcr.setClient(client);
+        pcr.setInstitution(webUserController.getLoggedInstitution());
+        pcr.setCreatedInstitution(webUserController.getLoggedInstitution());
+        pcr.setEncounterType(EncounterType.Test_Enrollment);
+        pcr.setEncounterDate(date);
+        pcr.setEncounterFrom(date);
+        pcr.setEncounterMonth(CommonController.getMonth(date));
+        pcr.setEncounterQuarter(CommonController.getQuarter(date));
+        pcr.setEncounterYear(CommonController.getYear(date));
+
+        if (sessionController.getLastLab() == null) {
+            pcr.setReferalInstitution(sessionController.getLastLab());
+        } else {
+            pcr.setReferalInstitution(webUserController.getLoggedInstitution());
+        }
+
+        pcr.setCreatedAt(date);
+        pcr.setCreatedBy(webUserController.getLoggedUser());
+
+        pcr.setSampled(true);
+        pcr.setSampledAt(date);
+        pcr.setSampledBy(webUserController.getLoggedUser());
+
+        pcr.setResultConfirmedAt(date);
+
+        if (sessionController.getLastWorkplace() != null) {
+            pcr.getClient().getPerson().setWorkPlace(sessionController.getLastWorkplace());
+        }
+
+        if (sessionController.getLastContactOfWorkplace() != null) {
+            pcr.getClient().getPerson().setWorkplaceContact(sessionController.getLastContactOfWorkplace());
+        }
+
+        if (sessionController.getLastContactOfWorkplaceDetails() != null) {
+            pcr.getClient().getPerson().setWorkplaceContactDetails(sessionController.getLastContactOfWorkplaceDetails());
+        }
+
+        pcr.setCreatedAt(date);
+
+        return  "/moh/pcr_with_result";
+    }
+
+    public String toSaveAndNewPcrWithResult() {
+        if (savePcr() != null) {
+            return "/moh/pcr_with_result";
+        } else {
+            return "";
+        }
+    }
+
     public String toAddNewRatWithNewClient() {
         rat = new Encounter();
         nicExistsForRat = null;
@@ -2058,7 +2123,7 @@ public class MohController implements Serializable {
         m.put("ins", webUserController.getLoggedInstitution());
 
 //        webUserController.getLoggedInstitution();
-        
+
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
         System.out.println("getFromDate() = " + getFromDate());
