@@ -232,6 +232,19 @@ public class WebUserController implements Serializable {
 
     }
 
+    public String displayUsers(Institution ins){
+        String us = "";
+        for(WebUser wu:webUserApplicationController.getItems()){
+            if(wu.getInstitution()!=null && wu.getInstitution().equals(ins)){
+                if(!us.equals("")){
+                    us+= ", ";
+                }
+                us+=wu.getName();
+            }
+        }
+        return us;
+    }
+    
     public String assumeUser() {
         if (current == null) {
             JsfUtil.addErrorMessage("Please select a User");

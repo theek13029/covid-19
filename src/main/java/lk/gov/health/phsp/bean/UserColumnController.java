@@ -37,7 +37,7 @@ import lk.gov.health.phsp.facade.UserColumnFacade;
  *
  * @author buddhika
  */
-@Named(value = "userColumnController")
+@Named
 @RequestScoped
 public class UserColumnController {
 
@@ -56,17 +56,21 @@ public class UserColumnController {
     }
 
     public void markChecked(String colName) {
+        System.out.println("markChecked");
         String j = "select u "
                 + " from UserColumn u "
                 + " where u.webUser=:wu "
-                + " u.viewId=:v "
-                + " u.columnName=:c";
+                + " and u.viewId=:v "
+                + " and u.columnName=:c";
         Map m = new HashMap();
         String viewId = getFacesContext().getViewRoot().getViewId();
-        m.put("u", getWebUserController().getLoggedUser());
+        m.put("wu", getWebUserController().getLoggedUser());
         m.put("v", viewId);
         m.put("c", colName);
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
         UserColumn uc = getFacade().findFirstByJpql(j, m);
+        System.out.println("uc = " + uc);
         if (uc == null) {
             uc = new UserColumn();
             uc.setColumnName(colName);
@@ -81,17 +85,21 @@ public class UserColumnController {
     }
 
     public void markUnChecked(String colName) {
+        System.out.println("markUnChecked");
         String j = "select u "
                 + " from UserColumn u "
                 + " where u.webUser=:wu "
-                + " u.viewId=:v "
-                + " u.columnName=:c";
+                + " and u.viewId=:v "
+                + " and u.columnName=:c";
         Map m = new HashMap();
         String viewId = getFacesContext().getViewRoot().getViewId();
-        m.put("u", getWebUserController().getLoggedUser());
+        m.put("wu", getWebUserController().getLoggedUser());
         m.put("v", viewId);
         m.put("c", colName);
+        System.out.println("m = " + m);
+        System.out.println("j = " + j);
         UserColumn uc = getFacade().findFirstByJpql(j, m);
+        System.out.println("uc = " + uc);
         if (uc == null) {
             uc = new UserColumn();
             uc.setColumnName(colName);
@@ -106,18 +114,22 @@ public class UserColumnController {
     }
 
     public boolean displayColumn(String colName) {
-        boolean display = true;
+        System.out.println("displayColumn");
+        boolean display ;
         String j = "select u "
                 + " from UserColumn u "
                 + " where u.webUser=:wu "
-                + " u.viewId=:v "
-                + " u.columnName=:c";
+                + " and u.viewId=:v "
+                + " and u.columnName=:c";
         Map m = new HashMap();
         String viewId = getFacesContext().getViewRoot().getViewId();
-        m.put("u", getWebUserController().getLoggedUser());
+        m.put("wu", getWebUserController().getLoggedUser());
         m.put("v", viewId);
         m.put("c", colName);
+        System.out.println("m = " + m);
+        System.out.println("j = " + j);
         UserColumn uc = getFacade().findFirstByJpql(j, m);
+        System.out.println("uc = " + uc);
         if (uc == null) {
             uc = new UserColumn();
             uc.setColumnName(colName);
