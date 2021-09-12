@@ -100,8 +100,6 @@ public class DashboardController implements Serializable {
     private Long ratPatientsWithNoMohArea;
 //    First encounters with no MOH area
     private Long firstContactsWithNoMOHArea;
-//    Samples awaiting dispatch
-    private Long samplesAwaitingDispatch;
 
     private CovidData myCovidData;
 
@@ -120,6 +118,8 @@ public class DashboardController implements Serializable {
     private Long samplesResultReviewed;
     private Long samplesResultsConfirmed;
     private Long samplesPositive;
+//    Samples awaiting dispatch
+    private Long samplesAwaitingDispatch;
 
 //    Uses to convert doubles to rounded string value
     DecimalFormat df = new DecimalFormat("0.00");
@@ -364,6 +364,14 @@ public class DashboardController implements Serializable {
         } else {
         	this.yesterdayRatPositiveRate = "0.00%";
         }
+
+//      Get samples awaiting dispatch at MOH level to be shown on the dashboard
+        this.samplesAwaitingDispatch = dashboardApplicationController.samplesAwaitingDispatch(
+                this.webUserController.getLoggedUser().getInstitution().getMohArea(),
+                yesterdayStart,
+                now,
+                null
+        );
     }
 
     public void prepareHospitalDashboard() {

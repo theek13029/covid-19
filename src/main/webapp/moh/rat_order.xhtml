@@ -47,7 +47,7 @@
 
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel class= "form-label fw-bold" value="Sampled at"></h:outputLabel>
-                                        <p:calendar inputClass="w-100" class="w-100" value="#{mohController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
+                                        <p:calendar inputStyle="width:100%;" value="#{mohController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
                                     </div>
 
                                 </div>
@@ -64,11 +64,51 @@
                                         <h:message class="text-danger small" for="name"></h:message>
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "form-label fw-bold" value="Citizenship:" for="citizenship" />
-                                        <h:selectOneMenu class="form-select w-100" id="citizenship" value="#{mohController.rat.client.person.citizenship}"
-                                                         tabindex="103" >
-                                            <f:selectItems value="#{mohController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}"></f:selectItems>
+
+                                        <h:outputLabel class= "form-label fw-bold" value="Age: (Years/Months)*"/>
+                                        <div class="row">
+                                            <div class="col-3">
+                                            <p:inputText class="form-control w-100" autocomplete="off" id="year"
+                                                         tabindex="108"
+                                                         requiredMessage="Please enter the age"
+                                                         placeholder="Years"
+                                                         value="#{mohController.rat.client.person.ageYears}"
+                                                         required="true" >
+                                                <f:ajax event="keyup" execute="@this month day" render="calDob" />
+                                            </p:inputText>
+                                            </div>
+                                            <div class="col-3">
+                                            <p:inputText class="form-control w-100" tabindex="108"  autocomplete="off" id="month" placeholder="Months"
+                                                         value="#{mohController.rat.client.person.ageMonths}">
+                                                <f:ajax event="keyup" execute="@this year day" render="calDob" />
+                                            </p:inputText>
+                                            </div>
+                                            <div class="col-3">
+                                                    <p:inputText tabindex="109" 
+                                                                 class="form-control" 
+                                                                 autocomplete="off" 
+                                                                 id="day" 
+                                                                 placeholder="Days" 
+                                                                 style="width: 3em; "
+                                                                 value="#{mohController.rat.client.person.ageDays}">
+                                                        <f:ajax event="keyup" execute="year month day" render="calDob" />
+                                                    </p:inputText>
+                                                    <p:tooltip for="day" >
+                                                        Days
+                                                    </p:tooltip>
+                                                </div>
+                                            <h:message class="text-danger small" for="year"></h:message>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-md-3 mb-4">
+                                        <h:outputLabel class= "form-label fw-bold" value="Gender:"  for="sex" />
+                                        <h:selectOneMenu
+                                            class="form-select w-100" id="sex" value="#{mohController.rat.client.person.sex}" required="true"
+                                            tabindex="107" requiredMessage="Please select Gender" >
+                                            <f:selectItems value="#{mohController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
                                         </h:selectOneMenu>
+                                        <h:message class="text-danger small" for="sex"></h:message>
                                     </div>
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel class= "form-label fw-bold" value="PHN No.:" for="phn" />
@@ -76,11 +116,7 @@
                                                      tabindex="104"
                                                      class="form-control w-100" value="#{mohController.rat.client.phn}" title="Phn" placeholder="New PHN"></p:inputText>
                                     </div>
-                                    <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "form-label fw-bold" value="Other Ordering Category:"  />
-                                        <h:inputText class="form-control w-100" value="#{mohController.rat.pcrOrderingCategoryOther}"
-                                                     tabindex="105" ></h:inputText>
-                                    </div>
+                                    
 
 
                                 </div>
@@ -99,46 +135,23 @@
                                         </h:inputText>
                                     </div>
                                     <div class="col-md-3 mb-4">
-                                        <h:outputLabel class= "form-label fw-bold" value="Gender:"  for="sex" />
-                                        <h:selectOneMenu
-                                            class="form-select w-100" id="sex" value="#{mohController.rat.client.person.sex}" required="true"
-                                            tabindex="107" requiredMessage="Please select Gender" >
-                                            <f:selectItems value="#{mohController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
-                                        </h:selectOneMenu>
-                                        <h:message class="text-danger small" for="sex"></h:message>
-                                    </div>
-
-                                    <div class="col-md-3 mb-4">
-
-                                        <h:outputLabel class= "form-label fw-bold" value="Age: (Years/Months)*"/>
-                                        <div class="d-inline-flex">
-                                            <div class="mr-2">
-                                            <p:inputText class="form-control w-100" autocomplete="off" id="year"
-                                                         tabindex="108"
-                                                         requiredMessage="Please enter the age"
-                                                         placeholder="Years"
-                                                         value="#{mohController.rat.client.person.ageYears}"
-                                                         required="true" >
-                                                <f:ajax event="keyup" execute="@this month day" render="calDob" />
-                                            </p:inputText>
-                                            </div>
-                                            <div class="mr-2">
-                                            <p:inputText class="form-control w-100" tabindex="108"  autocomplete="off" id="month" placeholder="Months"
-                                                         value="#{mohController.rat.client.person.ageMonths}">
-                                                <f:ajax event="keyup" execute="@this year day" render="calDob" />
-                                            </p:inputText>
-                                            </div>
-                                            <h:message class="text-danger small" for="year"></h:message>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-md-3 mb-4">
                                         <h:outputLabel class= "form-label fw-bold" value="Symptomatic:"  />
                                         <p:selectBooleanButton class="form-select w-100" tabindex="106"
                                                                value="#{mohController.rat.symptomatic}"  offLabel="No" onLabel="Yes"></p:selectBooleanButton>
                                     </div>
-
+                                    <div class="col-md-3 mb-4">
+                                        <h:outputLabel class= "form-label fw-bold" value="Other Ordering Category:"  />
+                                        <h:inputText class="form-control w-100" value="#{mohController.rat.pcrOrderingCategoryOther}"
+                                                     tabindex="105" ></h:inputText>
+                                    </div>
+                                  
+                                    <div class="col-md-3 mb-4">
+                                        <h:outputLabel class= "form-label fw-bold" value="Citizenship:" for="citizenship" />
+                                        <h:selectOneMenu class="form-select w-100" id="citizenship" value="#{mohController.rat.client.person.citizenship}"
+                                                         tabindex="103" >
+                                            <f:selectItems value="#{mohController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}"></f:selectItems>
+                                        </h:selectOneMenu>
+                                    </div>
 
                                 </div>
                                 <div class="form-group row">

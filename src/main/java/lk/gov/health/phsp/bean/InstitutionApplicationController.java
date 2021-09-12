@@ -290,24 +290,32 @@ public class InstitutionApplicationController {
         });
         List<Institution> tins = new ArrayList<>();
         tins.addAll(cins);
+        return tins;
+    }
+    
+    public List<Institution> findChildrenInstitutionsOld(Institution ins) {
+        List<Institution> allIns = getInstitutions();
+        List<Institution> cins = new ArrayList<>();
+        allIns.stream().filter(i -> !(i.getParent() == null)).filter(i -> (i.getParent().equals(ins))).forEachOrdered(i -> {
+            cins.add(i);
+        });
+        List<Institution> tins = new ArrayList<>();
+        tins.addAll(cins);
         if (cins.isEmpty()) {
             return tins;
         } else {
             cins.forEach(i -> {
-                List<Institution> cis = findChildrenInstitutions(i);
-                if (cis != null) {
-                    tins.addAll(cis);
-                }
+                tins.addAll(findChildrenInstitutions(i));
             });
         }
         return tins;
     }
-
-    public Institution findMinistryOfHealth() {
-        Institution moh = null;
-        for (Institution i : getInstitutions()) {
-            if (i.getInstitutionType() == InstitutionType.Ministry_of_Health) {
-                moh = i;
+    
+    public Institution findMinistryOfHealth(){
+        Institution moh=null;
+        for(Institution i: getInstitutions()){
+            if(i.getInstitutionType()==InstitutionType.Ministry_of_Health){
+                moh =i;
                 return moh;
             }
         }
