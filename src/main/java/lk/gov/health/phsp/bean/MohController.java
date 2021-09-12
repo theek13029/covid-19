@@ -1378,7 +1378,7 @@ public class MohController implements Serializable {
         return "/moh/pcr";
     }
 
-    public String toAddNewPcrWithExistingNic() {
+    public String toAddNewPcrWithExistingNic(int path) {
         if (pcr == null) {
             return "";
         }
@@ -1419,7 +1419,14 @@ public class MohController implements Serializable {
         pcr.setSampledAt(new Date());
         pcr.setSampledBy(webUserController.getLoggedUser());
         pcr.setCreatedAt(new Date());
-        return "/moh/pcr";
+
+        if (path == 1) {
+            return "/moh/pcr";
+        } else if (path == 2) {
+            return "/moh/pcr_with_result";
+        } else {
+            return "/moh/pcr";
+        }
     }
 
     public String toAddNewPcrWithExistingClient() {
@@ -1541,7 +1548,10 @@ public class MohController implements Serializable {
         return "/moh/rat_order";
     }
 
-    public String toAddNewRatWithExistingNic() {
+    // The event is triggered when user clicks NIC exists on a RAT ordering page
+    // If NIC exists and called from New Rat Request page the user is redirected to RAT Request page with user details
+    // If user called the function from RAT request with results page the user will be redirected to RAT request with results page with user details
+    public String toAddNewRatWithExistingNic(int path) {
         if (rat == null) {
             return "";
         }
@@ -1589,7 +1599,13 @@ public class MohController implements Serializable {
         rat.setResultConfirmedBy(webUserController.getLoggedUser());
 
         rat.setCreatedAt(new Date());
-        return "/moh/rat";
+        if (path == 1) {
+            return "/moh/rat_order";
+        } else if (path == 2) {
+            return "/moh/rat";
+        } else {
+            return "/moh/rat_order";
+        }
     }
 
     public String toAddNewRatWithExistingClient() {
