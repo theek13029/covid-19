@@ -428,7 +428,6 @@ public class WebUserController implements Serializable {
                 }
             }
         }
-        ;
     }
 
     public String toAddNewUserByInsAdmin() {

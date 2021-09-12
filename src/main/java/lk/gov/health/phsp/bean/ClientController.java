@@ -1748,73 +1748,198 @@ public class ClientController implements Serializable {
         //Patient Properties
         html = html.replace("{name}", e.getClient().getPerson().getName());
         e.getClient().getPerson().calAgeFromDob();
+
         html = html.replace("{age}", e.getClient().getPerson().getAge());
         html = html.replace("{sex}", e.getClient().getPerson().getSex().getName());
         html = html.replace("{address}", e.getClient().getPerson().getAddress());
-        html = html.replace("{phone1}", e.getClient().getPerson().getAddress());
-        html = html.replace("{phone2}", e.getClient().getPerson().getAddress());
+        if (e.getClient().getPerson().getPhone1() != null) {
+            html = html.replace("{phone1}", e.getClient().getPerson().getPhone1());
+        } else {
+            html = html.replace("{phone1}", "");
+        }
+        if (e.getClient().getPerson().getPhone2() != null) {
+            html = html.replace("{phone2}", e.getClient().getPerson().getPhone2());
+        } else {
+            html = html.replace("{phone2}", "");
+        }
         if (e.getLabNumber() != null) {
             html = html.replace("{lab_no}", e.getLabNumber());
+        } else {
+            html = html.replace("{lab_no}", "");
         }
         if (e.getEncounterNumber() != null) {
             html = html.replace("{ref_no}", e.getEncounterNumber());
+        } else {
+            html = html.replace("{ref_no}", "");
         }
         if (e.getClient().getPerson().getGnArea() != null) {
             html = html.replace("{gn}", e.getClient().getPerson().getGnArea().getName());
+        } else {
+            html = html.replace("{gn}", "");
         }
         if (e.getClient().getPerson().getPhiArea() != null) {
             html = html.replace("{phi}", e.getClient().getPerson().getPhiArea().getName());
+        } else {
+            html = html.replace("{phi}", "");
         }
 
         //Institute Properties
-        html = html.replace("{institute}", e.getInstitution().getName());
+        if (e.getInstitution() != null) {
+            if (e.getInstitution().getName() != null) {
+                html = html.replace("{institute}", e.getInstitution().getName());
+                html = html.replace("{institute_name}", e.getInstitution().getName());
+            } else {
+                html = html.replace("{institute}", "");
+                html = html.replace("{institute_name}", "");
+            }
+            if (e.getInstitution().getAddress() != null) {
+                html = html.replace("{institute_address}", e.getInstitution().getAddress());
+            } else {
+                html = html.replace("{institute_address}", "");
+            }
+            if (e.getInstitution().getPhone() != null) {
+                html = html.replace("{institute_phone}", e.getInstitution().getPhone());
+            } else {
+                html = html.replace("{institute_phone}", "");
+            }
+            if (e.getInstitution().getFax() != null) {
+                html = html.replace("{institute_fax}", e.getInstitution().getFax());
+            } else {
+                html = html.replace("{institute_fax}", "");
+            }
+            if (e.getInstitution().getEmail() != null) {
+                html = html.replace("{institute_email}", e.getInstitution().getEmail());
+            } else {
+                html = html.replace("{institute_email}", "");
+            }
+        } else {
+            html = html.replace("{institute}", "");
+            html = html.replace("{institute_name}", "");
+            html = html.replace("{institute_address}", "");
+            html = html.replace("{institute_phone}", "");
+            html = html.replace("{institute_fax}", "");
+            html = html.replace("{institute_email}", "");
 
-        html = html.replace("{ref_institute_name}", e.getInstitution().getName());
-        html = html.replace("{ref_institute_address}", e.getInstitution().getAddress());
-        html = html.replace("{ref_institute_phone}", e.getInstitution().getPhone());
-        html = html.replace("{ref_institute_fax}", e.getInstitution().getFax());
-        html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
+        }
 
-        html = html.replace("{ref_institute_email}", e.getInstitution().getEmail());
+        //Institute Properties
+        if (e.getReferalInstitution() != null) {
+            if (e.getReferalInstitution().getName() != null) {
+                html = html.replace("{lab}", e.getReferalInstitution().getName());
+                html = html.replace("{lab_name}", e.getReferalInstitution().getName());
+            } else {
+                html = html.replace("{lab}", "");
+                html = html.replace("{lab_name}", "");
+            }
+            if (e.getReferalInstitution().getAddress() != null) {
+                html = html.replace("{lab_address}", e.getReferalInstitution().getAddress());
+            } else {
+                html = html.replace("{lab_address}", "");
+            }
+            if (e.getReferalInstitution().getPhone() != null) {
+                html = html.replace("{lab_phone}", e.getReferalInstitution().getPhone());
+            } else {
+                html = html.replace("{lab_phone}", "");
+            }
+            if (e.getReferalInstitution().getFax() != null) {
+                html = html.replace("{lab_fax}", e.getReferalInstitution().getFax());
+            } else {
+                html = html.replace("{lab_fax}", "");
+            }
+            if (e.getReferalInstitution().getEmail() != null) {
+                html = html.replace("{lab_email}", e.getReferalInstitution().getEmail());
+            } else {
+                html = html.replace("{lab_email}", "");
+            }
+        } else {
+            html = html.replace("{lab}", "");
+            html = html.replace("{lab_name}", "");
+            html = html.replace("{lab_address}", "");
+            html = html.replace("{lab_phone}", "");
+            html = html.replace("{lab_fax}", "");
+            html = html.replace("{lab_email}", "");
+        }
+
+        if (e.getCreatedAt() != null) {
+            html = html.replace("{requested_date}", CommonController.dateTimeToString(e.getCreatedAt()));
+        } else {
+            html = html.replace("{requested_date}", "");
+        }
+
+        if (e.getSampledAt() != null) {
+            html = html.replace("{sampled_date}", CommonController.dateTimeToString(e.getSampledAt()));
+        } else {
+            html = html.replace("{sampled_date}", "");
+        }
+        
+        if (e.getSentToLabAt() != null) {
+            html = html.replace("{dispatched_date}", CommonController.dateTimeToString(e.getSentToLabAt()));
+        } else {
+            html = html.replace("{dispatched_date}", "");
+        }
 
         if (e.getReceivedAtLabAt() != null) {
             html = html.replace("{received_date}", CommonController.dateTimeToString(e.getReceivedAtLabAt()));
+        } else {
+            html = html.replace("{received_date}", "");
         }
 
         if (e.getResultEnteredAt() != null) {
             html = html.replace("{entered_date}", CommonController.dateTimeToString(e.getResultEnteredAt()));
+        }else {
+            html = html.replace("{entered_date}", "");
+        }
+        
+        if (e.getResultReviewedAt() != null) {
+            html = html.replace("{reviewed_date}", CommonController.dateTimeToString(e.getResultReviewedAt()));
+        }else {
+            html = html.replace("{reviewed_date}", "");
         }
 
         if (e.getResultConfirmedAt() != null) {
             html = html.replace("{confirmed_date}", CommonController.dateTimeToString(e.getResultConfirmedAt()));
+        }else {
+            html = html.replace("{confirmed_date}", "");
         }
+        
+        
         if (e.getSampledAt() != null) {
             html = html.replace("{sampled_date}", CommonController.dateTimeToString(e.getResultConfirmedAt()));
+        }else {
+            html = html.replace("{sampled_date}", "");
         }
+        
         if (e.getResultEnteredBy() != null) {
             html = html.replace("{entered_by}", e.getResultEnteredBy().getPerson().getName());
+        }else {
+            html = html.replace("{entered_by}", "");
+        }
+        
+         if (e.getResultReviewedBy() != null) {
+            html = html.replace("{reviewed_by}", e.getResultReviewedBy().getPerson().getName());
+        }else {
+            html = html.replace("{reviewed_by}", "");
         }
 
         if (e.getResultConfirmedBy() != null) {
             html = html.replace("{approved_by}", e.getResultConfirmedBy().getPerson().getName());
+        }else {
+            html = html.replace("{approved_by}", "");
         }
 
-//        Item test = itemController.findItemByCode("test_type");
-//        ClientEncounterComponentItem testValueCi = e.getClientEncounterComponentItem(test);
-//        if (testValueCi != null) {
-//            Item testVal = testValueCi.getItemValue();
-//            if (testVal != null) {
-//                html = html.replace("{test}", testVal.getName());
-//            }
-//        }
+        if (e.getPcrTestType().getName() != null) {
+            html = html.replace("{test}", e.getPcrTestType().getName());
+        }else{
+            html = html.replace("{test}", "");
+        }
+        
+
         if (e.getPcrResult() != null) {
             html = html.replace("{pcr_result}", e.getPcrResult().getName());
+        }else{
+            html = html.replace("{pcr_result}", "");
         }
-        if (e.getPcrResultStr() != null) {
-            html = html.replace("{pcr_result_string}", e.getPcrResultStr());
-        } else {
-            html = html.replace("{pcr_result_string}", "");
-        }
+        
         if (e.getCtValue() != null) {
             html = html.replace("{pcr_ct1}", e.getCtValue().toString());
         } else {
@@ -1830,12 +1955,12 @@ public class ClientController implements Serializable {
         } else {
             html = html.replace("{pcr_comments}", "");
         }
-        if (e.getUnitWard()!= null) {
+        if (e.getUnitWard() != null) {
             html = html.replace("{unit_or_ward}", e.getUnitWard());
         } else {
             html = html.replace("{unit_or_ward}", "");
         }
-        if (e.getBht()!= null) {
+        if (e.getBht() != null) {
             html = html.replace("{bht}", e.getBht());
         } else {
             html = html.replace("{bht}", "");
@@ -1856,11 +1981,11 @@ public class ClientController implements Serializable {
                 html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue("pcrInconclusiveComment", webUserController.getLoggedInstitution()));
             } else {
                 html = html.replace("{pcr_result_string}", getPreferenceController().findPreferanceValue(""));
-                html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue( ""));
+                html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue(""));
             }
         } else {
             html = html.replace("{pcr_result_string}", getPreferenceController().findPreferanceValue(""));
-            html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue( ""));
+            html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue(""));
         }
 
         return html;
