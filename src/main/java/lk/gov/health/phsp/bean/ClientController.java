@@ -1973,10 +1973,10 @@ public class ClientController implements Serializable {
             } else if (e.getPcrResult().equals(itemApplicationController.getPcrNegative())) {
                 html = html.replace("{pcr_result_string}", getPreferenceController().findPreferanceValue("pcrNegativeTerm", webUserController.getLoggedInstitution()));
                 html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue("pcrNegativeComment", webUserController.getLoggedInstitution()));
-            } else if (e.getPcrResult().equals(itemApplicationController.getPcrInconclusive())) {
+            } else if (e.getPcrResult().equals(itemApplicationController.getPcrInvalid())) {
                 html = html.replace("{pcr_result_string}", getPreferenceController().findPreferanceValue("pcrInvalidTerm", webUserController.getLoggedInstitution()));
                 html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue("pcrInvalidComment", webUserController.getLoggedInstitution()));
-            } else if (e.getPcrResult().equals(itemApplicationController.getPcrInvalid())) {
+            } else if (e.getPcrResult().equals(itemApplicationController.getPcrInconclusive())) {
                 html = html.replace("{pcr_result_string}", getPreferenceController().findPreferanceValue("pcrInconclusiveTerm", webUserController.getLoggedInstitution()));
                 html = html.replace("{pcr_comment_string}", getPreferenceController().findPreferanceValue("pcrInconclusiveComment", webUserController.getLoggedInstitution()));
             } else {

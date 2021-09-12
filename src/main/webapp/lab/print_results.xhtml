@@ -85,13 +85,27 @@
                                          currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                          rowsPerPageTemplate="5,10,{ShowAll|'All'}"
 
-                                          rowStyleClass="#{(c.pcrResult.name) eq 'Positive'?'bg-danger':''}"
-                                         
+                                         rowStyleClass="#{(c.pcrResult.name) eq 'Positive'?'bg-danger':''}"
+
                                          selection="#{clientController.selectedToPrint}">
                                 <p:column selectionMode="multiple" width="50" >
                                 </p:column>
                                 <p:column width="50" >
                                     <h:outputLabel value="#{n+1}" ></h:outputLabel>
+                                </p:column>
+                                <p:column headerText="Request From" >
+                                     <h:outputLabel value="#{c.institution.name}" >
+                                    </h:outputLabel>
+                                </p:column>
+                                <p:column headerText="Received at" >
+                                    <h:outputLabel value="#{c.receivedAtLabAt}" >
+                                        <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>
+                                    </h:outputLabel>
+                                </p:column>
+                                <p:column headerText="Confirmed at" >
+                                    <h:outputLabel value="#{c.resultConfirmedAt}" >
+                                        <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>
+                                    </h:outputLabel>
                                 </p:column>
                                 <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                     <h:outputLabel value="#{c.encounterNumber}" ></h:outputLabel>

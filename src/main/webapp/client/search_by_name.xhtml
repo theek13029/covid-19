@@ -33,7 +33,9 @@
                                                        itemValue="#{d}" ></f:selectItems>
                                     </p:selectOneMenu>
                                     <div></div>
-                                    <h:commandButton class="btn btn-success w-100 my-2" value="Search" action="#{clientController.searchByName()}" >
+                                    <h:commandButton class="btn btn-success w-100 my-2" value="Search" 
+                                                     disabled="true"
+                                                     action="#{clientController.searchByName()}" >
                                     </h:commandButton>
                                 </p:panelGrid>
                                 <p:messages ></p:messages>

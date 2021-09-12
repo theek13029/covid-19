@@ -1136,10 +1136,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Client_Management);
                 wups.add(Privilege.Encounter_Management);
                 wups.add(Privilege.Lab_Management);
-//                wups.add(Privilege.Pharmacy_Management);
                 wups.add(Privilege.User);
-                //Client Management
-//                wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
 //                Motinoring & Evaluation
@@ -1147,16 +1144,14 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
                 wups.add(Privilege.View_individual_data);
                 wups.add(Privilege.View_aggragate_date);
+                
                 break;
             case Nurse:
                 //Menu
                 wups.add(Privilege.Client_Management);
                 wups.add(Privilege.Encounter_Management);
-                wups.add(Privilege.Appointment_Management);
                 wups.add(Privilege.Lab_Management);
-//                wups.add(Privilege.Pharmacy_Management);
                 wups.add(Privilege.User);
-                //Client Management
                 wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
@@ -1336,6 +1331,9 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Print_Results);
                 break;
             case Hospital_Admin:
+                wups.add(Privilege.Add_Client);
+                wups.add(Privilege.Add_Tests);
+                wups.add(Privilege.Mark_Tests);
                 wups.add(Privilege.Manage_Users);
                 wups.add(Privilege.Lab_Reports);
                 wups.add(Privilege.Confirm_Results);
