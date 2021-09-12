@@ -9,14 +9,6 @@
     <h:body>
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
-                <h:outputStylesheet library="css" name="tem1.css"/>
-
-
-                <!-- comment <p:panelGrid columns="1" style="width: 100%;" styleClass="alignCenter" rendered="true" >
-                    <f:facet name="header" >
-                        <p:outputLabel value="List of Results"></p:outputLabel>
-                    </f:facet>-->
-
                 <h:form >
                     <div class="row" >
                         <div class="col-12 text-center mt-4 mb-2" >
@@ -40,21 +32,18 @@
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
-
                             <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
                             <h:selectOneMenu value="#{mohController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
-
                             <h:outputLabel class="h6 fw-bold" value="Result" ></h:outputLabel>
                             <h:selectOneMenu value="#{mohController.result}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{mohController.resultTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
-
                             <p:outputLabel class="h6 fw-bold" value="Lab"></p:outputLabel>
                             <p:autoComplete style="width: 100%;"
                                             inputStyleClass="autocomplete"
@@ -63,28 +52,23 @@
                                             completeMethod="#{mohController.completeLab}"
                                             var="l" itemLabel="#{l.name}" itemValue="#{l}">
                             </p:autoComplete>
-
                             <p:commandButton ajax="false" value="Generate Excel" class="btn btn-success w-100">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="results" ></p:dataExporter>
+                                <p:dataExporter target="tbl" type="xlsx" fileName="moh_area_results" ></p:dataExporter>
                             </p:commandButton>
-                            <p:commandButton ajax="false" value="Process"
+                            <p:commandButton class="btn btn-warning" ajax="false" value="Process"
                                              action="#{mohController.toViewResults()}" ></p:commandButton>
-
-
                         </h:panelGrid>
-
-
                     </div>
-
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.tests}"
-                                     var="c" rowKey="#{c.id}"
-                                     rows="10"
-                                     paginator="true"
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                     rowsPerPageTemplate="10,50,100,{ShowAll|'All'}"
-                                     rowStyleClass="#{c.resultCssClass}">
+                        <p:dataTable resizableColumns="true"
+                                    multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.tests}"
+                                    var="c" rowKey="#{c.id}"
+                                    rows="10"
+                                    paginator="true"
+                                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                    rowsPerPageTemplate="10,50,100,{ShowAll|'All'}"
+                                    rowStyleClass="#{c.resultCssClass}">
                             <p:column class="w-auto" headerText="Age"  sortBy="#{c.client.person.age}" filterBy="#{c.client.person.age}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.client.person.age}" class="form-label"></h:outputLabel>
                             </p:column>
@@ -113,39 +97,34 @@
                                 </h:outputLabel>
                             </p:column>
                             <p:column id="ct1" headerText="CT1" sortBy="#{c.ctValue}"  >
-                                <p:outputLabel id="txtCt" value="#{c.ctValue}" style="width:99%;" rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
+                                <p:outputLabel id="txtCt" value="#{c.ctValue}" rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
                                 </p:outputLabel>
                             </p:column>
                             <p:column id="ct2" headerText="CT2" sortBy="#{c.ctValue2}" >
-                                <p:outputLabel id="txtCt2" value="#{c.ctValue2}" style="width:99%;"   rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
+                                <p:outputLabel id="txtCt2" value="#{c.ctValue2}"  rendered="#{c.pcrTestType.code eq 'covid19_pcr_test'}" >
                                     <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResultsAtMohForConfirmedDate(c)}" >
                                     </p:ajax>
                                 </p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false">
-                                <p:commandButton ajax="false"  rendered="#{c.referenceCase eq null}"
+                                <h:commandButton ajax="false"  rendered="#{c.referenceCase eq null}"
                                                  value="Investigate"
-                                                 action="#{clientController.toNewCaseInvestigationFromTest()}" style="width: 100%;" >
+                                                 action="#{clientController.toNewCaseInvestigationFromTest()}"
+                                                 class="btn btn-warning small btn-sm w-100">
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                     </f:setPropertyActionListener>
-                                </p:commandButton>
-                                <p:commandButton rendered="#{c.referenceCase ne null}"
-                                                 ajax="false" value="View Investigation Details"
+                                </h:commandButton>
+                                <h:commandButton rendered="#{c.referenceCase ne null}"
+                                                 ajax="false" value="View Details"
                                                  action="#{clientController.toViewOrEditCaseEnrollmentFromEncounter()}"
-                                                 style="width: 100%;" >
+                                                 class="btn btn-success btn-sm small w-100" >
                                     <f:setPropertyActionListener value="#{c.referenceCase}" target="#{clientController.selectedEncounter}" >
                                     </f:setPropertyActionListener>
-                                </p:commandButton>
+                                </h:commandButton>
                             </p:column>
-
                         </p:dataTable>
                     </h:panelGrid>
-
-
                 </h:form>
-
-
-
                 <!-- comment </p:panelGrid>-->
             </ui:define>
         </ui:composition>
