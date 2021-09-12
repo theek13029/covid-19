@@ -231,7 +231,7 @@ public class PreferenceController implements Serializable {
         savePreference("pcrPositiveTerm", webUserController.getLoggedInstitution(), pcrPositiveTerm);
         savePreference("pcrNegativeTerm", webUserController.getLoggedInstitution(), pcrNegativeTerm);
         savePreference("pcrInvalidTerm", webUserController.getLoggedInstitution(), pcrInvalidTerm);
-        savePreference("pcrInvalidTerm", webUserController.getLoggedInstitution(), pcrInconclusiveTerm);
+        savePreference("pcrInconclusiveTerm", webUserController.getLoggedInstitution(), pcrInconclusiveTerm);
 
         savePreference("pcrPositiveComment", webUserController.getLoggedInstitution(), pcrPositiveComment);
         savePreference("pcrNegativeComment", webUserController.getLoggedInstitution(), pcrNegativeComment);
