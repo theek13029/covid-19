@@ -37,7 +37,7 @@
                                 <div class="col-md-4">
                                     <p:autoComplete value="#{webUserController.institution}" class="form-control"
                                                     completeMethod="#{institutionController.completeInstitutions}"
-                                                    var="ins"
+                                                    var="ins" minQueryLength="3" maxResults="10"
                                                     itemLabel="#{ins.name}"
                                                     itemValue="#{ins}" ></p:autoComplete>
                                 </div>
