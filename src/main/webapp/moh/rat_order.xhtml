@@ -70,10 +70,10 @@
               </div>
               <div class="col-md-3">
                 <label for="gn" class="form-label fw-bold">GN Division</label>
-                <h:commandLink id="lnkLastGn" action="#{mohController.retrieveLastGnRat()}" process="lnkLastGn"
+                <p:commandLink id="lnkLastGn" action="#{mohController.retrieveLastGnRat()}" process="lnkLastGn"
                   update="gn">
                   <i class="bi bi-arrow-clockwise"></i>
-                </h:commandLink>
+                </p:commandLink>
                 <p:autoComplete id="gn" value="#{mohController.rat.client.person.gnArea}"
                   completeMethod="#{mohController.completeGnAreasForRat}" var="gn" itemLabel="#{gn.name}"
                   itemValue="#{gn}" maxResults="20" forceSelection="true" placeholder="Not Known" minQueryLength="2">
@@ -99,10 +99,10 @@
               <div class="col-md-3">
                 <label for="age" class="form-label fw-bold">Age (Y|M|D)</label>
                 <div class="d-flex">
-                  <h:inputText class="form-control w-50" autocomplete="off" id="year" requiredMessage="Age is required"
+                  <p:inputText class="form-control w-50" autocomplete="off" id="year" requiredMessage="Age is required"
                     placeholder="Years" value="#{mohController.rat.client.person.ageYears}" required="true">
                     <f:ajax event="keyup" execute="@this month day" render="calDob"></f:ajax>
-                  </h:inputText>
+                  </p:inputText>
                   <h:inputText class="form-control w-25" autocomplete="off" id="month"
                     value="#{mohController.rat.client.person.ageMonths}">
                     <f:ajax event="keyup" execute="@this year day" render="calDob"></f:ajax>

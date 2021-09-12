@@ -77,6 +77,12 @@
                             </f:facet>
                             <h:outputText value="#{item.rdhsArea.name}"/>
                         </p:column>
+                         <p:column  >
+                            <f:facet name="header">
+                                <h:outputText value="Users"/>
+                            </f:facet>
+                             <h:outputText value="#{webUserController.displayUsers(item)}"/>
+                        </p:column>
                         <p:column  rendered="#{userColumnController.displayColumn('POI')}">
                             <f:facet name="header">
                                 <h:outputText value="POI"/>

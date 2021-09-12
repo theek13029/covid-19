@@ -27,8 +27,8 @@
                 </h:selectOneMenu>
               </div>
               <div class="col-md-3">
-                <label for="sampledAt" class="form-label d-block fw-bold">Result Issed Date</label>
-                <p:datePicker id="sampledAt" value="#{mohController.pcr.resultConfirmedAt}" inputClass="w-100 d-block"
+                <label for="sampledAt" class="form-label d-block fw-bold">Result Issued Date</label>
+                <p:datePicker id="sampledAt" value="#{mohController.pcr.resultConfirmedAt}" class="w-100 d-block"
                   pattern="dd MMMM yyyy hh:mm"></p:datePicker>
               </div>
               <div class="col-md-3">
@@ -53,7 +53,7 @@
               </div>
             </div>
             <div class="row mb-4">
-              <h5 class="text-muted fw-bold">Reginoal Details</h5>
+              <h5 class="text-muted fw-bold">Regional Details</h5>
               <div class="col-md-3">
                 <label for="district" class="form-label fw-bold">District</label>
                 <p:autoComplete id="district" required="tue" requiredMessage="Please select a district"
@@ -76,9 +76,9 @@
               </div>
               <div class="col-md-3">
                 <label for="gnarea" class="form-label fw-bold">GN Division</label>
-                <h:commandLink id="lnkLastGn" action="#{mohController.retrieveLastGnPcr()}" update="gnarea">
+                <p:commandLink id="lnkLastGn" action="#{mohController.retrieveLastGnPcr()}" update="gnarea">
                   <i class="bi bi-arrow-clockwise"></i>
-                </h:commandLink>
+                </p:commandLink>
                 <p:autoComplete id="gnarea" completeMethod="#{mohController.completeGnAreasForPcr}" var="gnAreas"
                   itemLabel="#{gnAreas.name}" itemValue="#{gnAreas}" maxResults="20" forceSelection="true"
                   minQueryLength="2"></p:autoComplete>
@@ -184,10 +184,10 @@
               <div class="col-md-6">
                 <label for="address" class="form-label fw-bold">Residential Address<small
                     class="text-muted px-2">Required</small></label>
-                <h:commandLink id="lnkLastAddress" action="#{mohController.retrieveLastAddressForPcr()}"
+                <p:commandLink id="lnkLastAddress" action="#{mohController.retrieveLastAddressForPcr()}"
                   process="lnkLastAddress" update="address">
                   <i class="bi bi-arrow-clockwise"></i>
-                </h:commandLink>
+                </p:commandLink>
                 <h:inputText id="address" required="true" class="form-control" requiredMessage="Address is required"
                   value="#{mohController.pcr.client.person.address}"></h:inputText>
                 <h:message class="text-danger small" for="address"></h:message>
@@ -195,12 +195,12 @@
               <div class="col-md-3">
                 <label for="phone" class="form-label fw-bold">Contact Number<small
                     class="text-muted px-2">Required</small></label>
-                <h:commandLink id="lnkLastPhone" action="#{mohController.retrieveLastPhoneForPcr()}"
+                <p:commandLink id="lnkLastPhone" action="#{mohController.retrieveLastPhoneForPcr()}"
                   process="lnkLastPhone" update="phone">
                   <i class="bi bi-arrow-clockwise"></i>
-                </h:commandLink>
+                </p:commandLink>
                 <h:inputText id="phone" class="form-control" requiredMessage="Contact number is required" required="true"
-                  value="#{mohController.pcr.client.person.phone1}" aria-autocomplete="off"></h:inputText>
+                  value="#{mohController.pcr.client.person.phone1}" autocomplete="off"></h:inputText>
                 <h:message class="text-danger small" for="phone"></h:message>
               </div>
             </div>

@@ -390,6 +390,43 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
+    
+    public String toListInstitutionsWithUsers() {
+        boolean privileged = false;
+        boolean national=false;
+        for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
+            if (up.getPrivilege() == Privilege.Institution_Administration) {
+                privileged = true;
+            }
+            if (up.getPrivilege() == Privilege.System_Administration) {
+                privileged = true;
+                national = true;
+            }
+        }
+        if (!privileged) {
+            JsfUtil.addErrorMessage("You are NOT autherized");
+            return "";
+        }
+        institutionController.prepareToListInstitution();
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/admin/institution_list_with_users";
+            case National:
+                return "/national/admin/institution_list_with_users";
+            case Hospital:
+                return "/hospital/admin/institution_list_with_users";
+            case Lab:
+                return "/lab/admin/institution_list_with_users";
+            case National_Lab:
+                return "/national/admin/institution_list_with_users";
+            case Moh:
+                return "/moh/admin/institution_list_with_users";
+            case Provincial:
+                return "/provincial/admin/institution_list_with_users";
+            default:
+                return "";
+        }
+    }
 
     
     public String toPrivileges() {

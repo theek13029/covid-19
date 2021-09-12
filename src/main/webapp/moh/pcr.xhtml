@@ -74,10 +74,10 @@
               </div>
               <div class="col md-3">
                 <label for="gnArea" class="form-label fw-bold">GN Division</label>
-                <h:commandLink id="lnkLastGn" action="#{mohController.retrieveLastGnPcr()}" process="lnkLastGn"
+                <p:commandLink id="lnkLastGn" action="#{mohController.retrieveLastGnPcr()}" process="lnkLastGn"
                   update="gn">
                   <i class="bi bi-arrow-clockwise"></i>
-                </h:commandLink>
+                </p:commandLink>
                 <p:autoComplete tabindex="6" id="gnArea" value="#{mohController.pcr.client.person.gnArea}"
                   completeMethod="#{mohController.completeGnAreasForPcr}" var="gn" itemLabel="#{gn.name}"
                   itemValue="#{gn}" maxResults="20" forceSelection="true" minQueryLength="2">
@@ -117,7 +117,7 @@
                     value="#{mohController.pcr.client.person.ageMonths}">
                     <f:ajax event="keyup" execute="year month day" render="calBob"></f:ajax>
                   </h:inputText>
-                  <h:inputText class="form-control w-25" id="day" autocomplete="off" placeholder="Days"
+                  <h:inputText class="form-control w-25" id="day" autocomplete="off" 
                     value="#{mohController.pcr.client.person.ageDays}">
                     <f:ajax event="keyup" execute="year month day" render="calDob"></f:ajax>
                   </h:inputText>
@@ -188,10 +188,10 @@
               <div class="col-md-6">
                 <label for="address" class="form-label fw-bold">Residential Address<small
                     class="text-muted px-2">Required</small></label>
-                <h:commandLink id="lnkLastAddress" action="#{mohController.retrieveLastAddressForPcr()}"
+                <p:commandLink id="lnkLastAddress" action="#{mohController.retrieveLastAddressForPcr()}"
                   process="lnkLastAddress" update="address">
                   <i class="bi bi-arrow-clockwise"></i>
-                </h:commandLink>
+                </p:commandLink>
                 <h:inputText id="address" required="true" class="form-control" requiredMessage="Address is required"
                   value="#{mohController.pcr.client.person.address}"></h:inputText>
                 <h:message class="text-danger small" for="address"></h:message>
@@ -199,12 +199,12 @@
               <div class="col-md-3">
                 <label for="phone" class="form-label fw-bold">Contact Number<small
                     class="text-muted px-2">Required</small></label>
-                <h:commandLink id="lnkLastPhone" action="#{mohController.retrieveLastPhoneForPcr()}"
+                <p:commandLink id="lnkLastPhone" action="#{mohController.retrieveLastPhoneForPcr()}"
                   process="lnkLastPhone" update="phone">
                   <i class="bi bi-arrow-clockwise"></i>
-                </h:commandLink>
+                </p:commandLink>
                 <h:inputText id="phone" class="form-control" requiredMessage="Contact number is required" required="true"
-                  value="#{mohController.pcr.client.person.phone1}" aria-autocomplete="off"></h:inputText>
+                  value="#{mohController.pcr.client.person.phone1}" autocomplete="off"></h:inputText>
                 <h:message class="text-danger small" for="phone"></h:message>
               </div>
             </div>
