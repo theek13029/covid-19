@@ -39,17 +39,16 @@
                   <f:selectItem itemLabel="Select"></f:selectItem>
                   <f:selectItems value="#{mohController.covidTestOrderingCategories}" var="catType"
                     itemLabel="#{catType.name}" itemValue="#{catType}"></f:selectItems>
-                  <p:ajax process="orderingCat" event="blur"></p:ajax>
+                  <f:ajax execute="orderingCat" event="blur"></f:ajax>
                 </h:selectOneMenu>
                 <h:message for="orderingCat" class="text-danger small"></h:message>
               </div>
               <div class="col-md-3">
-                <label for="lab" class="form-label fw-bold">Reffering Lab <small
-                    class="text-muted px-2">Required</small></label>
+                <label for="lab" class="form-label fw-bold">Reffering Lab</label>
                 <p:autoComplete id="lab" inputStyleClass="autocomplete" value="#{mohController.pcr.referalInstitution}"
                   forceSelection="true" completeMethod="#{mohController.completeLab}" var="labs"
                   itemLabel="#{labs.name}" itemValue="#{labs}">
-                  <p:ajax process="lab" event="blur"></p:ajax>
+                  <f:ajax execute="lab" event="blur"></f:ajax>
                 </p:autoComplete>
               </div>
             </div>
@@ -133,7 +132,7 @@
                 <h:message class="text-danger small" for="gender"></h:message>
               </div>
               <div class="col-md-3">
-                <label for="nic" class="form-label fw-bold">NIC</label>
+                <label for="nic" class="form-label fw-bold">NIC | Passport Number</label>
                 <h:inputText id="nic" autocomplete="off" value="#{mohController.pcr.client.person.nic}" title="NIC"
                   validatorMessage="Please check the NIC number" class="form-control">
                   <f:ajax event="blur" execute="@this" render="nicExists year month sex"
@@ -142,7 +141,7 @@
                 <h:message class="text-danger small" for="nic"></h:message>
                 <h:panelGroup id="nicExists">
                   <h:commandLink rendered="#{mohController.nicExistsForPcr}" immediate="true"
-                    action="#{mohController.toAddNewPcrWithExistingNic()}"
+                    action='#{mohController.toAddNewPcrWithExistingNic(2)}'
                     value="NIC exists. Click here to load the patient" class="btn btn-secondary btn-sm"></h:commandLink>
                 </h:panelGroup>
               </div>
@@ -200,7 +199,7 @@
                   process="lnkLastPhone" update="phone">
                   <i class="bi bi-arrow-clockwise"></i>
                 </h:commandLink>
-                <h:inputText id="phone" class="form-control" reqiredMessage="Contact number is required" required="true"
+                <h:inputText id="phone" class="form-control" requiredMessage="Contact number is required" required="true"
                   value="#{mohController.pcr.client.person.phone1}" aria-autocomplete="off"></h:inputText>
                 <h:message class="text-danger small" for="phone"></h:message>
               </div>

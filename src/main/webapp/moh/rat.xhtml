@@ -28,7 +28,7 @@
                 </h:selectOneMenu>
               </div>
               <div class="col-md-3">
-                <label for="calendar" class="form-label fw-bold">Result Issued Date</label>
+                <label for="calendar" class="form-label d-block fw-bold">Result Issued Date</label>
                 <p:calendar id="calendar" value="#{mohController.rat.resultConfirmedAt}" pattern="dd MMMM yyyy hh:mm">
                 </p:calendar>
               </div>
@@ -72,7 +72,7 @@
                 <label for="mohArea" class="form-label fw-bold">MOH Area</label>
                 <p:autoComplete id="mohArea" value="#{mohController.rat.client.person.mohArea}"
                   completeMethod="#{mohController.completeMohAreas}" var="m" itemLabel="#{m.name}" itemValue="#{m}"
-                  inputStyle="width:100%;" maxResults="15" forceSelection="true" minQueryLength="3">
+                  maxResults="15" forceSelection="true" minQueryLength="3">
                   <f:ajax event="itemSelect" execute="moh"></f:ajax>
                   <f:ajax event="blur" execute="moh"></f:ajax>
                 </p:autoComplete>
@@ -145,8 +145,8 @@
                 <h:message class="text-danger small" for="nic"></h:message>
                 <h:panelGroup id="nicExists">
                   <h:commandLink rendered="#{mohController.nicExistsForRat}" immediate="true"
-                    action="#{mohController.toAddNewRatWithExistingNic()}"
-                    value="NIC Exists. Click here to Load Patient">
+                    action="#{mohController.toAddNewRatWithExistingNic(2)}"
+                    value="NIC Exists. Click here to Load Patient" class="btn btn-sm btn-secondary">
                   </h:commandLink>
                 </h:panelGroup>
               </div>

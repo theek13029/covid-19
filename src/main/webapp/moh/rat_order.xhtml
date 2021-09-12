@@ -21,7 +21,7 @@
                 </h:inputText>
               </div>
               <div class="col-md-3">
-                <label for="date" class="form-label fw-bold">Sampled Date</label>
+                <label for="date" class="form-label d-block fw-bold">Sampled Date</label>
                 <p:calendar id="date" value="#{mohController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm"></p:calendar>
               </div>
               <div class="col-md-3">
@@ -125,11 +125,17 @@
                 <h:message class="text-danger small" for="gender"></h:message>
               </div>
               <div class="col-md-3">
-                <label for="nic" class="form-label fw-bold">NIC | Passport</label>
+                <label for="nic" class="form-label fw-bold">NIC | Passport Number</label>
                 <h:inputText id="nic" class="form-control" tabindex="3" autocomplete="off"
                   value="#{mohController.rat.client.person.nic}" title="NIC" validatorMessage="Please check the number">
                   <f:ajax event="blur" render="year month sex" execute="@this"></f:ajax>
                 </h:inputText>
+                <h:message class="text-danger small" for="nic"></h:message>
+                <h:panelGroup id="nicExists">
+                  <h:commandLink rendered="#{mohController.nicExistsForPcr}" immediate="true"
+                    action="#{mohController.toAddNewPcrWithExistingNic(1)}"
+                    value="NIC exists. Click here to load the patient" class="btn btn-secondary btn-sm"></h:commandLink>
+                </h:panelGroup>
               </div>
             </div>
             <div class="row mb-4">
