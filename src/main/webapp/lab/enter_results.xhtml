@@ -27,37 +27,45 @@
                         </div>
                     </div>
                     <div class="container bg-none mb-4 w-100 d-flex justify-content-around align-items-center" >
-                        <h:panelGrid columns="2" rendered="true" styleClass="border border-light">
-                            <h:outputLabel class="fs-6 fw-bold" value="From Date" ></h:outputLabel>
-                            <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <h:outputLabel class="fs-6 fw-bold" value="To Date" ></h:outputLabel>
-                            <p:calendar class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-6 d-flex justify-content-center">
+                                <h:panelGrid columns="2" rendered="true" styleClass="border border-light bg-white">
+                                    <h:outputLabel class="fs-6 fw-bold" value="From Date" ></h:outputLabel>
+                                    <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <h:outputLabel class="fs-6 fw-bold" value="From Institution" ></h:outputLabel>
-                            <p:autoComplete value="#{clientController.institution}"
-                                            completeMethod="#{institutionController.completeInstitutions}"
-                                            var="m" itemLabel="#{m.name}" itemValue="#{m}" >
-                            </p:autoComplete>
-                            <h:outputLabel class="fs-6 fw-bold" value="Plate No." ></h:outputLabel>
-                            <h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText>
-                        </h:panelGrid>
+                                    <h:outputLabel class="fs-6 fw-bold" value="To Date" ></h:outputLabel>
+                                    <p:calendar class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                        <h:panelGrid columns="1" styleClass="border border-light">
-                            <h:commandButton class="btn btn-warning w-100 my-2" value="Process" 
-                                             action="#{clientController.toLabEnterResults()}"></h:commandButton>
-                            <h:commandButton class="btn btn-success w-100 my-2" value="Generate Excel" style="width: 98%;">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
-                            </h:commandButton>
-                            <h:commandButton class="btn btn-primary w-100 my-2" action="#{clientController.toMarkAllNegative()}" value="Mark All Negative" onclick="if (!confirm('Are you sure you want mark all Negative?'))
-                                        return false">
-                            </h:commandButton>
-                        </h:panelGrid>
+                                    <h:outputLabel class="fs-6 fw-bold" value="From Institution" ></h:outputLabel>
+                                    <p:autoComplete value="#{clientController.institution}"
+                                                    completeMethod="#{institutionController.completeInstitutions}"
+                                                    var="m" itemLabel="#{m.name}" itemValue="#{m}" >
+                                    </p:autoComplete>
+                                    <h:outputLabel class="fs-6 fw-bold" value="Plate No." ></h:outputLabel>
+                                    <h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText>
+                                </h:panelGrid>
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-6 d-flex justify-content-center">
+                                <h:panelGrid columns="1" styleClass="border border-light bg-white">
+                                    <h:commandButton class="btn btn-warning w-100 my-2" value="Process" 
+                                                     action="#{clientController.toLabEnterResults()}"></h:commandButton>
+                                    <h:commandButton class="btn btn-success w-100 my-2" value="Generate Excel" style="width: 98%;">
+                                        <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
+                                    </h:commandButton>
+                                    <h:commandButton class="btn btn-primary w-100 my-2" action="#{clientController.toMarkAllNegative()}" value="Mark All Negative" onclick="if (!confirm('Are you sure you want mark all Negative?'))
+                                                return false">
+                                    </h:commandButton>
+                                </h:panelGrid>   
+                            </div>
+                        </div>
+
                     </div>
+
 
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
 
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToEnterResults}"  rendered="true"
+                        <p:dataTable reflow="true" resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToEnterResults}"  rendered="true"
                                      var="c" 
                                      rowKey="#{c.id}"
                                      rowIndexVar="n"
@@ -138,7 +146,7 @@
                             </p:column>
 
                             <p:column headerText="Comments" width="300"  sortBy="#{c.resultComments}" filterBy="#{c.resultComments}" filterMatchMode="contains" >
-                                <p:inputText id="txtComments" value="#{c.resultComments}"  style="width: 98%;">
+                                <p:inputText id="txtComments" value="#{c.resultComments}">
                                     <p:ajax event="blur" process="txtComments" 
                                             listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
@@ -146,8 +154,8 @@
                             </p:column>
 
                             <p:column headerText="Actions" width="60" exportable="false">
-                                <p:commandButton value="Reject" style="width: 90%;" ajax="false" action="#{clientController.markSelectedAsRejectedAtDataEntry(c)}" >
-                                </p:commandButton>
+                                <h:commandButton value="Reject" action="#{clientController.markSelectedAsRejectedAtDataEntry(c)}" >
+                                </h:commandButton>
                             </p:column>
                         </p:dataTable>
 
