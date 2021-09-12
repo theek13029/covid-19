@@ -23,15 +23,15 @@
                                 <div class="col-12 text-center mt-4 mb-2" >
                                     <h4 class="fw-bold"><h:outputLabel  value="Patient Data For PCR Ordering" ></h:outputLabel></h4>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="row" >
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <h:commandButton class="btn btn-success" value="Add New PCR Order" 
+                                    <h:commandButton class="btn btn-success" value="Add New PCR Order"
                                              action="#{mohController.toAddNewPcrWithNewClient()}" />
-                                    
+
                                     <h:commandButton class="btn btn-success" value="To Edit Details" action="#{mohController.toPcrEdit()}" />
                                 </div>
-                            </div> 
+                            </div>
                         </h:form>
                     </h5>
                      <div class="row px-3">
@@ -49,19 +49,19 @@
                                             <f:convertDateTime pattern="dd MMMM yyyy" ></f:convertDateTime>
                                         </h:outputLabel>
 
-                                        <h:outputLabel value="Name:" class="fw-bold"></h:outputLabel> 
+                                        <h:outputLabel value="Name:" class="fw-bold"></h:outputLabel>
                                         <h:outputLabel value="#{mohController.pcr.client.person.name}" title="Name" class="form-control border-0" ></h:outputLabel>
                                         <h:outputLabel value="Citizenship:" for="citizenship" class="fw-bold"></h:outputLabel>
                                         <h:outputLabel id="citizenship" value="#{mohController.pcr.client.person.citizenship.name}" class="form-control border-0" ></h:outputLabel>
 
 
-                                        <h:outputLabel value="PHN No.:" class="fw-bold"></h:outputLabel> 
-                                        <h:outputLabel id="phn" value="#{mohController.pcr.client.phn}" title="Phn" class="form-control border-0" ></h:outputLabel> 
+                                        <h:outputLabel value="PHN No.:" class="fw-bold"></h:outputLabel>
+                                        <h:outputLabel id="phn" value="#{mohController.pcr.client.phn}" title="Phn" class="form-control border-0" ></h:outputLabel>
                                         <h:outputLabel value="Other Ordering Category:" class="fw-bold"></h:outputLabel>
                                         <h:outputLabel value="#{mohController.pcr.pcrOrderingCategoryOther}" class="form-control border-0" ></h:outputLabel>
 
-                                        
-                                        <h:outputLabel value="Symptomatic:" class="fw-bold"></h:outputLabel> 
+
+                                        <h:outputLabel value="Symptomatic:" class="fw-bold"></h:outputLabel>
                                         <h:outputLabel tabindex="106" value="#{mohController.pcr.symptomatic?'Yes':''}" class="form-control border-0" ></h:outputLabel>
                                         <h:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" class="fw-bold"></h:outputLabel>
                                         <h:outputLabel id="nic"  value="#{mohController.pcr.client.person.nic}" title="Nic" class="form-control border-0" ></h:outputLabel>
@@ -77,23 +77,23 @@
                                         <h:outputLabel value="District:" class="fw-bold"></h:outputLabel>
                                         <h:outputLabel value="#{mohController.pcr.client.person.district.name}" class="form-control border-0" ></h:outputLabel>
 
-                                        
+
                                         <h:outputLabel value="MOH Area:" class="fw-bold"></h:outputLabel>
                                         <h:outputLabel value="#{mohController.pcr.client.person.mohArea.name}" class="form-control border-0" ></h:outputLabel>
                                         <h:outputLabel value="Contact Number :" class="fw-bold"></h:outputLabel>
                                         <h:outputLabel value="#{mohController.pcr.client.person.phone1}" class="form-control border-0" ></h:outputLabel>
-                                        
-                                        
+
+
                                         <h:outputLabel value="GN Area:" class="fw-bold"></h:outputLabel>
                                         <h:outputLabel value="#{mohController.pcr.client.person.gnArea.name}" class="form-control border-0" ></h:outputLabel>
                                         <h:outputLabel value="PHI Area:" class="fw-bold"></h:outputLabel>
                                         <h:outputLabel value="#{mohController.pcr.client.person.phiArea.name}" class="form-control border-0" ></h:outputLabel>
-                                        
+
                                         <h:outputLabel value="Unit/Ward:" class="fw-bold"></h:outputLabel>
                                         <h:outputLabel value="#{mohController.pcr.unitWard}" class="form-control border-0" ></h:outputLabel>
-                                        <h:outputLabel  class="fw-bold"></h:outputLabel>
-                                        <h:outputLabel  class="form-control border-0" ></h:outputLabel>
-                                        
+                                        <h:outputLabel  class="fw-bold">Test Result</h:outputLabel>
+                                        <h:outputLabel value="#{mohController.pcr.pcrResult.name}" class="fw-bold" ></h:outputLabel>
+
                                     </p:panelGrid>
                         <h:form>
                             <p:dataTable value="#{sessionController.pcrList}" id="tbl"

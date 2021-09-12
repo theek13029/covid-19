@@ -10,14 +10,16 @@
 
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
-                <p:panel id="WebUserEditDlg" class="main-panel" style="height: 100%;" rendered="#{webUserController.loggedUser.systemAdministrator}">
+               <!-- <p:panel id="WebUserEditDlg" class="main-panel" style="height: 100%;" rendered="#{webUserController.loggedUser.systemAdministrator}">-->
                     <h:form id="AreaEditForm">
-                        <div class="card fs-4 my-2 fw-bold">
-                            <div class="card-header bg-success text-white">
-                                <h:outputLabel value="Add New Area" ></h:outputLabel>
+                        
+                           <!-- <div class="card-header bg-success text-white">-->
+                           <div class="div bg-white px-5 py-5" >
+                        <h3 class="fw-bold ">Add New Area</h3>
+                                <!--<h:outputLabel value="Add New Area" ></h:outputLabel>-->
 
                             </div>
-                        </div>
+                       
                         <div class="card">
                             <div class="card-body">
                                 <div class="form-group row">
@@ -136,7 +138,7 @@
                             </div> 
                         </div>       
                     </h:form>
-                </p:panel>
+                <!--</p:panel>-->
             </ui:define>
             
         </ui:composition>

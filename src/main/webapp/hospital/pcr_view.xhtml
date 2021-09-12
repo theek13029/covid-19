@@ -26,56 +26,56 @@
                             <div class="col-md-12">
                                 <p:panelGrid columns="4"  class="w-100 border border-light">
 
-                                    <p:outputLabel class="fs-6 fw-bold" value="Test Number:"></p:outputLabel>
-                                    <p:outputLabel id="txtTestNo" value="#{hospitalController.pcr.encounterNumber}"></p:outputLabel>
-                                    <p:outputLabel class="fs-6 fw-bold"  value="Lab:"></p:outputLabel>
-                                    <p:outputLabel value="#{hospitalController.pcr.referalInstitution.name}"></p:outputLabel>
+                                    <h:outputLabel class="fs-6" value="Test Number:"></h:outputLabel>
+                                    <h:outputLabel class="fs-6 fw-bold" id="txtTestNo" value="#{hospitalController.pcr.encounterNumber}"></h:outputLabel>
+                                    <h:outputLabel class="fs-6"  value="Lab:"></h:outputLabel>
+                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.referalInstitution.name}"></h:outputLabel>
 
-                                    <p:outputLabel class="fs-6 fw-bold" value="Ordering Category:"></p:outputLabel>
-                                    <p:outputLabel id="orderingCat" value="#{hospitalController.pcr.pcrOrderingCategory.name}"></p:outputLabel>
-                                    <p:outputLabel class="fs-6 fw-bold" value="Sampled at:"></p:outputLabel>
-                                    <p:outputLabel id="test" value="#{hospitalController.pcr.sampledAt}">
+                                    <h:outputLabel class="fs-6" value="Ordering Category:"></h:outputLabel>
+                                    <h:outputLabel class="fs-6 fw-bold" id="orderingCat" value="#{hospitalController.pcr.pcrOrderingCategory.name}"></h:outputLabel>
+                                    <h:outputLabel class="fs-6" value="Sampled at:"></h:outputLabel>
+                                    <h:outputLabel class="fs-6 fw-bold" id="test" value="#{hospitalController.pcr.sampledAt}">
                                         <f:convertDateTime pattern="dd MMMM yyyy hh:mm" ></f:convertDateTime>
-                                    </p:outputLabel>
+                                    </h:outputLabel>
 
-                                    <p:outputLabel class="fs-6 fw-bold" value="Name:" />
-                                    <p:outputLabel value="#{hospitalController.pcr.client.person.name}" title="Name" />
-                                    <p:outputLabel class="fs-6 fw-bold" value="Citizenship:" for="citizenship" />
-                                    <p:outputLabel id="citizenship" value="#{hospitalController.pcr.client.person.citizenship.name}" ></p:outputLabel>
+                                    <h:outputLabel class="fs-6" value="Name:" />
+                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.name}" title="Name" />
+                                    <h:outputLabel class="fs-6" value="Citizenship:" for="citizenship" />
+                                    <h:outputLabel class="fs-6 fw-bold" id="citizenship" value="#{hospitalController.pcr.client.person.citizenship.name}" ></h:outputLabel>
 
 
-                                    <p:outputLabel class="fs-6 fw-bold" value="PHN No:"  />
-                                    <p:outputLabel id="phn" value="#{hospitalController.pcr.client.phn}" title="Phn"></p:outputLabel>
-                                    <p:outputLabel class="fs-6 fw-bold" value="Other Ordering Category:"  />
-                                    <p:outputLabel value="#{hospitalController.pcr.pcrOrderingCategoryOther}"/>
+                                    <h:outputLabel class="fs-6" value="PHN No:"  />
+                                    <h:outputLabel class="fs-6 fw-bold" id="phn" value="#{hospitalController.pcr.client.phn}" title="Phn"></h:outputLabel>
+                                    <h:outputLabel class="fs-6" value="Other Ordering Category:"  />
+                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.pcrOrderingCategoryOther}"/>
 
-                                    <p:outputLabel class="fs-6 fw-bold" value="Symptomatic:"  />
-                                    <p:outputLabel tabindex="106" value="#{hospitalController.pcr.symptomatic?'Yes':''}" ></p:outputLabel>
-                                    <p:outputLabel class="fs-6 fw-bold" value="NIC/NIC of the guardian/Passport No. :" for="nic" />
-                                    <p:outputLabel id="nic" value="#{hospitalController.pcr.client.person.nic}" title="Nic" ></p:outputLabel>
+                                    <h:outputLabel class="fs-6" value="Symptomatic:"  />
+                                    <h:outputLabel class="fs-6 fw-bold" tabindex="106" value="#{hospitalController.pcr.symptomatic?'Yes':''}" ></h:outputLabel>
+                                    <h:outputLabel class="fs-6" value="NIC/NIC of the guardian/Passport No. :" for="nic" />
+                                    <h:outputLabel class="fs-6 fw-bold" id="nic" value="#{hospitalController.pcr.client.person.nic}" title="Nic" ></h:outputLabel>
 
-                                    <p:outputLabel class="fs-6 fw-bold" value="Gender:"  for="sex" />
-                                    <p:outputLabel id="sex" value="#{hospitalController.pcr.client.person.sex}"></p:outputLabel>
-                                    <p:outputLabel class="fs-6 fw-bold" value="Age:" />
-                                    <h:panelGroup><p:outputLabel value="#{hospitalController.pcr.client.person.age}" ></p:outputLabel></h:panelGroup>
+                                    <h:outputLabel class="fs-6" value="Gender:"  for="sex" />
+                                    <h:outputLabel class="fs-6 fw-bold" id="sex" value="#{hospitalController.pcr.client.person.sex}"></h:outputLabel>
+                                    <h:outputLabel class="fs-6" value="Age:" />
+                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.age}" ></h:outputLabel>
 
-                                    <p:outputLabel class="fs-6 fw-bold" value="Current Residential Address:" for="address" />
-                                    <p:outputLabel tabindex="4" id="address" value="#{hospitalController.pcr.client.person.address}" title="Address ****" />
-                                    <p:outputLabel class="fs-6 fw-bold" value="District:"  />
-                                    <p:outputLabel value="#{hospitalController.pcr.client.person.district.name}" />
+                                    <h:outputLabel class="fs-6" value="Current Residential Address:" for="address" />
+                                    <h:outputLabel class="fs-6 fw-bold" tabindex="4" id="address" value="#{hospitalController.pcr.client.person.address}" title="Address ****" />
+                                    <h:outputLabel class="fs-6" value="District:"  />
+                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.district.name}" />
 
-                                    <p:outputLabel class="fs-6 fw-bold" value="MOH Area:" />
-                                    <p:outputLabel value="#{hospitalController.pcr.client.person.mohArea.name}" />
-                                    <p:outputLabel class="fs-6 fw-bold" value="Contact Number :" />
-                                    <p:outputLabel value="#{hospitalController.pcr.client.person.phone1}" />
+                                    <h:outputLabel class="fs-6" value="MOH Area:" />
+                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.mohArea.name}" />
+                                    <h:outputLabel class="fs-6" value="Contact Number :" />
+                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.phone1}" />
 
-                                    <p:outputLabel class="fs-6 fw-bold" value="GN Area:"  />
-                                    <p:outputLabel value="#{hospitalController.pcr.client.person.gnArea.name}" />
-                                    <p:outputLabel class="fs-6 fw-bold" value="PHI Area:" />
-                                    <p:outputLabel value="#{hospitalController.pcr.client.person.phiArea.name}" />
+                                    <h:outputLabel class="fs-6" value="GN Area:"  />
+                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.gnArea.name}" />
+                                    <h:outputLabel class="fs-6" value="PHI Area:" />
+                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.phiArea.name}" />
 
-                                    <p:outputLabel class="fs-6 fw-bold" value="Unit/Ward:"  />
-                                    <p:outputLabel value="#{hospitalController.pcr.unitWard}" />
+                                    <h:outputLabel class="fs-6" value="Unit/Ward:"  />
+                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.unitWard}" />
 
                                 </p:panelGrid>
                             </div>

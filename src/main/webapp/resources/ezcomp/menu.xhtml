@@ -14,9 +14,10 @@
             <p:menubar id="main-menu">
                 <p:menuitem class="text-white" ajax="false" value="Home" icon="ui-icon-home" action="/index" />
                 <p:submenu class="submenu" label="Tests" rendered="#{webUserController.hasPrivilege('Client_Management') and webUserController.loggedUser.webUserRoleLevel eq 'Moh' }" >
-                    <p:menuitem class="submenu-item" ajax="false" value="New PCR" action="#{mohController.toAddNewPcrWithNewClient()}" />
-                    <p:menuitem class="submenu-item"  rendered="true" ajax="false" value="New RAT Result" action="#{mohController.toAddNewRatWithNewClient()}" />
-                    <p:menuitem ajax="false" value="New RAT" action="#{mohController.toAddNewRatOrderWithNewClient()}"  />
+                    <p:menuitem ajax="false" value="New RAT Request" action="#{mohController.toAddNewRatOrderWithNewClient()}"  />
+                    <p:menuitem class="submenu-item" ajax="false" value="New PCR Request" action="#{mohController.toAddNewPcrWithNewClient()}" />
+                    <p:menuitem class="submenu-item"  rendered="true" ajax="false" value="New RAT With Result" action="#{mohController.toAddNewRatWithNewClient()}" />
+                    <p:menuitem class="submenu-item"  rendered="true" ajax="false" value="New PCR With Result" action="#{mohController.toAddNewPCRWithResult()}" />
                     <p:menuitem ajax="false" rendered="false" value="Search Patients" action="#{clientController.toSearchClientById()}" />
                     <p:menuitem ajax="false" value="Test Lists" action="#{mohController.toTestList()}" />
                     <p:menuitem ajax="false" value="Dispatch Samples" action="#{mohController.toDispatchSamples()}"/>
