@@ -71,7 +71,7 @@
                         </p:column>
                         <p:column sortBy="#{item.rdhsArea.name}"
                                   rendered="#{userColumnController.displayColumn('RDHS')}"
-                                  filterBy="#{item.rdhsArea.name}" filterMatchMode="contains" >
+                                  filterBy="#{item.rdhsArea.name}" filterMatchMode="startsWith" >
                             <f:facet name="header">
                                 <h:outputText value="RDHS"/>
                             </f:facet>
@@ -115,6 +115,10 @@
                     </p:dataTable>
 
 
+                    <h:commandButton value="Download" >
+                        <p:dataExporter target="tbl" type="xlsx" fileName="institutions and users" ></p:dataExporter>
+                    </h:commandButton>
+                    
                     <div class="card" >
                         <div class="card-header" >
                             Column Display

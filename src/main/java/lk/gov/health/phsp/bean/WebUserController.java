@@ -232,19 +232,19 @@ public class WebUserController implements Serializable {
 
     }
 
-    public String displayUsers(Institution ins){
+    public String displayUsers(Institution ins) {
         String us = "";
-        for(WebUser wu:webUserApplicationController.getItems()){
-            if(wu.getInstitution()!=null && wu.getInstitution().equals(ins)){
-                if(!us.equals("")){
-                    us+= ", ";
+        for (WebUser wu : webUserApplicationController.getItems()) {
+            if (wu.getInstitution() != null && wu.getInstitution().equals(ins)) {
+                if (!us.equals("")) {
+                    us += ", ";
                 }
-                us+=wu.getName();
+                us += wu.getName();
             }
         }
         return us;
     }
-    
+
     public String assumeUser() {
         if (current == null) {
             JsfUtil.addErrorMessage("Please select a User");
@@ -1157,7 +1157,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
                 wups.add(Privilege.View_individual_data);
                 wups.add(Privilege.View_aggragate_date);
-                
+
                 break;
             case Nurse:
                 //Menu
@@ -1831,43 +1831,55 @@ public class WebUserController implements Serializable {
 
         String lines[] = bulkText.split("\\r?\\n");
 
+        String j;
+        Map m;
+
         for (String line : lines) {
             if (line == null || line.trim().equals("")) {
                 continue;
             }
             line = line.trim();
 
-            Institution newIns = new Institution();
-            newIns.setName(line);
-            newIns.setCode(CommonController.prepareAsCode(line));
-            newIns.setParent(institution);
-            newIns.setDistrict(institution.getDistrict());
-            newIns.setInstitutionType(institutionType);
-            newIns.setPdhsArea(institution.getPdhsArea());
-            newIns.setPoiInstitution(institution.getPoiInstitution());
-            newIns.setProvince(institution.getProvince());
-            newIns.setRdhsArea(institution.getRdhsArea());
-            newIns.setCreatedAt(new Date());
-            newIns.setCreater(getLoggedUser());
-            institutionController.save(newIns);
+            Institution newIns;
 
-            Person newPerson = new Person();
-            newPerson.setName("System Administrator of " + line);
-            personController.save(newPerson);
+            j = "select i from Institution i where i.name=:name";
+            m = new HashMap();
+            m.put("name", line);
+            newIns = institutionFacade.findFirstByJpql(j, m);
 
-            WebUser newUser = new WebUser();
-            newUser.setName("sa" + CommonController.prepareAsCode(line).toLowerCase());
-            newUser.setPerson(newPerson);
-            newUser.setInstitution(newIns);
-            newUser.setArea(institution.getRdhsArea());
-            newUser.setWebUserRole(userRole);
-            newUser.setWebUserPassword(commonController.hash("abcd1234"));
-            newUser.setCreatedAt(new Date());
-            newUser.setCreater(getLoggedUser());
-            save(newUser);
-            addWebUserPrivileges(newUser, getInitialPrivileges(newUser.getWebUserRole()));
-            save(newUser);
-            addedUsers.add(newUser);
+            if (newIns == null) {
+                newIns = new Institution();
+                newIns.setName(line);
+                newIns.setCode(CommonController.prepareAsCode(line));
+                newIns.setParent(institution);
+                newIns.setDistrict(institution.getDistrict());
+                newIns.setInstitutionType(institutionType);
+                newIns.setPdhsArea(institution.getPdhsArea());
+                newIns.setPoiInstitution(institution.getPoiInstitution());
+                newIns.setProvince(institution.getProvince());
+                newIns.setRdhsArea(institution.getRdhsArea());
+                newIns.setCreatedAt(new Date());
+                newIns.setCreater(getLoggedUser());
+                institutionController.save(newIns);
+
+                Person newPerson = new Person();
+                newPerson.setName("System Administrator of " + line);
+                personController.save(newPerson);
+
+                WebUser newUser = new WebUser();
+                newUser.setName("sa" + CommonController.prepareAsCode(line).toLowerCase());
+                newUser.setPerson(newPerson);
+                newUser.setInstitution(newIns);
+                newUser.setArea(institution.getRdhsArea());
+                newUser.setWebUserRole(userRole);
+                newUser.setWebUserPassword(commonController.hash("abcd1234"));
+                newUser.setCreatedAt(new Date());
+                newUser.setCreater(getLoggedUser());
+                save(newUser);
+                addWebUserPrivileges(newUser, getInitialPrivileges(newUser.getWebUserRole()));
+                save(newUser);
+                addedUsers.add(newUser);
+            }
         }
 
         bulkText = "";
