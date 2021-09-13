@@ -5,274 +5,221 @@
     <h:body>
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
-                <h:form class="form" >
-                    <p:focus for="result" ></p:focus>
-                    <div class="card mt-4">
-                        <div class="row w-100">
-                            <div class="row pt-4 pb-2" >
-                                <h4 class="text-center fw-bold">RAT Details</h4>
-                            </div>
-                        </div>
-                        <h:panelGroup id="gpTest" >
-                            <div class="card-body #{hospitalController.rat.pcrResult.name eq 'Positive'?'text-warning':''}">
-                                <div class="form-group row mb-4">
-                                    <div class="col-md-2" >
-                                        <h:outputLabel class="h6 form-label fw-bold mb-2" for="result" value="Result"></h:outputLabel>
-                                        <p:selectOneMenu id="result" class="form-select"
-                                                         required="true"
-                                                         requiredMessage="Please select result"
-                                                         value="#{hospitalController.rat.pcrResult}"  var="r"
-                                                         tabindex="101" >
-                                            <f:selectItem itemLabel="Select" ></f:selectItem>
+                <h:form class="form">
+                    <p:focus for="result"></p:focus>
+                    <div class="#{hospitalController.rat.pcrResult.name eq 'Positive'?'text-warning':''}">
+                        <div class="row bg-white py-4">
+                            <h4 class="text-center fw-bold">NEW RAT RESULT</h4>
+                            <div class="my-2 px-4">
+                                <div class="row mb-4">
+                                    <h5 class="text-muted fw-bold">Investivation Details</h5>
+                                    <div class="col-md-3">
+                                        <label for="result" class="form-label fw-bold">Result</label>
+                                        <h:selectOneMenu class="form-select" id="result" value="#{hospitalController.rat.pcrResult}" tabindex="101"
+                                                         required="true" requiredMessage="Please select result">
+                                            <f:selectItem itemLabel="Please Select"></f:selectItem>
                                             <f:selectItems value="#{itemApplicationController.pcrResults}" var="tt" itemLabel="#{tt.name}"
-                                                           itemValue="#{tt}"  >
+                                                           itemValue="#{tt}">
                                             </f:selectItems>
-                                            <p:column style="#{r.name eq 'Positive'?'background-color:yellow;':''}">
-                                                <p:outputLabel value="${r.name}"
-                                                               style="#{r.name eq 'Positive'?'color:red;':''}" ></p:outputLabel>
+                                            <p:column class="#{r.name eq 'Positive'?'bg-danger':''}">
+                                                <h:outputLabel value="${r.name}"></h:outputLabel>
                                             </p:column>
-                                            <p:ajax event="change" update="gpTest" process="result" ></p:ajax>
-                                        </p:selectOneMenu>
+                                        </h:selectOneMenu>
                                     </div>
-
-                                    <div class="col-md-2">
-                                        <h:outputLabel class="h6 form-label fw-bold mb-2" value="Test Number"></h:outputLabel>
-                                        <h:inputText id="txtTestNo"  class="form-control w-100"
-                                                     value="#{hospitalController.rat.encounterNumber}"
-                                                     tabindex="1" >
-                                            <p:ajax process="txtTestNo" event="blur" ></p:ajax>
-                                        </h:inputText>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <h:outputLabel class="h6 form-label fw-bold mb-2" value="BHT / OPD No/ Clinic No:" for="bhtNo"  />
-                                        <h:inputText id="bhtNo"  value="#{hospitalController.rat.bht}"
-                                                     class="form-control w-100"
-                                                     required="false"
-                                                     tabindex="2"
-                                                     requiredMessage="Need a Number">
-                                        </h:inputText>
-                                    </div>
-
                                     <div class="col-md-3">
-                                        <h:outputLabel class="h6 from-label fw-bold mb-2" for="unitward" value="Unit/Ward:"  />
-                                        <h:inputText tabindex="114"
-                                                     id="unitward"
-                                                     value="#{hospitalController.rat.unitWard}"
-                                                     class="form-control w-100"
-                                                     required="false"
-                                                     autocomplete="on"
-                                                     requiredMessage="Enter a Unit / Ward / Clinic">
-                                        </h:inputText>
+                                        <label for="txtTestNo" class="form-label fw-bold">Test Number</label>
+                                        <p:inputText tabindex="1" id="txtTestNo" autocomplete="off" class="form-control" value="#{hospitalController.rat.encounterNumber}"
+                                                     title="txtTestNo" placeholder="Test Number">
+                                        </p:inputText>
                                     </div>
-
                                     <div class="col-md-3">
-                                        <h:outputLabel  value="Ordering Category" class="h6 form-label fw-bold mb-2"
-                                                        for="orderingCat"></h:outputLabel>
-                                        <h:selectOneMenu id="orderingCat"
-                                                         required="true"
-                                                         requiredMessage="Please select the category for ordering the test. If you select other, please give that reason under the other area."
-                                                         value="#{hospitalController.rat.pcrOrderingCategory}"
-                                                         tabindex="102"
-                                                         class="form-select w-100" >
-                                            <f:selectItem itemLabel="Select" ></f:selectItem>
+                                        <label for="sampledDate" class="form-label d-block fw-bold">Sampled Date</label>
+                                        <p:calendar  inputStyle="width:100%;" id="sampledDate" value="#{hospitalController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm">
+                                        </p:calendar>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="resultAt" class="form-label d-block fw-bold">Result Date</label>
+                                        <p:calendar inputStyle="width:100%;" id="resultAt" value="#{hospitalController.rat.resultConfirmedAt}" pattern="dd MMMM yyyy hh:mm">
+                                        </p:calendar>
+                                    </div>
+                                </div>
+                                <div class="row my-4">
+                                    <div class="col-md-3">
+                                        <label for="orderingCat" class="form-label fw-bold">Ordering Category <small
+                                                class="text-muted px-2">Required</small></label>
+                                        <h:selectOneMenu tabindex="102" class="form-select" id="orderingCat" required="true"
+                                                         requiredMessage="Please select the category for ordering the test."
+                                                         value="#{mohController.rat.pcrOrderingCategory}">
+                                            <f:selectItem itemLabel="Please Select"></f:selectItem>
                                             <f:selectItems value="#{hospitalController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
-                                                           itemValue="#{tt}" ></f:selectItems>
+                                                           itemValue="#{tt}"></f:selectItems>
                                         </h:selectOneMenu>
+                                        <h:message class="text-danger small" for="orderingCat"></h:message>
                                     </div>
-
-
-
-
+                                    <div class="col-md-3">
+                                        <label for="unitward" class="form-label fw-bold">Unit | Ward</label>
+                                        <p:inputText tabindex="114" id="unitward" autocomplete="on" class="form-control" value="#{hospitalController.rat.unitWard}"
+                                                     title="txtTestNo"  required="false">
+                                        </p:inputText>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="bhtNo" class="form-label fw-bold">BHT | OPD No | Clinic No</label>
+                                        <p:inputText tabindex="2" id="bhtNo" autocomplete="on" class="form-control" value="#{hospitalController.rat.bht}"
+                                                     title="bhtNo" required="false">
+                                        </p:inputText>
+                                    </div>
+                                    <div class="col-md-3"></div>
                                 </div>
-                                <div class="form-group row mb-4">
+                                <div class="row my-4">
+                                    <h5 class="text-muted fw-bold">Reginoal Details</h5>
                                     <div class="col-md-3">
-                                        <h:outputLabel class="h6 fw-bold mb-2" value="Name:" for="name" />
-                                        <h:inputText autocomplete="off"
-                                                     class="form-control w-100"
-                                                     tabindex="2"
-                                                     id="name"
-                                                     required="true"
-                                                     requiredMessage="Please give a name"
-                                                     value="#{hospitalController.rat.client.person.name}" title="Name" />
-                                    </div>
-                                    <div class="col-md-3">
-                                        <h:outputLabel class="h6 fw-bold mb-2" value="Gender:"  for="sex" />
-                                        <h:selectOneMenu
-                                            id="sex" value="#{hospitalController.rat.client.person.sex}" required="true"
-                                            tabindex="107" requiredMessage="Please select Gender"
-                                            class="form-select">
-                                            <f:selectItems value="#{hospitalController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}"></f:selectItems>
-                                        </h:selectOneMenu>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <h:outputLabel class="h6 fw-bold mb-2" value="Other Ordering Category:"  />
-                                        <h:inputText value="#{hospitalController.rat.pcrOrderingCategoryOther}"
-                                                     tabindex="105" class="form-control w-100"></h:inputText>
-
-                                    </div>
-                                    <div class="col-md-3">
-                                        <h:outputLabel class="h6 fw-bold mb-2" value="Symptomatic:"  />
-                                        <p:selectBooleanButton tabindex="106" class="form-select"
-                                                               value="#{hospitalController.rat.symptomatic}"  offLabel="No" onLabel="Yes"></p:selectBooleanButton>
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-4">
-                                    <div class="col-md-3">
-                                        <h:outputLabel class="h6 fw-bold mb-2" value="NIC/NIC of the guardian/Passport No. :" for="nic" />
-                                        <h:inputText id="nic"
-                                                     class="form-control w-100"
-                                                     tabindex="3"
-                                                     autocomplete="off"
-                                                     value="#{hospitalController.rat.client.person.nic}"
-                                                     title="Nic"
-                                                     validatorMessage="Please check the number">
-                                            <f:ajax event="blur" execute="@this" render="nicExists year month sex"
-                                                    listener="#{hospitalController.checkNicExistsForRat()}" ></f:ajax>
-                                        </h:inputText>
-                                        <h:panelGroup id="nicExists" >
-                                            <h:commandLink rendered="#{hospitalController.nicExistsForRat}"
-                                                           immediate="true"
-                                                           action="#{hospitalController.toAddNewRatWithExistingNic()}"
-                                                           value="NIC Exists. Click here to Load Patient" >
-                                            </h:commandLink>
-                                        </h:panelGroup>
-                                    </div>
-                                    <div class="col-md-3">
-
-                                        <h:outputLabel class="h6 fw-bold mb-2" value="Citizenship:" for="citizenship" />
-                                        <h:selectOneMenu id="citizenship" value="#{hospitalController.rat.client.person.citizenship}"
-                                                         tabindex="103" class="form-select">
-                                            <f:selectItems value="#{hospitalController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}"></f:selectItems>
-                                        </h:selectOneMenu>
-
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <h:outputLabel class="h6 fw-bold" value="Age: (Years/Months)*" />
-                                            <div class="col-md-3">
-
-                                                <h:inputText autocomplete="off" id="year"
-                                                             tabindex="108"
-                                                             requiredMessage="Please enter the age"
-                                                             value="#{hospitalController.rat.client.person.ageYears}"
-                                                             required="true" class="form-control w-100">
-                                                    <f:ajax event="keyup" execute="@this month day" render="calDob" />
-                                                </h:inputText>
-                                            </div>
-                                            <div class="col-md-3">
-
-                                                <h:inputText tabindex="108"  autocomplete="off" id="month" class="form-control w-100"
-                                                             value="#{hospitalController.rat.client.person.ageMonths}">
-                                                    <f:ajax event="keyup" execute="@this year day" render="calDob" />
-                                                </h:inputText>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                                <div class="form-group row mb-4">
-                                    <div class="col-md-6">
-                                        <h:outputLabel class="h6 fw-bold" value="Current Residential Address:" for="address" />
-                                        <p:commandLink id="lnkLastAddress"
-                                                       action="#{hospitalController.retrieveLastAddressForRat()}" process="lnkLastAddress" update="address" >
-                                            <i class="pi pi-refresh"></i>
-                                        </p:commandLink>
-                                        <h:inputText tabindex="4" class="form-control"
-                                                     id="address" required="false"
-                                                     requiredMessage="Please enter the address"
-                                                     value="#{hospitalController.rat.client.person.address}"
-                                                     title="Address"/>
-
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <h:outputLabel class="h6 fw-bold" value="District:"  for="district" />
-                                        <p:autoComplete required="true"
-                                                        requiredMessage="Please select a district"
-                                                        tabindex="110"
-                                                        style="width: 100%;" inputStyle="width:100%;"
-                                                        id="district"
+                                        <label for="district" class="form-label fw-bold">District<small class="px-2 text-muted">Required</small></label>
+                                        <p:autoComplete tabindex="110" required="true" requiredMessage="Please select a district" id="district"
                                                         value="#{hospitalController.rat.client.person.district}"
-                                                        completeMethod="#{hospitalController.completeDistricts}"
-                                                        var="d" itemLabel="#{d.name}"
-                                                        itemValue="#{d}" maxResults="15" forceSelection="true" minQueryLength="3">
+                                                        completeMethod="#{hospitalController.completeDistricts}" var="d" itemLabel="#{d.name}" itemValue="#{d}"
+                                                        maxResults="15" forceSelection="true" minQueryLength="3">
                                             <f:ajax event="itemSelect" execute="district"></f:ajax>
                                             <f:ajax event="blur" execute="district"></f:ajax>
                                         </p:autoComplete>
+                                        <h:message class="text-danger small" for="district"></h:message>
                                     </div>
-
-
                                     <div class="col-md-3">
-                                        <h:outputLabel class="h6 fw-bold" value="MOH Area:" for="moh" />
-                                        <p:autoComplete id="moh"
-                                                        tabindex="111" style="width:100%;"
-                                                        value="#{hospitalController.rat.client.person.mohArea}"
-                                                        completeMethod="#{hospitalController.completeMohAreas}"
-                                                        var="m" itemLabel="#{m.name}" itemValue="#{m}" inputStyle="width:20rem;" maxResults="15" forceSelection="true" minQueryLength="3">
+                                        <label for="mohArea" class="form-label fw-bold">MOH Area</label>
+                                        <p:autoComplete tabindex="111" id="mohArea" value="#{hospitalController.rat.client.person.mohArea}"
+                                                        completeMethod="#{hospitalController.completeMohAreas}" var="m" itemLabel="#{m.name}" itemValue="#{m}"
+                                                        maxResults="15" forceSelection="true" minQueryLength="3">
                                             <f:ajax event="itemSelect" execute="moh"></f:ajax>
                                             <f:ajax event="blur" execute="moh"></f:ajax>
                                         </p:autoComplete>
                                     </div>
-
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-3"></div>
                                 </div>
-                                <div class="form-group row mb-4">
+                                <div class="row my-4">
+                                    <h5 class="text-muted fw-bold">
+                                        Personal Details
+                                    </h5>
                                     <div class="col-md-3">
-                                        <h:outputLabel class="h6 fw-bold" value="Contact Number :" for="phone1" />
-                                        <p:commandLink id="lnkLastphone1"
-                                                       action="#{hospitalController.retrieveLastPhoneForRat()}" process="lnkLastphone1" update="phone1">
-                                            <i class="pi pi-refresh"></i>
-                                        </p:commandLink>
-                                        <h:inputText tabindex="5" class="form-control"
-                                                     id="phone1" required="false"
-                                                     requiredMessage="Please select a contact number"
-                                                     autocomplete="off"
+                                        <label for="name" class="form-label fw-bold">Name<small class="text-muted px-2">Required</small></label>
+                                        <h:inputText tabindex="2" autocomplete="off" id="name" required="true"
+                                                     value="#{hospitalController.rat.client.person.name}" title="Name" requiredMessage="Name is required"
+                                                     class="form-control"></h:inputText>
+                                        <h:message class="text-danger small" for="name"></h:message>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="age" class="form-label fw-bold">Age (Y|M|D)</label>
+                                        <div class="d-flex">
+                                            <h:inputText id="year" class="form-control w-50" autocomplete="false"
+                                                         tabindex="108"
+                                                         value="#{hospitalController.rat.client.person.ageYears}">
+                                                <f:ajax event="keyup" execute="year month day" render="calDob"></f:ajax>
+                                            </h:inputText>
+                                            <h:inputText tabindex="108" id="month" class="form-control w-25" autocomplete="off"
+                                                         value="#{hospitalController.rat.client.person.ageMonths}">
+                                                <f:ajax event="keyup" execute="year month day" render="calBob"></f:ajax>
+                                            </h:inputText>
+                                            <h:inputText class="form-control w-25" id="day" autocomplete="off"
+                                                         tabindex="108" value="#{hospitalController.rat.client.person.ageDays}">
+                                                <f:ajax event="keyup" execute="year month day" render="calDob"></f:ajax>
+                                            </h:inputText>
+                                            <h:message class="text-danger small" for="year"></h:message>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="gender" class="form-label fw-bold">Gender <small
+                                                class="text-muted px-2">Required</small></label>
+                                        <h:selectOneMenu tabindex="107" id="gender" value="#{hospitalController.rat.client.person.sex}" required="true"
+                                                         class="form-select" requiredMessage="Please select gender">
+                                            <f:selectItem itemLabel="Please select"></f:selectItem>
+                                            <f:selectItems value="#{hospitalController.sexes}" var="genders" itemLabel="#{s.name}"
+                                                           itemValue="#{s}"></f:selectItems>
+                                        </h:selectOneMenu>
+                                        <h:message class="text-danger small" for="gender"></h:message>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="nic" class="form-label fw-bold">NIC | Passport Number</label>
+                                        <h:inputText id="nic" autocomplete="off" value="#{hospitalController.rat.client.person.nic}" title="NIC"
+                                                     validatorMessage="Please check the NIC number" class="form-control" tabindex="5">
+                                            <f:ajax event="blur" execute="@this" render="nicExists year month sex"
+                                                    listener="#{hospitalController.checkNicExistsForRat()}"></f:ajax>
+                                        </h:inputText>
+                                        <h:message class="text-danger small" for="nic"></h:message>
+                                        <h:panelGroup id="nicExists">
+                                            <h:commandLink rendered="#{hospitalController.nicExistsForRat}" immediate="true"
+                                                           action='#{hospitalController.toAddNewRatWithExistingNic()}'
+                                                           value="NIC exists. Click here to load the patient" class="btn btn-secondary btn-sm">
+                                            </h:commandLink>
+                                        </h:panelGroup>
+                                    </div>
+                                </div> 
+                                <div class="row my-4">
+                                    <div class="col-md-3">
+                                        <label for="symptomatic" class="form-label fw-bold">Symptomatic Status</label>
+                                        <h:selectOneMenu id="symptomatic" value="#{hospitalController.rat.symptomatic}" class="form-select">
+                                            <f:selectItem itemLabel="Please Select"></f:selectItem>
+                                            <f:selectItems value="#{itemApplicationController.symptomaticStatuses}" var="s" itemLabel="#{s.name}"
+                                                           itemValue="#{s}"></f:selectItems>
+                                        </h:selectOneMenu>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="phone1" class="fw-bold form-label">Contact Number<small
+                                                class="text-muted px-2">Required</small></label>
+                                        <h:commandLink id="lnkLastphone1" action="#{hospitalController.retrieveLastPhoneForRat()}">
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                        </h:commandLink>
+                                        <h:inputText tabindex="5" class="form-control" id="phone1" required="true"
+                                                     requiredMessage="Please enter a contact number" autocomplete="off"
                                                      value="#{hospitalController.rat.client.person.phone1}" title="Mobile"
                                                      validatorMessage="Please check the number">
                                         </h:inputText>
-
+                                        <h:message class="text-danger small" for="phone1"></h:message>
                                     </div>
-
                                     <div class="col-md-3">
-                                        <h:outputLabel class="h6 fw-bold" value="PHN No.:" for="phn" />
-                                        <h:inputText id="phn" autocomplete="off"
-                                                     tabindex="104"
-                                                     class="form-control" value="#{hospitalController.rat.client.phn}" title="Phn"
-                                                     ></h:inputText>
+                                        <label for="phn" class="form-label fw-bold">PHN Number</label>
+                                        <p:inputText id="phn" autocomplete="off" class="form-control" value="#{hospitalController.rat.client.phn}"
+                                                     title="Phn" placeholder="New PHN" tabindex="104">
+                                        </p:inputText>
                                     </div>
-
-
                                     <div class="col-md-3">
-                                        <h:outputLabel class="h6 fw-bold" value="Sampled at"></h:outputLabel>
-                                        <p:calendar  inputStyle="width:100%;"  value="#{hospitalController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <h:outputLabel class="h6 fw-bold" value="Result at"></h:outputLabel>
-                                        <p:calendar inputStyle="width:100%;"  value="#{hospitalController.rat.resultConfirmedAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
+                                        <label for="citizenship" class="form-label fw-bold">Citizenship</label>
+                                        <h:selectOneMenu class="form-select w-100" id="citizenship"
+                                                         value="#{hospitalController.rat.client.person.citizenship}">
+                                            <f:selectItem itemLabel="Please Select"></f:selectItem>
+                                            <f:selectItems value="#{hospitalController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}">
+                                            </f:selectItems>
+                                        </h:selectOneMenu>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-md-12">
-                                        <p:messages ></p:messages>
+                                
+                                <div class="row my-4">
+                                <div class="col-md-6">
+                                        <label for="address" class="form-label fw-bold">Residential Address<small
+                                                class="px-2 text-muted">Required</small></label>
+                                        <h:commandLink id="lnkLastAddress" action="#{hospitalController.retrieveLastAddressForRat()}">
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                        </h:commandLink>
+                                        <h:inputText class="form-control" id="address" required="true" requiredMessage="Address is required"
+                                                     value="#{hospitalController.rat.client.person.address}" title="Address">
+                                        </h:inputText>
+                                        <h:message class="text-danger small" for="address"></h:message>
                                     </div>
                                 </div>
-                                <div class="container d-flex justify-content-center">
+                                <div class="row">
+                                    <p:messages class="my-2"></p:messages>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <h:commandButton tabindex="7" class="btn btn-success fw-bold w-25" action="#{hospitalController.saveRatAndToNewRat()}"
+                                                         value="Save and NEW RAT">
+                                        </h:commandButton>
 
-                                    <h:commandButton class="btn btn-success m-4"
-                                                     tabindex="7"
-                                                     action="#{hospitalController.saveRatAndToNewRat()}" value="Save and NEW RAT"></h:commandButton>
-
-
-                                    <h:commandButton class="btn btn-success m-4"
-                                                     tabindex="8"
-                                                     action="#{hospitalController.saveRatAndToRatView()}" value="Save and View RAT"></h:commandButton>
-
+                                        <h:commandButton tabindex="8" class="btn btn-success mx-2 fw-bold w-25" action="#{hospitalController.saveRatAndToRatView()}"
+                                                         value="Save and View RAT Details">
+                                        </h:commandButton>
+                                    </div>
                                 </div>
                             </div>
-                        </h:panelGroup>
+                        </div>
                     </div>
                 </h:form>
             </ui:define>
