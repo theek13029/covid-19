@@ -47,9 +47,10 @@
       .no-print {
         display: none;
       }
+      .page-break {
+        break-before: always;
+      }
       .print-area {
-        margin-top: 0.5cm;
-        margin-bottom: 0.5mm;
         padding: 2cm;
         width: 210mm;
         height: 297mm;
@@ -62,5 +63,6 @@
             Print Investigations
         </button>
         <h:outputText value="#{clientController.bulkPrintReport}" escape="false" ></h:outputText>
+        <div class="page-break"></div>
     </h:body>
 </html>
