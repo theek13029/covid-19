@@ -20,6 +20,7 @@
         padding: 2cm;
         width: 210mm;
         height: 297mm;
+        break-after: page;
       }
 
       .content-area {
@@ -44,13 +45,11 @@
       size: A4;
     }
     @media print {
-      .page-break {
-        break-before: always;
-      }
       .no-print {
         display: none;
       }
       .print-area {
+        break-after: page;
         padding: 2cm;
         width: 210mm;
         height: 297mm;
@@ -69,7 +68,6 @@
     <div class="content-area">
       <div class="print-area">
         <h:outputText value="#{clientController.generateLabReport(p)}" escape="false"></h:outputText>
-        <div class="page-break"></div>
       </div>
     </div>
   </ui:repeat>
