@@ -56,12 +56,6 @@
                                     </h:inputText>
                                     <h:message class="text-danger small" for="wardunit"></h:message>
                                 </div>
-                                <div class="col-md-3">
-                                    <label for="orderOtherCategory" class="form-label fw-bold">Other Ordering Category</label>
-                                    <h:inputText id="orderOtherCategory" value="#{hospitalController.pcr.pcrOrderingCategoryOther}" class="form-control">
-                                        <f:ajax execute="wardunit" event="blur"></f:ajax>
-                                    </h:inputText>
-                                </div>
                                 <div class="col-md-6">
                                     <label for="bhtNo" class="form-label fw-bold">BHT / OPD No/ Clinic No</label>
                                     <h:inputText id="bhtNo" value="#{hospitalController.pcr.bht}" class="form-control"
