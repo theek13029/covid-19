@@ -106,10 +106,10 @@
                             <p:column headerText="Created at" sortBy="#{c.createdAt}"  >
                                 <p:outputLabel value="#{c.createdAt}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Name" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains" >
+                            <p:column headerText="Name" sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age" width="80" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}"  filterMatchMode="contains" >
+                            <p:column headerText="Age" width="80" sortBy="#{c.client.person.age}" filterBy="#{c.client.person.age}"  filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Sex" width="80" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}"  filterMatchMode="contains" >
