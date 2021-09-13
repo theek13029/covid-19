@@ -873,8 +873,11 @@ public class NationalController implements Serializable {
                 + " order by count(c) desc ";
 
         institutionCounts = new ArrayList<>();
+        System.out.println("m = " + m);
+        System.out.println("j = " + j);
 
         List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
+        System.out.println("objCounts = " + objCounts.size());
         if (objCounts == null || objCounts.isEmpty()) {
             return "/national/count_of_results_by_lab";
         }
