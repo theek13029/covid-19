@@ -125,14 +125,22 @@ public class ClientController implements Serializable {
     private Encounter lastTest;
 
     private Area district;
+    
     private String testNoCol = "A";
-    private String nameCol = "B";
-    private String ageColumn = "C";
-    private String sexCol = "D";
-    private String nicCol = "E";
-    private String phoneCol = "F";
-    private String addressCol = "G";
-    private String resultCol = "H";
+    private String labNoCol = "B";
+    private String nameCol = "C";
+    private String ageColumn = "D";
+    private String sexCol = "E";
+    private String nicCol = "F";
+    private String phoneCol = "G";
+    private String addressCol = "H";
+    private String mohCol = "I";
+    private String districtCol = "J";
+    private String wardCol = "K";
+    private String bhtCol = "L";
+    private String resultCol = "M";
+    private String ct1Col = "N";
+    private String ct2Col = "O";
 
     private Integer startRow = 1;
 
@@ -1871,7 +1879,7 @@ public class ClientController implements Serializable {
         } else {
             html = html.replace("{sampled_date}", "");
         }
-        
+
         if (e.getSentToLabAt() != null) {
             html = html.replace("{dispatched_date}", CommonController.dateTimeToString(e.getSentToLabAt()));
         } else {
@@ -1886,60 +1894,58 @@ public class ClientController implements Serializable {
 
         if (e.getResultEnteredAt() != null) {
             html = html.replace("{entered_date}", CommonController.dateTimeToString(e.getResultEnteredAt()));
-        }else {
+        } else {
             html = html.replace("{entered_date}", "");
         }
-        
+
         if (e.getResultReviewedAt() != null) {
             html = html.replace("{reviewed_date}", CommonController.dateTimeToString(e.getResultReviewedAt()));
-        }else {
+        } else {
             html = html.replace("{reviewed_date}", "");
         }
 
         if (e.getResultConfirmedAt() != null) {
             html = html.replace("{confirmed_date}", CommonController.dateTimeToString(e.getResultConfirmedAt()));
-        }else {
+        } else {
             html = html.replace("{confirmed_date}", "");
         }
-        
-        
+
         if (e.getSampledAt() != null) {
             html = html.replace("{sampled_date}", CommonController.dateTimeToString(e.getResultConfirmedAt()));
-        }else {
+        } else {
             html = html.replace("{sampled_date}", "");
         }
-        
+
         if (e.getResultEnteredBy() != null) {
             html = html.replace("{entered_by}", e.getResultEnteredBy().getPerson().getName());
-        }else {
+        } else {
             html = html.replace("{entered_by}", "");
         }
-        
-         if (e.getResultReviewedBy() != null) {
+
+        if (e.getResultReviewedBy() != null) {
             html = html.replace("{reviewed_by}", e.getResultReviewedBy().getPerson().getName());
-        }else {
+        } else {
             html = html.replace("{reviewed_by}", "");
         }
 
         if (e.getResultConfirmedBy() != null) {
             html = html.replace("{approved_by}", e.getResultConfirmedBy().getPerson().getName());
-        }else {
+        } else {
             html = html.replace("{approved_by}", "");
         }
 
         if (e.getPcrTestType().getName() != null) {
             html = html.replace("{test}", e.getPcrTestType().getName());
-        }else{
+        } else {
             html = html.replace("{test}", "");
         }
-        
 
         if (e.getPcrResult() != null) {
             html = html.replace("{pcr_result}", e.getPcrResult().getName());
-        }else{
+        } else {
             html = html.replace("{pcr_result}", "");
         }
-        
+
         if (e.getCtValue() != null) {
             html = html.replace("{pcr_ct1}", e.getCtValue().toString());
         } else {
@@ -2694,6 +2700,7 @@ public class ClientController implements Serializable {
         district = institution.getDistrict();
 
         String strTestNo;
+        String strLabNo;
         String strName;
         String strAge;
         String strSex;
@@ -2703,6 +2710,7 @@ public class ClientController implements Serializable {
         String strResult;
         Long id;
         int testNoColInt;
+        int labNoColInt;
         int ageColInt;
         int nameColInt;
         int sexColInt;
@@ -2710,6 +2718,12 @@ public class ClientController implements Serializable {
         int phoneColInt;
         int addressColInt;
         int resultColInt;
+        int mohColInt;
+        int districtColInt;
+        int wardColInt;
+        int bhtColInt;
+        int ct1ColInt;
+        int ct2ColInt;
         Item sex;
         Item result;
 
@@ -2718,11 +2732,18 @@ public class ClientController implements Serializable {
         nameColInt = CommonController.excelColFromHeader(nameCol);
         ageColInt = CommonController.excelColFromHeader(ageColumn);
         testNoColInt = CommonController.excelColFromHeader(testNoCol);
+        labNoColInt = CommonController.excelColFromHeader(labNoCol);
         sexColInt = CommonController.excelColFromHeader(sexCol);
         phoneColInt = CommonController.excelColFromHeader(phoneCol);
         addressColInt = CommonController.excelColFromHeader(addressCol);
         nicColInt = CommonController.excelColFromHeader(nicCol);
         resultColInt = CommonController.excelColFromHeader(resultCol);
+        mohColInt = CommonController.excelColFromHeader(mohCol);
+        districtColInt = CommonController.excelColFromHeader(districtCol);
+        wardColInt = CommonController.excelColFromHeader(wardCol);
+        bhtColInt = CommonController.excelColFromHeader(bhtCol);
+        ct2ColInt = CommonController.excelColFromHeader(ct2Col);
+        ct1ColInt = CommonController.excelColFromHeader(ct1Col);
 
         JsfUtil.addSuccessMessage(file.getFileName());
         XSSFWorkbook myWorkBook;
@@ -2740,6 +2761,7 @@ public class ClientController implements Serializable {
                 }
 
                 strTestNo = cellValue(row.getCell(testNoColInt));
+                strLabNo = cellValue(row.getCell(labNoColInt));
                 strNic = cellValue(row.getCell(nicColInt));
                 Client c = null;
                 if (strNic != null && !strNic.trim().equals("") && strNic.trim().length() > 5) {
@@ -2775,10 +2797,26 @@ public class ClientController implements Serializable {
                     result = itemApplicationController.getPcrNegative();
                 }
 
+                Area ptDistrict = null;
+                String districtName = cellValue(row.getCell(districtColInt));
+                if (districtName != null) {
+                    ptDistrict = areaController.getAreaByCodeIfNotName(districtName, AreaType.District);
+                }
+                if (ptDistrict == null) {
+                    ptDistrict = district;
+                }
+
+                Area ptMoh = null;
+                String mohName = cellValue(row.getCell(mohColInt));
+                if (mohName != null) {
+                    ptMoh = areaController.getAreaByCodeIfNotName(districtName, AreaType.MOH);
+                }
+
                 ClientImport ci = new ClientImport();
                 ci.setClient(c);
                 ci.setName(strName);
                 ci.setTestNo(strTestNo);
+                ci.setLabNo(strLabNo);
                 ci.setAddress(strAddress);
                 ci.setAgeInYears(ageInYears);
                 ci.setSex(sex);
@@ -2786,6 +2824,26 @@ public class ClientController implements Serializable {
                 ci.setPhone(strPhone);
                 ci.setId(count);
                 ci.setResult(result);
+
+                ci.setDistrict(ptDistrict);
+                ci.setMoh(ptMoh);
+
+                String ptWard = cellValue(row.getCell(wardColInt));
+                if (ptWard != null) {
+                    ci.setWardUnit(ptWard);
+                }
+
+                String ptBht = cellValue(row.getCell(bhtColInt));
+                if (ptBht != null) {
+                    ci.setWardUnit(ptBht);
+                }
+
+                Double ptCt1 = cellValueDouble(row.getCell(ct1ColInt));
+                Double ptCt2 = cellValueDouble(row.getCell(ct2ColInt));
+
+                ci.setCt1(ptCt1);
+                ci.setCt2(ptCt2);
+
                 count++;
                 getClientImports().add(ci);
 
@@ -2817,6 +2875,7 @@ public class ClientController implements Serializable {
             return "";
         }
         String strTestNo;
+        String strLabNo;
         String strName;
         String strAge;
         String strSex;
@@ -2825,6 +2884,7 @@ public class ClientController implements Serializable {
         String strNic;
         Long id;
         int testNoColInt;
+        int labNoColInt;
         int ageColInt;
         int nameColInt;
         int sexColInt;
@@ -2837,6 +2897,7 @@ public class ClientController implements Serializable {
         nameColInt = CommonController.excelColFromHeader(nameCol);
         ageColInt = CommonController.excelColFromHeader(ageColumn);
         testNoColInt = CommonController.excelColFromHeader(testNoCol);
+        labNoColInt = CommonController.excelColFromHeader(labNoCol);
         sexColInt = CommonController.excelColFromHeader(sexCol);
         phoneColInt = CommonController.excelColFromHeader(phoneCol);
         addressColInt = CommonController.excelColFromHeader(addressCol);
@@ -2857,6 +2918,7 @@ public class ClientController implements Serializable {
                     continue;
                 }
                 strTestNo = cellValue(row.getCell(testNoColInt));
+                strLabNo = cellValue(row.getCell(labNoColInt));
                 strNic = cellValue(row.getCell(nicColInt));
                 Client c = null;
                 if (strNic != null && !strNic.trim().equals("")) {
@@ -2887,6 +2949,7 @@ public class ClientController implements Serializable {
                 ci.setClient(c);
                 ci.setName(strName);
                 ci.setTestNo(strTestNo);
+                ci.setLabNo(strLabNo);
                 ci.setAddress(strAddress);
                 ci.setAgeInYears(ageInYears);
                 ci.setSex(sex);
@@ -2922,6 +2985,24 @@ public class ClientController implements Serializable {
     }
 
     public String saveUploadedOrdersPlusResults() {
+        System.out.println("saveUploadedOrdersPlusResults");
+        if (getClientImportsSelected().isEmpty()) {
+            JsfUtil.addErrorMessage("Nothing Selected");
+            return "";
+        }
+        int count = 0;
+        for (ClientImport ci : getClientImportsSelected()) {
+            toAddNewPcrResultWithNewClient(ci);
+            count++;
+        }
+        String msg = "" + count + " Orders Imported.";
+        JsfUtil.addSuccessMessage(msg);
+        clientImports = new ArrayList<>();
+        clientImportsSelected = new ArrayList<>();
+        return toUploadOrders();
+    }
+
+    public String clearSelected() {
         System.out.println("saveUploadedOrdersPlusResults");
         if (getClientImportsSelected().isEmpty()) {
             JsfUtil.addErrorMessage("Nothing Selected");
@@ -2996,12 +3077,20 @@ public class ClientController implements Serializable {
         Client c;
         if (ci.getClient() == null) {
             c = new Client();
-            c.getPerson().setDistrict(district);
+            
             c.getPerson().setName(ci.getName());
             c.getPerson().setAddress(ci.getAddress());
             c.getPerson().setPhone1(ci.getPhone());
             c.getPerson().setSex(ci.getSex());
             c.getPerson().setNic(ci.getNic());
+            if (ci.getDistrict() != null) {
+                c.getPerson().setDistrict(ci.getDistrict());
+            }else{
+                c.getPerson().setDistrict(district);
+            }
+            if (ci.getMoh()!= null) {
+                c.getPerson().setMohArea(ci.getMoh());
+            }
             Calendar calDob = Calendar.getInstance();
             calDob.add(Calendar.YEAR, (0 - ci.getAgeInYears()));
             calDob.add(Calendar.MONTH, (0 - ci.getAgeInMonths()));
@@ -3016,8 +3105,11 @@ public class ClientController implements Serializable {
         pcr.setInstitution(institution);
         pcr.setCreatedInstitution(institution);
         pcr.setReferalInstitution(referingInstitution);
+        pcr.setUnitWard(ci.getWardUnit());
+        pcr.setBht(ci.getBhtNo());
 
         pcr.setEncounterNumber(ci.getTestNo());
+        pcr.setLabNumber(ci.getLabNo());
         pcr.setEncounterType(EncounterType.Test_Enrollment);
         pcr.setEncounterDate(fromDate);
         pcr.setEncounterFrom(new Date());
@@ -3049,6 +3141,8 @@ public class ClientController implements Serializable {
         pcr.setResultDate(toDate);
 
         pcr.setPcrResult(ci.getResult());
+        pcr.setCtValue(ci.getCt1());
+        pcr.setCtValue2(ci.getCt2());
 
         System.out.println("lastTestPcrOrRat = " + lastTestPcrOrRat);
 
@@ -3120,6 +3214,28 @@ public class ClientController implements Serializable {
             }
         }
         return intNum;
+    }
+
+    private Double cellValueDouble(Cell cell) {
+        Double dblNum = 0.0;
+        if (cell == null) {
+            return dblNum;
+        }
+        if (cell.getCellType() == null) {
+            return dblNum;
+        }
+        if (null != cell.getCellType()) {
+            switch (cell.getCellType()) {
+                case NUMERIC:
+                    Double d = cell.getNumericCellValue();
+                    dblNum = d;
+                    break;
+                default:
+                    dblNum = 0.0;
+                    break;
+            }
+        }
+        return dblNum;
     }
 
     public List<Area> completeClientsGnArea(String qry) {
@@ -6057,6 +6173,64 @@ public class ClientController implements Serializable {
     public void setResultCol(String resultCol) {
         this.resultCol = resultCol;
     }
+
+    public String getMohCol() {
+        return mohCol;
+    }
+
+    public void setMohCol(String mohCol) {
+        this.mohCol = mohCol;
+    }
+
+    public String getDistrictCol() {
+        return districtCol;
+    }
+
+    public void setDistrictCol(String districtCol) {
+        this.districtCol = districtCol;
+    }
+
+    public String getWardCol() {
+        return wardCol;
+    }
+
+    public void setWardCol(String wardCol) {
+        this.wardCol = wardCol;
+    }
+
+    public String getBhtCol() {
+        return bhtCol;
+    }
+
+    public void setBhtCol(String bhtCol) {
+        this.bhtCol = bhtCol;
+    }
+
+    public String getCt1Col() {
+        return ct1Col;
+    }
+
+    public void setCt1Col(String ct1Col) {
+        this.ct1Col = ct1Col;
+    }
+
+    public String getCt2Col() {
+        return ct2Col;
+    }
+
+    public void setCt2Col(String ct2Col) {
+        this.ct2Col = ct2Col;
+    }
+
+    public String getLabNoCol() {
+        return labNoCol;
+    }
+
+    public void setLabNoCol(String labNoCol) {
+        this.labNoCol = labNoCol;
+    }
+    
+    
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Inner Classes">
