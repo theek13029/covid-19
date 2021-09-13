@@ -62,8 +62,8 @@
                                                  action="#{clientController.toLabPrintSelectedBulk()}"
                                                  onclick="form.target = '_blank'"></h:commandButton>
 
-                                <h:commandButton class="btn btn-success mt-3 w-100" 
-                                                 value="Transfer SELECTED To Enter Results" 
+                                <h:commandButton class="btn btn-success mt-3 w-100"
+                                                 value="Transfer SELECTED To Enter Results"
                                                  action="#{clientController.toLabPrintSelectedBulk()}"
                                                  onclick="form.target = '_blank'"></h:commandButton>
                             </p:panelGrid>
@@ -76,9 +76,9 @@
                         <div class="row" >
                             <p:dataTable id="tbl" value="#{clientController.listedToPrint}"
                                          rowIndexVar="n"
-                                         var="c" 
-                                         rowKey="#{c.id}" 
-
+                                         var="c"
+                                         rowKey="#{c.id}"
+                                         resizableColumns="true"
                                          rows="10"
                                          paginator="true"
                                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -86,7 +86,7 @@
                                          rowsPerPageTemplate="5,10,{ShowAll|'All'}"
 
                                           rowStyleClass="#{(c.pcrResult.name) eq 'Positive'?'bg-danger':''}"
-                                         
+
                                          selection="#{clientController.selectedToPrint}">
                                 <p:column selectionMode="multiple" width="50" >
                                 </p:column>
