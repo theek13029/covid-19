@@ -8,13 +8,7 @@
         <ui:composition template="/template1.xhtml">
 
             <ui:define name="content">
-
                 <div class="container-fluid" >
-                    <div class="row" >
-                        <div class="col-12 p-2"   >
-                            <p:messages ></p:messages>
-                        </div>
-                    </div>
                     <div class="row" >
                         <div class="col-3" >
 
@@ -59,7 +53,7 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-                                                <h:commandLink disabled="true" value="View Institutions"
+                                                <h:commandLink value="View Institutions"
                                                                action="#{menuController.toListInstitutions()}"
                                                                class="btn btn-outline-primary w-100 btn-lg btn-block"
                                                                >
@@ -71,7 +65,7 @@
                                         <div class="col-12 p-2">
                                             <h:form>
 
-                                                <h:commandLink disabled="true" value="Add Institution"
+                                                <h:commandLink value="Add Institution"
                                                                action="#{menuController.toAddNewInstitution()}"
                                                                class="btn btn-outline-primary w-100 btn-lg btn-block"
                                                                >
