@@ -271,7 +271,7 @@ public class CommonController implements Serializable {
         System.out.println("date = " + date);
         Calendar d = Calendar.getInstance();
         d.setTime(date);
-        d.set(Calendar.HOUR_OF_DAY, d.getActualMaximum(Calendar.HOUR_OF_DAY));
+        d.set(Calendar.HOUR_OF_DAY , d.getActualMaximum(Calendar.HOUR_OF_DAY));
         d.set(Calendar.MINUTE, d.getActualMaximum(Calendar.MINUTE));
         d.set(Calendar.SECOND, d.getActualMaximum(Calendar.SECOND));
         d.set(Calendar.MILLISECOND, d.getActualMaximum(Calendar.MILLISECOND));
