@@ -49,7 +49,8 @@
                             </div>
                             <div class="row mb-4">
                                 <div class="col md-3">
-                                    <label for="wardunit" class="form-label fw-bold">Ward | Unit | Clinic</label>
+                                    <label for="wardunit" class="form-label fw-bold">Ward | Unit | Clinic 
+                                    <small class="px-2 text-muted">Required</small></label>
                                     <h:inputText id="wardunit" value="#{hospitalController.pcr.unitWard}" class="form-control"
                                                  required="true" requiredMessage="Need a Ward | Unit | Clinic">
                                         <f:ajax execute="wardunit" event="blur"></f:ajax>
@@ -57,7 +58,8 @@
                                     <h:message class="text-danger small" for="wardunit"></h:message>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="bhtNo" class="form-label fw-bold">BHT / OPD No/ Clinic No</label>
+                                    <label for="bhtNo" class="form-label fw-bold">BHT / OPD No/ Clinic No
+                                    <small class="px-2 text-muted">Required</small> </label>
                                     <h:inputText id="bhtNo" value="#{hospitalController.pcr.bht}" class="form-control"
                                                  required="true" requiredMessage="Need a Number">
                                         <f:ajax execute="bhtNo" event="blur"></f:ajax>
@@ -68,7 +70,8 @@
                             <div class="row mb-4">
                                 <h5 class="text-muted fw-bold">Reginoal Details</h5>
                                 <div class="col md-3">
-                                    <label class="form-label fw-bold" for="district">District</label>
+                                    <label class="form-label fw-bold" for="district">District
+                                    <small class="px-2 text-muted">Required</small> </label>
                                     <p:autoComplete required="true" requiredMessage="Please select a district" tabindex="110" id="district"
                                                     value="#{hospitalController.pcr.client.person.district}"
                                                     completeMethod="#{hospitalController.completeDistricts}" var="d" itemLabel="#{d.name}" itemValue="#{d}"
@@ -106,14 +109,11 @@
                                     <h:message class="text-danger small" for="name"></h:message>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="age" class="form-label fw-bold">Age (Y|M|D)<small
-                                            class="text-muted px-2">Required</small></label>
+                                    <label for="age" class="form-label fw-bold">Age (Y|M|D)</label>
                                     <div class="d-flex">
                                         <h:inputText id="year" class="form-control w-50" autocomplete="false"
-                                                     requiredMessage="Age is required" tabindex="108"
-                                                     value="#{hospitalController.pcr.client.person.ageYears}"
-                                                     required="true"
-                                                     >
+                                                     tabindex="108"
+                                                     value="#{hospitalController.pcr.client.person.ageYears}">
                                             <f:ajax event="keyup" execute="year month day" render="calDob"></f:ajax>
                                         </h:inputText>
                                         <h:inputText tabindex="108" id="month" class="form-control w-25" autocomplete="off"
@@ -130,7 +130,7 @@
                                 <div class="col-md-3">
                                     <label for="gender" class="form-label fw-bold">Gender <small
                                             class="text-muted px-2">Required</small></label>
-                                    <h:selectOneMenu tabindex="107" id="sex" value="#{hospitalController.pcr.client.person.sex}" required="true"
+                                    <h:selectOneMenu tabindex="107" id="gender" value="#{hospitalController.pcr.client.person.sex}" required="true"
                                                      class="form-select" requiredMessage="Please select gender">
                                         <f:selectItem itemLabel="Please select"></f:selectItem>
                                         <f:selectItems value="#{hospitalController.sexes}" var="genders" itemLabel="#{s.name}"
