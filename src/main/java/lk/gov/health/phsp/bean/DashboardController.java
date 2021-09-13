@@ -428,28 +428,28 @@ public class DashboardController implements Serializable {
         	double tempRate = ((double) this.todayPositivePcr/this.todayPcr) * 100;
         	this.todayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.todayPcrPositiveRate = "0.00%";
+        	this.todayPcrPositiveRate = "0.0%";
         }
 //      Calculate today's RAT percentage
         if (this.todayRat != 0) {
         	double tempRate = ((double) this.todayPositiveRat/this.todayRat) * 100;
         	this.todayRatPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.todayRatPositiveRate = "0.00%";
+        	this.todayRatPositiveRate = "0.0%";
         }
 //        Calculate yesterday's PCR positive percentage
         if (this.yesterdayPcr != 0) {
         	double tempRate = ((double) this.yesterdayPositivePcr/this.yesterdayPcr) * 100;
         	this.yesterdayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.yesterdayPcrPositiveRate = "0.00%";
+        	this.yesterdayPcrPositiveRate = "0.0%";
         }
 //        Calculates yesterday's Rat positive percentage
         if (this.yesterdayRat != 0) {
         	double tempRate = ((double) this.yesterdayPositiveRat/this.yesterdayRat) * 100;
         	this.yesterdayRatPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.yesterdayRatPositiveRate = "0.00%";
+        	this.yesterdayRatPositiveRate = "0.0%";
         }
 
     }
