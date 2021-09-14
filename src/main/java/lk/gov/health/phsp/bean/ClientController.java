@@ -3217,7 +3217,7 @@ public class ClientController implements Serializable {
     }
 
     private Double cellValueDouble(Cell cell) {
-        Double dblNum = 0.0;
+        Double dblNum = null;
         if (cell == null) {
             return dblNum;
         }
