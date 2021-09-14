@@ -371,6 +371,7 @@ public class MenuController implements Serializable {
             return "";
         }
         institutionController.prepareToListInstitution();
+        System.out.println("webUserController.getLoggedUser().getWebUserRoleLevel() = " + webUserController.getLoggedUser().getWebUserRoleLevel());
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
                 return "/regional/admin/institution_list";
@@ -385,7 +386,8 @@ public class MenuController implements Serializable {
             case Moh:
                 return "/moh/admin/institution_list";
             case Provincial:
-                return "/provincial/admin/user_list";
+                System.out.println("provincial");
+                return "/provincial/admin/institution_list";
             default:
                 return "";
         }
