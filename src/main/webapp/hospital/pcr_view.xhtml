@@ -14,126 +14,194 @@
                 View PCR Order
             </ui:define>
             <ui:define name="content">
-
-                <div class="card my-3">
-                    <h5 class="card-header bg-success">
-                        <h:form>
-                            <p:outputLabel class="text-white fs-5 fw-bold my-2" value="Patient Data For PCR Ordering" ></p:outputLabel>
-                        </h:form>
-                    </h5>
-                    <div class="card-body">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold fs-6">Patient Data For PCR Ordering</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">
+                                Test Number
+                            </td>
+                            <td>
+                                #{hospitalController.pcr.encounterNumber}
+                            </td>
+                            <td class="fw-bold">
+                                Ordering Category
+                            </td>
+                            <td>
+                                #{hospitalController.pcr.pcrOrderingCategory.name}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">
+                                Sampled Date | Time
+                            </td>
+                            <td>
+                                <p:outputLabel value="#{hospitalController.pcr.sampledAt}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy hh:mm"></f:convertDateTime>
+                                </p:outputLabel>
+                            </td>
+                            <td class="fw-bold">
+                                Lab
+                            </td>
+                            <td>
+                                #{hospitalController.pcr.referalInstitution.name}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Name</td>
+                            <td>
+                                #{hospitalController.pcr.client.person.name}
+                            </td>
+                            <td class="fw-bold">
+                                Citizenship
+                            </td>
+                            <td>
+                                #{hospitalController.pcr.client.person.citizenship.name}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">PHN Number</td>
+                            <td>
+                                #{hospitalController.pcr.client.phn}
+                            </td>
+                            <td class="fw-bold">
+                                Symptomatic Status
+                            </td>
+                            <td>
+                                #{hospitalController.pcr.symptomatic?'Yes':''}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">NIC | Passport Number</td>
+                            <td>
+                                #{hospitalController.pcr.client.person.nic}
+                            </td>
+                            <td class="fw-bold">Gender</td>
+                            <td>
+                                #{hospitalController.pcr.client.person.sex}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Age</td>
+                            <td>
+                                #{hospitalController.pcr.client.person.age}
+                            </td>
+                            <td class="fw-bold">Current Residential Address</td>
+                            <td>
+                                #{hospitalController.pcr.client.person.address}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">District</td>
+                            <td>
+                                #{hospitalController.pcr.client.person.district}
+                            </td>
+                            <td class="fw-bold">MOH Area</td>
+                            <td>
+                                #{hospitalController.pcr.client.person.mohArea}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">
+                                GN Division
+                            </td>
+                            <td>
+                                #{hospitalController.pcr.client.person.gnArea.name}
+                            </td>
+                            <td class="fw-bold">
+                                Contact Number
+                            </td>
+                            <td>
+                                #{labController.pcr.client.person.phone1}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">
+                                PHI Area
+                            </td>
+                            <td>
+                                #{hospitalController.pcr.client.person.phiArea.name}
+                            </td>
+                            <td class="fw-bold">
+                                Unit | Ward
+                            </td>
+                            <td>
+                                #{hospitalController.pcr.unitWard}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <h:form>
                         <div class="row">
-                            <div class="col-md-12">
-                                <p:panelGrid columns="4"  class="w-100 border border-light">
-
-                                    <h:outputLabel class="fs-6" value="Test Number:"></h:outputLabel>
-                                    <h:outputLabel class="fs-6 fw-bold" id="txtTestNo" value="#{hospitalController.pcr.encounterNumber}"></h:outputLabel>
-                                    <h:outputLabel class="fs-6"  value="Lab:"></h:outputLabel>
-                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.referalInstitution.name}"></h:outputLabel>
-
-                                    <h:outputLabel class="fs-6" value="Ordering Category:"></h:outputLabel>
-                                    <h:outputLabel class="fs-6 fw-bold" id="orderingCat" value="#{hospitalController.pcr.pcrOrderingCategory.name}"></h:outputLabel>
-                                    <h:outputLabel class="fs-6" value="Sampled at:"></h:outputLabel>
-                                    <h:outputLabel class="fs-6 fw-bold" id="test" value="#{hospitalController.pcr.sampledAt}">
-                                        <f:convertDateTime pattern="dd MMMM yyyy hh:mm" ></f:convertDateTime>
-                                    </h:outputLabel>
-
-                                    <h:outputLabel class="fs-6" value="Name:" />
-                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.name}" title="Name" />
-                                    <h:outputLabel class="fs-6" value="Citizenship:" for="citizenship" />
-                                    <h:outputLabel class="fs-6 fw-bold" id="citizenship" value="#{hospitalController.pcr.client.person.citizenship.name}" ></h:outputLabel>
-
-
-                                    <h:outputLabel class="fs-6" value="PHN No:"  />
-                                    <h:outputLabel class="fs-6 fw-bold" id="phn" value="#{hospitalController.pcr.client.phn}" title="Phn"></h:outputLabel>
-                                    <h:outputLabel class="fs-6" value="Other Ordering Category:"  />
-                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.pcrOrderingCategoryOther}"/>
-
-                                    <h:outputLabel class="fs-6" value="Symptomatic:"  />
-                                    <h:outputLabel class="fs-6 fw-bold" tabindex="106" value="#{hospitalController.pcr.symptomatic?'Yes':''}" ></h:outputLabel>
-                                    <h:outputLabel class="fs-6" value="NIC/NIC of the guardian/Passport No. :" for="nic" />
-                                    <h:outputLabel class="fs-6 fw-bold" id="nic" value="#{hospitalController.pcr.client.person.nic}" title="Nic" ></h:outputLabel>
-
-                                    <h:outputLabel class="fs-6" value="Gender:"  for="sex" />
-                                    <h:outputLabel class="fs-6 fw-bold" id="sex" value="#{hospitalController.pcr.client.person.sex}"></h:outputLabel>
-                                    <h:outputLabel class="fs-6" value="Age:" />
-                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.age}" ></h:outputLabel>
-
-                                    <h:outputLabel class="fs-6" value="Current Residential Address:" for="address" />
-                                    <h:outputLabel class="fs-6 fw-bold" tabindex="4" id="address" value="#{hospitalController.pcr.client.person.address}" title="Address ****" />
-                                    <h:outputLabel class="fs-6" value="District:"  />
-                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.district.name}" />
-
-                                    <h:outputLabel class="fs-6" value="MOH Area:" />
-                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.mohArea.name}" />
-                                    <h:outputLabel class="fs-6" value="Contact Number :" />
-                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.phone1}" />
-
-                                    <h:outputLabel class="fs-6" value="GN Area:"  />
-                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.gnArea.name}" />
-                                    <h:outputLabel class="fs-6" value="PHI Area:" />
-                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.client.person.phiArea.name}" />
-
-                                    <h:outputLabel class="fs-6" value="Unit/Ward:"  />
-                                    <h:outputLabel class="fs-6 fw-bold" value="#{hospitalController.pcr.unitWard}" />
-
-                                </p:panelGrid>
+                            <div class="col-sm-12 col-md-3 col-lg-2">
+                                <h:commandButton value="Edit Details" action="#{hospitalController.toPcrEdit()}"
+                                                 class="btn btn-primary fw-bold w-100 mb-2">
+                                </h:commandButton>
+                            </div>
+                            <div class="col-sm-12 col-md-3 col-lg-2">
+                                <h:commandButton value="Add New PCR Request" class="btn btn-primary fw-bold mb-2 w-100"
+                                                 action="#{hospitalController.toAddNewPcrWithNewClient()}">
+                                </h:commandButton>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-footer bg-white">
-                        <div class="col-md-6">
-                            <h:commandButton class="my-2 btn btn-warning w-25 me-2" value="To Edit Details" action="#{hospitalController.toPcrEdit()}" ></h:commandButton>
-                            <h:commandButton class="my-2 btn btn-success w-25" value="Add New PCR Order" action="#{hospitalController.toAddNewPcrWithNewClient()}">
-                            </h:commandButton>
-                        </div>
-                    </div>
+                    </h:form>
                 </div>
 
-
                 <div class="row">
-                    <div class="col-md-12">
-                        <h:form>
-                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{sessionController.pcrList}" id="tbl"
-                                         var="c" paginator="true" rowKey="#{c.id}" rows="10" >
+                    <h:form>
+                        <div>
+                            <div class="my-2">
+                                <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button"
+                                                 value="Columns" />
+                                <p:columnToggler datasource="tbl" trigger="toggler" />
+                            </div>
+
+                            <p:dataTable reflow="true" resizableColumns="true" multiViewState="true" resizeMode="expand"
+                                         value="#{sessionController.pcrList}" id="tbl" var="c" paginator="true" rowKey="#{c.id}" rows="10">
                                 <f:facet name="header">
-                                    <h4  class="fs-4 my-3 fw-bold">Last Entries</h4>
+                                    <h3 class="fs-5 fw-bold mb-2">Latest Entries</h3>
                                 </f:facet>
-                                <p:column class="fs-6" headerText="Test No" sortBy="#{c.encounterNumber}">
-                                    <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
+                                <p:column headerText="Test No" sortBy="#{c.encounterNumber}">
+                                    <p:outputLabel value="#{c.encounterNumber}"></p:outputLabel>
                                 </p:column>
-                                <p:column class="fs-6" headerText="Name" sortBy="#{c.client.person.name}" >
-                                    <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                                <p:column headerText="Name" sortBy="#{c.client.person.name}">
+                                    <p:outputLabel value="#{c.client.person.name}"></p:outputLabel>
                                 </p:column>
-                                <p:column class="fs-6" headerText="Age" sortBy="#{c.client.person.ageInDays}" >
-                                    <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
+                                <p:column headerText="Age" sortBy="#{c.client.person.ageInDays}">
+                                    <p:outputLabel value="#{c.client.person.age}"></p:outputLabel>
                                 </p:column>
-                                <p:column class="fs-6" headerText="Sex" sortBy="#{c.client.person.sex.name}">
-                                    <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
+                                <p:column headerText="Sex" sortBy="#{c.client.person.sex.name}">
+                                    <p:outputLabel value="#{c.client.person.sex.name}"></p:outputLabel>
                                 </p:column>
-                                <p:column class="fs-6" headerText="NIC" sortBy="#{c.client.person.nic}" >
-                                    <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                                <p:column headerText="NIC" sortBy="#{c.client.person.nic}">
+                                    <p:outputLabel value="#{c.client.person.nic}"></p:outputLabel>
                                 </p:column>
-                                <p:column class="fs-6" headerText="Address" >
-                                    <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
+                                <p:column headerText="Address">
+                                    <p:outputLabel value="#{c.client.person.address}"></p:outputLabel>
                                 </p:column>
-                                <p:column headerText="Actions" >
-                                    <h:commandButton class="btn btn-warning w-100" value="Edit" action="#{hospitalController.toPcrEdit()}" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{hospitalController.pcr}" ></f:setPropertyActionListener>
+                                <p:column headerText="Phone">
+                                    <p:outputLabel value="#{c.client.person.phone1}"></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="GN Area">
+                                    <p:outputLabel value="#{c.client.person.gnArea.name}"></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Actions">
+                                    <h:commandButton value="Edit" action="#{hospitalController.toPcrEdit()}" class="btn btn-sm btn-primary">
+                                        <f:setPropertyActionListener value="#{c}" target="#{hospitalController.pcr}">
+                                        </f:setPropertyActionListener>
                                     </h:commandButton>
-                                    <h:commandButton class="btn btn-danger w-100" value="Delete" action="#{hospitalController.toDeleteTestFromLastPcrList()}" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{hospitalController.deleting}" ></f:setPropertyActionListener>
+                                    <h:commandButton value="Delete" action="#{hospitalController.toDeleteTestFromLastPcrList()}" class="btn btn-sm btn-danger">
+                                        <f:setPropertyActionListener value="#{c}" target="#{hospitalController.deleting}">
+                                        </f:setPropertyActionListener>
                                     </h:commandButton>
                                 </p:column>
                             </p:dataTable>
-                        </h:form>
-                    </div>
+                        </div>
+                    </h:form>
                 </div>
-
-
-
-
-
             </ui:define>
         </ui:composition>
     </body>
