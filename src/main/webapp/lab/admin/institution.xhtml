@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<body>
+  <ui:composition template="/lab/admin/index.xhtml">
+    <ui:define name="admin">
+      <h:form id="InstitutionCreateForm">
+        <div class="px-4 py-4 bg-white">
+          <h5 class="text-muted mt-3 fw-bold">Institution Details</h5>
+          <div class="row mb-3">
+            <label for="institutionType" class="form-col-label fw-bold col-md-4">Institution Type</label>
+            <div class="col-md-8">
+              <h:selectOneMenu id="institutionType" class="form-select"
+                value="#{institutionController.selected.institutionType}" title="InstitutionType">
+                <f:selectItems value="#{applicationController.institutionTypes}" var="institutionTypes"
+                  itemValue="#{institutionTypes}" itemLabel="#{institutionTypes.label}"></f:selectItems>
+              </h:selectOneMenu>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="name" class="col-form-label fw-bold col-md-4">Institution Name</label>
+            <div class="col-md-8">
+              <h:inputText id="name" autocomplete="off" class="form-control"
+                value="#{institutionController.selected.name}" title="Name" />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label for="code" class="form-col-label fw-bold col-md-4">Code</label>
+            <div class="col-md-8">
+              <h:inputText id="code" autocomplete="off" class="form-control"
+                value="#{institutionController.selected.code}" title="Code" />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label for="parent" class="col-form-label fw-bold col-md-4">Parent</label>
+            <div class="col-md-8">
+              <p:autoComplete id="parent" class="d-block" value="#{institutionController.selected.parent}"
+                completeMethod="#{institutionController.completeInstitutions}" var="i" itemLabel="#{i.name}"
+                itemValue="#{i}" forceSelection="True" maxResults="15" minQueryLength="3">
+              </p:autoComplete>
+            </div>
+          </div>
+
+          <h5 class="text-muted fw-bold">Contact Details <button class="btn btn-sm btn-secondary mx-2" data-bs-target="#contactdetails" data-bs-toggle="collapse" role="button" type="button" aria-expanded="false" aria-controls="contactdetails">Expand</button></h5>
+          <div class="collapse" id="contactdetails">
+            <div class="row mb-3">
+              <label for="address" class="fw-bold col-form-label col-md-4">Address</label>
+              <div class="col-md-8">
+                <h:inputText id="address" class="form-control" value="#{institutionController.selected.address}"
+                  title="Address" />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="fax" class="fw-bold col-form-label col-md-4">Fax</label>
+              <div class="col-md-8">
+                <h:inputText id="fax" class="form-control" value="#{institutionController.selected.fax}" title="Fax" />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="email" class="fw-bold col-form-label col-md-4">Email</label>
+              <div class="col-md-8">
+                <h:inputText id="email" class="form-control" value="#{institutionController.selected.email}"
+                  title="Email" />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="phone" class="fw-bold col-form-label col-md-4">Contact Number</label>
+              <div class="col-md-8">
+                <h:inputText id="phone" class="form-control" value="#{institutionController.selected.phone}"
+                  title="Phone" />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="mobile" class="fw-bold col-form-label col-md-4">Mobile Number</label>
+              <div class="col-md-8">
+                <h:inputText id="mobile" class="form-control" value="#{institutionController.selected.mobile}"
+                  title="Mobile" />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="Web" class="fw-bold col-form-label col-md-4">Website</label>
+              <div class="col-md-8">
+                <h:inputText id="web" class="form-control" value="#{institutionController.selected.web}" title="Web" />
+              </div>
+            </div>
+          </div>
+
+          <h5 class="text-muted fw-bold">PHN Issue
+            <button class="btn btn-sm btn-secondary mx-2" data-bs-target="#phnDetails" data-bs-toggle="collapse" role="button" type="button" aria-expanded="false" aria-controls="phnDetails">Expand</button>
+          </h5>
+          <div class="collapse" id="phnDetails">
+            <div class="row mb-3">
+              <label for="lastHin" class="col-form-label col-md-4 fw-bold">Last Serial # of PHN</label>
+              <div class="col md-8">
+                <h:inputText id="lastHin" class="form-control" value="#{institutionController.selected.lastHin}"
+                  title="LastHin" />
+              </div>
+            </div>
+            <div class="row mb-3">
+
+              <label for="poiNumber" class="col-form-label col-md-4 fw-bold">POI Number</label>
+              <div class="col md-8">
+                <h:inputText id="poiNumber" class="form-control" value="#{institutionController.selected.poiNumber}"
+                  title="PoiNumber" />
+              </div>
+
+            </div>
+            <div class="row mb-3">
+
+              <label for="poii" class="col-form-label col-md-4 fw-bold">POI Issuing Institute</label>
+              <div class="col md-8">
+                <p:autoComplete id="poii" value="#{institutionController.selected.poiInstitution}" class="d-block"
+                  completeMethod="#{institutionController.completeInstitutions}" forceSelection="true" maxResults="15"
+                  minQueryLength="3" var="poii" itemLabel="#{poii.name}" itemValue="#{poii}">
+                </p:autoComplete>
+
+              </div>
+            </div>
+          </div>
+
+          <h5 class="text-muted fw-bold">Location Details
+            <button class="btn btn-sm btn-secondary mx-2" data-bs-target="#locationdetails" data-bs-toggle="collapse" role="button" type="button" aria-expanded="false" aria-controls="locationdetails">Expand</button>
+          </h5>
+          <div class="collapse" id="locationdetails">
+            <div class="row mb-3">
+              <label for="province" class="fw-bold col-form-label col-md-4">Province</label>
+              <div class="col-md-8">
+                <p:autoComplete id="province" value="#{institutionController.selected.province}" class="d-block"
+                  completeMethod="#{areaController.completeProvinces}" var="province" itemLabel="#{province.name}"
+                  itemValue="#{province}" maxResults="15" forceSelection="true" minQueryLength="3"></p:autoComplete>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="pdhsArea" class="fw-bold col-form-label col-md-4">PDHS Area</label>
+              <div class="col-md-8">
+                <p:autoComplete id="pdhsArea" value="#{institutionController.selected.pdhsArea}" class="d-block"
+                  inputStyleClass="form-control" completeMethod="#{areaController.completePdhsAreas}" var="pdhsArea"
+                  itemLabel="#{pdhsArea.name}" itemValue="#{pdhsArea}" maxResults="15" forceSelection="true"
+                  minQueryLength="3">
+                </p:autoComplete>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="district" class="fw-bold col-form-label col-md-4">District</label>
+              <div class="col-md-8">
+                <p:autoComplete id="district" value="#{institutionController.selected.district}" class="d-block"
+                  inputStyleClass="form-control" completeMethod="#{areaController.completeDistricts}" var="district"
+                  itemLabel="#{district.name}" itemValue="#{district}" maxResults="15" forceSelection="true"
+                  minQueryLength="3">
+                </p:autoComplete>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="rdhsArea" class="fw-bold col-form-label col-md-4">RDHS Area</label>
+              <div class="col-md-8">
+                <p:autoComplete id="rdhsArea" value="#{institutionController.selected.rdhsArea}" class="d-block"
+                  completeMethod="#{areaController.completeRdhsAreas}" var="rdhsArea" itemLabel="#{rdhsArea.name}"
+                  itemValue="#{rdhsArea}" maxResults="15" forceSelection="true" minQueryLength="3">
+                </p:autoComplete>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="dsDivision" class="fw-bold col-form-label col-md-4">DS Division</label>
+              <div class="col-md-8">
+                <p:autoComplete id="dsDivision" value="#{institutionController.selected.dsDivision}" class="d-block"
+                  completeMethod="#{areaController.completeDsAreas}" var="dsDivision" itemLabel="#{dsDivision.name}"
+                  itemValue="#{dsDivision}" maxResults="15" forceSelection="true" minQueryLength="3">
+                </p:autoComplete>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="mohArea" class="fw-bold col-form-label col-md-4">MOH Area</label>
+              <div class="col-md-8">
+                <p:autoComplete id="moh" value="#{institutionController.selected.mohArea}" class="d-block"
+                  completeMethod="#{areaController.completeMoh}" var="moh" itemLabel="#{moh.name}" itemValue="#{moh}"
+                  maxResults="15" forceSelection="true" minQueryLength="3">
+                </p:autoComplete>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="phiArea" class="fw-bold col-form-label col-md-4">PHI Area</label>
+              <div class="col-md-8">
+                <p:autoComplete id="phiArea" value="#{institutionController.selected.phiArea}" class="d-block"
+                  completeMethod="#{areaController.completePhiAreas}" var="phiArea" itemLabel="#{phiArea.name}"
+                  itemValue="#{phiArea}" maxResults="15" forceSelection="true" minQueryLength="3">
+                </p:autoComplete>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="phmArea" class="fw-bold col-form-label col-md-4">PHM Area</label>
+              <div class="col-md-8">
+                <p:autoComplete id="phmArea" value="#{institutionController.selected.phmArea}" class="d-block"
+                  completeMethod="#{areaController.completeGnAreas}" var="phm" itemLabel="#{phm.name}" itemValue="#{phm}"
+                  maxResults="15" forceSelection="true" minQueryLength="3">
+                </p:autoComplete>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="gnDivision" class="fw-bold col-form-label col-md-4">GN Division</label>
+              <div class="col-md-8">
+                <p:autoComplete id="gnArea" value="#{institutionController.selected.gnArea}" class="d-block"
+                  completeMethod="#{areaController.completeGnAreas}" var="gn" itemLabel="#{gn.name}" itemValue="#{gn}"
+                  maxResults="15" forceSelection="true" minQueryLength="3">
+                </p:autoComplete>
+              </div>
+            </div>
+          </div>
+
+          <p:messages></p:messages>
+          <h:commandButton class="btn btn-primary fw-bold"
+            actionListener="#{institutionController.saveOrUpdateInstitution()}" value="Save" />
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
+</body>
+</html>
