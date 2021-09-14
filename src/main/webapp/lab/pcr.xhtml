@@ -122,6 +122,20 @@
                                     <h:message class="text-danger small" for="name"></h:message>
                                 </div>
                                 <div class="col-md-3">
+                                    <label for="nic" class="form-label fw-bold">NIC | Passport Number</label>
+                                    <h:inputText tabindex="16" id="nic" autocomplete="off" value="#{labController.pcr.client.person.nic}" title="NIC"
+                                                 validatorMessage="Please check the NIC number" class="form-control">
+                                        <f:ajax event="blur" execute="@this" render="nicExists year month sex"
+                                                listener="#{labController.checkNicExistsForPcr()}"></f:ajax>
+                                    </h:inputText>
+                                    <h:message class="text-danger small" for="nic"></h:message>
+                                    <h:panelGroup id="nicExists">
+                                        <h:commandLink rendered="#{labController.nicExistsForPcr}" immediate="true"
+                                                       action='#{labController.toAddNewPcrWithExistingNic()}'
+                                                       value="NIC exists. Click here to load the patient" class="btn btn-secondary btn-sm"></h:commandLink>
+                                    </h:panelGroup>
+                                </div>
+                                <div class="col-md-3">
                                     <label for="age" class="form-label fw-bold">Age (Y|M|D)</label>
                                     <div class="d-flex">
                                         <h:inputText tabindex="12" id="year" class="form-control w-50" autocomplete="false"
@@ -132,7 +146,7 @@
                                                      value="#{labController.pcr.client.person.ageMonths}">
                                             <f:ajax event="keyup" execute="year month day" render="calBob"></f:ajax>
                                         </h:inputText>
-                                        <h:inputText tabindex="14" class="form-control w-25" id="day" autocomplete="off" 
+                                        <h:inputText tabindex="14" class="form-control w-25" id="day" autocomplete="off"
                                                      value="#{labController.pcr.client.person.ageDays}">
                                             <f:ajax event="keyup" execute="year month day" render="calDob"></f:ajax>
                                         </h:inputText>
@@ -149,20 +163,6 @@
                                     </h:selectOneMenu>
                                     <h:message class="text-danger small" for="sex"></h:message>
                                 </div>
-                                <div class="col-md-3">
-                                    <label for="nic" class="form-label fw-bold">NIC | Passport Number</label>
-                                    <h:inputText tabindex="16" id="nic" autocomplete="off" value="#{labController.pcr.client.person.nic}" title="NIC"
-                                                 validatorMessage="Please check the NIC number" class="form-control">
-                                        <f:ajax event="blur" execute="@this" render="nicExists year month sex"
-                                                listener="#{labController.checkNicExistsForPcr()}"></f:ajax>
-                                    </h:inputText>
-                                    <h:message class="text-danger small" for="nic"></h:message>
-                                    <h:panelGroup id="nicExists">
-                                        <h:commandLink rendered="#{labController.nicExistsForPcr}" immediate="true"
-                                                       action='#{labController.toAddNewPcrWithExistingNic()}'
-                                                       value="NIC exists. Click here to load the patient" class="btn btn-secondary btn-sm"></h:commandLink>
-                                    </h:panelGroup>
-                                </div>
                             </div>
                             <div class="row mb-4">
                                 <div class="col-md-3">
@@ -173,6 +173,15 @@
                                                        itemLabel="#{symptomaticStatus.name}" itemValue="#{symptomaticStatus}"></f:selectItems>
                                     </h:selectOneMenu>
                                 </div>
+                                <div class="col-md-3">
+                                    <label for="vaccineStatus" class="form-label fw-bold">Vaccination Status</label>
+                                    <h:selectOneMenu id="vaccineStatus" value="#{labController.pcr.vaccinationStatus}" class="form-select">
+                                      <f:selectItem itemLabel="Please select"></f:selectItem>
+                                      <f:selectItems value="#{itemApplicationController.vaccinationStatuses}" var="statuses"
+                                        itemLabel="#{statuses.name}" itemValue="#{statuses}">
+                                      </f:selectItems>
+                                    </h:selectOneMenu>
+                                  </div>
                                 <div class="col-md-3">
                                     <label for="phn" class="form-label fw-bold">
                                         PHN #
@@ -188,17 +197,6 @@
                                                        itemLabel="#{citizenships.name}" itemValue="#{citizenships}"></f:selectItems>
                                     </h:selectOneMenu>
                                 </div>
-                                <div class="col-md-3">
-                                    <label for="phone" class="form-label fw-bold">Contact Number<small
-                                            class="text-muted px-2">Required</small></label>
-                                    <p:commandLink id="lnkLastPhone" action="#{labController.retrieveLastPhoneForPcr()}"
-                                                   process="lnkLastPhone" update="phone">
-                                        <i class="bi bi-arrow-clockwise"></i>
-                                    </p:commandLink>
-                                    <h:inputText tabindex="20" id="phone" class="form-control" requiredMessage="Contact number is required" required="true"
-                                                 value="#{labController.pcr.client.person.phone1}" autocomplete="off"></h:inputText>
-                                    <h:message class="text-danger small" for="phone"></h:message>
-                                </div>
                             </div>
                             <div class="row mb-4">
                                 <div class="col-md-6">
@@ -212,7 +210,18 @@
                                                  value="#{labController.pcr.client.person.address}"></h:inputText>
                                     <h:message class="text-danger small" for="address"></h:message>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-3">
+                                    <label for="phone" class="form-label fw-bold">Contact Number<small
+                                            class="text-muted px-2">Required</small></label>
+                                    <p:commandLink id="lnkLastPhone" action="#{labController.retrieveLastPhoneForPcr()}"
+                                                   process="lnkLastPhone" update="phone">
+                                        <i class="bi bi-arrow-clockwise"></i>
+                                    </p:commandLink>
+                                    <h:inputText tabindex="20" id="phone" class="form-control" requiredMessage="Contact number is required" required="true"
+                                                 value="#{labController.pcr.client.person.phone1}" autocomplete="off"></h:inputText>
+                                    <h:message class="text-danger small" for="phone"></h:message>
+                                </div>
+                                <div class="col-md-3">
                                     <label for="comments" class="form-label fw-bold">comments</label>
                                     <h:inputText tabindex="22" id="comments" class="form-control" value="#{labController.pcr.comments}"></h:inputText>
                                 </div>
@@ -223,10 +232,10 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <h:commandButton tabindex="23" class="btn btn-success fw-bold"
-                                                     action="#{labController.savePcrAndToNewPcr()}" value="Save and NEW PCR">
+                                                     action="#{labController.savePcrAndToNewPcr()}" value="Save and NEW PCR Request">
                                     </h:commandButton>
                                     <h:commandButton tabindex="24" class="btn btn-success mx-2 fw-bold"
-                                                     action="#{labController.savePcrAndToPcrView()}" value="Save and VIEW PCR">
+                                                     action="#{labController.savePcrAndToPcrView()}" value="Save and VIEW PCR Details">
                                     </h:commandButton>
                                 </div>
                             </div>
