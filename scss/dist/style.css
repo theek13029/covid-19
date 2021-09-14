@@ -132,6 +132,12 @@
   border: 1px solid;
 }
 
+.ui-columntoggler-items {
+  background-color: #fff;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .border-none {
   border-radius: 0;
 }
