@@ -285,14 +285,19 @@ public class InstitutionApplicationController {
     public List<Institution> findChildrenInstitutions(Institution ins) {
         List<Institution> allIns = getInstitutions();
         List<Institution> cins = new ArrayList<>();
-        allIns.stream().filter(i -> !(i.getParent() == null)).filter(i -> (i.getParent().equals(ins))).forEachOrdered(i -> {
-            cins.add(i);
-        });
-        List<Institution> tins = new ArrayList<>();
-        tins.addAll(cins);
-        return tins;
+        for (Institution i : allIns) {
+            if (i.getParent() != null) {
+                if (!i.equals(ins)) {
+                    if (i.getParent().equals(ins)) {
+                        cins.add(i);
+                        cins.addAll(findChildrenInstitutions(i));
+                    }
+                }
+            }
+        }
+        return cins;
     }
-    
+
     public List<Institution> findChildrenInstitutionsOld(Institution ins) {
         List<Institution> allIns = getInstitutions();
         List<Institution> cins = new ArrayList<>();
@@ -310,12 +315,12 @@ public class InstitutionApplicationController {
         }
         return tins;
     }
-    
-    public Institution findMinistryOfHealth(){
-        Institution moh=null;
-        for(Institution i: getInstitutions()){
-            if(i.getInstitutionType()==InstitutionType.Ministry_of_Health){
-                moh =i;
+
+    public Institution findMinistryOfHealth() {
+        Institution moh = null;
+        for (Institution i : getInstitutions()) {
+            if (i.getInstitutionType() == InstitutionType.Ministry_of_Health) {
+                moh = i;
                 return moh;
             }
         }

@@ -7,7 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-        <ui:composition template="/national/admin/index.xhtml">
+        <ui:composition template="/provincial/admin/index.xhtml">
             <ui:define name="admin">
                 <h:form>    
                     <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" 
@@ -70,12 +70,17 @@
 
                         </p:column>
                         <p:column sortBy="#{item.rdhsArea.name}"
-                                  
-                                  filterBy="#{item.rdhsArea.name}" filterMatchMode="contains" >
+                                  filterBy="#{item.rdhsArea.name}" filterMatchMode="startsWith" >
                             <f:facet name="header">
                                 <h:outputText value="RDHS"/>
                             </f:facet>
                             <h:outputText value="#{item.rdhsArea.name}"/>
+                        </p:column>
+                         <p:column  >
+                            <f:facet name="header">
+                                <h:outputText value="Users"/>
+                            </f:facet>
+                             <h:outputText value="#{webUserController.displayUsers(item)}"/>
                         </p:column>
                         <p:column  >
                             <f:facet name="header">
@@ -109,6 +114,11 @@
                     </p:dataTable>
 
 
+                    <h:commandButton value="Download" >
+                        <p:dataExporter target="tbl" type="xlsx" fileName="institutions and users" ></p:dataExporter>
+                    </h:commandButton>
+                    
+            
 
                 </h:form>
             </ui:define>

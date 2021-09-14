@@ -2129,6 +2129,65 @@ public class WebUserController implements Serializable {
         return rs;
     }
 
+    public WebUserRole[] getWebUserRolesForPd() {
+        List<WebUserRole> urs = new ArrayList<>();
+        urs.add(WebUserRole.Hospital_Admin);
+        urs.add(WebUserRole.Pdhs);
+        urs.add(WebUserRole.Provincial_Admin);
+        urs.add(WebUserRole.Pdhs_Staff);
+        urs.add(WebUserRole.Rdhs);
+        urs.add(WebUserRole.Regional_Admin);
+        urs.add(WebUserRole.Re);
+        urs.add(WebUserRole.Rdhs_Staff);
+        urs.add(WebUserRole.Moh);
+        urs.add(WebUserRole.Amoh);
+        urs.add(WebUserRole.Sphi);
+        urs.add(WebUserRole.Phns);
+        urs.add(WebUserRole.Sphm);
+        urs.add(WebUserRole.Phi);
+        urs.add(WebUserRole.Phm);
+        urs.add(WebUserRole.MohStaff);
+        urs.add(WebUserRole.Hospital_Admin);
+        urs.add(WebUserRole.Hospital_User);
+        urs.add(WebUserRole.Doctor);
+        urs.add(WebUserRole.Nurse);
+        urs.add(WebUserRole.Lab_Admin);
+        urs.add(WebUserRole.Lab_Consultant);
+        urs.add(WebUserRole.Lab_Mo);
+        urs.add(WebUserRole.Lab_Mlt);
+        urs.add(WebUserRole.Lab_User);
+        WebUserRole[] rs = urs.toArray(new WebUserRole[0]);
+        return rs;
+    }
+    
+    public WebUserRole[] getWebUserRolesForRd() {
+        List<WebUserRole> urs = new ArrayList<>();
+        urs.add(WebUserRole.Hospital_Admin);
+        urs.add(WebUserRole.Rdhs);
+        urs.add(WebUserRole.Regional_Admin);
+        urs.add(WebUserRole.Re);
+        urs.add(WebUserRole.Rdhs_Staff);
+        urs.add(WebUserRole.Moh);
+        urs.add(WebUserRole.Amoh);
+        urs.add(WebUserRole.Sphi);
+        urs.add(WebUserRole.Phns);
+        urs.add(WebUserRole.Sphm);
+        urs.add(WebUserRole.Phi);
+        urs.add(WebUserRole.Phm);
+        urs.add(WebUserRole.MohStaff);
+        urs.add(WebUserRole.Hospital_Admin);
+        urs.add(WebUserRole.Hospital_User);
+        urs.add(WebUserRole.Doctor);
+        urs.add(WebUserRole.Nurse);
+        urs.add(WebUserRole.Lab_Admin);
+        urs.add(WebUserRole.Lab_Consultant);
+        urs.add(WebUserRole.Lab_Mo);
+        urs.add(WebUserRole.Lab_Mlt);
+        urs.add(WebUserRole.Lab_User);
+        WebUserRole[] rs = urs.toArray(new WebUserRole[0]);
+        return rs;
+    }
+
     public WebUserRole[] getWebUserRolesForLabAdmin() {
         List<WebUserRole> urs = new ArrayList<>();
         urs.add(WebUserRole.Hospital_Admin);

@@ -853,7 +853,7 @@ public class NationalController implements Serializable {
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
 
-        j += " and c.resultConfirmedAt between :fd and :td ";
+        j += " and (c.resultConfirmedAt > :fd and c.resultConfirmedAt <:td) ";
         m.put("fd", getFromDate());
         m.put("td", getToDate());
 
@@ -873,8 +873,11 @@ public class NationalController implements Serializable {
                 + " order by count(c) desc ";
 
         institutionCounts = new ArrayList<>();
+        System.out.println("m = " + m);
+        System.out.println("j = " + j);
 
         List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
+        System.out.println("objCounts = " + objCounts.size());
         if (objCounts == null || objCounts.isEmpty()) {
             return "/national/count_of_results_by_lab";
         }
