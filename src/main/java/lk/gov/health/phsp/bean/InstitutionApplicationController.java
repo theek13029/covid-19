@@ -288,7 +288,7 @@ public class InstitutionApplicationController {
         for (Institution i : allIns) {
             if (i.getParent() != null) {
                 if (!i.equals(ins)) {
-                    if (!i.getParent().equals(ins)) {
+                    if (i.getParent().equals(ins)) {
                         cins.add(i);
                         cins.addAll(findChildrenInstitutions(i));
                     }
