@@ -27,6 +27,10 @@
                   </h:selectOneMenu>
                 </div>
                 <div class="col-md-3">
+                  <label for="sampledAt" class="form-label d-block fw-bold">Sampled Date</label>
+                  <p:calendar value="#{mohController.pcr.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
+                </div>
+                <div class="col-md-3">
                   <label for="sampledAt" class="form-label d-block fw-bold">Result Issued Date</label>
                   <p:datePicker id="sampledAt" value="#{mohController.pcr.resultConfirmedAt}" class="w-100 d-block"
                                 pattern="dd MMMM yyyy hh:mm"></p:datePicker>
@@ -43,6 +47,8 @@
                   </h:selectOneMenu>
                   <h:message for="orderingCat" class="text-danger small"></h:message>
                 </div>
+              </div>
+              <div class="row mb-3">
                 <div class="col-md-3">
                   <label for="lab" class="form-label fw-bold">Referring Lab</label>
                   <p:autoComplete id="lab" inputStyleClass="autocomplete" value="#{mohController.pcr.referalInstitution}"

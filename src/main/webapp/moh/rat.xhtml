@@ -28,6 +28,10 @@
                                     </h:selectOneMenu>
                                 </div>
                                 <div class="col-md-3">
+                                    <label for="sampledAt" class="form-label fw-bold d-block">Sampled Date</label>
+                                    <p:calendar value="#{mohController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm" ></p:calendar>
+                                </div>
+                                <div class="col-md-3">
                                     <label for="calendar" class="form-label d-block fw-bold">Result Issued Date</label>
                                     <p:calendar id="calendar" value="#{mohController.rat.resultConfirmedAt}" pattern="dd MMMM yyyy hh:mm">
                                     </p:calendar>
@@ -44,6 +48,8 @@
                                     </h:selectOneMenu>
                                     <h:message class="text-danger small" for="orderingCat"></h:message>
                                 </div>
+                            </div>
+                            <div class="row mb-3">
                                 <div class="col-md-3">
                                     <label for="acLab" class="form-label fw-bold">Referring Lab<small
                                             class="text-muted px-2">Required</small></label>
@@ -239,12 +245,13 @@
                             <div class="row">
                                 <div>
                                     <h:commandButton class="btn btn-success fw-bold" action="#{mohController.saveRatAndToNewRat()}"
-                                                     value="Save and NEW RAT Result">
+                                                     value="Save and NEW RAT Request With Result">
                                     </h:commandButton>
 
                                     <h:commandButton class="btn btn-success mx-2 fw-bold" action="#{mohController.saveRatAndToRatView()}"
                                                      value="Save and View RAT Result Details">
                                     </h:commandButton>
+
                                 </div>
                             </div>
                         </div>
