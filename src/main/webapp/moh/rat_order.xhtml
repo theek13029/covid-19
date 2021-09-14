@@ -1,243 +1,243 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui"
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
-    <h:body>
-        <ui:composition template="/template1.xhtml">
-            <ui:define name="content">
-                <h:form class="form">
-                    <p:focus for="txtTestNo"></p:focus>
-                    <div class="row bg-white py-4">
-                        <h4 class="text-center fw-bold">NEW RAT REQUEST</h4>
-                        <div class="my-2 px-4">
-                            <div class="row mb-4">
-                                <h5 class="text-muted fw-bold">Investigation Details</h5>
-                                <div class="col-md-3">
-                                    <label for="txtTestNo" class="fw-bold form-label">Test Number</label>
-                                    <h:inputText id="txtTestNo" class="form-control" value="#{mohController.rat.encounterNumber}">
-                                    </h:inputText>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="date" class="form-label d-block fw-bold">Sampled Date</label>
-                                    <p:calendar id="date" value="#{mohController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm"></p:calendar>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="orderingCat" class="form-label fw-bold">Ordering Category<small
-                                            class="text-muted px-2">Required</small></label>
-                                    <h:selectOneMenu class="form-select w-100" id="orderingCat" required="true"
-                                                     requiredMessage="Please select the ordering category."
-                                                     value="#{mohController.rat.pcrOrderingCategory}">
-                                        <f:selectItem itemLabel="Select"></f:selectItem>
-                                        <f:selectItems value="#{mohController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
-                                                       itemValue="#{tt}"></f:selectItems>
-                                    </h:selectOneMenu>
-                                    <h:message class="text-danger small" for="orderingCat"></h:message>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="lab" class="form-label fw-bold">Reffering Lab<small
-                                            class="px-2 text-muted"></small></label>
-                                    <p:autoComplete inputStyleClass="autocomplete" value="#{mohController.rat.referalInstitution}"
-                                                    forceSelection="true" completeMethod="#{mohController.completeLab}" var="l" itemLabel="#{l.name}"
-                                                    itemValue="#{l}">
-                                    </p:autoComplete>
-                                </div>
-                            </div>
-                            <div class="row mb-4">
-                                <h5 class="fw-bold text-muted">Reginoal Details</h5>
-                                <div class="col-md-3">
-                                    <label for="district" class="form-label fw-bold">District<small
-                                            class="text-muted px-2">Required</small></label>
-                                    <p:autoComplete required="true" requiredMessage="District is required" id="district"
-                                                    value="#{mohController.rat.client.person.district}"
-                                                    completeMethod="#{mohController.completeDistricts}" var="d" itemLabel="#{d.name}" itemValue="#{d}"
-                                                    maxResults="15" forceSelection="true" minQueryLength="3">
-                                        <f:ajax event="itemSelect" execute="district"></f:ajax>
-                                        <f:ajax event="blur" execute="district"></f:ajax>
-                                    </p:autoComplete>
-                                    <h:message class="text-danger small" for="district"></h:message>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="mohArea" class="fw-bold form-label">MOH Area</label>
-                                    <p:autoComplete id="mohArea" value="#{mohController.rat.client.person.mohArea}"
-                                                    completeMethod="#{mohController.completeMohAreas}" var="m" itemLabel="#{m.name}" itemValue="#{m}"
-                                                    maxResults="15" forceSelection="true" minQueryLength="3">
-                                        <f:ajax event="itemSelect" execute="moh"></f:ajax>
-                                        <f:ajax event="blur" execute="moh"></f:ajax>
-                                    </p:autoComplete>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="gn" class="form-label fw-bold">GN Division</label>
-                                    <p:commandLink id="lnkLastGn" action="#{mohController.retrieveLastGnRat()}" process="lnkLastGn"
-                                                   update="gn">
-                                        <i class="bi bi-arrow-clockwise"></i>
-                                    </p:commandLink>
-                                    <p:autoComplete id="gn" value="#{mohController.rat.client.person.gnArea}"
-                                                    completeMethod="#{mohController.completeGnAreasForRat}" var="gn" itemLabel="#{gn.name}"
-                                                    itemValue="#{gn}" maxResults="20" forceSelection="true" placeholder="Not Known" minQueryLength="2">
-                                    </p:autoComplete>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="phi" class="fw-bold form-label">PHI Area</label>
-                                    <p:autoComplete id="phi" value="#{mohController.rat.client.person.phiArea}"
-                                                    completeMethod="#{mohController.completePhiAreasForRat}" var="gn" itemLabel="#{gn.name}"
-                                                    itemValue="#{gn}" maxResults="20" forceSelection="true" minQueryLength="2">
-                                    </p:autoComplete>
-                                </div>
-                            </div>
-                            <div class="row mb-4">
-                                <h5 class="text-muted fw-bold">Personal Details</h5>
-                                <div class="col-md-3">
-                                    <label for="name" class="form-label fw-bold">Name<small class="px-2 text-muted">Required</small></label>
-                                    <h:inputText autocomplete="off" class="form-control w-100" id="name" required="true"
-                                                 requiredMessage="Name is required" value="#{mohController.rat.client.person.name}" title="Name">
-                                    </h:inputText>
-                                    <h:message class="text-danger small" for="name"></h:message>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="nic" class="form-label fw-bold">NIC | Passport Number</label>
-                                    <h:inputText id="nic" class="form-control" tabindex="3" autocomplete="off"
-                                                 value="#{mohController.rat.client.person.nic}" title="NIC" validatorMessage="Please check the number">
-                                        <f:ajax event="blur" render="year month sex nicExists" execute="@this"
-                                                listener="#{mohController.checkNicExistsForRat()}"></f:ajax>
-                                    </h:inputText>
-                                    <h:message class="text-danger small" for="nic"></h:message>
-                                    <h:panelGroup id="nicExists">
-                                        <h:commandLink rendered="#{mohController.nicExistsForRat}" immediate="true"
-                                                       action="#{mohController.toAddNewRatWithExistingNic(1)}"
-                                                       value="NIC exists. Click here to load the patient" class="btn btn-secondary btn-sm"></h:commandLink>
-                                    </h:panelGroup>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="age" class="form-label fw-bold">Age (Y|M|D)</label>
-                                    <div class="d-flex">
-                                        <p:inputText class="form-control w-50" autocomplete="off" id="year" requiredMessage="Age is required"
-                                                     placeholder="Years" value="#{mohController.rat.client.person.ageYears}" required="true">
-                                            <f:ajax event="keyup" execute="@this month day" render="calDob"></f:ajax>
-                                        </p:inputText>
-                                        <h:inputText class="form-control w-25" autocomplete="off" id="month"
-                                                     value="#{mohController.rat.client.person.ageMonths}">
-                                            <f:ajax event="keyup" execute="@this year day" render="calDob"></f:ajax>
-                                        </h:inputText>
-                                        <h:inputText class="form-control w-25" autocomplete="off" id="day"
-                                                     value="#{mohController.rat.client.person.ageDays}">
-                                            <f:ajax event="keyup" execute="year month day" render="calDob"></f:ajax>
-                                        </h:inputText>
-                                        <h:message class="small text-danger" for="year"></h:message>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="gender" class="form-label fw-bold">Gender<small
-                                            class="text-muted px-2">Required</small></label>
-                                    <h:selectOneMenu class="form-select w-100" id="gender" value="#{mohController.rat.client.person.sex}"
-                                                     required="true" tabindex="107" requiredMessage="Please select Gender">
-                                        <f:selectItems value="#{mohController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}">
-                                        </f:selectItems>
-                                    </h:selectOneMenu>
-                                    <h:message class="text-danger small" for="gender"></h:message>
-                                </div>
+  <h:body>
+    <ui:composition template="/template1.xhtml">
+      <ui:define name="content">
+        <h:form class="form">
+          <p:focus for="txtTestNo"></p:focus>
+          <div class="row bg-white py-4">
+            <h4 class="text-center fw-bold">NEW RAT REQUEST</h4>
+            <div class="my-2 px-4">
+              <div class="row mb-4">
+                <h5 class="text-muted fw-bold">Investigation Details</h5>
+                <div class="col-md-3">
+                  <label for="txtTestNo" class="fw-bold form-label">Test Number</label>
+                  <h:inputText id="txtTestNo" class="form-control" value="#{mohController.rat.encounterNumber}">
+                  </h:inputText>
+                </div>
+                <div class="col-md-3">
+                  <label for="date" class="form-label d-block fw-bold">Sampled Date</label>
+                  <p:calendar id="date" value="#{mohController.rat.sampledAt}" pattern="dd MMMM yyyy hh:mm"></p:calendar>
+                </div>
+                <div class="col-md-3">
+                  <label for="orderingCat" class="form-label fw-bold">Ordering Category<small
+                      class="text-muted px-2">Required</small></label>
+                  <h:selectOneMenu class="form-select w-100" id="orderingCat" required="true"
+                                   requiredMessage="Please select the ordering category."
+                                   value="#{mohController.rat.pcrOrderingCategory}">
+                    <f:selectItem itemLabel="Select"></f:selectItem>
+                    <f:selectItems value="#{mohController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
+                                   itemValue="#{tt}"></f:selectItems>
+                  </h:selectOneMenu>
+                  <h:message class="text-danger small" for="orderingCat"></h:message>
+                </div>
+                <div class="col-md-3">
+                  <label for="lab" class="form-label fw-bold">Referring Lab<small
+                      class="px-2 text-muted"></small></label>
+                  <p:autoComplete inputStyleClass="autocomplete" value="#{mohController.rat.referalInstitution}"
+                                  forceSelection="true" completeMethod="#{mohController.completeLab}" var="l" itemLabel="#{l.name}"
+                                  itemValue="#{l}">
+                  </p:autoComplete>
+                </div>
+              </div>
+              <div class="row mb-4">
+                <h5 class="fw-bold text-muted">Regional Details</h5>
+                <div class="col-md-3">
+                  <label for="district" class="form-label fw-bold">District<small
+                      class="text-muted px-2">Required</small></label>
+                  <p:autoComplete required="true" requiredMessage="District is required" id="district"
+                                  value="#{mohController.rat.client.person.district}"
+                                  completeMethod="#{mohController.completeDistricts}" var="d" itemLabel="#{d.name}" itemValue="#{d}"
+                                  maxResults="15" forceSelection="true" minQueryLength="3">
+                    <f:ajax event="itemSelect" execute="district"></f:ajax>
+                    <f:ajax event="blur" execute="district"></f:ajax>
+                  </p:autoComplete>
+                  <h:message class="text-danger small" for="district"></h:message>
+                </div>
+                <div class="col-md-3">
+                  <label for="mohArea" class="fw-bold form-label">MOH Area</label>
+                  <p:autoComplete id="mohArea" value="#{mohController.rat.client.person.mohArea}"
+                                  completeMethod="#{mohController.completeMohAreas}" var="m" itemLabel="#{m.name}" itemValue="#{m}"
+                                  maxResults="15" forceSelection="true" minQueryLength="3">
+                    <f:ajax event="itemSelect" execute="moh"></f:ajax>
+                    <f:ajax event="blur" execute="moh"></f:ajax>
+                  </p:autoComplete>
+                </div>
+                <div class="col-md-3">
+                  <label for="gn" class="form-label fw-bold">GN Division</label>
+                  <p:commandLink id="lnkLastGn" action="#{mohController.retrieveLastGnRat()}" process="lnkLastGn"
+                                 update="gn">
+                    <i class="bi bi-arrow-clockwise"></i>
+                  </p:commandLink>
+                  <p:autoComplete id="gn" value="#{mohController.rat.client.person.gnArea}"
+                                  completeMethod="#{mohController.completeGnAreasForRat}" var="gn" itemLabel="#{gn.name}"
+                                  itemValue="#{gn}" maxResults="20" forceSelection="true" placeholder="Not Known" minQueryLength="2">
+                  </p:autoComplete>
+                </div>
+                <div class="col-md-3">
+                  <label for="phi" class="fw-bold form-label">PHI Area</label>
+                  <p:autoComplete id="phi" value="#{mohController.rat.client.person.phiArea}"
+                                  completeMethod="#{mohController.completePhiAreasForRat}" var="gn" itemLabel="#{gn.name}"
+                                  itemValue="#{gn}" maxResults="20" forceSelection="true" minQueryLength="2">
+                  </p:autoComplete>
+                </div>
+              </div>
+              <div class="row mb-4">
+                <h5 class="text-muted fw-bold">Personal Details</h5>
+                <div class="col-md-3">
+                  <label for="name" class="form-label fw-bold">Name<small class="px-2 text-muted">Required</small></label>
+                  <h:inputText autocomplete="off" class="form-control w-100" id="name" required="true"
+                               requiredMessage="Name is required" value="#{mohController.rat.client.person.name}" title="Name">
+                  </h:inputText>
+                  <h:message class="text-danger small" for="name"></h:message>
+                </div>
+                <div class="col-md-3">
+                  <label for="nic" class="form-label fw-bold">NIC | Passport Number</label>
+                  <h:inputText id="nic" class="form-control" tabindex="3" autocomplete="off"
+                               value="#{mohController.rat.client.person.nic}" title="NIC" validatorMessage="Please check the number">
+                    <f:ajax event="blur" render="year month sex nicExists" execute="@this"
+                            listener="#{mohController.checkNicExistsForRat()}"></f:ajax>
+                  </h:inputText>
+                  <h:message class="text-danger small" for="nic"></h:message>
+                  <h:panelGroup id="nicExists">
+                    <h:commandLink rendered="#{mohController.nicExistsForRat}" immediate="true"
+                                   action="#{mohController.toAddNewRatWithExistingNic(1)}"
+                                   value="NIC exists. Click here to load the patient" class="btn btn-secondary btn-sm"></h:commandLink>
+                  </h:panelGroup>
+                </div>
+                <div class="col-md-3">
+                  <label for="age" class="form-label fw-bold">Age (Y|M|D)</label>
+                  <div class="d-flex">
+                    <p:inputText class="form-control w-50" autocomplete="off" id="year" requiredMessage="Age is required"
+                                 placeholder="Years" value="#{mohController.rat.client.person.ageYears}" required="true">
+                      <f:ajax event="keyup" execute="@this month day" render="calDob"></f:ajax>
+                    </p:inputText>
+                    <h:inputText class="form-control w-25" autocomplete="off" id="month"
+                                 value="#{mohController.rat.client.person.ageMonths}">
+                      <f:ajax event="keyup" execute="@this year day" render="calDob"></f:ajax>
+                    </h:inputText>
+                    <h:inputText class="form-control w-25" autocomplete="off" id="day"
+                                 value="#{mohController.rat.client.person.ageDays}">
+                      <f:ajax event="keyup" execute="year month day" render="calDob"></f:ajax>
+                    </h:inputText>
+                    <h:message class="small text-danger" for="year"></h:message>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label for="gender" class="form-label fw-bold">Gender<small
+                      class="text-muted px-2">Required</small></label>
+                  <h:selectOneMenu class="form-select w-100" id="sex" value="#{mohController.rat.client.person.sex}"
+                                   required="true" tabindex="107" requiredMessage="Please select Gender">
+                    <f:selectItems value="#{mohController.sexes}" var="s" itemLabel="#{s.name}" itemValue="#{s}">
+                    </f:selectItems>
+                  </h:selectOneMenu>
+                  <h:message class="text-danger small" for="gender"></h:message>
+                </div>
 
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-md-3">
-                                    <label for="vaccineStatus" class="form-label fw-bold">Vaccination Status</label>
-                                    <h:selectOneMenu id="vaccineStatus" value="#{mohController.rat.vaccinationStatus}" class="form-select">
-                                        <f:selectItem itemLabel="Please select"></f:selectItem>
-                                        <f:selectItems value="#{itemApplicationController.vaccinationStatuses}" var="statuses"
-                                                       itemLabel="#{statuses.name}" itemValue="#{statuses}">
-                                        </f:selectItems>
-                                    </h:selectOneMenu>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="symptomatic" class="form-label fw-bold">Symptomatic status</label>
-                                    <h:selectOneMenu id="symptomatic" value="#{mohController.rat.symptomaticStatus}" class="form-select">
-                                        <f:selectItem itemLabel="Please select"></f:selectItem>
-                                        <f:selectItems value="#{itemApplicationController.symptomaticStatuses}" var="symptomaticStatus"
-                                                       itemLabel="#{symptomaticStatus.name}" itemValue="#{symptomaticStatus}"></f:selectItems>
-                                    </h:selectOneMenu>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="phn" class="form-label fw-bold">PHN Number</label>
-                                    <h:inputText id="phn" autocomplete="off" class="form-control" value="#{mohController.rat.client.phn}">
-                                    </h:inputText>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="citizenship" class="form-label fw-bold">Citizenship</label>
-                                    <h:selectOneMenu class="form-select" id="citizenship"
-                                                     value="#{mohController.rat.client.person.citizenship}">
-                                        <f:selectItems value="#{mohController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}">
-                                        </f:selectItems>
-                                    </h:selectOneMenu>
-                                </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <label for="address" class="form-label fw-bold">Residential Address<small
-                                            class="px-2 text-muted">Required</small></label>
-                                    <p:commandLink id="lnkLastAddress" action="#{mohController.retrieveLastAddressForRat()}"
-                                                   process="lnkLastAddress" update="address">
-                                        <i class="bi bi-arrow-clockwise"></i>
-                                    </p:commandLink>
-                                    <h:inputText class="form-control" id="address" required="true"
-                                                 requiredMessage="Please enter the address" value="#{mohController.rat.client.person.address}"
-                                                 title="Address"></h:inputText>
-                                    <h:message class="text-danger small" for="address"></h:message>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="phone1" class="form-label fw-bold">Contact Number<small
-                                            class="px-2 text-muted">Required</small></label>
-                                    <p:commandLink id="lnkLastphone1" action="#{mohController.retrieveLastPhoneForRat()}"
-                                                   process="lnkLastphone1" update="phone1">
-                                        <i class="bi bi-arrow-clockwise"></i>
-                                    </p:commandLink>
-                                    <h:inputText class="form-control" id="phone1" required="true"
-                                                 requiredMessage="Contact number is required" autocomplete="off"
-                                                 value="#{mohController.rat.client.person.phone1}" title="Mobile"
-                                                 validatorMessage="Please check the number">
-                                    </h:inputText>
-                                    <h:message class="tex-danger small" for="phone1"></h:message>
-                                </div>
-                            </div>
-                            <div class="row my-4 py-2 bg-light">
-                                <h5 class="text-muted fw-bold">Workplace Details</h5>
-                                <div class="col-md-4">
-                                    <label for="workplace" class="form-label fw-bold">Workplace Name</label>
-                                    <h:inputText class="form-control" value="#{mohController.rat.client.person.workPlace}"
-                                                 id="workplace">
-                                    </h:inputText>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="workplaceContact" class="form-label fw-bold">Workplace Contact Person's Name</label>
-                                    <h:inputText class="form-control" value="#{mohController.rat.client.person.workplaceContact}"
-                                                 id="workplaceContact">
-                                    </h:inputText>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="workplaceContactNumber" class="form-label fw-bold">Workplace Contact Number</label>
-                                    <h:inputText tabindex="114" class="form-control"
-                                                 value="#{mohController.rat.client.person.workplaceContactDetails}" id="workplaceContactNumber">
-                                    </h:inputText>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <p:messages class="my-2"></p:messages>
-                            </div>
-                            <div class="row">
-                                <div>
-                                    <h:commandButton class="btn btn-success fw-bold" action="#{mohController.saveRatAndToNewRatOrder()}"
-                                                     value="Save and NEW RAT Order"></h:commandButton>
-                                    <h:commandButton class="btn btn-success fw-bold mx-2"
-                                                     action="#{mohController.saveRatAndToRatOrderView()}" value="Save and View RAT Order">
-                                    </h:commandButton>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </h:form>
-            </ui:define>
-        </ui:composition>
-    </h:body>
+              </div>
+              <div class="row mb-4">
+                <div class="col-md-3">
+                  <label for="vaccineStatus" class="form-label fw-bold">Vaccination Status</label>
+                  <h:selectOneMenu id="vaccineStatus" value="#{mohController.rat.vaccinationStatus}" class="form-select">
+                    <f:selectItem itemLabel="Please select"></f:selectItem>
+                    <f:selectItems value="#{itemApplicationController.vaccinationStatuses}" var="statuses"
+                                   itemLabel="#{statuses.name}" itemValue="#{statuses}">
+                    </f:selectItems>
+                  </h:selectOneMenu>
+                </div>
+                <div class="col-md-3">
+                  <label for="symptomatic" class="form-label fw-bold">Symptomatic status</label>
+                  <h:selectOneMenu id="symptomatic" value="#{mohController.rat.symptomaticStatus}" class="form-select">
+                    <f:selectItem itemLabel="Please select"></f:selectItem>
+                    <f:selectItems value="#{itemApplicationController.symptomaticStatuses}" var="symptomaticStatus"
+                                   itemLabel="#{symptomaticStatus.name}" itemValue="#{symptomaticStatus}"></f:selectItems>
+                  </h:selectOneMenu>
+                </div>
+                <div class="col-md-3">
+                  <label for="phn" class="form-label fw-bold">PHN Number</label>
+                  <h:inputText id="phn" autocomplete="off" class="form-control" value="#{mohController.rat.client.phn}">
+                  </h:inputText>
+                </div>
+                <div class="col-md-3">
+                  <label for="citizenship" class="form-label fw-bold">Citizenship</label>
+                  <h:selectOneMenu class="form-select" id="citizenship"
+                                   value="#{mohController.rat.client.person.citizenship}">
+                    <f:selectItems value="#{mohController.citizenships}" var="c" itemLabel="#{c.name}" itemValue="#{c}">
+                    </f:selectItems>
+                  </h:selectOneMenu>
+                </div>
+              </div>
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <label for="address" class="form-label fw-bold">Residential Address<small
+                      class="px-2 text-muted">Required</small></label>
+                  <p:commandLink id="lnkLastAddress" action="#{mohController.retrieveLastAddressForRat()}"
+                                 process="lnkLastAddress" update="address">
+                    <i class="bi bi-arrow-clockwise"></i>
+                  </p:commandLink>
+                  <h:inputText class="form-control" id="address" required="true"
+                               requiredMessage="Please enter the address" value="#{mohController.rat.client.person.address}"
+                               title="Address"></h:inputText>
+                  <h:message class="text-danger small" for="address"></h:message>
+                </div>
+                <div class="col-md-3">
+                  <label for="phone1" class="form-label fw-bold">Contact Number<small
+                      class="px-2 text-muted">Required</small></label>
+                  <p:commandLink id="lnkLastphone1" action="#{mohController.retrieveLastPhoneForRat()}"
+                                 process="lnkLastphone1" update="phone1">
+                    <i class="bi bi-arrow-clockwise"></i>
+                  </p:commandLink>
+                  <h:inputText class="form-control" id="phone1" required="true"
+                               requiredMessage="Contact number is required" autocomplete="off"
+                               value="#{mohController.rat.client.person.phone1}" title="Mobile"
+                               validatorMessage="Please check the number">
+                  </h:inputText>
+                  <h:message class="tex-danger small" for="phone1"></h:message>
+                </div>
+              </div>
+              <div class="row my-4 py-2 bg-light">
+                <h5 class="text-muted fw-bold">Workplace Details</h5>
+                <div class="col-md-4">
+                  <label for="workplace" class="form-label fw-bold">Workplace Name</label>
+                  <h:inputText class="form-control" value="#{mohController.rat.client.person.workPlace}"
+                               id="workplace">
+                  </h:inputText>
+                </div>
+                <div class="col-md-4">
+                  <label for="workplaceContact" class="form-label fw-bold">Workplace Contact Person's Name</label>
+                  <h:inputText class="form-control" value="#{mohController.rat.client.person.workplaceContact}"
+                               id="workplaceContact">
+                  </h:inputText>
+                </div>
+                <div class="col-md-4">
+                  <label for="workplaceContactNumber" class="form-label fw-bold">Workplace Contact Number</label>
+                  <h:inputText tabindex="114" class="form-control"
+                               value="#{mohController.rat.client.person.workplaceContactDetails}" id="workplaceContactNumber">
+                  </h:inputText>
+                </div>
+              </div>
+              <div class="row">
+                <p:messages class="my-2"></p:messages>
+              </div>
+              <div class="row">
+                <div>
+                  <h:commandButton class="btn btn-success fw-bold" action="#{mohController.saveRatAndToNewRatOrder()}"
+                                   value="Save and NEW RAT Request"></h:commandButton>
+                  <h:commandButton class="btn btn-success fw-bold mx-2"
+                                   action="#{mohController.saveRatAndToRatOrderView()}" value="Save and View RAT Request">
+                  </h:commandButton>
+                </div>
+              </div>
+            </div>
+          </div>
+        </h:form>
+      </ui:define>
+    </ui:composition>
+  </h:body>
 
 </html>

@@ -7,7 +7,7 @@
     <h:body>
         <ui:composition template="/template1.xhtml">
             <ui:define name="title">
-                NCHIS - PCR Order
+                NCHIS - PCR Request
             </ui:define>
             <ui:define name="content">
                 <h:form class="form">
@@ -42,7 +42,7 @@
                                     <h:message for="orderingCat" class="text-danger small"></h:message>
                                 </div>
                                 <div class="col md-3">
-                                    <label for="acLab" class="form-label fw-bold">Reffering Lab</label>
+                                    <label for="acLab" class="form-label fw-bold">Referring Lab</label>
                                     <p:autoComplete id="acLab" inputStyleClass="autocomplete"
                                                     value="#{mohController.pcr.referalInstitution}" forceSelection="true"
                                                     completeMethod="#{mohController.completeLab}" var="l" itemLabel="#{l.name}" itemValue="#{l}">
@@ -235,10 +235,10 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <h:commandButton class="btn btn-success fw-bold"
-                                                     action="#{mohController.savePcrAndToNewPcr()}" value="Save and NEW PCR">
+                                                     action="#{mohController.savePcrAndToNewPcr()}" value="Save and NEW PCR Request">
                                     </h:commandButton>
                                     <h:commandButton class="btn btn-success mx-2 fw-bold"
-                                                     action="#{mohController.savePcrAndToPcrView()}" value="Save and VIEW PCR">
+                                                     action="#{mohController.savePcrAndToPcrView()}" value="Save and VIEW PCR Request">
                                     </h:commandButton>
                                 </div>
                             </div>
