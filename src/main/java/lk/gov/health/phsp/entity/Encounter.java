@@ -183,7 +183,10 @@ public class Encounter implements Serializable {
     @ManyToOne
     private Item pcrOrderingCategory;
     @ManyToOne
+    @Deprecated
     private Item vaccinationStatus;
+    
+    @ManyToOne
     private Item symptomaticStatus;
     private String pcrOrderingCategoryOther;
     private Boolean symptomatic;
@@ -861,6 +864,8 @@ public class Encounter implements Serializable {
     public Double getCtValue2() {
         return ctValue2;
     }
+    
+    
 
     public void setCtValue2(Double ctValue2) {
         this.ctValue2 = ctValue2;
