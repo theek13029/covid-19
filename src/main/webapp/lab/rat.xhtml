@@ -11,7 +11,7 @@
         <p:focus for="result"></p:focus>
         <div class="mb-2 #{labController.rat.pcrResult.name eq 'Positive'?'text-danger':''}">
           <div class="row bg-white py-4">
-            <h4 class="text-center fw-bold">NEW RAT RESULT</h4>
+            <h4 class="text-center fw-bold">NEW RAT REQUEST WITH RESULT</h4>
             <div class="my-2 px-4">
               <div class="row mb-4">
                 <h5 class="text-muted fw-bold">Investigation Details</h5>
@@ -115,6 +115,21 @@
                   <h:message class="text-danger small" for="name"></h:message>
                 </div>
                 <div class="col-md-3">
+                    <label for="nic" class="fw-bold form-label">NIC | Passport Number</label>
+                    <h:inputText tabindex="15" id="nic" class="form-control" autocomplete="off"
+                      value="#{labController.rat.client.person.nic}" validatorMessage="Please check the number">
+                      <f:ajax event="blur" execute="@this" render="nicExists year month sex"
+                        listener="#{labController.checkNicExistsForRat()}"></f:ajax>
+                    </h:inputText>
+                    <h:message class="text-danger small" for="nic"></h:message>
+                    <h:panelGroup id="nicExists">
+                      <h:commandLink rendered="#{labController.nicExistsForRat}" immediate="true"
+                        action="#{labController.toAddNewRatWithExistingNic()}"
+                        value="NIC Exists. Click here to Load Patient" class="btn btn-sm btn-secondary">
+                      </h:commandLink>
+                    </h:panelGroup>
+                  </div>
+                <div class="col-md-3">
                   <label for="year" class="form-label fw-bold">Age (Y|M|D)<small
                       class="text-mutex px-2">Required</small></label>
                   <div class="d-flex">
@@ -146,36 +161,16 @@
                   </h:selectOneMenu>
                   <h:message class="text-danger small" for="gender"></h:message>
                 </div>
-                <div class="col-md-3">
-                  <label for="nic" class="fw-bold form-label">NIC | Passport Number</label>
-                  <h:inputText tabindex="15" id="nic" class="form-control" autocomplete="off"
-                    value="#{labController.rat.client.person.nic}" validatorMessage="Please check the number">
-                    <f:ajax event="blur" execute="@this" render="nicExists year month sex"
-                      listener="#{labController.checkNicExistsForRat()}"></f:ajax>
-                  </h:inputText>
-                  <h:message class="text-danger small" for="nic"></h:message>
-                  <h:panelGroup id="nicExists">
-                    <h:commandLink rendered="#{labController.nicExistsForRat}" immediate="true"
-                      action="#{labController.toAddNewRatWithExistingNic(2)}"
-                      value="NIC Exists. Click here to Load Patient" class="btn btn-sm btn-secondary">
-                    </h:commandLink>
-                  </h:panelGroup>
-                </div>
               </div>
               <div class="my-4 row">
                 <div class="col-md-3">
-                  <label for="phone1" class="fw-bold form-label">Contact Number<small
-                      class="text-muted px-2">Required</small></label>
-                  <p:commandLink id="lnkLastphone1" action="#{labController.retrieveLastPhoneForRat()}"
-                    process="lnkLastphone1" update="phone1">
-                    <i class="bi bi-arrow-clockwise"></i>
-                  </p:commandLink>
-                  <h:inputText tabindex="16" class="form-control" id="phone1" required="true"
-                    requiredMessage="Please enter a contact number" autocomplete="off"
-                    value="#{labController.rat.client.person.phone1}" title="Mobile"
-                    validatorMessage="Please check the number">
-                  </h:inputText>
-                  <h:message class="text-danger small" for="phone1"></h:message>
+                    <label for="vaccineStatus" class="form-label fw-bold">Vaccination Status</label>
+                    <h:selectOneMenu id="vaccineStatus" value="#{labController.rat.vaccinationStatus}" class="form-select">
+                      <f:selectItem itemLabel="Please select"></f:selectItem>
+                      <f:selectItems value="#{itemApplicationController.vaccinationStatuses}" var="statuses"
+                        itemLabel="#{statuses.name}" itemValue="#{statuses}">
+                      </f:selectItems>
+                    </h:selectOneMenu>
                 </div>
                 <div class="col-md-3">
                   <label for="symptomatic" class="form-label fw-bold">Symptomatic Status</label>
@@ -216,8 +211,42 @@
                   </h:inputText>
                   <h:message class="text-danger small" for="address"></h:message>
                 </div>
-
+                <div class="col-md-3">
+                    <label for="phone1" class="fw-bold form-label">Contact Number<small
+                        class="text-muted px-2">Required</small></label>
+                    <p:commandLink id="lnkLastphone1" action="#{labController.retrieveLastPhoneForRat()}"
+                      process="lnkLastphone1" update="phone1">
+                      <i class="bi bi-arrow-clockwise"></i>
+                    </p:commandLink>
+                    <h:inputText tabindex="16" class="form-control" id="phone1" required="true"
+                      requiredMessage="Please enter a contact number" autocomplete="off"
+                      value="#{labController.rat.client.person.phone1}" title="Mobile"
+                      validatorMessage="Please check the number">
+                    </h:inputText>
+                    <h:message class="text-danger small" for="phone1"></h:message>
+                  </div>
               </div>
+              <div class="my-4 py-2 bg-light row">
+                <h5 class="text-muted fw-bold">Workplace Details</h5>
+                <div class="col-md-4">
+                    <label for="workplace" class="form-label fw-bold">Workplace Name</label>
+                    <h:inputText class="form-control" value="#{labController.rat.client.person.workPlace}"
+                      id="workplace">
+                    </h:inputText>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="workplaceContact" class="form-label fw-bold">Workplace Contact Person's Name</label>
+                    <h:inputText class="form-control" value="#{labController.rat.client.person.workplaceContact}"
+                      id="workplaceContact">
+                    </h:inputText>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="workplaceContactNumber" class="form-label fw-bold">Workplace Contact Number</label>
+                    <h:inputText tabindex="114" class="form-control"
+                      value="#{labController.rat.client.person.workplaceContactDetails}" id="workplaceContactNumber">
+                    </h:inputText>
+                  </div>
+                </div>
               <div class="row">
                 <p:messages class="my-2"></p:messages>
               </div>
