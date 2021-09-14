@@ -12,33 +12,36 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <h:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Samples To Receive" ></p:outputLabel>
+                        <h:outputLabel value="Samples To Receive" ></h:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:outputLabel value="From" ></p:outputLabel>
-                            <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+                        <h:panelGrid columns="2" >
+                            <h:outputLabel value="From" ></h:outputLabel>
+                            <p:calendar  class="form-control" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <p:outputLabel value="To" ></p:outputLabel>
-                            <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                            <h:outputLabel value="To" ></h:outputLabel>
+                            <p:calendar  class="form-control" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                            <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{regionalController.testType}" >
+                            <h:outputLabel value="Test" ></h:outputLabel>
+                            <h:selectOneMenu value="#{regionalController.testType}"
+                                              class="form-control">
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{regionalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{clientController.toSummaryByOrderedInstitutionVsLabToReceive()}" ></p:commandButton>
-                            <p:commandButton ajax="false" value="Generate Excel" >
+                            <h:commandButton value="Process"
+                                             class="btn btn-success"
+                                             action="#{clientController.toSummaryByOrderedInstitutionVsLabToReceive()}" ></h:commandButton>
+                            <h:commandButton  value="Generate Excel"
+                                              class="btn btn-success">
                                 <p:dataExporter type="xlsx" fileName="Samples to Receive Summery" target="tbl" ></p:dataExporter>
-                            </p:commandButton>
+                            </h:commandButton>
 
-                        </p:panelGrid>
+                        </h:panelGrid>
 
 
                         <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.labSummariesToReceive}" 
@@ -51,33 +54,33 @@
 
                                      >
                             <p:column headerText="No" width="50" >
-                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
+                                <h:outputLabel value="#{n+1}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Ordering Institute"
                                       sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.institution.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Lab"
                                       sortBy="#{c.referralInstitution.name}" filterBy="#{c.referralInstitution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.referralInstitution.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.referralInstitution.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Number of Orders"  sortBy="#{c.count}" width="70">
-                                <p:outputLabel value="#{c.count}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.count}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false"  >
-                                <p:commandButton ajax="false" value="To Divert" action="#{clientController.toDivertSamples()}" >
+                                <h:commandButton  value="To Divert" class="btn btn-success" action="#{clientController.toDivertSamples()}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                     <f:setPropertyActionListener value="#{c.referralInstitution}" target="#{clientController.referingInstitution}" >
                                     </f:setPropertyActionListener>
-                                </p:commandButton>
+                                </h:commandButton>
                             </p:column>
                         </p:dataTable>
                     </h:form>
 
 
 
-                </p:panelGrid>
+                </h:panelGrid>
             </ui:define>
         </ui:composition>
     </body>
