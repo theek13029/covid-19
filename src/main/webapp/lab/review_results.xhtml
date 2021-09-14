@@ -82,20 +82,31 @@
                 
                     
                     <div class="col-sm-12 col-md-4">
-                        <h:commandButton class="btn btn-success my-2 w-100" value="MARK AS REVIEWED FOR SELECTED" 
+                        <h:commandButton class="btn btn-primary my-2 w-100" value="MARK AS REVIEWED FOR SELECTED" 
                                          action="#{clientController.reviewOkForSelectedResults()}" ></h:commandButton>
                     </div>
 
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable reflow="true" id="tbl" value="#{clientController.listedToReviewResults}" 
-                                     var="c" paginator="true" rowKey="#{c.id}" rows="10" 
+                        <p:dataTable reflow="true" 
+                                     id="tbl" 
+                                     value="#{clientController.listedToReviewResults}" 
+                                     var="c" 
+                                     paginator="true" 
+                                     rowKey="#{c.id}" rows="10" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,50,96,100,{ShowAll|'All'}"
-
+                                     resizableColumns="true"
                                      rowStyleClass="#{c.resultPositive?'redRow':''}"
                                      selection="#{clientController.selectedToReview}">
-                            <p:column selectionMode="multiple" ></p:column>
+                            <div>
+                                <p:commandButton id="toggler" type="button"
+                                    class="btn btn-secondary btn-sm" 
+                                    value="Toggle Columns" 
+                                    icon="pi pi-align-justify"/>
+                                <p:columnToggler datasource="tbl" trigger="toggler"/>
+                            </div>
+                            <p:column selectionMode="multiple"></p:column>
                             <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.unitWard}" ></h:outputLabel>
                             </p:column>
