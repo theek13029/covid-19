@@ -112,7 +112,7 @@
                             </p:inputText>
                         </p:column>
                         <p:column headerText="District" >
-                            <p:inputText id="dist" value="#{c.district.name}"  disabled="#{c.client ne null}"   style="width: 95%;" >
+                            <p:inputText id="dist"  rendered="#{c.district ne null}"  value="#{c.district.name}"  disabled="#{c.client ne null}"   style="width: 95%;" >
                                 <p:ajax event="keyup" process="@this" ></p:ajax>
                             </p:inputText>
                         </p:column>
