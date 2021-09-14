@@ -1,206 +1,206 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui"
+    xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
-    <body>
+<body>
 
-        <ui:composition template="/template1.xhtml">
-            <ui:define name="content">
-                View RAT Order
-            </ui:define>
-            <ui:define name="content">
-                <div class="card">
-                    <h5 class="card-header">
-                        <h:form>
-                            <p:outputLabel value="Patient Data For RAT" ></p:outputLabel>
-                            <p:commandButton value="To Edit Details" ajax="false" action="#{mohController.toRatEdit()}"
-                                             style="float: right;">
-                            </p:commandButton>
-                            <p:commandButton value="Add New RAT"  ajax="false"
-                                             action="#{mohController.toAddNewRatWithNewClient()}" style="float: right;">
-                            </p:commandButton>
-                        </h:form>
-                    </h5>
-                    <div class="card-body #{mohController.rat.pcrResult.name eq 'Positive'?'text-danger':''}">
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <p:outputLabel value="Result"></p:outputLabel>
-                                <p:outputLabel id="txtTestNo"  
-                                               value="#{mohController.rat.pcrResult.name}" 
-                                               style="width:100%;font-weight: bolder;">
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel  value="Ordering Category"></p:outputLabel>
-                                <p:outputLabel id="orderingCat"
-                                               value="#{mohController.rat.pcrOrderingCategory.name}" 
-                                               style="margin: 0px; padding: 0px; width: 100%;font-weight: bolder;" >
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel  value="Sampled at"></p:outputLabel>
-                                <p:outputLabel 
-                                    value="#{mohController.rat.sampledAt}" 
-                                    style="margin: 0px; padding: 0px; width: 100%;font-weight: bolder;" >
-                                    <f:convertDateTime pattern="dd MMMM yyyy hh:mm" ></f:convertDateTime>
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel  value="Result at"></p:outputLabel>
-                                <p:outputLabel 
-                                    value="#{mohController.rat.resultConfirmedAt}" 
-                                    style="margin: 0px; padding: 0px; width: 100%;font-weight: bolder;" >
-                                    <f:convertDateTime pattern="dd MMMM yyyy hh:mm" ></f:convertDateTime>
-                                </p:outputLabel>
-                            </div>
+    <ui:composition template="/template1.xhtml">
+        <ui:define name="content">
+            VIEW RAT REQUEST
+        </ui:define>
+        <ui:define name="content">
+            <table class="table table-striped">
+                <tbody>
+                    <tr class="#{labController.rat.pcrResult.name eq 'Positive'?'table-danger':''}">
+                        <td class="fw-bold">
+                            Result
+                        </td>
+                        <td class="fw-bold text-uppercase">
+                            #{labController.rat.pcrResult.name}
+                        </td>
+                        <td class="fw-bold">
+                            Ordering Category
+                        </td>
+                        <td>
+                            #{labController.rat.pcrOrderingCategory.name}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">
+                            Sampled Date | Time
+                        </td>
+                        <td>
+                            <p:outputLabel value="#{labController.rat.sampledAt}">
+                                <f:convertDateTime pattern="dd MMMM yyyy hh:mm"></f:convertDateTime>
+                            </p:outputLabel>
+                        </td>
+                        <td class="fw-bold">
+                            Result Issued Date | Time
+                        </td>
+                        <td>
+                            <p:outputLabel value="#{labController.rat.resultConfirmedAt}">
+                                <f:convertDateTime pattern="dd MMMM yyyy hh:mm"></f:convertDateTime>
+                            </p:outputLabel>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">
+                            Name
+                        </td>
+                        <td>
+                            #{labController.rat.client.person.name}
+                        </td>
+                        <td class="fw-bold">
+                            Citizenship
+                        </td>
+                        <td>
+                            #{labController.rat.client.person.citizenship.name}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">
+                            PHN Number
+                        </td>
+                        <td>
+                            #{labController.rat.client.phn}
+                        </td>
+                        <td class="fw-bold">
+                            Symptomatic Status
+                        </td>
+                        <td>
+                            #{labController.rat.symptomatic?'Yes':''}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">
+                            NIC | Passport Number
+                        </td>
+                        <td>
+                            #{labController.rat.client.person.nic}
+                        </td>
+                        <td class="fw-bold">
+                            Gender
+                        </td>
+                        <td>
+                            #{labController.rat.client.person.sex}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">
+                            Age
+                        </td>
+                        <td>
+                            #{labController.rat.client.person.age}
+                        </td>
+                        <td class="fw-bold">
+                            Current Residential Address
+                        </td>
+                        <td>
+                            #{labController.rat.client.person.address}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">District</td>
+                        <td>
+                            #{labController.rat.client.person.district.name}
+                        </td>
+                        <td class="fw-bold">
+                            MOH Area
+                        </td>
+                        <td>
+                            #{labController.rat.client.person.mohArea.name}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Contact Number</td>
+                        <td>
+                            #{labController.rat.client.person.phone1}
+                        </td>
+                        <td class="fw-bold">GN Division</td>
+                        <td>
+                            #{labController.rat.client.person.gnArea.name}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">PHI Area</td>
+                        <td>
+                            #{labController.rat.client.person.phiArea.name}
+                        </td>
+                        <td class="fw-bold">
+                            Unit | Ward
+                        </td>
+                        <td>
+                            #{labController.rat.unitWard}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <h:commandButton class="btn btn-primary fw-bold" value="Edit Details"
+                    action="#{labController.toRatEdit()}"></h:commandButton>
+                <h:commandButton class="btn mx-2 btn-primary fw-bold" value="New Rat Request With Result"
+                    action="#{labController.toAddNewRatWithNewClient()}"></h:commandButton>
+                <h:commandButton class="btn mx-2 btn-primary fw-bold" value="New Rat Request"
+                    action="#{labController.toAddNewRatOrderWithNewClient()}"></h:commandButton>
+            </div>
+
+            <div class="row">
+                <h:form>
+                    <div>
+                        <div class="my-2">
+                            <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button" value="Columns" />
+                            <p:columnToggler datasource="tbl" trigger="toggler"/>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <p:outputLabel value="Name:" />
-                                <p:outputLabel value="#{mohController.rat.client.person.name}" title="Name" style="width:100%;font-weight: bolder;"/>
-                            </div>
-                            <div class="col-md-1">
-                                <p:outputLabel value="Citizenship:" for="citizenship" />
-                                <p:outputLabel id="citizenship" value="#{mohController.rat.client.person.citizenship.name}" style="width:100%;font-weight: bolder;">
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-2">
-                                <p:outputLabel value="PHN No.:"  />
-                                <p:outputLabel id="phn" value="#{mohController.rat.client.phn}" title="Phn" 
-                                               style="width: 100%;font-weight: bolder;"></p:outputLabel>
-                            </div>
-                            <div class="col-md-2">
-                                <p:outputLabel value="Other Ordering Category:"  />
-                                <p:outputLabel value="#{mohController.rat.pcrOrderingCategoryOther}" style="width:100%;font-weight: bolder;"/>
-                            </div>
-                            <div class="col-md-1">
-                                <p:outputLabel value="Symptomatic:"  />
-                                <p:outputLabel tabindex="106" 
-                                               value="#{mohController.rat.symptomatic?'Yes':''}" style="width:100%;font-weight: bolder;" ></p:outputLabel>
-                            </div>
-
-
-
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <p:outputLabel value="NIC/NIC of the guardian/Passport No. :" for="nic" />
-                                <p:outputLabel id="nic" 
-                                               style="width: 100%;font-weight: bolder;"  value="#{mohController.rat.client.person.nic}" title="Nic" >
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel value="Gender:"  for="sex" />
-                                <p:outputLabel
-                                    id="sex" value="#{mohController.rat.client.person.sex}" 
-                                    style="width: 100%;font-weight: bolder;">
-                                </p:outputLabel>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel value="Age:" style="width: 100%;"/>
-                                <h:panelGroup>
-                                    <p:outputLabel value="#{mohController.rat.client.person.age}"  style="width:100%;font-weight: bolder;">
-                                    </p:outputLabel>
-                                </h:panelGroup>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <p:outputLabel value="Current Residential Address:" for="address" />
-                                <p:outputLabel tabindex="4" 
-                                               id="address"
-                                               value="#{mohController.rat.client.person.address}"
-                                               title="Address ****" style="width:100%;font-weight: bolder;font-weight: bolder;"/>
-
-                            </div>
-
-                            <div class="col-md-3">
-                                <p:outputLabel value="District:"  />
-                                <p:outputLabel value="#{mohController.rat.client.person.district.name}" style="width: 100%;font-weight: bolder;"/>
-                            </div>
-
-
-                            <div class="col-md-3">
-                                <p:outputLabel value="MOH Area:" />
-                                <p:outputLabel value="#{mohController.rat.client.person.mohArea.name}" style="width: 100%;font-weight: bolder;"/>
-                            </div>
-
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <p:outputLabel value="Contact Number :" />
-                                <p:outputLabel value="#{mohController.rat.client.person.phone1}" style="width: 100%;font-weight: bolder;"/>
-                            </div>
-                            <div class="col-md-3">
-                                <p:outputLabel value="GN Area:"  />
-                                <p:outputLabel value="#{mohController.rat.client.person.gnArea.name}" style="width: 100%;font-weight: bolder;"/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <p:outputLabel value="PHI Area:" />
-                                <p:outputLabel value="#{mohController.rat.client.person.phiArea.name}" style="width: 100%;font-weight: bolder;"/>
-                            </div>
-
-                            <div class="col-md-2">
-                                <p:outputLabel value="Unit/Ward:"  />
-                                <p:outputLabel value="#{mohController.rat.unitWard}" style="width:100%;font-weight: bolder;"/>
-                            </div>
-
-
-                        </div>
-
+                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand"
+                            value="#{sessionController.ratList}" id="tbl" reflow="true" var="c" paginator="true"
+                            rowKey="#{c.id}" rows="10">
+                            <f:facet name="header">
+                                Latest Entries
+                            </f:facet>
+                            <p:column headerText="Test No" sortBy="#{c.encounterNumber}">
+                                <p:outputLabel value="#{c.encounterNumber}"></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Name" sortBy="#{c.client.person.name}">
+                                <p:outputLabel value="#{c.client.person.name}"></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Age" sortBy="#{c.client.person.ageInDays}">
+                                <p:outputLabel value="#{c.client.person.age}"></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Sex" sortBy="#{c.client.person.sex.name}">
+                                <p:outputLabel value="#{c.client.person.sex.name}"></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="NIC" sortBy="#{c.client.person.nic}">
+                                <p:outputLabel value="#{c.client.person.nic}"></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Address">
+                                <p:outputLabel value="#{c.client.person.address}"></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Actions">
+                                <p:commandButton value="Edit" ajax="false" action="#{labController.toRatEdit()}"
+                                    class="btn btn-sm btn-primary">
+                                    <f:setPropertyActionListener value="#{c}" target="#{labController.rat}">
+                                    </f:setPropertyActionListener>
+                                </p:commandButton>
+                                <p:commandButton value="Delete" ajax="false"
+                                    action="#{labController.toDeleteTestFromLastRatList()}"
+                                    class="btn btn-sm btn-danger">
+                                    <f:setPropertyActionListener value="#{c}" target="#{labController.deleting}">
+                                    </f:setPropertyActionListener>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
                     </div>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <h:form>
-                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{sessionController.ratList}" id="tbl"
-                                         var="c" paginator="true" rowKey="#{c.id}" rows="10" >
-                                <f:facet name="header">
-                                    Last Entries
-                                </f:facet>
-                                <p:column headerText="Test No" sortBy="#{c.encounterNumber}">
-                                    <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Name" sortBy="#{c.client.person.name}" >
-                                    <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Age" sortBy="#{c.client.person.ageInDays}" >
-                                    <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Sex" sortBy="#{c.client.person.sex.name}">
-                                    <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="NIC" sortBy="#{c.client.person.nic}" >
-                                    <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Address" >
-                                    <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
-                                </p:column>
-                                <p:column headerText="Actions" >
-                                    <p:commandButton value="Edit" ajax="false" action="#{mohController.toRatEdit()}" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.rat}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
-                                    <p:commandButton value="Delete" ajax="false" action="#{mohController.toDeleteTestFromLastRatList()}" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.deleting}" ></f:setPropertyActionListener>
-                                    </p:commandButton>
-                                </p:column>
-                            </p:dataTable>
-                        </h:form>
-                    </div>
-                </div>
+                </h:form>
+            </div>
 
 
 
 
-            </ui:define>
-        </ui:composition>
-    </body>
+        </ui:define>
+    </ui:composition>
+</body>
+
 </html>
