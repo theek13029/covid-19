@@ -70,22 +70,23 @@
                             </h:panelGrid>
                         </div>
 
+                        <div>
+                            <p:commandButton id="toggler" class="btn btn-sm btn-secondary"
+                                type="button" value="Filter columns" icon="pi pi-align-justify"/>
+                            <p:columnToggler datasource="tbl" trigger="toggler"/>
+                         </div>
+
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{nationalController.tests}"
                                      var="c" rowKey="#{c.id}"
                                      rows="10"
                                      reflow="true"
-                                     resizable="true"
+                                     resizableColumns="true"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,50,100,{ShowAll|'All'}"
                                      rowStyleClass="#{c.resultCssClass}">
-                                     <div>
-                                        <p:commandButton id="toggler" class="btn btn-sm btn-secondary"
-                                            type="button" value="Columns" icon="pi pi-align-justify"/>
-                                        <p:columnToggler datasource="tbl" trigger="toggler"/>
-                                     </div>
                             <p:column headerText="Ordered By" sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.institution.name}" ></h:outputLabel>
                             </p:column>
@@ -111,8 +112,8 @@
                             <p:column headerText="Phone"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.client.person.phone1}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Vaccine Status" sortBy="#{c.client.vaccinationStatus}" filterBy="#{c.client.vaccinationStatus}" filterMatchMode="contains">
-                                <h:outputLabel value=#{c.client.person.vaccinationStatus}></h:outputLabel>
+                            <p:column headerText="Vaccine Status" sortBy="#{c.vaccinationStatus}" filterBy="#{c.vaccinationStatus}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.vaccinationStatus.name}"></h:outputLabel>
                             </p:column>
                             <p:column headerText="Address"  sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.client.person.address}" ></h:outputLabel>
