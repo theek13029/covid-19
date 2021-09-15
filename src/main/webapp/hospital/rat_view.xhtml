@@ -160,8 +160,12 @@
                                 <h:commandButton class="btn btn-primary fw-bold w-100  my-2" value="Edit Details"
                                                  action="#{hospitalController.toRatEdit()}"></h:commandButton>
                             </div>
-                            <div class="col-sm-12 col-md-4 col-lg-2">
+                            <div class="col-sm-12 col-md-4 d-sm-block d-md-none">
                                 <h:commandButton class="btn btn-primary fw-bold w-100 my-2" value="New Rat Request With Result"
+                                                 action="#{hospitalController.toAddNewRatWithNewClient()}"></h:commandButton>
+                            </div>
+                            <div class="col-sm-12 col-md-4 d-sm-none d-md-block">
+                                <h:commandButton class="btn btn-primary fw-bold my-2" value="New Rat Request With Result"
                                                  action="#{hospitalController.toAddNewRatWithNewClient()}"></h:commandButton>
                             </div>
                         </div>
