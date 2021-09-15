@@ -18,6 +18,12 @@
                                 <h4 class="fw-bold"><h:outputLabel  value="Edit User Detais" ></h:outputLabel></h4>
                             </div>
                         </div> 
+                        
+                        <div class="row" >
+                            <div class="col-12 text-center mt-4 mb-2" >
+                                <p:messages ></p:messages>
+                            </div>
+                        </div> 
 
                         <h:panelGrid columns="2" rendered="#{webUserController.selected != null}" style="margin: auto; text-align: left; background-color: #cecece;">
                             <p:outputLabel value="Username" for="username" />
@@ -26,8 +32,10 @@
 
                             <p:outputLabel value="Title" for="title" />
                             <h:selectOneMenu class="form-select" id="title"  value="#{webUserController.selected.person.title}"  >
+                                <f:selectItem itemLabel="Select" ></f:selectItem>
                                 <f:selectItems value="#{itemController.titles}" var="t" itemLabel="#{t.name}"
                                                itemValue="#{t}" ></f:selectItems>
+                                <f:ajax execute="@this" ></f:ajax>
                             </h:selectOneMenu>
 
                             <p:outputLabel value="Name" for="name" />
