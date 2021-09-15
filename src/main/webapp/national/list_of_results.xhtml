@@ -91,7 +91,7 @@
                                 <h:outputLabel value="#{c.institution.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Institution Type" sortBy="#{c.institution.institutionType.label}"
-                                      filterBy="#{c.c.institution.institutionType.label}" filterMatchMode="contains" >
+                                      filterBy="#{c.institution.institutionType.label}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.institution.institutionType.label}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="RDHS"  sortBy="#{c.referalInstitution.rdhsArea.name}" 
@@ -141,7 +141,7 @@
                                       filterBy="#{c.client.person.district.name}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.client.person.district.name}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Result" exportable="false"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
+                            <p:column headerText="Result"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
                                 <h:outputLabel id="cmbResult" value="#{c.pcrResult.name}" >
                                 </h:outputLabel>
                             </p:column>

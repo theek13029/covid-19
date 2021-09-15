@@ -64,6 +64,14 @@
                             </div>
                         </div>
 
+
+                        <div class="row mb-3">
+                            <h:commandButton  class="btn btn-primary" style="float: left;" value="Add Mutiple Users"
+                                              action="#{webUserController.addMultipleInstitutionAndUsers()}"/> 
+                            <h:commandButton class="btn btn-primary" style="float: left;" value="Clear Added Users"
+                                             action="#{webUserController.clearAddedUsers()}"/> 
+                        </div>
+
                         <div class="row mb-3">
                             <div class="buttons">
                                 <h:commandButton value="Download" class="btn btn-success fw-bold " >
@@ -89,16 +97,9 @@
 
                     </div>
 
-                    <!--<div class="card-footer">-->
 
 
-                    <h:commandButton  class="btn btn-primary" style="float: left;" value="Add Mutiple Users"
-                                      action="#{webUserController.addMultipleInstitutionAndUsers()}"/> 
-                    <h:commandButton class="btn btn-primary" style="float: left;" value="Clear Added Users"
-                                     action="#{webUserController.clearAddedUsers()}"/> 
-                    <!--</div>-->
 
-                    
                 </h:form>
             </ui:define>
         </ui:composition>

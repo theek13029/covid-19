@@ -1356,6 +1356,38 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Receive_Samples);
                 wups.add(Privilege.Review_Results);
                 wups.add(Privilege.Print_Results);
+
+                wups.add(Privilege.Client_Management);
+                wups.add(Privilege.Encounter_Management);
+                wups.add(Privilege.Sample_Management);
+                wups.add(Privilege.Lab_Management);
+                wups.add(Privilege.Institution_Administration);
+                wups.add(Privilege.Add_Client);
+                wups.add(Privilege.Add_Tests);
+                wups.add(Privilege.Mark_Tests);
+                wups.add(Privilege.Submit_Returns);
+                wups.add(Privilege.Search_any_Client_by_IDs);
+                wups.add(Privilege.Search_any_Client_by_Details);
+                wups.add(Privilege.Manage_Institution_Users);
+                wups.add(Privilege.Manage_Users);
+                wups.add(Privilege.Manage_Metadata);
+                wups.add(Privilege.Manage_Area);
+                wups.add(Privilege.Manage_Institutions);
+                wups.add(Privilege.Manage_Forms);
+                wups.add(Privilege.Monitoring_and_evaluation);
+                wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
+                wups.add(Privilege.Dispatch_Samples);
+                wups.add(Privilege.Divert_Samples);
+                wups.add(Privilege.View_Orders);
+                wups.add(Privilege.Receive_Samples);
+                wups.add(Privilege.Enter_Results);
+                wups.add(Privilege.Review_Results);
+                wups.add(Privilege.Confirm_Results);
+                wups.add(Privilege.Print_Results);
+                wups.add(Privilege.Lab_Reports);
+
                 break;
             case Hospital_User:
                 wups.add(Privilege.Monitoring_and_evaluation);
@@ -2159,7 +2191,7 @@ public class WebUserController implements Serializable {
         WebUserRole[] rs = urs.toArray(new WebUserRole[0]);
         return rs;
     }
-    
+
     public WebUserRole[] getWebUserRolesForRd() {
         List<WebUserRole> urs = new ArrayList<>();
         urs.add(WebUserRole.Hospital_Admin);
