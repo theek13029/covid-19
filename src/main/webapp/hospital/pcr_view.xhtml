@@ -18,6 +18,7 @@
                     <tbody>
                         <tr>
                             <td class="fw-bold fs-6">Patient Data For PCR Ordering</td>
+                            <td></td><td></td><td></td>
                         </tr>
                         <tr>
                             <td class="fw-bold">
@@ -131,9 +132,24 @@
                                 #{hospitalController.pcr.unitWard}
                             </td>
                         </tr>
+                        <tr>
+                            <td class="fw-bold">
+                                BHT / OPD No/ Clinic Number
+                            </td>
+                            <td>
+                                #{hospitalController.pcr.bht}
+                            </td>
+                            <td class="fw-bold">
+                                Comments
+                            </td>
+                            <td>
+                                #{hospitalController.pcr.comments}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-                <div>
+
+                <div class="row">
                     <h:form>
                         <div class="row">
                             <div class="col-sm-12 col-md-3 col-lg-2">
@@ -147,11 +163,6 @@
                                 </h:commandButton>
                             </div>
                         </div>
-                    </h:form>
-                </div>
-
-                <div class="row">
-                    <h:form>
                         <div>
                             <div class="my-2">
                                 <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button"
