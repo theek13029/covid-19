@@ -25,10 +25,10 @@
                             <h:outputLabel value="To" ></h:outputLabel>
                             <p:calendar  class="form-control" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                            <h:commandButton  value="Process" 
+                            <h:commandButton  value="Process"
                                               class="btn btn-success"
                                              action="#{clientController.toSummaryByOrderedInstitutionVsLabToReceive()}" ></h:commandButton>
-                            <h:commandButton value="Generate Excel" 
+                            <h:commandButton value="Generate Excel"
                                              class="btn btn-success">
                                 <p:dataExporter type="xlsx" fileName="Lab Order Summery" target="tbl" ></p:dataExporter>
                             </h:commandButton>
@@ -36,9 +36,18 @@
                         </h:panelGrid>
 
 
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.labSummariesToReceive}" 
+                        <p:dataTable resizableColumns="true"
+                            multiViewState="true"
+                            resizeMode="expand"
+                            reflow="true"
+                            id="tbl" value="#{clientController.labSummariesToReceive}"
                                      rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
+                            <div>
+                                <p:commandButton id="toggler" type="button" class="btn btn-sm btn-secondary"
+                                    value="Columns" icon="pi pi-align-justify"/>
+                                <p:columnToggler datasource="tbl" trigger="toggler"/>
+                            </div>
                             <p:column headerText="No" width="50" >
                                 <h:outputLabel value="#{n+1}" ></h:outputLabel>
                             </p:column>
@@ -46,7 +55,7 @@
                                       sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.institution.name}" ></h:outputLabel>
                             </p:column>
-                            
+
                             <p:column headerText="Lab"
                                       sortBy="#{c.referralInstitution.name}" filterBy="#{c.referralInstitution.name}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.referralInstitution.name}" ></h:outputLabel>
@@ -55,7 +64,7 @@
                                 <h:outputLabel value="#{c.count}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false"  >
-                                <h:commandButton class="btn btn-success"  rendered="#{c.referralInstitution ne null}" value="To Dispatch Samples to Designated Lab" 
+                                <h:commandButton class="btn btn-success"  rendered="#{c.referralInstitution ne null}" value="To Dispatch Samples to Designated Lab"
                                                   action="#{clientController.toDispatchSamplesWithReferringLab()}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
