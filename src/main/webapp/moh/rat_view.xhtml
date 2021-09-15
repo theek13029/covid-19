@@ -210,12 +210,12 @@
                                 </p:column>
                                 <p:column headerText="Actions">
                                     <h:commandButton value="Edit" action="#{mohController.toRatEdit()}"
-                                                     class="btn btn-sm btn-primary w-100">
+                                                     class="btn btn-sm btn-primary">
                                         <f:setPropertyActionListener value="#{c}" target="#{mohController.rat}">
                                         </f:setPropertyActionListener>
                                     </h:commandButton>
                                     <h:commandButton value="Delete" action="#{mohController.toDeleteTestFromLastRatList()}"
-                                                     class="btn btn-sm btn-danger w-100 my-2">
+                                                     class="btn btn-sm btn-danger">
                                         <f:setPropertyActionListener value="#{c}" target="#{mohController.deleting}">
                                         </f:setPropertyActionListener>
                                     </h:commandButton>
