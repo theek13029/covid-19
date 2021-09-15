@@ -181,7 +181,6 @@ public class NationalController implements Serializable {
         m.put("td", getToDate());
         m.put("ral", false);
         m.put("sl", true);
-        m.put("rd", webUserController.getLoggedInstitution().getRdhsArea());
         labSummariesToReceive = new ArrayList<>();
         List<Object> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
         // // System.out.println("obs = " + obs.size());
@@ -190,7 +189,7 @@ public class NationalController implements Serializable {
                 labSummariesToReceive.add((InstitutionCount) o);
             }
         }
-        return "/regional/summary_lab_vs_ordered_to_receive";
+        return "/national/summary_lab_vs_ordered_to_receive";
     }
 
     public void prepareSummaryByOrderedInstitution() {
