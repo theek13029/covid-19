@@ -15,186 +15,215 @@
             </ui:define>
             <ui:define name="content">
                 <table class="table table-striped">
-                <tbody>
-                    <tr class="#{mohController.rat.pcrResult.name eq 'Positive'?'table-danger':''}">
-                        <td class="fw-bold">
-                            Result
-                        </td>
-                        <td class="fw-bold text-uppercase">
-                            #{mohController.rat.pcrResult.name}
-                        </td>
-                        <td class="fw-bold">
-                            Ordering Category
-                        </td>
-                        <td>
-                            #{mohController.rat.pcrOrderingCategory.name}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold">
-                            Sampled Date | Time
-                        </td>
-                        <td>
-                            <p:outputLabel value="#{mohController.rat.sampledAt}">
-                                <f:convertDateTime pattern="dd MMMM yyyy hh:mm"></f:convertDateTime>
-                            </p:outputLabel>
-                        </td>
-                        <td class="fw-bold">
-                            Result Issued Date | Time
-                        </td>
-                        <td>
-                            <p:outputLabel value="#{mohController.rat.resultConfirmedAt}">
-                                <f:convertDateTime pattern="dd MMMM yyyy hh:mm"></f:convertDateTime>
-                            </p:outputLabel>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold">
-                            Name
-                        </td>
-                        <td>
-                            #{mohController.rat.client.person.name}
-                        </td>
-                        <td class="fw-bold">
-                            Citizenship
-                        </td>
-                        <td>
-                            #{mohController.rat.client.person.citizenship.name}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold">
-                            PHN Number
-                        </td>
-                        <td>
-                            #{mohController.rat.client.phn}
-                        </td>
-                        <td class="fw-bold">
-                            Symptomatic Status
-                        </td>
-                        <td>
-                            #{mohController.rat.symptomatic?'Yes':''}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold">
-                            NIC | Passport Number
-                        </td>
-                        <td>
-                            #{mohController.rat.client.person.nic}
-                        </td>
-                        <td class="fw-bold">
-                            Gender
-                        </td>
-                        <td>
-                            #{mohController.rat.client.person.sex}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold">
-                            Age
-                        </td>
-                        <td>
-                            #{mohController.rat.client.person.age}
-                        </td>
-                        <td class="fw-bold">
-                            Current Residential Address
-                        </td>
-                        <td>
-                            #{mohController.rat.client.person.address}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold">District</td>
-                        <td>
-                            #{mohController.rat.client.person.district.name}
-                        </td>
-                        <td class="fw-bold">
-                            MOH Area
-                        </td>
-                        <td>
-                            #{mohController.rat.client.person.mohArea.name}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold">Contact Number</td>
-                        <td>
-                            #{mohController.rat.client.person.phone1}
-                        </td>
-                        <td class="fw-bold">GN Division</td>
-                        <td>
-                            #{mohController.rat.client.person.gnArea.name}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold">PHI Area</td>
-                        <td>
-                            #{mohController.rat.client.person.phiArea.name}
-                        </td>
-                        <td class="fw-bold">
-                            Unit | Ward
-                        </td>
-                        <td>
-                            #{mohController.rat.unitWard}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-                <div class="mb-2">
-                <h:commandButton class="btn btn-primary fw-bold" value="Edit Details"
-                    action="#{mohController.toRatEdit()}"></h:commandButton>
-                <h:commandButton class="btn mx-2 btn-primary fw-bold" value="New Rat Request With Result"
-                    action="#{mohController.toAddNewRatWithNewClient()}"></h:commandButton>
-            </div>
+                    <tbody>
+                        <tr class="#{mohController.rat.pcrResult.name eq 'Positive'?'table-danger':''}">
+                            <td class="fw-bold">
+                                Result
+                            </td>
+                            <td class="fw-bold text-uppercase">
+                                #{mohController.rat.pcrResult.name}
+                            </td>
+                            <td class="fw-bold">
+                                Ordering Category
+                            </td>
+                            <td>
+                                #{mohController.rat.pcrOrderingCategory.name}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">
+                                Sampled Date | Time
+                            </td>
+                            <td>
+                                <p:outputLabel value="#{mohController.rat.sampledAt}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy hh:mm"></f:convertDateTime>
+                                </p:outputLabel>
+                            </td>
+                            <td class="fw-bold">
+                                Result Issued Date | Time
+                            </td>
+                            <td>
+                                <p:outputLabel value="#{mohController.rat.resultConfirmedAt}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy hh:mm"></f:convertDateTime>
+                                </p:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">
+                                Name
+                            </td>
+                            <td>
+                                #{mohController.rat.client.person.name}
+                            </td>
+                            <td class="fw-bold">
+                                Citizenship
+                            </td>
+                            <td>
+                                #{mohController.rat.client.person.citizenship.name}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">
+                                PHN Number
+                            </td>
+                            <td>
+                                #{mohController.rat.client.phn}
+                            </td>
+                            <td class="fw-bold">
+                                Symptomatic Status
+                            </td>
+                            <td>
+                                #{mohController.rat.symptomatic?'Yes':''}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">
+                                NIC | Passport Number
+                            </td>
+                            <td>
+                                #{mohController.rat.client.person.nic}
+                            </td>
+                            <td class="fw-bold">
+                                Gender
+                            </td>
+                            <td>
+                                #{mohController.rat.client.person.sex}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">
+                                Age
+                            </td>
+                            <td>
+                                #{mohController.rat.client.person.age}
+                            </td>
+                            <td class="fw-bold">
+                                Current Residential Address
+                            </td>
+                            <td>
+                                #{mohController.rat.client.person.address}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">District</td>
+                            <td>
+                                #{mohController.rat.client.person.district.name}
+                            </td>
+                            <td class="fw-bold">
+                                MOH Area
+                            </td>
+                            <td>
+                                #{mohController.rat.client.person.mohArea.name}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Contact Number</td>
+                            <td>
+                                #{mohController.rat.client.person.phone1}
+                            </td>
+                            <td class="fw-bold">GN Division</td>
+                            <td>
+                                #{mohController.rat.client.person.gnArea.name}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">PHI Area</td>
+                            <td>
+                                #{mohController.rat.client.person.phiArea.name}
+                            </td>
+                            <td class="fw-bold">
+                                Referring Lab
+                            </td>
+                            <td>
+                                #{mohController.rat.referalInstitution}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Vaccination Status</td>
+                            <td>
+                                #{mohController.rat.vaccinationStatus}
+                            </td>
+                            <td class="fw-bold">
+                                Workplace Name
+                            </td>
+                            <td>
+                                #{mohController.rat.client.person.workPlace}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Workplace Contact Person's Name</td>
+                            <td>
+                                #{mohController.rat.client.person.workplaceContact}
+                            </td>
+                            <td class="fw-bold">
+                                Workplace Contact Number
+                            </td>
+                            <td>
+                                #{mohController.rat.client.person.workplaceContactDetails}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <div class="row">
-                <h:form>
-                    <div>
-                        <div class="my-2">
-                            <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button" value="Columns" />
-                            <p:columnToggler datasource="tbl" trigger="toggler"/>
+                <div class="row">
+                    <h:form>
+                        <div class="mb-2">
+                            <h:commandButton class="btn btn-primary fw-bold" value="Edit Details"
+                                             action="#{mohController.toRatEdit()}"></h:commandButton>
+                            <h:commandButton class="btn mx-2 btn-primary fw-bold" value="New Rat Request With Result"
+                                             action="#{mohController.toAddNewRatWithNewClient()}"></h:commandButton>
                         </div>
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand"
-                            value="#{sessionController.ratList}" id="tbl" reflow="true" var="c" paginator="true"
-                            rowKey="#{c.id}" rows="10">
-                            <f:facet name="header">
-                                Latest Entries
-                            </f:facet>
-                            <p:column headerText="Test No" sortBy="#{c.encounterNumber}">
-                                <p:outputLabel value="#{c.encounterNumber}"></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Name" sortBy="#{c.client.person.name}">
-                                <p:outputLabel value="#{c.client.person.name}"></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Age" sortBy="#{c.client.person.ageInDays}">
-                                <p:outputLabel value="#{c.client.person.age}"></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Sex" sortBy="#{c.client.person.sex.name}">
-                                <p:outputLabel value="#{c.client.person.sex.name}"></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="NIC" sortBy="#{c.client.person.nic}">
-                                <p:outputLabel value="#{c.client.person.nic}"></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Address">
-                                <p:outputLabel value="#{c.client.person.address}"></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Actions">
-                                <p:commandButton value="Edit" ajax="false" action="#{mohController.toRatEdit()}"
-                                    class="btn btn-sm btn-primary">
-                                    <f:setPropertyActionListener value="#{c}" target="#{mohController.rat}">
-                                    </f:setPropertyActionListener>
-                                </p:commandButton>
-                                <p:commandButton value="Delete" ajax="false"
-                                    action="#{mohController.toDeleteTestFromLastRatList()}"
-                                    class="btn btn-sm btn-danger">
-                                    <f:setPropertyActionListener value="#{c}" target="#{mohController.deleting}">
-                                    </f:setPropertyActionListener>
-                                </p:commandButton>
-                            </p:column>
-                        </p:dataTable>
-                    </div>
-                </h:form>
-            </div>
+                        <div>
+                            <div class="my-2">
+                                <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button" value="Columns" />
+                                <p:columnToggler datasource="tbl" trigger="toggler"/>
+                            </div>
+                            <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand"
+                                         value="#{sessionController.ratList}" id="tbl" reflow="true" var="c" paginator="true"
+                                         rowKey="#{c.id}" rows="10">
+                                <f:facet name="header">
+                                    <h3 class="fs-5 fw-bold mb-2">Latest Entries</h3>
+                                </f:facet>
+                                <p:column headerText="Test No" sortBy="#{c.encounterNumber}">
+                                    <p:outputLabel value="#{c.encounterNumber}"></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Name" sortBy="#{c.client.person.name}">
+                                    <p:outputLabel value="#{c.client.person.name}"></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Age" sortBy="#{c.client.person.ageInDays}">
+                                    <p:outputLabel value="#{c.client.person.age}"></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Sex" sortBy="#{c.client.person.sex.name}">
+                                    <p:outputLabel value="#{c.client.person.sex.name}"></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="NIC" sortBy="#{c.client.person.nic}">
+                                    <p:outputLabel value="#{c.client.person.nic}"></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Address">
+                                    <p:outputLabel value="#{c.client.person.address}"></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Phone">
+                                    <p:outputLabel value="#{c.client.person.phone1}"></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="GN Area">
+                                    <p:outputLabel value="#{c.client.person.gnArea}"></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Actions">
+                                    <h:commandButton value="Edit" action="#{mohController.toRatEdit()}"
+                                                     class="btn btn-sm btn-primary w-100">
+                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.rat}">
+                                        </f:setPropertyActionListener>
+                                    </h:commandButton>
+                                    <h:commandButton value="Delete" action="#{mohController.toDeleteTestFromLastRatList()}"
+                                                     class="btn btn-sm btn-danger w-100 my-2">
+                                        <f:setPropertyActionListener value="#{c}" target="#{mohController.deleting}">
+                                        </f:setPropertyActionListener>
+                                    </h:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </h:form>
+                </div>
 
 
 
