@@ -1717,10 +1717,10 @@ public class MohController implements Serializable {
             createdIns = rat.getClient().getCreateInstitution();
         }
 
-        if (createdIns == null || createdIns.getPoiNumber() == null || createdIns.getPoiNumber().trim().equals("")) {
-            JsfUtil.addErrorMessage("The institution you logged has no POI. Can not generate a PHN.");
-            return "";
-        }
+//        if (createdIns == null || createdIns.getPoiNumber() == null || createdIns.getPoiNumber().trim().equals("")) {
+//            JsfUtil.addErrorMessage("The institution you logged has no POI. Can not generate a PHN.");
+//            return "";
+//        }
 
         if (rat.getClient().getPhn() == null || rat.getClient().getPhn().trim().equals("")) {
             String newPhn = applicationController.createNewPersonalHealthNumberformat(createdIns);

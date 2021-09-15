@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="container-fluid w-100" >
-                     <ui:insert name="content">
+                    <ui:insert name="content">
                         Contents
                     </ui:insert>
                 </div>
@@ -47,6 +47,27 @@
                         <ez:login/>
                     </div>
                 </div>
+
+                <div class="container" >
+                    <div class="card" >
+                        <div class="card-header" >
+                            Downloads
+                        </div>
+                        <div class="card-body" >
+                            <div class="col-12" >
+                                <a href="https://drive.google.com/file/d/1UVJnSX4j0IQQodTfpbsVBlsH535k4AYF/view?usp=sharing"  target="_blank">
+                                    Download Data Collection Form for MOH
+                                </a>
+                            </div>
+                            <div class="col-12" >
+                                <a href="https://drive.google.com/file/d/1bEBr3Ip35JjMrEFnhk5ExD0P64IydSki/view?usp=sharing"  target="_blank">
+                                    Download Data Collection Form for Hospitals
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </h:panelGroup>
 
             <ui:insert name="timeout">
@@ -57,13 +78,15 @@
             <h:outputScript library="js" name="jquery.easing.min.js"></h:outputScript>
         </h:body>
     </f:view>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async="true" src="https://www.googletagmanager.com/gtag/js?id=G-M89EXF43GH"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
 
-    gtag('config', 'G-M89EXF43GH');
+        gtag('config', 'G-M89EXF43GH');
     </script>
 </html>
