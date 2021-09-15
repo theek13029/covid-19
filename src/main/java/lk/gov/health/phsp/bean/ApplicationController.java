@@ -148,13 +148,13 @@ public class ApplicationController {
 
     public String createNewPersonalHealthNumberformat(Institution pins) {
         if (pins == null) {
-            return null;
+            pins=institutionApplicationController.findMinistryOfHealth();
         }else{
             pins = institutionApplicationController.findMinistryOfHealth();
         }
         Institution ins = getInstitutionFacade().find(pins.getId());
         if (ins == null) {
-            return null;
+            ins=institutionApplicationController.findMinistryOfHealth();
         }else{
             ins = institutionApplicationController.findMinistryOfHealth();
         }
