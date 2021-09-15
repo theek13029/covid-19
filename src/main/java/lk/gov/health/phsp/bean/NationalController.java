@@ -171,9 +171,8 @@ public class NationalController implements Serializable {
                 + " from Encounter c "
                 + " where c.retired=false "
                 + " and c.encounterType=:type "
-                + " and c.encounterDate between :fd and :td "
-                + " and c.institution.rdhsArea=:rd "
-                + " and (c.receivedAtLab is null c.receivedAtLab=:ral) "
+                + " and (c.encounterDate > :fd and c.encounterDate<:td) "
+                + " and (c.receivedAtLab is null or c.receivedAtLab=:ral) "
                 + " and c.sentToLab=:sl "
                 + " group by c.institution, c.referalInstitution";
         Map m = new HashMap();
@@ -184,7 +183,7 @@ public class NationalController implements Serializable {
         m.put("sl", true);
         m.put("rd", webUserController.getLoggedInstitution().getRdhsArea());
         labSummariesToReceive = new ArrayList<>();
-        List<Object> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
+        List<Object> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
         // // System.out.println("obs = " + obs.size());
         for (Object o : obs) {
             if (o instanceof InstitutionCount) {

@@ -78,6 +78,10 @@
                                       filterBy="#{c.institution.name}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.institution.name}" ></h:outputLabel>
                             </p:column>
+                           <p:column headerText="Institution District" sortBy="#{c.institution.district.name}"
+                                      filterBy="#{c.institution.district.name}" filterMatchMode="contains">
+                             <h:outputLabel value="#{c.institution.district.name}" ></h:outputLabel>
+                            </p:column>
 
                              <p:column headerText="Ordering Category"  sortBy="#{c.pcrOrderingCategory.name}"
                                       filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
