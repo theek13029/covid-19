@@ -32,6 +32,18 @@
                         </tr>
                         <tr>
                             <td class="fw-bold">
+                                Test Number
+                            </td>
+                            <td>
+                                #{hospitalController.rat.encounterNumber}
+                            </td>
+                            <td class="fw-bold">BHT / OPD No/ Clinic Number</td>
+                            <td>
+                                #{hospitalController.rat.bht}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">
                                 Sampled Date | Time
                             </td>
                             <td>
@@ -140,19 +152,19 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="row">
-                    <div class="col-sm-12 col-md-4 col-lg-2">
-                        <h:commandButton class="btn btn-primary fw-bold w-100  my-2" value="Edit Details"
-                                         action="#{hospitalController.toRatEdit()}"></h:commandButton>
-                    </div>
-                    <div class="col-sm-12 col-md-4 col-lg-2">
-                        <h:commandButton class="btn btn-primary fw-bold w-100 my-2" value="New Rat Request With Result"
-                                         action="#{hospitalController.toAddNewRatWithNewClient()}"></h:commandButton>
-                    </div>
-                </div>
 
                 <div class="row">
                     <h:form>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 col-lg-2">
+                                <h:commandButton class="btn btn-primary fw-bold w-100  my-2" value="Edit Details"
+                                                 action="#{hospitalController.toRatEdit()}"></h:commandButton>
+                            </div>
+                            <div class="col-sm-12 col-md-4 col-lg-2">
+                                <h:commandButton class="btn btn-primary fw-bold w-100 my-2" value="New Rat Request With Result"
+                                                 action="#{hospitalController.toAddNewRatWithNewClient()}"></h:commandButton>
+                            </div>
+                        </div>
                         <div>
                             <div class="my-2">
                                 <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button" value="Columns" />
