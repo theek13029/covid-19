@@ -445,6 +445,75 @@ public class NationalController implements Serializable {
         return "/national/count_of_tests_by_ordered_institution_without_rdhs";
     }
 
+    // This will return data of number of tests done by hospitals of a given RDHS
+    // Rukshan
+
+    public String toCountOfTestsFromRdhsToMoh() {
+        Map m = new HashMap();
+
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and (c.createdAt > :fd and c.createdAt < :td) ";
+        m.put("fd", getFromDate());
+
+        System.out.println("getFromDate() = " + getFromDate());
+
+        System.out.println("getToDate() = " + getToDate());
+
+        m.put("td", getToDate());
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+        if (institutionType != null) {
+            j += " and c.institution.institutionType=:it ";
+            m.put("it", institutionType);
+        }
+
+        j += " and c.institution.rdhsArea=:rd";
+        m.put("rd", this.rdhs);
+
+        j += " group by c.institution"
+                + " order by count(c) desc ";
+
+        System.out.println("j = " + j);
+        System.out.println("m = " + m);
+
+        institutionCounts = new ArrayList<>();
+
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
+        if (objCounts == null || objCounts.isEmpty()) {
+            return "/national/count_of_tests_by_ordered_institution";
+        }
+        for (Object o : objCounts) {
+            if (o instanceof InstitutionCount) {
+                InstitutionCount ic = (InstitutionCount) o;
+                institutionCounts.add(ic);
+            }
+        }
+
+        return "/national/count_of_tests_by_ordered_institution";
+    }
+
     public String toCountOfTestsFromPdhsToRdhs() {
         System.out.println("pdhs = " + pdhs);
         if (pdhs == null) {
