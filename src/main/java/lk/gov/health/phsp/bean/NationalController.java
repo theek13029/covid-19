@@ -447,7 +447,7 @@ public class NationalController implements Serializable {
     // This will return data of number of tests done by hospitals of a given RDHS
     // Rukshan
 
-    public String toCountOfTestsFromRdhsToMoh() {
+    public String toCountOfTestsFromRdhsToInstitution() {
         Map m = new HashMap();
 
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c))   "
