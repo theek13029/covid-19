@@ -720,7 +720,7 @@ public class NationalController implements Serializable {
 
     // This will provide a test positive rate according to the area provided
     // RukshanR
-    public String testPositiveRateByRdhs() {
+    public String toTestPositiveRateByRdhs() {
         DecimalFormat df = new DecimalFormat("0.0");
 
         Map m = new HashMap();
