@@ -171,95 +171,69 @@
             </div>
             <div class="row my-2 gx-4">
                 <div class="col">
-                    <div class="d-flex bg-success px-3 py-2 align-items-center">
-                        <div class="flex-grow-1 text-white">
-                            <h4 class="fw-bold">
-                                <i class="bi mx-2 bi-info-circle-fill"></i>
-                                Test By Category
-                            </h4>
-                            <div class="d-flex">
-                                <div class="p-2 w-100">
-                                    <h5>
-                                        <h:commandLink class="text-decoration-none text-white"  value="First Contacts"
-                                        action="#{dashboardController.toContactNational()}"></h:commandLink>
-                                    </h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.firstContactCount}" ></h:outputLabel>
-                                    </h5>
-                                </div>
+                    <ol class="list-group">
+                        <li class="list-group-item active">Test By Category</li>
+                        <h:commandLink action="#{dashboardController.toContactNational()}" class="list-group-item list-group-action-item d-flex justify-content-between align-items-start">
+                          <div class="ms-2 me-auto">
+                                First Contacts
+                          </div>
+                          <span class="badge bg-primary rounded-pill">
+                            #{dashboardApplicationController.firstContactCount}
+                          </span>
+                        </h:commandLink>
+                        <h:commandLink action="#{dashboardController.toCommunityRandomNational()}" class="list-group-item d-flex justify-content-between align-items-start list-group-action-item">
+                          <div class="ms-2 me-auto">
+                                Community Random
+                          </div>
+                          <span class="badge bg-primary rounded-pill">
+                                #{dashboardApplicationController.communityRandomCount}
+                          </span>
+                        </h:commandLink>
+                        <h:commandLink action="#{dashboardController.toForeign()}" class="list-group-item d-flex justify-content-between align-items-start list-group-action-item">
+                          <div class="ms-2 me-auto">
+                                Foreign returnees and tourists
+                          </div>
+                          <span class="badge bg-primary rounded-pill">
+                            #{dashboardApplicationController.foreignCount}
+                          </span>
+                        </h:commandLink>
+                        <h:commandLink action="#{dashboardController.toHospital()}" class="list-group-item d-flex justify-content-between align-items-start list-group-action-item">
+                            <div class="ms-2 me-auto">
+                                Hospitals
                             </div>
-                            <div class="d-flex">
-                                <div class="p-2 w-100">
-                                    <h5>
-                                        <h:commandLink class="text-decoration-none text-white"  value="Community Random"
-                                        action="#{dashboardController.toCommunityRandomNational()}"></h:commandLink>
-                                    </h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.communityRandomCount}">
-                                        </h:outputLabel>
-                                    </h5>
-                                </div>
+                            <span class="badge bg-primary rounded-pill">
+                                #{dashboardApplicationController.hospitalCount}
+                            </span>
+                        </h:commandLink>
+                        <h:commandLink action="#{dashboardController.toOtherOrderingCategory()}" class="list-group-item d-flex jusify-content-between align-items-start list-group-action-item">
+                           <div class="ms-2 me-auto">
+                               Other
                             </div>
-                            <div class="d-flex">
-                                <div class="p-2 w-100">
-                                    <h5>
-                                        <h:commandLink class="text-decoration-none text-white" 
-                                        value="Foreign returnees &amp; Tourists "
-                                        action="#{dashboardController.toForeign()}"></h:commandLink>
-                                    </h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.foreignCount}">
-                                        </h:outputLabel>
-                                    </h5>
-                                </div>
+                            <span class="badge bg-primary rounded-pill">
+                                #{dashboardApplicationController.otherCount}
+                            </span>
+                        </h:commandLink>
+                        <h:commandLink action="#{mohController.toDistrictViceTestListForOrderingCategories()}" class="list-group-item d-flex justify-content-betweeen align-items-start list-group-action-item">
+                            <div class="ms-2 me-auto">
+                                Other
                             </div>
-                            <div class="d-flex">
-                                <div class="p-2 w-100">
-                                    <h5>
-                                        <h:commandLink class="text-decoration-none text-white"  value="Hospitals"
-                                        action="#{dashboardController.toHospital()}"></h:commandLink>
-                                    </h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.hospitalCount}">
-                                        </h:outputLabel>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="p-2 w-100">
-                                    <h5>
-                                        <h:commandLink class="text-decoration-none text-white"  value="Other"
-                                        action="#{dashboardController.toOtherOrderingCategory()}"></h:commandLink>
-                                    </h5>
-                                </div>
-                                <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                    <h5>
-                                        <h:outputLabel value="#{dashboardApplicationController.otherCount}">
-                                        </h:outputLabel>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="p-2 w-100">
-                                    <h5>
-                                        <h:commandLink class="text-white text-decoration-none" value="Find more details .."
-                                        action="#{mohController.toDistrictViceTestListForOrderingCategories()}"></h:commandLink>
-                                    </h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            <span class="badge bg-primary rounded-pill">
+                                #{dashboardApplicationController.otherCount}
+                            </span>
+                        </h:commandLink>
+                        <h:commandLink class="list-group-item list-group-item-action" action="#{nationalController.toTestPositiveRateByRdhs()}">
+                            Test Positivity Rate Details
+                        </h:commandLink>
+                        <h:commandLink action="#{mohController.toDistrictViceTestListForOrderingCategories()}" class="list-group-item d-flex list-group-action-item">
+                            More details
+                        </h:commandLink>
+                      </ol>
                 </div>
-                <div class="col"></div>
-                <div class="col"></div>
+                <div class="col">
+                </div>
+                <div class="col">
+
+                </div>
                 <div class="col"></div>
             </div>
 
