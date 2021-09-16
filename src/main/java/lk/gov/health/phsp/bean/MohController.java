@@ -1065,6 +1065,14 @@ public class MohController implements Serializable {
             return "";
         }
     }
+    
+    public String toViewRequest() {
+        if (test == null) {
+            JsfUtil.addErrorMessage("No Test");
+            return "";
+        }
+        return "/moh/request_view";
+    }
 
     public String toViewResult() {
         if (test == null) {

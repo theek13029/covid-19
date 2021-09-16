@@ -65,6 +65,8 @@ public class CommonController implements Serializable {
 
     private Client client;
     private Encounter encounter;
+    private Encounter request;
+    private Encounter result;
 
     private static final long serialVersionUID = 1L;
 
@@ -1198,4 +1200,22 @@ public class CommonController implements Serializable {
         this.encounter = encounter;
     }
 
+    public Encounter getRequest() {
+        return request;
+    }
+
+    public void setRequest(Encounter request) {
+        this.request = request;
+    }
+
+    public Encounter getResult() {
+        return result;
+    }
+
+    public void setResult(Encounter result) {
+        this.result = result;
+    }
+
+    
+    
 }

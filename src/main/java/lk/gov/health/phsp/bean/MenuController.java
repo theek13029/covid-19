@@ -63,6 +63,18 @@ public class MenuController implements Serializable {
      */
     public MenuController() {
     }
+    
+    public String toViewRequest() {
+        return "/common/request_view";
+    }
+    
+    public String toViewPatient() {
+        return "/common/client_view";
+    }
+    
+    public String toViewResult() {
+        return "/common/result_view";
+    }
 
     public String toSummaryByOrderedInstitution() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {

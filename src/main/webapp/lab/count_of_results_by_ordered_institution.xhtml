@@ -18,12 +18,12 @@
                     <h:form >
                         <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
                         <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded" >
-                            <h:outputLabel class="h6 fw-bold" value="Ordered From" ></h:outputLabel>
+                            <h:outputLabel class="h6 fw-bold" value="Result Confirmed From" ></h:outputLabel>
                             <p:calendar value="#{labController.fromDate}"
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
-                            <h:outputLabel class="h6 fw-bold" value="Ordered To" ></h:outputLabel>
+                            <h:outputLabel class="h6 fw-bold" value="Result Confirmed Up To" ></h:outputLabel>
                             <p:calendar value="#{labController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
                             <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
@@ -33,15 +33,6 @@
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
-
-                            <h:outputLabel class="h6 fw-bold" value="Lab"></h:outputLabel>
-                            <p:autoComplete style="width: 100%;"
-                                            inputStyleClass="autocomplete"
-                                            value="#{labController.lab}"
-                                            forceSelection="true" tabindex="100"
-                                            completeMethod="#{labController.completeLab}"
-                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
-                            </p:autoComplete>
 
                             <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
                             <h:selectOneMenu value="#{labController.testType}" class="form-select">
@@ -83,23 +74,13 @@
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
                                      >
-
-                            <p:column headerText="Province" sortBy="#{c.institution.province.name}"
-                                      filterBy="#{c.institution.province.name}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.institution.province.name}" ></h:outputLabel>
-                            </p:column>
                             <p:column headerText="PDHS" sortBy="#{c.institution.pdhsArea.name}"
                                       filterBy="#{c.institution.pdhsArea.name}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.institution.pdhsArea.name}" ></h:outputLabel>
                             </p:column>
-
                             <p:column headerText="RDHS" sortBy="#{c.institution.rdhsArea.name}"
                                       filterBy="#{c.institution.rdhsArea.name}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.institution.rdhsArea.name}" ></h:outputLabel>
-                            </p:column>
-                            <p:column headerText="District" sortBy="#{c.institution.district.name}"
-                                      filterBy="#{c.institution.district.name}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.institution.district.name}"></h:outputLabel>
                             </p:column>
                             <p:column headerText="Institution" sortBy="#{c.institution.name}"
                                       filterBy="#{c.institution.name}" filterMatchMode="contains">
