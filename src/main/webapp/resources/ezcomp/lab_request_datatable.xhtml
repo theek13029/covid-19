@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute  name="form" type="lk.gov.health.phsp.entity.ClientEncounterComponentForm" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+
+        <p:dataTable id="tbl" value="#{labController.tests}" rendered="true"
+                     rowIndexVar="n"
+                     var="c"
+                     rowKey="#{c.id}"
+
+                     stripedRows="true"
+                     reflow="true"
+                     resizableColumns="true"
+                     resizeMode="expand"
+
+
+                     paginator="true"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                     rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
+                     rows="10"
+                     >
+            <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                <h:outputLabel value="#{c.encounterNumber}" ></h:outputLabel>
+            </p:column>
+            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
+                <h:outputLabel value="#{c.pcrTestType.name}" ></h:outputLabel>
+            </p:column>
+            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
+                <h:outputLabel value="#{c.client.person.name}" ></h:outputLabel>
+            </p:column>
+            <p:column headerText="Age"  sortBy="#{c.client.person.age}" width="60"
+                      filterBy="#{c.client.person.age}" filterMatchMode="contains">
+                <h:outputLabel value="#{c.client.person.age}" ></h:outputLabel>
+            </p:column>
+            <p:column headerText="Gender"
+                      width="80"
+                      sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
+                <h:outputLabel value="#{c.client.person.sex.name}" ></h:outputLabel>
+            </p:column>
+            <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
+                <h:outputLabel value="#{c.client.person.nic}" ></h:outputLabel>
+            </p:column>
+            <p:column headerText="Phone" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
+                <h:outputLabel value="#{c.client.person.phone1}" ></h:outputLabel>
+                <h:outputLabel rendered="#{c.client.person.phone2 ne null}" value=", " ></h:outputLabel>
+                <h:outputLabel rendered="#{c.client.person.phone2 ne null}" value="#{c.client.person.phone2}" ></h:outputLabel>
+            </p:column>
+            <p:column headerText="Address"  sortBy="#{c.client.person.address}"
+                      filterBy="#{c.client.person.address}" filterMatchMode="contains">
+                <h:outputLabel value="#{c.client.person.address}" ></h:outputLabel>
+            </p:column>
+            <p:column headerText="Details" >
+                <h:outputText value=" Ward/Unit : #{c.unitWard}&lt;br/&gt;" escape="false" rendered="#{c.unitWard ne null and c.unitWard ne ''}" ></h:outputText>
+                <h:outputText value=" BHT/Clinic/OPD No. : #{c.bht}&lt;br/&gt;"  rendered="#{c.bht ne null and c.bht ne ''}" ></h:outputText>
+            </p:column>
+            <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
+
+                <h:commandButton  class="btn btn-primary mb-2 d-flex flex-column w-100  align-items-center" 
+                                  value="View Patient" onclick="form.target = '_blank'"
+                                  action="#{menuController.toViewPatient()}"  >
+                    <f:setPropertyActionListener value="#{c.client}" 
+                                                 target="#{clientController.selected}" >
+                    </f:setPropertyActionListener>
+                </h:commandButton>
+                <h:commandButton  class="btn btn-secondary mb-2 d-flex flex-column w-100  align-items-center" 
+                                  value="View Request" onclick="form.target = '_blank'"
+                                  action="#{menuController.toViewRequest()}"  >
+                    <f:setPropertyActionListener value="#{c}" 
+                                                 target="#{commonController.request}" >
+                    </f:setPropertyActionListener>
+                </h:commandButton>
+                <h:commandButton class="btn btn-warning d-flex flex-column w-100  align-items-center" 
+                                 value="View Result" onclick="form.target = '_blank'"
+                                 action="#{menuController.toViewResult()}" >
+                    <f:setPropertyActionListener value="#{c}" 
+                                                 target="#{commonController.result}" >
+                    </f:setPropertyActionListener>
+                </h:commandButton>
+
+            </p:column>
+        </p:dataTable>
+
+
+    </cc:implementation>
+</html>
