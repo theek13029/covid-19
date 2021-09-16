@@ -6,18 +6,13 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <body>
+    <h:body>
 
-        <ui:composition template="/template1.xhtml">
-
-            <ui:define name="title">
-                List of Tests by Ordered Date
-            </ui:define>
-
-            <ui:define name="content">
+        <ui:composition template="/lab/reports_index.xhtml">
+            <ui:define name="reports">
                 <p:panelGrid columns="1" styleClass="alignTop w-100 bg-white border border-light" >
                     <f:facet name="header" >
-                        <h:outputLabel class="fs-5 fw-bold" value="Test List" ></h:outputLabel>
+                        <h:outputLabel class="fs-5 fw-bold" value="Requests by Ordered Date" ></h:outputLabel>
                     </f:facet>
 
                     <h:form >
@@ -30,8 +25,8 @@
                             <h:outputLabel class="fs-6 fw-bold" value="Ordered To" ></h:outputLabel>
                             <p:calendar class="fs-6" value="#{labController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                            <h:outputLabel value="Institution" class="form-label"></h:outputLabel>
-                            <p:autoComplete class="w-100"
+                            <h:outputLabel value="Institution" class="fs-6 fw-bold"></h:outputLabel>
+                            <p:autoComplete class="fs-6 w-100"
                                             id="acIns"
                                             value="#{labController.institution}"
                                             forceSelection="true" tabindex="100"
@@ -40,8 +35,8 @@
                                 <p:ajax process="acIns" event="blur" ></p:ajax>
                             </p:autoComplete>
 
-                            <p:outputLabel value="Test" ></p:outputLabel>
-                            <h:selectOneMenu value="#{labController.testType}" >
+                            <p:outputLabel value="Test"  class="fs-6 fw-bold"></p:outputLabel>
+                            <h:selectOneMenu value="#{labController.testType}"  class="fs-6 w-100">
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{labController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
@@ -63,6 +58,13 @@
                                      rowIndexVar="n"
                                      var="c"
                                      rowKey="#{c.id}"
+
+                                     stripedRows="true"
+                                     reflow="true"
+                                     resizableColumns="true"
+                                     resizeMode="expand"
+
+
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -108,29 +110,29 @@
                                 <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
-                                <p:panelGrid columns="3" >
-                                    <h:commandButton  class="btn btn-success mb-2 d-flex flex-column w-100  align-items-center" 
-                                                      value="View Patient" 
-                                                      action="#{menuController.toViewPatient()}"  >
-                                        <f:setPropertyActionListener value="#{c}" 
-                                                                     target="#{clientController.selected}" >
-                                        </f:setPropertyActionListener>
-                                    </h:commandButton>
-                                    <h:commandButton  class="btn btn-success mb-2 d-flex flex-column w-100  align-items-center" 
-                                                      value="View Request" 
-                                                      action="#{menuController.toViewRequest()}"  >
-                                        <f:setPropertyActionListener value="#{c}" 
-                                                                     target="#{commonController.request}" >
-                                        </f:setPropertyActionListener>
-                                    </h:commandButton>
-                                    <h:commandButton class="btn btn-warning d-flex flex-column w-100  align-items-center" 
-                                                     value="View Result" 
-                                                     action="#{mohController.toViewResult()}" >
-                                        <f:setPropertyActionListener value="#{c}" 
-                                                                     target="#{mohController.result}" >
-                                        </f:setPropertyActionListener>
-                                    </h:commandButton>
-                                </p:panelGrid>
+
+                                <h:commandButton  class="btn btn-primary mb-2 d-flex flex-column w-100  align-items-center" 
+                                                  value="View Patient" 
+                                                  action="#{menuController.toViewPatient()}"  >
+                                    <f:setPropertyActionListener value="#{c.client}" 
+                                                                 target="#{clientController.selected}" >
+                                    </f:setPropertyActionListener>
+                                </h:commandButton>
+                                <h:commandButton  class="btn btn-secondary mb-2 d-flex flex-column w-100  align-items-center" 
+                                                  value="View Request" 
+                                                  action="#{menuController.toViewRequest()}"  >
+                                    <f:setPropertyActionListener value="#{c}" 
+                                                                 target="#{commonController.request}" >
+                                    </f:setPropertyActionListener>
+                                </h:commandButton>
+                                <h:commandButton class="btn btn-warning d-flex flex-column w-100  align-items-center" 
+                                                 value="View Result" 
+                                                 action="#{menuController.toViewResult()}" >
+                                    <f:setPropertyActionListener value="#{c}" 
+                                                                 target="#{commonController.result}" >
+                                    </f:setPropertyActionListener>
+                                </h:commandButton>
+
                             </p:column>
                         </p:dataTable>
                     </h:form>
@@ -139,5 +141,5 @@
 
         </ui:composition>
 
-    </body>
+    </h:body>
 </html>

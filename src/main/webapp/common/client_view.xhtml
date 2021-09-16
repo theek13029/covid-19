@@ -65,17 +65,6 @@
                                         <p:outputLabel value="#{clientController.selected.person.gnArea.name}" class="form-control border-0" ></p:outputLabel>
 
                                     </p:panelGrid>
-
-                                    <div class="card-footer d-flex justify-content-between bg-white">
-                                        <div>
-                                            <h:commandButton class="btn btn-warning my-2 ms-2" value="To Edit Details" action="/client/client" style="float: right;"/>
-                                            <h:commandButton class="btn btn-success my-2" value="Add New PCR" action="#{mohController.toAddNewPcrWithExistingClient()}" />
-                                            <h:commandButton class="btn btn-success my-2  ms-2" value="Add New RAT Result" action="#{mohController.toAddNewRatWithExistingClient()}" />
-                                        </div>
-                                        <div>
-                                            <h:commandButton  class="btn btn-success my-2" value="Add New RAT" action="#{mohController.toAddNewRatOrderWithExistingClient()}" />
-                                        </div>
-                                    </div>
                                 </div>
                             </div> 
 
@@ -171,23 +160,6 @@
                                     <div class="col-md-12">
                                         <p:outputLabel value="#{clientController.selected.person.gnArea.name}" class="form-control border-0" ></p:outputLabel>
                                     </div>
-
-                                </div>
-                                <div class="card-footer d-flex justify-content-between bg-white">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h:commandButton class="btn btn-warning my-2 w-100" value="To Edit Details" action="/client/client" style="float: right;"/>
-
-                                        </div>
-                                        <div class="col-md-12">
-                                            <h:commandButton class="btn btn-success my-2 w-100" value="Add New PCR" action="#{mohController.toAddNewPcrWithExistingClient()}" />
-                                        </div>
-                                        <div class="col-md-12">
-                                            <h:commandButton class="btn btn-success my-2  w-100" value="Add New RAT Result" action="#{mohController.toAddNewRatWithExistingClient()}" />
-                                        </div>
-                                        <div class="col-md-12"><h:commandButton  class="btn btn-success my-2 w-100" value="Add New RAT" action="#{mohController.toAddNewRatOrderWithExistingClient()}" />
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -200,9 +172,9 @@
                     <p:panelGrid columns="1" class="w-100">
                         <p:dataTable reflow="true" resizableColumns="true" resizeMode="expand" value="#{clientController.selectedClientEncounters}" 
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10" >
-                            <p:column headerText="Name" >
+                            <p:column headerText="Date / Time" >
                                 <p:outputLabel value="#{c.encounterDate}" >
-                                    <f:convertDateTime parent="dd MMMM yyyy" ></f:convertDateTime>
+                                    <f:convertDateTime parent="dd MMMM yyyy hh:mm a" ></f:convertDateTime>
                                 </p:outputLabel>
                             </p:column>
                             <p:column headerText="Type" >
@@ -215,18 +187,25 @@
                             <p:column headerText="Institution" >
                                 <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
                             </p:column>
+                            <p:column headerText="Lab" >
+                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Result" >
                                 <p:outputLabel value="#{c.pcrResult.name}" ></p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions">
-                                <h:commandButton  class="btn btn-success mb-2 d-flex flex-column w-100  align-items-center" value="View Order" action="#{mohController.toViewTest()}" rendered="#{c.encounterType eq 'Test_Enrollment'}" >
+                                <h:commandButton  class="btn btn-success mb-2 d-flex flex-column w-100  align-items-center" 
+                                                  value="View Order" action="#{menuController.toViewRequest()}" rendered="#{c.encounterType eq 'Test_Enrollment'}" >
                                     <f:setPropertyActionListener value="#{c}" 
-                                                                 target="#{mohController.test}" >
+                                                                 target="#{commonController.request}" >
                                     </f:setPropertyActionListener>
                                 </h:commandButton>
-                                <h:commandButton class="btn btn-warning d-flex flex-column w-100  align-items-center" value="View Results" action="#{mohController.toViewResult()}" rendered="#{c.encounterType eq 'Test_Enrollment'}" >
+                                <h:commandButton class="btn btn-warning d-flex flex-column w-100  align-items-center" 
+                                                 value="View Results" 
+                                                 action="#{menuController.toViewResult()}" 
+                                                 rendered="#{c.encounterType eq 'Test_Enrollment'}" >
                                     <f:setPropertyActionListener value="#{c}" 
-                                                                 target="#{mohController.test}" >
+                                                                 target="#{commonController.result}" >
                                     </f:setPropertyActionListener>
                                 </h:commandButton>
 
