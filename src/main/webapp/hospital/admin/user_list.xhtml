@@ -11,20 +11,13 @@
         <ui:composition template="/hospital/admin/index.xhtml">
             <ui:define name="admin">
                 <h:form >
-
-
-
-
-
-
-
                     <p:panelGrid columns="1" class="h-100 w-100 bg-white border border-light text-center my-2  text-white ">
                         <f:facet name="header" >
                             <p:outputLabel value="User List" class="fw-bold fs-6"></p:outputLabel>
                         </f:facet>
                         <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary d-flex justify-content-start" id="toggler" type="button" value="Columns" />
                         <p:columnToggler datasource="tbl" trigger="toggler"/>
-                        <p:dataTable id="tbl" resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{webUserController.items}" var="item"  
+                        <p:dataTable reflow="true" id="tbl" resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{webUserController.items}" var="item"  
                                      rowKey="#{item.id}" 
                                      selection="#{webUserController.current}" 
                                      rows="10"
