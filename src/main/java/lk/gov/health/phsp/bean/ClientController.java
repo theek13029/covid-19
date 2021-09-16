@@ -1096,11 +1096,12 @@ public class ClientController implements Serializable {
             + " and c.encounterDate between :fd and :td "
             + " and c.referalInstitution=:rins"
             + " and c.receivedAtLab=:rec "
-            + " and c.resultEntered is null "
+            + " and (c.resultEntered is null or c.resultEntered=:re ) "
             + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
             + " and (c.sampleMissing is null or c.sampleMissing=:sm) ";
     Map m = new HashMap();
     m.put("ret", true);
+    m.put("re", false);
     m.put("rec", true);
     m.put("type", EncounterType.Test_Enrollment);
     m.put("fd", fromDate);
@@ -1307,10 +1308,11 @@ public class ClientController implements Serializable {
             + " and c.referalInstitution=:rins"
             + " and c.resultReviewed=:rec "
             + " and (c.sampleRejectedAtLab is null or c.sampleRejectedAtLab=:rej) "
-            + " and c.resultConfirmed is null ";
+            + " and (c.resultConfirmed is null or c.resultConfirmed=:rc) ";
 
     Map m = new HashMap();
     m.put("ret", false);
+    m.put("rc", false);
     m.put("rec", true);
     m.put("rej", false);
     m.put("type", EncounterType.Test_Enrollment);

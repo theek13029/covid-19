@@ -34,6 +34,9 @@
             <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                 <h:outputLabel value="#{c.encounterNumber}" ></h:outputLabel>
             </p:column>
+            <p:column headerText="Lab No." sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
+                <h:outputLabel value="#{c.labNumber}" ></h:outputLabel>
+            </p:column>
             <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
                 <h:outputLabel value="#{c.pcrTestType.name}" ></h:outputLabel>
             </p:column>
@@ -61,10 +64,23 @@
                       filterBy="#{c.client.person.address}" filterMatchMode="contains">
                 <h:outputLabel value="#{c.client.person.address}" ></h:outputLabel>
             </p:column>
-            <p:column headerText="Details" >
-                <h:outputText value=" Ward/Unit : #{c.unitWard}&lt;br/&gt;" escape="false" rendered="#{c.unitWard ne null and c.unitWard ne ''}" ></h:outputText>
-                <h:outputText value=" BHT/Clinic/OPD No. : #{c.bht}&lt;br/&gt;"  rendered="#{c.bht ne null and c.bht ne ''}" ></h:outputText>
-            </p:column>
+
+            <p:column headerText="Entered" rendered="true"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                <p:selectBooleanButton offLabel="Not Entered" onLabel="Entered"  value="#{c.resultEntered}" >
+                    <f:ajax execute="@this" listener="#{clientController.saveLabNo(c)}" ></f:ajax>
+                </p:selectBooleanButton>
+            </p:column> 
+            <p:column headerText="Reviewed" rendered="true" sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                <p:selectBooleanButton offLabel="Not Reviewed" onLabel="Reviewed"  value="#{c.resultEntered}" >
+                    <f:ajax execute="@this" listener="#{clientController.saveLabNo(c)}" ></f:ajax>
+                </p:selectBooleanButton>
+            </p:column> 
+            <p:column headerText="Confirmed" rendered="true" sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                <p:selectBooleanButton offLabel="Not Confirmed" onLabel="Confirmed"  value="#{c.resultConfirmed}" >
+                    <f:ajax execute="@this" listener="#{clientController.saveLabNo(c)}" ></f:ajax>
+                </p:selectBooleanButton>
+            </p:column> 
+
             <p:column headerText="Actions" exportable="false" style="width: 10rem;" >
 
                 <h:commandButton  class="btn btn-primary mb-2 d-flex flex-column w-100  align-items-center" 
