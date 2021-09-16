@@ -7,16 +7,11 @@
       xmlns:p="http://primefaces.org/ui">
 
     <h:body>
-       <ui:composition template="/hospital/admin/index.xhtml">
+        <ui:composition template="/hospital/admin/index.xhtml">
             <ui:define name="admin">
                 <h:form>
-                    <p:panel header="Manage Privileges" >
-                        <f:facet name="header" >
-                            <p:commandButton id="btnUpdate" 
-                                             ajax="false" 
-                                             action="#{webUserController.updateUserPrivilegesIns()}" 
-                                             value="#{bundleClinical.Save}" />
-                        </f:facet>
+                    <p:panel class="fs-6 fw-bold" header="Manage Privileges" >
+
 
                         <p:tree id="tree"  value="#{webUserApplicationController.hospitalPrivilegeRoot}" var="node"  
                                 selectionMode="checkbox" 
@@ -26,7 +21,12 @@
                             </p:treeNode> 
                         </p:tree>  
 
-
+                        <f:facet name="footer" >
+                            <h:commandButton id="btnUpdate" 
+                                             class="btn btn-success my-1 px-5"
+                                             action="#{webUserController.updateUserPrivilegesIns()}" 
+                                             value="#{bundleClinical.Save}" />
+                        </f:facet>
                     </p:panel>
 
                 </h:form>
