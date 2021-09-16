@@ -25,6 +25,8 @@ package lk.gov.health.phsp.bean;
 
 // <editor-fold defaultstate="collapsed" desc="Import">
 import java.io.Serializable;
+import java.text.DecimalFormat;
+
 import lk.gov.health.phsp.entity.Client;
 import lk.gov.health.phsp.bean.util.JsfUtil;
 import lk.gov.health.phsp.facade.ClientFacade;
@@ -689,6 +691,118 @@ public class NationalController implements Serializable {
     public String toCountOfTestsByRdhsWithoutSpecifyingPdhs() {
         pdhs = null;
         return toCountOfTestsByRdhs();
+    }
+
+    // This will provide a test positive rate according to the area provided
+    // RukshanR
+    public String toTestPositiveRateByRdhs() {
+        DecimalFormat df = new DecimalFormat("0.0");
+
+        Map m = new HashMap();
+
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution.rdhsArea, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and (c.createdAt > :fd and c.createdAt < :td) ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+
+        if (pdhs != null) {
+            j += " and c.institution.rdhsArea.pdhsArea=:pd ";
+            m.put("pd", pdhs);
+        }
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+
+        j += " group by c.institution.rdhsArea "
+                + " order by count(c) desc ";
+
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
+
+        m = new HashMap();
+
+        j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution.rdhsArea, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and (c.createdAt > :fd and c.createdAt < :td) ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+
+        if (pdhs != null) {
+            j += " and c.institution.rdhsArea.pdhsArea=:pd ";
+            m.put("pd", pdhs);
+        }
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+
+
+        j += " and c.pcrResult=:result ";
+        m.put("result", itemApplicationController.getPcrPositive());
+
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+
+        j += " group by c.institution.rdhsArea "
+                + " order by count(c) desc ";
+
+
+        List<Object> objPositives = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
+        institutionCounts = new ArrayList<>();
+
+
+        if (objCounts == null || objCounts.isEmpty()) {
+            return "/national/positivity_rate_by_rdhs";
+        }
+
+
+        for (int index = 0; index <= objPositives.size()-1; index++) {
+            InstitutionCount incPositive = (InstitutionCount) objPositives.get(index);
+            InstitutionCount incCounts = (InstitutionCount) objCounts.get(index);
+            double tempPositiveRate = ((double) incPositive.getCount()/incCounts.getCount()*100);
+            String tempRate = df.format(tempPositiveRate) + "%";
+            InstitutionCount rateCount = new InstitutionCount();
+            rateCount.setArea(incPositive.getArea());
+            rateCount.setPositiveRate(tempRate);
+            rateCount.setCount(incCounts.getCount());
+            institutionCounts.add(rateCount);
+        }
+
+        return "/national/positivity_rate_by_rdhs";
     }
 
     public String toCountOfTestsByRdhs() {

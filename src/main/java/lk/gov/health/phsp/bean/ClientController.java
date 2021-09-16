@@ -2310,7 +2310,7 @@ public class ClientController implements Serializable {
       JsfUtil.addErrorMessage("No Patient Form Set");
       return "";
     }
-    clientEncounterComponentFormSetController.loadOldFormset(cefs);
+//    clientEncounterComponentFormSetController.loadOldFormset(cefs);
     if (cefs.getEncounter() != null) {
       testEncounter.setReferenceCase(cefs.getEncounter());
       encounterFacade.edit(testEncounter);

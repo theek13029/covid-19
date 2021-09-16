@@ -49,7 +49,8 @@
                             <h:commandButton class="btn btn-success w-100 my-2" value="Generate Excel" style="width: 98%;">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                             </h:commandButton>
-                            <h:commandButton class="btn btn-primary w-100 my-2" action="#{clientController.toMarkAllNegative()}" value="Mark All Negative" onclick="if (!confirm('Are you sure you want mark all Negative?'))
+                            <h:commandButton class="btn btn-primary w-100 my-2" 
+                                             action="#{clientController.toMarkAllNegative()}" value="Mark All Negative" onclick="if (!confirm('Are you sure you want mark all Negative?'))
                                         return false">
                             </h:commandButton>
                         </h:panelGrid>

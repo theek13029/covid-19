@@ -8,7 +8,8 @@
 
     <h:body>
        <ui:composition template="/national/reports_index.xhtml">
-            <ui:define name="reports">
+
+               <ui:define name="reports">
 
                 <h:panelGrid columns="1" styleClass="alignTop" >
                     <f:facet name="header" >
@@ -21,7 +22,7 @@
                             <h:outputLabel class="h6 fw-bold" value="Ordered From" ></h:outputLabel>
                             <p:calendar value="#{nationalController.fromDate}"
                                         pattern="dd MMMM yyyy hh:mm a">
-                            </p:calendar><!-- comment -->
+                            </p:calendar>
 
                             <h:outputLabel class="h6 fw-bold" value="Ordered To" ></h:outputLabel>
                             <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
@@ -35,7 +36,7 @@
                             </h:selectOneMenu>
 
                             <h:outputLabel class="h6 fw-bold" value="Lab"></h:outputLabel>
-                            <p:autoComplete style="width: 100%;"
+                            <p:autoComplete
                                             inputStyleClass="autocomplete"
                                             value="#{nationalController.lab}"
                                             forceSelection="true" tabindex="100"
@@ -50,7 +51,7 @@
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
 
-                            <h:outputLabel class="h6 fw-bold" value="PDHS" ></h:outputLabel>
+                            <h:outputLabel class="h6 fw-bold" value="PDHS"></h:outputLabel>
                             <h:selectOneMenu value="#{nationalController.pdhs}" class="form-select" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{areaApplicationController.allPdhsAreas}"
@@ -64,7 +65,7 @@
                                 <p:dataExporter target="tbl" type="xlsx" fileName="counts by rdhs" ></p:dataExporter>
                             </h:commandButton>
                             <h:commandButton value="Process" class="btn btn-warning w-100"
-                                             action="#{nationalController.toCountOfTestsByRdhs()}" ></h:commandButton>
+                                             action="#{nationalController.toPcrPositiveRateByRdhs()}" ></h:commandButton>
 
 
                         </h:panelGrid>
@@ -81,12 +82,15 @@
                                      >
                             <p:column headerText="RDHS" sortBy="#{c.area.name}"
                                       filterBy="#{c.area.name}" filterMatchMode="contains">
-                                <h:commandLink value="#{c.area.name}" action="#{nationalController.toCountOfTestsFromRdhsToInstitution()}">
+                                <h:commandLink value="#{c.area.name}" ajax="false" action="#{nationalController.toCountOfTestsFromRdhsToMoh()}">
                                     <f:setPropertyActionListener value="#{c.area}" target="#{nationalController.rdhs}" ></f:setPropertyActionListener>
                                 </h:commandLink>
                             </p:column>
-                            <p:column headerText="Count"  sortBy="#{c.count}">
-                                <h:outputLabel value="#{c.count}" ></h:outputLabel>
+                            <p:column headerText="Tests" sortBy="#{c.count}">
+                              <h:outputLabel value="#{c.count}"></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Positivity Rate"  sortBy="#{c.positiveRate}">
+                                <h:outputLabel value="#{c.positiveRate}"></h:outputLabel>
                             </p:column>
                         </p:dataTable>
                         </h:panelGrid>
