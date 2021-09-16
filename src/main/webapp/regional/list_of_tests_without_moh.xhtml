@@ -10,20 +10,16 @@
 
         <ui:composition template="/regional/reports_index.xhtml">
             <ui:define name="reports">
-                
-                    <!-- comment <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
-                        <f:facet name="header" >
-                            <p:outputLabel value="List of Tests without MOH Area" ></p:outputLabel>
-                        </f:facet>-->
-                    <h:form >
-                        <div class="row" >
-                            <div class="col-12 text-center mt-4 mb-2" >
-                                 <h4 class="fw-bold"><h:outputLabel  value="List of Tests without MOH" ></h:outputLabel></h4>
-                            </div>
+
+                <h:form >
+                    <div class="row" >
+                        <div class="col-12 text-center mt-4 mb-2" >
+                            <h4 class="fw-bold"><h:outputLabel  value="List of Tests without MOH" ></h:outputLabel></h4>
                         </div>
-                        <div class="row">
-                            <div class="col-12 d-flex justify-content-center" >
-                        
+                    </div>
+                    <div class="row">
+                        <div class="col-6 d-flex justify-content-center" >
+
                             <h:panelGrid columns="2" class="shadow-lg p-3 bg-white rounded" >
                                 <h:outputLabel class="fs-6 fw-bold" value="Ordered From" ></h:outputLabel>
                                 <p:calendar value="#{regionalController.fromDate}" 
@@ -72,75 +68,92 @@
 
 
                             </h:panelGrid>
+                        </div>
+                        <div class="col-6 d-flex mb-3 justify-content-center" >
+                            <div class="container-fluid w-100" >
+                                <div class="row" >
+                                    <div class="col-12 " >
+                                        <h:panelGrid columns="3" class="shadow-lg p-3 bg-white rounded">
+                                            <h:outputLabel class="fs-6 fw-bold" value="Assigning MOH Area" ></h:outputLabel>
+                                            <h:selectOneMenu class="form-select" value="#{regionalController.mohArea}" >
+                                                <f:selectItem itemLabel="Select" ></f:selectItem>
+                                                <f:selectItems value="#{webUserController.loggableMohAreas}" var="c"
+                                                               itemValue="#{c}"
+                                                               itemLabel="#{c.name}" >
+                                                </f:selectItems>
+                                            </h:selectOneMenu>                            
+                                            <h:commandButton class="w-100 btn btn-success my-2" action="#{regionalController.assignMohAreaToSelectedEncounters()}"
+                                                             value="Assign MOH Areas to Selected" ></h:commandButton>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="row" >
+                                    <div class="col-12" >
+                                        <h:panelGrid columns="3" class="shadow-lg p-3 bg-white rounded">
+                                            <h:outputLabel class="fs-6 fw-bold" value="Assigning MOH Area" ></h:outputLabel>
+                                            <h:selectOneMenu class="form-select" value="#{regionalController.district}" >
+                                                <f:selectItem itemLabel="Select" ></f:selectItem>
+                                                <f:selectItems value="#{areaController.districts}" var="c"
+                                                               itemValue="#{c}"
+                                                               itemLabel="#{c.name}" >
+                                                </f:selectItems>
+                                            </h:selectOneMenu>                            
+                                            <h:commandButton class="w-100 btn btn-success my-2" action="#{regionalController.assignDistrictToSelectedEncounters()}"
+                                                             value="Assign District to Selected" ></h:commandButton>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div class="row">
-                            <div class="col-12 d-flex mb-3 justify-content-center" >
-
-                            <h:panelGrid columns="2" class="shadow-lg p-3 bg-white rounded">
-                                <h:outputLabel class="fs-6 fw-bold" value="Assigning MOH Area" ></h:outputLabel>
-                                <h:selectOneMenu class="form-select" value="#{regionalController.mohArea}" >
-                                    <f:selectItem itemLabel="Select" ></f:selectItem>
-                                    <f:selectItems value="#{webUserController.loggableMohAreas}" var="c"
-                                                   itemValue="#{c}"
-                                                   itemLabel="#{c.name}" >
-                                    </f:selectItems>
-                                </h:selectOneMenu>                            
-
-                                <h:commandButton class="w-100 btn btn-success my-2" action="#{regionalController.assignMohAreaToSelectedEncounters()}"
-                                                 value="Assign MOH Areas to Selected Contacts" ></h:commandButton>
-                            </h:panelGrid>
-                            </div>
-                        </div>    
-                        
+                    </div>    
 
 
 
 
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{regionalController.tests}" rendered="true"
-                                     rowIndexVar="n"
-                                     var="c" 
-                                     rowKey="#{c.id}" 
-                                     rowStyleClass="#{c.resultCssClass}"
-                                     selection="#{regionalController.selectedToAssign}"
-                                     paginator="true" 
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                     rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
-                                     rows="10"
-                                     >
-                            <p:column width="20" selectionMode="multiple" ></p:column>
-                            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Phone" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Address"  sortBy="#{c.client.person.address}"
-                                      filterBy="#{c.client.person.address}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
-                            </p:column>
-                             <p:column headerText="District"  sortBy="#{c.client.person.district.name}"
-                                      filterBy="#{c.client.person.district.name}" filterMatchMode="contains">
-                                 <p:outputLabel value="#{c.client.person.district.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Added at"  sortBy="#{c.institution.name}"
-                                      filterBy="#{c.institution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}"
-                                      filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
-                            </p:column>
-                            <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
-                                      filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></p:outputLabel>
-                            </p:column>
-                        </p:dataTable>
+
+                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{regionalController.tests}" rendered="true"
+                                 rowIndexVar="n"
+                                 var="c" 
+                                 rowKey="#{c.id}" 
+                                 rowStyleClass="#{c.resultCssClass}"
+                                 selection="#{regionalController.selectedToAssign}"
+                                 paginator="true" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                 rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
+                                 rows="10"
+                                 >
+                        <p:column width="20" selectionMode="multiple" ></p:column>
+                        <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
+                            <p:outputLabel value="#{c.pcrTestType.name}" ></p:outputLabel>
+                        </p:column>
+                        <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
+                            <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
+                        </p:column>
+                        <p:column headerText="Phone" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
+                            <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
+                        </p:column>
+                        <p:column headerText="Address"  sortBy="#{c.client.person.address}"
+                                  filterBy="#{c.client.person.address}" filterMatchMode="contains">
+                            <p:outputLabel value="#{c.client.person.address}" ></p:outputLabel>
+                        </p:column>
+                        <p:column headerText="District"  sortBy="#{c.client.person.district.name}"
+                                  filterBy="#{c.client.person.district.name}" filterMatchMode="contains">
+                            <p:outputLabel value="#{c.client.person.district.name}" ></p:outputLabel>
+                        </p:column>
+                        <p:column headerText="Added at"  sortBy="#{c.institution.name}"
+                                  filterBy="#{c.institution.name}" filterMatchMode="contains">
+                            <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
+                        </p:column>
+                        <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}"
+                                  filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
+                            <p:outputLabel value="#{c.referalInstitution.name}" ></p:outputLabel>
+                        </p:column>
+                        <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
+                                  filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
+                            <p:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" ></p:outputLabel>
+                        </p:column>
+                    </p:dataTable>
 
 
 

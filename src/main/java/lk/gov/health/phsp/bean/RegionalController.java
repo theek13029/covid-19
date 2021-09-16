@@ -457,6 +457,31 @@ public class RegionalController implements Serializable {
         return toListOfTestsWithoutMoh();
     }
 
+    public String assignDistrictToSelectedEncounters() {
+        if (selectedToAssign == null || selectedToAssign.isEmpty()) {
+            JsfUtil.addErrorMessage("Please select persons");
+            return "";
+        }
+        if (district == null) {
+            JsfUtil.addErrorMessage("Please select District");
+            return "";
+        }
+        for (Encounter i : selectedToAssign) {
+            if (i.getClient() != null || i.getClient().getPerson() != null) {
+                i.getClient().getPerson().setDistrict(district);
+                personFacade.edit(i.getClient().getPerson());
+                clientFacade.edit(i.getClient());
+                encounterFacade.edit(i);
+            }
+        }
+        selectedToAssign = null;
+        district = null;
+        JsfUtil.addSuccessMessage("Districts added");
+        return toListOfTestsWithoutMoh();
+    }
+
+    
+    
     public String toMohAreaResultList() {
         Map m = new HashMap();
         String j = "select c "
@@ -892,7 +917,7 @@ public class RegionalController implements Serializable {
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
         j += " and c.client.person.mohArea is null ";
-        j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
+        j += " and c.client.person.district=:district ";
         m.put("rdhs", webUserController.getLoggedInstitution().getRdhsArea());
         m.put("district", webUserController.getLoggedInstitution().getDistrict());
         j += " and c.createdAt between :fd and :td ";

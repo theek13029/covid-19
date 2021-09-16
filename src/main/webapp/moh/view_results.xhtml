@@ -107,7 +107,7 @@
                                 </p:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false">
-                                <h:commandButton ajax="false"  rendered="#{c.referenceCase eq null}"
+                                <h:commandButton  rendered="#{c.referenceCase eq null}"
                                                  value="Investigate"
                                                  action="#{clientController.toNewCaseInvestigationFromTest()}"
                                                  class="btn btn-warning small btn-sm w-100">
@@ -115,7 +115,7 @@
                                     </f:setPropertyActionListener>
                                 </h:commandButton>
                                 <h:commandButton rendered="#{c.referenceCase ne null}"
-                                                 ajax="false" value="View Details"
+                                                  value="View Details"
                                                  action="#{clientController.toViewOrEditCaseEnrollmentFromEncounter()}"
                                                  class="btn btn-success btn-sm small w-100" >
                                     <f:setPropertyActionListener value="#{c.referenceCase}" target="#{clientController.selectedEncounter}" >
