@@ -9,55 +9,53 @@
         <ui:composition template="/hospital/admin/index.xhtml">
             <ui:define name="admin">
                 <h:form class="form">
-                    <div class="card">
-                        <div class="card-header">
+                    <div class="card border border-light">
+                        <div class="card-header fw-bold bg-success text-white fs-5">
                             <p:outputLabel value="Add New User" ></p:outputLabel>
-                            <p:commandButton action="#{webUserController.saveNewWebUserByInsAdmin()}"
-                                             class="btn btn-primary" style="float: left;" 
-                                             value="#{bundleClinical.Save}" /> 
+                           
                         </div>
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <p:outputLabel value="Title:" class="col-md-2" for="title" />
+                        <div class="card-body bg-white">
+                            <div class="form-group row my-2">
+                                <p:outputLabel value="Title:" class="col-md-2 fs-6 fw-bold" for="title" />
                                 <div class="col-md-4">
                                     <p:selectOneMenu id="title" filter="true"
                                                      filterMatchMode="contains"
-                                                     value="#{webUserController.selected.person.title}" style="width: 100%;">
+                                                     value="#{webUserController.selected.person.title}" class="form-control w-100">
                                         <f:selectItem itemLabel="Select" ></f:selectItem>
                                         <f:selectItems value="#{itemController.titles}" var="t" itemLabel="#{t.name}"
                                                        itemValue="#{t}" ></f:selectItems>
                                     </p:selectOneMenu>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <p:outputLabel value="Name:" class="col-md-2" for="name" />
+                            <div class="form-group row mb-2">
+                                <p:outputLabel value="Name:" class="col-md-2 fs-6 fw-bold" for="name" />
                                 <div class="col-md-4">
-                                    <p:inputText autocomplete="off" class="form-control" id="name" required="true" value="#{webUserController.selected.person.name}" title="Name" />
+                                    <p:inputText autocomplete="off" class="form-control w-100" id="name" required="true" requiredMessage="name is required" value="#{webUserController.selected.person.name}" title="Name" />
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <p:outputLabel value="Username:" class="col-md-2" for="txtU" />
+                                <p:outputLabel value="Username:" class="col-md-2 fs-6 fw-bold" for="txtU" />
                                 <div class="col-md-4">
-                                    <p:inputText id="txtU" value="#{webUserController.selected.name}" class="form-control" required="true" autocomplete="off" requiredMessage="#{bundleClinical.EditWebUserRequiredMessage_name}"/>
+                                    <p:inputText id="txtU" value="#{webUserController.selected.name}" class="form-control w-100" required="true" autocomplete="off" requiredMessage="#{bundleClinical.EditWebUserRequiredMessage_name}"/>
                                     <p:outputLabel id="lblune" style="color: red;" value="#{webUserController.userNameExsists()?'Username is already taken. Please try another.':''}" ></p:outputLabel>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <p:outputLabel value="Password:" class="col-md-2" for="txtP" />
+                            <div class="form-group row mb-2 mt-0">
+                                <p:outputLabel value="Password:" class="col-md-2 fs-6 fw-bold" for="txtP" />
                                 <div class="col-md-4">
-                                    <p:password  id="txtP" class="form-control" value="#{webUserController.password}" title="Password" autocomplete="off" required="true" requiredMessage="Password is required."/>
+                                    <p:password  id="txtP" class="form-control w-100" value="#{webUserController.password}" title="Password" autocomplete="off" required="true" requiredMessage="Password is required."/>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <p:outputLabel value="Re-enter Password:" class="col-md-2" for="txtPr" />
+                            <div class="form-group row mb-2">
+                                <p:outputLabel value="Re-enter Password:" class="col-md-2 fs-6 fw-bold" for="txtPr" />
                                 <div class="col-md-4">
-                                    <p:password  id="txtPr" class="form-control" value="#{webUserController.passwordReenter}" title="Re-enter Password" required="true" autocomplete="off" requiredMessage="Password is required."/>
+                                    <p:password  id="txtPr" class="form-control w-100" value="#{webUserController.passwordReenter}" title="Re-enter Password" required="true" autocomplete="off" requiredMessage="Password is required."/>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <p:outputLabel value="Institution / Unit / Ward :" class="col-md-2" for="institution" />
+                            <div class="form-group row mb-2">
+                                <p:outputLabel value="Institution / Unit / Ward :" class="col-md-2 fs-6 fw-bold" for="institution" />
                                 <div class="col-md-4">
-                                    <p:selectOneMenu id="institution" style="width: 100%;" value="#{webUserController.selected.institution}" required="true">
+                                    <p:selectOneMenu id="institution" styleClass="form-control W-100" value="#{webUserController.selected.institution}" required="true">
                                         <f:selectItem itemLabel="Please Select" ></f:selectItem>
                                         <f:selectItems value="#{webUserController.loggableInstitutions}"
                                                        var="ins" 
@@ -66,22 +64,22 @@
                                     </p:selectOneMenu>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <p:outputLabel value="Email:" class="col-md-2" for="email" />
+                            <div class="form-group row mb-2">
+                                <p:outputLabel value="Email:" class="col-md-2 fs-6 fw-bold" for="email" />
                                 <div class="col-md-4">
-                                    <p:inputText id="email" class="form-control" value="#{webUserController.selected.email}" title="#{bundleClinical.EditWebUserTitle_email}" autocomplete="false"/>
+                                    <p:inputText id="email" class="form-control w-100" value="#{webUserController.selected.email}" title="#{bundleClinical.EditWebUserTitle_email}" autocomplete="false"/>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <p:outputLabel value="Telephone Number.:" class="col-md-2" for="telNo" />
+                            <div class="form-group row mb-2">
+                                <p:outputLabel value="Telephone Number.:" class="col-md-2 fs-6 fw-bold " for="telNo" />
                                 <div class="col-md-4">
-                                    <p:inputText id="telNo" class="form-control" value="#{webUserController.selected.telNo}" autocomplete="false" title="#{bundleClinical.EditWebUserTitle_telNo}" />
+                                    <p:inputText id="telNo" class="form-control w-100" value="#{webUserController.selected.telNo}" autocomplete="false" title="#{bundleClinical.EditWebUserTitle_telNo}" />
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <p:outputLabel value="Role:" class="col-md-2" for="webUserRole" />
+                            <div class="form-group row mb-2">
+                                <p:outputLabel value="Role:" class="col-md-2 fs-6 fw-bold" for="webUserRole" />
                                 <div class="col-md-4">
-                                    <p:selectOneMenu style="width: 100%;" id="webUserRole" value="#{webUserController.selected.webUserRole}" required="true">
+                                    <p:selectOneMenu class="form-control w-100" id="webUserRole" value="#{webUserController.selected.webUserRole}" required="true">
                                         <f:selectItem itemLabel="Select" ></f:selectItem>
                                         <f:selectItems value="#{webUserController.webUserRolesForHospitalAdmin}" 
                                                        var="r" 
@@ -92,7 +90,13 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                            
+                        <div class="card-footer bg-white">
+                             <p:commandButton action="#{webUserController.saveNewWebUserByInsAdmin()}"
+                                             class="btn btn-success w-25 "  
+                                             value="#{bundleClinical.Save}" /> 
+                        </div>
+                    </div>
+                    <p:messages></p:messages>
                 </h:form>   
             </ui:define>
         </ui:composition>
