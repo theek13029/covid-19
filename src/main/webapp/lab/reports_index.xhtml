@@ -38,7 +38,7 @@
                                         <div class="col-12 p-2">
                                             <h:form>
                                                 <h:commandLink value="Requests by District"
-                                                               action="#{nationalController.toCountOfTestsByRdhsWithoutSpecifyingPdhs()}"
+                                                               action="#{labController.toCountOfTestsByRdhsWithoutSpecifyingPdhs()}"
                                                                class="btn btn-outline-primary w-100 btn-block">
                                                 </h:commandLink>
                                             </h:form>
@@ -48,7 +48,7 @@
                                         <div class="col-12 p-2">
                                             <h:form>
                                                 <h:commandLink value="Requests by Institution Type"
-                                                               action="#{nationalController.toCountOfTestsByInstitutionType()}"
+                                                               action="#{labController.toCountOfTestsByInstitutionType()}"
                                                                class="btn btn-outline-primary w-100 btn-block">
                                                 </h:commandLink>
                                             </h:form>
@@ -58,7 +58,7 @@
                                         <div class="col-12 p-2">
                                             <h:form>
                                                 <h:commandLink value="Requests by Institution"
-                                                               action="#{nationalController.toCountOfTestsByOrderedInstitution()}"
+                                                               action="#{labController.toCountOfTestsByOrderedInstitution()}"
                                                                class="btn btn-outline-primary w-100 btn-block">
                                                 </h:commandLink>
                                             </h:form>
@@ -149,69 +149,6 @@
                             </div>
 
 
-                            <div class="card">
-                                <div class="card-header">
-                                    <h:outputLabel value="Other Reports"></h:outputLabel>
-                                </div>
-                                <div class="card-body container-fluid">
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandButton value="PCR Positive Data"
-                                                                 class="list-group-item list-group-item-action list-group-item-danger text-center"
-                                                                 action="#{mohController.toPcrPositiveReportsIndexNational()}">
-                                                </h:commandButton>
-                                            </h:form>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandButton value="RAT Positive Data"
-                                                                 class="list-group-item list-group-item-action list-group-item-danger text-center"
-                                                                 action="#{mohController.toPcrPositiveReportsIndexNational()}">
-                                                </h:commandButton>
-                                            </h:form>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandButton value="Lab Data"
-                                                                 class="list-group-item list-group-item-action list-group-item-success text-center"
-                                                                 action="#{nationalController.toLabReportsIndexNational()}">
-                                                </h:commandButton>
-                                            </h:form>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandButton value="MOH/Hospital Data"
-                                                                 class="list-group-item list-group-item-action list-group-item-success text-center"
-                                                                 action="#{mohController.toPcrPositiveReportsIndexNational()}">
-                                                </h:commandButton>
-                                            </h:form>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandButton value="Cases by Management Plan"
-                                                                 class="list-group-item list-group-item-action list-group-item-warning text-center"
-                                                                 action="#{mohController.toListCasesByManagementForNationalLevel()}">
-                                                </h:commandButton>
-                                            </h:form>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
 
                         </div>
                         <div class="col-9">

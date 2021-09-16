@@ -351,11 +351,9 @@ public class ClientController implements Serializable {
   public void sendPositiveSms(Encounter e) {
     String number = "";
     if (e == null) {
-      System.err.println("No encounter");
       return;
     }
     if (e.getClient() == null) {
-      System.err.println("No Client");
       return;
     }
     if (e.getClient().getPerson().getPhone1() != null && !e.getClient().getPerson().getPhone1().trim().equals("")) {
@@ -404,11 +402,9 @@ public class ClientController implements Serializable {
   public void sendNegativeSms(Encounter e) {
     String number = "";
     if (e == null) {
-      System.err.println("No encounter");
       return;
     }
     if (e.getClient() == null) {
-      System.err.println("No Client");
       return;
     }
     if (e.getClient().getPerson().getPhone1() != null && !e.getClient().getPerson().getPhone1().trim().equals("")) {
@@ -1297,8 +1293,6 @@ public class ClientController implements Serializable {
     m.put("td", getToDate());
     m.put("ins", institution);
     m.put("rins", referingInstitution);
-    System.out.println("m = " + m);
-    System.out.println("j = " + j);
     listedToDivert = getEncounterFacade().findByJpql(j, m, TemporalType.DATE);
     return "/moh/divert_samples";
   }
@@ -1743,13 +1737,10 @@ public class ClientController implements Serializable {
   }
 
   public String generateLabReport(Encounter e) {
-    System.out.println("generateLabReport");
-    System.out.println("e = " + e);
     if (e == null) {
       return "No Encounter";
     }
     String html = getPreferenceController().findPreferanceValue("labReportHeader", webUserController.getLoggedInstitution());
-    System.out.println("html = " + html);
     if (html == null || html.trim().equals("")) {
       return "No Report Format";
     }
@@ -1998,11 +1989,9 @@ public class ClientController implements Serializable {
   }
 
   public String generateLabReportsBulk(List<Encounter> es) {
-    System.out.println("generateLabReportsBulk");
     Map<String, ReportHolder> rhs = new HashMap<>();
     List<ReportHolder> orhs = new ArrayList<>();
     for (Encounter e : es) {
-      System.out.println("e = " + e);
       ReportHolder temRh = new ReportHolder();
       temRh.setIns(e.getInstitution());
       temRh.setDateOfCollection(e.getSampledAt());
@@ -2020,10 +2009,8 @@ public class ClientController implements Serializable {
     try {
       rowsPerPage = Integer.parseInt(preferenceController.getNumberOfRowsPerPage());
     } catch (Exception e) {
-      System.out.println("e = " + e.getMessage());
       rowsPerPage = 10;
     }
-    System.out.println("rowsPerPage = " + rowsPerPage);
     for (ReportHolder r : rhs.values()) {
       if (r.getEncounters().size() > rowsPerPage) {
         int totalPages = (r.getEncounters().size() / rowsPerPage) + 1;
@@ -2033,7 +2020,6 @@ public class ClientController implements Serializable {
         int pageNo = 0;
         for (Encounter e : r.getEncounters()) {
           if (counter == 0) {
-            System.out.println("Count is 0.");
             counter = 1;
             pageNo++;
             nr = new ReportHolder();
@@ -2044,11 +2030,9 @@ public class ClientController implements Serializable {
             nr.setPageNo(pageNo);
             nr.setTotalPages(totalPages);
             nr.getEncounters().add(e);
-            System.out.println("nr size = " + nr.getEncounters().size());
             remaing--;
             orhs.add(nr);
           } else if (counter == rowsPerPage) {
-            System.out.println("counter is rowsperpage");
             pageNo++;
             nr = new ReportHolder();
             nr.setDateOfCollection(e.getSampledAt());
@@ -2058,18 +2042,13 @@ public class ClientController implements Serializable {
             nr.setPageNo(pageNo);
             nr.setTotalPages(totalPages);
             nr.getEncounters().add(e);
-            System.out.println("nr size = " + nr.getEncounters().size());
             orhs.add(nr);
             counter = 1;
           } else {
-            System.out.println("counter is middle");
             nr.getEncounters().add(e);
             remaing--;
             counter++;
-            System.out.println("nr size = " + nr.getEncounters().size());
           }
-          System.out.println("remaing = " + remaing);
-          System.out.println("counter = " + counter);
         }
       } else if (!r.getEncounters().isEmpty()) {
         orhs.add(r);
@@ -2077,7 +2056,6 @@ public class ClientController implements Serializable {
     }
     String allReportHolders = "";
     for (ReportHolder rh : orhs) {
-      System.out.println("rh = " + rh.getEncounters().size());
       allReportHolders += " <div class=\"main-page\">";
       allReportHolders += " <div class=\"sub-page\">";
       allReportHolders += generateLabReportBulk(rh);
@@ -2302,15 +2280,12 @@ public class ClientController implements Serializable {
   }
 
   public String toViewOrEditCaseEnrollmentFromEncounter() {
-    System.out.println("toViewOrEditCaseEnrollmentFromEncounter");
     if (selectedEncounter == null) {
-      System.out.println("selected encounter is null");
       JsfUtil.addErrorMessage("No encounter");
       return "";
     }
     Encounter testEncounter = selectedEncounter;
     if (selectedEncounter.getClient() == null) {
-      System.out.println("client is null");
       JsfUtil.addErrorMessage("No Client");
       return "";
     }
@@ -2327,13 +2302,11 @@ public class ClientController implements Serializable {
       JsfUtil.addErrorMessage("No Default Form Set");
       return "";
     }
-    System.out.println("dfs = " + dfs);
     ClientEncounterComponentFormSet cefs = clientEncounterComponentFormSetController.findFormsetFromEncounter(selectedEncounter);
     if (cefs == null) {
       JsfUtil.addErrorMessage("No Patient Form Set");
       return "";
     }
-    System.out.println("cefs = " + cefs);
     clientEncounterComponentFormSetController.loadOldFormset(cefs);
     if (cefs.getEncounter() != null) {
       testEncounter.setReferenceCase(cefs.getEncounter());
@@ -2341,7 +2314,6 @@ public class ClientController implements Serializable {
       cefs.getEncounter().setReferenceTest(testEncounter);
     }
     updateYearDateMonth();
-    System.out.println("to page : /client/client_case_enrollment");
     return "/client/client_case_enrollment";
   }
 
@@ -2776,7 +2748,6 @@ public class ClientController implements Serializable {
           strNic = cellValue(row.getCell(nicColInt));
 
           ageInYears = cellValueInt(row.getCell(ageColInt));
-          System.out.println("ageInYears = " + ageInYears);
           if (strSex.toLowerCase().contains("f")) {
             sex = itemApplicationController.getFemale();
           } else {
@@ -2856,7 +2827,6 @@ public class ClientController implements Serializable {
       return "/hospital/uploaded_results";
     } catch (IOException e) {
       JsfUtil.addErrorMessage(e.getMessage());
-      System.err.println("e = " + e.getMessage());
       return "";
     }
 
@@ -2936,7 +2906,6 @@ public class ClientController implements Serializable {
           strAddress = cellValue(row.getCell(addressColInt));
           strNic = cellValue(row.getCell(nicColInt));
           ageInYears = cellValueInt(row.getCell(ageColInt));
-          System.out.println("ageInYears = " + ageInYears);
           if (strSex.toLowerCase().contains("f")) {
             sex = itemApplicationController.getFemale();
           } else {
@@ -2967,7 +2936,6 @@ public class ClientController implements Serializable {
       return "/lab/uploaded_orders";
     } catch (IOException e) {
       JsfUtil.addErrorMessage(e.getMessage());
-      System.err.println("e = " + e.getMessage());
       return "";
     }
 
@@ -2989,7 +2957,6 @@ public class ClientController implements Serializable {
   }
 
   public String saveUploadedOrdersPlusResults() {
-    System.out.println("saveUploadedOrdersPlusResults");
     if (getClientImportsSelected().isEmpty()) {
       JsfUtil.addErrorMessage("Nothing Selected");
       return "";
@@ -3007,7 +2974,6 @@ public class ClientController implements Serializable {
   }
 
   public String clearUploadedData() {
-    System.out.println("clearUploadedData");
     clientImports = new ArrayList<>();
     clientImportsSelected = new ArrayList<>();
     return toUploadOrders();
@@ -3141,7 +3107,6 @@ public class ClientController implements Serializable {
       pcr.setCtValue2(ci.getCt2());
     }
 
-    System.out.println("lastTestPcrOrRat = " + lastTestPcrOrRat);
 
     pcr.setPcrTestType(lastTestPcrOrRat);
 
@@ -5013,7 +4978,6 @@ public class ClientController implements Serializable {
     errorCode = "";
     for (Encounter e : cs) {
 
-      System.out.println("e = " + e.getId());
 
       if (e.getInstitution() == null) {
         errorCode += "No Institution";

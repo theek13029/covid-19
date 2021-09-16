@@ -455,7 +455,6 @@ public class DashboardController implements Serializable {
     }
 
     public void prepareRegionalDashboard() {
-        System.out.println("prepareRegionalDashboard");
         Calendar c = Calendar.getInstance();
         Date now = c.getTime();
         Date todayStart = CommonController.startOfTheDate();

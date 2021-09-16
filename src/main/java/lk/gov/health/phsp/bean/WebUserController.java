@@ -883,7 +883,6 @@ public class WebUserController implements Serializable {
         if (!checkLoginNew()) {
             JsfUtil.addErrorMessage("Username/Password Error. Please retry.");
             userTransactionController.recordTransaction("Failed Login Attempt", userName);
-            System.out.println("No Match");
             return "";
         }
         loggedUserPrivileges = userPrivilegeList(loggedUser);
@@ -944,11 +943,9 @@ public class WebUserController implements Serializable {
             return;
         }
         if (loggedUser.getInstitution() == null) {
-            System.err.println("No Institute for the user : " + loggedUser.getName());
             return;
         }
         if (loggedUser.getWebUserRole() == null) {
-            System.err.println("No Role for the user : " + loggedUser.getName());
             return;
         }
         if (loggedUser.getArea() == null) {
@@ -1047,7 +1044,6 @@ public class WebUserController implements Serializable {
     }
 
     private boolean checkLoginNew() {
-        System.out.println("checkLoginNew");
         if (getFacade() == null) {
             JsfUtil.addErrorMessage("Server Error");
             return false;
@@ -1061,7 +1057,6 @@ public class WebUserController implements Serializable {
 //        JsfUtil.addErrorMessage("M=" + m);
 //        JsfUtil.addErrorMessage("S=" + temSQL);
         loggedUser = getFacade().findFirstByJpql(temSQL, m);
-        System.out.println("loggedUser = " + loggedUser);
 //        JsfUtil.addErrorMessage("User = " + loggedUser);
         if (loggedUser == null) {
             return false;

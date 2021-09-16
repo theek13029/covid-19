@@ -34,15 +34,6 @@
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
 
-                            <h:outputLabel class="h6 fw-bold" value="Lab"></h:outputLabel>
-                            <p:autoComplete style="width: 100%;"
-                                            inputStyleClass="autocomplete"
-                                            value="#{labController.lab}"
-                                            forceSelection="true" tabindex="100"
-                                            completeMethod="#{labController.completeLab}"
-                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
-                            </p:autoComplete>
-
                             <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
                             <h:selectOneMenu value="#{labController.testType}" class="form-select" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
