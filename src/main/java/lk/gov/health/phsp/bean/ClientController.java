@@ -1383,6 +1383,7 @@ public class ClientController implements Serializable {
   }
 
   public void saveEncounterResults(Encounter se) {
+      System.out.println("saveEncounterResults");
     if (se == null) {
       return;
     }

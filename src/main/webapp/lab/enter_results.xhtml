@@ -69,7 +69,7 @@
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,50,96,100,{ShowAll|'All'}"
 
-                                     rowStyleClass="#{c.pcrResult.name eq 'Positive'?'alert alert-danger':''}"
+                                    
 
                                      >
 
@@ -113,7 +113,7 @@
                             <p:column headerText="Phone"  width="60"   sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Result" width="100"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
+                            <p:column headerText="Result" width="200"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
                                 <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}" style="width: 98%;" >
                                     <f:selectItem itemLabel="Select Result"  ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
