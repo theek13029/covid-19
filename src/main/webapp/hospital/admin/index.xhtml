@@ -18,8 +18,8 @@
                     <div class="row" >
                         <div class="col-3" >
 
-                            <div class="card" >
-                                <div class="card-header" >
+                            <div class="card border border-light" >
+                                <div class="card-header bg-white fw-bold text-secondary fs-5 my-2" >
                                     <h:outputLabel value="System Administration" ></h:outputLabel>
                                 </div>
                                 <div class="card-body container-fluid">
@@ -28,7 +28,7 @@
                                             <h:form>
                                                 <h:commandLink value="Preferences" 
                                                                action="#{menuController.toPreferences()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100" 
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -40,7 +40,7 @@
                                             <h:form>
                                                 <h:commandLink value="Add New User" 
                                                                action="#{menuController.toAddNewUser()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -52,7 +52,7 @@
                                             <h:form>
                                                 <h:commandLink value="View Users" 
                                                                action="#{menuController.toListUsers()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100" 
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -65,7 +65,7 @@
 
                                                 <h:commandLink disabled="true" value="Add Institution" 
                                                                action="#{menuController.toAddNewInstitution()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg btn-block w-100"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -78,7 +78,7 @@
 
                                                 <h:commandLink  value="View Institutions" 
                                                                 action="#{menuController.toListInstitutions()}" 
-                                                                class="btn btn-outline-primary btn-lg btn-block"
+                                                                class="btn btn-outline-primary btn-lg btn-block w-100"
                                                                 >
                                                 </h:commandLink>
                                             </h:form>
