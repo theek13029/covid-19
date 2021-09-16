@@ -370,7 +370,8 @@ public class DashboardController implements Serializable {
                 this.webUserController.getLoggedUser().getInstitution().getMohArea(),
                 yesterdayStart,
                 now,
-                null
+                null,
+                itemApplicationController.getPcr()
         );
     }
 
@@ -552,7 +553,8 @@ public class DashboardController implements Serializable {
                 this.webUserController.getLoggedInstitution().getRdhsArea(),
                 yesterdayStart,
                 now,
-                null
+                null,
+                itemApplicationController.getPcr()
         );
 
 //      Calculate today's positive PCR percentage

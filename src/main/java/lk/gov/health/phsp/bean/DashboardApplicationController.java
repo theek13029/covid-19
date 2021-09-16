@@ -351,7 +351,8 @@ public Long samplesAwaitingDispatch(
         Area area,
         Date fromDate,
         Date toDate,
-        Institution institution
+        Institution institution,
+        Item testType
 ) {
     Map hashMap = new HashMap();
     String jpql = "select count(c) "
@@ -363,6 +364,11 @@ public Long samplesAwaitingDispatch(
     if (institution != null){
         jpql += " and c.institution=:ins ";
          hashMap.put("ins", institution);
+    }
+
+    if (testType != null) {
+        jpql += " anc c.testType=:tt";
+        hashMap.put("tt", testType);
     }
 
     if( area != null) {
