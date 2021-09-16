@@ -65,6 +65,8 @@ public class CommonController implements Serializable {
 
     private Client client;
     private Encounter encounter;
+    private Encounter request;
+    private Encounter result;
 
     private static final long serialVersionUID = 1L;
 
@@ -267,15 +269,12 @@ public class CommonController implements Serializable {
     }
 
     public Date endOfTheDay(Date date) {
-        System.out.println("endOfTheDay");
-        System.out.println("date = " + date);
         Calendar d = Calendar.getInstance();
         d.setTime(date);
         d.set(Calendar.HOUR_OF_DAY , d.getActualMaximum(Calendar.HOUR_OF_DAY));
         d.set(Calendar.MINUTE, d.getActualMaximum(Calendar.MINUTE));
         d.set(Calendar.SECOND, d.getActualMaximum(Calendar.SECOND));
         d.set(Calendar.MILLISECOND, d.getActualMaximum(Calendar.MILLISECOND));
-        System.out.println("d.getTime() = " + d.getTime());
         return d.getTime();
     }
 
@@ -495,14 +494,12 @@ public class CommonController implements Serializable {
     }
 
     public static Date startOfTheDate(Date d) {
-        System.out.println("startOfTheDate");
         Calendar c = Calendar.getInstance();
         c.setTime(d);
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 1);
-        System.out.println("c.getTime() = " + c.getTime());
         return c.getTime();
     }
 
@@ -1203,4 +1200,22 @@ public class CommonController implements Serializable {
         this.encounter = encounter;
     }
 
+    public Encounter getRequest() {
+        return request;
+    }
+
+    public void setRequest(Encounter request) {
+        this.request = request;
+    }
+
+    public Encounter getResult() {
+        return result;
+    }
+
+    public void setResult(Encounter result) {
+        this.result = result;
+    }
+
+    
+    
 }

@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <h:body>
+
+        <ui:composition template="/lab/reports_index.xhtml">
+            <ui:define name="reports">
+                <p:panelGrid columns="1" styleClass="alignTop w-100 bg-white border border-light" >
+                    <f:facet name="header" >
+                        <h:outputLabel class="fs-5 fw-bold" value="Requests by Ordered Date" ></h:outputLabel>
+                    </f:facet>
+
+                    <h:form >
+                        <p:panelGrid columns="2"  class="border border-light">
+                            <h:outputLabel class="fs-6 fw-bold" value="Ordered From" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{labController.fromDate}"
+                                        pattern="dd MMMM yyyy hh:mm a">
+                            </p:calendar><!-- comment -->
+
+                            <h:outputLabel class="fs-6 fw-bold" value="Ordered To" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{labController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+
+                            <h:outputLabel value="Institution" class="fs-6 fw-bold"></h:outputLabel>
+                            <p:autoComplete class="fs-6 w-100"
+                                            id="acIns"
+                                            value="#{labController.institution}"
+                                            forceSelection="true" tabindex="100"
+                                            completeMethod="#{institutionController.completeInstitutions}"
+                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
+                                <p:ajax process="acIns" event="blur" ></p:ajax>
+                            </p:autoComplete>
+
+                            <p:outputLabel value="Test"  class="fs-6 fw-bold"></p:outputLabel>
+                            <h:selectOneMenu value="#{labController.testType}"  class="fs-6 w-100">
+                                <f:selectItem itemLabel="All" ></f:selectItem>
+                                <f:selectItems value="#{labController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                                               itemValue="#{c}" ></f:selectItems>
+                            </h:selectOneMenu>
+
+
+
+                            <h:commandButton class="btn btn-success my-2" value="Generate Excel">
+                                <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
+                            </h:commandButton>
+                            <h:commandButton class="btn btn-warning w-100" value="Process"
+                                             action="#{labController.toListOfRequestsByReceivedDate()}" ></h:commandButton>
+
+
+                        </p:panelGrid>
+
+                        <ez:lab_request_datatable/>
+                        
+                    </h:form>
+                </p:panelGrid>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

@@ -97,11 +97,8 @@
                                      >
                             <p:column selectionMode="multiple" width="40" ></p:column>
                             <p:column headerText="Test No" width="90" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
-                                <p:inputText id="txtTestNo" value="#{c.encounterNumber}" >
-                                    <p:ajax event="blur" process="txtTestNo" 
-                                            listener="#{clientController.saveLabNo(c)}" >
-                                    </p:ajax>
-                                </p:inputText>
+                                <p:outputLabel id="txtTestNo" value="#{c.encounterNumber}" >
+                                </p:outputLabel>
                             </p:column>
                             <p:column headerText="Created at" sortBy="#{c.createdAt}"  >
                                 <p:outputLabel value="#{c.createdAt}" ></p:outputLabel>

@@ -883,7 +883,6 @@ public class WebUserController implements Serializable {
         if (!checkLoginNew()) {
             JsfUtil.addErrorMessage("Username/Password Error. Please retry.");
             userTransactionController.recordTransaction("Failed Login Attempt", userName);
-            System.out.println("No Match");
             return "";
         }
         loggedUserPrivileges = userPrivilegeList(loggedUser);
@@ -944,11 +943,9 @@ public class WebUserController implements Serializable {
             return;
         }
         if (loggedUser.getInstitution() == null) {
-            System.err.println("No Institute for the user : " + loggedUser.getName());
             return;
         }
         if (loggedUser.getWebUserRole() == null) {
-            System.err.println("No Role for the user : " + loggedUser.getName());
             return;
         }
         if (loggedUser.getArea() == null) {
@@ -1047,7 +1044,6 @@ public class WebUserController implements Serializable {
     }
 
     private boolean checkLoginNew() {
-        System.out.println("checkLoginNew");
         if (getFacade() == null) {
             JsfUtil.addErrorMessage("Server Error");
             return false;
@@ -1061,7 +1057,6 @@ public class WebUserController implements Serializable {
 //        JsfUtil.addErrorMessage("M=" + m);
 //        JsfUtil.addErrorMessage("S=" + temSQL);
         loggedUser = getFacade().findFirstByJpql(temSQL, m);
-        System.out.println("loggedUser = " + loggedUser);
 //        JsfUtil.addErrorMessage("User = " + loggedUser);
         if (loggedUser == null) {
             return false;
@@ -1356,6 +1351,38 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Receive_Samples);
                 wups.add(Privilege.Review_Results);
                 wups.add(Privilege.Print_Results);
+
+                wups.add(Privilege.Client_Management);
+                wups.add(Privilege.Encounter_Management);
+                wups.add(Privilege.Sample_Management);
+                wups.add(Privilege.Lab_Management);
+                wups.add(Privilege.Institution_Administration);
+                wups.add(Privilege.Add_Client);
+                wups.add(Privilege.Add_Tests);
+                wups.add(Privilege.Mark_Tests);
+                wups.add(Privilege.Submit_Returns);
+                wups.add(Privilege.Search_any_Client_by_IDs);
+                wups.add(Privilege.Search_any_Client_by_Details);
+                wups.add(Privilege.Manage_Institution_Users);
+                wups.add(Privilege.Manage_Users);
+                wups.add(Privilege.Manage_Metadata);
+                wups.add(Privilege.Manage_Area);
+                wups.add(Privilege.Manage_Institutions);
+                wups.add(Privilege.Manage_Forms);
+                wups.add(Privilege.Monitoring_and_evaluation);
+                wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
+                wups.add(Privilege.Dispatch_Samples);
+                wups.add(Privilege.Divert_Samples);
+                wups.add(Privilege.View_Orders);
+                wups.add(Privilege.Receive_Samples);
+                wups.add(Privilege.Enter_Results);
+                wups.add(Privilege.Review_Results);
+                wups.add(Privilege.Confirm_Results);
+                wups.add(Privilege.Print_Results);
+                wups.add(Privilege.Lab_Reports);
+
                 break;
             case Hospital_User:
                 wups.add(Privilege.Monitoring_and_evaluation);
@@ -2159,7 +2186,7 @@ public class WebUserController implements Serializable {
         WebUserRole[] rs = urs.toArray(new WebUserRole[0]);
         return rs;
     }
-    
+
     public WebUserRole[] getWebUserRolesForRd() {
         List<WebUserRole> urs = new ArrayList<>();
         urs.add(WebUserRole.Hospital_Admin);

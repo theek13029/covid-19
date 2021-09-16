@@ -7,72 +7,70 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:body>
-        <ui:composition template="/national/reports_index.xhtml">
+        <ui:composition template="/lab/reports_index.xhtml">
             <ui:define name="reports">
 
                 <h:panelGrid columns="1" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Test Counts by Institution Types" ></p:outputLabel>
+                        <p:outputLabel value="Test Counts by Provincial Departments" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
                         <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
-                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded" >
+                        <h:panelGrid class="shadow-lg p-3 mb-5 bg-white rounded" columns="2" >
                             <h:outputLabel class="h6 fw-bold" value="Ordered From" ></h:outputLabel>
-                            <p:calendar value="#{nationalController.fromDate}" 
+                            <p:calendar value="#{labController.fromDate}"
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
-                            <h:outputLabel value="Ordered To" class="h6 fw-bold" ></h:outputLabel>
-                            <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <h:outputLabel class="h6 fw-bold" value="Ordered To" ></h:outputLabel>
+                            <p:calendar value="#{labController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                            <h:outputLabel value="Ordering Category" class="h6 fw-bold" ></h:outputLabel>
-                            <h:selectOneMenu value="#{nationalController.orderingCategory}" class="form-select" >
+                            <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
+                            <h:selectOneMenu value="#{labController.orderingCategory}" class="form-select">
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{nationalController.covidTestOrderingCategories}" 
+                                <f:selectItems value="#{labController.covidTestOrderingCategories}"
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
 
-                          
-
                             <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
-                            <h:selectOneMenu value="#{nationalController.testType}" class="form-select" >
+                            <h:selectOneMenu value="#{labController.testType}" class="form-select" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{nationalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                                <f:selectItems value="#{labController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
 
 
 
                             <h:commandButton value="Generate Excel" class="btn btn-success w-100">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
+                                <p:dataExporter target="tbl" type="xlsx" fileName="test_counts_by_provincial_departmants" ></p:dataExporter>
                             </h:commandButton>
                             <h:commandButton value="Process" class="btn btn-warning w-100"
-                                             action="#{nationalController.toCountOfTestsByInstitutionType()}" ></h:commandButton>
+                                             action="#{labController.toCountOfTestsByPdhs()}" ></h:commandButton>
 
 
                         </h:panelGrid>
                         </div>
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{nationalController.institutionTypeCounts}" rendered="true"
+                        <p:dataTable id="tbl" value="#{labController.institutionCounts}" rendered="true"
                                      rowIndexVar="n"
-                                     var="c" 
-                                     paginator="true" 
+                                     var="c"
+                                     paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
                                      >
-                            <p:column headerText="Institution Type" sortBy="#{c.type.label}"
-                                      filterBy="#{c.type.label}" filterMatchMode="contains">
-                                <h:commandLink value="#{c.type.label}" action="#{nationalController.toCountOfTestsByOrderedInstitution()}" >
-                                    <f:setPropertyActionListener value="#{c.type}" target="#{nationalController.institutionType}" ></f:setPropertyActionListener>
+                            <p:column headerText="PDHS" sortBy="#{c.area.name}"
+                                      filterBy="#{c.area.name}" filterMatchMode="contains">
+                                <h:commandLink value="#{c.area.name}" action="#{labController.toCountOfTestsFromPdhsToRdhs()}" >
+                                    <f:setPropertyActionListener value="#{c.area}" target="#{labController.pdhs}" ></f:setPropertyActionListener>
                                 </h:commandLink>
                             </p:column>
                             <p:column headerText="Count"  sortBy="#{c.count}">
-                                <h:commandLink value="#{c.count}" action="#{nationalController.toCountOfTestsByOrderedInstitution()}" >
-                                    <f:setPropertyActionListener value="#{c.type}" target="#{nationalController.institutionType}" ></f:setPropertyActionListener>
+                                <h:commandLink value="#{c.count}" action="#{labController.toCountOfTestsFromPdhsToRdhs()}" >
+                                    <f:setPropertyActionListener value="#{c.area}" target="#{labController.pdhs}" ></f:setPropertyActionListener>
                                 </h:commandLink>
                             </p:column>
                         </p:dataTable>

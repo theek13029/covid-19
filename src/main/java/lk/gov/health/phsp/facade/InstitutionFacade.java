@@ -41,7 +41,6 @@ public class InstitutionFacade extends AbstractFacade<Institution> {
     
     @Override
     protected EntityManager getEntityManager() {
-        System.out.println("this = " + this);
         return em;
     }
 
