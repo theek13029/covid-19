@@ -85,7 +85,8 @@
                   <p:commandLink id="lnkLastGn" action="#{mohController.retrieveLastGnPcr()}" update="gnarea">
                     <i class="bi bi-arrow-clockwise"></i>
                   </p:commandLink>
-                  <p:autoComplete id="gnarea" completeMethod="#{mohController.completeGnAreasForPcr}" var="gnAreas"
+                  <p:autoComplete id="gnarea" value="#{mohController.pcr.client.person.gnArea}" 
+                                  completeMethod="#{mohController.completeGnAreasForPcr}" var="gnAreas"
                                   itemLabel="#{gnAreas.name}" itemValue="#{gnAreas}" maxResults="20" forceSelection="true"
                                   minQueryLength="2"></p:autoComplete>
                 </div>

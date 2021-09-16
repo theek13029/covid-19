@@ -81,6 +81,12 @@
                                     <p:autoComplete tabindex="6" id="gnArea" value="#{mohController.pcr.client.person.gnArea}"
                                                     completeMethod="#{mohController.completeGnAreasForPcr}" var="gn" itemLabel="#{gn.name}"
                                                     itemValue="#{gn}" maxResults="20" forceSelection="true" minQueryLength="2">
+                                        <p:column headerText="GN" >
+                                            <h:outputLabel value="#{gn.name}" ></h:outputLabel>
+                                        </p:column>                                        
+                                        <p:column headerText="DS" >
+                                            <h:outputLabel value="#{gn.dsd.name}" ></h:outputLabel>
+                                        </p:column>                                        
                                     </p:autoComplete>
                                 </div>
                                 <div class="col md-3">

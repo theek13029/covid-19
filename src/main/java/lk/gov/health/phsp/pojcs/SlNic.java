@@ -60,7 +60,6 @@ public class SlNic {
                 String strDates = nic.substring(2, 5);
                 dates = Integer.parseInt(strDates);
             } catch (NumberFormatException e) {
-                System.out.println("e = " + e);
                 return;
             }
 

@@ -25,6 +25,8 @@ package lk.gov.health.phsp.bean;
 
 // <editor-fold defaultstate="collapsed" desc="Import">
 import java.io.Serializable;
+import java.text.DecimalFormat;
+
 import lk.gov.health.phsp.entity.Client;
 import lk.gov.health.phsp.bean.util.JsfUtil;
 import lk.gov.health.phsp.facade.ClientFacade;
@@ -243,10 +245,7 @@ public class NationalController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         m.put("sl", false);
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         List<Object> os = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("os = " + os.size());
         awaitingDispatch = new ArrayList<>();
         Long c = 0l;
         for (Object o : os) {
@@ -274,9 +273,7 @@ public class NationalController implements Serializable {
         j += " and (c.createdAt > :fd and c.createdAt < :td) ";
         m.put("fd", getFromDate());
 
-        System.out.println("getFromDate() = " + getFromDate());
 
-        System.out.println("getToDate() = " + getToDate());
 
         m.put("td", getToDate());
 
@@ -305,8 +302,6 @@ public class NationalController implements Serializable {
         j += " group by c.institution"
                 + " order by count(c) desc ";
 
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         institutionCounts = new ArrayList<>();
 
@@ -338,9 +333,7 @@ public class NationalController implements Serializable {
         j += " and (c.createdAt > :fd and c.createdAt < :td) ";
         m.put("fd", getFromDate());
 
-        System.out.println("getFromDate() = " + getFromDate());
 
-        System.out.println("getToDate() = " + getToDate());
 
         m.put("td", getToDate());
 
@@ -368,8 +361,6 @@ public class NationalController implements Serializable {
         j += " group by c.institution"
                 + " order by count(c) desc ";
 
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         institutionCounts = new ArrayList<>();
 
@@ -425,8 +416,6 @@ public class NationalController implements Serializable {
         j += " group by c.institution"
                 + " order by count(c) desc ";
 
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         institutionCounts = new ArrayList<>();
 
@@ -447,7 +436,7 @@ public class NationalController implements Serializable {
     // This will return data of number of tests done by hospitals of a given RDHS
     // Rukshan
 
-    public String toCountOfTestsFromRdhsToMoh() {
+    public String toCountOfTestsFromRdhsToInstitution() {
         Map m = new HashMap();
 
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c))   "
@@ -461,9 +450,7 @@ public class NationalController implements Serializable {
         j += " and (c.createdAt > :fd and c.createdAt < :td) ";
         m.put("fd", getFromDate());
 
-        System.out.println("getFromDate() = " + getFromDate());
 
-        System.out.println("getToDate() = " + getToDate());
 
         m.put("td", getToDate());
 
@@ -494,8 +481,6 @@ public class NationalController implements Serializable {
         j += " group by c.institution"
                 + " order by count(c) desc ";
 
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         institutionCounts = new ArrayList<>();
 
@@ -514,16 +499,12 @@ public class NationalController implements Serializable {
     }
 
     public String toCountOfTestsFromPdhsToRdhs() {
-        System.out.println("pdhs = " + pdhs);
         if (pdhs == null) {
             return toCountOfTestsByRdhs();
         } else {
-            System.out.println("pdhs.getId() = " + pdhs.getId());
             if (pdhs.getId() == null) {
-                System.out.println("ins counts");
                 return toCountOfTestsByOrderedInstitutionWithoutRdhs();
             } else {
-                System.out.println("rdhs counts ");
                 return toCountOfTestsByRdhs();
             }
         }
@@ -543,9 +524,7 @@ public class NationalController implements Serializable {
         j += " and (c.createdAt > :fd and c.createdAt < :td) ";
         m.put("fd", getFromDate());
 
-        System.out.println("getFromDate() = " + getFromDate());
 
-        System.out.println("getToDate() = " + getToDate());
 
         m.put("td", getToDate());
 
@@ -635,9 +614,7 @@ public class NationalController implements Serializable {
         j += " and (c.createdAt > :fd and c.createdAt < :td) ";
         m.put("fd", getFromDate());
 
-        System.out.println("getFromDate() = " + getFromDate());
 
-        System.out.println("getToDate() = " + getToDate());
 
         m.put("td", getToDate());
 
@@ -716,6 +693,118 @@ public class NationalController implements Serializable {
         return toCountOfTestsByRdhs();
     }
 
+    // This will provide a test positive rate according to the area provided
+    // RukshanR
+    public String toTestPositiveRateByRdhs() {
+        DecimalFormat df = new DecimalFormat("0.0");
+
+        Map m = new HashMap();
+
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution.rdhsArea, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and (c.createdAt > :fd and c.createdAt < :td) ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+
+        if (pdhs != null) {
+            j += " and c.institution.rdhsArea.pdhsArea=:pd ";
+            m.put("pd", pdhs);
+        }
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+        if (result != null) {
+            j += " and c.pcrResult=:result ";
+            m.put("result", result);
+        }
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+
+        j += " group by c.institution.rdhsArea "
+                + " order by count(c) desc ";
+
+        List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
+
+        m = new HashMap();
+
+        j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution.rdhsArea, count(c))   "
+                + " from Encounter c "
+                + " where (c.retired is null or c.retired=:ret) ";
+        m.put("ret", false);
+
+        j += " and c.encounterType=:etype ";
+        m.put("etype", EncounterType.Test_Enrollment);
+
+        j += " and (c.createdAt > :fd and c.createdAt < :td) ";
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+
+        if (pdhs != null) {
+            j += " and c.institution.rdhsArea.pdhsArea=:pd ";
+            m.put("pd", pdhs);
+        }
+
+        if (testType != null) {
+            j += " and c.pcrTestType=:tt ";
+            m.put("tt", testType);
+        }
+
+        if (orderingCategory != null) {
+            j += " and c.pcrOrderingCategory=:oc ";
+            m.put("oc", orderingCategory);
+        }
+
+
+        j += " and c.pcrResult=:result ";
+        m.put("result", itemApplicationController.getPcrPositive());
+
+        if (lab != null) {
+            j += " and c.referalInstitution=:ri ";
+            m.put("ri", lab);
+        }
+
+        j += " group by c.institution.rdhsArea "
+                + " order by count(c) desc ";
+
+
+        List<Object> objPositives = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
+        institutionCounts = new ArrayList<>();
+
+
+        if (objCounts == null || objCounts.isEmpty()) {
+            return "/national/positivity_rate_by_rdhs";
+        }
+
+
+        for (int index = 0; index <= objPositives.size()-1; index++) {
+            InstitutionCount incPositive = (InstitutionCount) objPositives.get(index);
+            InstitutionCount incCounts = (InstitutionCount) objCounts.get(index);
+            double tempPositiveRate = ((double) incPositive.getCount()/incCounts.getCount()*100);
+            String tempRate = df.format(tempPositiveRate) + "%";
+            InstitutionCount rateCount = new InstitutionCount();
+            rateCount.setArea(incPositive.getArea());
+            rateCount.setPositiveRate(tempRate);
+            rateCount.setCount(incCounts.getCount());
+            institutionCounts.add(rateCount);
+        }
+
+        return "/national/positivity_rate_by_rdhs";
+    }
+
     public String toCountOfTestsByRdhs() {
         Map m = new HashMap();
 
@@ -758,12 +847,9 @@ public class NationalController implements Serializable {
 
         institutionCounts = new ArrayList<>();
 
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
 
-        System.out.println("objCounts.size() = " + objCounts.size());
 
         if (objCounts == null || objCounts.isEmpty()) {
             return "/national/count_of_tests_by_rdhs";
@@ -940,11 +1026,8 @@ public class NationalController implements Serializable {
                 + " order by count(c) desc ";
 
         institutionCounts = new ArrayList<>();
-        System.out.println("m = " + m);
-        System.out.println("j = " + j);
 
         List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
-        System.out.println("objCounts = " + objCounts.size());
         if (objCounts == null || objCounts.isEmpty()) {
             return "/national/count_of_results_by_lab";
         }
@@ -1007,7 +1090,6 @@ public class NationalController implements Serializable {
         testType = itemApplicationController.getPcr();
         result = itemApplicationController.getPcrPositive();
 
-        System.out.println("toTestList");
         Map m = new HashMap();
 
         String j = "select c "
@@ -1025,9 +1107,7 @@ public class NationalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -1044,11 +1124,8 @@ public class NationalController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
 
         return "/moh/assign_investigation";
     }
@@ -1202,9 +1279,7 @@ public class NationalController implements Serializable {
         m.put("etype", EncounterType.Test_Enrollment);
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         j += " and c.pcrTestType=:tt ";
         m.put("tt", testType);
         j += " and c.pcrResult=:result ";
@@ -1445,9 +1520,7 @@ public class NationalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -1464,11 +1537,8 @@ public class NationalController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
 
         return "/regional/list_of_tests_without_moh";
     }
@@ -1495,13 +1565,8 @@ public class NationalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("cecItems = " + cecItems.size());
         return "/regional/list_of_first_contacts_without_moh";
     }
 
@@ -1525,13 +1590,8 @@ public class NationalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("cecItems = " + cecItems.size());
         return "/moh/order_tests_for_moh";
     }
 
@@ -1555,13 +1615,8 @@ public class NationalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("cecItems = " + cecItems.size());
         return "/regional/list_of_first_contacts";
     }
 
@@ -1814,10 +1869,7 @@ public class NationalController implements Serializable {
             m.put("ri", lab);
         }
         j += " group by c.pcrOrderingCategory, c.client.person.district";
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("objs = " + objs.size());
         List<InstitutionCount> tics = new ArrayList<>();
         for (Object o : objs) {
             if (o instanceof InstitutionCount) {
@@ -1864,10 +1916,7 @@ public class NationalController implements Serializable {
             m.put("dis", district);
         }
         j += " group by c.pcrOrderingCategory, c.client.person.mohArea";
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("objs = " + objs.size());
         List<InstitutionCount> tics = new ArrayList<>();
         for (Object o : objs) {
             if (o instanceof InstitutionCount) {
@@ -1917,9 +1966,7 @@ public class NationalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -1936,16 +1983,12 @@ public class NationalController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
         return "/moh/list_of_tests_without_results";
     }
 
     public String toListOfTestsRegional() {
-        System.out.println("toTestList");
         Map m = new HashMap();
 
         String j = "select c "
@@ -1975,9 +2018,7 @@ public class NationalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -1994,11 +2035,8 @@ public class NationalController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
         return "/regional/list_of_tests";
     }
 
@@ -2059,9 +2097,7 @@ public class NationalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
 
         if (managementType != null) {
             j += " and (ci.item.code=:mxplan and ci.itemValue.code=:planType) ";
@@ -2074,11 +2110,8 @@ public class NationalController implements Serializable {
 
         j += " group by c";
 
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
 
         return "/regional/list_of_cases_by_management_plan";
     }
@@ -2096,9 +2129,7 @@ public class NationalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
 
         if (managementType != null) {
             j += " and (ci.item.code=:mxplan and ci.itemValue.code=:planType) ";
@@ -2111,17 +2142,13 @@ public class NationalController implements Serializable {
 
         j += " group by c";
 
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
 
         return "/national/list_of_cases_by_management_plan";
     }
 
     public String toEnterResults() {
-        System.out.println("toTestList");
         Map m = new HashMap();
 
         String j = "select c "
@@ -2137,9 +2164,7 @@ public class NationalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -2156,11 +2181,8 @@ public class NationalController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
         return "/moh/enter_results";
     }
 
@@ -2472,7 +2494,6 @@ public class NationalController implements Serializable {
     }
 
     public void generateInstitutionPeformanceSummery() {
-        System.out.println("generateInstitutionPeformanceSummery");
         Long p = 0l;
         Long r = 0l;
         Long pp = 0l;
@@ -2501,7 +2522,6 @@ public class NationalController implements Serializable {
     }
 
     public void generateFilteredInstitutionPeformanceSummery() {
-        System.out.println("generateFilteredInstitutionPeformanceSummery");
         Long p = 0l;
         Long r = 0l;
         Long pp = 0l;
@@ -2528,10 +2548,6 @@ public class NationalController implements Serializable {
         getInstitutionPeformancesSummery().setRats(r);
         getInstitutionPeformancesSummery().setRatPositives(rp);
 
-        System.out.println("getInstitutionPeformancesSummery().getPcrPositives(); = " + getInstitutionPeformancesSummery().getPcrPositives());
-        System.out.println("getInstitutionPeformancesSummery().getPcrs() = " + getInstitutionPeformancesSummery().getPcrs());
-        System.out.println("getInstitutionPeformancesSummery().getRats() = " + getInstitutionPeformancesSummery().getRats());
-        System.out.println("getInstitutionPeformancesSummery().getRatPositives() = " + getInstitutionPeformancesSummery().getRatPositives());
     }
 
     public InstitutionPeformance getInstitutionPeformancesSummery() {

@@ -56,7 +56,6 @@ public class UserColumnController {
     }
 
     public void markChecked(String colName) {
-        System.out.println("markChecked");
         String j = "select u "
                 + " from UserColumn u "
                 + " where u.webUser=:wu "
@@ -67,10 +66,7 @@ public class UserColumnController {
         m.put("wu", getWebUserController().getLoggedUser());
         m.put("v", viewId);
         m.put("c", colName);
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         UserColumn uc = getFacade().findFirstByJpql(j, m);
-        System.out.println("uc = " + uc);
         if (uc == null) {
             uc = new UserColumn();
             uc.setColumnName(colName);
@@ -85,7 +81,6 @@ public class UserColumnController {
     }
 
     public void markUnChecked(String colName) {
-        System.out.println("markUnChecked");
         String j = "select u "
                 + " from UserColumn u "
                 + " where u.webUser=:wu "
@@ -96,10 +91,7 @@ public class UserColumnController {
         m.put("wu", getWebUserController().getLoggedUser());
         m.put("v", viewId);
         m.put("c", colName);
-        System.out.println("m = " + m);
-        System.out.println("j = " + j);
         UserColumn uc = getFacade().findFirstByJpql(j, m);
-        System.out.println("uc = " + uc);
         if (uc == null) {
             uc = new UserColumn();
             uc.setColumnName(colName);
@@ -114,7 +106,6 @@ public class UserColumnController {
     }
 
     public boolean displayColumn(String colName) {
-        System.out.println("displayColumn");
         boolean display ;
         String j = "select u "
                 + " from UserColumn u "
@@ -126,10 +117,7 @@ public class UserColumnController {
         m.put("wu", getWebUserController().getLoggedUser());
         m.put("v", viewId);
         m.put("c", colName);
-        System.out.println("m = " + m);
-        System.out.println("j = " + j);
         UserColumn uc = getFacade().findFirstByJpql(j, m);
-        System.out.println("uc = " + uc);
         if (uc == null) {
             uc = new UserColumn();
             uc.setColumnName(colName);

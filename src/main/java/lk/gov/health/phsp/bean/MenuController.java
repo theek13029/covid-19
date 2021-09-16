@@ -63,6 +63,18 @@ public class MenuController implements Serializable {
      */
     public MenuController() {
     }
+    
+    public String toViewRequest() {
+        return "/common/request_view";
+    }
+    
+    public String toViewPatient() {
+        return "/common/client_view";
+    }
+    
+    public String toViewResult() {
+        return "/common/result_view";
+    }
 
     public String toSummaryByOrderedInstitution() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
@@ -173,6 +185,30 @@ public class MenuController implements Serializable {
         }
     }
 
+    
+    public String toSearch() {
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/search";
+            case National:
+                return "/national/search";
+            case Hospital:
+                return "/hospital/search";
+            case Lab:
+                return "/lab/search";
+            case National_Lab:
+                return "/national/search";
+            case Moh:
+                return "/moh/search";
+            case Provincial:
+                return "/provincial/search";
+            default:
+                return "";
+        }
+    }
+
+    
+    
     public String toAdministrationIndex() {
         boolean privileged = false;
         for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
