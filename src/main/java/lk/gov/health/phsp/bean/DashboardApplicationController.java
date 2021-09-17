@@ -81,6 +81,10 @@ public class DashboardApplicationController {
     @Inject
     CovidDataHolder covidDataHolder;
 
+//    AreaController
+    @Inject
+    private AreaController areaController;
+
     private Long todayPcr;
     private Long todayRat;
     private Long todayPositivePcr;
@@ -326,6 +330,47 @@ public class DashboardApplicationController {
             }
         }
         return tics;
+    }
+
+    // This will generate the list of investigations done by insitutions in a given RDHS area
+
+    public Map<String, List<String>> generateRdhsInvestigationHashmap(
+            List<Institution> myInstitutions
+    ) {
+
+        Map<String, List<String>> hashMap = new HashMap<>();
+
+        Date todayStart = CommonController.startOfTheDate();
+        Calendar calendar = Calendar.getInstance();
+        Date now = calendar.getTime();
+
+        for (Institution ins:myInstitutions) {
+            System.out.println("mohArea = " + ins.getName());
+            List<String> tempList = new ArrayList<>();
+            Long tempTodayPcr = this.getOrderCountArea(
+                    null,
+                    todayStart,
+                    now,
+                    itemApplicationController.getPcr(),
+                    null,
+                    null,
+                    ins
+            );
+            Long tempTodayRat = this.getOrderCountArea(
+                    null,
+                    todayStart,
+                    now,
+                    itemApplicationController.getRat(),
+                    null,
+                    null,
+                    ins
+            );
+            tempList.add(tempTodayPcr.toString());
+            tempList.add(tempTodayRat.toString());
+            hashMap.put(ins.getName(), tempList);
+        }
+
+        return hashMap;
     }
 
     public Long getOrderCount(Institution ins,
