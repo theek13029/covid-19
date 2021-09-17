@@ -153,7 +153,7 @@
                                     </p:ajax>
                                 </p:calendar>
                             </p:column>
-                            <p:column headerText="Result"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
+                            <p:column headerText="Result" width="200"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
                                 <h:selectOneMenu id="cmbResult" value="#{c.pcrResult}" disabled="#{(c.receivedAtLab and c.testType.name eq 'Pcr')}" class="form-select">
                                     <f:selectItem itemLabel="Select Result" ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"

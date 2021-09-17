@@ -70,7 +70,7 @@
                         </h:panelGrid>
                         </div>
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{nationalController.institutionCounts}" rendered="true"
+                            <p:dataTable reflow="true" id="tbl" value="#{nationalController.institutionCounts}" rendered="true"
                                      rowIndexVar="n"
                                      var="c"
                                      paginator="true"

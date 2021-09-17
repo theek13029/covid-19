@@ -47,6 +47,7 @@ import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.NumbersFacade;
 import lk.gov.health.phsp.pojcs.CovidData;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
+import org.json.JSONObject;
 
 /**
  *
@@ -100,6 +101,9 @@ public class DashboardController implements Serializable {
     private Long ratPatientsWithNoMohArea;
 //    First encounters with no MOH area
     private Long firstContactsWithNoMOHArea;
+//    HashMap to generate investigation chart at MOH dashboard
+    private JSONObject investigationHashmap;
+
 
     private CovidData myCovidData;
 
@@ -370,7 +374,8 @@ public class DashboardController implements Serializable {
                 this.webUserController.getLoggedUser().getInstitution().getMohArea(),
                 yesterdayStart,
                 now,
-                null
+                null,
+                itemApplicationController.getPcr()
         );
     }
 
@@ -552,7 +557,8 @@ public class DashboardController implements Serializable {
                 this.webUserController.getLoggedInstitution().getRdhsArea(),
                 yesterdayStart,
                 now,
-                null
+                null,
+                itemApplicationController.getPcr()
         );
 
 //      Calculate today's positive PCR percentage
@@ -583,6 +589,11 @@ public class DashboardController implements Serializable {
         } else {
         	this.yesterdayRatPositiveRate = "0.00%";
         }
+
+        // The json is used to generate chart for available insitutions in a given RDHS area
+        this.investigationHashmap = new JSONObject(dashboardApplicationController.generateRdhsInvestigationHashmap(
+                this.webUserController.getLoggableInstitutions()
+        ));
 
     }
 
@@ -799,6 +810,9 @@ public class DashboardController implements Serializable {
      */
     public DashboardController() {
     }
+
+    //    Generates a hashmap that will give PCR and RAT investigations of each MOH under a given RDHS area
+
 
     public void calculateNumbers() {
         covidDataHolder.calculateNumbers(fromDate, toDate);
@@ -1068,7 +1082,13 @@ public class DashboardController implements Serializable {
 		this.todayRatPositiveRate = todayRatPositiveRate;
 	}
 
-	/**
+//	Getter for the mohInstegiationHashmap
+
+    public JSONObject getInvestigationHashmap() {
+        return investigationHashmap;
+    }
+
+    /**
 	 * @return the yesterdayPcrPositiveRate
 	 */
 	public String getYesterdayPcrPositiveRate() {

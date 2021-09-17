@@ -393,7 +393,7 @@ public class AreaApplicationController {
                     tas.add(a);
                     continue;
                 }
-                if (a.getMoh().equals(moh)) {
+                if (a.getMoh()!=null && a.getMoh().equals(moh)) {
                     tas.add(a);
                 }
             }

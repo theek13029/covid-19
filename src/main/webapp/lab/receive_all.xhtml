@@ -12,56 +12,115 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-               <!--<h:panelGrid columns="1" styleClass="alignTop" >-->
-                    <!--<f:facet name="header" >
-                        <p:outputLabel value="Samples to Receive" ></p:outputLabel>
-                    </f:facet>-->
+                <!--<h:panelGrid columns="1" styleClass="alignTop" >-->
+                <!--<f:facet name="header" >
+                    <p:outputLabel value="Samples to Receive" ></p:outputLabel>
+                </f:facet>-->
 
-                    <h:form >
-                        <div class="row" >
-                            <div class="col-12 text-center mt-4 mb-2" >
-                                <h4 class="fw-bold"><h:outputLabel  value="Samples to Receive" ></h:outputLabel></h4>
+                <h:form >
+                    <div class="row" >
+                        <div class="col-12 text-center mt-4 mb-2" >
+                            <h4 class="fw-bold"><h:outputLabel  value="Samples to Receive" ></h:outputLabel></h4>
+                        </div>
+                    </div>
+                    <div class="container bg-none mb-4 w-100 d-flex justify-content-around align-items-center" >
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-6 d-flex justify-content-center">
+                                <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded d-none d-md-block d-lg-block">
+
+                                    <h:outputLabel class="h6 fw-bold" value="Sample Sent From Date" ></h:outputLabel>
+                                    <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+
+                                    <h:outputLabel class="h6 fw-bold" value="Sample Sent To Date" ></h:outputLabel>
+                                    <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                                    <h:commandButton value="Process" 
+                                                     action="#{clientController.toLabReceiveAll()}" class="btn btn-warning w-100" ></h:commandButton>
+                                    <h:commandButton value="Generate Excel" class="btn btn-success w-100" >
+                                        <p:dataExporter type="xlsx" fileName="Samples to receive" target="tbl" ></p:dataExporter>
+                                    </h:commandButton>
+
+                                </h:panelGrid>
+
+
+
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-6 d-flex justify-content-center">
+                                <h:panelGrid columns="2" class="shadow-lg mb-5 rounded d-none d-md-block d-lg-block bg-white p-3">
+                                    <f:facet name="header" >
+                                        <p:outputLabel value="Lab number generation" ></p:outputLabel>
+                                    </f:facet>
+                                    <h:outputLabel class="h6 fw-bold" value="Serial No Prefix" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:outputLabel>
+                                    <h:inputText class="form-control" value="#{clientController.serialPrefix}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:inputText>
+
+                                    <h:outputLabel class="h6 fw-bold" value="Serial No Starts from" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:outputLabel>
+                                    <h:inputText class="form-control" value="#{clientController.serialStart}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:inputText>
+
+                                    <h:outputLabel class="h6 fw-bold" value="Plate No" ></h:outputLabel>
+                                    <p:inputText class="form-control" value="#{clientController.plateNo}" ></p:inputText>
+
+                                </h:panelGrid>  
                             </div>
                         </div>
-                        <div class="container bg-none mb-4 w-100 d-flex justify-content-around align-items-center" >
-
-                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
-
-                                <h:outputLabel class="h6 fw-bold" value="Sample Sent From Date" ></h:outputLabel>
-                                <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
-
-                                <h:outputLabel class="h6 fw-bold" value="Sample Sent To Date" ></h:outputLabel>
-                                <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
-                                <h:commandButton value="Process" 
-                                                 action="#{clientController.toLabReceiveAll()}" class="btn btn-warning w-100" ></h:commandButton>
-                                <h:commandButton value="Generate Excel" class="btn btn-success w-100" >
-                                    <p:dataExporter type="xlsx" fileName="Samples to receive" target="tbl" ></p:dataExporter>
-                                </h:commandButton>
-
-                            </h:panelGrid>
-
-                            <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
-                                <f:facet name="header" >
-                                    <p:outputLabel value="Lab number generation" ></p:outputLabel>
-                                </f:facet>
-                                <h:outputLabel class="h6 fw-bold" value="Serial No Prefix" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:outputLabel>
-                                <h:inputText class="form-control" value="#{clientController.serialPrefix}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:inputText>
-
-                                <h:outputLabel class="h6 fw-bold" value="Serial No Starts from" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:outputLabel>
-                                <h:inputText class="form-control" value="#{clientController.serialStart}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:inputText>
-
-                                <h:outputLabel class="h6 fw-bold" value="Plate No" ></h:outputLabel>
-                                <p:inputText class="form-control" value="#{clientController.plateNo}" ></p:inputText>
-
-                            </h:panelGrid>
+                    </div>
 
 
+                    <!-- Mobile friendly design -->
+
+
+                    <div class="card border border-light d-md-none">
+                        <div class="card-body">
+                            <div class="col-sm-12"><h:outputLabel class="h6 fw-bold mb-2" value="Sample Sent From Date" ></h:outputLabel></div>
+                            <div class="col-sm-12"><p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar></div>
+                            <div class="col-sm-12"><h:outputLabel class="h6 fw-bold mb-2" value="Sample Sent To Date" ></h:outputLabel></div>
+                            <div class="col-sm-12"><p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar></div>
+                            <div class="card-footer bg-white">
+                                <div class="col-sm-12">
+                                    <h:commandButton value="Process" 
+                                                     action="#{clientController.toLabReceiveAll()}" class="btn btn-warning w-100 my-2" ></h:commandButton>
+                                </div>
+                                <div class="col-sm-12">
+                                    <h:commandButton value="Generate Excel" class="btn btn-success w-100 my-2" >
+                                        <p:dataExporter type="xlsx" fileName="Samples to receive" target="tbl" ></p:dataExporter>
+                                    </h:commandButton>
+                                </div>
+                            </div>
 
                         </div>
+                    </div>
 
-                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{clientController.labSummariesToReceive}" class="table"
-                                     rowIndexVar="n" reflow="true"
+
+                    <div class="card border border-light d-md-none my-3">
+                        <div class="card-header bg-success text-white fw-bold text-center">
+                            <p:outputLabel value="Lab number generation" ></p:outputLabel>
+                        </div>
+                        <div class="card-body bg-white">
+                            <div class="col-sm-12">
+                                <h:outputLabel class="fw-bold mb-2" value="Serial No Prefix" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:outputLabel></div>
+                            <div class="col-sm-12">
+                                 <h:inputText class="form-control" value="#{clientController.serialPrefix}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:inputText>
+                            </div>
+                            <div class="col-sm-12">
+                                <h:outputLabel class="fw-bold" value="Serial No Starts from" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:outputLabel>
+                            </div>
+                            <div class="col-sm-12">
+                                <h:inputText class="form-control" value="#{clientController.serialStart}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:inputText>
+                            </div>
+                            <div class="col-sm-12">
+                                 <h:outputLabel class="h6 fw-bold" value="Plate No" ></h:outputLabel>
+                            </div>
+                            <div class="col-sm-12">
+                                <p:inputText class="form-control" value="#{clientController.plateNo}" ></p:inputText>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                    <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
+                        <p:dataTable reflow="true" id="tbl" value="#{clientController.labSummariesToReceive}" class="table"
+                                     rowIndexVar="n"
                                      var="c" paginator="true" rowKey="#{c.id}" rows="10">
                             <p:column headerText="No" width="50" >
                                 <h:outputLabel value="#{n+1}" ></h:outputLabel>
@@ -73,7 +132,7 @@
                             <p:column headerText="Number of Samples to Receive"  sortBy="#{c.count}" width="170">
                                 <h:outputLabel value="#{c.count}" ></h:outputLabel>
                             </p:column>
-                            
+
                             <p:column headerText="Actions" exportable="false" >
                                 <h:commandButton value="Mark All as Received" class="btn btn-success mx-2" action="#{clientController.labReceiveAll()}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
@@ -84,11 +143,11 @@
                                     </f:setPropertyActionListener>
                                 </h:commandButton>
                             </p:column>
-                            
+
                         </p:dataTable>
-                        </h:panelGrid>
-                    </h:form>
-               <!-- </h:panelGrid>-->
+                    </h:panelGrid>
+                </h:form>
+                <!-- </h:panelGrid>-->
             </ui:define>
         </ui:composition>
     </body>

@@ -63,7 +63,10 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                            <p:dataTable id="tbl" value="#{nationalController.tests}" rendered="true"
+                            <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button" value="Columns" />
+                            <p:columnToggler datasource="tbl" trigger="toggler"/>
+                            <p:dataTable reflow="true" id="tbl" value="#{nationalController.tests}" rendered="true"
+                                         lazy="true"
                                          rowIndexVar="n"
                                          var="c"
                                          rowKey="#{c.id}"
@@ -84,11 +87,11 @@
                                           filterBy="#{c.institution.institutionType.label}" filterMatchMode="contains" >
                                     <h:outputLabel value="#{c.institution.institutionType.label}" ></h:outputLabel>
                                 </p:column>
-                                <p:column headerText="RDHS"  sortBy="#{c.referalInstitution.rdhsArea.name}" 
+                                <p:column headerText="RDHS"  sortBy="#{c.referalInstitution.rdhsArea.name}"
                                           filterBy="#{c.institution.rdhsArea.name}" filterMatchMode="contains" >
                                     <h:outputLabel value="#{c.referalInstitution.rdhsArea.name}" ></h:outputLabel>
                                 </p:column>
-                                <p:column headerText="PDHS"  sortBy="#{c.institution.pdhsArea.name}" 
+                                <p:column headerText="PDHS"  sortBy="#{c.institution.pdhsArea.name}"
                                           filterBy="#{c.institution.pdhsArea.name}" filterMatchMode="contains" >
                                     <h:outputLabel value="#{c.institution.pdhsArea.name}" ></h:outputLabel>
                                 </p:column>
