@@ -148,13 +148,13 @@ public class ApplicationController {
 
     public String createNewPersonalHealthNumberformat(Institution pins) {
         if (pins == null) {
-            return null;
+            pins=institutionApplicationController.findMinistryOfHealth();
         }else{
             pins = institutionApplicationController.findMinistryOfHealth();
         }
         Institution ins = getInstitutionFacade().find(pins.getId());
         if (ins == null) {
-            return null;
+            ins=institutionApplicationController.findMinistryOfHealth();
         }else{
             ins = institutionApplicationController.findMinistryOfHealth();
         }
@@ -288,7 +288,6 @@ public class ApplicationController {
             if (c.getCode() != null) {
                 if(c.getCode().equalsIgnoreCase(code)){
                     if(r!=null){
-                        System.err.println("THIS CODE HAS DUPLICATES : " + code);
                     }
                     r=c;
                 }

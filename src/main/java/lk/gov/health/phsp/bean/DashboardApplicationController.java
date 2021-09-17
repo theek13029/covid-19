@@ -296,10 +296,7 @@ public class DashboardApplicationController {
             m.put("ri", lab);
         }
         j += " group by c.pcrOrderingCategory";
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("objs = " + objs.size());
         List<InstitutionCount> tics = new ArrayList<>();
         for (Object o : objs) {
             if (o instanceof InstitutionCount) {
@@ -562,8 +559,6 @@ public Long samplesAwaitingDispatch(
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
 
@@ -655,8 +650,6 @@ public Long samplesAwaitingDispatch(
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
 
@@ -716,8 +709,6 @@ public Long samplesAwaitingDispatch(
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
 
@@ -766,8 +757,6 @@ public Long samplesAwaitingDispatch(
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
 

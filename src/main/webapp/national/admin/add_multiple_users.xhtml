@@ -11,27 +11,30 @@
         <ui:composition template="/national/admin/index.xhtml">
             <ui:define name="admin">
                 <h:form id="AreaListForm">
-                    <div class="card">
-                        <div class="card-header">
-                            <p:outputLabel value="Adding Multiplt Users" ></p:outputLabel>
-                        </div>
+                   <!-- <div class="card">
+                        <div class="card-header">-->
+                           <div class="div bg-white px-5 py-5">
+                        <h3 class="fw-bold mb-3">Adding Multiplt Users</h3>
+                     <!--   </div>-->
 
 
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <p:outputLabel value="Area" class="col-md-2" /> 
-                                <div class="col-md-4">
-                                    <p:autoComplete class="form-control" value="#{webUserController.area}"
+                        <!--<div class="card-body">
+                            <div class="form-group row">-->
+                                <div class="row mb-3">
+                                <h:outputLabel value="Area" class="col-form-label col-md-4 fw-bold"></h:outputLabel> 
+                                
+                                <div class="col-md-8">
+                                    <p:autoComplete  value="#{webUserController.area}"
                                                     completeMethod="#{areaApplicationController.completeAreas}"
                                                     var="a"
                                                     itemLabel="#{a.name}"
                                                     itemValue="#{a}" ></p:autoComplete>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <p:outputLabel value="Institution" class="col-md-2" ></p:outputLabel>
-                                <div class="col-md-4">
-                                    <p:autoComplete value="#{webUserController.institution}" class="form-control"
+                                </div>
+                                <div class="row mb-3">
+                                <h:outputLabel value="Institution" class="col-form-label col-md-4 fw-bold"></h:outputLabel>
+                                <div class="col-md-8">
+                                    <p:autoComplete value="#{webUserController.institution}" 
                                                     completeMethod="#{institutionController.completeInstitutions}"
                                                     var="ins"
                                                     itemLabel="#{ins.name}"
@@ -39,10 +42,10 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <p:outputLabel value="User Role" class="col-md-2" ></p:outputLabel>
-                                <div class="col-md-4">
-                                    <p:selectOneMenu value="#{webUserController.userRole}" class="form-control"
+                             <div class="row mb-3">
+                                <h:outputLabel value="User Role" class="col-form-label col-md-4 fw-bold"></h:outputLabel>
+                                <div class="col-md-8">
+                                    <p:selectOneMenu value="#{webUserController.userRole}" class="form-control w-100"
                                                      >
                                         <f:selectItem itemLabel="Select" ></f:selectItem>
                                         <f:selectItems value="#{commonController.webUserRoles}"
@@ -53,18 +56,20 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <p:outputLabel value="User Names Seperated by Line Breaks" class="col-md-2" ></p:outputLabel>
-                                <div class="col-md-4">
-                                    <p:inputTextarea class="form-control" value="#{webUserController.bulkText}" rows="30" cols="40" ></p:inputTextarea>
+                         <div class="row mb-3">
+                                <h:outputLabel value="User Names Seperated by Line Breaks" class="col-form-label col-md-4 fw-bold" ></h:outputLabel>
+                                <div class="col-md-8">
+                                    <h:inputTextarea class="form-control" value="#{webUserController.bulkText}" rows="10" cols="30" ></h:inputTextarea>
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-
-                                <h:commandButton value="Download" >
+                            <div class="row mb-3">
+                                <div class="buttons">
+                                <h:commandButton value="Download" class="btn btn-success fw-bold " >
+                                    
                                     <p:dataExporter target="tbl" type="xls" fileName="New Users - #{webUserController.institution.name}" ></p:dataExporter>
                                 </h:commandButton>
+                                </div>
 
                                 <p:dataTable id="tbl" value="#{webUserController.addedUsers}" var="u" >
                                     <p:column headerText="Name" >
@@ -82,14 +87,14 @@
                                 </p:dataTable>
                             </div>
 
-                        </div>
+                        <!--</div>-->
 
-                        <div class="card-footer">
-                            <p:commandButton ajax="false" class="btn btn-primary" style="float: left;" value="Add Mutiple Users"
+                       <!-- <div class="card-footer">-->
+                            <h:commandButton  class="btn btn-primary" style="float: left;" value="Add Mutiple Users"
                                              action="#{webUserController.addMultipleUsers()}"/> 
-                            <p:commandButton ajax="false" class="btn btn-primary" style="float: left;" value="Clear Added Users"
+                            <h:commandButton  class="btn btn-primary" style="float: left;" value="Clear Added Users"
                                              action="#{webUserController.clearAddedUsers()}"/> 
-                        </div>
+                       <!-- </div>-->
                     </div>
                 </h:form>
             </ui:define>

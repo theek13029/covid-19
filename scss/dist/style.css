@@ -2,7 +2,28 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap");
 .ui-inputfield {
+  display: block;
+  width: 100%;
   padding: 0.375rem 0.75rem !important;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.ui-inputfield:focus {
+  color: var(--bs-blue);
+  background-color: #fff;
+  border-color: #969fa8;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(44, 62, 80, 0.25);
 }
 
 .submenu a:nth-child(1) {
@@ -44,6 +65,10 @@
 }
 .ui-timepicker-div .ui_tpicker_time_input:focus {
   box-shadow: 0 0 0 0.25rem rgba(44, 62, 80, 0.25);
+}
+
+.p-datepicker {
+  width: 100% !important;
 }
 
 .ui-autocomplete-panel {
@@ -105,6 +130,12 @@
 .ui-selectonemenu-items-wrapper {
   background-color: #fff;
   border: 1px solid;
+}
+
+.ui-columntoggler-items {
+  background-color: #fff;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .border-none {

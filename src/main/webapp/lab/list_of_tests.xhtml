@@ -49,7 +49,7 @@
                             </p:autoComplete>
 
                             <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{labController.testType}" >
+                            <h:selectOneMenu value="#{labController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{labController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>

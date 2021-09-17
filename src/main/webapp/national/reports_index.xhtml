@@ -1,246 +1,178 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui">
 
-    <h:head >
-        <ui:define name="title">
-            National Reports Index
-        </ui:define>
-    </h:head>
-    <h:body>
-        <ui:composition template="/template1.xhtml">
-            <ui:define name="content">
-                <div class="container-fluid" >
-                    <div class="row" >
-                        <div class="col-12 p-2"   >
-                            <p:messages ></p:messages>
-                        </div>
-                    </div>
-                    <div class="row" >
-                        <div class="col-3" >
+<h:head>
+  <ui:define name="title">
+    National Reports Index
+  </ui:define>
+</h:head>
+<h:body>
+  <ui:composition template="/template1.xhtml">
+    <ui:define name="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 p-2">
+            <p:messages></p:messages>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
 
-                            <div class="card" >
-                                <div class="card-header" >
-                                    <h:outputLabel value="Counts" ></h:outputLabel>
-                                </div>
-                                <div class="card-body container-fluid">
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandLink value="Requests by Province" 
-                                                               action="#{nationalController.toCountOfTestsByPdhs()}" 
-                                                               class="btn btn-outline-primary btn-lg w-100 btn-block" 
-                                                               >
-                                                </h:commandLink>
-                                            </h:form>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandLink value="Requests by District" 
-                                                               action="#{nationalController.toCountOfTestsByRdhsWithoutSpecifyingPdhs()}" 
-                                                               class="btn btn-outline-primary btn-lg w-100 btn-block" 
-                                                               >
-                                                </h:commandLink>
-                                            </h:form>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandLink value="Requests by Institution Type" 
-                                                               action="#{nationalController.toCountOfTestsByInstitutionType()}" 
-                                                               class="btn btn-outline-primary btn-lg w-100 btn-block" 
-                                                               >
-                                                </h:commandLink>
-                                            </h:form>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandLink value="Requests by MOH / Hospital" 
-                                                               action="#{nationalController.toCountOfTestsByOrderedInstitution()}" 
-                                                               class="btn btn-outline-primary btn-lg w-100 btn-block" 
-                                                               >
-                                                </h:commandLink>
-                                            </h:form>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandLink value="Results by MOH / Hospital" 
-                                                               action="#{nationalController.toCountOfResultsByOrderedInstitution()}" 
-                                                               class="btn btn-outline-primary btn-lg w-100 btn-block"
-                                                               >
-                                                </h:commandLink>
-                                            </h:form>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-
-                                                <h:commandLink value="Result by MOH Area" 
-                                                               action="#{nationalController.toCountOfResultsByMohArea()}" 
-                                                               class="btn btn-outline-primary btn-lg w-100 btn-block"
-                                                               >
-                                                </h:commandLink>
-                                            </h:form>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-
-                                                <h:commandLink value="Result Counts by Lab" 
-                                                               action="#{nationalController.toCountOfResultsByLab()}" 
-                                                               class="btn btn-outline-primary btn-lg w-100 btn-block"
-                                                               >
-                                                </h:commandLink>
-                                            </h:form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card" >
-                                <div class="card-header" >
-                                    <h:outputLabel value="Lists" ></h:outputLabel>
-                                </div>
-                                <div class="card-body container-fluid">
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandLink value="PCR/RAT Orders List" 
-                                                               action="#{nationalController.toListOfTests()}" 
-                                                               class="btn btn-outline-primary btn-lg w-100 btn-block"
-                                                               >
-                                                </h:commandLink>
-                                            </h:form>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandLink value="Result List" 
-                                                               action="#{nationalController.toListResults()}" 
-                                                               class="btn btn-outline-primary btn-lg w-100 btn-block"
-                                                               >
-                                                </h:commandLink>
-                                            </h:form>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandLink 
-                                                    class="btn btn-outline-primary btn-lg w-100 btn-block"
-                                                    value="List by Management Plan" action="#{nationalController.toListCasesByManagement()}">
-                                                </h:commandLink>
-                                            </h:form>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            
-                            <div class="card" >
-                                <div class="card-header" >
-                                    <h:outputLabel value="Performance Reports" ></h:outputLabel>
-                                </div>
-                                <div class="card-body container-fluid">
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandLink value="Institution-vice Peformance" 
-                                                               action="#{nationalController.toInstitutionvicePeformanceReport()}" 
-                                                               class="btn btn-outline-primary btn-lg w-100 btn-block"
-                                                               >
-                                                </h:commandLink>
-                                            </h:form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="card" >
-                                <div class="card-header" >
-                                    <h:outputLabel value="Other Reports" ></h:outputLabel>
-                                </div>
-                                <div class="card-body container-fluid">
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandButton value="PCR Positive Data" class="list-group-item list-group-item-action list-group-item-danger text-center"
-                                                                 action="#{mohController.toPcrPositiveReportsIndexNational()}" >
-                                                </h:commandButton>
-                                            </h:form>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandButton value="RAT Positive Data" class="list-group-item list-group-item-action list-group-item-danger text-center"
-                                                                 action="#{mohController.toPcrPositiveReportsIndexNational()}" >
-                                                </h:commandButton>
-                                            </h:form>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandButton value="Lab Data" class="list-group-item list-group-item-action list-group-item-success text-center"
-                                                                 action="#{nationalController.toLabReportsIndexNational()}" >
-                                                </h:commandButton>
-                                            </h:form>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandButton value="MOH/Hospital Data" class="list-group-item list-group-item-action list-group-item-success text-center"
-                                                                 action="#{mohController.toPcrPositiveReportsIndexNational()}" >
-                                                </h:commandButton>
-                                            </h:form>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-                                                <h:commandButton value="Cases by Management Plan" class="list-group-item list-group-item-action list-group-item-warning text-center"
-                                                                 action="#{mohController.toListCasesByManagementForNationalLevel()}" >
-                                                </h:commandButton>
-                                            </h:form>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-9" >
-                            <ui:insert name="reports" >
-                            </ui:insert>
-                        </div>
-                    </div>
+            <div class="card">
+              <div class="card-header">
+                <h:outputLabel value="Counts"></h:outputLabel>
+              </div>
+              <div class="card-body container-fluid">
+                <div class="row">
+                  <div class="col-12 p-2">
+                    <h:form>
+                      <h:commandLink value="Requests by Province" action="#{nationalController.toCountOfTestsByPdhs()}"
+                        class="btn btn-outline-primary w-100 btn-block">
+                      </h:commandLink>
+                    </h:form>
+                  </div>
                 </div>
-            </ui:define>
+                <div class="row">
+                  <div class="col-12 p-2">
+                    <h:form>
+                      <h:commandLink value="Requests by District"
+                        action="#{nationalController.toCountOfTestsByRdhsWithoutSpecifyingPdhs()}"
+                        class="btn btn-outline-primary w-100 btn-block">
+                      </h:commandLink>
+                    </h:form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 p-2">
+                    <h:form>
+                      <h:commandLink value="Requests by Institution Type"
+                        action="#{nationalController.toCountOfTestsByInstitutionType()}"
+                        class="btn btn-outline-primary w-100 btn-block">
+                      </h:commandLink>
+                    </h:form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 p-2">
+                    <h:form>
+                      <h:commandLink value="Requests by MOH | Hospital"
+                        action="#{nationalController.toCountOfTestsByOrderedInstitution()}"
+                        class="btn btn-outline-primary w-100 btn-block">
+                      </h:commandLink>
+                    </h:form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col p-2">
+                    <h:form>
+                      <h:commandLink class="btn btn-outline-primary w-100" value="Requests by Wards"
+                        action="#{nationalController.toCountofTestsByWards()}"></h:commandLink>
+                    </h:form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 p-2">
+                    <h:form>
+                      <h:commandLink value="Results by MOH | Hospital"
+                        action="#{nationalController.toCountOfResultsByOrderedInstitution()}"
+                        class="btn btn-outline-primary w-100 btn-block">
+                      </h:commandLink>
+                    </h:form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 p-2">
+                    <h:form>
 
-        </ui:composition>
+                      <h:commandLink value="Result by MOH Area"
+                        action="#{nationalController.toCountOfResultsByMohArea()}"
+                        class="btn btn-outline-primary w-100 btn-block">
+                      </h:commandLink>
+                    </h:form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 p-2">
+                    <h:form>
+                      <h:commandLink value="Result Counts by Lab" action="#{nationalController.toCountOfResultsByLab()}"
+                        class="btn btn-outline-primary w-100 btn-block">
+                      </h:commandLink>
+                    </h:form>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-    </h:body>
+            <div class="card">
+              <div class="card-header">
+                <h:outputLabel value="Lists"></h:outputLabel>
+              </div>
+              <div class="card-body container-fluid">
+                <div class="row">
+                  <div class="col-12 p-2">
+                    <h:form>
+                      <h:commandLink value="PCR/RAT Orders List" action="#{nationalController.toListOfTests()}"
+                        class="btn btn-outline-primary w-100 btn-block">
+                      </h:commandLink>
+                    </h:form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 p-2">
+                    <h:form>
+                      <h:commandLink value="Result List" action="#{nationalController.toListResults()}"
+                        class="btn btn-outline-primary w-100 btn-block">
+                      </h:commandLink>
+                    </h:form>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="col-12 p-2">
+                    <h:form>
+                      <h:commandLink class="btn btn-outline-primary w-100 btn-block" value="List by Management Plan"
+                        action="#{nationalController.toListCasesByManagement()}">
+                      </h:commandLink>
+                    </h:form>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h:outputLabel value="Performance Reports"></h:outputLabel>
+              </div>
+              <div class="card-body container-fluid">
+                <div class="row">
+                  <div class="col-12 p-2">
+                    <h:form>
+                      <h:commandLink value="Institution-vice Peformance"
+                        action="#{nationalController.toInstitutionvicePeformanceReport()}"
+                        class="btn btn-outline-primary w-100 btn-block">
+                      </h:commandLink>
+                    </h:form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-9">
+            <ui:insert name="reports">
+            </ui:insert>
+          </div>
+        </div>
+      </div>
+    </ui:define>
+
+  </ui:composition>
+
+</h:body>
+
 </html>

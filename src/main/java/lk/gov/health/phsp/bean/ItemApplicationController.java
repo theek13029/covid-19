@@ -284,7 +284,6 @@ public class ItemApplicationController {
             }
         }
         if (counter > 1) {
-            System.err.println("This item code is duplicated = " + code);
         }
         return item;
     }

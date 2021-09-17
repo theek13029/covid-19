@@ -19,7 +19,7 @@
                         <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
                         <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded" >
                             <h:outputLabel class="h6 fw-bold" value="Ordered From" ></h:outputLabel>
-                            <p:calendar value="#{nationalController.fromDate}" 
+                            <p:calendar value="#{nationalController.fromDate}"
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
@@ -29,15 +29,15 @@
                             <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
                             <h:selectOneMenu value="#{nationalController.orderingCategory}" class="form-select" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{nationalController.covidTestOrderingCategories}" 
+                                <f:selectItems value="#{nationalController.covidTestOrderingCategories}"
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
-                            
+
                              <h:outputLabel class="h6 fw-bold" value="Institution Type" ></h:outputLabel>
                              <h:selectOneMenu value="#{nationalController.institutionType}" class="form-select">
                                 <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{institutionApplicationController.institutionTypes}" 
+                                <f:selectItems value="#{institutionApplicationController.institutionTypes}"
                                                var="it" itemLabel="#{it.label}"
                                                itemValue="#{it}" ></f:selectItems>
                             </h:selectOneMenu>
@@ -46,8 +46,8 @@
                             <p:autoComplete style="width: 100%;"
                                             inputStyleClass="autocomplete"
                                             value="#{nationalController.lab}"
-                                            forceSelection="true" tabindex="100" 
-                                            completeMethod="#{nationalController.completeLab}" 
+                                            forceSelection="true" tabindex="100"
+                                            completeMethod="#{nationalController.completeLab}"
                                             var="l" itemLabel="#{l.name}" itemValue="#{l}">
                             </p:autoComplete>
 
@@ -58,22 +58,28 @@
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
 
-
-
                             <h:commandButton value="Generate Excel" class="btn btn-success w-100">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
+                                <p:dataExporter target="tbl" type="xlsx" fileName="count_of_texts_by_#{nationalController.getInstitutionTypeName()}" ></p:dataExporter>
                             </h:commandButton>
-                            <h:commandButton value="Process" 
+                            <h:commandButton value="Process"
                                              action="#{nationalController.toCountOfTestsByOrderedInstitution()}" class="btn btn-warning w-100" ></h:commandButton>
 
 
                         </h:panelGrid>
                         </div>
+                        <div>
+                            <p:commandButton id="toggler" type="button" value="Filter Columns"
+                                class="btn btn-sm btn-secondary"
+                                icon="pi pi-align-justify"/>
+                            <p:columnToggler datasource="tbl" trigger="toggler"/>
+                        </div>
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{nationalController.institutionCounts}" rendered="true"
                                      rowIndexVar="n"
-                                     var="c" 
-                                     paginator="true" 
+                                     var="c"
+                                     reflow="true"
+                                     resizableColumns="true"
+                                     paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"

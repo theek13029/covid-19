@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content">
+                
+                 <div class="row">
+                    <div class="container my-4">
+                        <div class="d-flex justify-content-center bg-warning">
+                            <h:outputText value="Under Construction" class="tex-danger h1" ></h:outputText>
+                        </div>
+                    </div>
+                 </div>
+                
+                <div class="row">
+                    <div class="container my-4">
+                        <div class="d-flex justify-content-center">
+                            <h:form>
+                                <div class="text-center fw-bold fs-5">Search by Name</div>
+                                <p:panelGrid columns="4" class="bg-white border border-light">
+                                    <p:outputLabel  class="fs-6 fw-bold" value="Name" 
+                                                    for="txtSearchName"></p:outputLabel>
+                                    <p:inputText  class="form-control fs-6" id="txtSearchName"
+                                                  required="true" 
+                                                  requiredMessage="Please enter a name to search"
+                                                  value="#{clientController.searchingName}" >
+                                    </p:inputText>
+                                    <p:spacer height="1" width="10" ></p:spacer>
+                                    <h:commandButton class="btn btn-success w-100 my-2" value="Search" 
+                                                     disabled="false"
+                                                     action="#{clientController.searchByName()}" >
+                                    </h:commandButton>
+                                </p:panelGrid>
+                                <p:messages ></p:messages>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="container my-4">
+                        <div class="d-flex justify-content-center">
+                            <h:form>
+                                <div class="text-center fw-bold fs-5">Search by ID</div>
+                                <p:panelGrid columns="4" class="bg-white border border-light">
+                                    <p:outputLabel  class="fs-6 fw-bold" value="ID" 
+                                                    for="txtSearchId"></p:outputLabel>
+                                    <p:inputText  class="form-control fs-6" id="txtSearchId"
+                                                  required="true" 
+                                                  requiredMessage="Please enter ad ID to search"
+                                                  value="#{clientController.searchingName}" >
+                                    </p:inputText>
+                                    <p:spacer height="1" width="10" ></p:spacer>
+                                    <h:commandButton class="btn btn-success w-100 my-2" value="Search" 
+                                                     disabled="true"
+                                                     action="#{clientController.searchByName()}" >
+                                    </h:commandButton>
+                                </p:panelGrid>
+                                <p:messages ></p:messages>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="container my-4">
+                        <div class="d-flex justify-content-center">
+                            <h:form>
+                                <div class="text-center fw-bold fs-5">Search by Lab No</div>
+                                <p:panelGrid columns="4" class="bg-white border border-light">
+                                    <p:outputLabel  class="fs-6 fw-bold" value="Lab No" 
+                                                    for="txtSearchLabNo"></p:outputLabel>
+                                    <p:inputText  class="form-control fs-6" id="txtSearchLabNo"
+                                                  required="true" 
+                                                  requiredMessage="Please enter a Lab number to search"
+                                                  value="#{clientController.searchingName}" >
+                                    </p:inputText>
+                                    <p:spacer height="1" width="10" ></p:spacer>
+                                    <h:commandButton class="btn btn-success w-100 my-2" value="Search" 
+                                                     disabled="true"
+                                                     action="#{clientController.searchByName()}" >
+                                    </h:commandButton>
+                                </p:panelGrid>
+                                <p:messages ></p:messages>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="container my-4">
+                        <div class="d-flex justify-content-center">
+                            <h:form>
+                                <div class="text-center fw-bold fs-5">Search by Test/Tube/Sample No</div>
+                                <p:panelGrid columns="4" class="bg-white border border-light">
+                                    <p:outputLabel  class="fs-6 fw-bold" value="Test No" 
+                                                    for="txtSearchTestNo"></p:outputLabel>
+                                    <p:inputText  class="form-control fs-6" id="txtSearchTestNo"
+                                                  required="true" 
+                                                  requiredMessage="Please enter a Test number to search"
+                                                  value="#{clientController.searchingName}" >
+                                    </p:inputText>
+                                    <p:spacer height="1" width="10" ></p:spacer>
+                                    <h:commandButton class="btn btn-success w-100 my-2" value="Search" 
+                                                     disabled="true"
+                                                     action="#{clientController.searchByName()}" >
+                                    </h:commandButton>
+                                </p:panelGrid>
+                                <p:messages ></p:messages>
+
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+
+</html>

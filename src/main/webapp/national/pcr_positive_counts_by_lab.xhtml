@@ -23,12 +23,11 @@
                     <h:form >
                         <p:panelGrid columns="2" >
                             <p:outputLabel value="Result Confirmed " ></p:outputLabel>
-                            <p:calendar value="#{mohController.fromDate}" 
-                                        pattern="dd MMMM yyyy hh:mm a">
-                            </p:calendar><!-- comment -->
+                            <p:datePicker value="#{mohController.fromDate}" >
+                            </p:datePicker>
 
                             <p:outputLabel value="Result Confirmed To" ></p:outputLabel>
-                            <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <p:datePicker  hourFormat="12"  value="#{mohController.toDate}" ></p:datePicker>
 
                             <p:commandButton ajax="false" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>

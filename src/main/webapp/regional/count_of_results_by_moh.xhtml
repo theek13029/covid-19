@@ -10,23 +10,23 @@
         <ui:composition template="/regional/reports_index.xhtml">
             <ui:define name="reports">
 
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <h:panelGrid columns="1" styleClass="alignTop bg-white border border-light w-100"  >
                     <f:facet name="header" >
-                        <p:outputLabel value="Result Counts by MOH Area" ></p:outputLabel>
+                        <p:outputLabel class="fs-6 fw-bold my-1" value="Results Count By MOH Area" ></p:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:outputLabel value="Ordered From" ></p:outputLabel>
+                        <p:panelGrid columns="2" class="border border-light" >
+                            <p:outputLabel value="Ordered From" class="fs-6 fw-bold" ></p:outputLabel>
                             <p:calendar value="#{regionalController.fromDate}"
-                                        pattern="dd MMMM yyyy hh:mm">
+                                        pattern="dd MMMM yyyy hh:mm" class="fs-6">
                             </p:calendar><!-- comment -->
 
-                            <p:outputLabel value="Ordered To" ></p:outputLabel>
-                            <p:calendar value="#{regionalController.toDate}" pattern="dd MMMM yyyy hh:mm"></p:calendar>
+                            <p:outputLabel value="Ordered To" class="fs-6 fw-bold" ></p:outputLabel>
+                            <p:calendar value="#{regionalController.toDate}" pattern="dd MMMM yyyy hh:mm" class="fs-6"></p:calendar>
 
-                            <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                            <p:selectOneMenu value="#{regionalController.orderingCategory}" >
+                            <p:outputLabel value="Ordering Category" class="fs-6 fw-bold" ></p:outputLabel>
+                            <p:selectOneMenu value="#{regionalController.orderingCategory}" class="form-control form-control-sm w-100" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{regionalController.covidTestOrderingCategories}"
                                                var="c" itemLabel="#{c.name}"
@@ -35,16 +35,16 @@
 
 
 
-                            <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{regionalController.testType}" >
+                            <p:outputLabel value="Test" class="fs-6 fw-bold" ></p:outputLabel>
+                            <p:selectOneMenu value="#{regionalController.testType}" class="form-control form-control-sm w-100" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{regionalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </p:selectOneMenu>
 
 
-                            <p:outputLabel value="Result" ></p:outputLabel>
-                            <p:selectOneMenu value="#{regionalController.result}" >
+                            <p:outputLabel value="Result" class="fs-6 fw-bold" ></p:outputLabel>
+                            <p:selectOneMenu value="#{regionalController.result}" class="form-control form-control-sm w-100">
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{regionalController.resultTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
@@ -52,11 +52,11 @@
 
 
 
-                            <p:commandButton ajax="false" value="Generate Excel">
+                            <h:commandButton value="Generate Excel" class="w-100 btn btn-success my-2">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="test_counts_by_moh" ></p:dataExporter>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Process"
-                                             action="#{regionalController.toCountOfResultsByMoh()}" ></p:commandButton>
+                            </h:commandButton>
+                            <h:commandButton value="Process" class="w-100 btn btn-warning my-2"
+                                             action="#{regionalController.toCountOfResultsByMoh()}" ></h:commandButton>
 
 
                         </p:panelGrid>
@@ -83,7 +83,7 @@
 
 
 
-                </p:panelGrid>
+                </h:panelGrid>
             </ui:define>
 
         </ui:composition>

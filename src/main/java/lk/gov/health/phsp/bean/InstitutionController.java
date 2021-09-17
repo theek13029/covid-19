@@ -172,8 +172,6 @@ public class InstitutionController implements Serializable {
     }
 
     public String deleteInstitution() {
-        System.out.println("delete institution");
-        System.out.println("deleting = " + deleting);
         if (deleting == null) {
             JsfUtil.addErrorMessage("Please select");
             return "";

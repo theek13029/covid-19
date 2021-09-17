@@ -44,10 +44,8 @@ public class InstitutionCount {
     private Item item;
     private Item itemValue;
     private Long id;
-    
-    
+    private String positiveRate;
 
-    
     public InstitutionCount(Long count, Institution institution, Date date, EncounterType encounerType) {
         this.institution = institution;
         this.count = count;
@@ -59,10 +57,10 @@ public class InstitutionCount {
         this.itemValue = itemValue;
         this.count = count;
     }
-    
-    
-    
-    
+
+
+
+
      public InstitutionCount(Area area, Item itemValue, Long count) {
         this.itemValue = itemValue;
         this.count = count;
@@ -100,15 +98,23 @@ public class InstitutionCount {
         this.area = area;
         this.count = count;
     }
-    
+
     public InstitutionCount(Area area, Institution institution, Long count) {
         this.area = area;
         this.count = count;
         this.institution = institution;
     }
 
-
     public InstitutionCount() {
+    }
+
+    // getters and setters
+    public String getPositiveRate() {
+        return this.positiveRate;
+    }
+
+    public void setPositiveRate(String positiveRate) {
+        this.positiveRate = positiveRate;
     }
 
     public Institution getInstitution() {

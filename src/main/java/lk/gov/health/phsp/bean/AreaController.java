@@ -884,37 +884,29 @@ public class AreaController implements Serializable {
     }
 
     public Area getAreaByCodeIfNotName(String nameOrCode, AreaType areaType) {
+        if(nameOrCode==null){
+            return null;
+        }
         if (nameOrCode.trim().equals("")) {
             return null;
         }
-        String j;
-        Map m = new HashMap();
-
-        j = "select a "
-                + " from Area a "
-                + " where upper(a.code)=:n  ";
-        m.put("n", nameOrCode.toUpperCase());
-        if (areaType != null) {
-            j += " and a.type=:t";
-            m.put("t", areaType);
+        Area ta = null;
+        for(Area a: areaApplicationController.getAllAreas()){
+            if(areaType==null || (a.getType()!=null && a.getType().equals(areaType))){
+                if(a.getName()!=null && a.getName().equalsIgnoreCase(nameOrCode)){
+                    return a;
+                }
+                if(a.getCode()!=null && a.getCode().equals(nameOrCode)){
+                    return a;
+                }
+                if(a.getCode()!=null &&   a.getCode().toLowerCase().contains(nameOrCode.trim().toLowerCase())){
+                    ta=a;
+                }
+                if(a.getName()!=null && a.getName().toLowerCase().contains(nameOrCode.trim().toLowerCase())){
+                    ta=a;
+                }
+            }
         }
-
-        Area ta = getFacade().findFirstByJpql(j, m);
-
-        if (ta != null) {
-            return ta;
-        }
-
-        m = new HashMap();
-        j = "select a "
-                + " from Area a "
-                + " where upper(a.name)=:n  ";
-        m.put("n", nameOrCode.toUpperCase());
-        if (areaType != null) {
-            j += " and a.type=:t";
-            m.put("t", areaType);
-        }
-        ta = getFacade().findFirstByJpql(j, m);
         return ta;
     }
 

@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
-                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
+                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded d-none d-md-block d-lg-block">
                             <h:outputLabel class="fs-6 fw-bold" value="From" ></h:outputLabel>
                             <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
@@ -48,29 +48,36 @@
 
 
                         </h:panelGrid>
+
                     </div>
-                </h:form>
-
-
-                <h:form>
-                    <h:commandButton class="btn btn-success w-25 my-2" value="MARK AS REVIEWED FOR SELECTED" 
-                                     action="#{clientController.reviewOkForSelectedResults()}" ></h:commandButton>
+                
+                    
+                    <div class="col-sm-12 col-md-4">
+                        <h:commandButton class="btn btn-primary my-2 w-100" value="MARK AS REVIEWED FOR SELECTED" 
+                                         action="#{clientController.reviewOkForSelectedResults()}" ></h:commandButton>
+                    </div>
 
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}" 
+                        <p:dataTable reflow="true" 
+                                     id="tbl" 
+                                     value="#{clientController.listedToReviewResults}" 
                                      var="c" 
-                                     rowKey="#{c.id}"
-
-                                     rows="10"
-                                     paginator="true"
+                                     paginator="true" 
+                                     rowKey="#{c.id}" rows="10" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                     rowsPerPageTemplate="5,10,{ShowAll|'All'}"
-
-                                      rowStyleClass="#{(c.pcrResult.name) eq 'Positive'?'bg-danger':''}"
-                                      
+                                     rowsPerPageTemplate="10,50,96,100,{ShowAll|'All'}"
+                                     resizableColumns="true"
+                                     rowStyleClass="#{c.resultPositive?'redRow':''}"
                                      selection="#{clientController.selectedToReview}">
-                            <p:column selectionMode="multiple" ></p:column>
+                            <div>
+                                <p:commandButton id="toggler" type="button"
+                                    class="btn btn-secondary btn-sm" 
+                                    value="Toggle Columns" 
+                                    icon="pi pi-align-justify"/>
+                                <p:columnToggler datasource="tbl" trigger="toggler"/>
+                            </div>
+                            <p:column selectionMode="multiple"></p:column>
                             <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.unitWard}" ></h:outputLabel>
                             </p:column>
