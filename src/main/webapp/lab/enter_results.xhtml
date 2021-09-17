@@ -27,63 +27,71 @@
                         </div>
                     </div>
                     <div class="container bg-none mb-4 w-100 d-flex justify-content-around align-items-center" >
-                        <h:panelGrid columns="2" rendered="true" styleClass="border border-light">
-                            <h:outputLabel class="fs-6 fw-bold" value="From Date" ></h:outputLabel>
-                            <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <h:outputLabel class="fs-6 fw-bold" value="To Date" ></h:outputLabel>
-                            <p:calendar class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-6 d-flex justify-content-center">
+                                <h:panelGrid columns="2" rendered="true" styleClass="border border-light bg-white">
+                                    <h:outputLabel class="fs-6 fw-bold" value="From Date" ></h:outputLabel>
+                                    <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <h:outputLabel class="fs-6 fw-bold" value="From Institution" ></h:outputLabel>
-                            <p:autoComplete value="#{clientController.institution}"
-                                            completeMethod="#{institutionController.completeInstitutions}"
-                                            var="m" itemLabel="#{m.name}" itemValue="#{m}" >
-                            </p:autoComplete>
-                            <h:outputLabel class="fs-6 fw-bold" value="Plate No." ></h:outputLabel>
-                            <h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText>
-                        </h:panelGrid>
+                                    <h:outputLabel class="fs-6 fw-bold" value="To Date" ></h:outputLabel>
+                                    <p:calendar class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                        <h:panelGrid columns="1" styleClass="border border-light">
-                            <h:commandButton class="btn btn-warning w-100 my-2" value="Process" 
-                                             action="#{clientController.toLabEnterResults()}"></h:commandButton>
-                            <h:commandButton class="btn btn-success w-100 my-2" value="Generate Excel" style="width: 98%;">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
-                            </h:commandButton>
-                            <h:commandButton class="btn btn-primary w-100 my-2" action="#{clientController.toMarkAllNegative()}" value="Mark All Negative" onclick="if (!confirm('Are you sure you want mark all Negative?'))
-                                        return false">
-                            </h:commandButton>
-                        </h:panelGrid>
+                                    <h:outputLabel class="fs-6 fw-bold" value="From Institution" ></h:outputLabel>
+                                    <p:autoComplete value="#{clientController.institution}"
+                                                    completeMethod="#{institutionController.completeInstitutions}"
+                                                    var="m" itemLabel="#{m.name}" itemValue="#{m}" >
+                                    </p:autoComplete>
+                                    <h:outputLabel class="fs-6 fw-bold" value="Plate No." ></h:outputLabel>
+                                    <h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText>
+                                </h:panelGrid>
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-6 d-flex justify-content-center">
+                                <h:panelGrid columns="1" styleClass="border border-light bg-white">
+                                    <h:commandButton class="btn btn-warning w-100 my-2" value="Process"
+                                                     action="#{clientController.toLabEnterResults()}"></h:commandButton>
+                                    <h:commandButton class="btn btn-success w-100 my-2" value="Generate Excel" style="width: 98%;">
+                                        <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
+                                    </h:commandButton>
+                                    <h:commandButton class="btn btn-primary w-100 my-2" action="#{clientController.toMarkAllNegative()}" value="Mark All Negative" onclick="if (!confirm('Are you sure you want mark all Negative?'))
+                                                return false">
+                                    </h:commandButton>
+                                </h:panelGrid>
+                            </div>
+                        </div>
+
                     </div>
+
 
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
 
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToEnterResults}"  rendered="true"
-                                     var="c" 
+                        <p:dataTable reflow="true" resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToEnterResults}"  rendered="true"
+                                     var="c"
                                      rowKey="#{c.id}"
                                      rowIndexVar="n"
 
                                      paginator="true"
 
-                                     rows="10" 
+                                     rows="10"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,50,96,100,{ShowAll|'All'}"
 
-                                     rowStyleClass="#{c.pcrResult.name eq 'Positive'?'alert alert-danger':''}"
+
 
                                      >
 
-                            <p:column headerText="Institution" 
-                                      rendered="#{clientController.institution eq null}"  
+                            <p:column headerText="Institution"
+                                      rendered="#{clientController.institution eq null}"
                                       sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.institution.name}"  style="width: 98%;" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Unit/Ward"  width="60"    rendered="#{clientController.institution.institutionType ne 'MOH_Office'}"  
+                            <p:column headerText="Unit/Ward"  width="60"    rendered="#{clientController.institution.institutionType ne 'MOH_Office'}"
                                       sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.unitWard}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="BHT/OPD No/Clinic No"   width="60"  
-                                      rendered="#{clientController.institution.institutionType ne 'MOH_Office'}"  
+                            <p:column headerText="BHT/OPD No/Clinic No"   width="60"
+                                      rendered="#{clientController.institution.institutionType ne 'MOH_Office'}"
                                       sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
@@ -93,16 +101,16 @@
                             </p:column>
                             <p:column  headerText="Lab No" width="100"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
                                 <p:inputText value="#{c.labNumber}" id="txtLabNo" style="width: 98%;" >
-                                    <p:ajax event="blur" process="txtLabNo" 
+                                    <p:ajax event="blur" process="txtLabNo"
                                             listener="#{clientController.saveLabNo(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" 
+                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}"
                                       filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age" width="60"  sortBy="#{c.client.person.age}" 
+                            <p:column headerText="Age" width="60"  sortBy="#{c.client.person.age}"
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
@@ -113,7 +121,7 @@
                             <p:column headerText="Phone"  width="60"   sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Result" width="100"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
+                            <p:column headerText="Result" width="200"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
                                 <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}" style="width: 98%;" >
                                     <f:selectItem itemLabel="Select Result"  ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
@@ -138,16 +146,16 @@
                             </p:column>
 
                             <p:column headerText="Comments" width="300"  sortBy="#{c.resultComments}" filterBy="#{c.resultComments}" filterMatchMode="contains" >
-                                <p:inputText id="txtComments" value="#{c.resultComments}"  style="width: 98%;">
-                                    <p:ajax event="blur" process="txtComments" 
+                                <p:inputText id="txtComments" value="#{c.resultComments}">
+                                    <p:ajax event="blur" process="txtComments"
                                             listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
 
                             <p:column headerText="Actions" width="60" exportable="false">
-                                <p:commandButton value="Reject" style="width: 90%;" ajax="false" action="#{clientController.markSelectedAsRejectedAtDataEntry(c)}" >
-                                </p:commandButton>
+                                <h:commandButton value="Reject" action="#{clientController.markSelectedAsRejectedAtDataEntry(c)}" >
+                                </h:commandButton>
                             </p:column>
                         </p:dataTable>
 

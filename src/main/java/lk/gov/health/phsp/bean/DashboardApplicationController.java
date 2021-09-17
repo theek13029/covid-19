@@ -106,7 +106,7 @@ public class DashboardApplicationController {
     private JSONObject ratPositiveCasesJSON;
 
 //  Round double values to two decimal format
-    private static DecimalFormat df = new DecimalFormat("0.00");
+    private static DecimalFormat df = new DecimalFormat("0.0");
 
     private List<InstitutionCount> orderingCounts;
     List<CovidData> covidDatas;
@@ -200,7 +200,7 @@ public class DashboardApplicationController {
         	double tempRate = ((double) this.todayPositivePcr/this.todayPcr) * 100;
         	this.todayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.todayPcrPositiveRate = "0.00%";
+        	this.todayPcrPositiveRate = "0.0%";
         }
 
 //		This will return today's rat positive rate as a percentage
@@ -208,7 +208,7 @@ public class DashboardApplicationController {
         	double tempRate = ((double) this.todayPositiveRat/this.todayRat) * 100;
         	this.todayRatPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.todayRatPositiveRate = "0.00%";
+        	this.todayRatPositiveRate = "0.0%";
         }
 
 //      This will return yesterday's pcr positive rate as a percentage
@@ -216,7 +216,7 @@ public class DashboardApplicationController {
         	double tempRate = ((double) this.yesterdayPositivePcr/this.yesterdayPcr) * 100;
         	this.yesterdayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.yesterdayPcrPositiveRate = "0.00%";
+        	this.yesterdayPcrPositiveRate = "0.0%";
         }
 
 //		This will return yesterday's RAT positive rate as a percentage
@@ -224,7 +224,7 @@ public class DashboardApplicationController {
         	double tempRate = ((double) this.yesterdayPositiveRat/this.yesterdayRat) * 100;
         	this.yesterdayRatPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.yesterdayRatPositiveRate = "0.00%";
+        	this.yesterdayRatPositiveRate = "0.0%";
 
         }
         categorizeOrderingCounts(orderingCounts);
@@ -317,10 +317,7 @@ public class DashboardApplicationController {
             m.put("ri", lab);
         }
         j += " group by c.pcrOrderingCategory";
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("objs = " + objs.size());
         List<InstitutionCount> tics = new ArrayList<>();
         for (Object o : objs) {
             if (o instanceof InstitutionCount) {
@@ -379,14 +376,16 @@ public Long samplesAwaitingDispatch(
         Area area,
         Date fromDate,
         Date toDate,
-        Institution institution
+        Institution institution,
+        Item testType
 ) {
     Map hashMap = new HashMap();
     String jpql = "select count(c) "
             + " from Encounter c "
             + " where c.retired=:ret "
             + " and c.encounterType=:type "
-            + " and c.encounterDate between :fd and :td ";
+            + " and c.encounterDate between :fd and :td "
+            + " and c.pcrTestType=:testType ";
 
     if (institution != null){
         jpql += " and c.institution=:ins ";
@@ -400,7 +399,7 @@ public Long samplesAwaitingDispatch(
                 hashMap.put("district", area.getDistrict());
                 break;
             case RdhsAra:
-                jpql += "and (c.institution.rdhsArea=:rdArea or c.institution.district=:district) ";
+                jpql += " and (c.institution.rdhsArea=:rdArea or c.institution.district=:district) ";
                 hashMap.put("rdArea", area);
                 hashMap.put("district", area.getDistrict());
                 break;
@@ -414,7 +413,7 @@ public Long samplesAwaitingDispatch(
                 hashMap.put("province", area.getProvince());
                 break;
             case MOH:
-                jpql += " and (c.institution.mohArea=:mohArea)";
+                jpql += " and (c.institution.mohArea=:mohArea) ";
                 hashMap.put("mohArea", area);
                 break;
             default:
@@ -431,6 +430,7 @@ public Long samplesAwaitingDispatch(
     hashMap.put("fd", fromDate);
     hashMap.put("sl", false);
     hashMap.put("td", toDate);
+    hashMap.put("testType", testType);
 
 
     return encounterFacade.findLongByJpql(jpql, hashMap, TemporalType.DATE);
@@ -576,8 +576,6 @@ public Map<String, String> getSeriesOfCases(
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
 
@@ -669,8 +667,6 @@ public Map<String, String> getSeriesOfCases(
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
 
@@ -730,8 +726,6 @@ public Map<String, String> getSeriesOfCases(
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
 
@@ -780,8 +774,6 @@ public Map<String, String> getSeriesOfCases(
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
 

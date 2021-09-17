@@ -183,7 +183,10 @@ public class Encounter implements Serializable {
     @ManyToOne
     private Item pcrOrderingCategory;
     @ManyToOne
+    @Deprecated
     private Item vaccinationStatus;
+    
+    @ManyToOne
     private Item symptomaticStatus;
     private String pcrOrderingCategoryOther;
     private Boolean symptomatic;
@@ -861,6 +864,8 @@ public class Encounter implements Serializable {
     public Double getCtValue2() {
         return ctValue2;
     }
+    
+    
 
     public void setCtValue2(Double ctValue2) {
         this.ctValue2 = ctValue2;
@@ -921,13 +926,9 @@ public class Encounter implements Serializable {
     public String getResultCssClass() {
         System.out.println("getResultCssClass");
         resultCssClass = "";
-        System.out.println("pcrResult = " + pcrResult);
-        System.out.println("pcrTestType = " + pcrTestType);
         if (pcrResult == null || pcrTestType == null) {
             return resultCssClass;
         }
-        System.out.println("pcrTestType.getCode() = " + pcrTestType.getCode());
-        System.out.println("pcrResult.getCode() = " + pcrResult.getCode());
         if (pcrTestType.getCode().equalsIgnoreCase("covid19_pcr_test")) {
             switch (pcrResult.getCode()) {
                 case "pcr_positive":

@@ -44,6 +44,9 @@ import lk.gov.health.phsp.facade.EncounterFacade;
 import lk.gov.health.phsp.facade.SmsFacade;
 import javax.inject.Named;
 import javax.persistence.TemporalType;
+
+import com.itextpdf.text.html.WebColors;
+
 import lk.gov.health.phsp.entity.ClientEncounterComponentItem;
 import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.entity.WebUser;
@@ -184,8 +187,6 @@ public class MohController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         j += " group by c.client.person.gnArea, c.institution"
                 + " order by c.client.person.gnArea.name ";
 
@@ -246,9 +247,6 @@ public class MohController implements Serializable {
 
         List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
 
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
-        System.out.println("objCounts.size() = " + objCounts.size());
 
         if (objCounts == null || objCounts.isEmpty()) {
             return "/moh/count_of_results_by_gn";
@@ -351,8 +349,6 @@ public class MohController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         j += " group by c.client.person.phiArea, c.institution"
                 + " order by c.client.person.phiArea.name ";
 
@@ -436,9 +432,7 @@ public class MohController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -455,11 +449,8 @@ public class MohController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
 
         return "/moh/assign_investigation";
     }
@@ -607,9 +598,7 @@ public class MohController implements Serializable {
         m.put("etype", EncounterType.Test_Enrollment);
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         j += " and c.pcrTestType=:tt ";
         m.put("tt", testType);
         j += " and c.pcrResult=:result ";
@@ -882,13 +871,8 @@ public class MohController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("cecItems = " + cecItems.size());
         return "/moh/list_of_first_contacts_to_test";
     }
 
@@ -912,13 +896,8 @@ public class MohController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("cecItems = " + cecItems.size());
         return "/regional/list_of_first_contacts_without_moh";
     }
 
@@ -942,13 +921,8 @@ public class MohController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("cecItems = " + cecItems.size());
         return "/moh/order_tests_for_moh";
     }
 
@@ -972,13 +946,8 @@ public class MohController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("cecItems = " + cecItems.size());
         return "/regional/list_of_first_contacts";
     }
 
@@ -1096,6 +1065,14 @@ public class MohController implements Serializable {
             return "";
         }
     }
+    
+    public String toViewRequest() {
+        if (test == null) {
+            JsfUtil.addErrorMessage("No Test");
+            return "";
+        }
+        return "/moh/request_view";
+    }
 
     public String toViewResult() {
         if (test == null) {
@@ -1165,6 +1142,68 @@ public class MohController implements Serializable {
 
     public List<Item> getSexes() {
         return itemApplicationController.getSexes();
+    }
+
+    // Render the view PCR request with result
+    public String toAddNewPCRWithResult() {
+        pcr = new Encounter();
+        nicExistsForPcr = null;
+        Date date = new Date();
+        Client client = new Client();
+
+        client.getPerson().setDistrict(webUserController.getLoggedUser().getInstitution().getDistrict());
+        client.getPerson().setMohArea(webUserController.getLoggedUser().getInstitution().getMohArea());
+        client.getPerson().setPhiArea(webUserController.getLoggedUser().getInstitution().getPhiArea());
+        pcr.setPcrTestType(itemApplicationController.getPcr());
+        pcr.setPcrOrderingCategory(sessionController.getLastPcrOrdringCategory());
+        pcr.setClient(client);
+        pcr.setInstitution(webUserController.getLoggedInstitution());
+        pcr.setCreatedInstitution(webUserController.getLoggedInstitution());
+        pcr.setEncounterType(EncounterType.Test_Enrollment);
+        pcr.setEncounterDate(date);
+        pcr.setEncounterFrom(date);
+        pcr.setEncounterMonth(CommonController.getMonth(date));
+        pcr.setEncounterQuarter(CommonController.getQuarter(date));
+        pcr.setEncounterYear(CommonController.getYear(date));
+
+        if (sessionController.getLastLab() == null) {
+            pcr.setReferalInstitution(sessionController.getLastLab());
+        } else {
+            pcr.setReferalInstitution(webUserController.getLoggedInstitution());
+        }
+
+        pcr.setCreatedAt(date);
+        pcr.setCreatedBy(webUserController.getLoggedUser());
+
+        pcr.setSampled(true);
+        pcr.setSampledAt(date);
+        pcr.setSampledBy(webUserController.getLoggedUser());
+
+        pcr.setResultConfirmedAt(date);
+
+        if (sessionController.getLastWorkplace() != null) {
+            pcr.getClient().getPerson().setWorkPlace(sessionController.getLastWorkplace());
+        }
+
+        if (sessionController.getLastContactOfWorkplace() != null) {
+            pcr.getClient().getPerson().setWorkplaceContact(sessionController.getLastContactOfWorkplace());
+        }
+
+        if (sessionController.getLastContactOfWorkplaceDetails() != null) {
+            pcr.getClient().getPerson().setWorkplaceContactDetails(sessionController.getLastContactOfWorkplaceDetails());
+        }
+
+        pcr.setCreatedAt(date);
+
+        return  "/moh/pcr_with_result";
+    }
+
+    public String toSaveAndNewPcrWithResult() {
+        if (savePcr() != null) {
+             return toAddNewPcrResultWithNewClient();
+        } else {
+            return "";
+        }
     }
 
     public String toAddNewRatWithNewClient() {
@@ -1273,6 +1312,46 @@ public class MohController implements Serializable {
         return "/moh/rat_order";
     }
 
+    public String toAddNewPcrResultWithNewClient() {
+        pcr = new Encounter();
+        nicExistsForPcr = null;
+        Date d = new Date();
+        Client c = new Client();
+        c.getPerson().setDistrict(webUserController.getLoggedInstitution().getDistrict());
+        c.getPerson().setMohArea(webUserController.getLoggedInstitution().getMohArea());
+        pcr.setPcrTestType(itemApplicationController.getPcr());
+        pcr.setPcrOrderingCategory(sessionController.getLastPcrOrdringCategory());
+
+        pcr.setClient(c);
+        pcr.setInstitution(webUserController.getLoggedInstitution());
+        pcr.setCreatedInstitution(webUserController.getLoggedInstitution());
+        pcr.setReferalInstitution(lab);
+        pcr.setEncounterType(EncounterType.Test_Enrollment);
+        pcr.setEncounterDate(d);
+        pcr.setEncounterFrom(d);
+        pcr.setEncounterMonth(CommonController.getMonth(d));
+        pcr.setEncounterQuarter(CommonController.getQuarter(d));
+        pcr.setEncounterYear(CommonController.getYear(d));
+        pcr.setSampled(true);
+        pcr.setSampledAt(new Date());
+        pcr.setSampledBy(webUserController.getLoggedUser());
+        pcr.setCreatedAt(new Date());
+
+        if (sessionController.getLastWorkplace() != null) {
+            pcr.getClient().getPerson().setWorkPlace(sessionController.getLastWorkplace());
+        }
+
+        if (sessionController.getLastContactOfWorkplace() != null) {
+            pcr.getClient().getPerson().setWorkplaceContact(sessionController.getLastContactOfWorkplace());
+        }
+
+        if (sessionController.getLastContactOfWorkplaceDetails() != null) {
+            pcr.getClient().getPerson().setWorkplaceContactDetails(sessionController.getLastContactOfWorkplaceDetails());
+        }
+
+        return "/moh/pcr_with_result";
+    }
+    
     public String toAddNewPcrWithNewClient() {
         pcr = new Encounter();
         nicExistsForPcr = null;
@@ -1313,7 +1392,7 @@ public class MohController implements Serializable {
         return "/moh/pcr";
     }
 
-    public String toAddNewPcrWithExistingNic() {
+    public String toAddNewPcrWithExistingNic(int path) {
         if (pcr == null) {
             return "";
         }
@@ -1354,7 +1433,14 @@ public class MohController implements Serializable {
         pcr.setSampledAt(new Date());
         pcr.setSampledBy(webUserController.getLoggedUser());
         pcr.setCreatedAt(new Date());
-        return "/moh/pcr";
+
+        if (path == 1) {
+            return "/moh/pcr";
+        } else if (path == 2) {
+            return "/moh/pcr_with_result";
+        } else {
+            return "/moh/pcr";
+        }
     }
 
     public String toAddNewPcrWithExistingClient() {
@@ -1476,7 +1562,10 @@ public class MohController implements Serializable {
         return "/moh/rat_order";
     }
 
-    public String toAddNewRatWithExistingNic() {
+    // The event is triggered when user clicks NIC exists on a RAT ordering page
+    // If NIC exists and called from New Rat Request page the user is redirected to RAT Request page with user details
+    // If user called the function from RAT request with results page the user will be redirected to RAT request with results page with user details
+    public String toAddNewRatWithExistingNic(int path) {
         if (rat == null) {
             return "";
         }
@@ -1524,7 +1613,13 @@ public class MohController implements Serializable {
         rat.setResultConfirmedBy(webUserController.getLoggedUser());
 
         rat.setCreatedAt(new Date());
-        return "/moh/rat";
+        if (path == 1) {
+            return "/moh/rat_order";
+        } else if (path == 2) {
+            return "/moh/rat";
+        } else {
+            return "/moh/rat_order";
+        }
     }
 
     public String toAddNewRatWithExistingClient() {
@@ -1636,10 +1731,10 @@ public class MohController implements Serializable {
             createdIns = rat.getClient().getCreateInstitution();
         }
 
-        if (createdIns == null || createdIns.getPoiNumber() == null || createdIns.getPoiNumber().trim().equals("")) {
-            JsfUtil.addErrorMessage("The institution you logged has no POI. Can not generate a PHN.");
-            return "";
-        }
+//        if (createdIns == null || createdIns.getPoiNumber() == null || createdIns.getPoiNumber().trim().equals("")) {
+//            JsfUtil.addErrorMessage("The institution you logged has no POI. Can not generate a PHN.");
+//            return "";
+//        }
 
         if (rat.getClient().getPhn() == null || rat.getClient().getPhn().trim().equals("")) {
             String newPhn = applicationController.createNewPersonalHealthNumberformat(createdIns);
@@ -1974,11 +2069,8 @@ public class MohController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
 
         return "/moh/list_of_results_from_other_institutions";
     }
@@ -2005,7 +2097,6 @@ public class MohController implements Serializable {
         m.put("fd", getFromDate());
         m.put("td", getToDate());
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("cecItems = " + cecItems.size());
         return "/moh/list_of_first_contacts";
     }
 
@@ -2058,12 +2149,10 @@ public class MohController implements Serializable {
         m.put("ins", webUserController.getLoggedInstitution());
 
 //        webUserController.getLoggedInstitution();
-        
+
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
 
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
@@ -2081,11 +2170,8 @@ public class MohController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
         return "/moh/list_of_results_for_orders_from_my_moh";
     }
 
@@ -2106,9 +2192,7 @@ public class MohController implements Serializable {
 
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
 
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
@@ -2126,11 +2210,8 @@ public class MohController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
         return "/moh/view_results";
     }
 
@@ -2150,9 +2231,7 @@ public class MohController implements Serializable {
 
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
 
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
@@ -2170,11 +2249,8 @@ public class MohController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
         return "/moh/list_of_results_for_persons_in_my_area";
     }
 
@@ -2197,9 +2273,7 @@ public class MohController implements Serializable {
 
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
 
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
@@ -2217,11 +2291,8 @@ public class MohController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
         return "/moh/list_of_results_for_orders_from_other_moh";
     }
 
@@ -2256,10 +2327,7 @@ public class MohController implements Serializable {
             m.put("ri", lab);
         }
         j += " group by c.pcrOrderingCategory, c.client.person.district";
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("objs = " + objs.size());
         List<InstitutionCount> tics = new ArrayList<>();
         for (Object o : objs) {
             if (o instanceof InstitutionCount) {
@@ -2306,10 +2374,7 @@ public class MohController implements Serializable {
             m.put("dis", district);
         }
         j += " group by c.pcrOrderingCategory, c.client.person.mohArea";
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("objs = " + objs.size());
         List<InstitutionCount> tics = new ArrayList<>();
         for (Object o : objs) {
             if (o instanceof InstitutionCount) {
@@ -2461,9 +2526,7 @@ public class MohController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -2480,11 +2543,8 @@ public class MohController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
         return "/regional/list_of_tests";
     }
 
@@ -2510,9 +2570,7 @@ public class MohController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
 
         if (managementType != null) {
             j += " and (ci.item.code=:mxplan and ci.itemValue.code=:planType) ";
@@ -2525,11 +2583,8 @@ public class MohController implements Serializable {
 
         j += " group by c";
 
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
 
         return "/regional/list_of_cases_by_management_plan";
     }
@@ -2547,9 +2602,7 @@ public class MohController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
 
         if (managementType != null) {
             j += " and (ci.item.code=:mxplan and ci.itemValue.code=:planType) ";
@@ -2562,11 +2615,8 @@ public class MohController implements Serializable {
 
         j += " group by c";
 
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
 
         return "/national/list_of_cases_by_management_plan";
     }

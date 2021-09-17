@@ -285,6 +285,22 @@ public class InstitutionApplicationController {
     public List<Institution> findChildrenInstitutions(Institution ins) {
         List<Institution> allIns = getInstitutions();
         List<Institution> cins = new ArrayList<>();
+        for (Institution i : allIns) {
+            if (i.getParent() != null) {
+                if (!i.equals(ins)) {
+                    if (i.getParent().equals(ins)) {
+                        cins.add(i);
+                        cins.addAll(findChildrenInstitutions(i));
+                    }
+                }
+            }
+        }
+        return cins;
+    }
+
+    public List<Institution> findChildrenInstitutionsOld(Institution ins) {
+        List<Institution> allIns = getInstitutions();
+        List<Institution> cins = new ArrayList<>();
         allIns.stream().filter(i -> !(i.getParent() == null)).filter(i -> (i.getParent().equals(ins))).forEachOrdered(i -> {
             cins.add(i);
         });
@@ -294,10 +310,7 @@ public class InstitutionApplicationController {
             return tins;
         } else {
             cins.forEach(i -> {
-                List<Institution> cis = findChildrenInstitutions(i);
-                if (cis != null) {
-                    tins.addAll(cis);
-                }
+                tins.addAll(findChildrenInstitutions(i));
             });
         }
         return tins;

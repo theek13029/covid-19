@@ -283,7 +283,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
 
     public void completeFormsetForCaseEnrollment() {
         if (selected == null) {
-            System.err.println("Nothing to Complete in completeFormsetForCaseEnrollment.");
             userTransactionController.recordTransaction("Nothing to Complete in formset");
             return;
         }
@@ -301,14 +300,12 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             selected.getEncounter().setRetired(false);
             getEncounterFacade().edit(selected.getEncounter());
         } else {
-            System.err.println("selected.getEncounter() is NULL");
         }
         userTransactionController.recordTransaction("Formset Completed for Case Enrollment");
     }
 
     public void completeFormsetForTestEnrollment() {
         if (selected == null) {
-            System.err.println("Nothing to Complete in completeFormsetForCaseEnrollment.");
             userTransactionController.recordTransaction("Nothing to Complete in formset");
             return;
         }
@@ -326,7 +323,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             selected.getEncounter().setRetired(false);
             getEncounterFacade().edit(selected.getEncounter());
         } else {
-            System.err.println("selected.getEncounter() is NULL");
         }
         userTransactionController.recordTransaction("Formset Completed for Test Enrollment");
     }
@@ -341,7 +337,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
             }
             for (DataItem tItem : tForm.getItems()) {
                 if (tItem.getDi() == null || tItem.getDi().getSelectionDataType() == null) {
-                    System.err.println("Null in (tItem.getDi() == null || tItem.getDi().getSelectionDataType())");
                     continue;
                 }
 
@@ -349,11 +344,9 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                     if (tItem.getDi().getSelectionDataType() == SelectionDataType.Procedure_Request) {
                         for (DataItem ttItem : tItem.getAddedItems()) {
                             if (ttItem.getCi() == null) {
-                                System.err.println("ttItem.getCi() is null");
                                 continue;
                             }
                             if (ttItem.getCi().getItemValue() == null) {
-                                System.err.println("ttItem.getCi().getItemValue() is null");
                                 continue;
                             }
                             ApiRequest r = new ApiRequest();
@@ -368,11 +361,9 @@ public class ClientEncounterComponentFormSetController implements Serializable {
                 } else {
                     if (tItem.getDi().getSelectionDataType() == SelectionDataType.Procedure_Request) {
                         if (tItem.getCi() == null) {
-                            System.err.println("tItem.getCi() is null");
                             continue;
                         }
                         if (tItem.getCi().getItemValue() == null) {
-                            System.err.println("tItem.getCi().getItemValue() is null");
                             continue;
                         }
                         // // System.out.println("tItem = " + tItem.getCi().getItemValue().getName());
@@ -1392,7 +1383,6 @@ public class ClientEncounterComponentFormSetController implements Serializable {
 
     public ClientEncounterComponentFormSet findFormsetFromEncounter(Encounter encounter) {
         if (encounter == null) {
-            System.err.println("No Encounter");
             return null;
         }
         String j = "select efs from ClientEncounterComponentFormSet efs"
@@ -2166,33 +2156,24 @@ public class ClientEncounterComponentFormSetController implements Serializable {
     }
 
     public void updateValuesFromClient(Client c, ClientEncounterComponentItem ti) {
-        System.out.println("updateValuesFromClient");
-        System.out.println("c = " + c);
 
         if (ti == null) {
-            System.err.println("ti is null");
             return;
         }
         if (ti.getItem() == null) {
-            System.out.println("ti.getItem is null");
             return;
         }
         if (ti.getItem().getCode() == null) {
-            System.out.println("ti.getItem.getCode is null");
             return;
         }
         if (c == null) {
-            System.out.println("c is null");
             return;
         }
         String code = ti.getItem().getCode();
-        System.out.println("code = " + code);
         switch (code) {
             case "clients_district":
                 if (c.getPerson().getDistrict() != null) {
-                    System.out.println("c.getPerson().getDistrict() = " + c.getPerson().getDistrict());
                     ti.setAreaValue(c.getPerson().getDistrict());
-                    System.out.println("ti.getAreaValue() = " + ti.getAreaValue());
                 }
                 return;
             case "client_current_moh_area":
@@ -2281,19 +2262,15 @@ public class ClientEncounterComponentFormSetController implements Serializable {
 
     public void updateValuesFromTest(Encounter test, ClientEncounterComponentItem ti) {
         if (ti == null) {
-            System.err.println("ti is null");
             return;
         }
         if (ti.getItem() == null) {
-            System.out.println("ti.getItem is null");
             return;
         }
         if (ti.getItem().getCode() == null) {
-            System.out.println("ti.getItem.getCode is null");
             return;
         }
         if (test == null) {
-            System.out.println("c is null");
             return;
         }
         String code = ti.getItem().getCode();
@@ -2316,19 +2293,15 @@ public class ClientEncounterComponentFormSetController implements Serializable {
 
     public void updateFromClientValueSingle(ClientEncounterComponentItem ti, Client c, Map<String, ClientEncounterComponentItem> cvs) {
         if (ti == null) {
-            System.err.println("ti is null");
             return;
         }
         if (ti.getItem() == null) {
-            System.out.println("ti.getItem is null");
             return;
         }
         if (ti.getItem().getCode() == null) {
-            System.out.println("ti.getItem.getCode is null");
             return;
         }
         if (c == null) {
-            System.out.println("c is null");
             return;
         }
         String code = ti.getItem().getCode();

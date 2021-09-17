@@ -10,8 +10,8 @@
                     <div class="card mt-4">
                         <div class="row w-100">
                             <div class="row pt-4 pb-2" >
-                               <h4 class="text-center fw-bold">RAT Details</h4>
-                           </div>
+                                <h4 class="text-center fw-bold">RAT Details</h4>
+                            </div>
                         </div>
                         <h:panelGroup id="gpTest" >
                             <div class="card-body #{hospitalController.rat.pcrResult.name eq 'Positive'?'text-warning':''}">
@@ -44,7 +44,7 @@
                                         </h:inputText>
                                     </div>
 
-                                     <div class="col-md-2">
+                                    <div class="col-md-2">
                                         <h:outputLabel class="h6 form-label fw-bold mb-2" value="BHT / OPD No/ Clinic No:" for="bhtNo"  />
                                         <h:inputText id="bhtNo"  value="#{hospitalController.rat.bht}"
                                                      class="form-control w-100"
@@ -128,10 +128,16 @@
                                                      value="#{hospitalController.rat.client.person.nic}"
                                                      title="Nic"
                                                      validatorMessage="Please check the number">
-                                            <f:ajax event="blur"
-                                                    render="year month sex"
-                                                    execute="@this"/>
+                                            <f:ajax event="blur" execute="@this" render="nicExists year month sex"
+                                                    listener="#{hospitalController.checkNicExistsForRat()}" ></f:ajax>
                                         </h:inputText>
+                                        <h:panelGroup id="nicExists" >
+                                            <h:commandLink rendered="#{hospitalController.nicExistsForRat}"
+                                                           immediate="true"
+                                                           action="#{hospitalController.toAddNewRatWithExistingNic()}"
+                                                           value="NIC Exists. Click here to Load Patient" >
+                                            </h:commandLink>
+                                        </h:panelGroup>
                                     </div>
                                     <div class="col-md-3">
 
@@ -145,24 +151,24 @@
                                     <div class="col-md-6">
                                         <div class="form-group row">
                                             <h:outputLabel class="h6 fw-bold" value="Age: (Years/Months)*" />
-                                        <div class="col-md-3">
+                                            <div class="col-md-3">
 
-                                            <h:inputText autocomplete="off" id="year"
-                                                         tabindex="108"
-                                                         requiredMessage="Please enter the age"
-                                                         value="#{hospitalController.rat.client.person.ageYears}"
-                                                         required="true" class="form-control w-100">
-                                                <f:ajax event="keyup" execute="@this month day" render="calDob" />
-                                            </h:inputText>
-                                        </div>
-                                        <div class="col-md-3">
+                                                <h:inputText autocomplete="off" id="year"
+                                                             tabindex="108"
+                                                             requiredMessage="Please enter the age"
+                                                             value="#{hospitalController.rat.client.person.ageYears}"
+                                                             required="true" class="form-control w-100">
+                                                    <f:ajax event="keyup" execute="@this month day" render="calDob" />
+                                                </h:inputText>
+                                            </div>
+                                            <div class="col-md-3">
 
-                                            <h:inputText tabindex="108"  autocomplete="off" id="month" class="form-control w-100"
-                                                         value="#{hospitalController.rat.client.person.ageMonths}">
-                                                <f:ajax event="keyup" execute="@this year day" render="calDob" />
-                                            </h:inputText>
+                                                <h:inputText tabindex="108"  autocomplete="off" id="month" class="form-control w-100"
+                                                             value="#{hospitalController.rat.client.person.ageMonths}">
+                                                    <f:ajax event="keyup" execute="@this year day" render="calDob" />
+                                                </h:inputText>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
 
 

@@ -63,11 +63,23 @@ public class MenuController implements Serializable {
      */
     public MenuController() {
     }
+    
+    public String toViewRequest() {
+        return "/common/request_view";
+    }
+    
+    public String toViewPatient() {
+        return "/common/client_view";
+    }
+    
+    public String toViewResult() {
+        return "/common/result_view";
+    }
 
     public String toSummaryByOrderedInstitution() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
-                regionalController.prepareSummaryByOrderedInstitution();
+                regionalController.processSummaryReceivedAtLab();
                 return "/regional/summary_lab_ordered";
             case National:
                 nationalController.prepareSummaryByOrderedInstitution();
@@ -129,6 +141,28 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
+    
+    public String toReceivedAtLabSummary() {
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/summary_received_at_lab";
+            case National:
+                return nationalController.toSummaryByOrderedInstitutionVsLabToReceive();
+            case Hospital:
+                return "/hospital/divert_samples";
+            case Lab:
+                return "/lab/divert_samples";
+            case National_Lab:
+                nationalController.toSummaryByOrderedInstitutionVsLabToReceive();
+                return "/national/divert_samples";
+            case Moh:
+                return "/moh/divert_samples";
+            case Provincial:
+                return "/provincial/divert_samples";
+            default:
+                return "";
+        }
+    }
 
     public String toReportsIndex() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
@@ -151,6 +185,30 @@ public class MenuController implements Serializable {
         }
     }
 
+    
+    public String toSearch() {
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/search";
+            case National:
+                return "/national/search";
+            case Hospital:
+                return "/hospital/search";
+            case Lab:
+                return "/lab/search";
+            case National_Lab:
+                return "/national/search";
+            case Moh:
+                return "/moh/search";
+            case Provincial:
+                return "/provincial/search";
+            default:
+                return "";
+        }
+    }
+
+    
+    
     public String toAdministrationIndex() {
         boolean privileged = false;
         for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
@@ -349,6 +407,7 @@ public class MenuController implements Serializable {
             return "";
         }
         institutionController.prepareToListInstitution();
+        System.out.println("webUserController.getLoggedUser().getWebUserRoleLevel() = " + webUserController.getLoggedUser().getWebUserRoleLevel());
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
                 return "/regional/admin/institution_list";
@@ -363,7 +422,45 @@ public class MenuController implements Serializable {
             case Moh:
                 return "/moh/admin/institution_list";
             case Provincial:
-                return "/provincial/admin/user_list";
+                System.out.println("provincial");
+                return "/provincial/admin/institution_list";
+            default:
+                return "";
+        }
+    }
+    
+    public String toListInstitutionsWithUsers() {
+        boolean privileged = false;
+        boolean national=false;
+        for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
+            if (up.getPrivilege() == Privilege.Institution_Administration) {
+                privileged = true;
+            }
+            if (up.getPrivilege() == Privilege.System_Administration) {
+                privileged = true;
+                national = true;
+            }
+        }
+        if (!privileged) {
+            JsfUtil.addErrorMessage("You are NOT autherized");
+            return "";
+        }
+        institutionController.prepareToListInstitution();
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Regional:
+                return "/regional/admin/institution_list_with_users";
+            case National:
+                return "/national/admin/institution_list_with_users";
+            case Hospital:
+                return "/hospital/admin/institution_list_with_users";
+            case Lab:
+                return "/lab/admin/institution_list_with_users";
+            case National_Lab:
+                return "/national/admin/institution_list_with_users";
+            case Moh:
+                return "/moh/admin/institution_list_with_users";
+            case Provincial:
+                return "/provincial/admin/institution_list_with_users";
             default:
                 return "";
         }

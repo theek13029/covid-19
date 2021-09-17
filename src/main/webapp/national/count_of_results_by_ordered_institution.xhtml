@@ -76,10 +76,18 @@
 
                         </h:panelGrid>
                         </div>
+                        <div>
+                            <p:commandButton id="toggler" type="button" class="btn btn-sm btn-secondary" value="Toggle Columns" icon="pi pi-align-justify"/>
+                            <p:columnToggler datasource="tbl" trigger="toggler"/>
+                        </div>
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{nationalController.institutionCounts}" rendered="true"
+                            <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button" value="Columns" />
+                            <p:columnToggler datasource="tbl" trigger="toggler"/>
+                            <p:dataTable reflow="true" id="tbl" value="#{nationalController.institutionCounts}" rendered="true"
                                      rowIndexVar="n"
                                      var="c"
+                                     reflow="true"
+                                     resizableColumns="true"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"

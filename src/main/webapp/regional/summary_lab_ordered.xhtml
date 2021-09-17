@@ -35,7 +35,7 @@
                             </p:selectOneMenu>
 
                             <p:commandButton ajax="false" value="Process" 
-                                             action="#{regionalController.prepareSummaryByOrderedInstitution()}" ></p:commandButton>
+                                             action="#{regionalController.processSummaryReceivedAtLab()}" ></p:commandButton>
                             <p:commandButton ajax="false" value="Generate Excel" >
                                 <p:dataExporter type="xlsx" fileName="Orders Summery" target="tbl" ></p:dataExporter>
                             </p:commandButton>

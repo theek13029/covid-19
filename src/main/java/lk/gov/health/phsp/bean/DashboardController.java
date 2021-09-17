@@ -100,8 +100,6 @@ public class DashboardController implements Serializable {
     private Long ratPatientsWithNoMohArea;
 //    First encounters with no MOH area
     private Long firstContactsWithNoMOHArea;
-//    Samples awaiting dispatch
-    private Long samplesAwaitingDispatch;
 
     private CovidData myCovidData;
 
@@ -120,6 +118,8 @@ public class DashboardController implements Serializable {
     private Long samplesResultReviewed;
     private Long samplesResultsConfirmed;
     private Long samplesPositive;
+//    Samples awaiting dispatch
+    private Long samplesAwaitingDispatch;
 
 //    Uses to convert doubles to rounded string value
     DecimalFormat df = new DecimalFormat("0.00");
@@ -364,6 +364,15 @@ public class DashboardController implements Serializable {
         } else {
         	this.yesterdayRatPositiveRate = "0.00%";
         }
+
+//      Get samples awaiting dispatch at MOH level to be shown on the dashboard
+        this.samplesAwaitingDispatch = dashboardApplicationController.samplesAwaitingDispatch(
+                this.webUserController.getLoggedUser().getInstitution().getMohArea(),
+                yesterdayStart,
+                now,
+                null,
+                itemApplicationController.getPcr()
+        );
     }
 
     public void prepareHospitalDashboard() {
@@ -420,34 +429,33 @@ public class DashboardController implements Serializable {
         	double tempRate = ((double) this.todayPositivePcr/this.todayPcr) * 100;
         	this.todayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.todayPcrPositiveRate = "0.00%";
+        	this.todayPcrPositiveRate = "0.0%";
         }
 //      Calculate today's RAT percentage
         if (this.todayRat != 0) {
         	double tempRate = ((double) this.todayPositiveRat/this.todayRat) * 100;
         	this.todayRatPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.todayRatPositiveRate = "0.00%";
+        	this.todayRatPositiveRate = "0.0%";
         }
 //        Calculate yesterday's PCR positive percentage
         if (this.yesterdayPcr != 0) {
         	double tempRate = ((double) this.yesterdayPositivePcr/this.yesterdayPcr) * 100;
         	this.yesterdayPcrPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.yesterdayPcrPositiveRate = "0.00%";
+        	this.yesterdayPcrPositiveRate = "0.0%";
         }
 //        Calculates yesterday's Rat positive percentage
         if (this.yesterdayRat != 0) {
         	double tempRate = ((double) this.yesterdayPositiveRat/this.yesterdayRat) * 100;
         	this.yesterdayRatPositiveRate = df.format(tempRate) + "%";
         } else {
-        	this.yesterdayRatPositiveRate = "0.00%";
+        	this.yesterdayRatPositiveRate = "0.0%";
         }
 
     }
 
     public void prepareRegionalDashboard() {
-        System.out.println("prepareRegionalDashboard");
         Calendar c = Calendar.getInstance();
         Date now = c.getTime();
         Date todayStart = CommonController.startOfTheDate();
@@ -545,7 +553,8 @@ public class DashboardController implements Serializable {
                 this.webUserController.getLoggedInstitution().getRdhsArea(),
                 yesterdayStart,
                 now,
-                null
+                null,
+                itemApplicationController.getPcr()
         );
 
 //      Calculate today's positive PCR percentage

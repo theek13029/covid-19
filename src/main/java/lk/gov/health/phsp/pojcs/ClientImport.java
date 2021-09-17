@@ -23,6 +23,7 @@
  */
 package lk.gov.health.phsp.pojcs;
 
+import lk.gov.health.phsp.entity.Area;
 import lk.gov.health.phsp.entity.Client;
 import lk.gov.health.phsp.entity.Item;
 
@@ -34,6 +35,7 @@ public class ClientImport {
 
     private Long id;
     private String testNo;
+    private String labNo;
     private String name;
     private String nic;
     private String phone;
@@ -44,6 +46,15 @@ public class ClientImport {
     private int ageInMonths;
     private int ageInDays;
     private Client client;
+    private String wardUnit;
+    private String bhtNo;
+    private Double ct1;
+    private Double ct2;
+    private Area district;
+    private Area moh;
+    
+    
+    
     
     
 
@@ -141,6 +152,64 @@ public class ClientImport {
 
     public void setResult(Item result) {
         this.result = result;
+    }
+
+    public String getWardUnit() {
+        return wardUnit;
+    }
+
+    
+    
+    public void setWardUnit(String wardUnit) {
+        this.wardUnit = wardUnit;
+    }
+
+    public String getBhtNo() {
+        return bhtNo;
+    }
+
+    public void setBhtNo(String bhtNo) {
+        this.bhtNo = bhtNo;
+    }
+
+    public Double getCt1() {
+        return ct1;
+    }
+
+    public void setCt1(Double ct1) {
+        this.ct1 = ct1;
+    }
+
+    public Double getCt2() {
+        return ct2;
+    }
+
+    public void setCt2(Double ct2) {
+        this.ct2 = ct2;
+    }
+
+    public Area getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(Area district) {
+        this.district = district;
+    }
+
+    public Area getMoh() {
+        return moh;
+    }
+
+    public void setMoh(Area moh) {
+        this.moh = moh;
+    }
+
+    public String getLabNo() {
+        return labNo;
+    }
+
+    public void setLabNo(String labNo) {
+        this.labNo = labNo;
     }
 
 }

@@ -98,8 +98,6 @@ public class WebUserController implements Serializable {
     @Inject
     private UserTransactionController userTransactionController;
     @Inject
-    private ApplicationController applicationController;
-    @Inject
     InstitutionApplicationController institutionApplicationController;
     @Inject
     WebUserApplicationController webUserApplicationController;
@@ -232,6 +230,19 @@ public class WebUserController implements Serializable {
             ipAddress = request.getRemoteAddr();
         }
 
+    }
+
+    public String displayUsers(Institution ins) {
+        String us = "";
+        for (WebUser wu : webUserApplicationController.getItems()) {
+            if (wu.getInstitution() != null && wu.getInstitution().equals(ins)) {
+                if (!us.equals("")) {
+                    us += ", ";
+                }
+                us += wu.getName();
+            }
+        }
+        return us;
     }
 
     public String assumeUser() {
@@ -430,7 +441,6 @@ public class WebUserController implements Serializable {
                 }
             }
         }
-        ;
     }
 
     public String toAddNewUserByInsAdmin() {
@@ -873,14 +883,13 @@ public class WebUserController implements Serializable {
         if (!checkLoginNew()) {
             JsfUtil.addErrorMessage("Username/Password Error. Please retry.");
             userTransactionController.recordTransaction("Failed Login Attempt", userName);
-            System.out.println("No Match");
             return "";
         }
         loggedUserPrivileges = userPrivilegeList(loggedUser);
         if (loggedUser != null) {
             loggedInstitution = loggedUser.getInstitution();
         }
-        
+
         executeSuccessfulLoginActions();
         fillUsersForMyInstitute();
         fillAreasForMe();
@@ -934,11 +943,9 @@ public class WebUserController implements Serializable {
             return;
         }
         if (loggedUser.getInstitution() == null) {
-            System.err.println("No Institute for the user : " + loggedUser.getName());
             return;
         }
         if (loggedUser.getWebUserRole() == null) {
-            System.err.println("No Role for the user : " + loggedUser.getName());
             return;
         }
         if (loggedUser.getArea() == null) {
@@ -1017,16 +1024,16 @@ public class WebUserController implements Serializable {
             default:
         }
     }
-    
-    public String toChangeLoggedInstitution(){
+
+    public String toChangeLoggedInstitution() {
         return "/webUser/change_logged_institute";
     }
 
-    public String changeLoggedInstitution(){
+    public String changeLoggedInstitution() {
         executeSuccessfulLoginActions();
         return "/index";
     }
-    
+
     private void fillUsersForMyInstitute() {
         String j = "select u from WebUser u "
                 + " where u.retired=false "
@@ -1037,7 +1044,6 @@ public class WebUserController implements Serializable {
     }
 
     private boolean checkLoginNew() {
-        System.out.println("checkLoginNew");
         if (getFacade() == null) {
             JsfUtil.addErrorMessage("Server Error");
             return false;
@@ -1051,7 +1057,6 @@ public class WebUserController implements Serializable {
 //        JsfUtil.addErrorMessage("M=" + m);
 //        JsfUtil.addErrorMessage("S=" + temSQL);
         loggedUser = getFacade().findFirstByJpql(temSQL, m);
-        System.out.println("loggedUser = " + loggedUser);
 //        JsfUtil.addErrorMessage("User = " + loggedUser);
         if (loggedUser == null) {
             return false;
@@ -1139,10 +1144,7 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Client_Management);
                 wups.add(Privilege.Encounter_Management);
                 wups.add(Privilege.Lab_Management);
-//                wups.add(Privilege.Pharmacy_Management);
                 wups.add(Privilege.User);
-                //Client Management
-//                wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
 //                Motinoring & Evaluation
@@ -1150,16 +1152,14 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Monitoring_and_evaluation_reports);
                 wups.add(Privilege.View_individual_data);
                 wups.add(Privilege.View_aggragate_date);
+
                 break;
             case Nurse:
                 //Menu
                 wups.add(Privilege.Client_Management);
                 wups.add(Privilege.Encounter_Management);
-                wups.add(Privilege.Appointment_Management);
                 wups.add(Privilege.Lab_Management);
-//                wups.add(Privilege.Pharmacy_Management);
                 wups.add(Privilege.User);
-                //Client Management
                 wups.add(Privilege.Add_Client);
                 wups.add(Privilege.Search_any_Client_by_IDs);
                 wups.add(Privilege.Search_any_Client_by_Details);
@@ -1339,6 +1339,9 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Print_Results);
                 break;
             case Hospital_Admin:
+                wups.add(Privilege.Add_Client);
+                wups.add(Privilege.Add_Tests);
+                wups.add(Privilege.Mark_Tests);
                 wups.add(Privilege.Manage_Users);
                 wups.add(Privilege.Lab_Reports);
                 wups.add(Privilege.Confirm_Results);
@@ -1348,6 +1351,38 @@ public class WebUserController implements Serializable {
                 wups.add(Privilege.Receive_Samples);
                 wups.add(Privilege.Review_Results);
                 wups.add(Privilege.Print_Results);
+
+                wups.add(Privilege.Client_Management);
+                wups.add(Privilege.Encounter_Management);
+                wups.add(Privilege.Sample_Management);
+                wups.add(Privilege.Lab_Management);
+                wups.add(Privilege.Institution_Administration);
+                wups.add(Privilege.Add_Client);
+                wups.add(Privilege.Add_Tests);
+                wups.add(Privilege.Mark_Tests);
+                wups.add(Privilege.Submit_Returns);
+                wups.add(Privilege.Search_any_Client_by_IDs);
+                wups.add(Privilege.Search_any_Client_by_Details);
+                wups.add(Privilege.Manage_Institution_Users);
+                wups.add(Privilege.Manage_Users);
+                wups.add(Privilege.Manage_Metadata);
+                wups.add(Privilege.Manage_Area);
+                wups.add(Privilege.Manage_Institutions);
+                wups.add(Privilege.Manage_Forms);
+                wups.add(Privilege.Monitoring_and_evaluation);
+                wups.add(Privilege.Monitoring_and_evaluation_reports);
+                wups.add(Privilege.View_individual_data);
+                wups.add(Privilege.View_aggragate_date);
+                wups.add(Privilege.Dispatch_Samples);
+                wups.add(Privilege.Divert_Samples);
+                wups.add(Privilege.View_Orders);
+                wups.add(Privilege.Receive_Samples);
+                wups.add(Privilege.Enter_Results);
+                wups.add(Privilege.Review_Results);
+                wups.add(Privilege.Confirm_Results);
+                wups.add(Privilege.Print_Results);
+                wups.add(Privilege.Lab_Reports);
+
                 break;
             case Hospital_User:
                 wups.add(Privilege.Monitoring_and_evaluation);
@@ -1823,43 +1858,55 @@ public class WebUserController implements Serializable {
 
         String lines[] = bulkText.split("\\r?\\n");
 
+        String j;
+        Map m;
+
         for (String line : lines) {
             if (line == null || line.trim().equals("")) {
                 continue;
             }
             line = line.trim();
 
-            Institution newIns = new Institution();
-            newIns.setName(line);
-            newIns.setCode(CommonController.prepareAsCode(line));
-            newIns.setParent(institution);
-            newIns.setDistrict(institution.getDistrict());
-            newIns.setInstitutionType(institutionType);
-            newIns.setPdhsArea(institution.getPdhsArea());
-            newIns.setPoiInstitution(institution.getPoiInstitution());
-            newIns.setProvince(institution.getProvince());
-            newIns.setRdhsArea(institution.getRdhsArea());
-            newIns.setCreatedAt(new Date());
-            newIns.setCreater(getLoggedUser());
-            institutionController.save(newIns);
+            Institution newIns;
 
-            Person newPerson = new Person();
-            newPerson.setName("System Administrator of " + line);
-            personController.save(newPerson);
+            j = "select i from Institution i where i.name=:name";
+            m = new HashMap();
+            m.put("name", line);
+            newIns = institutionFacade.findFirstByJpql(j, m);
 
-            WebUser newUser = new WebUser();
-            newUser.setName("sa" + CommonController.prepareAsCode(line).toLowerCase());
-            newUser.setPerson(newPerson);
-            newUser.setInstitution(newIns);
-            newUser.setArea(institution.getRdhsArea());
-            newUser.setWebUserRole(userRole);
-            newUser.setWebUserPassword(commonController.hash("abcd1234"));
-            newUser.setCreatedAt(new Date());
-            newUser.setCreater(getLoggedUser());
-            save(newUser);
-            addWebUserPrivileges(newUser, getInitialPrivileges(newUser.getWebUserRole()));
-            save(newUser);
-            addedUsers.add(newUser);
+            if (newIns == null) {
+                newIns = new Institution();
+                newIns.setName(line);
+                newIns.setCode(CommonController.prepareAsCode(line));
+                newIns.setParent(institution);
+                newIns.setDistrict(institution.getDistrict());
+                newIns.setInstitutionType(institutionType);
+                newIns.setPdhsArea(institution.getPdhsArea());
+                newIns.setPoiInstitution(institution.getPoiInstitution());
+                newIns.setProvince(institution.getProvince());
+                newIns.setRdhsArea(institution.getRdhsArea());
+                newIns.setCreatedAt(new Date());
+                newIns.setCreater(getLoggedUser());
+                institutionController.save(newIns);
+
+                Person newPerson = new Person();
+                newPerson.setName("System Administrator of " + line);
+                personController.save(newPerson);
+
+                WebUser newUser = new WebUser();
+                newUser.setName("sa" + CommonController.prepareAsCode(line).toLowerCase());
+                newUser.setPerson(newPerson);
+                newUser.setInstitution(newIns);
+                newUser.setArea(institution.getRdhsArea());
+                newUser.setWebUserRole(userRole);
+                newUser.setWebUserPassword(commonController.hash("abcd1234"));
+                newUser.setCreatedAt(new Date());
+                newUser.setCreater(getLoggedUser());
+                save(newUser);
+                addWebUserPrivileges(newUser, getInitialPrivileges(newUser.getWebUserRole()));
+                save(newUser);
+                addedUsers.add(newUser);
+            }
         }
 
         bulkText = "";
@@ -2105,6 +2152,65 @@ public class WebUserController implements Serializable {
         urs.add(WebUserRole.Lab_Mlt);
         urs.add(WebUserRole.Lab_Mo);
         urs.add(WebUserRole.Nurse);
+        WebUserRole[] rs = urs.toArray(new WebUserRole[0]);
+        return rs;
+    }
+
+    public WebUserRole[] getWebUserRolesForPd() {
+        List<WebUserRole> urs = new ArrayList<>();
+        urs.add(WebUserRole.Hospital_Admin);
+        urs.add(WebUserRole.Pdhs);
+        urs.add(WebUserRole.Provincial_Admin);
+        urs.add(WebUserRole.Pdhs_Staff);
+        urs.add(WebUserRole.Rdhs);
+        urs.add(WebUserRole.Regional_Admin);
+        urs.add(WebUserRole.Re);
+        urs.add(WebUserRole.Rdhs_Staff);
+        urs.add(WebUserRole.Moh);
+        urs.add(WebUserRole.Amoh);
+        urs.add(WebUserRole.Sphi);
+        urs.add(WebUserRole.Phns);
+        urs.add(WebUserRole.Sphm);
+        urs.add(WebUserRole.Phi);
+        urs.add(WebUserRole.Phm);
+        urs.add(WebUserRole.MohStaff);
+        urs.add(WebUserRole.Hospital_Admin);
+        urs.add(WebUserRole.Hospital_User);
+        urs.add(WebUserRole.Doctor);
+        urs.add(WebUserRole.Nurse);
+        urs.add(WebUserRole.Lab_Admin);
+        urs.add(WebUserRole.Lab_Consultant);
+        urs.add(WebUserRole.Lab_Mo);
+        urs.add(WebUserRole.Lab_Mlt);
+        urs.add(WebUserRole.Lab_User);
+        WebUserRole[] rs = urs.toArray(new WebUserRole[0]);
+        return rs;
+    }
+
+    public WebUserRole[] getWebUserRolesForRd() {
+        List<WebUserRole> urs = new ArrayList<>();
+        urs.add(WebUserRole.Hospital_Admin);
+        urs.add(WebUserRole.Rdhs);
+        urs.add(WebUserRole.Regional_Admin);
+        urs.add(WebUserRole.Re);
+        urs.add(WebUserRole.Rdhs_Staff);
+        urs.add(WebUserRole.Moh);
+        urs.add(WebUserRole.Amoh);
+        urs.add(WebUserRole.Sphi);
+        urs.add(WebUserRole.Phns);
+        urs.add(WebUserRole.Sphm);
+        urs.add(WebUserRole.Phi);
+        urs.add(WebUserRole.Phm);
+        urs.add(WebUserRole.MohStaff);
+        urs.add(WebUserRole.Hospital_Admin);
+        urs.add(WebUserRole.Hospital_User);
+        urs.add(WebUserRole.Doctor);
+        urs.add(WebUserRole.Nurse);
+        urs.add(WebUserRole.Lab_Admin);
+        urs.add(WebUserRole.Lab_Consultant);
+        urs.add(WebUserRole.Lab_Mo);
+        urs.add(WebUserRole.Lab_Mlt);
+        urs.add(WebUserRole.Lab_User);
         WebUserRole[] rs = urs.toArray(new WebUserRole[0]);
         return rs;
     }

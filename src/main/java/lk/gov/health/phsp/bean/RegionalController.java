@@ -169,17 +169,50 @@ public class RegionalController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
-    public void prepareSummaryByOrderedInstitution() {
-        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, count(c)) "
+    
+    
+    public String toSummaryByOrderedInstitutionVsLabToReceive() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
+                + " from Encounter c "
+                + " where c.retired=false "
+                + " and c.encounterType=:type ";
+        j += " and c.encounterDate between :fd and :td "
+                + " and (c.receivedAtLab is null or c.receivedAtLab=:rl ) "
+                + " and c.institution.rdhsArea=:rd ";
+        j += " and c.sentToLab=:sl ";
+        j += " group by c.institution, c.referalInstitution";
+        Map m = new HashMap();
+        m.put("type", EncounterType.Test_Enrollment);
+        m.put("fd", getFromDate());
+        m.put("td", getToDate());
+        m.put("rl", false);
+        m.put("sl", true);
+        m.put("rd", webUserController.getLoggedInstitution().getRdhsArea());
+        labSummariesToReceive = new ArrayList<>();
+        List<Object> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
+        // // System.out.println("obs = " + obs.size());
+        for (Object o : obs) {
+            if (o instanceof InstitutionCount) {
+                labSummariesToReceive.add((InstitutionCount) o);
+            }
+        }
+        return "/regional/summary_received_at_lab";
+    }
+    
+    
+    public void processSummaryReceivedAtLab() {
+        String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired=false "
                 + " and c.encounterType=:type "
-                + " and c.encounterDate between :fd and :td ";
+                + " and c.encounterDate between :fd and :td "
+                + " and c.receivedAtLab=:rl ";
 
         Map m = new HashMap();
         m.put("type", EncounterType.Test_Enrollment);
         m.put("fd", getFromDate());
         m.put("td", getToDate());
+        m.put("rl", true);
 
         j += " and (c.institution.rdhsArea=:rd or c.institution.district=:dis) ";
         m.put("rd", webUserController.getLoggedInstitution().getRdhsArea());
@@ -190,10 +223,11 @@ public class RegionalController implements Serializable {
             m.put("tt", testType);
         }
 
-        j += " group by c.institution";
+        j += " group by c.institution, c.referalInstitution";
         institutionCounts = new ArrayList<>();
-        List<Object> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.DATE);
-        // // System.out.println("obs = " + obs.size());
+        
+        
+        List<Object> obs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
         Long c=1l;
         for (Object o : obs) {
             if (o instanceof InstitutionCount) {
@@ -205,7 +239,7 @@ public class RegionalController implements Serializable {
         }
     }
     
-    public String toSummaryByOrderedInstitutionVsLabToReceive() {
+    public String toSummaryByOrderedInstitutionVsLabToReceive1() {
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.institution, c.referalInstitution, count(c)) "
                 + " from Encounter c "
                 + " where c.retired=false "
@@ -254,10 +288,7 @@ public class RegionalController implements Serializable {
         m.put("td", getToDate());
         m.put("sl", false);
         m.put("rdhs", webUserController.getLoggedInstitution().getRdhsArea());
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         List<Object> os = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("os = " + os.size());
         awaitingDispatch = new ArrayList<>();
         Long c=0l;
         for (Object o : os) {
@@ -426,6 +457,31 @@ public class RegionalController implements Serializable {
         return toListOfTestsWithoutMoh();
     }
 
+    public String assignDistrictToSelectedEncounters() {
+        if (selectedToAssign == null || selectedToAssign.isEmpty()) {
+            JsfUtil.addErrorMessage("Please select persons");
+            return "";
+        }
+        if (district == null) {
+            JsfUtil.addErrorMessage("Please select District");
+            return "";
+        }
+        for (Encounter i : selectedToAssign) {
+            if (i.getClient() != null || i.getClient().getPerson() != null) {
+                i.getClient().getPerson().setDistrict(district);
+                personFacade.edit(i.getClient().getPerson());
+                clientFacade.edit(i.getClient());
+                encounterFacade.edit(i);
+            }
+        }
+        selectedToAssign = null;
+        district = null;
+        JsfUtil.addSuccessMessage("Districts added");
+        return toListOfTestsWithoutMoh();
+    }
+
+    
+    
     public String toMohAreaResultList() {
         Map m = new HashMap();
         String j = "select c "
@@ -647,9 +703,7 @@ public class RegionalController implements Serializable {
         m.put("district", webUserController.getLoggedInstitution().getDistrict());
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -667,7 +721,6 @@ public class RegionalController implements Serializable {
             m.put("ri", lab);
         }
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
 
         return "/regional/list_of_tests";
     }
@@ -864,14 +917,11 @@ public class RegionalController implements Serializable {
         j += " and c.encounterType=:etype ";
         m.put("etype", EncounterType.Test_Enrollment);
         j += " and c.client.person.mohArea is null ";
-        j += " and (c.institution.rdhsArea=:rdhs or c.client.person.district=:district) ";
-        m.put("rdhs", webUserController.getLoggedInstitution().getRdhsArea());
+        j += " and c.client.person.district=:district ";
         m.put("district", webUserController.getLoggedInstitution().getDistrict());
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -888,10 +938,7 @@ public class RegionalController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
         return "/regional/list_of_tests_without_moh";
     }
 
@@ -917,13 +964,8 @@ public class RegionalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("cecItems = " + cecItems.size());
         return "/regional/list_of_first_contacts_without_moh";
     }
 
@@ -947,13 +989,8 @@ public class RegionalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("cecItems = " + cecItems.size());
         return "/moh/order_tests_for_moh";
     }
 
@@ -977,13 +1014,8 @@ public class RegionalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         cecItems = ceciFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("cecItems = " + cecItems.size());
         return "/regional/list_of_first_contacts";
     }
 
@@ -1202,8 +1234,6 @@ public class RegionalController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
         return "/regional/list_of_results";
@@ -1240,10 +1270,7 @@ public class RegionalController implements Serializable {
             m.put("ri", lab);
         }
         j += " group by c.pcrOrderingCategory, c.client.person.district";
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("objs = " + objs.size());
         List<InstitutionCount> tics = new ArrayList<>();
         for (Object o : objs) {
             if (o instanceof InstitutionCount) {
@@ -1290,10 +1317,7 @@ public class RegionalController implements Serializable {
             m.put("dis", district);
         }
         j += " group by c.pcrOrderingCategory, c.client.person.mohArea";
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
         List<Object> objs = encounterFacade.findObjectByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("objs = " + objs.size());
         List<InstitutionCount> tics = new ArrayList<>();
         for (Object o : objs) {
             if (o instanceof InstitutionCount) {
@@ -1343,9 +1367,7 @@ public class RegionalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -1362,11 +1384,8 @@ public class RegionalController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
         return "/moh/list_of_tests_without_results";
     }
 
@@ -1401,9 +1420,7 @@ public class RegionalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -1420,11 +1437,8 @@ public class RegionalController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
         return "/regional/list_of_tests";
     }
 
@@ -1450,9 +1464,7 @@ public class RegionalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
 
         if (managementType != null) {
             j += " and (ci.item.code=:mxplan and ci.itemValue.code=:planType) ";
@@ -1465,11 +1477,8 @@ public class RegionalController implements Serializable {
 
         j += " group by c";
 
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
 
         return "/regional/list_of_cases_by_management_plan";
     }
@@ -1487,9 +1496,7 @@ public class RegionalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
 
         if (managementType != null) {
             j += " and (ci.item.code=:mxplan and ci.itemValue.code=:planType) ";
@@ -1502,11 +1509,8 @@ public class RegionalController implements Serializable {
 
         j += " group by c";
 
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
 
         return "/national/list_of_cases_by_management_plan";
     }
@@ -1528,9 +1532,7 @@ public class RegionalController implements Serializable {
 
         j += " and c.createdAt between :fd and :td ";
         m.put("fd", getFromDate());
-        System.out.println("getFromDate() = " + getFromDate());
         m.put("td", getToDate());
-        System.out.println(" getToDate() = " + getToDate());
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
@@ -1547,11 +1549,8 @@ public class RegionalController implements Serializable {
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
-        System.out.println("j = " + j);
-        System.out.println("m = " + m);
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
-        System.out.println("tests = " + tests.size());
         return "/moh/enter_results";
     }
 

@@ -15,20 +15,20 @@
                         </div>
                         <div class="card-body" >
                             <div class="row" >
-                                <div class="col-3" >
+                                <div class="col-3 w-80" >
                                     <h:form>
-                                        <p:commandButton  class="btn btn-primary w-100 m-1" ajax="false" action="/designComponentFormSet/List" value="Fromset Management" ></p:commandButton>
+                                        <h:commandButton  class="btn btn-primary w-100"  action="/designComponentFormSet/List" value="Fromset Management" ></h:commandButton>
                                         <hr/>
-                                        <p:commandButton  class="btn btn-primary w-100 m-1" ajax="false" action="#{itemController.toAddDictionaryItem()}" value="Add Dictionaty Item" ></p:commandButton>
-                                        <p:commandButton  class="btn btn-primary w-100 m-1" ajax="false" action="#{itemController.toManageDictionary()}" value="List Dictionaty Items" ></p:commandButton>
+                                        <h:commandButton  class="btn btn-primary w-100 m-1"  action="#{itemController.toAddDictionaryItem()}" value="Add Dictionaty Item" ></h:commandButton>
+                                        <h:commandButton  class="btn btn-primary w-100 m-1" action="#{itemController.toManageDictionary()}" value="List Dictionaty Items" ></h:commandButton>
                                        
-                                        <p:commandButton value="Reload Dictionary" 
+                                        <h:commandButton value="Reload Dictionary" 
                                                          class="btn btn-primary w-100 m-1" 
-                                                         ajax="false" 
+                                                          
                                                          action="#{itemController.reloadItems()}" >
-                                        </p:commandButton>
-                                        <p:commandButton  class="btn btn-primary w-100 m-1" 
-                                                          ajax="false" action="/item/import" value="Import Dictionary Items" ></p:commandButton>
+                                        </h:commandButton>
+                                        <h:commandButton  class="btn btn-primary w-100 m-1" 
+                                                          action="/item/import" value="Import Dictionary Items" ></h:commandButton>
                                     </h:form>
                                 </div>
                                 <div class="col-9" >

@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <body>
+
+        <ui:composition template="/template1.xhtml">
+            <ui:define name="content">
+                <h:outputStylesheet library="css" name="tem1.css"/>
+                <!--<p:panelGrid columns="1" styleClass="alignTop w-100 bg-white border border-light">
+                    <f:facet name="header" >
+                        <h:outputLabel class="fs-5 fw-bold" value="Review Test Results" ></h:outputLabel>
+                    </f:facet>-->
+
+                <h:form >
+                    <div class="row" >
+                        <div class="col-12 text-center mt-4 mb-2" >
+                            <h4 class="fw-bold"><h:outputLabel  value="Reverse Review Results" ></h:outputLabel></h4>
+                        </div>
+                    </div>
+                    <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded d-none d-md-block d-lg-block">
+                            <h:outputLabel class="fs-6 fw-bold" value="From" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+
+                            <h:outputLabel class="fs-6 fw-bold" value="To" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+
+                            <h:outputLabel class="fs-6 fw-bold" value="Ordered Institution" ></h:outputLabel>
+                            <p:autoComplete value="#{clientController.institution}"
+                                            completeMethod="#{institutionController.completeInstitutions}"
+                                            var="m" itemLabel="#{m.name}" itemValue="#{m}" >
+                            </p:autoComplete>
+
+                            <h:outputLabel class="fs-6 fw-bold" value="Plate No." ></h:outputLabel>
+                            <h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText>
+
+                            <h:commandButton class="btn btn-success w-100 my-2" value="Generate Excel">
+                                <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
+                            </h:commandButton>
+                            <h:commandButton class="btn btn-warning w-100" value="Process" 
+                                             action="#{clientController.toLabReviewResults()}" ></h:commandButton>
+                        </h:panelGrid>
+                    </div>
+
+                    <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
+                        <p:dataTable reflow="true" 
+                                     id="tbl" 
+                                     value="#{clientController.listedToReviewResults}" 
+                                     var="c" 
+                                     paginator="true" 
+                                     rowKey="#{c.id}" rows="10" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="10,50,96,100,{ShowAll|'All'}"
+                                     resizableColumns="true"
+                                     rowStyleClass="#{c.resultPositive?'redRow':''}"
+                                     selection="#{clientController.selectedToReview}">
+                            <p:column headerText="Entered"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                <p:selectBooleanButton offLabel="Not Entered" onLabel="Entered"  value="#{c.resultEntered}" >
+                                    <f:ajax execute="@this" listener="#{clientController.saveLabNo(c)}" ></f:ajax>
+                                </p:selectBooleanButton>
+                            </p:column>
+                            <p:column headerText="Unit/Ward"  sortBy="#{c.unitWard}" filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.unitWard}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="BHT/OPD No/Clinic No"  sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.bht}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Lab No"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.labNumber}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Tube No" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.encounterNumber}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Name" >
+                                <h:outputLabel value="#{c.client.person.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Age" >
+                                <h:outputLabel value="#{c.client.person.age}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Sex" >
+                                <h:outputLabel value="#{c.client.person.sex.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Phone" >
+                                <h:outputLabel value="#{c.client.person.phone1}" ></h:outputLabel>
+                            </p:column>
+                            <p:column  headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
+                                       filterBy="#{c.ctValue}" filterMatchMode="contains" >
+                                <h:outputText class="form-control" id="txtCt1" value="#{c.ctValue}" style="width: 98px;" >
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="CT 2" width="100"  sortBy="#{c.ctValue2}"
+                                      filterBy="#{c.ctValue2}" filterMatchMode="contains" >
+                                <h:outputText id="txtCt2" value="#{c.ctValue2}" style="width: 98px;" >
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Result" 
+                                      sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
+                                <h:outputText class="form-select" id="cmbResult" value="#{c.pcrResult.name}"  >
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGrid>
+                </h:form>
+
+                <!--</p:panelGrid>-->
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

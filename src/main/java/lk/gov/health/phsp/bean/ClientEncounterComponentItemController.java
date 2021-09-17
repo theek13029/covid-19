@@ -346,7 +346,6 @@ public class ClientEncounterComponentItemController implements Serializable {
                         dataType = c.getReferanceDesignComponentFormItem().getItem().getDataType();
                     } else {
                         dataType = c.getReferanceDesignComponentFormItem().getItem().getDataType();
-                        System.err.println("Error in data types");
                     }
                 }
 

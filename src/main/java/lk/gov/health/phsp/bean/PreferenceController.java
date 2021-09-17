@@ -91,7 +91,12 @@ public class PreferenceController implements Serializable {
     public String findPreferanceValue(String name, Institution ins) {
         Preference p = findPreferance(name, ins);
         if (p != null) {
-            return p.getLongTextValue();
+            if(p.getLongTextValue()!=null){
+                return p.getLongTextValue();
+            }else{
+                return "";
+            }
+            
         } else {
             return "";
         }
@@ -226,7 +231,7 @@ public class PreferenceController implements Serializable {
         savePreference("pcrPositiveTerm", webUserController.getLoggedInstitution(), pcrPositiveTerm);
         savePreference("pcrNegativeTerm", webUserController.getLoggedInstitution(), pcrNegativeTerm);
         savePreference("pcrInvalidTerm", webUserController.getLoggedInstitution(), pcrInvalidTerm);
-        savePreference("pcrInvalidTerm", webUserController.getLoggedInstitution(), pcrInconclusiveTerm);
+        savePreference("pcrInconclusiveTerm", webUserController.getLoggedInstitution(), pcrInconclusiveTerm);
 
         savePreference("pcrPositiveComment", webUserController.getLoggedInstitution(), pcrPositiveComment);
         savePreference("pcrNegativeComment", webUserController.getLoggedInstitution(), pcrNegativeComment);

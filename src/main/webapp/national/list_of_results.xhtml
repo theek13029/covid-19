@@ -8,10 +8,8 @@
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <h:body>
-       <ui:composition template="/national/reports_index.xhtml">
+        <ui:composition template="/national/reports_index.xhtml">
             <ui:define name="reports">
-                <h:outputStylesheet library="css" name="tem1.css"/>
-
 
                 <h:panelGrid columns="1" styleClass="alignTop" rendered="true" >
                     <f:facet name="header" >
@@ -22,7 +20,7 @@
                         <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
                             <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
                                 <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
-                                <p:calendar value="#{nationalController.fromDate}" 
+                                <p:calendar value="#{nationalController.fromDate}"
                                             pattern="dd MMMM yyyy hh:mm a">
                                 </p:calendar>
 
@@ -32,7 +30,7 @@
                                 <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
                                 <h:selectOneMenu value="#{nationalController.orderingCategory}" class="form-select">
                                     <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{nationalController.covidTestOrderingCategories}" 
+                                    <f:selectItems value="#{nationalController.covidTestOrderingCategories}"
                                                    var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
                                 </h:selectOneMenu>
@@ -55,8 +53,8 @@
                                 <p:autoComplete style="width: 100%;"
                                                 inputStyleClass="autocomplete"
                                                 value="#{nationalController.lab}"
-                                                forceSelection="true" tabindex="100" 
-                                                completeMethod="#{nationalController.completeLab}" 
+                                                forceSelection="true" tabindex="100"
+                                                completeMethod="#{nationalController.completeLab}"
                                                 var="l" itemLabel="#{l.name}" itemValue="#{l}">
                                 </p:autoComplete>
 
@@ -68,12 +66,20 @@
 
                             </h:panelGrid>
                         </div>
-                        
+
+                        <div>
+                            <p:commandButton id="toggler" class="btn btn-sm btn-secondary"
+                                type="button" value="Filter columns" icon="pi pi-align-justify"/>
+                            <p:columnToggler datasource="tbl" trigger="toggler"/>
+                         </div>
+
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{nationalController.tests}" 
-                                     var="c" rowKey="#{c.id}" 
-                                     rows="10" 
-                                     paginator="true" 
+                        <p:dataTable id="tbl" value="#{nationalController.tests}"
+                                     var="c" rowKey="#{c.id}"
+                                     rows="10" resizeMode="expand"
+                                     reflow="true"
+                                     resizableColumns="true"
+                                     paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,50,100,{ShowAll|'All'}"
@@ -81,9 +87,28 @@
                             <p:column headerText="Ordered By" sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.institution.name}" ></h:outputLabel>
                             </p:column>
+                            <p:column headerText="Institution Type" sortBy="#{c.institution.institutionType.label}"
+                                      filterBy="#{c.institution.institutionType.label}" filterMatchMode="contains" >
+                                <h:outputLabel value="#{c.institution.institutionType.label}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="RDHS"  sortBy="#{c.referalInstitution.rdhsArea.name}"
+                                      filterBy="#{c.institution.rdhsArea.name}" filterMatchMode="contains" >
+                                <h:outputLabel value="#{c.referalInstitution.rdhsArea.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="PDHS"  sortBy="#{c.institution.pdhsArea.name}"
+                                      filterBy="#{c.institution.pdhsArea.name}" filterMatchMode="contains" >
+                                <h:outputLabel value="#{c.institution.pdhsArea.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Province"  sortBy="#{c.referalInstitution.name}" filterBy="#{c.referalInstitution.name}" filterMatchMode="contains" >
+                                <h:outputLabel value="#{c.referalInstitution.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Ordered At" sortBy="#{c.createdAt}"  >
+                                <h:outputLabel value="#{c.createdAt}" ></h:outputLabel>
+                            </p:column>
                             <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}" filterBy="#{c.referalInstitution.name}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.referalInstitution.name}" ></h:outputLabel>
                             </p:column>
+
                             <p:column headerText="Ordering Category"  sortBy="#{c.pcrOrderingCategory.name}"
                                       filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.pcrOrderingCategory.name}" ></h:outputLabel>
@@ -103,10 +128,17 @@
                             <p:column headerText="Phone"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.client.person.phone1}" ></h:outputLabel>
                             </p:column>
+                            <p:column headerText="Vaccine Status" sortBy="#{c.vaccinationStatus}" filterBy="#{c.vaccinationStatus}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.vaccinationStatus.name}"></h:outputLabel>
+                            </p:column>
                             <p:column headerText="Address"  sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.client.person.address}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Result" exportable="false"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
+                            <p:column headerText="District"  sortBy="#{c.client.person.district.name}"
+                                      filterBy="#{c.client.person.district.name}" filterMatchMode="contains" >
+                                <h:outputLabel value="#{c.client.person.district.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Result"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
                                 <h:outputLabel id="cmbResult" value="#{c.pcrResult.name}" >
                                 </h:outputLabel>
                             </p:column>
@@ -122,13 +154,13 @@
                             </p:column>
                             <p:column id="colResultDate" headerText="Result Date" >
                                 <h:outputLabel id="calRd" value="#{c.resultConfirmedAt}">
-                                    <f:convertDateTime pattern="dd MMM yy" ></f:convertDateTime>
+                                    <f:convertDateTime pattern="dd MMMM yyyy mm:hh a" ></f:convertDateTime>
                                 </h:outputLabel>
                             </p:column>
 
                         </p:dataTable>
                         </h:panelGrid>
-                     
+
                     </h:form>
 
 

@@ -80,7 +80,7 @@
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{mohController.tests}" 
                                      var="c" rowKey="#{c.id}" 
-                                     rows="10" 
+                                     rows="10"  resizeMode="expand" resizableColumns="true"
                                      paginator="true" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -153,8 +153,8 @@
                                     </p:ajax>
                                 </p:calendar>
                             </p:column>
-                            <p:column headerText="Result"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
-                                <h:selectOneMenu id="cmbResult" value="#{c.pcrResult}" disabled="#{c.receivedAtLab}" class="form-select">
+                            <p:column headerText="Result" width="200"  sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
+                                <h:selectOneMenu id="cmbResult" value="#{c.pcrResult}" disabled="#{(c.receivedAtLab and c.testType.name eq 'Pcr')}" class="form-select">
                                     <f:selectItem itemLabel="Select Result" ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
                                                    var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
