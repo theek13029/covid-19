@@ -247,7 +247,6 @@ public class MohController implements Serializable {
 
         List<Object> objCounts = encounterFacade.findAggregates(j, m, TemporalType.TIMESTAMP);
 
-
         if (objCounts == null || objCounts.isEmpty()) {
             return "/moh/count_of_results_by_gn";
         }
@@ -479,8 +478,8 @@ public class MohController implements Serializable {
         selectedToAssign = null;
     }
 
-    public String assignMohAreaToContactScreeningAtRegionalLevel(){
-        if(selectedCecis==null || selectedCecis.isEmpty()){
+    public String assignMohAreaToContactScreeningAtRegionalLevel() {
+        if (selectedCecis == null || selectedCecis.isEmpty()) {
             JsfUtil.addErrorMessage("Please select contacts");
             return "";
         }
@@ -1065,7 +1064,7 @@ public class MohController implements Serializable {
             return "";
         }
     }
-    
+
     public String toViewRequest() {
         if (test == null) {
             JsfUtil.addErrorMessage("No Test");
@@ -1195,12 +1194,12 @@ public class MohController implements Serializable {
 
         pcr.setCreatedAt(date);
 
-        return  "/moh/pcr_with_result";
+        return "/moh/pcr_with_result";
     }
 
     public String toSaveAndNewPcrWithResult() {
         if (savePcr() != null) {
-             return toAddNewPcrResultWithNewClient();
+            return toAddNewPcrResultWithNewClient();
         } else {
             return "";
         }
@@ -1351,7 +1350,7 @@ public class MohController implements Serializable {
 
         return "/moh/pcr_with_result";
     }
-    
+
     public String toAddNewPcrWithNewClient() {
         pcr = new Encounter();
         nicExistsForPcr = null;
@@ -1710,6 +1709,23 @@ public class MohController implements Serializable {
         }
     }
 
+    public String savePcrAndToTestList() {
+        boolean newOne = false;
+        if (pcr != null) {
+            if (pcr.getId() == null) {
+                newOne = true;
+            }
+        }
+        if (savePcr() != null) {
+            if (newOne) {
+                return toTestList();
+            }
+            return toTestListNoProcess();
+        } else {
+            return "";
+        }
+    }
+
     public String saveRat() {
         if (rat == null) {
             JsfUtil.addErrorMessage("No RAT to save");
@@ -1735,7 +1751,6 @@ public class MohController implements Serializable {
 //            JsfUtil.addErrorMessage("The institution you logged has no POI. Can not generate a PHN.");
 //            return "";
 //        }
-
         if (rat.getClient().getPhn() == null || rat.getClient().getPhn().trim().equals("")) {
             String newPhn = applicationController.createNewPersonalHealthNumberformat(createdIns);
 
@@ -2149,7 +2164,6 @@ public class MohController implements Serializable {
         m.put("ins", webUserController.getLoggedInstitution());
 
 //        webUserController.getLoggedInstitution();
-
         j += " and c.resultConfirmedAt between :fd and :td ";
         m.put("fd", getFromDate());
         m.put("td", getToDate());
@@ -2437,6 +2451,10 @@ public class MohController implements Serializable {
         return "/moh/list_of_tests_without_results";
     }
 
+    public String toTestListNoProcess() {
+        return "/moh/list_of_tests";
+    }
+
     public String toTestList() {
         Map m = new HashMap();
         String j = "select c "
@@ -2583,7 +2601,6 @@ public class MohController implements Serializable {
 
         j += " group by c";
 
-
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
 
         return "/regional/list_of_cases_by_management_plan";
@@ -2614,7 +2631,6 @@ public class MohController implements Serializable {
         }
 
         j += " group by c";
-
 
         tests = encounterFacade.findByJpql(j, m, TemporalType.TIMESTAMP);
 
