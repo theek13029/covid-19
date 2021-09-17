@@ -360,7 +360,7 @@ public Long samplesAwaitingDispatch(
             + " where c.retired=:ret "
             + " and c.encounterType=:type "
             + " and c.encounterDate between :fd and :td "
-            + " and c.testType=:testType";
+            + " and c.testType=:testType ";
 
     if (institution != null){
         jpql += " and c.institution=:ins ";
@@ -374,7 +374,7 @@ public Long samplesAwaitingDispatch(
                 hashMap.put("district", area.getDistrict());
                 break;
             case RdhsAra:
-                jpql += "and (c.institution.rdhsArea=:rdArea or c.institution.district=:district) ";
+                jpql += " and (c.institution.rdhsArea=:rdArea or c.institution.district=:district) ";
                 hashMap.put("rdArea", area);
                 hashMap.put("district", area.getDistrict());
                 break;
@@ -388,7 +388,7 @@ public Long samplesAwaitingDispatch(
                 hashMap.put("province", area.getProvince());
                 break;
             case MOH:
-                jpql += " and (c.institution.mohArea=:mohArea)";
+                jpql += " and (c.institution.mohArea=:mohArea) ";
                 hashMap.put("mohArea", area);
                 break;
             default:
