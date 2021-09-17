@@ -893,16 +893,16 @@ public class AreaController implements Serializable {
         Area ta = null;
         for(Area a: areaApplicationController.getAllAreas()){
             if(areaType==null || a.getType().equals(areaType)){
-                if(a.getName().equalsIgnoreCase(nameOrCode)){
+                if(a.getName()!=null && a.getName().equalsIgnoreCase(nameOrCode)){
                     return a;
                 }
-                if(a.getCode().equals(nameOrCode)){
+                if(a.getCode()!=null && a.getCode().equals(nameOrCode)){
                     return a;
                 }
-                if(a.getCode().toLowerCase().contains(nameOrCode.trim().toLowerCase())){
+                if(a.getCode()!=null &&   a.getCode().toLowerCase().contains(nameOrCode.trim().toLowerCase())){
                     ta=a;
                 }
-                if(a.getName().toLowerCase().contains(nameOrCode.trim().toLowerCase())){
+                if(a.getName()!=null && a.getName().toLowerCase().contains(nameOrCode.trim().toLowerCase())){
                     ta=a;
                 }
             }
