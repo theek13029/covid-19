@@ -103,7 +103,7 @@ public class DashboardController implements Serializable {
     private Long firstContactsWithNoMOHArea;
 //    HashMap to generate investigation chart at MOH dashboard
     private JSONObject investigationHashmap;
-    
+
 
     private CovidData myCovidData;
 
@@ -1078,7 +1078,7 @@ public class DashboardController implements Serializable {
 	public void setTodayRatPositiveRate(String todayRatPositiveRate) {
 		this.todayRatPositiveRate = todayRatPositiveRate;
 	}
-	
+
 //	Getter for the mohInstegiationHashmap
 
     public JSONObject getInvestigationHashmap() {

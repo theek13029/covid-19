@@ -311,7 +311,7 @@ public class DashboardApplicationController {
     public Map<String, List<String>> generateMohInvestigationHashmap(
             Area rdhsArea
     ) {
-        List<Area> mohAreas = areaController.getMohAreas(rdhsArea);
+        List<Area> mohAreas = areaController.getMohAreasOfRdhs(rdhsArea);
         Map<String, List<String>> hashMap = new HashMap<>();
 
         Date todayStart = CommonController.startOfTheDate();
@@ -340,7 +340,7 @@ public class DashboardApplicationController {
             );
             tempList.add(tempTodayPcr.toString());
             tempList.add(tempTodayRat.toString());
-            hashMap.put(mohArea.toString(), tempList);
+            hashMap.put(mohArea.getName(), tempList);
         }
 
         return hashMap;
@@ -446,7 +446,7 @@ public Long samplesAwaitingDispatch(
     hashMap.put("fd", fromDate);
     hashMap.put("sl", false);
     hashMap.put("td", toDate);
-   
+
 
     return encounterFacade.findLongByJpql(jpql, hashMap, TemporalType.DATE);
 

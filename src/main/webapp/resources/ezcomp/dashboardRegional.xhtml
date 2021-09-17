@@ -10,8 +10,6 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <h:outputScript library="js" name="demo.js"></h:outputScript>
-        <h:outputScript library="js" name="chart.js"></h:outputScript>
         <h:form>
 
             <div class="container">
@@ -168,67 +166,102 @@
                     </div>
                 </div>
 
-
-                <!--Second row -->
-
-
                 <div class="row my-2 gx-4">
                     <div class="col">
-                        <div class="d-flex bg-success px-3 py-2 align-items-center">
-                            <div class="flex-grow-1 text-white">
-                                <h4 class="fw-bold">
-                                    <i class="bi mx-2 bi-info-circle-fill"></i>
-                                    Additional Info
-                                </h4>
-                                <div class="d-flex">
-                                    <div class="p-2 w-100">
-                                        <h5>
-                                            <h:commandLink ajax="false" action="#{regionalController.toListOfTestsWithoutMoh()}" class="text-decoration-none text-white" value="PCR Positive Without MOH Areas"></h:commandLink>
-                                        </h5>
-                                    </div>
-                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                        <h5>
-                                            <h:outputLabel value="#{dashboardController.pcrPatientsWithNoMohArea}" ></h:outputLabel>
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="d-flex">
-                                    <div class="p-2 w-100">
-                                        <h5>
-                                            <h:commandLink ajax="false" action="#{regionalController.toListOfTestsWithoutMoh()}" class="text-decoration-none text-white" value="RAT Positive Without MOH Areas"></h:commandLink>
-                                        </h5>
-                                    </div>
-                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                        <h5>
-                                            <h:outputLabel value="#{dashboardController.ratPatientsWithNoMohArea}">
-                                            </h:outputLabel>
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="d-flex">
-                                    <div class="p-2 w-100">
-                                        <h5>
-                                            <h:commandLink class="text-decoration-none text-white" 
-                                                           value="Samples not dispatched"></h:commandLink>
-                                        </h5>
-                                    </div>
-                                    <div class="p-2 flex-shrink-1 fw-semi-bold">
-                                        <h5>
-                                            <h:outputLabel value="#{dashboardController.samplesAwaitingDispatch}">
-                                            </h:outputLabel>
-                                        </h5>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="list-group list-group-numbered">
+                            <li class="list-group-item list-group-item-action active">Additional Information</li>
+                            <h:commandLink action="#{regionalController.toListOfTestsWithoutMoh()}" class="list-group-item d-flex justify-content-between align-items-start">
+                              <div class="ms-2 me-auto">
+                                PCR Positives Without MOH Area
+                              </div>
+                              <span class="badge bg-primary rounded-pill">
+                                #{dashboardController.pcrPatientsWithNoMohArea}
+                              </span>
+                            </h:commandLink>
+                            <h:commandLink action="#{regionalController.toListOfTestsWithoutMoh()}" class="list-group-item d-flex justify-content-between align-items-start">
+                              <div class="ms-2 me-auto">
+                                RAT Positives Without MOH Areas
+                              </div>
+                              <span class="badge bg-primary rounded-pill">
+                                #{dashboardController.ratPatientsWithNoMohArea}
+                              </span>
+                            </h:commandLink>
+                            <h:commandLink class="list-group-item d-flex justify-content-between align-items-start">
+                              <div class="ms-2 me-auto">
+                                Samples Awaiting Dispatch
+                              </div>
+                              <span class="badge bg-primary rounded-pill">
+                                #{dashboardController.samplesAwaitingDispatch}
+                              </span>
+                            </h:commandLink>
                         </div>
                     </div>
                     <div class="col"></div>
-                    <div class="col"></div>
-                    <div class="col"></div>
+                </div>
+                <div class="row my-2">
+                    <div class="accordion" id="accordionPanelsStayOpenExample">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                              PCRs And RATs Done Today By MOH Area <small class="px-3"><a href="#" onclick="window.location.reload()">Refresh the chart</a></small> <small class="text-danger">Beta</span>
+                            </button>
+                          </h2>
+                          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                            <div class="accordion-body">
+                             <canvas id="chart"></canvas>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                 </div>
             </div>
-            #{dashboardController.investigationHashmap}
         </h:form>
-        
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            var chartData = '#{dashboardController.investigationHashmap}'
+            var labels = Object.keys(JSON.parse(chartData))
+            var parsed = JSON.parse(chartData)
+            var parsedLabels = []
+
+            var pcrSet = {
+                label: "PCR",
+                backgroundColor: "#90be6d",
+                data: []
+            }
+
+            var ratSet = {
+                label: "RAT",
+                backgroundColor: "#f9844a",
+                data: []
+            }
+
+            labels.forEach(element => {
+                var parseLabel = element.toUpperCase()
+                var getSet = parsed[element]
+                pcrSet.data.push(getSet[0])
+                ratSet.data.push(getSet[1])
+                parsedLabels.push(parseLabel)
+            });
+
+
+            var data = {
+                labels: parsedLabels,
+                datasets: [
+                    pcrSet, ratSet
+                ]
+            };
+
+            console.log(data)
+
+            var chart = document.querySelector('#chart').getContext('2d');
+            var myChart = new Chart(chart, {
+                type: 'bar',
+                data: data,
+                options: {
+                    barValueSpacing: 15
+                }
+            })
+      </script>
     </cc:implementation>
 </html>
