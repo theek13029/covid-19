@@ -237,6 +237,99 @@
                 <div class="col"></div>
             </div>
 
+            <div class="row my-3">
+                <div class="accordion" id="accordionPanelsStayOpenExample">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                           <strong>Last 14 Day PCR and RAT Trend</strong> <small class="px-3"><a href="#" onclick="window.location.reload()">Refresh the chart</a></small> <small class="text-danger">Beta</small>
+                        </button>
+                      </h2>
+                      <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                        <div class="accordion-body">
+                            <h3 class="text-muted fw-bold" id="chartLoading">Chart loading, please refresh</h3>
+                            <canvas id="chart"></canvas>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script>
+                const pcrDataJson = '#{dashboardApplicationController.pcrPositiveCasesJSON}'
+                const ratDataJson = '#{dashboardApplicationController.ratPositiveCasesJSON}'
+
+                document.addEventListener('readystatechange', event => {
+                    if (event.target.readyState === 'interactive') {
+                        if (pcrDataJson !== '' || ratDataJson !== '') drawChart();
+                    }
+                })
+
+                function parseDate(date) {
+                    var date = new Date(date.replace('IST', ''));
+                    let day = date.getDate();
+                    let month = date.getMonth()+1;
+                    let year = date.getFullYear();
+
+                    return year+"/"+month+"/"+day
+                }
+
+                function drawChart() {
+                    const parsePcrData = JSON.parse(pcrDataJson)
+                    const parseRatData = JSON.parse(ratDataJson)
+
+                    const ratDataLabels = Object.keys(parseRatData)
+                    const pcrDataLabels = Object.keys(parsePcrData)
+
+                    const ratDataset = {
+                        label: "RAT",
+                        backgroundColor: "#ffd166",
+                        borderColor: "#ffd166",
+                        fill: false,
+                        data: []
+                    }
+
+                    const pcrDataset = {
+                        label: "PCR",
+                        backgroundColor: "#ef476f",
+                        borderColor: "#ef476f",
+                        fill: false,
+                        data: []
+                    }
+
+                    var parsedDates = []
+
+                    ratDataLabels.forEach(element => {
+                        var tempDate = parseDate(element)
+                        var getData = parseRatData[element]
+                        pcrDataset.data.push(getData)
+                        parsedDates.push(tempDate)
+                    })
+
+                    pcrDataLabels.forEach(element => {
+                        var getData = parsePcrData[element]
+                        ratDataset.data.push(getData)
+                    })
+
+                    const data = {
+                        labels: parsedDates,
+                        datasets: [
+                            ratDataset, pcrDataset
+                        ]
+                    }
+
+                    console.log(data)
+
+                    const chart = document.querySelector("#chart").getContext('2d')
+                    const myChart = new Chart(chart, {
+                            type: 'line',
+                            data: data
+                        }
+                    )
+                    document.querySelector("#chartLoading").classList.add('d-none')
+                }
+            </script>
         </div>
 
     </h:form>
