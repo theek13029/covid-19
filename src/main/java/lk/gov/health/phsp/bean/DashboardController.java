@@ -588,11 +588,8 @@ public class DashboardController implements Serializable {
         	this.yesterdayRatPositiveRate = "0.00%";
         }
 
-//        this.investigationHashmap = new JSONObject(dashboardApplicationController.generateMohInvestigationHashmap(
-//                this.webUserController.getLoggedInstitution().getRdhsArea()
-//        ));
-        
-         this.investigationHashmap = new JSONObject(dashboardApplicationController.generateMohInvestigationHashmap(
+        // The json is used to generate chart for available insitutions in a given RDHS area
+        this.investigationHashmap = new JSONObject(dashboardApplicationController.generateRdhsInvestigationHashmap(
                 this.webUserController.getLoggableInstitutions()
         ));
 

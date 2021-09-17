@@ -307,52 +307,12 @@ public class DashboardApplicationController {
         return tics;
     }
 
-//    This will generate a hashmap of PCR and RAT investigations that will be used to generate a chart at the MOH dashboard
-    public Map<String, List<String>> generateMohInvestigationHashmap(
-            Area rdhsArea
-    ) {
-        List<Area> mohAreas = areaController.getMohAreasOfRdhs(rdhsArea);
-        Map<String, List<String>> hashMap = new HashMap<>();
+    // This will generate the list of investigations done by insitutions in a given RDHS area
 
-        Date todayStart = CommonController.startOfTheDate();
-        Calendar calendar = Calendar.getInstance();
-        Date now = calendar.getTime();
-
-        for (Area mohArea:mohAreas) {
-            System.out.println("mohArea = " + mohArea.getName());
-            List<String> tempList = new ArrayList<>();
-            Long tempTodayPcr = this.getConfirmedCountArea(
-                    mohArea,
-                    todayStart,
-                    now,
-                    itemApplicationController.getPcr(),
-                    null,
-                    null,
-                    null
-            );
-            Long tempTodayRat = this.getConfirmedCountArea(
-                    mohArea,
-                    todayStart,
-                    now,
-                    itemApplicationController.getRat(),
-                    null,
-                    null,
-                    null
-            );
-            System.out.println("tempTodayPcr = " + tempTodayRat);
-            System.out.println("tempTodayRat = " + tempTodayRat);
-            tempList.add(tempTodayPcr.toString());
-            tempList.add(tempTodayRat.toString());
-            hashMap.put(mohArea.getName(), tempList);
-        }
-
-        return hashMap;
-    }
-    
-    public Map<String, List<String>> generateMohInvestigationHashmap(
+    public Map<String, List<String>> generateRdhsInvestigationHashmap(
             List<Institution> myInstitutions
     ) {
-        
+
         Map<String, List<String>> hashMap = new HashMap<>();
 
         Date todayStart = CommonController.startOfTheDate();
@@ -380,8 +340,6 @@ public class DashboardApplicationController {
                     null,
                     ins
             );
-            System.out.println("tempTodayPcr = " + tempTodayPcr);
-            System.out.println("tempTodayRat = " + tempTodayRat);
             tempList.add(tempTodayPcr.toString());
             tempList.add(tempTodayRat.toString());
             hashMap.put(ins.getName(), tempList);
