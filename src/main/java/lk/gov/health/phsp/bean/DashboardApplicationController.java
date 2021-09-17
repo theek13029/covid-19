@@ -319,8 +319,9 @@ public class DashboardApplicationController {
         Date now = calendar.getTime();
 
         for (Area mohArea:mohAreas) {
+            System.out.println("mohArea = " + mohArea.getName());
             List<String> tempList = new ArrayList<>();
-            Long tempTodayPcr = this.getOrderCountArea(
+            Long tempTodayPcr = this.getConfirmedCountArea(
                     mohArea,
                     todayStart,
                     now,
@@ -329,7 +330,7 @@ public class DashboardApplicationController {
                     null,
                     null
             );
-            Long tempTodayRat = this.getOrderCountArea(
+            Long tempTodayRat = this.getConfirmedCountArea(
                     mohArea,
                     todayStart,
                     now,
@@ -338,9 +339,52 @@ public class DashboardApplicationController {
                     null,
                     null
             );
+            System.out.println("tempTodayPcr = " + tempTodayRat);
+            System.out.println("tempTodayRat = " + tempTodayRat);
             tempList.add(tempTodayPcr.toString());
             tempList.add(tempTodayRat.toString());
             hashMap.put(mohArea.getName(), tempList);
+        }
+
+        return hashMap;
+    }
+    
+    public Map<String, List<String>> generateMohInvestigationHashmap(
+            List<Institution> myInstitutions
+    ) {
+        
+        Map<String, List<String>> hashMap = new HashMap<>();
+
+        Date todayStart = CommonController.startOfTheDate();
+        Calendar calendar = Calendar.getInstance();
+        Date now = calendar.getTime();
+
+        for (Institution ins:myInstitutions) {
+            System.out.println("mohArea = " + ins.getName());
+            List<String> tempList = new ArrayList<>();
+            Long tempTodayPcr = this.getOrderCountArea(
+                    null,
+                    todayStart,
+                    now,
+                    itemApplicationController.getPcr(),
+                    null,
+                    null,
+                    ins
+            );
+            Long tempTodayRat = this.getOrderCountArea(
+                    null,
+                    todayStart,
+                    now,
+                    itemApplicationController.getRat(),
+                    null,
+                    null,
+                    ins
+            );
+            System.out.println("tempTodayPcr = " + tempTodayPcr);
+            System.out.println("tempTodayRat = " + tempTodayRat);
+            tempList.add(tempTodayPcr.toString());
+            tempList.add(tempTodayRat.toString());
+            hashMap.put(ins.getName(), tempList);
         }
 
         return hashMap;
