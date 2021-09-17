@@ -892,7 +892,7 @@ public class AreaController implements Serializable {
         }
         Area ta = null;
         for(Area a: areaApplicationController.getAllAreas()){
-            if(areaType==null || a.getType().equals(areaType)){
+            if(areaType==null || (a.getType()!=null && a.getType().equals(areaType))){
                 if(a.getName()!=null && a.getName().equalsIgnoreCase(nameOrCode)){
                     return a;
                 }

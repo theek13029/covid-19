@@ -3009,7 +3009,8 @@ public class ClientController implements Serializable {
         JsfUtil.addSuccessMessage(msg);
         clientImports = new ArrayList<>();
         clientImportsSelected = new ArrayList<>();
-        return toUploadOrders();
+        clearUploadedData();
+        return toUploadResultsForHospitals();
     }
 
     public String clearUploadedData() {
