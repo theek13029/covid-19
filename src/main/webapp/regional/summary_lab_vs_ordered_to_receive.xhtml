@@ -20,14 +20,13 @@
                     <h:form >
                         <h:panelGrid columns="2" >
                             <h:outputLabel value="From" ></h:outputLabel>
-                            <p:calendar  class="form-control" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+                            <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
                             <h:outputLabel value="To" ></h:outputLabel>
-                            <p:calendar  class="form-control" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                            <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
                             <h:outputLabel value="Test" ></h:outputLabel>
-                            <h:selectOneMenu value="#{regionalController.testType}"
-                                              class="form-control">
+                            <h:selectOneMenu class="form-select" value="#{regionalController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{regionalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
@@ -36,8 +35,8 @@
                             <h:commandButton value="Process"
                                              class="btn btn-success"
                                              action="#{clientController.toSummaryByOrderedInstitutionVsLabToReceive()}" ></h:commandButton>
-                            <h:commandButton  value="Generate Excel"
-                                              class="btn btn-success">
+                            <h:commandButton value="Generate Excel"
+                                             class="btn btn-warning">
                                 <p:dataExporter type="xlsx" fileName="Samples to Receive Summery" target="tbl" ></p:dataExporter>
                             </h:commandButton>
 
@@ -69,7 +68,7 @@
                                 <h:outputLabel value="#{c.count}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false"  >
-                                <h:commandButton  value="To Divert" class="btn btn-success" action="#{clientController.toDivertSamples()}" >
+                                <h:commandButton value="To Divert" class="btn btn-success"  action="#{clientController.toDivertSamples()}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{clientController.institution}" >
                                     </f:setPropertyActionListener>
                                     <f:setPropertyActionListener value="#{c.referralInstitution}" target="#{clientController.referingInstitution}" >
