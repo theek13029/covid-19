@@ -13,26 +13,24 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <h:form>
-            <p:panelGrid columns="2" style="width: 100%;">
+            <p:panelGrid columns="1" class="border border-light bg-white w-100">
                 <f:facet name="header" >
-                    <p:commandButton ajax="false" action="#{preferenceController.savePreferencesInstitution()}" 
-                                     value="SAVE" style="float: left;"></p:commandButton>
-                    <p:outputLabel value="Preferences" ></p:outputLabel>
+                    <p:outputLabel class="fs-6 fw-bold text-white" value="Preferences" ></p:outputLabel>
                 </f:facet>
 
                 <p:tabView style="width: 100%;">
 
                     <p:tab title="Workflow" >
-                        <p:panelGrid columns="2" style="width: 100%;">
-                            <p:outputLabel value="Lab Approval Steps" ></p:outputLabel>
-                            <p:selectOneMenu value="#{preferenceController.labApprovalSteps}">
-                                <f:selectItem itemLabel="Select" ></f:selectItem>
+                        <p:panelGrid columns="2" class="w-100 border border-light bg-white">
+                            <p:outputLabel value="Lab Approval Steps" class="fs-6 fw-bold" ></p:outputLabel>
+                            <p:selectOneMenu value="#{preferenceController.labApprovalSteps}" class="form-control w-100">
+                                <f:selectItem itemLabel="Select"></f:selectItem>
                                 <f:selectItem  itemLabel="Entry only"  itemValue="Entry" ></f:selectItem>
                                 <f:selectItem  itemLabel="Entry and Confirm" itemValue="EntryConfirm" ></f:selectItem>
                                 <f:selectItem  itemLabel="Entry, Review and Confirm"  itemValue="EntryReviewConfirm" ></f:selectItem>
                             </p:selectOneMenu>
-                            <p:outputLabel value="Lab Number Generation" ></p:outputLabel>
-                            <p:selectOneMenu value="#{preferenceController.labNumberGeneration}">
+                            <p:outputLabel value="Lab Number Generation" class="fs-6 fw-bold" ></p:outputLabel>
+                            <p:selectOneMenu value="#{preferenceController.labNumberGeneration}" class="form-control w-100">
                                 <f:selectItem itemLabel="Select" ></f:selectItem>
                                 <f:selectItem  itemLabel="Ordered Institution Code + Lab Code + Date + Count"  
                                                itemValue="InsLabDateCount" ></f:selectItem>
@@ -52,53 +50,53 @@
                                                itemValue="CustomCount" ></f:selectItem>
                             </p:selectOneMenu>
 
-                            <p:outputLabel value="Starting Number for count" ></p:outputLabel><!-- comment -->
-                            <p:inputText value="#{preferenceController.startingSerialCount}" ></p:inputText>
+                            <p:outputLabel value="Starting Number for count" class="fs-6 fw-bold" ></p:outputLabel><!-- comment -->
+                            <p:inputText value="#{preferenceController.startingSerialCount}" class="form-control w-100"></p:inputText>
 
                         </p:panelGrid>
                     </p:tab>
 
                     <p:tab title="Terms" >
-                        <p:panelGrid columns="2" style="width: 100%;">
-                            <p:outputLabel value="PCR Positive Term" ></p:outputLabel><!-- comment -->
-                            <p:inputText value="#{preferenceController.pcrPositiveTerm}" ></p:inputText>
+                        <p:panelGrid columns="2" class="w-100 border border-light bg-white" >
+                            <p:outputLabel value="PCR Positive Term" class="fs-6 fw-bold" ></p:outputLabel><!-- comment -->
+                            <p:inputText value="#{preferenceController.pcrPositiveTerm}" class="form-control w-100"></p:inputText>
 
-                            <p:outputLabel value="PCR Negative Term" ></p:outputLabel><!-- comment -->
-                            <p:inputText value="#{preferenceController.pcrNegativeTerm}" ></p:inputText>
+                            <p:outputLabel value="PCR Negative Term" class="fs-6 fw-bold"></p:outputLabel><!-- comment -->
+                            <p:inputText value="#{preferenceController.pcrNegativeTerm}" class="form-control w-100"></p:inputText>
 
-                            <p:outputLabel value="PCR Inconclusive Term" ></p:outputLabel><!-- comment -->
-                            <p:inputText value="#{preferenceController.pcrInconclusiveTerm}" ></p:inputText>
+                            <p:outputLabel value="PCR Inconclusive Term" class="fs-6 fw-bold"></p:outputLabel><!-- comment -->
+                            <p:inputText value="#{preferenceController.pcrInconclusiveTerm}" class="form-control w-100"></p:inputText>
 
-                            <p:outputLabel value="PCR Invalid Term" ></p:outputLabel><!-- comment -->
-                            <p:inputText value="#{preferenceController.pcrInvalidTerm}" ></p:inputText>
+                            <p:outputLabel value="PCR Invalid Term" class="fs-6 fw-bold" ></p:outputLabel><!-- comment -->
+                            <p:inputText value="#{preferenceController.pcrInvalidTerm}" class="form-control w-100"></p:inputText>
 
-                            <p:outputLabel value="PCR Positive Comment" ></p:outputLabel><!-- comment -->
-                            <p:inputText value="#{preferenceController.pcrPositiveComment}" ></p:inputText>
+                            <p:outputLabel value="PCR Positive Comment" class="fs-6 fw-bold"></p:outputLabel><!-- comment -->
+                            <p:inputText value="#{preferenceController.pcrPositiveComment}" class="form-control w-100"></p:inputText>
 
-                            <p:outputLabel value="PCR Negative Comment" ></p:outputLabel><!-- comment -->
-                            <p:inputText value="#{preferenceController.pcrNegativeComment}" ></p:inputText>
+                            <p:outputLabel value="PCR Negative Comment" class="fs-6 fw-bold"></p:outputLabel><!-- comment -->
+                            <p:inputText value="#{preferenceController.pcrNegativeComment}" class="form-control w-100"></p:inputText>
 
-                            <p:outputLabel value="PCR Inconclusive Comment" ></p:outputLabel><!-- comment -->
-                            <p:inputText value="#{preferenceController.pcrInconclusiveComment}" ></p:inputText>
+                            <p:outputLabel value="PCR Inconclusive Comment" class="fs-6 fw-bold"></p:outputLabel><!-- comment -->
+                            <p:inputText value="#{preferenceController.pcrInconclusiveComment}" class="form-control w-100"></p:inputText>
 
-                            <p:outputLabel value="PCR Invalid Comment" ></p:outputLabel><!-- comment -->
-                            <p:inputText value="#{preferenceController.pcrInvalidComment}" ></p:inputText>
+                            <p:outputLabel value="PCR Invalid Comment" class="fs-6 fw-bold"></p:outputLabel><!-- comment -->
+                            <p:inputText value="#{preferenceController.pcrInvalidComment}" class="form-control w-100"></p:inputText>
 
 
-                            <p:outputLabel value="CT1 Term" ></p:outputLabel><!-- comment -->
-                            <p:inputText value="#{preferenceController.ct1Term}" ></p:inputText>
+                            <p:outputLabel value="CT1 Term" class="fs-6 fw-bold"></p:outputLabel ><!-- comment -->
+                            <p:inputText value="#{preferenceController.ct1Term}" class="form-control w-100"></p:inputText>
 
-                            <p:outputLabel value="CT2 Term" ></p:outputLabel><!-- comment -->
-                            <p:inputText value="#{preferenceController.ct2Term}" ></p:inputText>
+                            <p:outputLabel value="CT2 Term" class="fs-6 fw-bold"></p:outputLabel><!-- comment -->
+                            <p:inputText value="#{preferenceController.ct2Term}" class="form-control w-100"></p:inputText>
 
                         </p:panelGrid>
 
                     </p:tab>
 
                     <p:tab title="Individual Print Report Format" >
-                        <p:panelGrid columns="2" style="width: 100%;">
+                        <p:panelGrid columns="2" class="w-100 border border-light bg-white">
                             <h:panelGroup >
-                                <p:outputLabel value="Lab Report HTML" ></p:outputLabel>
+                                <p:outputLabel value="Lab Report HTML" class="fw-bold"></p:outputLabel>
                                 {name}
                                 {age}
                                 {sex}
@@ -155,12 +153,12 @@
 
 
                     <p:tab title="Bulk Print Report Format" >
-                        <p:panelGrid columns="2" style="width: 100%;">
-                            <p:outputLabel value="Number of rows per page" ></p:outputLabel>
-                            <p:inputText value="#{preferenceController.numberOfRowsPerPage}" ></p:inputText>
+                        <p:panelGrid columns="2" class="w-100 border border-light bg-white">
+                            <p:outputLabel value="Number of rows per page" class="fs-6 fw-bold"></p:outputLabel>
+                            <p:inputText value="#{preferenceController.numberOfRowsPerPage}" class="form-control w-100"></p:inputText>
 
                             <h:panelGroup >
-                                <p:outputLabel value="Lab Report HTML" ></p:outputLabel>
+                                <p:outputLabel value="Lab Report HTML" class="fs-6 fw-bold"></p:outputLabel>
                                 {institute}
                                 {result_table}
                                 {sampled_date}
@@ -186,7 +184,11 @@
 
                 </p:tabView>
 
+                <f:facet name="footer" >
+                    <h:commandButton class="btn btn-success text-white w-25" action="#{preferenceController.savePreferencesInstitution()}" 
+                                     value="SAVE" style="float: left;"></h:commandButton>
 
+                </f:facet>
 
 
 
