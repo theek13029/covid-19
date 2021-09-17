@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <div class="container bg-none mb-4 w-100 d-flex justify-content-around align-items-center" >
-                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
+                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded d-none d-md-block d-lg-block">
                             <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
                             <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
@@ -36,22 +36,63 @@
                             <h:outputLabel class="h6 fw-bold" value="Plate No." ></h:outputLabel>
                             <h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText>
                         </h:panelGrid>
-                        <h:panelGrid columns="1" class="shadow-lg p-3 mb-5 bg-white rounded" >
-                            <h:commandButton value="Process" class="btn btn-warning w-100"
-                                             action="#{clientController.toConfirmResults()}" ></h:commandButton>
-                            <h:commandButton value="Generate Excel" class="btn btn-success w-100">
-                                <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
-                            </h:commandButton>
-                            <h:commandButton value="Conform selected" class="btn btn-success w-100"
-                                             action="#{clientController.confirmSelectedResults()}" ></h:commandButton>
-                        </h:panelGrid>
+
+                        <div class="d-none d-md-block d-lg-block">
+                            <h:panelGrid columns="1" class="shadow-lg p-3 mb-5 bg-white rounded " >
+                                <h:commandButton value="Process" class="btn btn-warning w-100"
+                                                 action="#{clientController.toConfirmResults()}" ></h:commandButton>
+                                <h:commandButton value="Generate Excel" class="btn btn-success w-100">
+                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
+                                </h:commandButton>
+                                <h:commandButton value="Conform selected" class="btn btn-success w-100"
+                                                 action="#{clientController.confirmSelectedResults()}" ></h:commandButton>
+                            </h:panelGrid>
+                        </div></div>
+
+
+
+                    <div class="card border border-light d-md-none">
+                        <div class="card-body">
+
+                            <div class="col-sm-12"><h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel></div>
+                            <div class="col-sm-12"><p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar></div>
+                            <div class="col-sm-12"><h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel></div>
+                            <div class="col-sm-12"><p:calendar  class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar></div>
+                            <div class="col-sm-12"><h:outputLabel class="h6 fw-bold" value="Ordered Institution" ></h:outputLabel></div>
+                            <div class="col-sm-12"><p:autoComplete value="#{clientController.institution}"
+                                                                   completeMethod="#{institutionController.completeInstitutions}"
+                                                                   var="m" itemLabel="#{m.name}" itemValue="#{m}" >
+                                </p:autoComplete></div>
+                            <div class="col-sm-12"><h:outputLabel class="h6 fw-bold" value="Plate No." ></h:outputLabel></div>
+                            <div class="col-sm-12"><h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText></div>
+
+                        </div>
+
+
+                        <div class="card-footer bg-white">
+                            <div class="col-sm-12 mb-2"><h:commandButton value="Process" class="btn btn-warning w-100"
+                                                                         action="#{clientController.toConfirmResults()}" ></h:commandButton></div>
+                            <div class="col-sm-12 mb-2"><h:commandButton value="Generate Excel" class="btn btn-success w-100">
+                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
+                                </h:commandButton></div>
+                            <div class="col-sm-12"><h:commandButton value="Conform selected" class="btn btn-success w-100"
+                                                                    action="#{clientController.confirmSelectedResults()}" ></h:commandButton></div>
+
+                        </div>
                     </div>
+
+
+
+
+
 
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
 
-                        <p:outputLabel value="c"  ></p:outputLabel>
+                        <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button"
+                                         value="Columns" />
+                        <p:columnToggler datasource="tbl" trigger="toggler" />
 
-                        <p:dataTable id="tbl" value="#{clientController.listedToConfirm}" 
+                        <p:dataTable reflow="true" id="tbl" value="#{clientController.listedToConfirm}" 
                                      var="c"  rowKey="#{c.id}" 
                                      resizeMode="expand" resizableColumns="true"
 
@@ -86,7 +127,7 @@
                             </p:column>`
                             <p:column id="txtLabNo" headerText="Lab No" sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
                                 <h:inputText value="#{c.labNumber}" >
-                                <p:ajax event="blur" process="txtLabNo" 
+                                    <p:ajax event="blur" process="txtLabNo" 
                                             listener="#{clientController.saveLabNo(c)}" >
                                     </p:ajax>
                                 </h:inputText>
