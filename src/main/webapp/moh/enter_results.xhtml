@@ -22,10 +22,10 @@
                     <h:form >
                         <div class="row" >
                             <div class="col-12 text-center mt-4 mb-2" >
-                                <h4 class="fw-bold"><h:outputLabel  value="Entering Test Results" ></h:outputLabel></h4>
+                                <h4 class="fw-bold">Entering Test Results</h4>
                             </div>
                         </div>
-                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                        <div class="container mb-3 w-100 d-flex justify-content-center align-items-center" >
                         
                             <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
                                 <h:outputLabel class="h6 fw-bold" value="Ordered From" ></h:outputLabel>
@@ -78,7 +78,11 @@
 
                         </div>
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{mohController.tests}" 
+                            <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button" value="Filter Columns" />
+                            <p:columnToggler datasource="tbl" trigger="toggler"/>
+                            
+                            
+                            <p:dataTable reflow="true" id="tbl" value="#{mohController.tests}" 
                                      var="c" rowKey="#{c.id}" 
                                      rows="10"  resizeMode="expand" resizableColumns="true"
                                      paginator="true" 
