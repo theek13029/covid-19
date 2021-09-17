@@ -360,7 +360,7 @@ public Long samplesAwaitingDispatch(
             + " where c.retired=:ret "
             + " and c.encounterType=:type "
             + " and c.encounterDate between :fd and :td "
-            + " and c.testType=:testType ";
+            + " and c.pcrTestType=:testType ";
 
     if (institution != null){
         jpql += " and c.institution=:ins ";
