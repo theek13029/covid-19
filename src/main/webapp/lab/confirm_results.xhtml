@@ -50,42 +50,6 @@
                         </div></div>
 
 
-
-                    <div class="card border border-light d-md-none">
-                        <div class="card-body">
-
-                            <div class="col-sm-12"><h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel></div>
-                            <div class="col-sm-12"><p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar></div>
-                            <div class="col-sm-12"><h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel></div>
-                            <div class="col-sm-12"><p:calendar  class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar></div>
-                            <div class="col-sm-12"><h:outputLabel class="h6 fw-bold" value="Ordered Institution" ></h:outputLabel></div>
-                            <div class="col-sm-12"><p:autoComplete value="#{clientController.institution}"
-                                                                   completeMethod="#{institutionController.completeInstitutions}"
-                                                                   var="m" itemLabel="#{m.name}" itemValue="#{m}" >
-                                </p:autoComplete></div>
-                            <div class="col-sm-12"><h:outputLabel class="h6 fw-bold" value="Plate No." ></h:outputLabel></div>
-                            <div class="col-sm-12"><h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText></div>
-
-                        </div>
-
-
-                        <div class="card-footer bg-white">
-                            <div class="col-sm-12 mb-2"><h:commandButton value="Process" class="btn btn-warning w-100"
-                                                                         action="#{clientController.toConfirmResults()}" ></h:commandButton></div>
-                            <div class="col-sm-12 mb-2"><h:commandButton value="Generate Excel" class="btn btn-success w-100">
-                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
-                                </h:commandButton></div>
-                            <div class="col-sm-12"><h:commandButton value="Conform selected" class="btn btn-success w-100"
-                                                                    action="#{clientController.confirmSelectedResults()}" ></h:commandButton></div>
-
-                        </div>
-                    </div>
-
-
-
-
-
-
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
 
                         <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button"
