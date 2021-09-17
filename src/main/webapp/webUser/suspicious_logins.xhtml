@@ -29,36 +29,40 @@ THE SOFTWARE.
       xmlns:p="http://primefaces.org/ui">
 
     <body>
+
         <ui:composition template="/template1.xhtml">
+            <ui:define name="title">
+                National | Suspicious Logins
+            </ui:define>
             <ui:define name="content"> 
                 <h:form id="WebUserEditForm">
                     <p:panelGrid columns="1" rendered="#{webUserController.loggedUser != null}"
-                                 style="margin: auto; text-align: left; width: 100%;" styleClass="alignTop">
+                                 styleClass="alignTop m-auto w-100 border border-light bg-white">
 
-                        <p:panelGrid columns="6" > 
-                            <p:outputLabel value="IP"  />
-                            <p:inputText  value="#{userTransactionController.ip}"></p:inputText> 
+                        <p:panelGrid columns="6" class="bg-white border border-light"> 
+                            <h:outputLabel class="fs-6 fw-bold px-4 py-2" value="IP"></h:outputLabel>
+                            <h:inputText class="form-control" value="#{userTransactionController.ip}"></h:inputText> 
 
-                            <p:outputLabel value="From"  />
+                            <h:outputLabel class="fs-6 fw-bold  px-4 " value="From" ></h:outputLabel>
                             <p:calendar value="#{userTransactionController.fromDate}" pattern="dd/MM/yyyy hh:mm">
                             </p:calendar>
 
-                            <p:outputLabel value="To"  />
+                            <h:outputLabel class="fs-6 fw-bold  px-4 " value="To"></h:outputLabel>
                             <p:calendar value="#{userTransactionController.toDate}"  pattern="dd/MM/yyyy hh:mm">
                             </p:calendar>
                         </p:panelGrid>
 
-                        <p:panelGrid>
-                            <p:commandButton ajax="false" action="#{userTransactionController.clearSearch()}" value="Clear" ></p:commandButton>
-                            <p:commandButton ajax="false" action="#{userTransactionController.searchSuspiciousLogins()}" value="Search" ></p:commandButton>
-                            <p:commandButton ajax="false" value="Download" >
+                        <p:panelGrid columns="3" class="border border-light bg-white">
+                            <h:commandButton class="btn btn-warning my-2 w-100" action="#{userTransactionController.clearSearch()}" value="Clear" ></h:commandButton>
+                            <h:commandButton class="btn btn-success my-2 w-100" action="#{userTransactionController.searchSuspiciousLogins()}" value="Search" ></h:commandButton>
+                            <h:commandButton  class="btn btn-success my-2 w-100" value="Download" >
                                 <p:dataExporter target="tbl" type="xls" fileName="suspicious login list" >
                                 </p:dataExporter>
-                            </p:commandButton>
+                            </h:commandButton>
                         </p:panelGrid>
 
 
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" 
+                        <p:dataTable reflow="true" resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" 
                                      value="#{userTransactionController.suspiciousLogins}" var="c"
                                      rowIndexVar="n"
                                      paginator="true"
