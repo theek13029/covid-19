@@ -351,14 +351,16 @@ public Long samplesAwaitingDispatch(
         Area area,
         Date fromDate,
         Date toDate,
-        Institution institution
+        Institution institution,
+        Item testType
 ) {
     Map hashMap = new HashMap();
     String jpql = "select count(c) "
             + " from Encounter c "
             + " where c.retired=:ret "
             + " and c.encounterType=:type "
-            + " and c.encounterDate between :fd and :td ";
+            + " and c.encounterDate between :fd and :td "
+            + " and c.testType=:testType";
 
     if (institution != null){
         jpql += " and c.institution=:ins ";
@@ -403,7 +405,8 @@ public Long samplesAwaitingDispatch(
     hashMap.put("fd", fromDate);
     hashMap.put("sl", false);
     hashMap.put("td", toDate);
-   
+    hashMap.put("testType", testType);
+
 
     return encounterFacade.findLongByJpql(jpql, hashMap, TemporalType.DATE);
 
