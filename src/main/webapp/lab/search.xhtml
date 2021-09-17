@@ -9,6 +9,15 @@
 
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
+                
+                 <div class="row">
+                    <div class="container my-4">
+                        <div class="d-flex justify-content-center bg-warning">
+                            <h:outputText value="Under Construction" class="tex-danger h1" ></h:outputText>
+                        </div>
+                    </div>
+                 </div>
+                
                 <div class="row">
                     <div class="container my-4">
                         <div class="d-flex justify-content-center">
@@ -38,9 +47,9 @@
                     <div class="container my-4">
                         <div class="d-flex justify-content-center">
                             <h:form>
-                                <div class="text-center fw-bold fs-5">Search by Name</div>
+                                <div class="text-center fw-bold fs-5">Search by ID</div>
                                 <p:panelGrid columns="4" class="bg-white border border-light">
-                                    <p:outputLabel  class="fs-6 fw-bold" value="Name" 
+                                    <p:outputLabel  class="fs-6 fw-bold" value="ID" 
                                                     for="txtSearchId"></p:outputLabel>
                                     <p:inputText  class="form-control fs-6" id="txtSearchId"
                                                   required="true" 
@@ -92,7 +101,7 @@
                                 <p:panelGrid columns="4" class="bg-white border border-light">
                                     <p:outputLabel  class="fs-6 fw-bold" value="Test No" 
                                                     for="txtSearchTestNo"></p:outputLabel>
-                                    <p:inputText  class="form-control fs-6" id="txtSearchLabNo"
+                                    <p:inputText  class="form-control fs-6" id="txtSearchTestNo"
                                                   required="true" 
                                                   requiredMessage="Please enter a Test number to search"
                                                   value="#{clientController.searchingName}" >
