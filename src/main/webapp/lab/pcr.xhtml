@@ -73,7 +73,7 @@
               </div>
             </div>
             <div class="row mb-4">
-              <h5 class="text-muted fw-bold">Reginoal Details</h5>
+              <h5 class="text-muted fw-bold">Regional Details</h5>
               <div class="col md-3">
                 <label class="form-label fw-bold" for="district">District</label>
                 <p:autoComplete required="true" requiredMessage="Please select a district" id="district"
@@ -170,7 +170,7 @@
             <div class="row mb-4">
               <div class="col-md-3">
                 <label for="symptomatic" class="form-label fw-bold">Symptomatic status</label>
-                <h:selectOneMenu id="symptomatic" value="#{labController.pcr.symptomatic}"
+                <h:selectOneMenu id="symptomatic" value="#{labController.pcr.symptomaticStatus}"
                   class="form-select">
                   <f:selectItem itemLabel="Please select"></f:selectItem>
                   <f:selectItems value="#{itemApplicationController.symptomaticStatuses}" var="symptomaticStatus"
