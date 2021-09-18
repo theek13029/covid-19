@@ -126,21 +126,21 @@ public class ClientController implements Serializable {
 
     private Area district;
 
-    private String testNoCol = "A";
-    private String labNoCol = "B";
-    private String nameCol = "C";
-    private String ageColumn = "D";
-    private String sexCol = "E";
-    private String nicCol = "F";
-    private String phoneCol = "G";
-    private String addressCol = "H";
-    private String mohCol = "I";
-    private String districtCol = "J";
-    private String wardCol = "K";
-    private String bhtCol = "L";
-    private String resultCol = "M";
-    private String ct1Col = "N";
-    private String ct2Col = "O";
+    private String testNoCol;
+    private String labNoCol;
+    private String nameCol;
+    private String ageColumn;
+    private String sexCol;
+    private String nicCol;
+    private String phoneCol;
+    private String addressCol;
+    private String mohCol;
+    private String districtCol;
+    private String wardCol;
+    private String bhtCol;
+    private String resultCol;
+    private String ct1Col;
+    private String ct2Col;
 
     private Integer startRow = 1;
 
@@ -2675,33 +2675,33 @@ public class ClientController implements Serializable {
 
         district = institution.getDistrict();
 
-        String strTestNo;
-        String strLabNo;
-        String strName;
-        String strSex;
-        String strPhone;
-        String strAddress;
-        String strNic;
-        String strResult;
-        int testNoColInt;
-        int labNoColInt;
-        int ageColInt;
-        int nameColInt;
-        int sexColInt;
-        int nicColInt;
-        int phoneColInt;
-        int addressColInt;
-        int resultColInt;
-        int mohColInt;
-        int districtColInt;
-        int wardColInt;
-        int bhtColInt;
-        int ct1ColInt;
-        int ct2ColInt;
-        Item sex;
-        Item result;
+        String strTestNo = null;
+        String strLabNo = null;
+        String strName = null;
+        String strSex = null;
+        String strPhone = null;
+        String strAddress = null;
+        String strNic = null;
+        String strResult = null;
+        Integer testNoColInt;
+        Integer labNoColInt;
+        Integer ageColInt;
+        Integer nameColInt;
+        Integer sexColInt;
+        Integer nicColInt;
+        Integer phoneColInt;
+        Integer addressColInt;
+        Integer resultColInt;
+        Integer mohColInt;
+        Integer districtColInt;
+        Integer wardColInt;
+        Integer bhtColInt;
+        Integer ct1ColInt;
+        Integer ct2ColInt;
+        Item sex = null;
+        Item result = null;
 
-        int ageInYears;
+        int ageInYears = 0;
 
         nameColInt = CommonController.excelColFromHeader(nameCol);
         ageColInt = CommonController.excelColFromHeader(ageColumn);
@@ -2734,19 +2734,31 @@ public class ClientController implements Serializable {
                     continue;
                 }
 
-                strTestNo = cellValue(row.getCell(testNoColInt));
-                strLabNo = cellValue(row.getCell(labNoColInt));
-                strNic = cellValue(row.getCell(nicColInt));
+                if (testNoColInt != null) {
+                    strTestNo = cellValue(row.getCell(testNoColInt));
+                }
+                if (labNoColInt != null) {
+                    strLabNo = cellValue(row.getCell(labNoColInt));
+                }
+                if (nicColInt != null) {
+                    strNic = cellValue(row.getCell(nicColInt));
+                }
                 Client c = null;
                 if (strNic != null && !strNic.trim().equals("") && strNic.trim().length() > 5) {
                     c = getClientByNic(strNic);
                 }
 
                 if (c == null) {
-                    strName = cellValue(row.getCell(nameColInt));
-                    strSex = cellValue(row.getCell(sexColInt));
-                    strPhone = cellValue(row.getCell(phoneColInt));
-                    if (strPhone == null) {
+                    if (nameColInt != null) {
+                        strName = cellValue(row.getCell(nameColInt));
+                    }
+                    if (sexColInt != null) {
+                        strSex = cellValue(row.getCell(sexColInt));
+                    }
+                    if (phoneColInt != null) {
+                        strPhone = cellValue(row.getCell(phoneColInt));
+                    }
+                    if (strPhone != null) {
                         strPhone = "'" + strPhone;
                     } else {
                         Double dbl = cellValueDouble(row.getCell(phoneColInt));
@@ -2754,11 +2766,17 @@ public class ClientController implements Serializable {
                             strPhone = "'" + dbl + "";
                         }
                     }
-                    strAddress = cellValue(row.getCell(addressColInt));
-                    strNic = cellValue(row.getCell(nicColInt));
+                    if (addressColInt != null) {
+                        strAddress = cellValue(row.getCell(addressColInt));
+                    }
+                    if (nicColInt != null) {
+                        strNic = cellValue(row.getCell(nicColInt));
+                    }
 
-                    ageInYears = cellValueInt(row.getCell(ageColInt));
-                    if (strSex.toLowerCase().contains("f")) {
+                    if (ageColInt != null) {
+                        ageInYears = cellValueInt(row.getCell(ageColInt));
+                    }
+                    if (strSex != null && strSex.toLowerCase().contains("f")) {
                         sex = itemApplicationController.getFemale();
                     } else {
                         sex = itemApplicationController.getMale();
@@ -2771,15 +2789,22 @@ public class ClientController implements Serializable {
                     ageInYears = c.getPerson().getAgeYears();
                 }
 
-                strResult = cellValue(row.getCell(resultColInt));
-                if (strResult.toLowerCase().contains("pos")) {
-                    result = itemApplicationController.getPcrPositive();
-                } else {
-                    result = itemApplicationController.getPcrNegative();
+                if (resultColInt != null) {
+                    strResult = cellValue(row.getCell(resultColInt));
+                }
+                if (strResult != null) {
+                    if (strResult.toLowerCase().contains("pos")) {
+                        result = itemApplicationController.getPcrPositive();
+                    } else {
+                        result = itemApplicationController.getPcrNegative();
+                    }
                 }
 
                 Area ptDistrict = null;
-                String districtName = cellValue(row.getCell(districtColInt));
+                String districtName = null;
+                if (districtColInt != null) {
+                    districtName = cellValue(row.getCell(districtColInt));
+                }
                 if (districtName != null) {
                     ptDistrict = areaController.getAreaByCodeIfNotName(districtName, AreaType.District);
                 }
@@ -2788,7 +2813,11 @@ public class ClientController implements Serializable {
                 }
 
                 Area ptMoh = null;
-                String mohName = cellValue(row.getCell(mohColInt));
+                String mohName = null;
+                if (mohColInt != null) {
+                    mohName = cellValue(row.getCell(mohColInt));
+                }
+
                 if (mohName != null) {
                     ptMoh = areaController.getAreaByCodeIfNotName(districtName, AreaType.MOH);
                 }
@@ -2809,46 +2838,60 @@ public class ClientController implements Serializable {
                 ci.setDistrict(ptDistrict);
                 ci.setMoh(ptMoh);
 
-                String ptWard = cellValue(row.getCell(wardColInt));
-                if (ptWard != null) {
-                    ci.setWardUnit(ptWard);
-                } else {
-                    Double dbl = cellValueDouble(row.getCell(wardColInt));
-                    if (dbl != null) {
-                        ci.setWardUnit("'" + dbl + "");
+                String ptWard = null;
+                if (wardColInt != null) {
+                    ptWard = cellValue(row.getCell(wardColInt));
+
+                    if (ptWard != null) {
+                        ci.setWardUnit(ptWard);
+                    } else {
+                        Double dbl = cellValueDouble(row.getCell(wardColInt));
+                        if (dbl != null) {
+                            ci.setWardUnit("'" + dbl + "");
+                        }
                     }
                 }
 
-                String ptBht = cellValue(row.getCell(bhtColInt));
-                if (ptBht != null) {
-                    ci.setBhtNo(ptBht);
-                } else {
-                    Double dbl = cellValueDouble(row.getCell(bhtColInt));
-                    if (dbl != null) {
-                        ci.setBhtNo("'" + dbl + "");
+                String ptBht = null;
+                if (bhtColInt != null) {
+                    ptBht = cellValue(row.getCell(bhtColInt));
+
+                    if (ptBht != null) {
+                        ci.setBhtNo(ptBht);
+                    } else {
+                        Double dbl = cellValueDouble(row.getCell(bhtColInt));
+                        if (dbl != null) {
+                            ci.setBhtNo("'" + dbl + "");
+                        }
                     }
                 }
 
-                Double ptCt1 = cellValueDouble(row.getCell(ct1ColInt));
-                if (ptCt1 == null) {
-                    String ct = cellValue(row.getCell(ct1ColInt));
-                    if (ct != null && !ct.trim().equals("")) {
-                        ptCt1 = CommonController.getDoubleValue(ct);
+                Double ptCt1 = null;
+                if (ct1ColInt != null) {
+                    ptCt1 = cellValueDouble(row.getCell(ct1ColInt));
+                    if (ptCt1 == null) {
+                        String ct = cellValue(row.getCell(ct1ColInt));
+                        if (ct != null && !ct.trim().equals("")) {
+                            ptCt1 = CommonController.getDoubleValue(ct);
+                        }
                     }
                 }
-                if(ptCt1!=null && ptCt1 < 1){
-                    ptCt1=null;
+                if (ptCt1 != null && ptCt1 < 1) {
+                    ptCt1 = null;
                 }
-                
-                Double ptCt2 = cellValueDouble(row.getCell(ct2ColInt));
-                if (ptCt2 == null) {
-                    String ct = cellValue(row.getCell(ct2ColInt));
-                    if (ct != null && !ct.trim().equals("")) {
-                        ptCt2 = CommonController.getDoubleValue(ct);
+
+                Double ptCt2 = null;
+                if (ct2ColInt != null) {
+                    ptCt2 = cellValueDouble(row.getCell(ct2ColInt));
+                    if (ptCt2 == null) {
+                        String ct = cellValue(row.getCell(ct2ColInt));
+                        if (ct != null && !ct.trim().equals("")) {
+                            ptCt2 = CommonController.getDoubleValue(ct);
+                        }
                     }
                 }
-                if(ptCt2!=null && ptCt2 < 1){
-                    ptCt2=null;
+                if (ptCt2 != null && ptCt2 < 1) {
+                    ptCt2 = null;
                 }
 
                 if (ptCt1 != null && ptCt1 != 0.0) {
