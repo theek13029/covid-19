@@ -1687,6 +1687,23 @@ public class MohController implements Serializable {
             return "";
         }
     }
+    
+    public String saveRatAndToTestList() {
+        boolean newOne = false;
+        if (pcr != null) {
+            if (pcr.getId() == null) {
+                newOne = true;
+            }
+        }
+        if (saveRat()!= null) {
+            if (newOne) {
+                return toTestList();
+            }
+            return toTestListNoProcess();
+        } else {
+            return "";
+        }
+    }
 
     public String saveRatAndToRatOrderView() {
         saveRat();
