@@ -65,56 +65,7 @@
                     </div>
 
 
-                    <!-- Mobile friendly design -->
-
-
-                    <div class="card border border-light d-md-none">
-                        <div class="card-body">
-                            <div class="col-sm-12"><h:outputLabel class="h6 fw-bold mb-2" value="Sample Sent From Date" ></h:outputLabel></div>
-                            <div class="col-sm-12"><p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar></div>
-                            <div class="col-sm-12"><h:outputLabel class="h6 fw-bold mb-2" value="Sample Sent To Date" ></h:outputLabel></div>
-                            <div class="col-sm-12"><p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar></div>
-                            <div class="card-footer bg-white">
-                                <div class="col-sm-12">
-                                    <h:commandButton value="Process" 
-                                                     action="#{clientController.toLabReceiveAll()}" class="btn btn-warning w-100 my-2" ></h:commandButton>
-                                </div>
-                                <div class="col-sm-12">
-                                    <h:commandButton value="Generate Excel" class="btn btn-success w-100 my-2" >
-                                        <p:dataExporter type="xlsx" fileName="Samples to receive" target="tbl" ></p:dataExporter>
-                                    </h:commandButton>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-
-                    <div class="card border border-light d-md-none my-3">
-                        <div class="card-header bg-success text-white fw-bold text-center">
-                            <p:outputLabel value="Lab number generation" ></p:outputLabel>
-                        </div>
-                        <div class="card-body bg-white">
-                            <div class="col-sm-12">
-                                <h:outputLabel class="fw-bold mb-2" value="Serial No Prefix" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:outputLabel></div>
-                            <div class="col-sm-12">
-                                 <h:inputText class="form-control" value="#{clientController.serialPrefix}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:inputText>
-                            </div>
-                            <div class="col-sm-12">
-                                <h:outputLabel class="fw-bold" value="Serial No Starts from" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:outputLabel>
-                            </div>
-                            <div class="col-sm-12">
-                                <h:inputText class="form-control" value="#{clientController.serialStart}" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></h:inputText>
-                            </div>
-                            <div class="col-sm-12">
-                                 <h:outputLabel class="h6 fw-bold" value="Plate No" ></h:outputLabel>
-                            </div>
-                            <div class="col-sm-12">
-                                <p:inputText class="form-control" value="#{clientController.plateNo}" ></p:inputText>
-                            </div>
-
-                        </div>
-                    </div>
+                 
 
 
 
