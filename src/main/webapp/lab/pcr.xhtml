@@ -178,13 +178,15 @@
                 </h:selectOneMenu>
               </div>
               <div class="col-md-3">
-                <label for="vaccineStatus" class="form-label fw-bold">Vaccination Status</label>
-                <h:selectOneMenu id="vaccineStatus" value="#{labController.pcr.vaccinationStatus}" class="form-select">
+                <label for="vaccineStatus" class="form-label fw-bold">Vaccination Status <small
+                    class="text-muted px-2">Required</small></label>
+                <h:selectOneMenu id="vaccineStatus" value="#{labController.pcr.vaccinationStatus}" required="true" class="form-select" requiredMessage="Vaccination Status is required">
                   <f:selectItem itemLabel="Please select"></f:selectItem>
                   <f:selectItems value="#{itemApplicationController.vaccinationStatuses}" var="statuses"
                     itemLabel="#{statuses.name}" itemValue="#{statuses}">
                   </f:selectItems>
                 </h:selectOneMenu>
+                  <h:message class="text-danger small" for="vaccineStatus"></h:message>
               </div>
               <div class="col-md-3">
                 <label for="phn" class="form-label fw-bold">
