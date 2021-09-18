@@ -8,7 +8,10 @@
 
     <h:body>
         <ui:composition template="/template1.xhtml">
-            <ui:define name="content">
+             <ui:define name="title">
+                Dispatch Summary
+            </ui:define>
+             <ui:define name="content"> 
                 <h:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
                         <h:outputLabel value="Dispatch Summary" ></h:outputLabel>
@@ -16,16 +19,16 @@
 
                     <h:form >
                         <h:panelGrid columns="2" >
-                            <h:outputLabel value="Ordered From" ></h:outputLabel>
+                            <h:outputLabel class="fs-6 fw-bold" value="Ordered From" ></h:outputLabel>
                             <p:calendar value="#{nationalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm">
                             </p:calendar><!-- comment -->
 
-                            <h:outputLabel value="Ordered To" ></h:outputLabel>
+                            <h:outputLabel class="fs-6 fw-bold" value="Ordered To" ></h:outputLabel>
                             <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy hh:mm"></p:calendar>
 
-                            <h:outputLabel value="Test" ></h:outputLabel>
-                            <p:selectOneMenu value="#{nationalController.testType}" class="form-control" >
+                            <h:outputLabel class="fs-6 fw-bold" value="Test" ></h:outputLabel>
+                            <p:selectOneMenu value="#{nationalController.testType}" class="form select" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{nationalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
@@ -37,7 +40,8 @@
                             </h:commandButton>
                             <h:commandButton value="Process"
                                              class="btn btn-warning w-100"
-                                             action="#{nationalController.prepareDispatchSummery()}" ></h:commandButton>
+                                             action="#{nationalController.prepareDispatchSummery()}" >
+                            </h:commandButton>
 
 
                         </h:panelGrid>
