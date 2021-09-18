@@ -166,12 +166,14 @@
                             </div>
                             <div class="my-4 row">
                                 <div class="col-md-3">
-                                    <label for="vstatus" class="form-label fw-bold">Vaccination Status</label>
-                                    <h:selectOneMenu id="vstatus" value="#{mohController.rat.vaccinationStatus}" class="form-select">
+                                    <label for="vstatus" class="form-label fw-bold">Vaccination Status <small
+                                            class="text-muted px-2">Required</small></label>
+                                    <h:selectOneMenu id="vstatus" value="#{mohController.rat.vaccinationStatus}" class="form-select" required="true" requiredMessage="Vaccination Status is required">
                                         <f:selectItem itemLabel="Please select"></f:selectItem>
                                         <f:selectItems value="#{itemApplicationController.vaccinationStatuses}" var="s" itemLabel="#{s.name}"
                                                        itemValue="#{s}"></f:selectItems>
                                     </h:selectOneMenu>
+                                    <h:message class="text-danger small" for="vstatus"></h:message>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="symptomatic" class="form-label fw-bold">Symptomatic Status</label>
