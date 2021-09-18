@@ -127,19 +127,19 @@ public class ClientController implements Serializable {
     private Area district;
 
     private String testNoCol;
-    private String labNoCol ;
-    private String nameCol ;
-    private String ageColumn ;
-    private String sexCol ;
-    private String nicCol ;
+    private String labNoCol;
+    private String nameCol;
+    private String ageColumn;
+    private String sexCol;
+    private String nicCol;
     private String phoneCol;
-    private String addressCol ;
+    private String addressCol;
     private String mohCol;
-    private String districtCol ;
+    private String districtCol;
     private String wardCol;
-    private String bhtCol ;
-    private String resultCol ;
-    private String ct1Col ;
+    private String bhtCol;
+    private String resultCol;
+    private String ct1Col;
     private String ct2Col;
 
     private Integer startRow = 1;
@@ -2841,26 +2841,28 @@ public class ClientController implements Serializable {
                 String ptWard = null;
                 if (wardColInt != null) {
                     ptWard = cellValue(row.getCell(wardColInt));
-                }
-                if (ptWard != null) {
-                    ci.setWardUnit(ptWard);
-                } else {
-                    Double dbl = cellValueDouble(row.getCell(wardColInt));
-                    if (dbl != null) {
-                        ci.setWardUnit("'" + dbl + "");
+
+                    if (ptWard != null) {
+                        ci.setWardUnit(ptWard);
+                    } else {
+                        Double dbl = cellValueDouble(row.getCell(wardColInt));
+                        if (dbl != null) {
+                            ci.setWardUnit("'" + dbl + "");
+                        }
                     }
                 }
 
                 String ptBht = null;
                 if (bhtColInt != null) {
                     ptBht = cellValue(row.getCell(bhtColInt));
-                }
-                if (ptBht != null) {
-                    ci.setBhtNo(ptBht);
-                } else {
-                    Double dbl = cellValueDouble(row.getCell(bhtColInt));
-                    if (dbl != null) {
-                        ci.setBhtNo("'" + dbl + "");
+
+                    if (ptBht != null) {
+                        ci.setBhtNo(ptBht);
+                    } else {
+                        Double dbl = cellValueDouble(row.getCell(bhtColInt));
+                        if (dbl != null) {
+                            ci.setBhtNo("'" + dbl + "");
+                        }
                     }
                 }
 
