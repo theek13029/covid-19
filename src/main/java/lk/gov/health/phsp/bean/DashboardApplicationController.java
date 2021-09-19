@@ -437,6 +437,11 @@ public Long samplesAwaitingDispatch(
          hashMap.put("ins", institution);
     }
 
+    if (testType != null) {
+        jpql += " anc c.testType=:tt";
+        hashMap.put("tt", testType);
+    }
+
     if( area != null) {
         if (null != area.getType()) switch (area.getType()) {
             case District:
