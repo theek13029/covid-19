@@ -16,49 +16,49 @@
                         <div class= "col-3">
                             <h:form>
                                 
-                                <div class= "card my-3 mx-3 border border-light">
+                                <div class= "list-group mt-3"> 
 
                                     <h:commandButton  value="New User" action="#{menuController.toAddNewUser()}" 
-                                                      class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block"   />
-                                    <h:commandButton class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block"  value="View Users" action="#{menuController.toListUsers()}" 
+                                                      class="list-group-item btn btn-outline-primary  w-80 btn-block"   />
+                                    <h:commandButton class="list-group-item btn btn-outline-primary  w-80 btn-block"  value="View Users" action="#{menuController.toListUsers()}" 
                                                      />
-                                    <h:commandButton class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block"  value="Reload" action="#{webUserApplicationController.resetWebUsers()}" />
+                                    <h:commandButton class="list-group-item btn btn-outline-primary  w-80 btn-block"  value="Reload" action="#{webUserApplicationController.resetWebUsers()}" />
 
-                                    <h:commandButton  class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block"   value="Add Multiple Users" action="/national/admin/add_multiple_users" 
+                                    <h:commandButton  class="list-group-item btn btn-outline-primary  w-80 btn-block"   value="Add Multiple Users" action="/national/admin/add_multiple_users" 
                                                       />
-                                    <h:commandButton class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block"  value="Set Multiple User Privileges" action="#{webUserController.toSetUserPrivilages()}" 
+                                    <h:commandButton class="list-group-item btn btn-outline-primary  w-80 btn-block"  value="Set Multiple User Privileges" action="#{webUserController.toSetUserPrivilages()}" 
                                                      />
-                                    <h:commandButton class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block"  value="View Transactions" action="#{userTransactionController.toSearchUserTransactions()}" 
+                                    <h:commandButton class="list-group-item btn btn-outline-primary  w-80 btn-block"  value="View Transactions" action="#{userTransactionController.toSearchUserTransactions()}" 
                                                      />
                                     <h:commandButton value="Suspicious Login Attempts" action="#{userTransactionController.toSuspiciousLoginAttempts()}" 
-                                                    class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block"  />
+                                                    class="list-group-item btn btn-outline-primary  w-80 btn-block"  />
                                 </div>
-                                 <div class= "card my-3 mx-3 border border-light">
-                                <h:commandButton value="New Institution" class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block"  action="#{menuController.toAddNewInstitution()}" 
+                                 <div class= "list-group mt-3">
+                                <h:commandButton value="New Institution" class="list-group-item btn btn-outline-primary  w-80 btn-block"  action="#{menuController.toAddNewInstitution()}" 
                                                  />
-                                <h:commandButton value="List Institutions"  class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block"  action="#{menuController.toListInstitutions()}" 
+                                <h:commandButton value="List Institutions"  class="list-group-item btn btn-outline-primary  w-80 btn-block"  action="#{menuController.toListInstitutions()}" 
                                                  />
-                                <h:commandButton value="List Institutions &amp; Users"  class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block"  action="#{menuController.toListInstitutionsWithUsers()}" 
+                                <h:commandButton value="List Institutions &amp; Users"  class="list-group-item btn btn-outline-primary  w-80 btn-block"  action="#{menuController.toListInstitutionsWithUsers()}" 
                                                  />
-                                <h:commandButton  class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block" value="Add Multiple new Institutions and Users"  action="/national/admin/add_multiple_institutions_with_a_user"
+                                <h:commandButton  class="list-group-item btn btn-outline-primary  w-80 btn-block" value="Add Multiple new Institutions and Users"  action="/national/admin/add_multiple_institutions_with_a_user"
                                                  />
-                                <h:commandButton  class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block" value="Relod Institutions"  action="#{institutionController.resetAllInstitutions()}" 
-                                                 />
-                                 </div>
-                                 <div class= "card my-3 mx-3 border border-light">
-                                <h:commandButton  class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block" value="Add Area" action="#{areaController.toAddArea()}" 
-                                                 />
-                                <h:commandButton   class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block" value="List Area" action="#{areaController.toListAreasForSysAdmin()}" 
-                                                 />
-                                <h:commandButton value="Adding MOH with Users"   class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block" action="/national/admin/add_multiple_moh_areas_with_users" 
-                                                 />
-                                <h:commandButton value="Reload Areas"  class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block" action="#{areaApplicationController.invalidateItems()}" 
+                                <h:commandButton  class="list-group-item btn btn-outline-primary  w-80 btn-block" value="Relod Institutions"  action="#{institutionController.resetAllInstitutions()}" 
                                                  />
                                  </div>
-                                 <div class= "card my-3 mx-3 border border-light">
-                                <h:commandButton value="Manage Metadata"   class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block" action="/systemAdmin/manage_metadata_index"     />
-                                <h:commandButton value="Manage Data"  class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block"  action="/systemAdmin/manage_data_index"    />
-                                <h:commandButton value="Manage Preferences"  class="btn btn-outline-primary  w-80 my-2 mx-2 btn-block" action="#{preferenceController.toManagePreferences()}"    />
+                                 <div class= "list-group mt-3">
+                                <h:commandButton  class="list-group-item btn btn-outline-primary  w-80 btn-block" value="Add Area" action="#{areaController.toAddArea()}" 
+                                                 />
+                                <h:commandButton   class="list-group-item btn btn-outline-primary  w-80 btn-block" value="List Area" action="#{areaController.toListAreasForSysAdmin()}" 
+                                                 />
+                                <h:commandButton value="Adding MOH with Users"   class="list-group-item btn btn-outline-primary  w-80 btn-block" action="/national/admin/add_multiple_moh_areas_with_users" 
+                                                 />
+                                <h:commandButton value="Reload Areas"  class="list-group-item btn btn-outline-primary  w-80 btn-block" action="#{areaApplicationController.invalidateItems()}" 
+                                                 />
+                                 </div>
+                                 <div class= "list-group mt-3">
+                                <h:commandButton value="Manage Metadata"   class="list-group-item btn btn-outline-primary  w-80 btn-block" action="/systemAdmin/manage_metadata_index"     />
+                                <h:commandButton value="Manage Data"  class="list-group-item btn btn-outline-primary  w-80 btn-block"  action="/systemAdmin/manage_data_index"    />
+                                <h:commandButton value="Manage Preferences"  class="list-group-item btn btn-outline-primary  w-80 btn-block" action="#{preferenceController.toManagePreferences()}"    />
                                  </div>
                         </h:form>
                         </div>
