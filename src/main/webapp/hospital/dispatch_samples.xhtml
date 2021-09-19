@@ -33,7 +33,7 @@
                                 <h:outputLabel class="fs-6 fw-bold" value="Test" ></h:outputLabel>
                                 <h:selectOneMenu class="fs-6" value="#{hospitalController.testType}" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
-                                    <f:selectItems value="#{hospitalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                                    <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
                                 </h:selectOneMenu>
 

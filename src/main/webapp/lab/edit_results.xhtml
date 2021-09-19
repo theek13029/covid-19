@@ -56,34 +56,6 @@
                         </h:panelGrid>
 
 
-                        <div class="card border border-light d-md-none">
-                            <div class="card-body">
-                                <div class="col-sm-12"><h:outputLabel class="fs-6 fw-bold mb-2" value="From Date" ></h:outputLabel></div>
-                                <div class="col-sm-12"><p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar></div>
-                                <div class="col-sm-12"><h:outputLabel  class="fs-6 fw-bold mb-2" value="To Date" ></h:outputLabel></div>
-                                <div class="col-sm-12"><p:calendar class="fs-6" value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar> </div>
-                                <div class="col-sm-12"><h:outputLabel  class="fs-6 fw-bold" value="From Institution" ></h:outputLabel></div>
-                                <div class="col-sm-12"><p:autoComplete value="#{clientController.institution}"
-                                                                       completeMethod="#{institutionController.completeInstitutions}"
-                                                                       var="m" itemLabel="#{m.name}" itemValue="#{m}" class="my-2" >
-                                    </p:autoComplete></div>
-                                <div class="col-sm-12"><h:outputLabel  class="fs-6 fw-bold" value="Plate No." ></h:outputLabel></div>
-                                <div class="col-sm-12"><h:inputText class="form-control my-2" value="#{clientController.plateNo}" ></h:inputText></div>
-                            </div>
-
-                            <div class="card-footer bg-white">
-                                <div class="col-sm-12"><h:commandButton class="btn btn-warning w-100 my-2" value="Process" 
-                                                                        action="#{clientController.toLabEditResults()}" ></h:commandButton></div>
-                                <div class="col-sm-12"><h:commandButton class="btn btn-success w-100 my-2" value="Generate Excel">
-                                        <p:dataExporter target="tbl" type="xlsx" fileName="entered_results" ></p:dataExporter>
-                                    </h:commandButton></div>
-                                <div class="col-sm-12"><h:commandButton class="btn btn-success w-100 my-2" value="Generate Excel with Negative Results">
-                                        <p:dataExporter target="tblNegative" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
-                                    </h:commandButton></div></div>
-
-
-                        </div>
-
                     </div>
                     
                     
