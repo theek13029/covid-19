@@ -14,16 +14,9 @@
                 National Dispatch Samples
             </ui:define>
             <ui:define name="content">
-                <h:outputStylesheet library="css" name="tem1.css"/>
-                <h:panelGrid columns="1"  styleClass="alignTop" >
-                    <f:facet name="header" >
-                        <h:outputLabel class="h6 fw-bold" value="Dispatch Samples" ></h:outputLabel>
-                    </f:facet>
-
+                    <h4 class="fw-bold">Dispatch Samples</h4>
                     <h:form >
-                        
-             
-                        
+
                         <h:panelGrid columns="2" rendered="true" styleClass="border border-light bg-white" >
 
                             <h:panelGrid columns="2" >
@@ -46,11 +39,10 @@
                                                  class="btn btn-success">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                                 </h:commandButton>
-                                <h:commandButton value="Process" 
+                                <h:commandButton value="Process"
                                                  action="#{nationalController.toDispatchSamples()}"
                                                  class="btn btn-warning w-100">
                                 </h:commandButton>
-
 
                             </h:panelGrid>
                             <h:panelGrid columns="2" >
@@ -68,7 +60,7 @@
                                                  class="btn btn-success">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
                                 </h:commandButton>
-                                <h:commandButton value="Dispatch" 
+                                <h:commandButton value="Dispatch"
                                                  class="btn btn-warning w-100"
                                                  action="#{nationalController.dispatchSelectedSamples()}" >
                                 </h:commandButton>
@@ -78,17 +70,17 @@
 
                         </h:panelGrid>
 
-                        
-                        
-                        <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button"
-                value="Columns" />
-              <p:columnToggler datasource="tbl" trigger="toggler" />
-                        
-                        <p:dataTable resizableColumns="true" multiViewState="true" 
-                                     resizeMode="expand" 
-                                     id="tbl" 
-                                     value="#{nationalController.listedToDispatch}" 
-                                     var="c" rowKey="#{c.id}" 
+                        <div>
+                            <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button"
+                                value="Columns" />
+                            <p:columnToggler datasource="tbl" trigger="toggler" />
+                        </div>
+
+                        <p:dataTable resizableColumns="true" multiViewState="true"
+                                     resizeMode="expand"
+                                     id="tbl"
+                                     value="#{nationalController.listedToDispatch}"
+                                     var="c" rowKey="#{c.id}"
                                      rowIndexVar="n"
 
                                      selection="#{nationalController.selectedToDispatch}"
@@ -97,8 +89,6 @@
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="5,10,{ShowAll|'All'}"
-
-
                                      >
                             <p:column selectionMode="multiple" width="50" resizable="false"></p:column>
 
@@ -110,7 +100,7 @@
                             <p:column headerText="Tube No"  sortBy="#{c.encounterNumber}"
                                       filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <p:inputText id="txtTubeNo" value="#{c.encounterNumber}" style="width: 95%;" >
-                                    <p:ajax event="blur" process="txtTubeNo" 
+                                    <p:ajax event="blur" process="txtTubeNo"
                                             listener="#{clientController.saveLabNo(c)}" >
                                     </p:ajax>
                                 </p:inputText>
@@ -130,32 +120,26 @@
                             <p:column headerText="Phone"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.client.person.phone1}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" 
-                                      filterBy="#{c.pcrTestType.name}" 
+                            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}"
+                                      filterBy="#{c.pcrTestType.name}"
                                       filterMatchMode="contains">
                                 <h:outputLabel value="#{c.pcrTestType.name}"></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Entered at" sortBy="#{c.createdAt}" 
+                            <p:column headerText="Entered at" sortBy="#{c.createdAt}"
                                       filterMatchMode="contains">
                                 <h:outputLabel value="#{c.createdAt}">
                                 </h:outputLabel>
                             </p:column>
 
-                            <p:column headerText="Current Lab" 
-                                      sortBy="#{c.referalInstitution.name}" 
-                                      filterBy="#{c.referalInstitution.name}" 
+                            <p:column headerText="Current Lab"
+                                      sortBy="#{c.referalInstitution.name}"
+                                      filterBy="#{c.referalInstitution.name}"
                                       filterMatchMode="contains">
                                 <h:outputLabel value="#{c.referalInstitution.name}" ></h:outputLabel>
                             </p:column>
 
-                            
-
                         </p:dataTable>
                     </h:form>
-
-
-
-                </h:panelGrid>
             </ui:define>
         </ui:composition>
     </body>
