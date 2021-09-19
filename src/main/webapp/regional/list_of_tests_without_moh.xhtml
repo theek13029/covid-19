@@ -75,7 +75,8 @@
                                     <div class="col-12 " >
                                         <h:panelGrid columns="3" class="shadow-lg p-3 bg-white rounded">
                                             <h:outputLabel class="fs-6 fw-bold" value="Assigning MOH Area" ></h:outputLabel>
-                                            <h:selectOneMenu class="form-select" value="#{regionalController.mohArea}" >
+                                            <h:selectOneMenu class="form-select" value="#{regionalController.mohArea}"
+                                                             style="width: 10em;">
                                                 <f:selectItem itemLabel="Select" ></f:selectItem>
                                                 <f:selectItems value="#{webUserController.loggableMohAreas}" var="c"
                                                                itemValue="#{c}"
@@ -83,15 +84,16 @@
                                                 </f:selectItems>
                                             </h:selectOneMenu>                            
                                             <h:commandButton class="w-100 btn btn-success my-2" action="#{regionalController.assignMohAreaToSelectedEncounters()}"
-                                                             value="Assign District Areas to Selected" ></h:commandButton>
+                                                             value="Assign to MOH" ></h:commandButton>
                                         </h:panelGrid>
                                     </div>
                                 </div>
                                 <div class="row" >
                                     <div class="col-12" >
                                         <h:panelGrid columns="3" class="shadow-lg p-3 bg-white rounded">
-                                            <h:outputLabel class="fs-6 fw-bold" value="Assigning MOH Area" ></h:outputLabel>
-                                            <h:selectOneMenu class="form-select" value="#{regionalController.district}" >
+                                            <h:outputLabel class="fs-6 fw-bold" value="Assigning District" ></h:outputLabel>
+                                            <h:selectOneMenu class="form-select" value="#{regionalController.district}" 
+                                                             style="width: 10em;">
                                                 <f:selectItem itemLabel="Select" ></f:selectItem>
                                                 <f:selectItems value="#{areaController.districts}" var="c"
                                                                itemValue="#{c}"
@@ -99,7 +101,7 @@
                                                 </f:selectItems>
                                             </h:selectOneMenu>                            
                                             <h:commandButton class="w-100 btn btn-success my-2" action="#{regionalController.assignDistrictToSelectedEncounters()}"
-                                                             value="Assign District to Selected" ></h:commandButton>
+                                                             value="Assign to District" ></h:commandButton>
                                         </h:panelGrid>
                                     </div>
                                 </div>

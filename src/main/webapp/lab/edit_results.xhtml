@@ -61,11 +61,12 @@
                     
                     <div></div>
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable reflow="true" id="tbl" value="#{clientController.listedToReviewResults}"
+                        <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}"
                                      rendered="true"
                                      var="c" 
                                      rowKey="#{c.id}" 
                                      rowIndexVar="n"
+                                     reflow="true" 
 
                                      rows="10"
                                      paginator="true"

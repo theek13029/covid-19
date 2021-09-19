@@ -76,6 +76,12 @@
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
                         <p:dataTable id="tbl" value="#{mohController.tests}"
                                      var="c" rowKey="#{c.id}"
+                                     
+                                     resizeMode="expand"
+                                     reflow="true"
+                                     
+                                     resizableColumns="true"
+                                     
                                      rows="10"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -88,25 +94,32 @@
                             <p:column headerText="Test"   style="width: 6rem;"   sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.pcrTestType.name}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains" >
+                            <p:column headerText="Name"  style="width: 18rem;" sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.client.person.name}" ></h:outputLabel>
                             </p:column>
-                             <p:column headerText="Age"  sortBy="#{c.client.person.age}" 
+                             <p:column headerText="Age"  sortBy="#{c.client.person.age}"  style="width: 8rem;"
                                        filterBy="#{c.client.person.age}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.client.person.age}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Sex"  sortBy="#{c.client.person.sex.name}" 
+                            <p:column headerText="Sex"  sortBy="#{c.client.person.sex.name}"  style="width: 8rem;"
                                        filterBy="#{c.client.person.sex.name}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.client.person.sex.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Phone"   style="width: 10rem;"  sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.client.person.phone1}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Address"  sortBy="#{c.client.person.address}" filterBy="#{c.client.person.address}" filterMatchMode="contains" >
+                            <p:column headerText="NIC"  style="width: 8rem;"  sortBy="#{c.client.person.nic}" 
+                                      filterBy="#{c.client.person.nic}" filterMatchMode="contains" >
+                                <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Address"  sortBy="#{c.client.person.address}"
+                                      filterBy="#{c.client.person.address}" filterMatchMode="contains" 
+                                      style="width: 18em;">
                                 <h:outputLabel value="#{c.client.person.address}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="GN Area"  sortBy="#{c.client.person.gnArea.name}"
-                                      filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains" >
+                                      filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains" 
+                                      style="width: 10em;">
                                 <h:outputLabel value="#{c.client.person.gnArea.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Result"   style="width: 8rem;"   sortBy="#{c.pcrResult.name}" filterBy="#{c.pcrResult.name}" filterMatchMode="contains" >
@@ -122,6 +135,15 @@
                                     <p:ajax event="keyup" process="txtCt2" listener="#{clientController.saveEncounterResultsAtMohForConfirmedDate(c)}" >
                                     </p:ajax>
                                 </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Comments"   style="width: 8rem;"   
+                                      sortBy="#{c.comments}" filterBy="#{c.comments}" filterMatchMode="contains" >
+                                <h:outputLabel id="txtComments" value="#{c.comments}" style="width: 98%;" >
+                                </h:outputLabel>
+                            </p:column>
+                             <p:column headerText="Sampled Date"  sortBy="#{c.sampledAt}"
+                                      filterBy="#{c.sampledAt}"  style="width: 8rem;">
+                                <p:outputLabel value="#{c.sampledAt}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
                         

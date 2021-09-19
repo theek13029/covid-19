@@ -6,9 +6,11 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <body>
+    <h:body>
 
         <ui:composition template="/moh/admin/index.xhtml">
+            <ui:define name="Edit User at MOH">
+            </ui:define>
             <ui:define name="admin">
                 <p:panel id="WebUserEditDlg" header="Edit User Detais" style="text-align: center; height: 100%;">
                     <h:form id="WebUserEditForm">
@@ -71,6 +73,6 @@
             </ui:define>
         </ui:composition>
 
-    </body>
+    </h:body>
 </html>
 
