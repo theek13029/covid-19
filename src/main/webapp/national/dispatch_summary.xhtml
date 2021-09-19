@@ -28,7 +28,7 @@
                             <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy hh:mm"></p:calendar>
 
                             <h:outputLabel class="fs-6 fw-bold" value="Test" ></h:outputLabel>
-                            <p:selectOneMenu value="#{nationalController.testType}" class="form select" >
+                            <p:selectOneMenu value="#{nationalController.testType}" class="form-select" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{nationalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
