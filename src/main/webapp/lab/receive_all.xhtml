@@ -17,10 +17,10 @@
                     <p:outputLabel value="Samples to Receive" ></p:outputLabel>
                 </f:facet>-->
 
-                <h:form >
+                <h:form>
                     <div class="row" >
                         <div class="col-12 text-center mt-4 mb-2" >
-                            <h4 class="fw-bold"><h:outputLabel  value="Samples to Receive" ></h:outputLabel></h4>
+                            <h4 class="fw-bold"><h:outputLabel  value="Samples to Receive ***" ></h:outputLabel></h4>
                         </div>
                     </div>
                     <div class="container bg-none mb-4 w-100 d-flex justify-content-around align-items-center" >
@@ -30,10 +30,10 @@
                                 <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded d-none d-md-block d-lg-block">
 
                                     <h:outputLabel class="h6 fw-bold" value="Sample Sent From Date" ></h:outputLabel>
-                                    <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
+                                    <p:datePicker value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:datePicker><!-- comment -->
 
                                     <h:outputLabel class="h6 fw-bold" value="Sample Sent To Date" ></h:outputLabel>
-                                    <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
+                                    <p:datePicker value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:datePicker>
                                     <h:commandButton value="Process" 
                                                      action="#{clientController.toLabReceiveAll()}" class="btn btn-warning w-100" ></h:commandButton>
                                     <h:commandButton value="Generate Excel" class="btn btn-success w-100" >
