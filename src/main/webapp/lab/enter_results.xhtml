@@ -10,6 +10,9 @@
     <body>
 
         <ui:composition template="/template1.xhtml">
+            <ui:define name="title">
+                Lab | Enter Results
+            </ui:define>
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <!--<p:panelGrid columns="1" styleClass="alignTop bg-white w-100 border border-light" >-->
@@ -26,7 +29,7 @@
                             <h4 class="fw-bold"><h:outputLabel  value="Enter Test Results" ></h:outputLabel></h4>
                         </div>
                     </div>
-                    <div class="container bg-none mb-4 w-100 d-flex justify-content-around align-items-center" >
+                    <div class="container mb-4 w-100 d-flex justify-content-around align-items-center" >
 
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-6 d-flex justify-content-center">
@@ -64,6 +67,9 @@
 
 
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
+                        <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button"
+                                         value="Filter Columns" />
+                        <p:columnToggler datasource="tbl" trigger="toggler" />
 
                         <p:dataTable reflow="true" resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{clientController.listedToEnterResults}"  rendered="true"
                                      var="c"
