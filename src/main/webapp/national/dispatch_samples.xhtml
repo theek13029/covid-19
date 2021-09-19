@@ -21,7 +21,10 @@
                     </f:facet>
 
                     <h:form >
-                        <h:panelGrid columns="2" >
+                        
+             
+                        
+                        <h:panelGrid columns="2" rendered="true" styleClass="border border-light bg-white" >
 
                             <h:panelGrid columns="2" >
                                 <f:facet name="header" >
@@ -52,7 +55,7 @@
                             </h:panelGrid>
                             <h:panelGrid columns="2" >
                                 <f:facet name="header" >
-                                    <h:outputLabel class="h6 fw-bold" value="Dispatching" ></h:outputLabel>
+                                    <h:outputLabel class="h6 fw-bold"  value="Dispatching" ></h:outputLabel>
                                 </f:facet>
 
                                 <h:outputLabel class="h6 fw-bold" value="Lab to Dispatch" ></h:outputLabel>
@@ -75,6 +78,12 @@
 
                         </h:panelGrid>
 
+                        
+                        
+                        <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button"
+                value="Columns" />
+              <p:columnToggler datasource="tbl" trigger="toggler" />
+                        
                         <p:dataTable resizableColumns="true" multiViewState="true" 
                                      resizeMode="expand" 
                                      id="tbl" 
