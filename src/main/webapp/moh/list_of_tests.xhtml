@@ -117,10 +117,10 @@
                                       filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains"  style="width:10em;">
                                 <p:outputLabel value="#{c.client.person.phiArea.name}" ></p:outputLabel>
                             </p:column>
-<!--                            <p:column headerText="Ordering Category"  sortBy="#{c.pcrOrderingCategory.name}"
-                                      filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.pcrOrderingCategory.name}" ></p:outputLabel>
-                            </p:column>-->
+                            <p:column headerText="Sampled Date"  sortBy="#{c.sampledAt}"
+                                      filterBy="#{c.sampledAt}" style="width: 10em;">
+                                <p:outputLabel value="#{c.sampledAt}" ></p:outputLabel>
+                            </p:column>
 
                             <p:column headerText="Actions" exportable="false" style="width: 18em;" >
                                 <h:commandButton value="Edit Order" action="#{mohController.toEditTest()}" class="btn btn-success mx-2"   >

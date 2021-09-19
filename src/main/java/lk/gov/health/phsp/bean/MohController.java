@@ -2269,10 +2269,6 @@ public class MohController implements Serializable {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
         }
-        if (orderingCategory != null) {
-            j += " and c.pcrOrderingCategory=:oc ";
-            m.put("oc", orderingCategory);
-        }
         if (result != null) {
             j += " and c.pcrResult=:result ";
             m.put("result", result);
@@ -2714,14 +2710,6 @@ public class MohController implements Serializable {
         if (testType != null) {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
-        }
-        if (orderingCategory != null) {
-            j += " and c.pcrOrderingCategory=:oc ";
-            m.put("oc", orderingCategory);
-        }
-        if (result != null) {
-            j += " and c.pcrResult=:result ";
-            m.put("result", result);
         }
         if (lab != null) {
             j += " and c.referalInstitution=:ri ";

@@ -96,28 +96,33 @@
                                 <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
 
-                            <p:column headerText="Tube No" width="100" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
+                            <p:column headerText="Tube No"  style="width: 8rem;" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
                             </p:column>
-                            <p:column  headerText="Lab No" width="100"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
+                            <p:column  headerText="Lab No"  style="width: 8rem;"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
                                 <p:inputText value="#{c.labNumber}" id="txtLabNo" style="width: 98%;" >
                                     <p:ajax event="blur" process="txtLabNo"
                                             listener="#{clientController.saveLabNo(c)}" >
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}"
+                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" 
+                                      style="width: 18rem;"
+                                      filterBy="#{c.client.person.name}"
                                       filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.name}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Age" width="60"  sortBy="#{c.client.person.age}"
+                            <p:column headerText="Age"  style="width: 8rem;"  sortBy="#{c.client.person.age}"
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.age}" ></p:outputLabel>
                             </p:column>
-                            <p:column headerText="Sex" width="60"  sortBy="#{c.client.person.sex.name}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains" >
+                            <p:column headerText="Sex"  style="width: 8rem;"  sortBy="#{c.client.person.sex.name}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains" >
                                 <p:outputLabel value="#{c.client.person.sex.name}" ></p:outputLabel>
                             </p:column>
-
+                            <p:column headerText="NIC"  style="width: 8rem;"  sortBy="#{c.client.person.nic}" 
+                                      filterBy="#{c.client.person.nic}" filterMatchMode="contains" >
+                                <p:outputLabel value="#{c.client.person.nic}" ></p:outputLabel>
+                            </p:column>
                             <p:column headerText="Phone"  width="60"   sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
                                 <p:outputLabel value="#{c.client.person.phone1}" ></p:outputLabel>
                             </p:column>
