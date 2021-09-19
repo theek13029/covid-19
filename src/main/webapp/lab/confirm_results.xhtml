@@ -10,6 +10,9 @@
     <body>
 
         <ui:composition template="/template1.xhtml">
+            <ui:define name="title">
+                Lab | Confirm Results
+            </ui:define>
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
 
@@ -19,8 +22,8 @@
                             <h4 class="fw-bold"><h:outputLabel  value="Confirm Test Results" ></h:outputLabel></h4>
                         </div>
                     </div>
-                    <div class="container bg-none mb-4 w-100 d-flex justify-content-around align-items-center" >
-                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded d-none d-md-block d-lg-block">
+                    <div class="container mb-4 w-100 d-flex justify-content-around align-items-center" >
+                        <h:panelGrid columns="2" class="shadow-lg p-3 mb-3 bg-white rounded">
                             <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
                             <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
@@ -37,8 +40,8 @@
                             <h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText>
                         </h:panelGrid>
 
-                        <div class="d-none d-md-block d-lg-block">
-                            <h:panelGrid columns="1" class="shadow-lg p-3 mb-5 bg-white rounded " >
+                        <div>
+                            <h:panelGrid columns="1" class="shadow-lg p-3 mb-3 bg-white rounded " >
                                 <h:commandButton value="Process" class="btn btn-warning w-100"
                                                  action="#{clientController.toConfirmResults()}" ></h:commandButton>
                                 <h:commandButton value="Generate Excel" class="btn btn-success w-100">
@@ -53,7 +56,7 @@
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
 
                         <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button"
-                                         value="Columns" />
+                                         value="Filter Columns" />
                         <p:columnToggler datasource="tbl" trigger="toggler" />
 
                         <p:dataTable reflow="true" id="tbl" value="#{clientController.listedToConfirm}" 
