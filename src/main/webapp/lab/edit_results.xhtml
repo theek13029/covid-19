@@ -10,6 +10,9 @@
     <body>
 
         <ui:composition template="/template1.xhtml">
+            <ui:define name="title">
+                Lab | Edit Results
+            </ui:define>
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <!--<p:panelGrid columns="1" styleClass="alignTop border border-light w-100">
@@ -26,11 +29,11 @@
                             <h4 class="fw-bold"><h:outputLabel  value="Edit Test Results" ></h:outputLabel></h4>
                         </div>
                     </div>
-                    <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                    <div class="container mb-2 w-100 d-flex justify-content-center align-items-center" >
 
 
 
-                        <h:panelGrid columns="2" rendered="true" class="shadow-lg p-3 mb-5 bg-white rounded d-none d-md-block d-lg-block">
+                        <h:panelGrid columns="2" rendered="true" class="shadow-lg p-3 mb-5 bg-white rounded">
                             <h:outputLabel class="fs-6 fw-bold" value="From Date" ></h:outputLabel>
                             <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
                             <h:outputLabel  class="fs-6 fw-bold" value="To Date" ></h:outputLabel>
@@ -57,10 +60,15 @@
 
 
                     </div>
-                    
-                    
+
+
                     <div></div>
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
+
+                        <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button"
+                                         value="Filter Columns" />
+                        <p:columnToggler datasource="tbl" trigger="toggler" />
+
                         <p:dataTable reflow="true" id="tbl" value="#{clientController.listedToReviewResults}"
                                      rendered="true"
                                      var="c" 
