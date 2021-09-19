@@ -10,7 +10,11 @@
     <body>
 
         <ui:composition template="/template1.xhtml">
+            <ui:define name="title">
+    Lab | Receive All
+            </ui:define>
             <ui:define name="content">
+                
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <!--<h:panelGrid columns="1" styleClass="alignTop" >-->
                 <!--<f:facet name="header" >
@@ -23,11 +27,11 @@
                             <h4 class="fw-bold"><h:outputLabel  value="Samples to Receive ***" ></h:outputLabel></h4>
                         </div>
                     </div>
-                    <div class="container bg-none mb-4 w-100 d-flex justify-content-around align-items-center" >
+                    <div class="container mb-4 w-100 d-flex justify-content-around align-items-center" >
 
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-6 d-flex justify-content-center">
-                                <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded d-none d-md-block d-lg-block">
+                                <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
 
                                     <h:outputLabel class="h6 fw-bold" value="Sample Sent From Date" ></h:outputLabel>
                                     <p:datePicker value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:datePicker><!-- comment -->
@@ -46,7 +50,7 @@
 
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-6 d-flex justify-content-center">
-                                <h:panelGrid columns="2" class="shadow-lg mb-5 rounded d-none d-md-block d-lg-block bg-white p-3">
+                                <h:panelGrid columns="2" class="shadow-lg mb-5 rounded bg-white p-3">
                                     <f:facet name="header" >
                                         <p:outputLabel value="Lab number generation" ></p:outputLabel>
                                     </f:facet>
