@@ -27,7 +27,10 @@
                         </div>
                     </div>
                     <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
-                        <h:panelGrid columns="2" rendered="true" class="shadow-lg p-3 mb-5 bg-white rounded">
+
+
+
+                        <h:panelGrid columns="2" rendered="true" class="shadow-lg p-3 mb-5 bg-white rounded d-none d-md-block d-lg-block">
                             <h:outputLabel class="fs-6 fw-bold" value="From Date" ></h:outputLabel>
                             <p:calendar class="fs-6" value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
                             <h:outputLabel  class="fs-6 fw-bold" value="To Date" ></h:outputLabel>
@@ -52,9 +55,13 @@
 
                         </h:panelGrid>
 
+
                     </div>
+                    
+                    
+                    <div></div>
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{clientController.listedToReviewResults}"
+                        <p:dataTable reflow="true" id="tbl" value="#{clientController.listedToReviewResults}"
                                      rendered="true"
                                      var="c" 
                                      rowKey="#{c.id}" 
@@ -64,9 +71,7 @@
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                     rowsPerPageTemplate="5,10,{ShowAll|'All'}"
-
-                                      rowStyleClass="#{(c.pcrResult.name) eq 'Positive'?'bg-danger':''}"
+                                     rowsPerPageTemplate="10,20,50,100,{ShowAll|'All'}"
 
 
                                      >

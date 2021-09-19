@@ -49,13 +49,19 @@
                                     <h:message class="text-danger small" for="orderingCat"></h:message>
                                 </div>
                             </div>
+
                             <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label for="txtTestNo" class="fw-bold form-label">Test Number</label>
+                                    <h:inputText id="txtTestNo" class="form-control" value="#{mohController.rat.encounterNumber}">
+                                    </h:inputText>
+                                </div>
                                 <div class="col-md-3">
                                     <label for="acLab" class="form-label fw-bold">Referring Lab<small
                                             class="text-muted px-2">Required</small></label>
                                     <p:autoComplete id="acLab" inputStyleClass="autocomplete"
                                                     value="#{mohController.rat.referalInstitution}" forceSelection="true"
-                                                    completeMethod="#{mohController.completeLab}" var="l" itemLabel="#{l.name}" itemValue="#{l}">
+                                                    completeMethod="#{institutionController.completeInstitutions}" var="l" itemLabel="#{l.name}" itemValue="#{l}">
                                         <p:ajax process="acLab" event="blur"></p:ajax>
                                     </p:autoComplete>
                                     <h:message class="text-danger small" for="acLab"></h:message>
@@ -250,6 +256,10 @@
 
                                     <h:commandButton class="btn btn-success mx-2 fw-bold" action="#{mohController.saveRatAndToRatView()}"
                                                      value="Save and View RAT Result Details">
+                                    </h:commandButton>
+                                    
+                                    <h:commandButton class="btn btn-warning mx-2 fw-bold"
+                                                     action="#{mohController.saveRatAndToTestList()}" value="Save and To Test List">
                                     </h:commandButton>
 
                                 </div>

@@ -28,23 +28,19 @@
                     <p:menuitem class="submenu-item" ajax="false" value="New RAT Request" action="#{hospitalController.toAddNewRatOrderWithNewClient()}"  />
                     <p:menuitem class="submenu-item" ajax="false" value="New PCR Request" action="#{hospitalController.toAddNewPcrWithNewClient()}" />
                     <p:menuitem class="submenu-item" ajax="false" value="New RAT Result" action="#{hospitalController.toAddNewRatWithNewClient()}" />
-                    <p:menuitem class="submenu-item" ajax="false" value="New PCR Result" action="#{hospitalController.toAddNewPcrWithNewClient()}" disabled="true" />
+                    <p:menuitem class="submenu-item" ajax="false" rendered="false" value="New PCR Result" action="#{hospitalController.toAddNewPcrWithNewClient()}" disabled="true" />
                     <p:menuitem class="submenu-item" ajax="false" value="Test Lists" action="#{hospitalController.toTestListWithoutResults()}" />
                     <p:menuitem class="submenu-item" ajax="false" value="Dispatch Samples" action="#{hospitalController.toDispatchSamplesByMohOrHospital()}"/>
                     <p:menuitem class="submenu-item" ajax="false" value="Enter Results" action="#{hospitalController.toEnterResults()}" />
                     <p:menuitem class="submenu-item" ajax="false" value="View Results" action="#{hospitalController.toViewResults()}" />
                 </p:submenu>
 
-                <p:submenu class="submenu mx-2" label="Investigate" rendered="#{webUserController.hasPrivilege('Client_Management') and webUserController.loggedUser.webUserRoleLevel eq 'Moh' }}" >
+                <p:submenu class="submenu mx-2" label="Investigate" rendered="#{webUserController.hasPrivilege('Client_Management') and webUserController.loggedUser.webUserRoleLevel eq 'Moh' }" >
                     <p:menuitem ajax="false" value="Assign Cases to Investigate" action="#{mohController.toAssignInvestigation()}" />
                     <p:menuitem ajax="false" value="Cases Awaiting Investigation" action="#{mohController.toStartInvestigation()}" />
-                    <p:menuitem ajax="false" value="New Patient &amp; Investigate" action="#{clientController.toAddNewClientForCaseEnrollment()}"  />
-                    <p:menuitem ajax="false" value="View Investigated Cases" action="#{mohController.toListOfInvestigatedCasesForMoh()}" />
                 </p:submenu>
-                <p:submenu class="submenu mx-2" label="Contacts" rendered="#{webUserController.hasPrivilege('Client_Management') and webUserController.loggedUser.webUserRoleLevel eq 'Moh' }}" >
+                <p:submenu class="submenu mx-2" label="Contacts" rendered="#{webUserController.hasPrivilege('Client_Management') and webUserController.loggedUser.webUserRoleLevel eq 'Moh' }" >
                     <p:menuitem ajax="false" value="List of First Contacts" action="#{mohController.toListOfFirstContactsToTest()}" />
-                    <p:menuitem ajax="false" value="Order PCR for Contacts" action="#{mohController.toAssignInvestigation()}" />
-                    <p:menuitem ajax="false" value="Order RATs for Contacts" action="#{mohController.toStartInvestigation()}" />
                 </p:submenu>
                 <p:submenu class="submenu mx-2" label="Samples" rendered="#{webUserController.hasPrivilege('Sample_Management')  and (webUserController.loggedUser.webUserRoleLevel eq 'Moh' or webUserController.loggedUser.webUserRoleLevel eq 'Regional' or webUserController.loggedUser.webUserRoleLevel eq 'Provincial' or webUserController.loggedUser.webUserRoleLevel eq 'National_Lab' or webUserController.loggedUser.webUserRoleLevel eq 'National' )}" >
                     <p:menuitem ajax="false" value="Requests Summary"

@@ -53,6 +53,7 @@ import lk.gov.health.phsp.pojcs.CovidData;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
 import lk.gov.health.phsp.pojcs.OrderingCategoryResults;
 import org.joda.time.DateTimeComparator;
+import org.json.JSONObject;
 
 /**
  *
@@ -80,6 +81,10 @@ public class DashboardApplicationController {
     @Inject
     CovidDataHolder covidDataHolder;
 
+//    AreaController
+    @Inject
+    private AreaController areaController;
+
     private Long todayPcr;
     private Long todayRat;
     private Long todayPositivePcr;
@@ -99,6 +104,10 @@ public class DashboardApplicationController {
     private String todayRatPositiveRate;
     private String yesterdayPcrPositiveRate;
     private String yesterdayRatPositiveRate;
+
+//  Json data of PCR and RAT positive cases to be used to generate chart
+    private JSONObject pcrPositiveCasesJSON;
+    private JSONObject ratPositiveCasesJSON;
 
 //  Round double values to two decimal format
     private static DecimalFormat df = new DecimalFormat("0.0");
@@ -169,6 +178,26 @@ public class DashboardApplicationController {
                 itemApplicationController.getPcrPositive(),
                 null);
         orderingCounts = listOrderingCategoryCounts(null, yesterdayStart, now, null, null, null, null);
+
+//        Get the PCR Positive cases within the last 14 days
+        Map<String, String> pcrPositiveSeries = this.getSeriesOfCases(
+                now,
+                14,
+                this.itemApplicationController.getPcr(),
+                this.itemApplicationController.getPcrPositive()
+        );
+
+//        Get the RAT positive cases within the last 14 dats
+        Map<String, String> ratPositiveSeries = this.getSeriesOfCases(
+                now,
+                14,
+                this.itemApplicationController.getRat(),
+                this.itemApplicationController.getPcrPositive()
+        );
+
+
+        this.pcrPositiveCasesJSON = new JSONObject(pcrPositiveSeries);
+        this.ratPositiveCasesJSON = new JSONObject(ratPositiveSeries);
 
 //      This will return today's pcr positive rate as a percentage
         if (this.todayPcr != 0) {
@@ -303,6 +332,47 @@ public class DashboardApplicationController {
         return tics;
     }
 
+    // This will generate the list of investigations done by insitutions in a given RDHS area
+
+    public Map<String, List<String>> generateRdhsInvestigationHashmap(
+            List<Institution> myInstitutions
+    ) {
+
+        Map<String, List<String>> hashMap = new HashMap<>();
+
+        Date todayStart = CommonController.startOfTheDate();
+        Calendar calendar = Calendar.getInstance();
+        Date now = calendar.getTime();
+
+        for (Institution ins:myInstitutions) {
+            System.out.println("mohArea = " + ins.getName());
+            List<String> tempList = new ArrayList<>();
+            Long tempTodayPcr = this.getOrderCountArea(
+                    null,
+                    todayStart,
+                    now,
+                    itemApplicationController.getPcr(),
+                    null,
+                    null,
+                    ins
+            );
+            Long tempTodayRat = this.getOrderCountArea(
+                    null,
+                    todayStart,
+                    now,
+                    itemApplicationController.getRat(),
+                    null,
+                    null,
+                    ins
+            );
+            tempList.add(tempTodayPcr.toString());
+            tempList.add(tempTodayRat.toString());
+            hashMap.put(ins.getName(), tempList);
+        }
+
+        return hashMap;
+    }
+
     public Long getOrderCount(Institution ins,
             Date fromDate,
             Date toDate,
@@ -359,7 +429,8 @@ public Long samplesAwaitingDispatch(
             + " from Encounter c "
             + " where c.retired=:ret "
             + " and c.encounterType=:type "
-            + " and c.encounterDate between :fd and :td ";
+            + " and c.encounterDate between :fd and :td "
+            + " and c.pcrTestType=:testType ";
 
     if (institution != null){
         jpql += " and c.institution=:ins ";
@@ -378,7 +449,7 @@ public Long samplesAwaitingDispatch(
                 hashMap.put("district", area.getDistrict());
                 break;
             case RdhsAra:
-                jpql += "and (c.institution.rdhsArea=:rdArea or c.institution.district=:district) ";
+                jpql += " and (c.institution.rdhsArea=:rdArea or c.institution.district=:district) ";
                 hashMap.put("rdArea", area);
                 hashMap.put("district", area.getDistrict());
                 break;
@@ -392,7 +463,7 @@ public Long samplesAwaitingDispatch(
                 hashMap.put("province", area.getProvince());
                 break;
             case MOH:
-                jpql += " and (c.institution.mohArea=:mohArea)";
+                jpql += " and (c.institution.mohArea=:mohArea) ";
                 hashMap.put("mohArea", area);
                 break;
             default:
@@ -409,10 +480,43 @@ public Long samplesAwaitingDispatch(
     hashMap.put("fd", fromDate);
     hashMap.put("sl", false);
     hashMap.put("td", toDate);
-   
+    hashMap.put("testType", testType);
+
 
     return encounterFacade.findLongByJpql(jpql, hashMap, TemporalType.DATE);
 
+}
+
+//This function will return a series of cases depending on a provided time period
+public Map<String, String> getSeriesOfCases(
+        Date fromDate,
+        int duration,
+        Item testType,
+        Item result
+) {
+    int MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
+
+    Map<String, String> hashMap = new HashMap<String, String>();
+    Date startOfTheDate = CommonController.startOfTheDate(fromDate);
+
+    if (duration < 1) {
+        hashMap.put("", "");
+    } else {
+        for (int i = 0; i <= duration; i++) {
+            Date currentDate = new Date(startOfTheDate.getTime() - (long) MILLIS_IN_A_DAY * i);
+            Date endDate = CommonController.endOfTheDate(currentDate);
+            Long positive_cases = this.getConfirmedCount(
+                    null,
+                    currentDate,
+                    endDate,
+                    testType,
+                    null,
+                    result,
+                    null);
+            hashMap.put(currentDate.toString(), Long.toString(positive_cases));
+        }
+    }
+    return hashMap;
 }
 
 //  This will return count of Investigations where MOH area is not given
@@ -773,6 +877,15 @@ public Long samplesAwaitingDispatch(
             updateDashboard();
         }
         return todayPositiveRat;
+    }
+
+//    Getter for cases JSON data
+    public JSONObject getPcrPositiveCasesJSON() {
+        return pcrPositiveCasesJSON;
+    }
+
+    public JSONObject getRatPositiveCasesJSON() {
+        return ratPositiveCasesJSON;
     }
 
     public Long getYesterdayPcr() {

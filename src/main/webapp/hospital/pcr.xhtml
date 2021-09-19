@@ -11,9 +11,9 @@
                     <p:focus for="txtTestNo" ></p:focus>
                     <div class="card">
 
-                           <div class="row bg-white pt-4 pb-2" >
-                               <h4 class="text-center fw-bold">NEW PCR Order</h4>
-                           </div>
+                        <div class="row bg-white pt-4 pb-2" >
+                            <h4 class="text-center fw-bold">NEW PCR Order</h4>
+                        </div>
 
                         <h:panelGroup id="gpTest" >
                             <div class="card-body w-100">
@@ -47,7 +47,7 @@
                                                          value="#{hospitalController.pcr.pcrOrderingCategory}"
                                                          tabindex="102"
                                                          class="form-select w-100"
-                                                          >
+                                                         >
                                             <f:selectItem itemLabel="Select" ></f:selectItem>
                                             <f:selectItems value="#{hospitalController.covidTestOrderingCategories}" var="tt" itemLabel="#{tt.name}"
                                                            itemValue="#{tt}" ></f:selectItems>
@@ -59,16 +59,16 @@
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel value="Ward | Unit | Clinic" for="wardunit" class="h6 fw-bold mb-2"  />
                                         <h:inputText id="wardunit" tabindex="114" value="#{hospitalController.pcr.unitWard}"
-                                                    class="form-control w-100"
-                                                    required="true"
-                                                    requiredMessage="Need a Ward | Unit | Clinic">
+                                                     class="form-control w-100"
+                                                     required="true"
+                                                     requiredMessage="Need a Ward | Unit | Clinic">
                                         </h:inputText>
                                         <h:message class="text-danger small" for="wardunit"></h:message>
                                     </div>
 
 
 
-                                     <div class="col-md-3 mb-4">
+                                    <div class="col-md-3 mb-4">
                                         <h:outputLabel value="Name:" for="name" class="h6 fw-bold mb-2" />
                                         <h:inputText autocomplete="off"
 
@@ -111,8 +111,12 @@
                                     </div>
                                     <div class="col-md-3 mb-4">
                                         <h:outputLabel value="Symptomatic:"  class="h6 fw-bold mb-2" />
-                                        <p:selectBooleanButton tabindex="106"
-                                                               value="#{hospitalController.pcr.symptomatic}"  class="form-select w-100" offLabel="No" onLabel="Yes"></p:selectBooleanButton>
+                                        <h:selectOneMenu id="symptomatic" value="#{hospitalController.pcr.symptomaticStatus}"
+                                                         class="form-select">
+                                            <f:selectItem itemLabel="Please select"></f:selectItem>
+                                            <f:selectItems value="#{itemApplicationController.symptomaticStatuses}" var="symptomaticStatus"
+                                                           itemLabel="#{symptomaticStatus.name}" itemValue="#{symptomaticStatus}"></f:selectItems>
+                                        </h:selectOneMenu>
                                     </div>
 
                                 </div>
@@ -155,22 +159,22 @@
                                         <h:outputLabel value="Age: (Years/Months)*" style="width: 100%;" class="h6 fw-bold mb-2" />
                                         <div class="d-inline-flex">
                                             <div class="mr-2">
-                                            <p:inputText autocomplete="off" id="year"
-                                                         tabindex="108"
-                                                         requiredMessage="Please enter the age"
-                                                         placeholder="Years"
-                                                         class="form-control w-100"
-                                                         value="#{hospitalController.pcr.client.person.ageYears}"
-                                                         required="true" >
-                                                <f:ajax event="keyup" execute="@this month day" render="calDob" />
-                                            </p:inputText>
+                                                <p:inputText autocomplete="off" id="year"
+                                                             tabindex="108"
+                                                             requiredMessage="Please enter the age"
+                                                             placeholder="Years"
+                                                             class="form-control w-100"
+                                                             value="#{hospitalController.pcr.client.person.ageYears}"
+                                                             required="true" >
+                                                    <f:ajax event="keyup" execute="@this month day" render="calDob" />
+                                                </p:inputText>
                                             </div>
 
                                             <div class="mr-2">
-                                            <p:inputText tabindex="108"  autocomplete="off" id="month" placeholder="Months"
-                                                         value="#{hospitalController.pcr.client.person.ageMonths}" class="form-control w-100" >
-                                                <f:ajax event="keyup" execute="@this year day" render="calDob" />
-                                            </p:inputText>
+                                                <p:inputText tabindex="108"  autocomplete="off" id="month" placeholder="Months"
+                                                             value="#{hospitalController.pcr.client.person.ageMonths}" class="form-control w-100" >
+                                                    <f:ajax event="keyup" execute="@this year day" render="calDob" />
+                                                </p:inputText>
                                             </div>
                                             <h:message class="text-danger small" for="year"></h:message>
                                         </div>
@@ -234,7 +238,7 @@
                                     </div>
 
 
-                                     <div class="col-md-3 mb-4">
+                                    <div class="col-md-3 mb-4">
                                         <h:outputLabel value="PHN No.:" for="phn" class="h6 fw-bold mb-2" />
                                         <p:inputText id="phn" autocomplete="off"
                                                      class="form-control w-100"
@@ -250,7 +254,7 @@
                                         <h:outputLabel value="Contact Number :" for="phone1"  class="h6 fw-bold mb-2" />
                                         <p:commandLink id="lnkLastphone1" style="float: right;"
                                                        action="#{hospitalController.retrieveLastPhoneForPcr()}" process="lnkLastphone1" update="phone1">
-                                         <i class="bi bi-arrow-clockwise"></i>
+                                            <i class="bi bi-arrow-clockwise"></i>
                                         </p:commandLink>
                                         <h:inputText tabindex="7"
                                                      id="phone1" required="true"
@@ -292,7 +296,7 @@
                                 </div>
 
 
-                                 <div class="container d-flex justify-content-center">
+                                <div class="container d-flex justify-content-center">
 
                                     <h:commandButton class="btn btn-success mx-2 "   tabindex="10"
                                                      action="#{hospitalController.savePcrAndToNewPcr()}" value="Save and NEW PCR"></h:commandButton>
@@ -300,7 +304,7 @@
                                     <h:commandButton class="btn btn-success mx-2 "  tabindex="11"
                                                      action="#{hospitalController.savePcrAndToPcrView()}" value="Save and View PCR"></h:commandButton>
 
-                                 </div>
+                                </div>
                             </div>
                         </h:panelGroup>
                     </div>

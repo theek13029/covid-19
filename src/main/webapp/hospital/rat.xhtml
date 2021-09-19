@@ -114,9 +114,12 @@
                                     </div>
                                     <div class="col-md-3">
                                         <h:outputLabel class="h6 fw-bold mb-2" value="Symptomatic:"  />
-                                        <p:selectBooleanButton tabindex="106" class="form-select"
-                                                               value="#{hospitalController.rat.symptomatic}"  offLabel="No" onLabel="Yes"></p:selectBooleanButton>
-                                    </div>
+                                        <h:selectOneMenu id="symptomatic" value="#{hospitalController.rat.symptomaticStatus}"
+                                                         class="form-select">
+                                            <f:selectItem itemLabel="Please select"></f:selectItem>
+                                            <f:selectItems value="#{itemApplicationController.symptomaticStatuses}" var="symptomaticStatus"
+                                                           itemLabel="#{symptomaticStatus.name}" itemValue="#{symptomaticStatus}"></f:selectItems>
+                                        </h:selectOneMenu></div>
                                 </div>
                                 <div class="form-group row mb-4">
                                     <div class="col-md-3">

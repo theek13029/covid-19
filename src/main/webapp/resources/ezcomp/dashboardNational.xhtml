@@ -16,10 +16,11 @@
                 <div class="col">
                     <div class="d-flex bg-success px-3 py-2 align-items-center">
                         <div class="flex-grow-1 text-white">
-                            <h4 class="fw-bold">
+                            <h4 class="fw-bold text-cente mb-4">
                                 <i class="bi mx-2 bi-info-circle-fill"></i>
-                                PCRs
+                                PCR SAMPLES
                             </h4>
+                            <h5 class="text-center"></h5>
                             <div class="d-flex">
                                 <div class="p-2 flex-grow-1">
                                     <h5 class="fw-bold">Today</h5>
@@ -42,6 +43,10 @@
                                     </h5>
                                 </div>
                             </div>
+                            <hr/>
+                            <div class="flex-grow-1 text-white text-center">
+                                <small> Not a complete denominator<br/><br/></small>
+                            </div>
                         </div>
                     </div>
                     <div class="d-grid gap-2">
@@ -53,10 +58,11 @@
                 <div class="col">
                     <div class="d-flex bg-success px-3 py-2 align-items-center">
                         <div class="flex-grow-1 text-white">
-                            <h4 class="fw-bold">
+                            <h4 class="fw-bold text-cente mb-4">
                                 <i class="bi mx-2 bi-info-circle-fill"></i>
-                                RATS
+                                RAT SAMPLES
                             </h4>
+                            <h5 class="text-center"></h5>
                             <div class="d-flex">
                                 <div class="p-2 flex-grow-1">
                                     <h5 class="fw-bold">Today</h5>
@@ -79,6 +85,10 @@
                                     </h5>
                                 </div>
                             </div>
+                            <hr/>
+                            <div class="flex-grow-1 text-white text-center">
+                                <small>Not a complete denominator<br/><br/></small>
+                            </div>
                         </div>
                     </div>
                     <div class="d-grid gap-2">
@@ -89,10 +99,13 @@
                 <div class="col">
                     <div class="d-flex bg-danger px-3 py-2 align-items-center">
                         <div class="flex-grow-1 text-white">
-                            <h4 class="fw-bold">
+                            <h4 class="fw-bold text-cente mb-1">
                                 <i class="bi bi-exclamation-circle-fill"></i>
                                 PCR POSITIVES
                             </h4>
+                            <div class="flex-grow-1 text-white text-center">
+                                <small>Reported</small>
+                            </div>
                             <div class="d-flex">
                                 <div class="p-2 flex-grow-1">
                                     <h5 class="fw-bold">Today</h5>
@@ -119,6 +132,10 @@
                                     </h5>
                                 </div>
                             </div>
+                            <hr/>
+                            <div class="flex-grow-1 text-white text-center">
+                                <small>Positives could be from samples collected on a prior date</small>
+                            </div>
                         </div>
                     </div>
                     <div class="d-grid gap-2">
@@ -128,12 +145,16 @@
                     </div>
                 </div>
                 <div class="col">
+                    
                     <div class="d-flex bg-danger px-3 py-2 align-items-center">
-                        <div class="flex-grow-1 text-white">
-                            <h4 class="fw-bold">
+                           <div class="flex-grow-1 text-white">
+                            <h4 class="fw-bold text-center mb-1">
                                 <i class="bi bi-exclamation-circle-fill"></i>
                                 RAT POSITIVES
                             </h4>
+                            <div class="flex-grow-1 text-white text-center">
+                                <small>Reported</small>
+                            </div>
                             <div class="d-flex">
                                 <div class="p-2 flex-grow-1">
                                     <h5 class="fw-bold">Today</h5>
@@ -159,6 +180,10 @@
                                         </small>
                                     </h5>
                                 </div>
+                            </div>
+                            <hr/>
+                            <div class="flex-grow-1 text-white text-center">
+                                <small>Positives could be from samples collected on a prior date</small>
                             </div>
                         </div>
                     </div>
@@ -237,6 +262,122 @@
                 <div class="col"></div>
             </div>
 
+            <div class="row my-3">
+                <div class="accordion" id="accordionPanelsStayOpenExample">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                           <strong>Last 14 Day Positive Cases Trend</strong> <small class="px-3"><a href="#" onclick="window.location.reload()">Refresh the chart</a></small> <small class="text-danger">Beta</small>
+                        </button>
+                      </h2>
+                      <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                        <div class="accordion-body">
+                            <h3 class="text-muted fw-bold" id="chartLoading">Chart loading, please refresh</h3>
+                            <canvas id="chart"></canvas>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script>
+                const pcrDataJson = '#{dashboardApplicationController.pcrPositiveCasesJSON}'
+                const ratDataJson = '#{dashboardApplicationController.ratPositiveCasesJSON}'
+
+                document.addEventListener('readystatechange', event => {
+                    if (event.target.readyState === 'interactive') {
+                        if (pcrDataJson !== '' || ratDataJson !== '') drawChart();
+                    }
+                })
+
+                function parseDate(date) {
+                    var date = new Date(date.replace('IST', ''));
+                    let day = date.getDate();
+                    let month = date.getMonth()+1;
+                    let year = date.getFullYear();
+
+                    return year+"/"+month+"/"+day
+                }
+
+                function drawChart() {
+                    const parsePcrData = JSON.parse(pcrDataJson)
+                    const parseRatData = JSON.parse(ratDataJson)
+
+                    const arrayPcrData = Object.entries(parsePcrData)
+                    const arrayRatData = Object.entries(parseRatData)
+
+                    arrayPcrData.sort((a,b) => {
+                        var aDate = new Date(a[0].replace('IST', ''));
+                        var bDate = new Date(b[0].replace('IST', ''));
+                        return aDate-bDate
+                    })
+
+                    arrayRatData.sort((a,b) => {
+                        var aDate = new Date(a[0].replace('IST', ''));
+                        var bDate = new Date(b[0].replace('IST', ''));
+                        return aDate-bDate
+                    })
+
+                    const ratDataLabels = Object.keys(parseRatData)
+                    const pcrDataLabels = Object.keys(parsePcrData)
+
+                    const ratDataset = {
+                        label: "RAT",
+                        backgroundColor: "#ffd166",
+                        borderColor: "#ffd166",
+                        fill: false,
+                        data: []
+                    }
+
+                    const pcrDataset = {
+                        label: "PCR",
+                        backgroundColor: "#ef476f",
+                        borderColor: "#ef476f",
+                        fill: false,
+                        data: []
+                    }
+
+                    const totalDataset = {
+                        label: "Total Cases",
+                        backgroundColor: "#118ab2",
+                        borderColor: "#118ab2",
+                        fill: false,
+                        data: []
+                    }
+
+                    var parsedDates = []
+
+                    arrayRatData.forEach(element => {
+                        var tempDate = parseDate(element[0])
+                        parsedDates.push(tempDate)
+                        ratDataset.data.push(element[1])
+                    })
+
+                    arrayPcrData.forEach(element => {
+                        pcrDataset.data.push(element[1])
+                    })
+
+                    arrayRatData.map((value, index) => {
+                        totalDataset.data.push(parseInt(value[1])+parseInt(arrayPcrData[index][1]))
+                    })
+
+                    const data = {
+                        labels: parsedDates,
+                        datasets: [
+                            ratDataset, pcrDataset,totalDataset
+                        ]
+                    }
+
+                    const chart = document.querySelector("#chart").getContext('2d')
+                    const myChart = new Chart(chart, {
+                            type: 'line',
+                            data: data
+                        }
+                    )
+                    document.querySelector("#chartLoading").classList.add('d-none')
+                }
+            </script>
         </div>
 
     </h:form>
