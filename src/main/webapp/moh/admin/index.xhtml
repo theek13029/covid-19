@@ -26,8 +26,8 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-                                                <h:commandLink value="View Users" 
-                                                               action="#{menuController.toListUser()}" 
+                                                <h:commandLink value="Add New User" 
+                                                               action="#{menuController.toAddNewUser()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block" 
                                                                >
                                                 </h:commandLink>
@@ -37,8 +37,19 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-                                                <h:commandLink value="Add New User" 
-                                                               action="#{menuController.toAddNewUser()}" 
+                                                <h:commandLink value="View Users" 
+                                                               action="#{menuController.toListUsers()}" 
+                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               >
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 p-2">
+                                            <h:form>
+                                                <h:commandLink value="Add New PHI Area" 
+                                                               action="#{mohController.toAddPhiArea()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block"
                                                                >
                                                 </h:commandLink>
@@ -48,21 +59,8 @@
                                     <div class="row">
                                         <div class="col-12 p-2">
                                             <h:form>
-
-                                                <h:commandLink disabled="true" value="View Institutions" 
-                                                               action="#{regionalController.toCountOfResultsByOrderedInstitution()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
-                                                               >
-                                                </h:commandLink>
-                                            </h:form>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 p-2">
-                                            <h:form>
-
-                                                <h:commandLink disabled="true" value="Add Institution" 
-                                                               action="#{regionalController.toCountOfResultsByLab()}" 
+                                                <h:commandLink  value="View PHI Areas" 
+                                                               action="#{mohController.toViewPhiArea()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block"
                                                                >
                                                 </h:commandLink>

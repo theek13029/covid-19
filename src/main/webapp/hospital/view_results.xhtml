@@ -47,11 +47,11 @@
 
                             <h:outputLabel  value="Lab"></h:outputLabel>
                             <p:autoComplete
-                                            inputStyleClass="autocomplete"
-                                            value="#{hospitalController.lab}"
-                                            forceSelection="true" tabindex="100"
-                                            completeMethod="#{hospitalController.completeLab}"
-                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
+                                inputStyleClass="autocomplete"
+                                value="#{hospitalController.lab}"
+                                forceSelection="true" tabindex="100"
+                                completeMethod="#{hospitalController.completeLab}"
+                                var="l" itemLabel="#{l.name}" itemValue="#{l}">
                             </p:autoComplete>
 
                             <h:commandButton  style="margin-left: 1.4em" class="btn btn-success"   value="Generate Excel">
@@ -65,84 +65,92 @@
                                      rowIndexVar="n"
                                      var="c"
                                      rowKey="#{c.id}"
-                                     rowStyleClass="#{c.resultCssClass}"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
+                                     rowStyleClass="#{c.pcrResult.name eq 'Positive'?'bg-danger':''}"
                                      >
-                            <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                            <p:column headerText="Tube No." 
+                                      sortBy="#{c.encounterNumber}" 
+                                      filterBy="#{c.encounterNumber}" 
+                                      filterMatchMode="contains"
+                                      style="width: 8em;">
                                 <h:outputLabel value="#{c.encounterNumber}" class="form-label" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
+                            <p:column headerText="Lab No." 
+                                      sortBy="#{c.labNumber}" 
+                                      filterBy="#{c.labNumber}" 
+                                      filterMatchMode="contains"
+                                      style="width: 8em;"
+                                      >
+                                <h:outputLabel value="#{c.labNumber}" class="form-label" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" 
+                                      filterBy="#{c.pcrTestType.name}" filterMatchMode="contains"
+                                      style="width: 5em;">
                                 <h:outputLabel value="#{c.pcrTestType.name}" class="form-label"></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
+                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains"
+                                      style="width: 18em;">
                                 <h:outputLabel value="#{c.client.person.name}" class="form-label"></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Age"  sortBy="#{c.client.person.age}" width="60"
+                            <p:column headerText="Age"  sortBy="#{c.client.person.age}" style="width: 5em;"
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.client.person.age}" class="form-label"></h:outputLabel>
                             </p:column>
                             <p:column headerText="Gender"
-                                      width="80"
+                                      style="width: 5em;"
                                       sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.client.person.sex.name}" class="form-label"></h:outputLabel>
                             </p:column>
-                            <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
+                            <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains"
+                                      style="width: 10em;">
                                 <h:outputLabel value="#{c.client.person.nic}" class="form-label"></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Phone" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
+                            <p:column headerText="Phone" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains"
+                                      style="width: 10em;">
                                 <h:outputLabel value="#{c.client.person.phone1}" class="form-label"></h:outputLabel>
                                 <h:outputLabel rendered="#{c.client.person.phone2 ne null}" value=", " class="form-label"></h:outputLabel>
                                 <h:outputLabel rendered="#{c.client.person.phone2 ne null}" value="#{c.client.person.phone2}" class="form-label" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Address"  sortBy="#{c.client.person.address}"
-                                      filterBy="#{c.client.person.address}" filterMatchMode="contains">
+                                      filterBy="#{c.client.person.address}" filterMatchMode="contains"
+                                      style="width: 18em;">
                                 <h:outputLabel value="#{c.client.person.address}" class="form-label"></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Ordering Category"  sortBy="#{c.pcrOrderingCategory.name}"
-                                      filterBy="#{c.pcrOrderingCategory.name}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.pcrOrderingCategory.name}" class="form-label"></h:outputLabel>
+                            <p:column headerText="Ward"  sortBy="#{c.unitWard}"
+                                      filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.unitWard}" class="form-label"></h:outputLabel>
                             </p:column>
-                            <p:column headerText="PHI"  sortBy="#{c.client.person.phiArea.name}"
-                                      filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.client.person.phiArea.name}" class="form-label"></h:outputLabel>
-                            </p:column>
-                            <p:column headerText="GN Area"  sortBy="#{c.client.person.gnArea.name}"
-                                      filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.client.person.gnArea.name}" class="form-label"></h:outputLabel>
+                            <p:column headerText="BHT/Clinic/OPD No"  
+                                      sortBy="#{c.bht}"
+                                      filterBy="#{c.bht}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.bht}" class="form-label"></h:outputLabel>
                             </p:column>
                             <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}"
-                                      filterBy="#{c.referalInstitution.name}" filterMatchMode="contains">
+                                      filterBy="#{c.referalInstitution.name}" filterMatchMode="contains"
+                                      style="width: 15em;">
                                 <h:outputLabel value="#{c.referalInstitution.name}" class="form-label"></h:outputLabel>
                             </p:column>
                             <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
-                                      filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
+                                      filterBy="#{c.pcrResult.name}" filterMatchMode="contains"
+                                      style="width: 10em;">
                                 <h:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" class="form-label"></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Actions" exportable="false">
+                            <p:column headerText="Actions" exportable="false"
+                                      style="width: 12em;">
+                                <h:commandButton value="View Results" action="#{hospitalController.toViewResult()}" class="btn btn-suceess">
+                                    <f:setPropertyActionListener value="#{c}" target="#{hospitalController.test}" ></f:setPropertyActionListener>
+                                </h:commandButton>
+                                <h:commandButton class="btn btn-warning" value="Delete"  action="#{hospitalController.deleteTest()}"
+                                                 onclick="if (!confirm('Are you sure you want to delete?'))
+                                                             return false" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{hospitalController.deleting}" >
+                                    </f:setPropertyActionListener>
+                                </h:commandButton>
 
-                                <p:panelGrid columns="1" >
-                                    <h:commandButton rendered="#{c.referenceCase ne null}"
-                                                     value="View case"
-                                                     class="btn btn-success"
-                                                     action="#{clientController.toNewCaseInvestigationFromTest()}">
-
-                                        <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
-                                        </f:setPropertyActionListener>
-                                    </h:commandButton>
-                                    <h:commandButton value="View Results" action="#{hospitalController.toViewResult()}" class="btn btn-suceess">
-                                        <f:setPropertyActionListener value="#{c}" target="#{hospitalController.test}" ></f:setPropertyActionListener>
-                                    </h:commandButton>
-                                    <h:commandButton class="btn btn-warning" value="Delete"  action="#{hospitalController.deleteTest()}"
-                                                     onclick="if (!confirm('Are you sure you want to delete?'))
-                                                                 return false" >
-                                        <f:setPropertyActionListener value="#{c}" target="#{hospitalController.deleting}" >
-                                        </f:setPropertyActionListener>
-                                    </h:commandButton>
-                                </p:panelGrid>
                             </p:column>
                         </p:dataTable>
                     </h:form>

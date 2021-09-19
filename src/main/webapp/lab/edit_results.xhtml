@@ -47,7 +47,7 @@
                             <h:inputText class="form-control" value="#{clientController.plateNo}" ></h:inputText>
 
                             <p:spacer ></p:spacer>
-                            <h:commandButton class="btn btn-warning w-100 my-2" value="Process" 
+                            <h:commandButton class="btn btn-warning w-100 my-2" value="Process"
                                              action="#{clientController.toLabEditResults()}" ></h:commandButton>
                             <h:commandButton class="btn btn-success w-100 my-2" value="Generate Excel">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="entered_results" ></p:dataExporter>
@@ -71,9 +71,10 @@
 
                         <p:dataTable reflow="true" id="tbl" value="#{clientController.listedToReviewResults}"
                                      rendered="true"
-                                     var="c" 
-                                     rowKey="#{c.id}" 
+                                     var="c"
+                                     rowKey="#{c.id}"
                                      rowIndexVar="n"
+                                     reflow="true"
 
                                      rows="10"
                                      paginator="true"
@@ -97,32 +98,32 @@
                             </p:column>
                             <p:column  headerText="Lab No" width="200"  sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains" >
                                 <h:inputText class="form-control" value="#{c.labNumber}" id="txtLabNo" style="width: 98%;" >
-                                    <p:ajax event="blur" process="txtLabNo" 
+                                    <p:ajax event="blur" process="txtLabNo"
                                             listener="#{clientController.saveLabNo(c)}" >
                                     </p:ajax>
                                 </h:inputText>
                             </p:column>
 
-                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" 
+                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}"
                                       filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.client.person.name}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Age" width="60"  sortBy="#{c.client.person.age}" 
+                            <p:column headerText="Age" width="60"  sortBy="#{c.client.person.age}"
                                       filterBy="#{c.client.person.age}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.client.person.age}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Sex" width="60"  sortBy="#{c.client.person.sex.name}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains" >
                                 <h:outputLabel value="#{c.client.person.sex.name}" ></h:outputLabel>
                             </p:column>
-                            <p:column id="resultCt" headerText="CT 1" width="100"  sortBy="#{c.ctValue}" 
+                            <p:column id="resultCt" headerText="CT 1" width="100"  sortBy="#{c.ctValue}"
                                       filterBy="#{c.ctValue}" filterMatchMode="contains" >
                                 <h:inputText id="txtCt" value="#{c.ctValue}" style="width: 98px;" >
                                     <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </h:inputText>
                             </p:column>
-                            <p:column id="resultCt1" headerText="CT 2" width="100" 
-                                      sortBy="#{c.ctValue2}" 
+                            <p:column id="resultCt1" headerText="CT 2" width="100"
+                                      sortBy="#{c.ctValue2}"
                                       filterBy="#{c.ctValue2}" filterMatchMode="contains" >
                                 <h:inputText id="txtCt2" value="#{c.ctValue2}" style="width: 98px;" >
                                     <p:ajax event="keyup" process="txtCt" listener="#{clientController.saveEncounterResults(c)}" >
@@ -140,7 +141,7 @@
                             </p:column>
                             <p:column headerText="Comments" width="150"  sortBy="#{c.resultComments}" filterBy="#{c.resultComments}" filterMatchMode="contains" >
                                 <h:inputText id="txtComments" value="#{c.resultComments}"  style="width: 148px;">
-                                    <p:ajax event="blur" process="txtComments" 
+                                    <p:ajax event="blur" process="txtComments"
                                             listener="#{clientController.saveEncounterResults(c)}" >
                                     </p:ajax>
                                 </h:inputText>
