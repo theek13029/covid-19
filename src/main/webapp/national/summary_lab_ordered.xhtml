@@ -12,35 +12,37 @@
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <h:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="National Orders Summery" ></p:outputLabel>
+                        <h:outputLabel value="National Orders Summery" ></h:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:outputLabel value="From" ></p:outputLabel>
+                        <h:panelGrid columns="2" >
+                            <h:outputLabel value="From" ></h:outputLabel>
                             <p:calendar value="#{nationalController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <p:outputLabel value="To" ></p:outputLabel>
+                            <h:outputLabel value="To" ></h:outputLabel>
                             <p:calendar value="#{nationalController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
                             
                             
                             
-                            <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{nationalController.testType}" >
-                                <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{nationalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                            <h:outputLabel value="Test" ></h:outputLabel>
+                            <h:selectOneMenu value="#{nationalController.testType}" class="form-control" >
+                                <f:selectItem  itemLabel="All" ></f:selectItem>
+                                <f:selectItems  value="#{nationalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{nationalController.prepareSummaryByOrderedInstitution()}" ></p:commandButton>
-                            <p:commandButton ajax="false" value="Generate Excel" >
+                            <h:commandButton value="Process"
+                                             class="btn btn-success"
+                                             action="#{nationalController.prepareSummaryByOrderedInstitution()}" ></h:commandButton>
+                            <h:commandButton value="Generate Excel" 
+                                             class="btn btn-warning w-100">
                                 <p:dataExporter type="xlsx" fileName="Orders Summery" target="tbl" ></p:dataExporter>
-                            </p:commandButton>
+                            </h:commandButton>
 
-                        </p:panelGrid>
+                        </h:panelGrid>
 
 
                         <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" 
@@ -69,7 +71,7 @@
 
 
 
-                </p:panelGrid>
+                </h:panelGrid>
             </ui:define>
         </ui:composition>
     </body>
