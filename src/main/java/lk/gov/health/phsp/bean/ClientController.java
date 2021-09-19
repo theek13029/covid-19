@@ -187,6 +187,8 @@ public class ClientController implements Serializable {
     private Institution divertingLab;
     private List<Encounter> selectedClientsClinics;
     private List<Encounter> selectedClientEncounters;
+
+//    Search queries
     private String searchingId;
     private String searchingPhn;
     private String searchingPassportNo;
@@ -196,6 +198,8 @@ public class ClientController implements Serializable {
     private String searchingPhoneNumber;
     private String searchingLocalReferanceNo;
     private String searchingSsNumber;
+    private String searchingTestNo;
+
     private String uploadDetails;
     private String errorCode;
     private YearMonthDay yearMonthDay;
@@ -2612,6 +2616,46 @@ public class ClientController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Functions">
+
+//  This will allow a lab user to search for samples with test no
+    public String searchByTestNo() {
+        if (this.searchingTestNo == null || this.searchingTestNo.length() == 0) {
+            JsfUtil.addErrorMessage("Please enter a valid test number");
+            return "";
+        }
+
+        Map hashmap = new HashMap<>();
+        String jpql = "select e from Encounter e where e.retired=:retired";
+
+        jpql += " and e.referalInstitution=:ref";
+        hashmap.put("retired", false);
+
+        hashmap.put("ref", webUserController.getLoggedInstitution());
+
+        jpql += " and e.encounterNumber=:eno";
+        hashmap.put("eno", this.searchingTestNo);
+
+        jpql += " and e.encounterType=:etype";
+        hashmap.put("etype", EncounterType.Test_Enrollment);
+
+        if (this.fromDate != null && this.toDate != null) {
+            jpql += " and e.encounterDate between :fd to :td";
+            hashmap.put("fd", fromDate);
+            hashmap.put("td", toDate);
+        }
+
+        if (this.institution != null) {
+            jpql += " and e.institution=:ins";
+            hashmap.put("ins", this.institution);
+        }
+
+        jpql += " order by e.encounterNumber";
+
+        testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
+        System.out.println(selectedClients);
+        return "/lab/order_list";
+     }
+
     public String toUploadOrders() {
         return "/lab/upload_orders";
     }
@@ -5165,6 +5209,14 @@ public class ClientController implements Serializable {
         selectedClientChanged();
         selectedClientsClinics = null;
         selectedClientEncounters = null;
+    }
+
+    public String getSearchingTestNo() {
+        return searchingTestNo;
+    }
+
+    public void setSearchingTestNo(String searchingTestNo) {
+        this.searchingTestNo = searchingTestNo;
     }
 
     private ClientFacade getFacade() {
