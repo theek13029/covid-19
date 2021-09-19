@@ -24,6 +24,7 @@
 package lk.gov.health.phsp.bean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.ApplicationScoped;
 import lk.gov.health.phsp.entity.Area;
+import lk.gov.health.phsp.entity.WebUser;
 import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.facade.AreaFacade;
 
@@ -239,7 +241,7 @@ public class AreaApplicationController {
                 } else if (a.getRdhsArea() != null && a.getRdhsArea().equals(rdhs)) {
                     tas.add(a);
                 }
-            }else if (rdhs.getType() == AreaType.District) {
+            } else if (rdhs.getType() == AreaType.District) {
                 if (a.getParentArea() != null && a.getParentArea().equals(rdhs)) {
                     tas.add(a);
                 } else if (a.getDistrict() != null && a.getDistrict().equals(rdhs)) {
@@ -248,6 +250,37 @@ public class AreaApplicationController {
             }
         }
         return tas;
+    }
+
+    public List<Area> getPhiAreasOfMoh(Area moh) {
+        List<Area> tas = new ArrayList<>();
+        for (Area a : getAllAreas(AreaType.PHI)) {
+            if (a.getParentArea() != null && a.getParentArea().equals(moh)) {
+                tas.add(a);
+            } else if (a.getMoh() != null && a.getMoh().equals(moh)) {
+                tas.add(a);
+            }
+        }
+        return tas;
+    }
+    
+    public boolean saveArea(Area a, WebUser u){
+        if(a==null){
+            return false;
+        }
+        if(a.getId()==null){
+            a.setCreatedAt(new Date());
+            a.setCreatedBy(u);
+            areaFacade.create(a);
+            invalidateItems();
+            getAllAreas();
+            return true;
+        }else{
+            a.setLastEditBy(u);
+            a.setLastEditeAt(new Date());
+            areaFacade.edit(a);
+            return true;
+        }
     }
 
     public List<Area> getAllAreas(List<AreaType> ats) {
@@ -288,7 +321,7 @@ public class AreaApplicationController {
         }
         return tas;
     }
-    
+
     public List<Area> completeAreas(String qry) {
         List<Area> tas = new ArrayList<>();
         for (Area a : getAllAreas()) {
@@ -393,7 +426,7 @@ public class AreaApplicationController {
                     tas.add(a);
                     continue;
                 }
-                if (a.getMoh()!=null && a.getMoh().equals(moh)) {
+                if (a.getMoh() != null && a.getMoh().equals(moh)) {
                     tas.add(a);
                 }
             }

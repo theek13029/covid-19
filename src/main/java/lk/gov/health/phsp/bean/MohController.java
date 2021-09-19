@@ -52,6 +52,7 @@ import lk.gov.health.phsp.entity.Item;
 import lk.gov.health.phsp.entity.WebUser;
 import lk.gov.health.phsp.enums.AreaType;
 import lk.gov.health.phsp.enums.InstitutionType;
+import lk.gov.health.phsp.facade.AreaFacade;
 import lk.gov.health.phsp.facade.ClientEncounterComponentItemFacade;
 import lk.gov.health.phsp.pojcs.InstitutionCount;
 // </editor-fold>
@@ -70,7 +71,7 @@ public class MohController implements Serializable {
     @EJB
     private EncounterFacade encounterFacade;
     @EJB
-    ClientEncounterComponentItemFacade ceciFacade;
+    private ClientEncounterComponentItemFacade ceciFacade;
     @EJB
     private SmsFacade smsFacade;
 
@@ -129,6 +130,9 @@ public class MohController implements Serializable {
     private Date fromDate;
     private Date toDate;
 
+    Area phiArea;
+    List<Area> phiAreas;
+
     private Item orderingCategory;
     private Item result;
     private Item testType;
@@ -149,6 +153,42 @@ public class MohController implements Serializable {
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Functions">
+    public String toAddPhiArea() {
+        phiArea = new Area();
+        phiArea.setType(AreaType.PHI);
+        phiArea.setParentArea(webUserController.getLoggedInstitution().getMohArea());
+        phiArea.setMoh(webUserController.getLoggedInstitution().getMohArea());
+        phiArea.setDistrict(webUserController.getLoggedInstitution().getDistrict());
+        phiArea.setRdhsArea(webUserController.getLoggedInstitution().getRdhsArea());
+        phiArea.setProvince(webUserController.getLoggedInstitution().getProvince());
+        phiArea.setPdhsArea(webUserController.getLoggedInstitution().getPdhsArea());
+        return "/moh/admin/phi_area";
+    }
+
+    public String toViewPhiArea() {
+        phiAreas = areaApplicationController.getPhiAreasOfMoh(webUserController.getLoggedInstitution().getMohArea());
+        return "/moh/admin/phi_areas";
+    }
+
+    public String toViewPhiAreaOfMoh() {
+        if (phiArea == null) {
+            JsfUtil.addErrorMessage("Nothing Selected");
+            return "";
+        }
+        return "/moh/admin/phi_area";
+    }
+
+    public void savePhiArea() {
+        if (phiArea == null) {
+            JsfUtil.addErrorMessage("Nothing to save");
+            return;
+        }
+        areaApplicationController.saveArea(phiArea, webUserController.getLoggedUser());
+        phiAreas=null;
+        JsfUtil.addSuccessMessage("Saved");
+        toViewPhiAreaOfMoh();
+    }
+
     public String toCountOfTestsByGn() {
         Map m = new HashMap();
         String j = "select new lk.gov.health.phsp.pojcs.InstitutionCount(c.client.person.gnArea, c.institution, count(c))   "
@@ -1687,7 +1727,7 @@ public class MohController implements Serializable {
             return "";
         }
     }
-    
+
     public String saveRatAndToTestList() {
         boolean newOne = false;
         if (pcr != null) {
@@ -1695,7 +1735,7 @@ public class MohController implements Serializable {
                 newOne = true;
             }
         }
-        if (saveRat()!= null) {
+        if (saveRat() != null) {
             if (newOne) {
                 return toTestList();
             }
@@ -2810,6 +2850,24 @@ public class MohController implements Serializable {
         this.lab = lab;
     }
 
+    public Area getPhiArea() {
+        return phiArea;
+    }
+
+    public void setPhiArea(Area phiArea) {
+        this.phiArea = phiArea;
+    }
+
+    public List<Area> getPhiAreas() {
+        return phiAreas;
+    }
+
+    public void setPhiAreas(List<Area> phiAreas) {
+        this.phiAreas = phiAreas;
+    }
+
+    
+    
     public Encounter getDeleting() {
         return deleting;
     }
