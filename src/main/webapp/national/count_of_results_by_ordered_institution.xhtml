@@ -34,15 +34,6 @@
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
 
-                            <h:outputLabel class="h6 fw-bold" value="Lab"></h:outputLabel>
-                            <p:autoComplete style="width: 100%;"
-                                            inputStyleClass="autocomplete"
-                                            value="#{nationalController.lab}"
-                                            forceSelection="true" tabindex="100"
-                                            completeMethod="#{nationalController.completeLab}"
-                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
-                            </p:autoComplete>
-
                             <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
                             <h:selectOneMenu value="#{nationalController.testType}" class="form-select">
                                 <f:selectItem itemLabel="All" ></f:selectItem>
@@ -76,14 +67,11 @@
 
                         </h:panelGrid>
                         </div>
-                        <div>
-                            <p:commandButton id="toggler" type="button" class="btn btn-sm btn-secondary" value="Toggle Columns" icon="pi pi-align-justify"/>
-                            <p:columnToggler datasource="tbl" trigger="toggler"/>
-                        </div>
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                            <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button" value="Columns" />
+                            <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button" value="Filter Columns" />
                             <p:columnToggler datasource="tbl" trigger="toggler"/>
-                            <p:dataTable reflow="true" id="tbl" value="#{nationalController.institutionCounts}" rendered="true"
+                            
+                            <p:dataTable id="tbl" value="#{nationalController.institutionCounts}" rendered="true"
                                      rowIndexVar="n"
                                      var="c"
                                      reflow="true"
