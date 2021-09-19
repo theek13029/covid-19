@@ -8,66 +8,65 @@
 
     <body>
         <ui:composition template="/template1.xhtml">
+            <ui:define name="title">
+                Web User | Transactions
+            </ui:define>
             <ui:define name="content"> 
-
                 <h:form id="WebUserEditForm">
                     <p:panelGrid columns="1" rendered="#{webUserController.loggedUser != null}"
-                                 style="margin: auto; text-align: left; width: 100%;" styleClass="alignTop">
+                                 styleClass="alignTop w-100 m-auto border border-auto bg-white">
 
-                            <p:panelGrid columns="6" >
-                                <p:outputLabel value="Action"  />
-                                <p:selectOneMenu  value="#{userTransactionController.searchText}" style="width:200px;" >
-                                    <f:selectItem itemLabel="All"  ></f:selectItem>
-                                    <f:selectItems value="#{userTransactionController.userTransactionTypes}" >
-                                    </f:selectItems>
-                                </p:selectOneMenu>
+                        <p:panelGrid columns="6" class="border border-auto bg-white">
+                            <p:outputLabel class="fs-6 fw-bold" value="Action"  />
+                            <p:selectOneMenu class="form-control form-control-sm w-100" value="#{userTransactionController.searchText}" style="width:200px;" >
+                                <f:selectItem itemLabel="All"  ></f:selectItem>
+                                <f:selectItems value="#{userTransactionController.userTransactionTypes}" >
+                                </f:selectItems>
+                            </p:selectOneMenu>
 
-                                <p:outputLabel value="IP"  />
-                                <p:inputText  value="#{userTransactionController.ip}" >
-                                </p:inputText>
+                            <p:outputLabel class="fs-6 fw-bold" value="IP"  />
+                            <p:inputText class="fs-6 fw-bold" value="#{userTransactionController.ip}" >
+                            </p:inputText>
 
-                                <p:outputLabel value="User"  />
-                                <p:autoComplete value="#{userTransactionController.user}"
-                                                completeMethod="#{webUserController.completeUsers}"
-                                                var="u" itemLabel="#{u.name}" itemValue="#{u}"
-                                                maxResults="15" minQueryLength="3"
-                                                forceSelection="true">
-                                </p:autoComplete>
+                            <p:outputLabel class="fs-6 fw-bold" value="User"  />
+                            <p:autoComplete value="#{userTransactionController.user}"
+                                            completeMethod="#{webUserController.completeUsers}"
+                                            var="u" itemLabel="#{u.name}" itemValue="#{u}"
+                                            maxResults="15" minQueryLength="3"
+                                            forceSelection="true">
+                            </p:autoComplete>
 
-                                <p:outputLabel value="Data"  />
-                                <p:inputText  value="#{userTransactionController.data}" >
-                                </p:inputText>
+                            <p:outputLabel class="fs-6 fw-bold" value="Data"  />
+                            <p:inputText  value="#{userTransactionController.data}" >
+                            </p:inputText>
 
-                                <p:outputLabel value="From"  />
-                                <p:calendar value="#{userTransactionController.fromDate}" pattern="dd/MM/yyyy hh:mm">
-                                </p:calendar>
+                            <p:outputLabel class="fs-6 fw-bold" value="From"  />
+                            <p:calendar value="#{userTransactionController.fromDate}" pattern="dd/MM/yyyy hh:mm">
+                            </p:calendar>
 
-                                <p:outputLabel value="To"  />
-                                <p:calendar value="#{userTransactionController.toDate}"  pattern="dd/MM/yyyy hh:mm">
-                                </p:calendar>
-                                </p:panelGrid>
+                            <p:outputLabel class="fs-6 fw-bold" value="To"  />
+                            <p:calendar value="#{userTransactionController.toDate}"  pattern="dd/MM/yyyy hh:mm">
+                            </p:calendar>
+                        </p:panelGrid>
 
-                            <p:panelGrid > 
-                            
-                                <p:commandButton ajax="false" action="#{userTransactionController.clearSearch()}" value="Clear" >
-                                </p:commandButton>
-                                <p:commandButton ajax="false" action="#{userTransactionController.search()}" value="Search" >
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="Download" >
-                                    <p:dataExporter target="tbl" type="xls" fileName="user transaction list" >
-                                    </p:dataExporter>
-                                </p:commandButton>
-                
-                                
-                            </p:panelGrid>
-                        
-                    <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{userTransactionController.items}" var="item"
+                        <p:panelGrid columns="1" class="border border-auto bg-white"> 
+                            <h:commandButton class="btn btn-warning w-100" action="#{userTransactionController.clearSearch()}" value="Clear" >
+                            </h:commandButton>
+                            <h:commandButton  class="btn btn-success w-100" action="#{userTransactionController.search()}" value="Search" >
+                            </h:commandButton>
+                            <h:commandButton  class="btn btn-success w-100" value="Download" >
+                                <p:dataExporter target="tbl" type="xls" fileName="user transaction list" >
+                                </p:dataExporter>
+                            </h:commandButton>
+                        </p:panelGrid>
+                        <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button"
+                                         value="Columns" />
+                        <p:columnToggler datasource="tbl" trigger="toggler" />
+                        <p:dataTable  reflow="true" resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{userTransactionController.items}" var="item"
                                      rowKey="#{item.id}"
                                      paginator="true"
                                      rows="10"
-                                     rowsPerPageTemplate="10,20,30,40,50"
-
-                                     >
+                                     rowsPerPageTemplate="10,20,30,40,50">
                             <p:column>
                                 <f:facet name="header">
                                     <h:outputText value="Date / Time"/>
@@ -107,12 +106,8 @@
                                 <h:outputText value="#{item.transactionData}"/>
                             </p:column>
                         </p:dataTable>
-
                     </p:panelGrid>
-
-
                 </h:form>
-
 
             </ui:define>
         </ui:composition>
