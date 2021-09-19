@@ -8,14 +8,17 @@
 
     <h:body>
         <ui:composition template="/template1.xhtml">
+            <ui:define name="title">
+                MOH | View Results
+            </ui:define>
             <ui:define name="content">
                 <h:form >
                     <div class="row" >
                         <div class="col-12 text-center mt-4 mb-2" >
-                            <h4 class="fw-bold"><h:outputLabel  value="List of Results" ></h:outputLabel></h4>
+                            <h4 class="fw-bold">List of Results</h4>
                         </div>
                     </div>
-                    <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                    <div class="container mb-3 w-100 d-flex justify-content-center align-items-center" >
                         <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
                             <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
                             <p:calendar value="#{mohController.fromDate}"
@@ -26,26 +29,26 @@
                             <p:calendar  value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
                             <h:outputLabel class="h6 fw-bold" value="Ordering Category" ></h:outputLabel>
-                            <h:selectOneMenu value="#{mohController.orderingCategory}" >
+                            <h:selectOneMenu value="#{mohController.orderingCategory}" class="form-select form-select-sm w-100" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{mohController.covidTestOrderingCategories}"
                                                var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
                             <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
-                            <h:selectOneMenu value="#{mohController.testType}" >
+                            <h:selectOneMenu value="#{mohController.testType}" class="form-select form-select-sm w-100" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
                             <h:outputLabel class="h6 fw-bold" value="Result" ></h:outputLabel>
-                            <h:selectOneMenu value="#{mohController.result}" >
+                            <h:selectOneMenu value="#{mohController.result}" class="form-select form-select-sm w-100">
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{mohController.resultTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
                             </h:selectOneMenu>
                             <p:outputLabel class="h6 fw-bold" value="Lab"></p:outputLabel>
-                            <p:autoComplete style="width: 100%;"
+                            <p:autoComplete class="w-100"
                                             inputStyleClass="autocomplete"
                                             value="#{mohController.lab}"
                                             forceSelection="true" tabindex="100"
@@ -55,20 +58,25 @@
                             <p:commandButton ajax="false" value="Generate Excel" class="btn btn-success w-100">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="moh_area_results" ></p:dataExporter>
                             </p:commandButton>
-                            <p:commandButton class="btn btn-warning" ajax="false" value="Process"
+                            <p:commandButton class="btn btn-warning w-100" ajax="false" value="Process"
                                              action="#{mohController.toViewResults()}" ></p:commandButton>
                         </h:panelGrid>
                     </div>
                     <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable resizableColumns="true"
-                                    multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.tests}"
-                                    var="c" rowKey="#{c.id}"
-                                    rows="10"
-                                    paginator="true"
-                                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                    currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                    rowsPerPageTemplate="10,50,100,{ShowAll|'All'}"
-                                    rowStyleClass="#{c.resultCssClass}">
+                        <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button" value="Filter Columns" />
+                        <p:columnToggler datasource="tbl" trigger="toggler"/> 
+
+                        <p:dataTable 
+                            reflow="true"
+                            resizableColumns="true"
+                            multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.tests}"
+                            var="c" rowKey="#{c.id}"
+                            rows="10"
+                            paginator="true"
+                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                            rowsPerPageTemplate="10,50,100,{ShowAll|'All'}"
+                            rowStyleClass="#{c.resultCssClass}">
                             <p:column class="w-auto" headerText="Age"  sortBy="#{c.client.person.age}" filterBy="#{c.client.person.age}" filterMatchMode="contains">
                                 <h:outputLabel value="#{c.client.person.age}" class="form-label"></h:outputLabel>
                             </p:column>
@@ -108,14 +116,14 @@
                             </p:column>
                             <p:column headerText="Actions" exportable="false">
                                 <h:commandButton  rendered="#{c.referenceCase eq null}"
-                                                 value="Investigate"
-                                                 action="#{clientController.toNewCaseInvestigationFromTest()}"
-                                                 class="btn btn-warning small btn-sm w-100">
+                                                  value="Investigate"
+                                                  action="#{clientController.toNewCaseInvestigationFromTest()}"
+                                                  class="btn btn-warning small btn-sm w-100">
                                     <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
                                     </f:setPropertyActionListener>
                                 </h:commandButton>
                                 <h:commandButton rendered="#{c.referenceCase ne null}"
-                                                  value="View Details"
+                                                 value="View Details"
                                                  action="#{clientController.toViewOrEditCaseEnrollmentFromEncounter()}"
                                                  class="btn btn-success btn-sm small w-100" >
                                     <f:setPropertyActionListener value="#{c.referenceCase}" target="#{clientController.selectedEncounter}" >
