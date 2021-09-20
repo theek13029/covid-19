@@ -262,7 +262,7 @@ public class ApiResource {
             return errorMessageLogin();
         }
         
-        if(wu.getI)
+        
         
         cDistrict = areaApplicationController.getArea(CommonController.getLongValue(district_id));
         cMoh = areaApplicationController.getArea(CommonController.getLongValue(moh_id));
