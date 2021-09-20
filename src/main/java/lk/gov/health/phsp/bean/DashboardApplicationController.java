@@ -438,7 +438,7 @@ public Long samplesAwaitingDispatch(
     }
 
     if (testType != null) {
-        jpql += " anc c.testType=:tt";
+        jpql += " and c.pcrTestType=:tt";
         hashMap.put("tt", testType);
     }
 
