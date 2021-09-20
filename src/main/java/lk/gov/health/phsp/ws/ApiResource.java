@@ -136,10 +136,24 @@ public class ApiResource {
             @QueryParam("gn_area_id") String gn_area_id,
             @QueryParam("phi_area_id") String phi_area_id,
             @QueryParam("comments") String comments,
+            @QueryParam("request_id") String request_id,
             @Context HttpServletRequest requestContext,
             @Context SecurityContext context) {
 
         String ipadd = requestContext.getHeader("X-FORWARDED-FOR");
+        if (ipadd == null) {
+            ipadd = requestContext.getRemoteAddr();
+        }
+
+        System.out.println("ipadd = " + ipadd);
+        System.out.println("name = " + name);
+        String requestIp = "";
+        if(ipadd!=null){
+            requestIp = ipadd.trim().toLowerCase();
+        }else{
+            requestIp = "IP Address is NULL";
+        }
+        System.out.println("requestIp = " + requestIp);
 
         JSONObject jSONObjectOut;
         if (name == null || name.trim().equals("")) {
@@ -206,14 +220,17 @@ public class ApiResource {
                             phi_area_id,
                             comments);
                     break;
-                case "request_test_result":
+                case "request_pcr_result":
+                    jSONObjectOut = requestPcrResult(ipadd,
+                            username,
+                            password,
+                            request_id);
+                    break;
+                case "submit_pcr_result":
                     jSONObjectOut = requestPcrResult(ipadd,
                             username,
                             password,
                             test_number);
-                    break;
-                case "submit_pcr_result":
-                    jSONObjectOut = submitPcrResult();
                     break;
                 case "submit_rat_result":
                     jSONObjectOut = submitRatResult();
@@ -250,6 +267,10 @@ public class ApiResource {
             String phi_area_id,
             String comments) {
 
+        
+        System.out.println("submitPcrRequest");
+        System.out.println("ip = " + ip);
+        
         JSONObject jSONObjectOut = new JSONObject();
         JSONArray array = new JSONArray();
 
@@ -404,7 +425,7 @@ public class ApiResource {
         encounterApplicationController.save(e);
 
         JSONObject ja = new JSONObject();
-        ja.put("pcr_request_id", e.getId());
+        ja.put("request_id", e.getId());
 
         jSONObjectOut.put("data", ja);
         jSONObjectOut.put("status", successMessage());
@@ -414,7 +435,7 @@ public class ApiResource {
     private JSONObject requestPcrResult(String ipadd,
             String username,
             String password,
-            String pcr_request_id) {
+            String request_id) {
         JSONObject jSONObjectOut = new JSONObject();
         JSONArray array = new JSONArray();
 
@@ -434,11 +455,17 @@ public class ApiResource {
             return errorMessageNotAnAutherizedIp();
         }
 
-        if (pcr_request_id == null || pcr_request_id.trim().equals("")) {
+        if (request_id == null || request_id.trim().equals("")) {
             return errorMessageNoPcrRequestId();
         }
 
-        Encounter e = encounterApplicationController.getEncounter(CommonController.getLongValue(pcr_request_id));
+        System.out.println("request_id = " + request_id);
+        
+        Long rid = CommonController.getLongValue(request_id);
+        
+        System.out.println("rid = " + rid);
+        
+        Encounter e = encounterApplicationController.getEncounter(rid);
 
         if (e == null) {
             return errorMessageNoSuchPcrRequestId();
@@ -477,9 +504,33 @@ public class ApiResource {
                 jSONObjectOut.put("data", ja);
                 jSONObjectOut.put("status", successMessage());
                 return jSONObjectOut;
-            }else {
-                if(e.getResultReviewed()==null || e.getResultReviewed()==false){
-                    
+            } else {
+                if (e.getResultReviewed() == null || e.getResultReviewed() == false) {
+                    ja.put("pcr_result_status", "Awaiting reviewing results.");
+                    jSONObjectOut.put("data", ja);
+                    jSONObjectOut.put("status", successMessage());
+                    return jSONObjectOut;
+                } else {
+                    if (e.getResultConfirmed() == null || e.getResultConfirmed() == false) {
+                        ja.put("pcr_result_status", "Awaiting confirming results.");
+                        jSONObjectOut.put("data", ja);
+                        jSONObjectOut.put("status", successMessage());
+                        return jSONObjectOut;
+                    } else {
+                        if (e.getResultConfirmed() == true) {
+                            ja.put("pcr_result_status", "Results available.");
+                            ja.put("result", e.getPcrResult().getName());
+                            ja.put("result_display", e.getPcrResultStr());
+                            ja.put("ct1_value", e.getCtValue().toString());
+                            ja.put("ct2_value", e.getCtValue2().toString());
+                            ja.put("comments", e.getResultComments());
+                            ja.put("report", e.getResultPrintHtml());
+                            jSONObjectOut.put("data", ja);
+                            jSONObjectOut.put("status", successMessage());
+                            return jSONObjectOut;
+                        }
+                    }
+
                 }
             }
         }

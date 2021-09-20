@@ -23,6 +23,8 @@
  */
 package lk.gov.health.phsp.bean;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.ApplicationScoped;
@@ -63,7 +65,12 @@ public class EncounterApplicationController {
         if (id == null) {
             return e;
         }
-        e = encounterFacade.find(id);
+        String j = "select e "
+                + " from Ecnounter e "
+                + " where e.id=:eid";
+        Map m = new HashMap();
+        m.put("eid", id);
+        e = encounterFacade.findFirstByJpql(j, m);
         return e;
     }
 
