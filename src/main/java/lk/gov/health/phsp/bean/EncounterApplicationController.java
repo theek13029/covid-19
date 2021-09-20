@@ -51,11 +51,20 @@ public class EncounterApplicationController {
         if (e == null) {
             return;
         }
-        if(e.getId()==null){
+        if (e.getId() == null) {
             encounterFacade.create(e);
-        }else{
+        } else {
             encounterFacade.edit(e);
         }
+    }
+
+    public Encounter getEncounter(Long id) {
+        Encounter e = null;
+        if (id == null) {
+            return e;
+        }
+        e = encounterFacade.find(id);
+        return e;
     }
 
 }

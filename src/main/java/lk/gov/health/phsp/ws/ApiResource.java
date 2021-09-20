@@ -207,7 +207,10 @@ public class ApiResource {
                             comments);
                     break;
                 case "request_test_result":
-                    jSONObjectOut = requestTestResult();
+                    jSONObjectOut = requestPcrResult(ipadd,
+                            username,
+                            password,
+                            test_number);
                     break;
                 case "submit_pcr_result":
                     jSONObjectOut = submitPcrResult();
@@ -275,8 +278,7 @@ public class ApiResource {
             return errorMessageNoIps();
         }
 
-        
-        if (ip!=null && !wu.getLoginIPs().contains(ip)) {
+        if (ip != null && !wu.getLoginIPs().contains(ip)) {
             return errorMessageNotAnAutherizedIp();
         }
 
@@ -409,9 +411,78 @@ public class ApiResource {
         return jSONObjectOut;
     }
 
-    private JSONObject requestTestResult() {
+    private JSONObject requestPcrResult(String ipadd,
+            String username,
+            String password,
+            String pcr_request_id) {
         JSONObject jSONObjectOut = new JSONObject();
         JSONArray array = new JSONArray();
+
+        WebUser wu;
+
+        wu = webUserApplicationController.getWebUser(username, password);
+
+        if (wu == null) {
+            return errorMessageLogin();
+        }
+
+        if (wu.getLoginIPs() == null || wu.getLoginIPs().equals("")) {
+            return errorMessageNoIps();
+        }
+
+        if (ipadd != null && !wu.getLoginIPs().contains(ipadd)) {
+            return errorMessageNotAnAutherizedIp();
+        }
+
+        if (pcr_request_id == null || pcr_request_id.trim().equals("")) {
+            return errorMessageNoPcrRequestId();
+        }
+
+        Encounter e = encounterApplicationController.getEncounter(CommonController.getLongValue(pcr_request_id));
+
+        if (e == null) {
+            return errorMessageNoSuchPcrRequestId();
+        }
+        if (e.getEncounterType() != EncounterType.Test_Enrollment || e.getPcrTestType() != itemApplicationController.getPcr()) {
+            return errorMessageNoSuchPcrRequestId();
+        }
+
+        if (e.getInstitution() != wu.getInstitution()) {
+            return errorMessageNoSuchPcrRequestId();
+        }
+
+        JSONObject ja = new JSONObject();
+
+        if (e.getSampleMissing() == true) {
+            ja.put("pcr_result_status", "Sample is Missing");
+            jSONObjectOut.put("data", ja);
+            jSONObjectOut.put("status", successMessage());
+            return jSONObjectOut;
+        }
+        if (e.getSampleRejectedAtLab() == true) {
+            ja.put("pcr_result_status", "Sample Rejected.");
+            jSONObjectOut.put("data", ja);
+            jSONObjectOut.put("status", successMessage());
+            return jSONObjectOut;
+        }
+
+        if (e.getReceivedAtLab() == null || e.getReceivedAtLab() == false) {
+            ja.put("pcr_result_status", "Sample is awaiting to be received at the lab.");
+            jSONObjectOut.put("data", ja);
+            jSONObjectOut.put("status", successMessage());
+            return jSONObjectOut;
+        } else {
+            if (e.getResultEntered() == null || e.getResultEntered() == false) {
+                ja.put("pcr_result_status", "Sample is Processing");
+                jSONObjectOut.put("data", ja);
+                jSONObjectOut.put("status", successMessage());
+                return jSONObjectOut;
+            }else {
+                if(e.getResultReviewed()==null || e.getResultReviewed()==false){
+                    
+                }
+            }
+        }
 
         jSONObjectOut.put("data", array);
         jSONObjectOut.put("status", successMessage());
@@ -690,6 +761,24 @@ public class ApiResource {
         jSONObjectOut.put("code", 400);
         jSONObjectOut.put("type", "error");
         String e = "A test number (reference number or barcode) is required.";
+        jSONObjectOut.put("message", e);
+        return jSONObjectOut;
+    }
+
+    private JSONObject errorMessageNoPcrRequestId() {
+        JSONObject jSONObjectOut = new JSONObject();
+        jSONObjectOut.put("code", 400);
+        jSONObjectOut.put("type", "error");
+        String e = "PCR Request ID is required.";
+        jSONObjectOut.put("message", e);
+        return jSONObjectOut;
+    }
+
+    private JSONObject errorMessageNoSuchPcrRequestId() {
+        JSONObject jSONObjectOut = new JSONObject();
+        jSONObjectOut.put("code", 400);
+        jSONObjectOut.put("type", "error");
+        String e = "PCR Request ID is wrong. Please recheck.";
         jSONObjectOut.put("message", e);
         return jSONObjectOut;
     }
