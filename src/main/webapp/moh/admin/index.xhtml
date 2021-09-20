@@ -6,6 +6,9 @@
     <h:body>
 
         <ui:composition template="/template1.xhtml">
+            <ui:define name="title">
+                MOH | Administration
+            </ui:define>
 
             <ui:define name="content">
 
@@ -18,8 +21,8 @@
                     <div class="row" >
                         <div class="col-3" >
 
-                            <div class="card" >
-                                <div class="card-header" >
+                            <div class="card border border-light bg-white" >
+                                <div class="card-header my-2 fw-bold bg-white text-dark fs-5" >
                                     <h:outputLabel value="System Administration" ></h:outputLabel>
                                 </div>
                                 <div class="card-body container-fluid">
@@ -28,7 +31,7 @@
                                             <h:form>
                                                 <h:commandLink value="Add New User" 
                                                                action="#{menuController.toAddNewUser()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               class="btn btn-outline-primary btn-lg w-100" 
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -39,7 +42,7 @@
                                             <h:form>
                                                 <h:commandLink value="View Users" 
                                                                action="#{menuController.toListUsers()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block" 
+                                                               class="btn btn-outline-primary btn-lg w-100" 
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -50,7 +53,7 @@
                                             <h:form>
                                                 <h:commandLink value="Add New PHI Area" 
                                                                action="#{mohController.toAddPhiArea()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg w-100"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
@@ -61,7 +64,7 @@
                                             <h:form>
                                                 <h:commandLink  value="View PHI Areas" 
                                                                action="#{mohController.toViewPhiArea()}" 
-                                                               class="btn btn-outline-primary btn-lg btn-block"
+                                                               class="btn btn-outline-primary btn-lg w-100"
                                                                >
                                                 </h:commandLink>
                                             </h:form>
