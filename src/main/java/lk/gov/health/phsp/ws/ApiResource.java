@@ -275,7 +275,8 @@ public class ApiResource {
             return errorMessageNoIps();
         }
 
-        if (!wu.getLoginIPs().contains(ip)) {
+        
+        if (ip!=null && !wu.getLoginIPs().contains(ip)) {
             return errorMessageNotAnAutherizedIp();
         }
 

@@ -69,6 +69,9 @@ public class WebUserApplicationController {
     }
 
     public WebUser getWebUser(String userName, String password) {
+        if(userName==null || password==null){
+            return null;
+        }
         WebUser loggedUser;
         String temSQL;
         temSQL = "SELECT u FROM WebUser u WHERE lower(u.name)=:userName and u.retired =:ret";
