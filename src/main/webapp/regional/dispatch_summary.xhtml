@@ -8,37 +8,44 @@
 
     <h:body>
         <ui:composition template="/template1.xhtml">
+            <ui:define name="title">
+               Dispatch Summary(RDHS)
+            </ui:define>
+                
             <ui:define name="content">
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <h:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Dispatch Summary" ></p:outputLabel>
+                        <h:outputLabel value="Dispatch Summary" ></h:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:outputLabel value="Ordered From" ></p:outputLabel>
+                        <h:panelGrid columns="2" rendered="true" styleClass="border border-light bg-white" >
+                            <h:outputLabel class="h6 fw-bold" value="Ordered From" ></h:outputLabel>
                             <p:calendar value="#{regionalController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm">
                             </p:calendar><!-- comment -->
 
-                            <p:outputLabel value="Ordered To" ></p:outputLabel>
+                            <h:outputLabel class="h6 fw-bold" value="Ordered To" ></h:outputLabel>
                             <p:calendar value="#{regionalController.toDate}" pattern="dd MMMM yyyy hh:mm"></p:calendar>
 
-                            <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{regionalController.testType}" >
+                            <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
+                            <h:selectOneMenu class="form-select" value="#{regionalController.testType}" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{regionalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
-                            <p:commandButton ajax="false" value="Generate Excel">
+                            <h:commandButton  value="Generate Excel"
+                                              class="btn btn-success">
                                 <p:dataExporter target="tbl" type="xlsx" fileName="Dispatch Summary" ></p:dataExporter>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{regionalController.prepareDispatchSummery()}" ></p:commandButton>
+                            </h:commandButton>
+                            <h:commandButton  value="Process" 
+                                              class="btn btn-warning w-100"                                           
+                                             action="#{regionalController.prepareDispatchSummery()}" >
+                            </h:commandButton>
 
 
-                        </p:panelGrid>
+                        </h:panelGrid>
 
 
                         <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{regionalController.awaitingDispatch}" rendered="true"
@@ -52,23 +59,23 @@
                                      >
                             <p:column headerText="Institution" sortBy="#{c.institution.name}"
                                       filterBy="#{c.institution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.institution.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Count to dispatch"  sortBy="#{c.count}">
-                                <p:outputLabel value="#{c.count}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.count}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false"  >
-                                <p:commandButton ajax="false" value="To Dispatch Samples" action="#{regionalController.toDispatchSamples}" >
+                                <h:commandButton class="btn btn-warning"  value="To Dispatch Samples" action="#{regionalController.toDispatchSamples}" >
                                     <f:setPropertyActionListener value="#{c.institution}" target="#{regionalController.institution}" >
                                     </f:setPropertyActionListener>
-                                </p:commandButton>
+                                </h:commandButton>
                             </p:column>
                         </p:dataTable>
                     </h:form>
 
 
 
-                </p:panelGrid>
+                </h:panelGrid>
             </ui:define>
 
         </ui:composition>
