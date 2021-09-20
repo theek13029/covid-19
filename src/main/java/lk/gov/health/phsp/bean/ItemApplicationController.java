@@ -63,7 +63,7 @@ public class ItemApplicationController {
     private List<Item> citizenships;
 
     private List<Item> sexes;
-    
+
     private List<Item> vaccinationStatuses;
     private List<Item> symptomaticStatuses;
 
@@ -284,6 +284,19 @@ public class ItemApplicationController {
             }
         }
         if (counter > 1) {
+        }
+        return item;
+    }
+
+    public Item findItemById(Long code) {
+        Item item = null;
+        if (code == null) {
+            return item;
+        }
+        for (Item ti : getItems()) {
+            if (ti.getId().equals(code)) {
+                item = ti;
+            }
         }
         return item;
     }
@@ -559,8 +572,8 @@ public class ItemApplicationController {
     }
 
     public List<Item> getVaccinationStatuses() {
-        if(vaccinationStatuses==null){
-            vaccinationStatuses=findChildDictionaryItems("vaccinations_statuses");
+        if (vaccinationStatuses == null) {
+            vaccinationStatuses = findChildDictionaryItems("vaccinations_statuses");
         }
         return vaccinationStatuses;
     }
@@ -570,7 +583,7 @@ public class ItemApplicationController {
     }
 
     public List<Item> getSymptomaticStatuses() {
-        if(symptomaticStatuses==null){
+        if (symptomaticStatuses == null) {
             symptomaticStatuses = findChildDictionaryItems("symptomatic_statuses");
         }
         return symptomaticStatuses;
@@ -579,7 +592,5 @@ public class ItemApplicationController {
     public void setSymptomaticStatuses(List<Item> symptomaticStatuses) {
         this.symptomaticStatuses = symptomaticStatuses;
     }
-    
-    
 
 }

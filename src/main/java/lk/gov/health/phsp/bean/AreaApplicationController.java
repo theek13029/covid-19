@@ -263,19 +263,19 @@ public class AreaApplicationController {
         }
         return tas;
     }
-    
-    public boolean saveArea(Area a, WebUser u){
-        if(a==null){
+
+    public boolean saveArea(Area a, WebUser u) {
+        if (a == null) {
             return false;
         }
-        if(a.getId()==null){
+        if (a.getId() == null) {
             a.setCreatedAt(new Date());
             a.setCreatedBy(u);
             areaFacade.create(a);
             invalidateItems();
             getAllAreas();
             return true;
-        }else{
+        } else {
             a.setLastEditBy(u);
             a.setLastEditeAt(new Date());
             areaFacade.edit(a);
@@ -327,6 +327,19 @@ public class AreaApplicationController {
         for (Area a : getAllAreas()) {
             if (a.getName().toLowerCase().contains(qry.trim().toLowerCase())) {
                 tas.add(a);
+            }
+        }
+        return tas;
+    }
+
+    public Area getArea(Long id) {
+        Area tas = null;
+        if (id == null) {
+            return tas;
+        }
+        for (Area a : getAllAreas()) {
+            if (a.getId().equals(id)) {
+                tas = a;
             }
         }
         return tas;

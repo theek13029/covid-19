@@ -75,8 +75,8 @@ public class CommonController implements Serializable {
      */
     public CommonController() {
     }
-    
-    public List<String> getExcelColumns(){
+
+    public List<String> getExcelColumns() {
         List<String> cs = new ArrayList<>();
         cs.add("A");
         cs.add("B");
@@ -302,7 +302,7 @@ public class CommonController implements Serializable {
     public Date endOfTheDay(Date date) {
         Calendar d = Calendar.getInstance();
         d.setTime(date);
-        d.set(Calendar.HOUR_OF_DAY , d.getActualMaximum(Calendar.HOUR_OF_DAY));
+        d.set(Calendar.HOUR_OF_DAY, d.getActualMaximum(Calendar.HOUR_OF_DAY));
         d.set(Calendar.MINUTE, d.getActualMaximum(Calendar.MINUTE));
         d.set(Calendar.SECOND, d.getActualMaximum(Calendar.SECOND));
         d.set(Calendar.MILLISECOND, d.getActualMaximum(Calendar.MILLISECOND));
@@ -343,7 +343,7 @@ public class CommonController implements Serializable {
         }
     }
 
-    public boolean matchPassword(String planePassword, String encryptedPassword) {
+    public static Boolean matchPassword(String planePassword, String encryptedPassword) {
         BasicPasswordEncryptor en = new BasicPasswordEncryptor();
         return en.checkPassword(planePassword, encryptedPassword);
     }
@@ -752,11 +752,11 @@ public class CommonController implements Serializable {
     public static Date endOfYear() {
         return endOfYear(new Date());
     }
-    
+
     public static Date getYesterday() {
         return getYesterday(new Date());
     }
-    
+
     public static Date getYesterday(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
@@ -886,9 +886,13 @@ public class CommonController implements Serializable {
 
     public static Long getLongValue(String result) {
         Long l = null;
+        if (result == null) {
+            return l;
+        }
         try {
             l = Long.parseLong(result);
         } catch (Exception e) {
+            System.err.println("e = " + e);
             l = null;
         }
         return l;
@@ -1247,6 +1251,4 @@ public class CommonController implements Serializable {
         this.result = result;
     }
 
-    
-    
 }

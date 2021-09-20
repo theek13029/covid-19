@@ -84,6 +84,8 @@ public class WebUser implements Serializable {
     @ManyToOne
     private Area area;
 
+    private String loginIPs;
+    
     String code;
 
     /*
@@ -147,6 +149,8 @@ public class WebUser implements Serializable {
         this.institution = institution;
     }
 
+    
+    
     public String getEmail() {
         return email;
     }
@@ -632,6 +636,14 @@ public class WebUser implements Serializable {
             }
         }
         return webUserRoleLevel;
+    }
+
+    public String getLoginIPs() {
+        return loginIPs;
+    }
+
+    public void setLoginIPs(String loginIPs) {
+        this.loginIPs = loginIPs;
     }
 
 }

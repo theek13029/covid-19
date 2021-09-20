@@ -23,7 +23,9 @@
  */
 package lk.gov.health.phsp.bean;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.ApplicationScoped;
@@ -32,6 +34,7 @@ import lk.gov.health.phsp.entity.WebUser;
 import lk.gov.health.phsp.enums.Privilege;
 import lk.gov.health.phsp.enums.PrivilegeTreeNode;
 import lk.gov.health.phsp.facade.WebUserFacade;
+import lk.gov.health.phsp.facade.util.JsfUtil;
 import org.primefaces.model.TreeNode;
 
 /**
@@ -63,6 +66,25 @@ public class WebUserApplicationController {
      * Creates a new instance of WebUserApplicationController
      */
     public WebUserApplicationController() {
+    }
+
+    public WebUser getWebUser(String userName, String password) {
+        WebUser loggedUser;
+        String temSQL;
+        temSQL = "SELECT u FROM WebUser u WHERE lower(u.name)=:userName and u.retired =:ret";
+        Map m = new HashMap();
+        m.put("userName", userName.trim().toLowerCase());
+        m.put("ret", false);
+        loggedUser = facade.findFirstByJpql(temSQL, m);
+        if (loggedUser == null) {
+            return null;
+        }
+        if (CommonController.matchPassword(password, loggedUser.getWebUserPassword())) {
+            return loggedUser;
+        } else {
+            loggedUser = null;
+            return loggedUser;
+        }
     }
 
     private void createAllPrivilege() {
