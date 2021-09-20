@@ -40,6 +40,14 @@
                         <h:outputLabel class="fs-6"  id="institution" value="#{webUserController.selected.institution.name}"  >
                         </h:outputLabel>
 
+                        <h:outputLabel class="fs-6 fw-bold" value="My API IPs" for="ips" />
+                        <p:inputTextarea class="fs-6"  id="ips" 
+                                         value="#{webUserController.selected.loginIPs}"  
+                                         rows="5"
+                                         maxlength="255"
+                                         >
+                        </p:inputTextarea>
+
                         <h:outputLabel class="fs-6 fw-bold" value="Language"  />
                         <h:selectOneMenu class="form-control" value="#{webUserController.selected.defLocale}" >
                             <f:selectItem itemLabel="Sinhala" itemValue="si" ></f:selectItem>
