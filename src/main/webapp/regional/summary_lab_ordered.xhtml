@@ -10,37 +10,43 @@
     <body>
 
         <ui:composition template="/template1.xhtml">
+            <ui:define name="title">
+                Regional Orders Summary(RDHS)
+            </ui:define>
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <h:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Regional Orders Summery" ></p:outputLabel>
+                        <h:outputLabel value="Regional Orders Summery" ></h:outputLabel>
                     </f:facet>
 
                     <h:form >
-                        <p:panelGrid columns="2" >
-                            <p:outputLabel value="From" ></p:outputLabel>
+                        <h:panelGrid columns="2"  rendered="true" styleClass="border border-light bg-white"  >
+                            <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
                             <p:calendar value="#{regionalController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
-                            <p:outputLabel value="To" ></p:outputLabel>
+                            <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
                             <p:calendar value="#{regionalController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
                             
                             
                             
-                            <p:outputLabel value="Test" ></p:outputLabel>
-                            <p:selectOneMenu value="#{regionalController.testType}" >
+                            <h:outputLabel class="h6 fw-bold" value="Test" ></h:outputLabel>
+                            <h:selectOneMenu value="#{regionalController.testType}"
+                                             class="form-select" >
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{regionalController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>
-                            </p:selectOneMenu>
+                            </h:selectOneMenu>
 
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{regionalController.processSummaryReceivedAtLab()}" ></p:commandButton>
-                            <p:commandButton ajax="false" value="Generate Excel" >
+                            <h:commandButton  value="Process"
+                                              class="btn btn-success"
+                                             action="#{regionalController.processSummaryReceivedAtLab()}" ></h:commandButton>
+                            <h:commandButton value="Generate Excel"
+                                              class="btn btn-warning w-100">
                                 <p:dataExporter type="xlsx" fileName="Orders Summery" target="tbl" ></p:dataExporter>
-                            </p:commandButton>
+                            </h:commandButton>
 
-                        </p:panelGrid>
+                        </h:panelGrid>
 
 
                         <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" 
@@ -55,21 +61,21 @@
                                      
                                      >
                             <p:column headerText="No" width="50" >
-                                <p:outputLabel value="#{n+1}" ></p:outputLabel>
+                                <h:outputLabel value="#{n+1}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Ordering Institute"
                                       sortBy="#{c.institution.name}" filterBy="#{c.institution.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.institution.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.institution.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Number of Orders"  sortBy="#{c.count}" width="70">
-                                <p:outputLabel value="#{c.count}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.count}" ></h:outputLabel>
                             </p:column>
                         </p:dataTable>
                     </h:form>
 
 
 
-                </p:panelGrid>
+                </h:panelGrid>
             </ui:define>
         </ui:composition>
     </body>
