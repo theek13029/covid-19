@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.ApplicationScoped;
@@ -325,6 +326,17 @@ public class InstitutionApplicationController {
             }
         }
         return moh;
+    }
+    
+    public Institution findInstitutionById(Long id) {
+        Institution ins = null;
+        for (Institution i : getInstitutions()) {
+            if (Objects.equals(i.getId(), id)) {
+                ins = i;
+                return ins;
+            }
+        }
+        return ins;
     }
 
     public List<Institution> findChildrenInstitutions(Institution ins, InstitutionType type) {

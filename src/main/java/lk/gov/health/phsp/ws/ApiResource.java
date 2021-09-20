@@ -42,7 +42,9 @@ import lk.gov.health.phsp.bean.AnalysisController;
 import lk.gov.health.phsp.bean.ApiRequestApplicationController;
 import lk.gov.health.phsp.bean.ApplicationController;
 import lk.gov.health.phsp.bean.AreaApplicationController;
+import lk.gov.health.phsp.bean.ClientApplicationController;
 import lk.gov.health.phsp.bean.CommonController;
+import lk.gov.health.phsp.bean.EncounterApplicationController;
 import lk.gov.health.phsp.bean.InstitutionApplicationController;
 import lk.gov.health.phsp.bean.ItemApplicationController;
 import lk.gov.health.phsp.bean.StoredQueryResultController;
@@ -96,6 +98,10 @@ public class ApiResource {
     ApiRequestApplicationController apiRequestApplicationController;
     @Inject
     WebUserApplicationController webUserApplicationController;
+    @Inject
+    ClientApplicationController clientApplicationController;
+    @Inject
+    EncounterApplicationController encounterApplicationController;
 
     /**
      * Creates a new instance of GenericResource
@@ -178,7 +184,8 @@ public class ApiResource {
                     jSONObjectOut = symptomaticStatusesList();
                     break;
                 case "submit_pcr_request":
-                    jSONObjectOut = submitPcrRequest(username,
+                    jSONObjectOut = submitPcrRequest(ipadd,
+                            username,
                             password,
                             test_number,
                             referring_lab_id,
@@ -218,7 +225,8 @@ public class ApiResource {
         return json;
     }
 
-    private JSONObject submitPcrRequest(String username,
+    private JSONObject submitPcrRequest(String ip,
+            String username,
             String password,
             String test_number,
             String referring_lab_id,
@@ -249,49 +257,66 @@ public class ApiResource {
         Area cMoh;
         Area cGn;
         Area cPhi;
-        
+
         WebUser wu;
 
-        Item cGender=null;
+        Item cGender = null;
         Item cCitizenship = null;
         Item eOrderingCategory = null;
-        
+        Institution lab;
+
         wu = webUserApplicationController.getWebUser(username, password);
-        
-        if(wu==null){
+
+        if (wu == null) {
             return errorMessageLogin();
         }
-        
-        
-        
+
+        if (wu.getLoginIPs() == null || wu.getLoginIPs().equals("")) {
+            return errorMessageNoIps();
+        }
+
+        if (!wu.getLoginIPs().contains(ip)) {
+            return errorMessageNotAnAutherizedIp();
+        }
+
+        if (test_number == null || test_number.trim().equals("")) {
+            return errorMessageNoTestNumber();
+        }
+
+        lab = institutionApplicationController.findInstitutionById(CommonController.getLongValue(referring_lab_id));
+
+        if (lab == null) {
+            return errorMessageNoLab();
+        }
+
         cDistrict = areaApplicationController.getArea(CommonController.getLongValue(district_id));
         cMoh = areaApplicationController.getArea(CommonController.getLongValue(moh_id));
         cGn = areaApplicationController.getArea(CommonController.getLongValue(gn_area_id));
         cPhi = areaApplicationController.getArea(CommonController.getLongValue(phi_area_id));
         eOrderingCategory = itemApplicationController.findItemById(CommonController.getLongValue(ordering_category_id));
-        
+
         if (client_name == null || client_name.trim().equals("")) {
             return errorMessageNoClientName();
         }
-        
-        if(client_gender==null || client_gender.trim().equals("")){
+
+        if (client_gender == null || client_gender.trim().equals("")) {
             return errorMessageNoGender();
-        }else{
-            if(client_gender.toLowerCase().contains("f")){
-               cGender = itemApplicationController.getFemale();
-            }else{
-               cGender = itemApplicationController.getMale();
+        } else {
+            if (client_gender.toLowerCase().contains("f")) {
+                cGender = itemApplicationController.getFemale();
+            } else {
+                cGender = itemApplicationController.getMale();
             }
         }
-        
-        if(client_citizenship!=null ){
-            if(client_citizenship.toLowerCase().contains("f")){
+
+        if (client_citizenship != null) {
+            if (client_citizenship.toLowerCase().contains("f")) {
                 cCitizenship = itemApplicationController.findItemByCode("citizenship_foreign");
-            }else{
+            } else {
                 cCitizenship = itemApplicationController.findItemByCode("citizenship_local");
             }
         }
-        
+
         if (client_age_in_years != null || !client_name.trim().equals("")) {
             intAgeInYears = CommonController.getIntegerValue(client_age_in_years);
         } else if (client_age_in_months != null || !client_name.trim().equals("")) {
@@ -308,8 +333,6 @@ public class ApiResource {
                 }
             }
         }
-        
-        
 
         Client c = new Client();
         c.getPerson().setName(client_name);
@@ -345,16 +368,42 @@ public class ApiResource {
             c.getPerson().setNic(client_nic);
             c.getPerson().setPassportNumber(client_nic);
         }
-        
+
+        c.setCreateInstitution(wu.getInstitution());
+        c.setCreatedAt(new Date());
+        c.setCreatedBy(wu);
+        c.setCreatedAt(new Date());
+        clientApplicationController.saveClient(c);
+
         Encounter e = new Encounter();
         e.setPcrTestType(itemApplicationController.getPcr());
         e.setClient(c);
         e.setComments(comments);
         e.setCreatedAt(new Date());
         e.setPcrOrderingCategory(eOrderingCategory);
-        
+        e.setCreatedAt(new Date());
+        e.setCreatedBy(wu);
+        e.setCreatedInstitution(wu.getInstitution());
+        e.setInstitution(wu.getInstitution());
+        e.setPcrTestType(itemApplicationController.getPcr());
+        e.setReferalInstitution(lab);
+        e.setBht(test_number);
+        e.setEncounterNumber(test_number);
+        e.setEncounterDate(new Date());
+        e.setEncounterType(EncounterType.Test_Enrollment);
+        e.setSampled(true);
+        e.setSampledAt(new Date());
+        e.setSampledBy(wu);
+        e.setSentToLab(Boolean.TRUE);
+        e.setSentToLabAt(new Date());
+        e.setSentToLabBy(wu);
 
-        jSONObjectOut.put("data", array);
+        encounterApplicationController.save(e);
+
+        JSONObject ja = new JSONObject();
+        ja.put("pcr_request_id", e.getId());
+
+        jSONObjectOut.put("data", ja);
         jSONObjectOut.put("status", successMessage());
         return jSONObjectOut;
     }
@@ -635,6 +684,15 @@ public class ApiResource {
         return jSONObjectOut;
     }
 
+    private JSONObject errorMessageNoTestNumber() {
+        JSONObject jSONObjectOut = new JSONObject();
+        jSONObjectOut.put("code", 400);
+        jSONObjectOut.put("type", "error");
+        String e = "A test number (reference number or barcode) is required.";
+        jSONObjectOut.put("message", e);
+        return jSONObjectOut;
+    }
+
     private JSONObject errorMessageNoAge() {
         JSONObject jSONObjectOut = new JSONObject();
         jSONObjectOut.put("code", 400);
@@ -651,7 +709,7 @@ public class ApiResource {
         jSONObjectOut.put("message", "Indicator NOT recognized.");
         return jSONObjectOut;
     }
-    
+
     private JSONObject errorMessageLogin() {
         JSONObject jSONObjectOut = new JSONObject();
         jSONObjectOut.put("code", 411);
@@ -660,11 +718,35 @@ public class ApiResource {
         return jSONObjectOut;
     }
 
+    private JSONObject errorMessageNoIps() {
+        JSONObject jSONObjectOut = new JSONObject();
+        jSONObjectOut.put("code", 411);
+        jSONObjectOut.put("type", "error");
+        jSONObjectOut.put("message", "Your have not setup IPs you can login.");
+        return jSONObjectOut;
+    }
+
+    private JSONObject errorMessageNotAnAutherizedIp() {
+        JSONObject jSONObjectOut = new JSONObject();
+        jSONObjectOut.put("code", 411);
+        jSONObjectOut.put("type", "error");
+        jSONObjectOut.put("message", "Your are using a non autherized IP. Add it to your API IDPs and retry.");
+        return jSONObjectOut;
+    }
+
     private JSONObject errorMessageNoGender() {
         JSONObject jSONObjectOut = new JSONObject();
         jSONObjectOut.put("code", 402);
         jSONObjectOut.put("type", "error");
         jSONObjectOut.put("message", "Gender is not provided.");
+        return jSONObjectOut;
+    }
+
+    private JSONObject errorMessageNoLab() {
+        JSONObject jSONObjectOut = new JSONObject();
+        jSONObjectOut.put("code", 402);
+        jSONObjectOut.put("type", "error");
+        jSONObjectOut.put("message", "Lab is not provided.");
         return jSONObjectOut;
     }
 

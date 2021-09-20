@@ -53,6 +53,17 @@ public class ClientApplicationController {
      */
     public ClientApplicationController() {
     }
+    
+    public void saveClient(Client c){
+        if(c==null){
+            return;
+        }
+        if(c.getId()==null){
+            clientFacade.create(c);
+        }else{
+            clientFacade.edit(c);
+        }
+    }
 
     public Boolean checkPhnExists(String phn, Client c) {
         String jpql = "select count(c) from Client c "
