@@ -8,21 +8,31 @@
 
     <body>
 
-       <ui:composition template="/moh/admin/index.xhtml">
+        <ui:composition template="/moh/admin/index.xhtml">
+            <ui:define name="title">
+                MOH | User List
+            </ui:define>
             <ui:define name="admin">
                 <h:form >
-                    <p:panelGrid style="height: 100%;text-align: center;" columns="2">
+                    <p:panelGrid class="h-100 bg-white border border-light" columns="1">
                         <f:facet name="header" >
-                            <p:outputLabel value="User List" ></p:outputLabel>
+                            <p:outputLabel value="User List" class="fw-bold fs-6" ></p:outputLabel>
                         </f:facet>
-                        <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{webUserController.items}" var="item"  
-                                     rowKey="#{item.id}" 
-                                     selection="#{webUserController.current}" 
-                                     rows="10"
-                                     paginator="true"
-                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="10,20,25"
-                                     >
+                        <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button" value="Filter Columns" />
+                        <p:columnToggler datasource="tbl" trigger="toggler"/>
+
+                        <p:dataTable 
+                            reflow="true"
+                            resizableColumns="true" multiViewState="true" resizeMode="expand" value="#{webUserController.items}" var="item"  
+                            rowKey="#{item.id}" 
+                            selection="#{webUserController.current}" 
+                            rows="10"
+                            paginator="true"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="10,20,25"
+                            id="tbl"
+                            class="text-center"
+                            >
 
                             <p:column sortBy="#{item.person.name}" filterBy="#{item.person.name}" filterMatchMode="contains">
                                 <f:facet name="header">
@@ -69,22 +79,24 @@
                                 <f:facet name="header">
                                     <h:outputText value="Actions"/>
                                 </f:facet>
-                                <p:commandLink  value="Edit" ajax="false"
-                                                action="#{menuController.toEditUser()}" >
-                                    <f:setPropertyActionListener value="#{item}" target="#{webUserController.current}" ></f:setPropertyActionListener>
-                                </p:commandLink>
-                                <p:spacer height="1" width="10" ></p:spacer>
-                                <p:commandLink  value="Privileges" ajax="false"
-                                                action="#{menuController.toUserPrivileges()}" >
-                                    <f:setPropertyActionListener value="#{item}" 
-                                                                 target="#{webUserController.current}" >
-                                    </f:setPropertyActionListener>
-                                </p:commandLink>
-                                <p:spacer height="1" width="10" ></p:spacer>
-                                <p:commandLink  value="Password" ajax="false"
-                                                action="#{menuController.toEditPassword()}" >
-                                    <f:setPropertyActionListener value="#{item}" target="#{webUserController.current}" ></f:setPropertyActionListener>
-                                </p:commandLink>
+                                <div class="d-flex flex-column">
+                                    <h:commandLink  value="Edit" class="btn btn-warning w-100 btn-sm"
+                                                    action="#{menuController.toEditUser()}" >
+                                        <f:setPropertyActionListener value="#{item}" target="#{webUserController.current}" ></f:setPropertyActionListener>
+                                    </h:commandLink>
+                                    <p:spacer height="1" width="10" ></p:spacer>
+                                    <h:commandLink  value="Privileges" class="btn btn-success w-100 my-1 btn-sm"
+                                                    action="#{menuController.toUserPrivileges()}" >
+                                        <f:setPropertyActionListener value="#{item}" 
+                                                                     target="#{webUserController.current}" >
+                                        </f:setPropertyActionListener>
+                                    </h:commandLink>
+                                    <p:spacer height="1" width="10" ></p:spacer>
+                                    <h:commandLink  value="Password" class="btn btn-success w-100 btn-sm"
+                                                    action="#{menuController.toEditPassword()}" >
+                                        <f:setPropertyActionListener value="#{item}" target="#{webUserController.current}" ></f:setPropertyActionListener>
+                                    </h:commandLink>
+                                </div>
                             </p:column>
                         </p:dataTable>
 
