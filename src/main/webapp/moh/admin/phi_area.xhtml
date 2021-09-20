@@ -9,26 +9,29 @@
     <h:body>
 
         <ui:composition template="/moh/admin/index.xhtml">
+            <ui:define name="title">
+                MOH | PHI Area
+            </ui:define>
             <ui:define name="PHI Area of a MOH">
             </ui:define>
             <ui:define name="admin">
                 <h:form >
 
                     <div class="row" >
-                        <div class="col" >
-                            <div class="card" >
-                                <div class="card-header" >
+                        <div class="col-md-8" >
+                            <div class="card border border-light" >
+                                <div class="card-header fw-bold fs-5 bg-success text-white" >
                                     PHI Area
                                 </div>
-                                <div class="card-body" >
-                                    <h:panelGrid columns="2" >
-                                        <p:outputLabel value="PHI Area Name" ></p:outputLabel>
-                                        <h:inputText value="#{mohController.phiArea.name}" ></h:inputText>
+                                <div class="card-body bg-white" >
+                                    <h:panelGrid columns="2" class="w-100">
+                                        <p:outputLabel value="PHI Area Name" class="fs-6 fw-bold"></p:outputLabel>
+                                        <h:inputText class="form-control w-100 my-2" value="#{mohController.phiArea.name}" ></h:inputText>
                                         
                                     </h:panelGrid>
                                 </div>
-                                <div class="card-footer" >
-                                    <h:commandButton value="Save" action="#{mohController.savePhiArea()}" ></h:commandButton>
+                                <div class="card-footer bg-white" >
+                                    <h:commandButton class="btn btn-success w-25" value="Save" action="#{mohController.savePhiArea()}" ></h:commandButton>
                                 </div>
                             </div>
                         </div>
