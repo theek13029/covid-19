@@ -867,6 +867,7 @@ public class WebUserController implements Serializable {
     }
 
     public String loginNew() {
+        System.out.println("loginNew - " + new Date());
         loggableInstitutions = null;
         loggablePmcis = null;
         loggableGnAreas = null;
@@ -885,14 +886,18 @@ public class WebUserController implements Serializable {
             userTransactionController.recordTransaction("Failed Login Attempt", userName);
             return "";
         }
+        System.out.println("Check User Login New Completed - " + new Date());
         loggedUserPrivileges = userPrivilegeList(loggedUser);
         if (loggedUser != null) {
             loggedInstitution = loggedUser.getInstitution();
         }
-
+        System.out.println("loged Institution completed - " + new Date());
         executeSuccessfulLoginActions();
+        System.out.println("Executed Successful Login Actions - " + new Date());
         fillUsersForMyInstitute();
+        System.out.println("Filled Users for my institutions - " + new Date());
         fillAreasForMe();
+        System.out.println("Filled Areas for Me - " + new Date());
         return "/index";
     }
 

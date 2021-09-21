@@ -61,16 +61,22 @@ public class EncounterApplicationController {
     }
 
     public Encounter getEncounter(Long id) {
+        System.out.println("getEncounter");
+        System.out.println("id = " + id);
+        
         Encounter e = null;
         if (id == null) {
             return e;
         }
         String j = "select e "
-                + " from Ecnounter e "
+                + " from Encounter e "
                 + " where e.id=:eid";
         Map m = new HashMap();
         m.put("eid", id);
+        System.out.println("m = " + m);
+        System.out.println("j = " + j);
         e = encounterFacade.findFirstByJpql(j, m);
+        System.out.println("e = " + e);
         return e;
     }
 
