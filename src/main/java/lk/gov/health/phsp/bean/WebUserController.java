@@ -712,18 +712,29 @@ public class WebUserController implements Serializable {
         selectedNodes = temSelected.toArray(new TreeNode[temSelected.size()]);
     }
 
-    public String toOpdModule() {
-        userTransactionController.recordTransaction("To Opd Module");
-        return "/opd/index_opd";
-    }
 
     public String toChangeMyDetails() {
         if (loggedUser == null) {
             return "";
         }
         current = loggedUser;
-        userTransactionController.recordTransaction("To Change My Details");
         return "/change_my_details";
+    }
+
+    public String toChangeMyInstitutionDetails() {
+        if (loggedUser == null) {
+            return "";
+        }
+        current = loggedUser;
+        return "/change_my_institution_details";
+    }
+
+    public String toChangeMyUsername() {
+        if (loggedUser == null) {
+            return "";
+        }
+        current = loggedUser;
+        return "/change_my_username";
     }
 
     public String toChangeMyPassword() {
@@ -733,7 +744,6 @@ public class WebUserController implements Serializable {
         password = "";
         passwordReenter = "";
         current = loggedUser;
-        userTransactionController.recordTransaction("To Change My Password");
         return "/change_my_password";
     }
 
@@ -2076,7 +2086,30 @@ public class WebUserController implements Serializable {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(("Your details Updated."));
-            userTransactionController.recordTransaction("update My Details");
+            userTransactionController.recordTransaction("Updated My Details");
+            return "/index";
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, e.getMessage());
+            return null;
+        }
+    }
+    
+    public String updateMyUserName() {
+        try {
+            getFacade().edit(current);
+            JsfUtil.addSuccessMessage(("Your details Updated."));
+            userTransactionController.recordTransaction("Updated My Details");
+            return "/index";
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("Username already exists. Please select another.");
+            return "";
+        }
+    }
+    
+    public String updateMyInstitutionDetails() {
+        try {
+            getInstitutionFacade().edit(current.getInstitution());
+            userTransactionController.recordTransaction("Update My Institution Details");
             return "/index";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, e.getMessage());

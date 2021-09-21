@@ -59,7 +59,7 @@
                             </h:commandButton>
                             <h:commandButton value="Process"
                                              style="margin-left: 1.4em" class="btn btn-success"
-                                             action="#{hospitalController.toTestList()}" ></h:commandButton>
+                                             action="#{hospitalController.toViewResults()}" ></h:commandButton>
                         </h:panelGrid>
                         <p:dataTable id="tbl" value="#{hospitalController.tests}" rendered="true"
                                      rowIndexVar="n"
@@ -92,6 +92,13 @@
                                       style="width: 5em;">
                                 <h:outputLabel value="#{c.pcrTestType.name}" class="form-label"></h:outputLabel>
                             </p:column>
+                            <p:column headerText="Sampelled Date" 
+                                      sortBy="#{c.sampledAt}" 
+                                      style="width: 8em;">
+                                <h:outputLabel value="#{c.sampledAt}" class="form-label" >
+                                    <f:convertDateTime pattern="dd MMM yyyy" ></f:convertDateTime>
+                                </h:outputLabel>
+                            </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains"
                                       style="width: 18em;">
                                 <h:outputLabel value="#{c.client.person.name}" class="form-label"></h:outputLabel>
@@ -121,12 +128,14 @@
                                 <h:outputLabel value="#{c.client.person.address}" class="form-label"></h:outputLabel>
                             </p:column>
                             <p:column headerText="Ward"  sortBy="#{c.unitWard}"
-                                      filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                      filterBy="#{c.unitWard}" filterMatchMode="contains"
+                                      style="width: 5em;">
                                 <h:outputLabel value="#{c.unitWard}" class="form-label"></h:outputLabel>
                             </p:column>
                             <p:column headerText="BHT/Clinic/OPD No"  
                                       sortBy="#{c.bht}"
-                                      filterBy="#{c.bht}" filterMatchMode="contains">
+                                      filterBy="#{c.bht}" filterMatchMode="contains"
+                                      style="width: 5em;">
                                 <h:outputLabel value="#{c.bht}" class="form-label"></h:outputLabel>
                             </p:column>
                             <p:column headerText="Lab"  sortBy="#{c.referalInstitution.name}"
@@ -137,14 +146,14 @@
                             <p:column headerText="Result"  sortBy="#{c.pcrResult.name}"
                                       filterBy="#{c.pcrResult.name}" filterMatchMode="contains"
                                       style="width: 10em;">
-                                <h:outputLabel value="#{c.pcrResult.name}" rendered="#{c.resultConfirmed}" class="form-label"></h:outputLabel>
+                                <h:outputLabel value="#{c.pcrResult.name}" class="form-label"></h:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false"
                                       style="width: 12em;">
-                                <h:commandButton value="View Results" action="#{hospitalController.toViewResult()}" class="btn btn-suceess">
+                                <h:commandButton  value="View Results" action="#{hospitalController.toViewResult()}" class="btn btn-success">
                                     <f:setPropertyActionListener value="#{c}" target="#{hospitalController.test}" ></f:setPropertyActionListener>
                                 </h:commandButton>
-                                <h:commandButton class="btn btn-warning" value="Delete"  action="#{hospitalController.deleteTest()}"
+                                <h:commandButton rendered="false" class="btn btn-warning" value="Delete"  action="#{hospitalController.deleteTest()}"
                                                  onclick="if (!confirm('Are you sure you want to delete?'))
                                                              return false" >
                                     <f:setPropertyActionListener value="#{c}" target="#{hospitalController.deleting}" >
