@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.security.Key;
+
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
@@ -131,6 +131,7 @@ public class ApiResource {
             @QueryParam("month") String month,
             @QueryParam("institute_id") String instituteId,
             @QueryParam("id") String id,
+            @QueryParam("api_key") String jwt,
             @QueryParam("username") String username,
             @QueryParam("password") String password,
             @QueryParam("test_number") String test_number,
@@ -318,7 +319,7 @@ public class ApiResource {
         Verifier verifier = HMACVerifier.newVerifier(sessionController.getAppKey().toString());
         JWT decodeJwt = JWT.getDecoder().decode(jwt, verifier);
 
-        if (decodeJwt.subject == username) {
+        if (username.equals(decodeJwt.subject)) {
             return true;
         } else {
             return false;
