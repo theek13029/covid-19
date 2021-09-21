@@ -470,23 +470,27 @@ public class ApiResource {
         if (e == null) {
             return errorMessageNoSuchPcrRequestId();
         }
-        if (e.getEncounterType() != EncounterType.Test_Enrollment || e.getPcrTestType() != itemApplicationController.getPcr()) {
+        if (!e.getEncounterType().equals(EncounterType.Test_Enrollment) || 
+                !e.getPcrTestType().equals(itemApplicationController.getPcr())) {
+            System.out.println("Type wrong");
             return errorMessageNoSuchPcrRequestId();
         }
+        
 
-        if (e.getInstitution() != wu.getInstitution()) {
+        if (!e.getInstitution().equals(wu.getInstitution())) {
+            System.out.println("institution wrong");
             return errorMessageNoSuchPcrRequestId();
         }
 
         JSONObject ja = new JSONObject();
 
-        if (e.getSampleMissing() == true) {
+        if (e.getSampleMissing()!=null && e.getSampleMissing()== true) {
             ja.put("pcr_result_status", "Sample is Missing");
             jSONObjectOut.put("data", ja);
             jSONObjectOut.put("status", successMessage());
             return jSONObjectOut;
         }
-        if (e.getSampleRejectedAtLab() == true) {
+        if (e.getSampleRejectedAtLab()!=null && e.getSampleRejectedAtLab() == true) {
             ja.put("pcr_result_status", "Sample Rejected.");
             jSONObjectOut.put("data", ja);
             jSONObjectOut.put("status", successMessage());
