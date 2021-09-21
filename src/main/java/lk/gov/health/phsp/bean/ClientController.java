@@ -2691,7 +2691,7 @@ public class ClientController implements Serializable {
          Calendar cal = Calendar.getInstance();
 
          if (this.toDate == null) {
-             this.fromDate = cal.getTime();
+             this.toDate = cal.getTime();
          }
 
          if (this.fromDate == null) {
@@ -2699,7 +2699,7 @@ public class ClientController implements Serializable {
              this.fromDate = cal.getTime();
          }
 
-         jpql += " and e.encounterDate between :fd to :td";
+         jpql += " and e.encounterDate between :fd and :td";
          hashmap.put("fd", this.fromDate);
          hashmap.put("td", this.toDate);
 
@@ -2740,7 +2740,7 @@ public class ClientController implements Serializable {
         Calendar cal = Calendar.getInstance();
 
         if (this.toDate == null) {
-            this.fromDate = cal.getTime();
+            this.toDate = cal.getTime();
         }
 
         if (this.fromDate == null) {
@@ -2748,7 +2748,7 @@ public class ClientController implements Serializable {
             this.fromDate = cal.getTime();
         }
 
-        jpql += " and e.encounterDate between :fd to :td";
+        jpql += " and e.encounterDate between :fd and :td";
         hashmap.put("fd", this.fromDate);
         hashmap.put("td", this.toDate);
 
@@ -2759,15 +2759,15 @@ public class ClientController implements Serializable {
         }
 
         jpql += " and e.id=:id";
-        hashmap.put("bht", this.searchingTestId.toUpperCase());
+        hashmap.put("id", this.searchingTestId.toUpperCase());
 
-        jpql += " order by e.bht";
+        jpql += " order by e.id";
 
         testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
         System.out.println(testList);
         return "/lab/search";
     }
-    
+
 //    This function will search for a test under the test tube number
     	public String searchByLabNo() {
 	        if (this.searchingBhtno == null || this.searchingBhtno.trim().length() == 0) {
@@ -2789,7 +2789,7 @@ public class ClientController implements Serializable {
             Calendar cal = Calendar.getInstance();
 
             if (this.toDate == null) {
-                this.fromDate = cal.getTime();
+                this.toDate = cal.getTime();
             }
 
             if (this.fromDate == null) {
@@ -2797,7 +2797,7 @@ public class ClientController implements Serializable {
                 this.fromDate = cal.getTime();
             }
 
-            jpql += " and e.encounterDate between :fd to :td";
+            jpql += " and e.encounterDate between :fd and :td";
             hashmap.put("fd", this.fromDate);
             hashmap.put("td", this.toDate);
 
@@ -6502,8 +6502,8 @@ public class ClientController implements Serializable {
     public void setOrderingCategory(Item orderingCategory) {
         this.orderingCategory = orderingCategory;
     }
-    
-    
+
+
 
     /**
 	 * @return the searchingTestId
@@ -6518,8 +6518,8 @@ public class ClientController implements Serializable {
 	public void setSearchingTestId(String searchingTestId) {
 		this.searchingTestId = searchingTestId;
 	}
-	
-	
+
+
 
 
 
