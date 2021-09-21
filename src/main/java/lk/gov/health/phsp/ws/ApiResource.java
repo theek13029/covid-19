@@ -26,6 +26,11 @@ package lk.gov.health.phsp.ws;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import java.security.Key;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+
 import javax.enterprise.context.Dependent;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -47,6 +52,7 @@ import lk.gov.health.phsp.bean.CommonController;
 import lk.gov.health.phsp.bean.EncounterApplicationController;
 import lk.gov.health.phsp.bean.InstitutionApplicationController;
 import lk.gov.health.phsp.bean.ItemApplicationController;
+import lk.gov.health.phsp.bean.SessionController;
 import lk.gov.health.phsp.bean.StoredQueryResultController;
 import lk.gov.health.phsp.bean.WebUserApplicationController;
 import lk.gov.health.phsp.bean.WebUserController;
@@ -65,8 +71,15 @@ import lk.gov.health.phsp.enums.EncounterType;
 import lk.gov.health.phsp.enums.InstitutionType;
 import lk.gov.health.phsp.enums.RelationshipType;
 import lk.gov.health.phsp.enums.WebUserRole;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import io.fusionauth.jwt.Signer;
+import io.fusionauth.jwt.Verifier;
+import io.fusionauth.jwt.domain.JWT;
+import io.fusionauth.jwt.hmac.HMACSigner;
+import io.fusionauth.jwt.hmac.HMACVerifier;
 
 /**
  * REST Web Service
@@ -102,6 +115,8 @@ public class ApiResource {
     ClientApplicationController clientApplicationController;
     @Inject
     EncounterApplicationController encounterApplicationController;
+    @Inject
+    SessionController sessionController;
 
     /**
      * Creates a new instance of GenericResource
@@ -232,6 +247,9 @@ public class ApiResource {
                             password,
                             test_number);
                     break;
+                case "authenticate":
+                    jSONObjectOut = authenticate(username, password);
+                    break;
                 case "submit_rat_result":
                     jSONObjectOut = submitRatResult();
                     break;
@@ -243,6 +261,68 @@ public class ApiResource {
 
         String json = jSONObjectOut.toString();
         return json;
+    }
+
+    private JSONObject authenticate(String username, String password) {
+        System.out.println(username);
+        System.out.println(password);
+
+        if (username== null || username.trim().length() == 0) {
+            return errorMessageLogin();
+        }
+
+        if (password == null || password.trim().length() == 0) {
+            return errorMessageLogin();
+        }
+
+        WebUser wu = webUserApplicationController.getWebUser(username, password);
+
+        if (wu == null) {
+            return errorMessageLogin();
+        }
+
+        sessionController.setAppKey();
+        UUID key = sessionController.getAppKey();
+        Signer signer = HMACSigner.newSHA256Signer(key.toString());
+
+        JWT jwt = new JWT();
+        jwt.setIssuer("nchis.health.gov.lk");
+        jwt.setIssuedAt(ZonedDateTime.now(ZoneOffset.UTC));
+        jwt.setSubject(username);
+        // Token is set to be valid for 60 minutes
+        jwt.setExpiration(ZonedDateTime.now(ZoneOffset.UTC).plusMinutes(60));
+
+        String encodedJwt = JWT.getEncoder().encode(jwt, signer);
+
+        JSONObject json = new JSONObject();
+        json.put("api_key", encodedJwt);
+        json.put("status", 200);
+        json.put("message", "success");
+        System.out.println(json.toString());
+        return json;
+    }
+
+    private boolean authorize(String username, String jwt) {
+        if (jwt == null) {
+            return false;
+        }
+
+        if (username == null || username.trim().length() == 0) {
+            return false;
+        }
+
+        if (sessionController.getAppKey() == null) {
+            return false;
+        }
+
+        Verifier verifier = HMACVerifier.newVerifier(sessionController.getAppKey().toString());
+        JWT decodeJwt = JWT.getDecoder().decode(jwt, verifier);
+
+        if (decodeJwt.subject == username) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private JSONObject submitPcrRequest(String ip,
@@ -267,10 +347,10 @@ public class ApiResource {
             String phi_area_id,
             String comments) {
 
-        
+
         System.out.println("submitPcrRequest");
         System.out.println("ip = " + ip);
-        
+
         JSONObject jSONObjectOut = new JSONObject();
         JSONArray array = new JSONArray();
 
@@ -460,11 +540,11 @@ public class ApiResource {
         }
 
         System.out.println("request_id = " + request_id);
-        
+
         Long rid = CommonController.getLongValue(request_id);
-        
+
         System.out.println("rid = " + rid);
-        
+
         Encounter e = encounterApplicationController.getEncounter(rid);
 
         if (e == null) {

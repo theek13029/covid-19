@@ -24,12 +24,16 @@
 package lk.gov.health.phsp.bean;
 
 import javax.inject.Named;
+
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import lk.gov.health.phsp.entity.Encounter;
 import lk.gov.health.phsp.entity.Institution;
 import lk.gov.health.phsp.entity.Item;
@@ -59,14 +63,12 @@ public class SessionController implements Serializable {
     private String lastWorkplace;
     private String lastContactOfWorkplace;
     private String lastContactOfWorkplaceDetails;
-    
-    
+    private UUID appKey;
 
     private Map<Long, Encounter> rats;
     private Map<Long, Encounter> pcrs;
 
-    
-    
+
     public Encounter getLastRat() {
         return lastRat;
     }
@@ -79,8 +81,15 @@ public class SessionController implements Serializable {
         return lastPcr;
     }
 
-    
-    
+    public UUID getAppKey() {
+        return this.appKey;
+    }
+
+    public void setAppKey() {
+        UUID uuid = UUID.randomUUID();
+        this.appKey = uuid;
+    }
+
     public void setLastPcr(Encounter lastPcr) {
         this.lastPcr = lastPcr;
     }
@@ -89,8 +98,8 @@ public class SessionController implements Serializable {
         return lastRatOrderingCategory;
     }
 
-    
-    
+
+
     public void setLastRatOrderingCategory(Item lastRatOrderingCategory) {
         this.lastRatOrderingCategory = lastRatOrderingCategory;
     }
@@ -180,5 +189,5 @@ public class SessionController implements Serializable {
     public void setLastContactOfWorkplaceDetails(String lastContactOfWorkplaceDetails) {
         this.lastContactOfWorkplaceDetails = lastContactOfWorkplaceDetails;
     }
-    
+
 }

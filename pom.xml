@@ -58,17 +58,6 @@
             <version>3.0.0</version>
         </dependency>
 
-        <!--        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>org.eclipse.persistence.jpa</artifactId>
-            <version>2.7.7</version>
-        </dependency>-->
-        <!-- https://mvnrepository.com/artifact/org.eclipse.persistence/eclipselink -->
-        <!--        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>2.7.7</version>
-        </dependency>-->
         <dependency>
             <groupId>net.sourceforge.barbecue</groupId>
             <artifactId>barbecue</artifactId>
@@ -86,12 +75,7 @@
             <version>5.5.13.1</version>
             <type>jar</type>
         </dependency>
-        <!--        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>org.eclipse.persistence.core</artifactId>
-            <version>2.7.7</version>
-            <scope>provided</scope>
-        </dependency>-->
+
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.core</artifactId>
@@ -306,7 +290,12 @@
             <version>10.0.5</version>
         </dependency>
 
-
+        <!-- JWT dependancy -->
+        <dependency>
+            <groupId>io.fusionauth</groupId>
+            <artifactId>fusionauth-jwt</artifactId>
+            <version>4.3.1</version>
+        </dependency>
     </dependencies>
 
     <build>
