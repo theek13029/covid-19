@@ -10,32 +10,27 @@
 
        <ui:composition template="/moh/reports_index.xhtml">
             <ui:define name="reports">
-                <!--<p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
-                    <f:facet name="header" >
-                        <p:outputLabel value="First Contacts" ></p:outputLabel>
-                    </f:facet>-->
-
                     <h:form >
                         <div class="row" >
                             <div class="col-12 text-center mt-4 mb-2" >
-                                <h4 class="fw-bold"><h:outputLabel  value="First Contacts" ></h:outputLabel></h4>
+                                <h4 class="fw-bold"><h:outputLabel  value="List of Cases by Management Plan" ></h:outputLabel></h4>
                             </div>
                         </div>
                         <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
                         <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
                             
                             <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
-                            <p:calendar value="#{provincialController.fromDate}" 
+                            <p:calendar value="#{mohController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
                             <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
-                            <p:calendar value="#{provincialController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
                             
                             <h:outputLabel class="h6 fw-bold" value="Plan of Management" ></h:outputLabel>
-                            <h:selectOneMenu value="#{provincialController.managementType}" class="form-select">
+                            <h:selectOneMenu value="#{mohController.managementType}" class="form-select">
                                 <f:selectItem itemLabel="Any" ></f:selectItem>
-                                <f:selectItems value="#{provincialController.managementTypes}" var="m" itemLabel="#{m.name}"
+                                <f:selectItems value="#{itemApplicationController.managementTypes}" var="m" itemLabel="#{m.name}"
                                                itemValue="#{m}" ></f:selectItems>
                             </h:selectOneMenu>
 
@@ -43,12 +38,12 @@
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
                             </h:commandButton>
                             <h:commandButton value="Process" class="btn btn-warning w-100"
-                                             action="#{provincialController.toListCasesByManagement()}" ></h:commandButton>
+                                             action="#{mohController.toListCasesByManagement()}" ></h:commandButton>
                             
                         </h:panelGrid>
                         </div>
                         <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{provincialController.cecItems}" rendered="true"
+                        <p:dataTable id="tbl" value="#{mohController.cecItems}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
@@ -57,7 +52,7 @@
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
-                                     selection="#{provincialController.selectedCecis}"
+                                     selection="#{mohController.selectedCecis}"
                                      >
                             <p:column selectionMode="multiple" width="30"></p:column>
                             <p:column headerText="Name"  sortBy="#{c.shortTextValue}" filterBy="#{c.shortTextValue}" filterMatchMode="contains">
@@ -77,11 +72,11 @@
                             </p:column>
                            
                             <p:column headerText="Actions" exportable="false" rendered="false" >
-                                <p:commandLink value="Order PCR" action="#{provincialController.toViewTest()}" ajax="false" >
+                                <p:commandLink value="Order PCR" action="#{mohController.toViewTest()}" ajax="false" >
                                     <f:setPropertyActionListener value="#{c}" target="#{provincialController.test}" ></f:setPropertyActionListener>
                                 </p:commandLink>
                                 <h:outputLabel value=" | " ></h:outputLabel>
-                                <p:commandLink value="Order RAT" action="#{provincialController.toViewResult()}" ajax="false" >
+                                <p:commandLink value="Order RAT" action="#{mohController.toViewResult()}" ajax="false" >
                                     <f:setPropertyActionListener value="#{c}" target="#{provincialController.test}" ></f:setPropertyActionListener>
                                 </p:commandLink>
                             </p:column>
