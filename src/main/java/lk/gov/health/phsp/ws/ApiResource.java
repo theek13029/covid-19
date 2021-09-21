@@ -315,15 +315,19 @@ public class ApiResource {
         if (sessionController.getAppKey() == null) {
             return false;
         }
+        try {
+            Verifier verifier = HMACVerifier.newVerifier(sessionController.getAppKey().toString());
+            JWT decodeJwt = JWT.getDecoder().decode(jwt, verifier);
 
-        Verifier verifier = HMACVerifier.newVerifier(sessionController.getAppKey().toString());
-        JWT decodeJwt = JWT.getDecoder().decode(jwt, verifier);
-
-        if (username.equals(decodeJwt.subject)) {
-            return true;
-        } else {
+            if (username.equals(decodeJwt.subject)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
             return false;
         }
+
     }
 
     private JSONObject submitPcrRequest(String ip,
@@ -551,12 +555,12 @@ public class ApiResource {
         if (e == null) {
             return errorMessageNoSuchPcrRequestId();
         }
-        if (!e.getEncounterType().equals(EncounterType.Test_Enrollment) || 
+        if (!e.getEncounterType().equals(EncounterType.Test_Enrollment) ||
                 !e.getPcrTestType().equals(itemApplicationController.getPcr())) {
             System.out.println("Type wrong");
             return errorMessageNoSuchPcrRequestId();
         }
-        
+
 
         if (!e.getInstitution().equals(wu.getInstitution())) {
             System.out.println("institution wrong");
