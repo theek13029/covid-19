@@ -126,10 +126,10 @@
                             <p:outputLabel for="lbIcM" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>
                         <div class="col-md-4">
-                            <p:selectOneButton id="lbIcM" value="#{ii.addingItem.ci.itemValue}" >
+                            <p:selectOneRadio id="lbIcM" value="#{ii.addingItem.ci.itemValue}" >
                                 <f:selectItems value="#{ii.availableItemsForSelection}" var="li"
                                                itemLabel="#{li.displayName}" itemValue="#{li}" ></f:selectItems>
-                            </p:selectOneButton>
+                            </p:selectOneRadio>
                         </div>
                         <div class="col-md-4">
                             <p:commandButton id="btnAddM3a"  value="Add" process="lbIcM btnAddM3a" update="@form"
@@ -215,9 +215,9 @@
             <h:panelGroup id="gpDataAndButtonsSingle" rendered="#{!ii.multipleEntries}" layout="block"
                           style="text-align:left;">
                 <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text' and ii.di.item.dataType eq 'Short_Text'}" >
-                    <div class="row p-1" >
+                    <div class="row p-1  #{ii.di.css}" >
                         <div class="col-md-4" >
-                            <p:outputLabel for="itStC" value="#{ii.di.name}" style="#{ii.di.css}" ></p:outputLabel>
+                            <p:outputLabel for="itStC" value="#{ii.di.name}"  ></p:outputLabel>
                         </div>
                         <div class="col-md-8" >
                             <p:inputText id="itStC" value="#{ii.ci.shortTextValue}" 
@@ -235,16 +235,16 @@
                 </h:panelGroup>
 
                 <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text' and ii.di.item.dataType eq 'Integer_Number'}" >
-                    <div class="row p-1" >
+                    <div class="row p-1 #{ii.di.css}" >
                         <div class="col-md-4" >
-                            <p:outputLabel for="itIntC" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
+                            <p:outputLabel for="itIntC" value="#{ii.di.name}"  ></p:outputLabel>
                         </div>
                         <div class="col-md-2" >
                             <p:inputText id="itIntC" value="#{ii.ci.integerNumberValue}"  style="width:98%;"
                                          required="#{ii.di.required}" validatorMessage="#{ii.di.regexValidationFailedMessage}"
                                          requiredMessage="#{ii.di.requiredErrorMessage}" >
                                 <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-                                <f:validateRegex pattern="#{ii.di.regexValidationString}" rendered="#{ii.di.regexValidationString ne null or ii.di.regexValidationString ne ''}" ></f:validateRegex>
+                                <!--<f:validateRegex pattern="#{ii.di.regexValidationString}" rendered="#{ii.di.regexValidationString ne null or ii.di.regexValidationString ne ''}" ></f:validateRegex>-->
                             </p:inputText>
                         </div>
                     </div>
@@ -254,7 +254,7 @@
                     </h:panelGroup>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text' and ii.di.item.dataType eq 'Real_Number'}" >
-                    <div class="row p-1" >
+                    <div class="row p-1  #{ii.di.css}"  >
                         <div class="col-md-4" >
                             <p:outputLabel for="itRnC" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>
@@ -272,7 +272,7 @@
                     </h:panelGroup>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text' and ii.di.item.dataType eq 'Long_Number'}" >
-                    <div class="row p-1" >
+                    <div class="row p-1 #{ii.di.css}" >
                         <div class="col-md-4" >
                             <p:outputLabel for="itLongC" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>
@@ -293,7 +293,7 @@
 
 
                 <h:panelGroup rendered="#{ii.di.renderType eq 'Integer_with_detail'}" >
-                    <div class="row p-1" >
+                    <div class="row p-1 #{ii.di.css}" >
                         <div class="col-md-4" >
                             <p:outputLabel for="itdLongC" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>
@@ -316,7 +316,7 @@
 
 
                 <h:panelGroup rendered="#{ii.di.renderType eq 'Input_Text_Area'}" >
-                    <div class="row p-1" >
+                    <div class="row p-1 #{ii.di.css}" >
                         <div class="col-md-4" >
                             <p:outputLabel for="txtItaL" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>
@@ -364,7 +364,7 @@
                     </div>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'Drop_Down_Menu'}" >
-                    <div class="row p-1" >
+                    <div class="row p-1 #{ii.di.css}" >
                         <div class="col-md-4" >
                             <p:outputLabel for="domIc" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>
@@ -380,22 +380,22 @@
                 </h:panelGroup>
                 
                 <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'List_Box'}" >
-                    <div class="row p-1" >
+                    <div class="row p-1 #{ii.di.css}" >
                         <div class="col-md-4" >
                             <p:outputLabel for="lbIc" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>
                         <div class="col-md-8" >
-                            <p:selectOneListbox  id="lbIc" value="#{ii.ci.itemValue}" >
+                            <p:selectOneRadio  id="lbIc" value="#{ii.ci.itemValue}" >
                                 <f:selectItems value="#{ii.availableItemsForSelection}" var="li"
                                                itemLabel="#{li.displayName}" itemValue="#{li}" ></f:selectItems>
                                 <p:ajax  event="blur" process="@this"   listener="#{clientEncounterComponentItemController.save(ii.ci)}" ></p:ajax>
-                            </p:selectOneListbox>
+                            </p:selectOneRadio>
                         </div>
                     </div>
                 </h:panelGroup>
                 
                 <h:panelGroup rendered="#{ii.di.item.dataType eq 'Item_Reference' and ii.di.renderType eq 'Autocomplete'}" >
-                    <div class="row p-1" >
+                    <div class="row p-1 #{ii.di.css}" >
                         <div class="col-md-6" >
                             <p:outputLabel for="acItem" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>
@@ -415,7 +415,7 @@
                     </div>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{ii.di.renderType eq 'Boolean_Checkbox'}" >
-                    <div class="row p-1" >
+                    <div class="row p-1 #{ii.di.css}" >
                         <div class="col-md-4" >
                             <p:outputLabel for="bcNc" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>
@@ -434,7 +434,7 @@
                     </div>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{ii.di.renderType eq 'Boolean_Button'}" >
-                    <div class="row p-1" >
+                    <div class="row p-1 #{ii.di.css}" >
                         <div class="col-md-4" >
                             <p:outputLabel for="bbNc" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>
@@ -453,7 +453,7 @@
                     </div>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{ii.di.renderType eq 'Autocomplete' and ii.di.item.dataType eq 'Area_Reference'}" >
-                    <div class="row p-1" >
+                    <div class="row p-1 #{ii.di.css}" >
                         <div class="col-md-4" >
                             <p:outputLabel for="acA" value="#{ii.di.name}"  style="#{ii.di.css}" ></p:outputLabel>
                         </div>

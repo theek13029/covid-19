@@ -235,11 +235,19 @@
                                         </p:panelGrid>
                                     </p:tab>
 
-                                    <p:tab title="CSS" >
+                                    <p:tab title="Other" >
                                         <p:panelGrid columns="2" >
-                                            <p:outputLabel value="CSS:" for="css" />
-                                            <p:inputTextarea id="css" value="#{designComponentFormItemController.selected.css}" title="CSS"
-                                                             cols="90" rows="20"/>
+                                            <p:outputLabel value="CSS Class:" for="css" />
+                                            <p:inputText id="css" value="#{designComponentFormItemController.selected.css}" title="CSS"
+                                                             />
+                                            <p:outputLabel value="Form:" for="dcf" />
+                                            <p:selectOneMenu id="dcf" value="#{designComponentFormItemController.selected.parentComponent}" >
+                                                <f:selectItems value="#{designComponentFormController.formsOfTheSelectedSet}"
+                                                               var="f"
+                                                               itemLabel="#{f.name}"
+                                                               itemValue="#{f}" ></f:selectItems>
+                                            </p:selectOneMenu>
+                                            
                                         </p:panelGrid>
                                     </p:tab>
                                 </p:tabView>

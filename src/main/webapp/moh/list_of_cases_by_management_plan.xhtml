@@ -8,17 +8,17 @@
 
     <h:body>
 
-       <ui:composition template="/moh/reports_index.xhtml">
+        <ui:composition template="/moh/reports_index.xhtml">
             <ui:define name="reports">
-                    <h:form >
-                        <div class="row" >
-                            <div class="col-12 text-center mt-4 mb-2" >
-                                <h4 class="fw-bold"><h:outputLabel  value="List of Cases by Management Plan" ></h:outputLabel></h4>
-                            </div>
+                <h:form >
+                    <div class="row" >
+                        <div class="col-12 text-center mt-4 mb-2" >
+                            <h4 class="fw-bold"><h:outputLabel  value="List of Cases by Management Plan" ></h:outputLabel></h4>
                         </div>
-                        <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
+                    </div>
+                    <div class="container bg-none mt-4 mb-4 w-100 d-flex justify-content-center align-items-center" >
                         <h:panelGrid columns="2" class="shadow-lg p-3 mb-5 bg-white rounded">
-                            
+
                             <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
                             <p:calendar value="#{mohController.fromDate}" 
                                         pattern="dd MMMM yyyy hh:mm a">
@@ -26,7 +26,7 @@
 
                             <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
                             <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
-                            
+
                             <h:outputLabel class="h6 fw-bold" value="Plan of Management" ></h:outputLabel>
                             <h:selectOneMenu value="#{mohController.managementType}" class="form-select">
                                 <f:selectItem itemLabel="Any" ></f:selectItem>
@@ -39,54 +39,68 @@
                             </h:commandButton>
                             <h:commandButton value="Process" class="btn btn-warning w-100"
                                              action="#{mohController.toListCasesByManagement()}" ></h:commandButton>
-                            
+
                         </h:panelGrid>
-                        </div>
-                        <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
-                        <p:dataTable id="tbl" value="#{mohController.cecItems}" rendered="true"
+                    </div>
+                    <h:panelGrid columns="1" styleClass="alignTop" class="shadow bg-white rounded" >
+                        <p:dataTable id="tbl" value="#{mohController.tests}" rendered="true"
                                      rowIndexVar="n"
                                      var="c" 
                                      rowKey="#{c.id}" 
+
                                      paginator="true" 
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
-                                     selection="#{mohController.selectedCecis}"
+
                                      >
                             <p:column selectionMode="multiple" width="30"></p:column>
-                            <p:column headerText="Name"  sortBy="#{c.shortTextValue}" filterBy="#{c.shortTextValue}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.shortTextValue}" ></h:outputLabel>
+                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" 
+                                      filterBy="#{c.client.person.name}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.client.person.name}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Address"  sortBy="#{c.longTextValue}" 
-                                      filterBy="#{c.longTextValue}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.longTextValue}" ></h:outputLabel>
+                            <p:column headerText="Age"  sortBy="#{c.client.person.age}" 
+                                      filterBy="#{c.client.person.age}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.client.person.age}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="Contact Number" sortBy="#{c.shortTextValue2}" 
-                                      filterBy="#{c.shortTextValue2}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.shortTextValue2}" ></h:outputLabel>
+                            <p:column headerText="Sex"  sortBy="#{c.client.person.sex.name}" 
+                                      filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.client.person.sex.name}" ></h:outputLabel>
                             </p:column>
-                            <p:column headerText="District"  sortBy="#{c.areaValue2.name}"
-                                      filterBy="#{c.areaValue2.name}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.areaValue2.name}" ></h:outputLabel>
+                            <p:column headerText="Address"  sortBy="#{c.client.person.address}" 
+                                      filterBy="#{c.client.person.address}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.client.person.address}" ></h:outputLabel>
                             </p:column>
-                           
-                            <p:column headerText="Actions" exportable="false" rendered="false" >
-                                <p:commandLink value="Order PCR" action="#{mohController.toViewTest()}" ajax="false" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{provincialController.test}" ></f:setPropertyActionListener>
-                                </p:commandLink>
-                                <h:outputLabel value=" | " ></h:outputLabel>
-                                <p:commandLink value="Order RAT" action="#{mohController.toViewResult()}" ajax="false" >
-                                    <f:setPropertyActionListener value="#{c}" target="#{provincialController.test}" ></f:setPropertyActionListener>
-                                </p:commandLink>
+                            <p:column headerText="Contact Number" sortBy="#{c.client.person.phone1}" 
+                                      filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.client.person.phone1}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="GN Area"  sortBy="#{c.client.person.gnArea.name}"
+                                      filterBy="#{c.client.person.gnArea.name}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.client.person.gnArea.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="PHI Area"  sortBy="#{c.client.person.phiArea.name}"
+                                      filterBy="#{c.client.person.phiArea.name}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.client.person.phiArea.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Actions" exportable="false"
+                                      style="width: 12em;">
+                                <h:commandButton rendered="#{c.referenceCase ne null}"
+                                                 value="View Details"
+                                                 action="#{clientController.toViewOrEditCaseEnrollmentFromEncounter()}"
+                                                 class="btn btn-success btn-sm small w-100" >
+                                    <f:setPropertyActionListener value="#{c}" target="#{clientController.selectedEncounter}" >
+                                    </f:setPropertyActionListener>
+                                </h:commandButton>
                             </p:column>
                         </p:dataTable>
-                        </h:panelGrid>
-                    </h:form>
+                    </h:panelGrid>
+                </h:form>
 
 
 
-                
+
             </ui:define>
 
         </ui:composition>
