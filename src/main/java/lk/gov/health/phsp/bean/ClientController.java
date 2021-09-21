@@ -3119,7 +3119,193 @@ public class ClientController implements Serializable {
 
     }
 
+    
     public String importOrdersFromExcel() {
+        if (file == null) {
+            JsfUtil.addErrorMessage("File ?");
+            return "";
+        }
+
+        district = institution.getDistrict();
+
+        String strTestNo = null;
+        String strName = null;
+        String strSex = null;
+        String strPhone = null;
+        String strAddress = null;
+        String strNic = null;
+        Integer testNoColInt;
+        Integer ageColInt;
+        Integer nameColInt;
+        Integer sexColInt;
+        Integer nicColInt;
+        Integer phoneColInt;
+        Integer addressColInt;
+        Integer mohColInt;
+        Integer districtColInt;
+        Integer wardColInt;
+        Integer bhtColInt;
+        Item sex = null;
+
+        int ageInYears = 0;
+
+        nameColInt = CommonController.excelColFromHeader(nameCol);
+        ageColInt = CommonController.excelColFromHeader(ageColumn);
+        testNoColInt = CommonController.excelColFromHeader(testNoCol);
+        sexColInt = CommonController.excelColFromHeader(sexCol);
+        phoneColInt = CommonController.excelColFromHeader(phoneCol);
+        addressColInt = CommonController.excelColFromHeader(addressCol);
+        nicColInt = CommonController.excelColFromHeader(nicCol);
+        mohColInt = CommonController.excelColFromHeader(mohCol);
+        districtColInt = CommonController.excelColFromHeader(districtCol);
+        wardColInt = CommonController.excelColFromHeader(wardCol);
+        bhtColInt = CommonController.excelColFromHeader(bhtCol);
+
+        JsfUtil.addSuccessMessage(file.getFileName());
+        XSSFWorkbook myWorkBook;
+        try {
+            JsfUtil.addSuccessMessage(file.getFileName());
+            myWorkBook = new XSSFWorkbook(file.getInputStream());
+            XSSFSheet mySheet = myWorkBook.getSheetAt(0);
+            Iterator<Row> rowIterator = mySheet.iterator();
+            Long count = 0l;
+            startRow--;
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                if (row.getRowNum() < startRow) {
+                    continue;
+                }
+
+                if (testNoColInt != null) {
+                    strTestNo = cellValue(row.getCell(testNoColInt));
+                }
+                if (nicColInt != null) {
+                    strNic = cellValue(row.getCell(nicColInt));
+                }
+                Client c = null;
+                if (strNic != null && !strNic.trim().equals("") && strNic.trim().length() > 5) {
+                    c = getClientByNic(strNic);
+                }
+
+                if (c == null) {
+                    if (nameColInt != null) {
+                        strName = cellValue(row.getCell(nameColInt));
+                    }
+                    if (sexColInt != null) {
+                        strSex = cellValue(row.getCell(sexColInt));
+                    }
+                    if (phoneColInt != null) {
+                        strPhone = cellValue(row.getCell(phoneColInt));
+                    }
+                    if (strPhone != null) {
+                        strPhone = "'" + strPhone;
+                    } else {
+                        Double dbl = cellValueDouble(row.getCell(phoneColInt));
+                        if (dbl != null) {
+                            strPhone = "'" + dbl + "";
+                        }
+                    }
+                    if (addressColInt != null) {
+                        strAddress = cellValue(row.getCell(addressColInt));
+                    }
+                    if (nicColInt != null) {
+                        strNic = cellValue(row.getCell(nicColInt));
+                    }
+
+                    if (ageColInt != null) {
+                        ageInYears = cellValueInt(row.getCell(ageColInt));
+                    }
+                    if (strSex != null && strSex.toLowerCase().contains("f")) {
+                        sex = itemApplicationController.getFemale();
+                    } else {
+                        sex = itemApplicationController.getMale();
+                    }
+                } else {
+                    strName = c.getPerson().getName();
+                    strPhone = c.getPerson().getPhone1();
+                    strAddress = c.getPerson().getAddress();
+                    sex = c.getPerson().getSex();
+                    ageInYears = c.getPerson().getAgeYears();
+                }
+                Area ptDistrict = null;
+                String districtName = null;
+                if (districtColInt != null) {
+                    districtName = cellValue(row.getCell(districtColInt));
+                }
+                if (districtName != null) {
+                    ptDistrict = areaController.getAreaByCodeIfNotName(districtName, AreaType.District);
+                }
+                if (ptDistrict == null) {
+                    ptDistrict = district;
+                }
+
+                Area ptMoh = null;
+                String mohName = null;
+                if (mohColInt != null) {
+                    mohName = cellValue(row.getCell(mohColInt));
+                }
+
+                if (mohName != null) {
+                    ptMoh = areaController.getAreaByCodeIfNotName(districtName, AreaType.MOH);
+                }
+
+                ClientImport ci = new ClientImport();
+                ci.setClient(c);
+                ci.setName(strName);
+                ci.setTestNo(strTestNo);
+                ci.setAddress(strAddress);
+                ci.setAgeInYears(ageInYears);
+                ci.setSex(sex);
+                ci.setNic(strNic);
+                ci.setPhone(strPhone);
+                ci.setId(count);
+
+                ci.setDistrict(ptDistrict);
+                ci.setMoh(ptMoh);
+
+                String ptWard = null;
+                if (wardColInt != null) {
+                    ptWard = cellValue(row.getCell(wardColInt));
+
+                    if (ptWard != null) {
+                        ci.setWardUnit(ptWard);
+                    } else {
+                        Double dbl = cellValueDouble(row.getCell(wardColInt));
+                        if (dbl != null) {
+                            ci.setWardUnit("'" + dbl + "");
+                        }
+                    }
+                }
+
+                String ptBht = null;
+                if (bhtColInt != null) {
+                    ptBht = cellValue(row.getCell(bhtColInt));
+
+                    if (ptBht != null) {
+                        ci.setBhtNo(ptBht);
+                    } else {
+                        Double dbl = cellValueDouble(row.getCell(bhtColInt));
+                        if (dbl != null) {
+                            ci.setBhtNo("'" + dbl + "");
+                        }
+                    }
+                }
+
+                count++;
+                getClientImports().add(ci);
+
+            }
+            startRow++;
+            return "/hospital/uploaded_orders";
+        } catch (IOException e) {
+            JsfUtil.addErrorMessage(e.getMessage());
+            return "";
+        }
+
+    }
+
+    
+    public String importOrdersFromExcelOld() {
         if (institution == null) {
             JsfUtil.addErrorMessage("Institution ?");
             return "";
@@ -3267,7 +3453,7 @@ public class ClientController implements Serializable {
         return toUploadOrders();
     }
 
-    private void toAddNewPcrWithNewClient(ClientImport ci) {
+    private void toAddNewPcrWithNewClientOld(ClientImport ci) {
         Encounter pcr = new Encounter();
         Client c;
         if (ci.getClient() == null) {
@@ -3319,6 +3505,72 @@ public class ClientController implements Serializable {
         encounterFacade.create(pcr);
     }
 
+     private void toAddNewPcrWithNewClient(ClientImport ci) {
+        Encounter pcr = new Encounter();
+        Client c;
+        if (ci.getClient() == null) {
+            c = new Client();
+
+            c.getPerson().setName(ci.getName());
+            c.getPerson().setAddress(ci.getAddress());
+            c.getPerson().setPhone1(ci.getPhone());
+            c.getPerson().setSex(ci.getSex());
+            c.getPerson().setNic(ci.getNic());
+            if (ci.getDistrict() != null) {
+                c.getPerson().setDistrict(ci.getDistrict());
+            } else {
+                c.getPerson().setDistrict(district);
+            }
+            if (ci.getMoh() != null) {
+                c.getPerson().setMohArea(ci.getMoh());
+            }
+            Calendar calDob = Calendar.getInstance();
+            calDob.add(Calendar.YEAR, (0 - ci.getAgeInYears()));
+            calDob.add(Calendar.MONTH, (0 - ci.getAgeInMonths()));
+            calDob.add(Calendar.DAY_OF_YEAR, (0 - ci.getAgeInDays()));
+            c.getPerson().setDateOfBirth(calDob.getTime());
+        } else {
+            c = ci.getClient();
+        }
+
+        pcr.setClient(c);
+
+        pcr.setInstitution(institution);
+        pcr.setCreatedInstitution(institution);
+        pcr.setReferalInstitution(referingInstitution);
+        pcr.setUnitWard(ci.getWardUnit());
+        pcr.setBht(ci.getBhtNo());
+        pcr.setPcrOrderingCategory(orderingCategory);
+
+        pcr.setEncounterNumber(ci.getTestNo());
+        pcr.setLabNumber(ci.getLabNo());
+        pcr.setEncounterType(EncounterType.Test_Enrollment);
+        pcr.setEncounterDate(fromDate);
+        pcr.setEncounterFrom(new Date());
+        pcr.setEncounterMonth(CommonController.getMonth(fromDate));
+        pcr.setEncounterQuarter(CommonController.getQuarter(fromDate));
+        pcr.setEncounterYear(CommonController.getYear(fromDate));
+
+        pcr.setSampled(true);
+        pcr.setSampledAt(fromDate);
+        pcr.setSampledBy(webUserController.getLoggedUser());
+        pcr.setCreatedAt(new Date());
+
+        pcr.setSentToLab(true);
+        pcr.setSentToLabAt(fromDate);
+        pcr.setSentToLabBy(webUserController.getLoggedUser());
+
+        pcr.setPcrTestType(lastTestPcrOrRat);
+
+        if (c.getId() == null) {
+            getFacade().create(c);
+        } else {
+            getFacade().edit(c);
+        }
+        encounterFacade.create(pcr);
+    }
+
+    
     private void toAddNewPcrResultWithNewClient(ClientImport ci) {
         Encounter pcr = new Encounter();
         Client c;
@@ -3406,6 +3658,7 @@ public class ClientController implements Serializable {
         encounterFacade.create(pcr);
     }
 
+    
     private String cellValue(Cell cell) {
         String str = "";
         if (cell == null) {

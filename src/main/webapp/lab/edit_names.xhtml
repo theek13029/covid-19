@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="/template1.xhtml">
+
+            <ui:define name="title">
+                List of Tests
+            </ui:define>
+
+            <ui:define name="content">
+                <p:panelGrid columns="1" styleClass="alignTop w-100 bg-white border border-light" >
+                    <f:facet name="header" >
+                        <h:outputLabel class="fs-5 fw-bold" value="Test List" ></h:outputLabel>
+                    </f:facet>
+
+                    <h:form >
+                        <p:panelGrid columns="2"  class="border border-light">
+                            <h:outputLabel class="fs-6 fw-bold" value="Ordered From" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{labController.fromDate}"
+                                        pattern="dd MMMM yyyy hh:mm a">
+                            </p:calendar><!-- comment -->
+
+                            <h:outputLabel class="fs-6 fw-bold" value="Ordered To" ></h:outputLabel>
+                            <p:calendar class="fs-6" value="#{labController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+
+                            <h:outputLabel value="Institution" class="form-label"></h:outputLabel>
+                            <p:autoComplete class="w-100"
+                                            id="acIns"
+                                            value="#{labController.institution}"
+                                            forceSelection="true" tabindex="100"
+                                            completeMethod="#{institutionController.completeInstitutions}"
+                                            var="l" itemLabel="#{l.name}" itemValue="#{l}">
+                                <p:ajax process="acIns" event="blur" ></p:ajax>
+                            </p:autoComplete>
+
+                            <p:outputLabel value="Test" ></p:outputLabel>
+                            <h:selectOneMenu value="#{labController.testType}" >
+                                <f:selectItem itemLabel="All" ></f:selectItem>
+                                <f:selectItems value="#{labController.covidTestTypes}" var="c" itemLabel="#{c.name}"
+                                               itemValue="#{c}" ></f:selectItems>
+                            </h:selectOneMenu>
+
+
+
+                            <h:commandButton class="btn btn-success my-2" value="Generate Excel">
+                                <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
+                            </h:commandButton>
+                            <h:commandButton class="btn btn-warning w-100" value="Process"
+                                             action="#{labController.toEditNames()}" ></h:commandButton>
+
+
+                        </p:panelGrid>
+
+
+                        <p:dataTable id="tbl" value="#{labController.tests}" rendered="true"
+                                     rowIndexVar="n"
+                                     var="c"
+                                     rowKey="#{c.id}"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
+                                     rows="10"
+                                     >
+                            <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                                <h:inputText value="#{c.encounterNumber}" >
+                                    <p:ajax event="blur" process="txtLabNo"
+                                            listener="#{clientController.saveLabNo(c)}" >
+                                    </p:ajax>
+                                </h:inputText>
+                            </p:column>
+                            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" filterBy="#{c.pcrTestType.name}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.pcrTestType.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
+                                <h:inputText value="#{c.client.person.name}" >
+                                    <p:ajax event="blur" process="txtLabNo"
+                                            listener="#{clientController.saveLabNo(c)}" >
+                                    </p:ajax>
+                                </h:inputText>
+                            </p:column>
+                            <p:column headerText="Age"  sortBy="#{c.client.person.age}" width="60"
+                                      filterBy="#{c.client.person.age}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.client.person.age}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Gender"
+                                      width="80"
+                                      sortBy="#{c.encounterNumber}" filterBy="#{c.client.person.sex.name}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.client.person.sex.name}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
+                                <h:inputText value="#{c.client.person.nic}" >
+                                    <p:ajax event="blur" process="txtLabNo"
+                                            listener="#{clientController.saveLabNo(c)}" >
+                                    </p:ajax>
+                                </h:inputText>
+                            </p:column>
+                            <p:column headerText="Phone" sortBy="#{c.client.person.phone1}" filterBy="#{c.client.person.phone1}" filterMatchMode="contains">
+                                <h:outputLabel value="#{c.client.person.phone1}" ></h:outputLabel>
+                                <h:outputLabel rendered="#{c.client.person.phone2 ne null}" value=", " ></h:outputLabel>
+                                <h:outputLabel rendered="#{c.client.person.phone2 ne null}" value="#{c.client.person.phone2}" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Address"  sortBy="#{c.client.person.address}"
+                                      filterBy="#{c.client.person.address}" filterMatchMode="contains">
+                                <h:inputText value="#{c.client.person.address}" >
+                                    <p:ajax event="blur" process="txtLabNo"
+                                            listener="#{clientController.saveLabNo(c)}" >
+                                    </p:ajax>
+                                </h:inputText>
+                            </p:column>
+                            <p:column headerText="Unit / Ward"  sortBy="#{c.unitWard}"
+                                      filterBy="#{c.unitWard}" filterMatchMode="contains">
+                                <h:inputText value="#{c.unitWard}" >
+                                    <p:ajax event="blur" process="txtLabNo"
+                                            listener="#{clientController.saveLabNo(c)}" >
+                                    </p:ajax>
+                                </h:inputText>
+                            </p:column>
+                            <p:column headerText="BHT"  sortBy="#{c.bht}"
+                                      filterBy="#{c.bht}" filterMatchMode="contains">
+                                <h:inputText value="#{c.bht}" >
+                                    <p:ajax event="blur" process="txtLabNo"
+                                            listener="#{clientController.saveLabNo(c)}" >
+                                    </p:ajax>
+                                </h:inputText>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:panelGrid>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

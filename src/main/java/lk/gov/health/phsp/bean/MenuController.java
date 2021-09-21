@@ -99,6 +99,41 @@ public class MenuController implements Serializable {
         }
     }
 
+    
+    public String toUploadResults(){
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Hospital:
+                return "/hospital/upload_results";
+            case Lab:
+                return "/lab/upload_results";
+            case Regional:
+            case National:
+            case National_Lab:
+            case Moh:
+            case Provincial:
+            default:
+                return "";
+        }
+    }
+    
+
+    public String toUploadOrders(){
+        switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
+            case Hospital:
+                return "/hospital/upload_orders";
+            case Lab:
+                return "/lab/upload_orders";
+            case Regional:
+            case National:
+            case National_Lab:
+            case Moh:
+            case Provincial:
+            default:
+                return "";
+        }
+    }
+
+    
     public String toDispatchSummary() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:

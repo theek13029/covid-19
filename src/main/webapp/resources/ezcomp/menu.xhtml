@@ -68,14 +68,15 @@
                     <p:menuitem ajax="false" value="Print Results" action="#{clientController.toLabToSelectForPrinting()}"
                                 rendered="#{webUserController.hasPrivilege('Print_Results')}"/>
                 </p:submenu>
-                <p:submenu class="submenu mx-2" label="Requests" rendered="#{webUserController.hasPrivilege('Lab_Management')}">
+                <p:submenu class="submenu mx-2" label="Requests from Lab" rendered="#{webUserController.hasPrivilege('Lab_Management')}">
                     <p:menuitem ajax="false" value="New RAT Request" rendered="false" action="#{labController.toAddNewRatOrderWithNewClient()}"  />
                     <p:menuitem ajax="false" value="New PCR Request" action="#{labController.toAddNewPcrWithNewClient()}" />
                     <p:menuitem ajax="false" value="New RAT With Result" action="#{labController.toAddNewRatWithNewClient()}" />
                     <p:menuitem ajax="false" value="New PCR With Result" disabled="true" action="#{labController.toAddNewRatWithNewClient()}" />
                     <p:menuitem ajax="false" value="Test Lists" action="#{labController.toTestListWithoutResults()}" />
-                    <p:menuitem ajax="false" value="Upload Orders" action="#{clientController.toUploadOrders()}" />
-                    <p:menuitem ajax="false" value="Upload Results" action="#{clientController.toUploadResultsForHospitals()}" />
+                    <p:menuitem ajax="false" value="Upload Orders" action="#{menuController.toUploadOrders()}" />
+                    <p:menuitem ajax="false" value="Upload Results" action="#{menuController.toUploadResults()}" />
+                    <p:menuitem ajax="false" value="Edit Names" action="#{labController.toEditNames()}" />
                 </p:submenu>
 
                 <p:menuitem class="text-white" ajax="false" value="Search" action="#{menuController.toSearch()}" />
