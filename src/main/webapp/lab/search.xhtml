@@ -94,8 +94,13 @@
           <p:commandButton class="btn btn-secondary btn-sm" id="toggler" type="button" value="Columns" icon="pi pi-align-justify" />
           <p:columnToggler datasource="tbl" trigger="toggler" />
         </div>
-        <p:dataTable id="tbl" value="#{clientController.testList}" class="table" rowIndexVar="n" rowKey="#{c.id}"
-          var="c" rows="10" paginator="true"
+        <p:dataTable id="tbl" value="#{clientController.testList}"
+          class="table"
+          rowIndexVar="n"
+          rowKey="#{c.id}"
+          var="c" rows="10"
+          paginator="true"
+          resizableColumns="true"
           paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
           currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
           rowsPerPageTemplate="5,10,{ShowAll|'All'}">
