@@ -57,6 +57,7 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.runners.Parameterized;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.file.UploadedFile;
@@ -187,6 +188,8 @@ public class ClientController implements Serializable {
     private Institution divertingLab;
     private List<Encounter> selectedClientsClinics;
     private List<Encounter> selectedClientEncounters;
+
+//    Search queries
     private String searchingId;
     private String searchingPhn;
     private String searchingPassportNo;
@@ -196,6 +199,11 @@ public class ClientController implements Serializable {
     private String searchingPhoneNumber;
     private String searchingLocalReferanceNo;
     private String searchingSsNumber;
+    private String searchingTestNo;
+    private String searchingBhtno;
+    private String searchingTestId;
+    private String searchingLabNo;
+
     private String uploadDetails;
     private String errorCode;
     private YearMonthDay yearMonthDay;
@@ -2612,6 +2620,203 @@ public class ClientController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Functions">
+
+//  This will allow a lab user to search for samples with test no
+    public String searchByTestNo() {
+        if (this.searchingTestNo == null || this.searchingTestNo.length() == 0) {
+            JsfUtil.addErrorMessage("Please enter a valid test number");
+            return "";
+        }
+
+        Map hashmap = new HashMap<>();
+        String jpql = "select e from Encounter e where e.retired=:retired";
+
+        jpql += " and e.referalInstitution=:ref";
+        hashmap.put("retired", false);
+
+        hashmap.put("ref", webUserController.getLoggedInstitution());
+
+        jpql += " and e.encounterNumber=:eno";
+        hashmap.put("eno", this.searchingTestNo.toUpperCase());
+
+        jpql += " and e.encounterType=:etype";
+        hashmap.put("etype", EncounterType.Test_Enrollment);
+//        To improve the performance of the searching as well as to limit the number of search results
+//        The search will only look for the last 14 days which is the average duration of patient stay
+//        This date can be adjusted from the search result page
+        Calendar cal = Calendar.getInstance();
+        if (this.toDate == null) {
+            this.toDate = cal.getTime();
+        }
+        if (this.fromDate == null) {
+            cal.add(Calendar.DATE, -14);
+            this.fromDate = cal.getTime();
+        }
+
+        jpql += " and e.encounterDate between :fd and :td";
+        hashmap.put("fd", fromDate);
+        hashmap.put("td", toDate);
+
+        if (this.institution != null) {
+            jpql += " and e.institution=:ins";
+            hashmap.put("ins", this.institution);
+        }
+
+        jpql += " order by e.encounterNumber";
+
+        testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
+        System.out.println(testList);
+        return "/lab/search";
+     }
+
+
+//   This will search for a patient according to a BHT number
+     public String searchByBhtNo() {
+        if (this.searchingBhtno == null || this.searchingBhtno.trim().length() == 0) {
+            JsfUtil.addErrorMessage("Please enter a valid BHT number");
+            return  "";
+        }
+
+        Map hashmap = new HashMap<>();
+        String jpql = "select e from Encounter e where e.retired=:retired";
+        hashmap.put("retired", false);
+
+        jpql += " and e.referalInstitution=:ref";
+        hashmap.put("ref", webUserController.getLoggedInstitution());
+
+        jpql += " and e.encounterType=:etype";
+        hashmap.put("etype", EncounterType.Test_Enrollment);
+//        To improve search performance as well as to limit the number of results only last 14 days will be searched
+//         This can be adjusted later at the search result page by the user
+         Calendar cal = Calendar.getInstance();
+
+         if (this.toDate == null) {
+             this.fromDate = cal.getTime();
+         }
+
+         if (this.fromDate == null) {
+             cal.add(Calendar.DATE, -14);
+             this.fromDate = cal.getTime();
+         }
+
+         jpql += " and e.encounterDate between :fd to :td";
+         hashmap.put("fd", this.fromDate);
+         hashmap.put("td", this.toDate);
+
+
+         if (this.institution != null) {
+             jpql += " and e.institution=:ins";
+             hashmap.put("ins", this.institution);
+         }
+
+         jpql += " and e.bht=:bht";
+         hashmap.put("bht", this.searchingBhtno.toUpperCase());
+
+         jpql += " order by e.bht";
+
+         testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
+         System.out.println(testList);
+         return "/lab/search";
+    }
+
+//    This will return a test according to it's ID
+    public String searchByTestId() {
+        if (this.searchingBhtno == null || this.searchingBhtno.trim().length() == 0) {
+            JsfUtil.addErrorMessage("Please enter a valid test number");
+            return  "";
+        }
+
+        Map hashmap = new HashMap<>();
+        String jpql = "select e from Encounter e where e.retired=:retired";
+        hashmap.put("retired", false);
+
+        jpql += " and e.referalInstitution=:ref";
+        hashmap.put("ref", webUserController.getLoggedInstitution());
+
+        jpql += " and e.encounterType=:etype";
+        hashmap.put("etype", EncounterType.Test_Enrollment);
+//        To improve search performance as well as to limit the number of results only last 14 days will be searched
+//         This can be adjusted later at the search result page by the user
+        Calendar cal = Calendar.getInstance();
+
+        if (this.toDate == null) {
+            this.fromDate = cal.getTime();
+        }
+
+        if (this.fromDate == null) {
+            cal.add(Calendar.DATE, -14);
+            this.fromDate = cal.getTime();
+        }
+
+        jpql += " and e.encounterDate between :fd to :td";
+        hashmap.put("fd", this.fromDate);
+        hashmap.put("td", this.toDate);
+
+
+        if (this.institution != null) {
+            jpql += " and e.institution=:ins";
+            hashmap.put("ins", this.institution);
+        }
+
+        jpql += " and e.id=:id";
+        hashmap.put("bht", this.searchingTestId.toUpperCase());
+
+        jpql += " order by e.bht";
+
+        testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
+        System.out.println(testList);
+        return "/lab/search";
+    }
+    
+//    This function will search for a test under the test tube number
+    	public String searchByLabNo() {
+	        if (this.searchingBhtno == null || this.searchingBhtno.trim().length() == 0) {
+	            JsfUtil.addErrorMessage("Please enter a valid lab number");
+                return  "";
+            }
+
+            Map hashmap = new HashMap<>();
+            String jpql = "select e from Encounter e where e.retired=:retired";
+            hashmap.put("retired", false);
+
+            jpql += " and e.referalInstitution=:ref";
+            hashmap.put("ref", webUserController.getLoggedInstitution());
+
+            jpql += " and e.encounterType=:etype";
+            hashmap.put("etype", EncounterType.Test_Enrollment);
+//            To improve search performance as well as to limit the number of results only last 14 days will be searched
+//             This can be adjusted later at the search result page by the user
+            Calendar cal = Calendar.getInstance();
+
+            if (this.toDate == null) {
+                this.fromDate = cal.getTime();
+            }
+
+            if (this.fromDate == null) {
+                cal.add(Calendar.DATE, -14);
+                this.fromDate = cal.getTime();
+            }
+
+            jpql += " and e.encounterDate between :fd to :td";
+            hashmap.put("fd", this.fromDate);
+            hashmap.put("td", this.toDate);
+
+
+            if (this.institution != null) {
+                jpql += " and e.institution=:ins";
+                hashmap.put("ins", this.institution);
+            }
+
+            jpql += " and e.labNumber=:labNo";
+            hashmap.put("labNo", this.searchingLabNo);
+
+            jpql += " order by e.bht";
+
+            testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
+            System.out.println(testList);
+            return "/lab/search";
+    }
+
     public String toUploadOrders() {
         return "/lab/upload_orders";
     }
@@ -5099,6 +5304,15 @@ public class ClientController implements Serializable {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Getters & Setters">
+
+    public String getSearchingBhtno() {
+        return searchingBhtno;
+    }
+
+    public void setSearchingBhtno(String searchingBhtno) {
+        this.searchingBhtno = searchingBhtno;
+    }
+
     public String getSearchingId() {
         return searchingId;
     }
@@ -5165,6 +5379,14 @@ public class ClientController implements Serializable {
         selectedClientChanged();
         selectedClientsClinics = null;
         selectedClientEncounters = null;
+    }
+
+    public String getSearchingTestNo() {
+        return searchingTestNo;
+    }
+
+    public void setSearchingTestNo(String searchingTestNo) {
+        this.searchingTestNo = searchingTestNo;
     }
 
     private ClientFacade getFacade() {
@@ -6280,8 +6502,46 @@ public class ClientController implements Serializable {
     public void setOrderingCategory(Item orderingCategory) {
         this.orderingCategory = orderingCategory;
     }
+    
+    
 
-    // </editor-fold>
+    /**
+	 * @return the searchingTestId
+	 */
+	public String getSearchingTestId() {
+		return searchingTestId;
+	}
+
+	/**
+	 * @param searchingTestId the searchingTestId to set
+	 */
+	public void setSearchingTestId(String searchingTestId) {
+		this.searchingTestId = searchingTestId;
+	}
+	
+	
+
+
+
+	/**
+	 * @return the searchingLabNo
+	 */
+	public String getSearchingLabNo() {
+		return searchingLabNo;
+	}
+
+	/**
+	 * @param searchingLabNo the searchingLabNo to set
+	 */
+	public void setSearchingLabNo(String searchingLabNo) {
+		this.searchingLabNo = searchingLabNo;
+	}
+
+
+
+
+
+	// </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Inner Classes">
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Converters">
