@@ -77,8 +77,30 @@
                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                             rowsPerPageTemplate="10,50,100,{ShowAll|'All'}"
                             rowStyleClass="#{c.resultCssClass}">
-                            <p:column class="w-auto" headerText="Age"  sortBy="#{c.client.person.age}" filterBy="#{c.client.person.age}" filterMatchMode="contains">
-                                <h:outputLabel value="#{c.client.person.age}" class="form-label"></h:outputLabel>
+
+                            <p:column headerText="Tube No." 
+                                      sortBy="#{c.encounterNumber}" 
+                                      filterBy="#{c.encounterNumber}" 
+                                      filterMatchMode="contains"
+                                      style="width: 8em;">
+                                <h:outputLabel value="#{c.encounterNumber}" class="form-label" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Lab No." 
+                                      sortBy="#{c.labNumber}" 
+                                      filterBy="#{c.labNumber}" 
+                                      filterMatchMode="contains"
+                                      style="width: 8em;"
+                                      >
+                                <h:outputLabel value="#{c.labNumber}" class="form-label" ></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Test" sortBy="#{c.pcrTestType.name}" 
+                                      filterBy="#{c.pcrTestType.name}" filterMatchMode="contains"
+                                      style="width: 5em;">
+                                <h:outputLabel value="#{c.pcrTestType.name}" class="form-label"></h:outputLabel>
+                            </p:column>
+                            <p:column headerText="Name" style="width: 12em;"
+                                      sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains" >
+                                <h:outputLabel value="#{c.client.person.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Sex" class="w-auto" sortBy="#{c.client.person.sex.name}"
                                       filterBy="#{c.client.person.sex.name}" filterMatchMode="contains"
