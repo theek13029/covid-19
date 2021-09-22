@@ -2629,6 +2629,11 @@ public class ClientController implements Serializable {
             return "";
         }
 
+        this.searchingBhtno = null;
+        this.searchingLabNo = null;
+        this.searchingTestId = null;
+        this.searchingName = null;
+
         Map hashmap = new HashMap<>();
         String jpql = "select e from Encounter e where e.retired=:retired";
 
@@ -2666,6 +2671,10 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Please enter a valid BHT number");
             return  "";
         }
+        this.searchingLabNo = null;
+        this.searchingTestId = null;
+        this.searchingTestNo = null;
+        this.searchingName = null;
 
         Map hashmap = new HashMap<>();
         String jpql = "select e from Encounter e where e.retired=:retired";
@@ -2682,7 +2691,7 @@ public class ClientController implements Serializable {
             hashmap.put("ins", this.institution);
         }
 
-        jpql += " and e.encounterDate between :fd and td";
+        jpql += " and e.encounterDate between :fd and :td";
         hashmap.put("fd", this.fromDate);
         hashmap.put("td", this.toDate);
 
@@ -2702,6 +2711,11 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Please enter a valid test number");
             return  "";
         }
+
+        this.searchingBhtno = null;
+        this.searchingLabNo = null;
+        this.searchingTestNo = null;
+        this.searchingName = null;
 
         Map hashmap = new HashMap<>();
         String jpql = "select e from Encounter e where e.retired=:retired";
@@ -2740,6 +2754,11 @@ public class ClientController implements Serializable {
                 return  "";
             }
 
+            this.searchingBhtno = null;
+            this.searchingTestId = null;
+            this.searchingTestNo = null;
+            this.searchingName = null;
+
             Map hashmap = new HashMap<>();
             String jpql = "select e from Encounter e where e.retired=:retired";
             hashmap.put("retired", false);
@@ -2749,10 +2768,6 @@ public class ClientController implements Serializable {
 
             jpql += " and e.encounterType=:etype";
             hashmap.put("etype", EncounterType.Test_Enrollment);
-
-            jpql += " and e.encounterDate between :fd and :td";
-            hashmap.put("fd", this.fromDate);
-            hashmap.put("td", this.toDate);
 
 
             if (this.institution != null) {
@@ -2794,6 +2809,11 @@ public class ClientController implements Serializable {
             return "";
         }
 
+        this.searchingBhtno = null;
+        this.searchingLabNo = null;
+        this.searchingTestId = null;
+        this.searchingTestNo = null;
+
         Map hashmap = new HashMap<>();
         String jpql = "select e from Encounter e where e.retired=:retired";
         hashmap.put("retired", false);
@@ -2813,13 +2833,10 @@ public class ClientController implements Serializable {
             hashmap.put("ins", this.institution);
         }
 
-        jpql += " and e.encouterDate between :fd and :td";
-        hashmap.put("fd", this.fromDate);
-        hashmap.put("td", this.toDate);
         jpql += " and lower(e.client.person.name) like :name";
         hashmap.put("name", "%" + searchingName.toLowerCase() + "%");
 
-        jpql += " order by e.encounterDate";
+        jpql += " order by e.id";
 
         testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
         return "/hospital/search";
