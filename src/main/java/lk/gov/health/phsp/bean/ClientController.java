@@ -2629,6 +2629,11 @@ public class ClientController implements Serializable {
             return "";
         }
 
+        this.searchingBhtno = null;
+        this.searchingLabNo = null;
+        this.searchingTestId = null;
+        this.searchingName = null;
+
         Map hashmap = new HashMap<>();
         String jpql = "select e from Encounter e where e.retired=:retired";
 
@@ -2656,7 +2661,7 @@ public class ClientController implements Serializable {
 
         testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
         System.out.println(testList);
-        return "/lab/search";
+        return "/hospital/search";
      }
 
 
@@ -2666,6 +2671,10 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Please enter a valid BHT number");
             return  "";
         }
+        this.searchingLabNo = null;
+        this.searchingTestId = null;
+        this.searchingTestNo = null;
+        this.searchingName = null;
 
         Map hashmap = new HashMap<>();
         String jpql = "select e from Encounter e where e.retired=:retired";
@@ -2682,14 +2691,18 @@ public class ClientController implements Serializable {
             hashmap.put("ins", this.institution);
         }
 
-         jpql += " and e.bht=:bht";
-         hashmap.put("bht", this.searchingBhtno.toUpperCase());
+        jpql += " and e.encounterDate between :fd and :td";
+        hashmap.put("fd", this.fromDate);
+        hashmap.put("td", this.toDate);
 
-         jpql += " order by e.bht";
+        jpql += " and lower(e.bht) like :bht";
+        hashmap.put("bht", "%" + this.searchingBhtno.toLowerCase() + "%");
 
-         testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
-         System.out.println(testList);
-         return "/lab/search";
+        jpql += " order by e.bht";
+
+        testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
+        System.out.println(testList);
+        return "/hospital/search";
     }
 
 //    This will return a test according to it's ID
@@ -2698,6 +2711,11 @@ public class ClientController implements Serializable {
             JsfUtil.addErrorMessage("Please enter a valid test number");
             return  "";
         }
+
+        this.searchingBhtno = null;
+        this.searchingLabNo = null;
+        this.searchingTestNo = null;
+        this.searchingName = null;
 
         Map hashmap = new HashMap<>();
         String jpql = "select e from Encounter e where e.retired=:retired";
@@ -2726,7 +2744,7 @@ public class ClientController implements Serializable {
 
         testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
         System.out.println(testList);
-        return "/lab/search";
+        return "/hospital/search";
     }
 
 //    This function will search for a test under the test tube number
@@ -2735,6 +2753,11 @@ public class ClientController implements Serializable {
 	            JsfUtil.addErrorMessage("Please enter a valid lab number");
                 return  "";
             }
+
+            this.searchingBhtno = null;
+            this.searchingTestId = null;
+            this.searchingTestNo = null;
+            this.searchingName = null;
 
             Map hashmap = new HashMap<>();
             String jpql = "select e from Encounter e where e.retired=:retired";
@@ -2746,24 +2769,24 @@ public class ClientController implements Serializable {
             jpql += " and e.encounterType=:etype";
             hashmap.put("etype", EncounterType.Test_Enrollment);
 
-            jpql += " and e.encounterDate between :fd and :td";
-            hashmap.put("fd", this.fromDate);
-            hashmap.put("td", this.toDate);
-
 
             if (this.institution != null) {
                 jpql += " and e.institution=:ins";
                 hashmap.put("ins", this.institution);
             }
 
-            jpql += " and e.labNumber=:labNo";
-            hashmap.put("labNo", this.searchingLabNo);
+            jpql += " and e.encounterDate between :fd and :td";
+            hashmap.put("fd", this.fromDate);
+            hashmap.put("td", this.toDate);
+
+            jpql += " and lower(e.labNumber) like :labNo";
+            hashmap.put("labNo", "%" + this.searchingLabNo.toLowerCase() + "%");
 
             jpql += " order by e.bht";
 
             testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
             System.out.println(testList);
-            return "/lab/search";
+            return "/hospital/search";
     }
 
     public String toUploadOrders() {
@@ -2774,6 +2797,7 @@ public class ClientController implements Serializable {
         return "/hospital/upload_results";
     }
 
+// This will search patient by name
     public String searchByName() {
         if (searchingName == null && searchingName.trim().equals("")) {
             JsfUtil.addErrorMessage("Please enter a name to search");
@@ -2785,39 +2809,37 @@ public class ClientController implements Serializable {
             return "";
         }
 
-        Map m = new HashMap();
-        String jpql = "select c "
-                + " from Client c "
-                + " where c.retired=:ret "
-                + " and lower(c.person.name) like :name";
+        this.searchingBhtno = null;
+        this.searchingLabNo = null;
+        this.searchingTestId = null;
+        this.searchingTestNo = null;
 
-        if (district != null) {
-            jpql += " and c.person.district=:dis ";
-            m.put("dis", district);
+        Map hashmap = new HashMap<>();
+        String jpql = "select e from Encounter e where e.retired=:retired";
+        hashmap.put("retired", false);
+
+        jpql += " and e.referalInstitution=:ref";
+        hashmap.put("ref", webUserController.getLoggedInstitution());
+
+        jpql += " and e.encounterType=:etype";
+        hashmap.put("etype", EncounterType.Test_Enrollment);
+
+        jpql += " and e.encounterDate between :fd and :td";
+        hashmap.put("fd", this.fromDate);
+        hashmap.put("td", this.toDate);
+
+        if (this.institution != null) {
+            jpql += " and e.institution=:ins";
+            hashmap.put("ins", this.institution);
         }
 
-        jpql += " order by c.person.name";
+        jpql += " and lower(e.client.person.name) like :name";
+        hashmap.put("name", "%" + searchingName.toLowerCase() + "%");
 
-        m.put("ret", false);
-        m.put("name", "%" + searchingName.toLowerCase() + "%");
+        jpql += " order by e.id";
 
-        List<Client> tmpClients = ejbFacade.findByJpql(jpql, m, 100);
-
-        if (tmpClients == null || tmpClients.isEmpty()) {
-            JsfUtil.addErrorMessage("No matches found");
-            return "";
-        }
-
-        if (tmpClients.size() == 1) {
-            selected = tmpClients.get(0);
-            return toClientProfile();
-        } else {
-            if (tmpClients.size() > 99) {
-                JsfUtil.addErrorMessage("Only the first 100 records are shown. Please increase the length of search keyword.");
-            }
-            selectedClients = tmpClients;
-            return toSelectClient();
-        }
+        testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
+        return "/hospital/search";
 
     }
 

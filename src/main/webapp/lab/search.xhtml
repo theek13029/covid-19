@@ -16,6 +16,18 @@
           <h4 class="fw-bold text-center">Search Lab Samples</h4>
         </div>
         <div class="col-md-3">
+          <label for="fromDate" class="form-label d-block fw-bold">From Date</label>
+          <p:calendar id="fromDate" class="form-select" value="#{clientController.fromDate}"
+                      pattern="dd MMMM yyyy hh:mm a">
+          </p:calendar>
+        </div>
+        <div class="col-md-3">
+          <label for="toDate" class="form-label fw-bold">To Date</label>
+          <p:calendar id="toDate" class="form-select" value="#{clientController.toDate}"
+                      pattern="dd MMMM yyyy hh:mm a">
+          </p:calendar>
+        </div>
+        <div class="col-md-3">
           <h:form>
             <label for="txtSearchName" class="form-label fw-bold">Search By Name</label>
             <div class="input-group">
@@ -75,7 +87,6 @@
           <h:form>
             <label for="txtSearchByLabNo" class="form-label fw-bold">Search By Lab #</label>
             <div class="input-group">
-
               <h:inputText class="form-control fs-6" id="txtSearchByLabNo" required="true"
                 requiredMessage="Please enter a Test number to search" value="#{clientController.searchingLabNo}">
               </h:inputText>
@@ -136,7 +147,12 @@
           <p:column headerText="Result" sortBy="#{c.client.person.age}">
             <h:outputLabel value="#{c.pcrResult.name}"></h:outputLabel>
           </p:column>
-
+          <p:column headerText="CT Value 1" soryBy="#{c.ctvalue}">
+            <h:outputLabel value="#{c.ctvalue}"></h:outputLabel>
+          </p:column>
+          <p:column headerText="CT Value 2" sortBy="#{c.ctvalue2}">
+            <h:outputLabel value="#{c.ctvalue2}"></h:outputLabel>
+          </p:column>
           <p:column headerText="Ordered" sortBy="#{c.createdAt}">
             <h:outputLabel value="#{c.createdAt}">
               <f:convertDateTime pattern="dd MM yy hh:mm"></f:convertDateTime>
