@@ -2813,6 +2813,9 @@ public class ClientController implements Serializable {
             hashmap.put("ins", this.institution);
         }
 
+        jpql += " and e.encouterDate between :fd and :td";
+        hashmap.put("fd", this.fromDate);
+        hashmap.put("td", this.toDate);
         jpql += " and lower(e.client.person.name) like :name";
         hashmap.put("name", "%" + searchingName.toLowerCase() + "%");
 
