@@ -30,16 +30,9 @@
                             <h:outputLabel class="fs-6 fw-bold" value="Ordered To" ></h:outputLabel>
                             <p:calendar class="fs-6" value="#{labController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                            <h:outputLabel class="fs-6 fw-bold" value="Ordering Category" ></h:outputLabel>
-                            <h:selectOneMenu class="form-select" value="#{labController.orderingCategory}" >
-                                <f:selectItem itemLabel="All" ></f:selectItem>
-                                <f:selectItems value="#{labController.covidTestOrderingCategories}"
-                                               var="c" itemLabel="#{c.name}"
-                                               itemValue="#{c}" ></f:selectItems>
-                            </h:selectOneMenu>
 
-                            <h:outputLabel value="Institution" class="form-label"></h:outputLabel>
-                            <p:autoComplete class="w-100"
+                            <h:outputLabel value="Institution" class="fs-6 fw-bold" ></h:outputLabel>
+                            <p:autoComplete class="fs-6"
                                             id="acIns"
                                             value="#{labController.institution}"
                                             forceSelection="true" tabindex="100"
@@ -48,8 +41,8 @@
                                 <p:ajax process="acIns" event="blur" ></p:ajax>
                             </p:autoComplete>
 
-                            <p:outputLabel value="Test" ></p:outputLabel>
-                            <h:selectOneMenu value="#{labController.testType}" >
+                            <p:outputLabel  class="fs-6 fw-bold"  value="Test" ></p:outputLabel>
+                            <h:selectOneMenu value="#{labController.testType}" class="fs-6">
                                 <f:selectItem itemLabel="All" ></f:selectItem>
                                 <f:selectItems value="#{labController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                itemValue="#{c}" ></f:selectItems>

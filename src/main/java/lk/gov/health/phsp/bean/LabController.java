@@ -2204,14 +2204,6 @@ public class LabController implements Serializable {
             j += " and c.pcrTestType=:tt ";
             m.put("tt", testType);
         }
-        if (orderingCategory != null) {
-            j += " and c.pcrOrderingCategory=:oc ";
-            m.put("oc", orderingCategory);
-        }
-        if (result != null) {
-            j += " and c.pcrResult=:result ";
-            m.put("result", result);
-        }
         if (institution != null) {
             j += " and c.institution=:ins ";
             m.put("ins", institution);

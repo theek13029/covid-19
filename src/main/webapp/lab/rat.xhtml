@@ -68,9 +68,21 @@
                                                      id="bhtNo">
                                         </h:inputText>
                                     </div>
+                                    <div class="col-md-3">
+                                        <label for="acIns" class="form-label fw-bold">Institution<small
+                                                class="px-2 text-muted">Required</small></label>
+                                        <p:autoComplete id="acIns" inputStyleClass="autocomplete"
+                                                        value="#{labController.rat.institution}" forceSelection="true" required="true"
+                                                        requiredMessage="Institution is required"
+                                                        completeMethod="#{institutionController.completeInstitutions}" var="l" itemLabel="#{l.name}"
+                                                        itemValue="#{l}">
+                                            <f:ajax execute="acIns" event="blur"></f:ajax>
+                                        </p:autoComplete>
+                                        <h:message for="acIns" class="text-danger small"></h:message>
+                                    </div>
                                 </div>
                                 <div class="row my-4">
-                                    <h5 class="text-muted fw-bold">Reginoal Details</h5>
+                                    <h5 class="text-muted fw-bold">Regional Details</h5>
                                     <div class="col-md-3">
                                         <label for="district" class="form-label fw-bold">District<small
                                                 class="px-2 text-muted">Required</small></label>
