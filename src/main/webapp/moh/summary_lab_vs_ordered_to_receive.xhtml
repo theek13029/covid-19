@@ -10,6 +10,11 @@
     <body>
 
         <ui:composition template="/template1.xhtml">
+            
+            <ui:define name="title">
+                Orders To Receive(RDHS)
+            </ui:define>
+            
             <ui:define name="content">
                 <h:outputStylesheet library="css" name="tem1.css"/>
                 <h:panelGrid columns="1" styleClass="alignTop" >
@@ -18,19 +23,22 @@
                     </f:facet>
 
                     <h:form >
-                        <h:panelGrid columns="2" >
+                        <h:panelGrid columns="2" rendered="true" styleClass="border border-light bg-white" >
                             <h:outputLabel value="From" ></h:outputLabel>
                             <p:calendar value="#{clientController.fromDate}" pattern="dd MMMM yyyy"></p:calendar><!-- comment -->
 
                             <h:outputLabel value="To" ></h:outputLabel>
                             <p:calendar value="#{clientController.toDate}" pattern="dd MMMM yyyy"></p:calendar>
 
-                            <h:commandButton value="Process"
-                                             class="btn btn-success"
-                                             action="#{clientController.toSummaryByOrderedInstitutionVsLabToReceive()}" ></h:commandButton>
+                            
                             <h:commandButton value="Generate Excel" class="btn btn-success" >
                                 <p:dataExporter type="xlsx" fileName="Lab Order Summery" target="tbl" ></p:dataExporter>
                             </h:commandButton>
+                            
+                            <h:commandButton value="Process"
+                                             class="btn btn-warning w-100"
+                                             
+                                             action="#{clientController.toSummaryByOrderedInstitutionVsLabToReceive()}" ></h:commandButton>
 
                         </h:panelGrid>
 
