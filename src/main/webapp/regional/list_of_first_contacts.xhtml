@@ -9,31 +9,37 @@
     <body>
 
         <ui:composition template="/regional/reports_index.xhtml">
+            <ui:define name="title">
+                Test List-RDHS
+            </ui:define>
             <ui:define name="reports">
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                <h:panelGrid columns="1" styleClass="alignTop" >
                     <f:facet name="header" >
-                        <p:outputLabel value="Test List" ></p:outputLabel>
+                        <h:outputLabel value="Test List" ></h:outputLabel>
                     </f:facet>
 
                     <h:form >
                         
-                        <p:panelGrid columns="2" >
-                            <p:panelGrid columns="2" >
-                            <p:outputLabel value="From" ></p:outputLabel>
-                            <p:calendar value="#{regionalController.fromDate}" 
-                                        pattern="dd MMMM yyyy hh:mm a">
+                        <h:panelGrid columns="2" rendered="true" styleClass="border border-light bg-white" >
+                            <h:panelGrid columns="2"  >
+                                <h:outputLabel class="h6 fw-bold" value="From" ></h:outputLabel>
+                            <p:calendar   value="#{regionalController.fromDate}" 
+                                        pattern="dd MM yyyy hh:mm a">
                             </p:calendar><!-- comment -->
 
-                            <p:outputLabel value="To" ></p:outputLabel>
-                            <p:calendar value="#{regionalController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
+                            <h:outputLabel class="h6 fw-bold" value="To" ></h:outputLabel>
+                            <p:calendar value="#{regionalController.toDate}" pattern="dd MM yyyy hh:mm a"></p:calendar>
 
-                            <p:commandButton ajax="false" value="Generate Excel">
+                            <h:commandButton value="Generate Excel"
+                                             class="btn btn-success">                                            
                                 <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                            </p:commandButton>
-                            <p:commandButton ajax="false" value="Process" 
-                                             action="#{regionalController.toListOfFirstContactsForRegionalLevel()}" ></p:commandButton>
-                            </p:panelGrid>
-                        </p:panelGrid>
+                            </h:commandButton>
+                            <h:commandButton value="Process" 
+                                             class="btn btn-warning w-100"
+                                             action="#{regionalController.toListOfFirstContactsForRegionalLevel()}" >
+                            </h:commandButton>
+                            </h:panelGrid>
+                        </h:panelGrid>
 
 
                         <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{regionalController.cecItems}" rendered="true"
@@ -49,38 +55,38 @@
                                      >
                             <p:column selectionMode="multiple" width="50" resizable="false"></p:column>
                             <p:column headerText="Name"  sortBy="#{c.shortTextValue}" filterBy="#{c.shortTextValue}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.shortTextValue}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.shortTextValue}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Address"  sortBy="#{c.longTextValue}" 
                                       filterBy="#{c.longTextValue}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.longTextValue}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.longTextValue}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Contact Number" sortBy="#{c.shortTextValue2}" 
                                       filterBy="#{c.shortTextValue2}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.shortTextValue2}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.shortTextValue2}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="District"  sortBy="#{c.areaValue2.name}"
                                       filterBy="#{c.areaValue2.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.areaValue2.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.areaValue2.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="MOH"  sortBy="#{c.areaValue.name}"
                                       filterBy="#{c.areaValue.name}" filterMatchMode="contains">
-                                <p:outputLabel value="#{c.areaValue.name}" ></p:outputLabel>
+                                <h:outputLabel value="#{c.areaValue.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Actions" exportable="false" rendered="false" >
-                                <p:commandLink value="View Order" action="#{regionalController.toViewTest()}" ajax="false" >
+                                <h:commandLink class="btn btn-success" value="View Order" action="#{regionalController.toViewTest()}"  >
                                     <f:setPropertyActionListener value="#{c}" target="#{regionalController.test}" ></f:setPropertyActionListener>
-                                </p:commandLink>
-                                <p:commandLink value="View Results" action="#{regionalController.toViewResult()}" ajax="false" >
+                                </h:commandLink>
+                                <h:commandLink class="btn btn-success" value="View Results" action="#{regionalController.toViewResult()}"  >
                                     <f:setPropertyActionListener value="#{c}" target="#{regionalController.test}" ></f:setPropertyActionListener>
-                                </p:commandLink>
+                                </h:commandLink>
                             </p:column>
                         </p:dataTable>
                     </h:form>
 
 
 
-                </p:panelGrid>
+                </h:panelGrid>
             </ui:define>
 
         </ui:composition>
