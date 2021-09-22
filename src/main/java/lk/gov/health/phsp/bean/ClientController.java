@@ -10,6 +10,7 @@ import lk.gov.health.phsp.bean.util.JsfUtil;
 import lk.gov.health.phsp.bean.util.JsfUtil.PersistAction;
 import lk.gov.health.phsp.facade.ClientFacade;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -201,7 +202,7 @@ public class ClientController implements Serializable {
     private String searchingSsNumber;
     private String searchingTestNo;
     private String searchingBhtno;
-    private String searchingTestId;
+    private BigInteger searchingTestId;
     private String searchingLabNo;
 
     private String uploadDetails;
@@ -2641,17 +2642,6 @@ public class ClientController implements Serializable {
 
         jpql += " and e.encounterType=:etype";
         hashmap.put("etype", EncounterType.Test_Enrollment);
-//        To improve the performance of the searching as well as to limit the number of search results
-//        The search will only look for the last 14 days which is the average duration of patient stay
-//        This date can be adjusted from the search result page
-        Calendar cal = Calendar.getInstance();
-        if (this.toDate == null) {
-            this.toDate = cal.getTime();
-        }
-        if (this.fromDate == null) {
-            cal.add(Calendar.DATE, -14);
-            this.fromDate = cal.getTime();
-        }
 
         jpql += " and e.encounterDate between :fd and :td";
         hashmap.put("fd", fromDate);
@@ -2686,28 +2676,11 @@ public class ClientController implements Serializable {
 
         jpql += " and e.encounterType=:etype";
         hashmap.put("etype", EncounterType.Test_Enrollment);
-//        To improve search performance as well as to limit the number of results only last 14 days will be searched
-//         This can be adjusted later at the search result page by the user
-         Calendar cal = Calendar.getInstance();
 
-         if (this.toDate == null) {
-             this.toDate = cal.getTime();
-         }
-
-         if (this.fromDate == null) {
-             cal.add(Calendar.DATE, -14);
-             this.fromDate = cal.getTime();
-         }
-
-         jpql += " and e.encounterDate between :fd and :td";
-         hashmap.put("fd", this.fromDate);
-         hashmap.put("td", this.toDate);
-
-
-         if (this.institution != null) {
-             jpql += " and e.institution=:ins";
-             hashmap.put("ins", this.institution);
-         }
+        if (this.institution != null) {
+            jpql += " and e.institution=:ins";
+            hashmap.put("ins", this.institution);
+        }
 
          jpql += " and e.bht=:bht";
          hashmap.put("bht", this.searchingBhtno.toUpperCase());
@@ -2721,7 +2694,7 @@ public class ClientController implements Serializable {
 
 //    This will return a test according to it's ID
     public String searchByTestId() {
-        if (this.searchingBhtno == null || this.searchingBhtno.trim().length() == 0) {
+        if (this.searchingTestId == null) {
             JsfUtil.addErrorMessage("Please enter a valid test number");
             return  "";
         }
@@ -2735,18 +2708,6 @@ public class ClientController implements Serializable {
 
         jpql += " and e.encounterType=:etype";
         hashmap.put("etype", EncounterType.Test_Enrollment);
-//        To improve search performance as well as to limit the number of results only last 14 days will be searched
-//         This can be adjusted later at the search result page by the user
-        Calendar cal = Calendar.getInstance();
-
-        if (this.toDate == null) {
-            this.toDate = cal.getTime();
-        }
-
-        if (this.fromDate == null) {
-            cal.add(Calendar.DATE, -14);
-            this.fromDate = cal.getTime();
-        }
 
         jpql += " and e.encounterDate between :fd and :td";
         hashmap.put("fd", this.fromDate);
@@ -2759,7 +2720,7 @@ public class ClientController implements Serializable {
         }
 
         jpql += " and e.id=:id";
-        hashmap.put("id", this.searchingTestId.toUpperCase());
+        hashmap.put("id", this.searchingTestId);
 
         jpql += " order by e.id";
 
@@ -2770,7 +2731,7 @@ public class ClientController implements Serializable {
 
 //    This function will search for a test under the test tube number
     	public String searchByLabNo() {
-	        if (this.searchingBhtno == null || this.searchingBhtno.trim().length() == 0) {
+	        if (this.searchingLabNo == null || this.searchingLabNo.trim().length() == 0) {
 	            JsfUtil.addErrorMessage("Please enter a valid lab number");
                 return  "";
             }
@@ -2784,18 +2745,6 @@ public class ClientController implements Serializable {
 
             jpql += " and e.encounterType=:etype";
             hashmap.put("etype", EncounterType.Test_Enrollment);
-//            To improve search performance as well as to limit the number of results only last 14 days will be searched
-//             This can be adjusted later at the search result page by the user
-            Calendar cal = Calendar.getInstance();
-
-            if (this.toDate == null) {
-                this.toDate = cal.getTime();
-            }
-
-            if (this.fromDate == null) {
-                cal.add(Calendar.DATE, -14);
-                this.fromDate = cal.getTime();
-            }
 
             jpql += " and e.encounterDate between :fd and :td";
             hashmap.put("fd", this.fromDate);
@@ -3119,7 +3068,7 @@ public class ClientController implements Serializable {
 
     }
 
-    
+
     public String importOrdersFromExcel() {
         if (file == null) {
             JsfUtil.addErrorMessage("File ?");
@@ -3304,7 +3253,7 @@ public class ClientController implements Serializable {
 
     }
 
-    
+
     public String importOrdersFromExcelOld() {
         if (institution == null) {
             JsfUtil.addErrorMessage("Institution ?");
@@ -3570,7 +3519,7 @@ public class ClientController implements Serializable {
         encounterFacade.create(pcr);
     }
 
-    
+
     private void toAddNewPcrResultWithNewClient(ClientImport ci) {
         Encounter pcr = new Encounter();
         Client c;
@@ -3658,7 +3607,7 @@ public class ClientController implements Serializable {
         encounterFacade.create(pcr);
     }
 
-    
+
     private String cellValue(Cell cell) {
         String str = "";
         if (cell == null) {
@@ -6761,14 +6710,14 @@ public class ClientController implements Serializable {
     /**
 	 * @return the searchingTestId
 	 */
-	public String getSearchingTestId() {
+	public BigInteger getSearchingTestId() {
 		return searchingTestId;
 	}
 
 	/**
 	 * @param searchingTestId the searchingTestId to set
 	 */
-	public void setSearchingTestId(String searchingTestId) {
+	public void setSearchingTestId(BigInteger searchingTestId) {
 		this.searchingTestId = searchingTestId;
 	}
 
