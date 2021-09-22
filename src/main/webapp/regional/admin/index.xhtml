@@ -27,7 +27,7 @@
                                         <div class="col-12 p-2">
                                             <h:form>
                                                 <h:commandLink value="View Users" 
-                                                               action="#{menuController.toListUser()}" 
+                                                               action="#{menuController.toListUsers()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block" 
                                                                >
                                                 </h:commandLink>
@@ -49,8 +49,8 @@
                                         <div class="col-12 p-2">
                                             <h:form>
 
-                                                <h:commandLink disabled="true" value="View Institutions" 
-                                                               action="#{regionalController.toCountOfResultsByOrderedInstitution()}" 
+                                                <h:commandLink value="View Institutions" 
+                                                               action="#{menuController.toListInstitutions()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block"
                                                                >
                                                 </h:commandLink>
@@ -61,8 +61,8 @@
                                         <div class="col-12 p-2">
                                             <h:form>
 
-                                                <h:commandLink disabled="true" value="Add Institution" 
-                                                               action="#{regionalController.toCountOfResultsByLab()}" 
+                                                <h:commandLink  value="Add Institution" 
+                                                               action="#{menuController.toAddNewInstitution()}" 
                                                                class="btn btn-outline-primary btn-lg btn-block"
                                                                >
                                                 </h:commandLink>
