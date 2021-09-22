@@ -69,9 +69,9 @@
                                      rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
                                      rows="10"
                                      >
-                            <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
+                            <p:column headerText="Tube No." id="txtTubeNo" sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                 <h:inputText value="#{c.encounterNumber}" >
-                                    <p:ajax event="blur" process="txtLabNo"
+                                    <p:ajax event="blur" process="txtTubeNo"
                                             listener="#{clientController.saveLabNo(c)}" >
                                     </p:ajax>
                                 </h:inputText>
@@ -80,8 +80,8 @@
                                 <h:outputLabel value="#{c.pcrTestType.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="Name"  sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}" filterMatchMode="contains">
-                                <h:inputText value="#{c.client.person.name}" >
-                                    <p:ajax event="blur" process="txtLabNo"
+                                <h:inputText id="txtName" value="#{c.client.person.name}" >
+                                    <p:ajax event="blur" process="txtName"
                                             listener="#{clientController.saveLabNo(c)}" >
                                     </p:ajax>
                                 </h:inputText>
@@ -96,8 +96,8 @@
                                 <h:outputLabel value="#{c.client.person.sex.name}" ></h:outputLabel>
                             </p:column>
                             <p:column headerText="NIC"  sortBy="#{c.client.person.nic}" filterBy="#{c.client.person.nic}" filterMatchMode="contains">
-                                <h:inputText value="#{c.client.person.nic}" >
-                                    <p:ajax event="blur" process="txtLabNo"
+                                <h:inputText id="txtNic" value="#{c.client.person.nic}" >
+                                    <p:ajax event="blur" process="txtNic"
                                             listener="#{clientController.saveLabNo(c)}" >
                                     </p:ajax>
                                 </h:inputText>
@@ -109,24 +109,24 @@
                             </p:column>
                             <p:column headerText="Address"  sortBy="#{c.client.person.address}"
                                       filterBy="#{c.client.person.address}" filterMatchMode="contains">
-                                <h:inputText value="#{c.client.person.address}" >
-                                    <p:ajax event="blur" process="txtLabNo"
+                                <h:inputText id="txtAddress" value="#{c.client.person.address}" >
+                                    <p:ajax event="blur" process="txtAddress"
                                             listener="#{clientController.saveLabNo(c)}" >
                                     </p:ajax>
                                 </h:inputText>
                             </p:column>
                             <p:column headerText="Unit / Ward"  sortBy="#{c.unitWard}"
                                       filterBy="#{c.unitWard}" filterMatchMode="contains">
-                                <h:inputText value="#{c.unitWard}" >
-                                    <p:ajax event="blur" process="txtLabNo"
+                                <h:inputText id="txtWard" value="#{c.unitWard}" >
+                                    <p:ajax event="blur" process="txtWard"
                                             listener="#{clientController.saveLabNo(c)}" >
                                     </p:ajax>
                                 </h:inputText>
                             </p:column>
                             <p:column headerText="BHT"  sortBy="#{c.bht}"
                                       filterBy="#{c.bht}" filterMatchMode="contains">
-                                <h:inputText value="#{c.bht}" >
-                                    <p:ajax event="blur" process="txtLabNo"
+                                <h:inputText id="txtBht" value="#{c.bht}" >
+                                    <p:ajax event="blur" process="txtBht"
                                             listener="#{clientController.saveLabNo(c)}" >
                                     </p:ajax>
                                 </h:inputText>
