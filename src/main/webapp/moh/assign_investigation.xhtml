@@ -11,7 +11,7 @@
         <ui:composition template="/template1.xhtml">
 
             <ui:define name="title">
-                Assign Investigation
+                MOH | Assign Investigation
             </ui:define>
 
             <ui:define name="content">
@@ -19,50 +19,50 @@
 
                     <div class="row" >
                         <div class="col-12" >
-                            <p:outputLabel value="Assign Cases to Investigate" ></p:outputLabel>
+                            <h2 class="fs-4 my-4 fw-bold text-center">Assign Cases to Investigate</h2>
                         </div>
                     </div>
 
                     <div class="row" >
                         <div class="col-6" >
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="Ordered From" ></p:outputLabel>
+                            <p:panelGrid columns="2" class="border border-light bg-white m-auto" >
+                                <p:outputLabel value="Ordered From" class="fs-6 fw-bold"></p:outputLabel>
                                 <p:calendar value="#{mohController.fromDate}" 
                                             pattern="dd MMMM yyyy hh:mm a">
                                 </p:calendar>
 
-                                <p:outputLabel value="Ordered To" ></p:outputLabel>
+                                <p:outputLabel value="Ordered To" class="fs-6 fw-bold"></p:outputLabel>
                                 <p:calendar value="#{mohController.toDate}" pattern="dd MMMM yyyy hh:mm a"></p:calendar>
 
-                                <p:outputLabel value="Ordering Category" ></p:outputLabel>
-                                <p:selectOneMenu value="#{mohController.orderingCategory}" >
+                                <p:outputLabel value="Ordering Category" class="fs-6 fw-bold"></p:outputLabel>
+                                <p:selectOneMenu class="form-control form-control-sm w-100" value="#{mohController.orderingCategory}" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
                                     <f:selectItems value="#{mohController.covidTestOrderingCategories}" 
                                                    var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
                                 </p:selectOneMenu>
 
-                                <p:outputLabel value="Test" ></p:outputLabel>
-                                <p:selectOneMenu value="#{mohController.testType}" >
+                                <p:outputLabel value="Test" class="fs-6 fw-bold"></p:outputLabel>
+                                <p:selectOneMenu class="form-control form-control-sm w-100" value="#{mohController.testType}" >
                                     <f:selectItem itemLabel="All" ></f:selectItem>
                                     <f:selectItems value="#{mohController.covidTestTypes}" var="c" itemLabel="#{c.name}"
                                                    itemValue="#{c}" ></f:selectItems>
                                 </p:selectOneMenu>
 
-                                <p:commandButton ajax="false" value="Generate Excel">
+                                <h:commandButton class="btn btn-success w-100" value="Generate Excel">
                                     <p:dataExporter target="tbl" type="xlsx" fileName="tests" ></p:dataExporter>
-                                </p:commandButton>
-                                <p:commandButton ajax="false" value="Process" 
-                                                 action="#{mohController.toAssignInvestigation()}" ></p:commandButton>
+                                </h:commandButton>
+                                <h:commandButton class="btn btn-warning w-100" value="Process" 
+                                                 action="#{mohController.toAssignInvestigation()}" ></h:commandButton>
 
 
                             </p:panelGrid>
                         </div>
                         <div class="col-6" >
 
-                            <p:panelGrid columns="2" >
-                                <p:outputLabel value="Assign to" ></p:outputLabel>
-                                <p:selectOneMenu value="#{mohController.assignee}" var="wu" >
+                            <p:panelGrid columns="2" class="border border-light bg-white">
+                                <p:outputLabel value="Assign to" class="fs-6 fw-bold"></p:outputLabel>
+                                <p:selectOneMenu  class="form-control form-control-sm w-100" value="#{mohController.assignee}" var="wu" >
                                     <f:selectItems value="#{webUserController.usersForMyInstitute}" var="w" 
                                                    itemLabel="#{w.area.name}" itemValue="#{w}" >
                                     </f:selectItems>
@@ -77,36 +77,32 @@
                                     </p:column>
                                 </p:selectOneMenu>
 
-                                <p:commandButton ajax="false" value="Assign" 
-                                                 action="#{mohController.assignToInvestigate()}"></p:commandButton>
+                                <h:commandButton class="w-100 btn btn-success my-2" value="Assign" 
+                                                 action="#{mohController.assignToInvestigate()}"></h:commandButton>
 
                             </p:panelGrid>
                         </div>
                     </div>
                     <div class="row" >
                         <div class="col-12" >
-                            <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
-                                <f:facet name="header" >
+                            <p:panelGrid columns="1" styleClass="w-100 alignTop border border-light bg-white">
+                                <p:commandButton icon="pi pi-align-justify" class="btn btn-sm btn-secondary" id="toggler" type="button" value="Filter Columns" />
+                                <p:columnToggler datasource="tbl" trigger="toggler"/>
 
-                                </f:facet>
-
-
-                                <p:panelGrid columns="2" >
-
-                                </p:panelGrid>
-
-                                <p:dataTable resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.tests}" rendered="true"
-                                             rowIndexVar="n"
-                                             var="c" 
-                                             rowKey="#{c.id}" 
-                                             rowStyleClass="#{c.resultCssClass}"
-                                             paginator="true" 
-                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                             rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
-                                             rows="10"
-                                             selection="#{mohController.selectedToAssign}"
-                                             >
+                                <p:dataTable 
+                                    reflow="true"
+                                    resizableColumns="true" multiViewState="true" resizeMode="expand" id="tbl" value="#{mohController.tests}" rendered="true"
+                                    rowIndexVar="n"
+                                    var="c" 
+                                    rowKey="#{c.id}" 
+                                    rowStyleClass="#{c.resultCssClass}"
+                                    paginator="true" 
+                                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                    rowsPerPageTemplate="10,25,100,{ShowAll|'All'}"
+                                    rows="10"
+                                    selection="#{mohController.selectedToAssign}"
+                                    >
                                     <p:column selectionMode="multiple" width="40" ></p:column>
                                     <p:column headerText="Tube No." sortBy="#{c.encounterNumber}" filterBy="#{c.encounterNumber}" filterMatchMode="contains">
                                         <p:outputLabel value="#{c.encounterNumber}" ></p:outputLabel>
