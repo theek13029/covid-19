@@ -9,38 +9,40 @@
     <h:body>
 
         <ui:composition template="/moh/admin/index.xhtml">
+            <ui:define name="title">
+               MOH | User Edit 
+            </ui:define>
             <ui:define name="Edit User at MOH">
             </ui:define>
             <ui:define name="admin">
-                <p:panel id="WebUserEditDlg" header="Edit User Detais" style="text-align: center; height: 100%;">
+                <p:panel id="WebUserEditDlg" header="Edit User Details" class="h-100 text-center fw-bold fs-5 mb-3">
                     <h:form id="WebUserEditForm">
 
-                        <p:panelGrid columns="2" rendered="#{webUserController.selected != null}" style="margin: auto; text-align: left;">
-                            <f:facet name="header" >
-                                <p:commandButton action="#{webUserController.update}" value="#{bundleClinical.Save}" ajax="false" />
-                            </f:facet>
+                        <p:panelGrid columns="2" rendered="#{webUserController.selected != null}" class="m-auto text-start border border-light bg-white">
+                            
 
-                            <p:outputLabel value="Username" for="username" />
-                            <p:inputText  id="username" value="#{webUserController.selected.name}" title="#{bundleClinical.EditWebUserTitle_name}"
+                            <p:outputLabel value="Username" for="username" class="fw-bold fs-6"/>
+                            <p:inputText class="text-muted bg-light w-100" id="username" value="#{webUserController.selected.name}" title="#{bundleClinical.EditWebUserTitle_name}"
                                           readonly="true" required="true" requiredMessage="#{bundleClinical.EditWebUserRequiredMessage_name}"/>
 
 
-                            <p:outputLabel value="Title" for="title" />
-                            <p:selectOneMenu id="title"  value="#{webUserController.selected.person.title}"  >
+                            <p:outputLabel value="Title" for="title" class="fw-bold fs-6"/>
+                            <p:selectOneMenu class="form-control form-control-sm w-100" id="title"  value="#{webUserController.selected.person.title}"  >
                                 <f:selectItems value="#{itemController.titles}" var="t" itemLabel="#{t.name}"
                                                itemValue="#{t}" ></f:selectItems>
                             </p:selectOneMenu>
 
-                            <p:outputLabel value="Name" for="name" />
+                            <p:outputLabel value="Name" for="name" class="fw-bold fs-6"/>
                             <p:inputText 
                                 autocomplete="off" 
                                 id="name" 
                                 value="#{webUserController.selected.person.name}"
-                                title="Name" />
+                                title="Name" 
+                                class="w-100"/>
 
 
-                            <p:outputLabel value="Institution" for="institution" />
-                            <p:selectOneMenu id="institution" style="width: 100%;" value="#{webUserController.selected.institution}" required="true">
+                            <p:outputLabel value="Institution" for="institution" class="fw-bold fs-6"/>
+                            <p:selectOneMenu class="form-control form-control-sm w-100" id="institution" style="width: 100%;" value="#{webUserController.selected.institution}" required="true">
                                 <f:selectItem itemLabel="Please Select" ></f:selectItem>
                                 <f:selectItems value="#{webUserController.loggableInstitutions}"
                                                var="ins" 
@@ -48,14 +50,14 @@
                                                itemValue="#{ins}" ></f:selectItems>
                             </p:selectOneMenu>
 
-                            <p:outputLabel value="Email" for="email" />
-                            <p:inputText id="email" value="#{webUserController.selected.email}" title="#{bundleClinical.EditWebUserTitle_email}" />
+                            <p:outputLabel value="Email" for="email" class="fw-bold fs-6"/>
+                            <p:inputText class="w-100" id="email" value="#{webUserController.selected.email}" title="#{bundleClinical.EditWebUserTitle_email}" />
 
-                            <p:outputLabel value="Telephone No." for="telNo" />
-                            <p:inputText id="telNo" value="#{webUserController.selected.telNo}" title="#{bundleClinical.EditWebUserTitle_telNo}" />
+                            <p:outputLabel value="Telephone No." for="telNo" class="fw-bold fs-6"/>
+                            <p:inputText class="w-100" id="telNo" value="#{webUserController.selected.telNo}" title="#{bundleClinical.EditWebUserTitle_telNo}" />
 
-                            <p:outputLabel value="Role" for="webUserRole" />
-                            <p:selectOneMenu  id="webUserRole" value="#{webUserController.selected.webUserRole}"  required="true">
+                            <p:outputLabel value="Role" for="webUserRole" class="fw-bold fs-6"/>
+                            <p:selectOneMenu class="form-control form-control-sm w-100" id="webUserRole" value="#{webUserController.selected.webUserRole}"  required="true">
                                 <f:selectItem itemLabel="Select" ></f:selectItem>
                                 <f:selectItems value="#{webUserController.webUserRolesForMoh}" 
                                                var="r" 
@@ -63,7 +65,9 @@
                                                itemValue="#{r}" >
                                 </f:selectItems>
                             </p:selectOneMenu>
-
+                            <f:facet name="footer" >
+                                <h:commandButton action="#{webUserController.update}" value="#{bundleClinical.Save}" class="btn btn-success w-50" />
+                            </f:facet>
                         </p:panelGrid>
 
 
