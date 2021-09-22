@@ -55,7 +55,7 @@
                             <p:outputLabel value="Role" for="webUserRole" />
                             <p:selectOneMenu  id="webUserRole" value="#{webUserController.selected.webUserRole}"  required="true">
                                 <f:selectItem itemLabel="Select" ></f:selectItem>
-                                <f:selectItems value="#{webUserController.webUserRolesForHospitalAdmin}" 
+                                <f:selectItems value="#{webUserController.webUserRolesForRd}" 
                                                var="r" 
                                                itemLabel="#{r.label}" 
                                                itemValue="#{r}" >
