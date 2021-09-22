@@ -19,15 +19,16 @@
                 <div class="card  #{mohController.pcr.resultCssClass}">
                     <h5 class="card-header">
                         <h:form>
-                            <p:outputLabel value="PCR Result" ></p:outputLabel>
-                            <p:commandButton value="To Edit PCR Order Details" action="#{mohController.toPcrEdit()}" ajax="false"
-                                             style="float: right;">
-                            </p:commandButton>
+                            <h:outputLabel value="PCR Result" ></h:outputLabel>
+                            <h:commandButton value="To Edit PCR Order Details" action="#{mohController.toPcrEdit()}"
+                                             style="float: right;"
+                                             class="btn btn-warning">
+                            </h:commandButton>
                         </h:form>
                     </h5>
                     <div class="card-body">
                             <h:form>
-                                <p:panelGrid columns="2" style="width: 100%;">
+                                <h:panelGrid columns="2" style="width: 100%;"  rendered="true" styleClass="border border-light bg-white" >
                                     <h:outputText value="Id:"/>
                                     <h:outputText value="#{mohController.pcr.id}" title="Id"/>
                                     <h:outputText value="Client:"/>
@@ -87,7 +88,7 @@
                                     <h:outputText value="Result:"/>
                                     <h:outputText value="#{mohController.pcr.pcrResult.name}" title="PcrResult"/>
                                     
-                                </p:panelGrid>
+                                </h:panelGrid>
                             </h:form>
                     </div>
                 </div>
