@@ -8,7 +8,7 @@
 
     <h:head>
         <ui:define name="title">
-            Uploaded Orders
+            Uploaded Results
         </ui:define>
     </h:head>
 
@@ -41,7 +41,7 @@
                         </h:outputLabel>
                         <h:outputLabel ></h:outputLabel>
                         <h:commandButton value="Save Orders" 
-                                         action="#{clientController.saveUploadedOrders()}" ></h:commandButton>
+                                         action="#{clientController.saveUploadedOrdersPlusResults()}" ></h:commandButton>
 
                         <h:outputLabel ></h:outputLabel>
                         <h:commandButton value="Clear List" 
@@ -68,6 +68,11 @@
                         <p:column selectionMode="multiple" width="50" ></p:column>
                         <p:column headerText="Test No"  >
                             <p:inputText id="testNo" value="#{c.testNo}" style="width: 95%;" >
+                                <p:ajax event="keyup" process="@this" ></p:ajax>
+                            </p:inputText>
+                        </p:column>
+                        <p:column headerText="Lab No" >
+                            <p:inputText id="labNo" value="#{c.labNo}" style="width: 95%;" >
                                 <p:ajax event="keyup" process="@this" ></p:ajax>
                             </p:inputText>
                         </p:column>
@@ -132,6 +137,27 @@
 
                         <p:column headerText="BHT/Clinic/OPD No." >
                             <p:inputText id="bht" value="#{c.bhtNo}" style="width: 95%;" >
+                                <p:ajax event="keyup" process="@this" ></p:ajax>
+                            </p:inputText>
+                        </p:column>
+
+
+                        <p:column headerText="Result" >
+                            <p:selectOneMenu id="cmbResult" value="#{c.result}" style="width: 98%;" >
+                                <f:selectItem itemLabel="Select Result"  ></f:selectItem>
+                                <f:selectItems value="#{itemApplicationController.pcrResults}"
+                                               var="i" itemLabel="#{i.name}" itemValue="#{i}" ></f:selectItems>
+                            </p:selectOneMenu>
+                        </p:column>
+
+                        <p:column headerText="CT1" >
+                            <p:inputText id="ct1" value="#{c.ct1}" style="width: 95%;" >
+                                <p:ajax event="keyup" process="@this" ></p:ajax>
+                            </p:inputText>
+                        </p:column>
+
+                        <p:column headerText="CT2" >
+                            <p:inputText id="ct2" value="#{c.ct2}" style="width: 95%;" >
                                 <p:ajax event="keyup" process="@this" ></p:ajax>
                             </p:inputText>
                         </p:column>
