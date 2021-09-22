@@ -8,6 +8,9 @@
 
     <h:body>
         <ui:composition template="/moh/admin/index.xhtml">
+            <ui:define name="title">
+                MOH | PHI Areas
+            </ui:define>
             <ui:define name="PHI Areas of a MOH">
             </ui:define>
             <ui:define name="admin">
@@ -15,25 +18,27 @@
                 <h:form >
                     <div class="row" >
                         <div class="col" >
-                            <div class="card" >
-                                <div class="card-header" >
+                            <div class="card border border-light" >
+                                <div class="card-header fs-5 fw-bold bg-white text-dark" >
                                     PHI Areas
                                 </div>
-                                <div class="card-body" >
-                                    <p:dataTable value="#{mohController.phiAreas}"
-                                                 var="p"
-                                                 rowKey="#{p.id}"
+                                <div class="card-body bg-white" >
+                                    <p:dataTable 
+                                       
+                                        value="#{mohController.phiAreas}"
+                                        var="p"
+                                        rowKey="#{p.id}"
 
-                                                 rowIndexVar="n"
-                                                 reflow="true" 
+                                        rowIndexVar="n"
+                                        reflow="true" 
 
-                                                 rows="10"
-                                                 paginator="true"
-                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                                 rowsPerPageTemplate="10,20,{ShowAll|'All'}"
+                                        rows="10"
+                                        paginator="true"
+                                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                        currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                        rowsPerPageTemplate="10,20,{ShowAll|'All'}"
 
-                                                 >
+                                        >
                                         <p:column width="200" headerText="No." >
                                             <h:outputText value="#{n+1}" ></h:outputText>
                                         </p:column>
@@ -44,9 +49,9 @@
                                             <h:outputText value="#{p.name}" ></h:outputText>
                                         </p:column>
                                         <p:column headerText="Actions" >
-                                            <p:commandButton ajax="false" value="Edit" action="#{mohController.toViewPhiAreaOfMoh()}" >
+                                            <h:commandButton class="w-100 btn btn-warning" value="Edit" action="#{mohController.toViewPhiAreaOfMoh()}" >
                                                 <f:setPropertyActionListener value="#{p}" target="#{mohController.phiArea}" ></f:setPropertyActionListener>
-                                            </p:commandButton>
+                                            </h:commandButton>
                                         </p:column>
 
                                     </p:dataTable>
