@@ -63,15 +63,15 @@ public class MenuController implements Serializable {
      */
     public MenuController() {
     }
-    
+
     public String toViewRequest() {
         return "/common/request_view";
     }
-    
+
     public String toViewPatient() {
         return "/common/client_view";
     }
-    
+
     public String toViewResult() {
         return "/common/result_view";
     }
@@ -99,7 +99,7 @@ public class MenuController implements Serializable {
         }
     }
 
-    
+
     public String toUploadResults(){
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Hospital:
@@ -115,7 +115,7 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
-    
+
 
     public String toUploadOrders(){
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
@@ -133,7 +133,7 @@ public class MenuController implements Serializable {
         }
     }
 
-    
+
     public String toDispatchSummary() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
@@ -176,7 +176,7 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
-    
+
     public String toReceivedAtLabSummary() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
@@ -220,7 +220,6 @@ public class MenuController implements Serializable {
         }
     }
 
-    
     public String toSearch() {
         switch (webUserController.getLoggedUser().getWebUserRoleLevel()) {
             case Regional:
@@ -230,7 +229,7 @@ public class MenuController implements Serializable {
             case Hospital:
                 return "/hospital/search";
             case Lab:
-                return "/lab/search";
+                return "/hospital/search";
             case National_Lab:
                 return "/national/search";
             case Moh:
@@ -242,8 +241,6 @@ public class MenuController implements Serializable {
         }
     }
 
-    
-    
     public String toAdministrationIndex() {
         boolean privileged = false;
         for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
@@ -347,7 +344,7 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
-    
+
     public String toAddNewInstitution() {
         boolean privileged = false;
         for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
@@ -423,8 +420,8 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
-    
- 
+
+
     public String toListInstitutions() {
         boolean privileged = false;
         boolean national=false;
@@ -463,7 +460,7 @@ public class MenuController implements Serializable {
                 return "";
         }
     }
-    
+
     public String toListInstitutionsWithUsers() {
         boolean privileged = false;
         boolean national=false;
@@ -501,7 +498,7 @@ public class MenuController implements Serializable {
         }
     }
 
-    
+
     public String toPrivileges() {
         boolean privileged = false;
         boolean national=false;
@@ -545,7 +542,7 @@ public class MenuController implements Serializable {
         }
     }
 
-    
+
     public String toEditUser() {
         boolean privileged = false;
         for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
@@ -580,7 +577,7 @@ public class MenuController implements Serializable {
         }
     }
 
-    
+
     public String toEditInstitution() {
         boolean privileged = false;
         for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
@@ -615,7 +612,7 @@ public class MenuController implements Serializable {
         }
     }
 
-    
+
     public String toEditPassword() {
         boolean privileged = false;
         for (UserPrivilege up : webUserController.getLoggedUserPrivileges()) {
