@@ -59,10 +59,16 @@
 
                         </p:panelGrid>
 
+                        <div>
+                            <p:commandButton class="btn btn-sm btn-secondary" id="toggler" type="button" value="Columns" icon="pi pi-align-justify"/>
+                            <p:columnToggler datasource="tbl" trigger="toggler"/>
+                        </div>
 
                         <p:dataTable id="tbl" value="#{labController.tests}" rendered="true"
                                      rowIndexVar="n"
                                      var="c"
+                                     reflow="true"
+                                     resizableColumns="true"
                                      rowKey="#{c.id}"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
