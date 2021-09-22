@@ -8,110 +8,84 @@
 
   <ui:composition template="/template1.xhtml">
     <ui:define name="title">
-     Lab | Search
+      Lab | Search
     </ui:define>
     <ui:define name="content">
+      <h:form>
       <div class="row bg-white py-4">
-        <div class="mb-2">
-          <h4 class="fw-bold text-center">Search Samples</h4>
-        </div>
-        <div class="col-md-3">
-          <label for="fromDate" class="form-label d-block fw-bold">From Date</label>
-          <p:calendar id="fromDate" class="form-select" value="#{clientController.fromDate}"
-                      pattern="dd MMMM yyyy hh:mm a">
-          </p:calendar>
-        </div>
-        <div class="col-md-3">
-          <label for="toDate" class="form-label fw-bold">To Date</label>
-          <p:calendar id="toDate" class="form-select" value="#{clientController.toDate}"
-                      pattern="dd MMMM yyyy hh:mm a">
-          </p:calendar>
-        </div>
-        <div class="col-md-3">
-          <h:form>
+          <div class="mb-2">
+            <h4 class="fw-bold text-center">Search Samples</h4>
+          </div>
+          <div class="col-md-3 mb-2">
+            <label for="fromDate" class="form-label d-block fw-bold">From Date</label>
+            <p:calendar id="fromDate" value="#{clientController.fromDate}" pattern="dd MMMM yyyy hh:mm a">
+            </p:calendar>
+          </div>
+          <div class="col-md-3 mb-2">
+            <label for="toDate" class="form-label fw-bold">To Date</label>
+            <p:calendar id="toDate" value="#{clientController.toDate}" pattern="dd MMMM yyyy hh:mm a">
+            </p:calendar>
+          </div>
+          <div class="col-md-3 mb-2">
             <label for="txtSearchName" class="form-label fw-bold">Search By Name</label>
             <div class="input-group">
-              <h:inputText class="form-control" id="txtSearchName" required="true"
-                requiredMessage="Please enter a name to search" value="#{clientController.searchingName}">
+              <h:inputText class="form-control" id="txtSearchName" value="#{clientController.searchingName}">
               </h:inputText>
               <h:commandButton class="btn btn-success fw-bold" value="Search"
                 action="#{clientController.searchByName()}">
               </h:commandButton>
             </div>
-            <h:messages class="small text-danger" for="txtSearchName"></h:messages>
-          </h:form>
-        </div>
-        <div class="col-md-3">
-          <h:form>
+          </div>
+          <div class="col-md-3 mb-2">
             <label for="txtSearchId" class="form-label fw-bold">Search By Test Id</label>
             <div class="input-group">
-              <h:inputText class="form-control" id="txtSearchId" required="true"
-                requiredMessage="Please enter ad ID to search" value="#{clientController.searchingTestId}">
+              <h:inputText class="form-control" id="txtSearchId" value="#{clientController.searchingTestId}">
               </h:inputText>
               <h:commandButton class="btn btn-success fw-bold" value="Search"
                 action="#{clientController.searchByTestId()}">
               </h:commandButton>
             </div>
-            <h:messages class="text-danger small" for="txtSearchId"></h:messages>
-          </h:form>
-        </div>
-        <div class="col-md-3">
-          <h:form>
+          </div>
+          <div class="col-md-3 mb-2">
             <label for="txtSearchTestNo" class="form-label fw-bold">Search By Test | Tube | Sample #</label>
             <div class="input-group">
-              <h:inputText class="form-control" id="txtSearchTestNo" required="true"
-                requiredMessage="Please enter a Test number to search" value="#{clientController.searchingTestNo}">
+              <h:inputText class="form-control" id="txtSearchTestNo" value="#{clientController.searchingTestNo}">
               </h:inputText>
-              <h:commandButton class="btn btn-success fw-bold" value="Search" action="#{clientController.searchByTestNo()}">
+              <h:commandButton class="btn btn-success fw-bold" value="Search"
+                action="#{clientController.searchByTestNo()}">
               </h:commandButton>
             </div>
-            <h:messages class="text-danger small" for="txtSearchTestNo"></h:messages>
-
-          </h:form>
-        </div>
-        <div class="col-md-3">
-          <h:form>
+          </div>
+          <div class="col-md-3 mb-2">
             <label for="txtSearchBhtNo" class="form-label fw-bold">Search By BHT #</label>
             <div class="input-group">
-              <h:inputText class="form-control " id="txtSearchBhtNo" required="true"
-                requiredMessage="Please enter a BHT number to search" value="#{clientController.searchingBhtno}">
+              <h:inputText class="form-control " id="txtSearchBhtNo" value="#{clientController.searchingBhtno}">
               </h:inputText>
               <h:commandButton class="btn btn-success fw-bold" value="Search"
                 action="#{clientController.searchByBhtNo()}">
               </h:commandButton>
             </div>
-            <h:messages class="text-danger small" for="txtSearchBhtNo"></h:messages>
-          </h:form>
-        </div>
-        <div class="col-md-3">
-          <h:form>
+          </div>
+          <div class="col-md-3 mb-2">
             <label for="txtSearchByLabNo" class="form-label fw-bold">Search By Lab #</label>
             <div class="input-group">
-              <h:inputText class="form-control fs-6" id="txtSearchByLabNo" required="true"
-                requiredMessage="Please enter a Test number to search" value="#{clientController.searchingLabNo}">
+              <h:inputText class="form-control fs-6" id="txtSearchByLabNo" value="#{clientController.searchingLabNo}">
               </h:inputText>
               <h:commandButton class="btn btn-success fw-bold" value="Search"
                 action="#{clientController.searchByLabNo()}">
               </h:commandButton>
             </div>
-
-            <h:messages class="text-danger small" for="txtSearchByLabNo"></h:messages>
-
-          </h:form>
+          </div>
         </div>
-      </div>
+      </h:form>
       <div class="my-3">
         <div>
-          <p:commandButton class="btn btn-secondary btn-sm" id="toggler" type="button" value="Columns" icon="pi pi-align-justify" />
+          <p:commandButton class="btn btn-secondary btn-sm" id="toggler" type="button" value="Columns"
+            icon="pi pi-align-justify" />
           <p:columnToggler datasource="tbl" trigger="toggler" />
         </div>
-        <p:dataTable id="tbl" value="#{clientController.testList}"
-          class="table"
-          rowIndexVar="n"
-          rowKey="#{c.id}"
-          var="c" rows="10"
-          paginator="true"
-          resizableColumns="true"
+        <p:dataTable id="tbl" value="#{clientController.testList}" class="table" rowIndexVar="n" rowKey="#{c.id}"
+          var="c" rows="10" paginator="true" resizableColumns="true"
           paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
           currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
           rowsPerPageTemplate="5,10,{ShowAll|'All'}">
@@ -127,6 +101,9 @@
           </p:column>
           <p:column headerText="Lab No" sortBy="#{c.labNumber}" filterBy="#{c.labNumber}" filterMatchMode="contains">
             <h:outputLabel value="#{c.labNumber}"></h:outputLabel>
+          </p:column>
+          <p:column headerText="BHT No" sortBy="#{c.bht}" filterBy="#{c.bht}" filterMatchMode="contains">
+            <h:outputLabel value="#{c.bht}"></h:outputLabel>
           </p:column>
           <p:column headerText="Name" sortBy="#{c.client.person.name}" filterBy="#{c.client.person.name}"
             filterMatchMode="contains">
@@ -147,11 +124,11 @@
           <p:column headerText="Result" sortBy="#{c.client.person.age}">
             <h:outputLabel value="#{c.pcrResult.name}"></h:outputLabel>
           </p:column>
-          <p:column headerText="CT Value 1" soryBy="#{c.ctvalue}">
-            <h:outputLabel value="#{c.ctvalue}"></h:outputLabel>
+          <p:column headerText="CT Value 1" soryBy="#{c.ctValue}">
+            <h:outputLabel value="#{c.ctValue}"></h:outputLabel>
           </p:column>
-          <p:column headerText="CT Value 2" sortBy="#{c.ctvalue2}">
-            <h:outputLabel value="#{c.ctvalue2}"></h:outputLabel>
+          <p:column headerText="CT Value 2" sortBy="#{c.ctValue2}">
+            <h:outputLabel value="#{c.ctValue2}"></h:outputLabel>
           </p:column>
           <p:column headerText="Ordered" sortBy="#{c.createdAt}">
             <h:outputLabel value="#{c.createdAt}">
@@ -176,7 +153,6 @@
               <f:convertDateTime pattern="dd MM yy hh:mm"></f:convertDateTime>
             </h:outputLabel>
             <h:outputLabel value=" by #{c.resultEnteredBy.person.name}"></h:outputLabel>
-
           </p:column>
           <p:column headerText="Review">
             <h:outputLabel value="#{c.resultReviewedAt}">
