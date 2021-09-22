@@ -2253,6 +2253,23 @@ public class WebUserController implements Serializable {
         return rs;
     }
 
+    
+    public WebUserRole[] getWebUserRolesForMoh() {
+        List<WebUserRole> urs = new ArrayList<>();
+        urs.add(WebUserRole.Moh);
+        urs.add(WebUserRole.Amoh);
+        urs.add(WebUserRole.Sphi);
+        urs.add(WebUserRole.Phns);
+        urs.add(WebUserRole.Sphm);
+        urs.add(WebUserRole.Phi);
+        urs.add(WebUserRole.Phm);
+        urs.add(WebUserRole.MohStaff);
+        WebUserRole[] rs = urs.toArray(new WebUserRole[0]);
+        return rs;
+    }
+
+    
+    
     public WebUserRole[] getWebUserRolesForLabAdmin() {
         List<WebUserRole> urs = new ArrayList<>();
         urs.add(WebUserRole.Hospital_Admin);
