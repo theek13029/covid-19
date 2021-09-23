@@ -11,15 +11,18 @@
 
         <ui:composition template="/template1.xhtml">
             <ui:define name="content">
-                <h:outputStylesheet library="css" name="tem1.css"/>
-                <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
-                    <f:facet name="header" >
-                        <p:outputLabel value="Receive Samples" ></p:outputLabel>
-                    </f:facet>
+                <h:form >
+                   
+                    
+                    <h:outputStylesheet library="css" name="tem1.css"/>
+                    <p:panelGrid columns="1" style="width: 100%;" styleClass="alignTop" >
+                        <f:facet name="header" >
+                            <p:outputLabel value="Receive Samples" ></p:outputLabel>
+                        </f:facet>
 
-                    <h:form >
+
                         <p:panelGrid columns="3" >
-                            <p:panelGrid columns="2" >
+                            <p:panelGrid columns="2" class="align-top" >
                                 <f:facet name="header" >
                                     <h:outputLabel value="List" ></h:outputLabel>
                                 </f:facet>
@@ -35,20 +38,20 @@
                                                 var="m" itemLabel="#{m.name}" itemValue="#{m}" >
                                 </p:autoComplete>
 
-                                <p:commandButton ajax="false" value="Process" 
+                                <p:commandButton ajax="false" value="Process" class="btn btn-success"
                                                  action="#{clientController.toLabReceiveSelected()}" ></p:commandButton>
-                                <p:commandButton ajax="false" value="Generate Excel">
-                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_to_receive" ></p:dataExporter>
+                                <p:commandButton ajax="false" value="Generate Excel" class="btn btn-secondary">
+                                    <p:dataExporter target="tbl" type="xlsx" fileName="samples_to_receive" ></p:dataExporter>
                                 </p:commandButton>
 
                             </p:panelGrid>
-                            <p:panelGrid columns="1" >
+                            <p:panelGrid columns="1" class="align-top" >
                                 <f:facet name="header" >
                                     <h:outputLabel value="Receive" ></h:outputLabel>
                                 </f:facet>
                                 <p:panelGrid columns="2" >
                                     <f:facet name="footer" >
-                                        <p:commandButton value="Receive Selected" ajax="false" 
+                                        <p:commandButton value="Receive Selected" ajax="false" class="btn btn-dark-warning"
                                                          action="#{clientController.markSelectedAsReceivedResults()}" ></p:commandButton>
                                     </f:facet>
                                     <p:outputLabel value="Serial No Prefix" rendered="#{preferenceController.labNumberGeneration eq 'CustomCount'}"></p:outputLabel>
@@ -123,11 +126,12 @@
                                 <p:outputLabel value="#{c.bht}" ></p:outputLabel>
                             </p:column>
                         </p:dataTable>
-                    </h:form>
 
 
 
-                </p:panelGrid>
+
+                    </p:panelGrid>
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>

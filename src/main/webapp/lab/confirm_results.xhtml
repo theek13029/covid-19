@@ -42,7 +42,7 @@
                                 <h:commandButton value="Process" class="btn btn-warning w-100"
                                                  action="#{clientController.toConfirmResults()}" ></h:commandButton>
                                 <h:commandButton value="Generate Excel" class="btn btn-success w-100">
-                                    <p:dataExporter target="tbl" type="xlsx" fileName="test_to_mark_results" ></p:dataExporter>
+                                    <p:dataExporter target="tbl" type="xlsx" fileName="result list" ></p:dataExporter>
                                 </h:commandButton>
                                 <h:commandButton value="Approve selected" class="btn btn-success w-100"
                                                  action="#{clientController.confirmSelectedResults()}" ></h:commandButton>
@@ -128,7 +128,8 @@
                                     </p:ajax>
                                 </p:inputText>
                             </p:column>
-                            <p:column headerText="Result" >
+                            <p:column headerText="Result" width="100"  sortBy="#{c.pcrResult.name}"
+                                      filterBy="#{c.pcrResult.name}" filterMatchMode="contains">
                                 <p:selectOneMenu id="cmbResult" value="#{c.pcrResult}"  >
                                     <f:selectItem itemLabel="Select Result" ></f:selectItem>
                                     <f:selectItems value="#{itemApplicationController.pcrResults}"
