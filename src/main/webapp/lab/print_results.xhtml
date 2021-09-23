@@ -19,7 +19,7 @@
                 <h:form >
                     <div class="row" >
                         <div class="col-12 text-center mt-4 mb-2" >
-                            <h4 class="fw-bold"><h:outputLabel  value="Test Order List" ></h:outputLabel></h4>
+                            <h4 class="fw-bold"><h:outputLabel  value="Print Results" ></h:outputLabel></h4>
                         </div>
 
                     </div>
@@ -54,26 +54,28 @@
                         <div class="col-6">
 
                             <p:panelGrid columns="1" styleClass="bg-white border border-light">
-                                <h:commandButton class="btn btn-success me-3 mt-3 w-100" value="PRINT SELECTED AS INDIVIDUAL REPORTS"
+                                <h:commandButton class="btn btn-primary fw-bold me-3 mt-3 w-100" value="PRINT SELECTED AS INDIVIDUAL REPORTS"
                                                  action="#{clientController.toLabPrintSelected()}"
                                                  onclick="form.target = '_blank'"></h:commandButton>
 
-                                <h:commandButton class="btn btn-success mt-3 w-100" value="PRINT SELECTED AS SINGLE REPORT"
+                                <h:commandButton class="btn fw-bold btn-primary mt-3 w-100" value="PRINT SELECTED AS SINGLE REPORT"
                                                  action="#{clientController.toLabPrintSelectedBulk()}"
                                                  onclick="form.target = '_blank'"></h:commandButton>
 
-                                <h:commandButton class="btn btn-success mt-3 w-100"
+                                <h:commandButton class="btn fw-bold btn-success mt-3 w-100"
                                                  value="Transfer SELECTED To Enter Results"
                                                  action="#{clientController.toLabPrintSelectedBulk()}"
                                                  onclick="form.target = '_blank'"></h:commandButton>
                             </p:panelGrid>
 
-
-
-
                         </div>
 
+
                         <div class="row" >
+                            <div>
+                                <p:commandButton id="toggler" type="button" class="btn btn-sm btn-secondary" value="Columns" icon="pi pi-align-justify"/>
+                                <p:columnToggler datasource="tbl" trigger="toggler"/>
+                            </div>
                             <p:dataTable id="tbl" value="#{clientController.listedToPrint}"
                                          rowIndexVar="n"
                                          var="c"
