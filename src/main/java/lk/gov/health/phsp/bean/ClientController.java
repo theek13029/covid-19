@@ -1950,7 +1950,6 @@ public class ClientController implements Serializable {
             html = html.replace("{pcr_result}", "");
         }
 
-
         if (e.getPcrTestType().getCode().equalsIgnoreCase("covid19_pcr_test")) {
             if (e.getCtValue() != null) {
                 html = html.replace("{pcr_ct1}", e.getCtValue().toString());
@@ -2628,7 +2627,6 @@ public class ClientController implements Serializable {
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Functions">
-
 //  This will allow a lab user to search for samples with test no
     public String searchByTestNo() {
         if (this.searchingTestNo == null || this.searchingTestNo.length() == 0) {
@@ -2669,14 +2667,13 @@ public class ClientController implements Serializable {
         testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
         System.out.println(testList);
         return "/hospital/search";
-     }
-
+    }
 
 //   This will search for a patient according to a BHT number
-     public String searchByBhtNo() {
+    public String searchByBhtNo() {
         if (this.searchingBhtno == null || this.searchingBhtno.trim().length() == 0) {
             JsfUtil.addErrorMessage("Please enter a valid BHT number");
-            return  "";
+            return "";
         }
         this.searchingLabNo = null;
         this.searchingTestId = null;
@@ -2716,7 +2713,7 @@ public class ClientController implements Serializable {
     public String searchByTestId() {
         if (this.searchingTestId == null) {
             JsfUtil.addErrorMessage("Please enter a valid test number");
-            return  "";
+            return "";
         }
 
         this.searchingBhtno = null;
@@ -2738,7 +2735,6 @@ public class ClientController implements Serializable {
         hashmap.put("fd", this.fromDate);
         hashmap.put("td", this.toDate);
 
-
         if (this.institution != null) {
             jpql += " and e.institution=:ins";
             hashmap.put("ins", this.institution);
@@ -2755,45 +2751,44 @@ public class ClientController implements Serializable {
     }
 
 //    This function will search for a test under the test tube number
-    	public String searchByLabNo() {
-	        if (this.searchingLabNo == null || this.searchingLabNo.trim().length() == 0) {
-	            JsfUtil.addErrorMessage("Please enter a valid lab number");
-                return  "";
-            }
+    public String searchByLabNo() {
+        if (this.searchingLabNo == null || this.searchingLabNo.trim().length() == 0) {
+            JsfUtil.addErrorMessage("Please enter a valid lab number");
+            return "";
+        }
 
-            this.searchingBhtno = null;
-            this.searchingTestId = null;
-            this.searchingTestNo = null;
-            this.searchingName = null;
+        this.searchingBhtno = null;
+        this.searchingTestId = null;
+        this.searchingTestNo = null;
+        this.searchingName = null;
 
-            Map hashmap = new HashMap<>();
-            String jpql = "select e from Encounter e where e.retired=:retired";
-            hashmap.put("retired", false);
+        Map hashmap = new HashMap<>();
+        String jpql = "select e from Encounter e where e.retired=:retired";
+        hashmap.put("retired", false);
 
-            jpql += " and e.referalInstitution=:ref";
-            hashmap.put("ref", webUserController.getLoggedInstitution());
+        jpql += " and e.referalInstitution=:ref";
+        hashmap.put("ref", webUserController.getLoggedInstitution());
 
-            jpql += " and e.encounterType=:etype";
-            hashmap.put("etype", EncounterType.Test_Enrollment);
+        jpql += " and e.encounterType=:etype";
+        hashmap.put("etype", EncounterType.Test_Enrollment);
 
+        if (this.institution != null) {
+            jpql += " and e.institution=:ins";
+            hashmap.put("ins", this.institution);
+        }
 
-            if (this.institution != null) {
-                jpql += " and e.institution=:ins";
-                hashmap.put("ins", this.institution);
-            }
+        jpql += " and e.encounterDate between :fd and :td";
+        hashmap.put("fd", this.fromDate);
+        hashmap.put("td", this.toDate);
 
-            jpql += " and e.encounterDate between :fd and :td";
-            hashmap.put("fd", this.fromDate);
-            hashmap.put("td", this.toDate);
+        jpql += " and lower(e.labNumber) like :labNo";
+        hashmap.put("labNo", "%" + this.searchingLabNo.toLowerCase() + "%");
 
-            jpql += " and lower(e.labNumber) like :labNo";
-            hashmap.put("labNo", "%" + this.searchingLabNo.toLowerCase() + "%");
+        jpql += " order by e.bht";
 
-            jpql += " order by e.bht";
-
-            testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
-            System.out.println(testList);
-            return "/hospital/search";
+        testList = encounterFacade.findByJpql(jpql, hashmap, TemporalType.DATE);
+        System.out.println(testList);
+        return "/hospital/search";
     }
 
     public String toUploadOrders() {
@@ -2940,13 +2935,14 @@ public class ClientController implements Serializable {
                     }
                     if (phoneColInt != null) {
                         strPhone = cellValue(row.getCell(phoneColInt));
-                    }
-                    if (strPhone != null) {
-                        strPhone = "'" + strPhone;
-                    } else {
-                        Double dbl = cellValueDouble(row.getCell(phoneColInt));
-                        if (dbl != null) {
-                            strPhone = "'" + dbl + "";
+
+                        if (strPhone != null) {
+                            strPhone = "'" + strPhone;
+                        } else {
+                            Double dbl = cellValueDouble(row.getCell(phoneColInt));
+                            if (dbl != null) {
+                                strPhone = "'" + dbl + "";
+                            }
                         }
                     }
                     if (addressColInt != null) {
@@ -3096,7 +3092,6 @@ public class ClientController implements Serializable {
         }
 
     }
-
 
     public String importOrdersFromExcel() {
         if (file == null) {
@@ -3281,7 +3276,6 @@ public class ClientController implements Serializable {
         }
 
     }
-
 
     public String importOrdersFromExcelOld() {
         if (institution == null) {
@@ -3483,7 +3477,7 @@ public class ClientController implements Serializable {
         encounterFacade.create(pcr);
     }
 
-     private void toAddNewPcrWithNewClient(ClientImport ci) {
+    private void toAddNewPcrWithNewClient(ClientImport ci) {
         Encounter pcr = new Encounter();
         Client c;
         if (ci.getClient() == null) {
@@ -3547,7 +3541,6 @@ public class ClientController implements Serializable {
         }
         encounterFacade.create(pcr);
     }
-
 
     private void toAddNewPcrResultWithNewClient(ClientImport ci) {
         Encounter pcr = new Encounter();
@@ -3635,7 +3628,6 @@ public class ClientController implements Serializable {
         }
         encounterFacade.create(pcr);
     }
-
 
     private String cellValue(Cell cell) {
         String str = "";
@@ -5535,7 +5527,6 @@ public class ClientController implements Serializable {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Getters & Setters">
-
     public String getSearchingBhtno() {
         return searchingBhtno;
     }
@@ -6734,45 +6725,35 @@ public class ClientController implements Serializable {
         this.orderingCategory = orderingCategory;
     }
 
-
+    /**
+     * @return the searchingTestId
+     */
+    public BigInteger getSearchingTestId() {
+        return searchingTestId;
+    }
 
     /**
-	 * @return the searchingTestId
-	 */
-	public BigInteger getSearchingTestId() {
-		return searchingTestId;
-	}
+     * @param searchingTestId the searchingTestId to set
+     */
+    public void setSearchingTestId(BigInteger searchingTestId) {
+        this.searchingTestId = searchingTestId;
+    }
 
-	/**
-	 * @param searchingTestId the searchingTestId to set
-	 */
-	public void setSearchingTestId(BigInteger searchingTestId) {
-		this.searchingTestId = searchingTestId;
-	}
+    /**
+     * @return the searchingLabNo
+     */
+    public String getSearchingLabNo() {
+        return searchingLabNo;
+    }
 
+    /**
+     * @param searchingLabNo the searchingLabNo to set
+     */
+    public void setSearchingLabNo(String searchingLabNo) {
+        this.searchingLabNo = searchingLabNo;
+    }
 
-
-
-
-	/**
-	 * @return the searchingLabNo
-	 */
-	public String getSearchingLabNo() {
-		return searchingLabNo;
-	}
-
-	/**
-	 * @param searchingLabNo the searchingLabNo to set
-	 */
-	public void setSearchingLabNo(String searchingLabNo) {
-		this.searchingLabNo = searchingLabNo;
-	}
-
-
-
-
-
-	// </editor-fold>
+    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Inner Classes">
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Converters">
