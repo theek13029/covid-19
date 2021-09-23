@@ -70,6 +70,8 @@ public class PreferenceController implements Serializable {
     private String bulkExcelSubFooter;
     private String bulkExcelLeftColBottom;
     private String bulkExcelRightColBottom;
+    private String pcrTestTerm;
+    private String ratTestTerm;
 
     private String startingSerialCount;
     String labNumberGeneration;
@@ -96,7 +98,7 @@ public class PreferenceController implements Serializable {
             }else{
                 return "";
             }
-            
+
         } else {
             return "";
         }
@@ -153,7 +155,10 @@ public class PreferenceController implements Serializable {
         pcrNegativeComment = findPreferanceValue("pcrNegativeComment", webUserController.getLoggedInstitution());
         pcrInconclusiveComment = findPreferanceValue("pcrInconclusiveComment", webUserController.getLoggedInstitution());
         pcrInvalidComment = findPreferanceValue("pcrInvalidComment", webUserController.getLoggedInstitution());
-
+        // Retrieves the PCR test term to be shown at preference page
+        this.pcrTestTerm = findPreferanceValue("pcrTestTerm", webUserController.getLoggedInstitution());
+        // Retrives thee RAT test term to be shwon at preference page
+        this.ratTestTerm = findPreferanceValue("ratTestTerm", webUserController.getLoggedInstitution());
         startingSerialCount = findPreferanceValue("startingSerialCount", webUserController.getLoggedInstitution());
 
         ct1Term = findPreferanceValue("ct1Term", webUserController.getLoggedInstitution(), "");
@@ -252,6 +257,11 @@ public class PreferenceController implements Serializable {
         savePreference("bulkExcelLeftColBottom", webUserController.getLoggedInstitution(), bulkExcelLeftColBottom);
         savePreference("bulkExcelRightColBottom", webUserController.getLoggedInstitution(), bulkExcelRightColBottom);
         savePreference("labReportBulkHtml", webUserController.getLoggedInstitution(), labReportBulkHtml);
+
+        // save pcr test term as a preference
+        savePreference("pcrTestTerm", webUserController.getLoggedInstitution(), this.pcrTestTerm);
+        // save rat test term as a preference
+        savePreference("ratTestTerm", webUserController.getLoggedInstitution(), this.ratTestTerm);
 
     }
 
@@ -615,6 +625,22 @@ public class PreferenceController implements Serializable {
             loadPreferencesInstitution();
         }
         return bulkExcelFooter;
+    }
+
+    public String getPcrTestTerm() {
+        return this.pcrTestTerm;
+    }
+
+    public void setPcrTestTerm(String pcrTestTerm) {
+        this.pcrTestTerm = pcrTestTerm;
+    }
+
+    public String getRatTestTerm() {
+        return this.ratTestTerm;
+    }
+
+    public void setRatTestTerm(String ratTestTerm) {
+        this.ratTestTerm = ratTestTerm;
     }
 
     public void setBulkExcelFooter(String bulkExcelFooter) {
