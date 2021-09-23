@@ -340,31 +340,33 @@ public class DashboardApplicationController {
 
         Map<String, List<String>> hashMap = new HashMap<>();
 
-        Date todayStart = CommonController.startOfTheDate();
+        Date todayStart = CommonController.startOfTheDate(CommonController.getYesterday());
         Calendar calendar = Calendar.getInstance();
         Date now = calendar.getTime();
 
         for (Institution ins:myInstitutions) {
             System.out.println("mohArea = " + ins.getName());
             List<String> tempList = new ArrayList<>();
-            Long tempTodayPcr = this.getOrderCountArea(
-                    null,
+            Long tempTodayPcr = this.getOrderCount(
+                    ins,
                     todayStart,
                     now,
                     itemApplicationController.getPcr(),
                     null,
                     null,
-                    ins
+                    null
             );
-            Long tempTodayRat = this.getOrderCountArea(
-                    null,
+            System.out.println("tempTodayPcr = " + tempTodayPcr);
+            Long tempTodayRat = this.getOrderCount(
+                    ins,
                     todayStart,
                     now,
                     itemApplicationController.getRat(),
                     null,
                     null,
-                    ins
+                    null
             );
+            System.out.println("tempTodayRat = " + tempTodayRat);
             tempList.add(tempTodayPcr.toString());
             tempList.add(tempTodayRat.toString());
             hashMap.put(ins.getName(), tempList);
@@ -579,7 +581,7 @@ public Map<String, String> getSeriesOfCases(
     public Long getOrderCountArea(Area area,
             Date fromDate,
             Date toDate,
-            Item testType,
+            Item pcrOrRat,
             Item orderingCategory,
             Item result,
             Institution lab) {
@@ -610,9 +612,9 @@ public Map<String, String> getSeriesOfCases(
         m.put("fd", fromDate);
         m.put("td", toDate);
 
-        if (testType != null) {
+        if (pcrOrRat != null) {
             j += " and c.pcrTestType=:tt ";
-            m.put("tt", testType);
+            m.put("tt", pcrOrRat);
         }
         if (orderingCategory != null) {
             j += " and c.pcrOrderingCategory=:oc ";
@@ -626,6 +628,8 @@ public Map<String, String> getSeriesOfCases(
             j += " and c.referalInstitution=:ri ";
             m.put("ri", lab);
         }
+        System.out.println("m = " + m);
+        System.out.println("j = " + j);
         return encounterFacade.findLongByJpql(j, m, TemporalType.TIMESTAMP);
     }
 
