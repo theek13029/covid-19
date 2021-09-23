@@ -40,11 +40,11 @@
                             <f:convertDateTime pattern="dd MMMM yyyy hh:mm" ></f:convertDateTime>
                         </h:outputLabel>
                         <h:outputLabel ></h:outputLabel>
-                        <h:commandButton value="Save Orders" 
+                        <h:commandButton value="Save Results" class="btn btn-success"
                                          action="#{clientController.saveUploadedOrdersPlusResults()}" ></h:commandButton>
 
                         <h:outputLabel ></h:outputLabel>
-                        <h:commandButton value="Clear List" 
+                        <h:commandButton value="Clear List"  class="btn btn-warning"
                                          action="#{clientController.clearUploadedData()}" ></h:commandButton>
 
                     </p:panelGrid>

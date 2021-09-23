@@ -2970,12 +2970,20 @@ public class ClientController implements Serializable {
 
                 if (resultColInt != null) {
                     strResult = cellValue(row.getCell(resultColInt));
-                }
-                if (strResult != null) {
-                    if (strResult.toLowerCase().contains("pos")) {
-                        result = itemApplicationController.getPcrPositive();
-                    } else {
-                        result = itemApplicationController.getPcrNegative();
+                    if (strResult != null) {
+                        if (strResult.toLowerCase().contains("invalid")) {
+                            result = itemApplicationController.getPcrInvalid();
+                        }else if (strResult.toLowerCase().contains("inconclusive")) {
+                            result = itemApplicationController.getPcrInconclusive();
+                        }else if (strResult.toLowerCase().contains("not") && strResult.toLowerCase().contains("detected") ) {
+                            result = itemApplicationController.getPcrNegative();
+                        }else if (!strResult.toLowerCase().contains("not") && strResult.toLowerCase().contains("detected") ) {
+                            result = itemApplicationController.getPcrPositive();
+                        }else if (strResult.toLowerCase().contains("pos")) {
+                            result = itemApplicationController.getPcrPositive();
+                        } else {
+                            result = itemApplicationController.getPcrNegative();
+                        }
                     }
                 }
 
@@ -3637,8 +3645,28 @@ public class ClientController implements Serializable {
         if (cell.getCellType() == null) {
             return str;
         }
+
+        /**
+         * if(cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+         * System.out.println("Formula is " + cell.getCellFormula());
+         * switch(cell.getCachedFormulaResultType()) { case
+         * Cell.CELL_TYPE_NUMERIC: System.out.println("Last evaluated as: " +
+         * cell.getNumericCellValue()); break; case Cell.CELL_TYPE_STRING:
+         * System.out.println("Last evaluated as \"" +
+         * cell.getRichStringCellValue() + "\""); break; } }
+         */
         if (null != cell.getCellType()) {
             switch (cell.getCellType()) {
+                case FORMULA:
+                    switch (cell.getCachedFormulaResultType()) {
+                        case NUMERIC:
+                            str = "\'" + cell.getNumericCellValue();
+                            break;
+                        case STRING:
+                            str = "\"" + cell.getRichStringCellValue() + "\"";
+                            break;
+                    }
+                    break;
                 case STRING:
                     str = cell.getStringCellValue();
                     break;
@@ -3651,9 +3679,6 @@ public class ClientController implements Serializable {
                     } else {
                         str = "false";
                     }
-                    break;
-                case FORMULA:
-                    str = cell.getCellFormula();
                     break;
                 case NUMERIC:
                     str = cell.getNumericCellValue() + "";
