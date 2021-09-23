@@ -1938,10 +1938,10 @@ public class ClientController implements Serializable {
             html = html.replace("{approved_by}", "");
         }
 
-        if (e.getPcrTestType().getName() != null) {
-            html = html.replace("{test}", e.getPcrTestType().getName());
-        } else {
-            html = html.replace("{test}", "");
+        if (e.getPcrTestType().getCode().equalsIgnoreCase("covid19_pcr_test")) {
+            html = html.replace("{test}", getPreferenceController().findPreferanceValue("pcrTestTerm", webUserController.getLoggedInstitution()));
+        } else if (e.getPcrTestType().getCode().equalsIgnoreCase("covid19_rat")) {
+            html = html.replace("{test}", getPreferenceController().findPreferanceValue("ratTestTerm", webUserController.getLoggedInstitution()));
         }
 
         if (e.getPcrResult() != null) {
@@ -1950,11 +1950,18 @@ public class ClientController implements Serializable {
             html = html.replace("{pcr_result}", "");
         }
 
-        if (e.getCtValue() != null) {
-            html = html.replace("{pcr_ct1}", e.getCtValue().toString());
-        } else {
-            html = html.replace("{pcr_ct1}", "");
+
+        if (e.getPcrTestType().getCode().equalsIgnoreCase("covid19_pcr_test")) {
+            if (e.getCtValue() != null) {
+                html = html.replace("{pcr_ct1}", e.getCtValue().toString());
+            } else {
+                html = html.replace("{pcr_ct1}", "");
+            }
+
+            html = html.replace("{ct1_term}", getPreferenceController().findPreferanceValue("ct1Term", webUserController.getLoggedInstitution()));
+            html = html.replace("{ct2_term}", getPreferenceController().findPreferanceValue("ct2Term", webUserController.getLoggedInstitution()));
         }
+
         if (e.getCtValue2() != null) {
             html = html.replace("{pcr_ct2}", e.getCtValue2().toString());
         } else {
